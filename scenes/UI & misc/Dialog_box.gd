@@ -29,7 +29,7 @@ func show_dialog(new_text, speaker):
 	$anims.play("appear")
 	pass
 
-func hide_dialogue(): #my code
+func hide_dialogue(): #Hides the Dialogue box
 	$anims.play("disappear")
 
 func _input(event):

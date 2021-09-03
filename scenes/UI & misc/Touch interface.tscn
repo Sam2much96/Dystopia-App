@@ -112,6 +112,7 @@ action = "move_down"
 visibility_mode = 1
 
 [node name="Joystick" type="Control" parent="."]
+visible = false
 margin_left = 203.651
 margin_top = 467.955
 margin_right = 243.651

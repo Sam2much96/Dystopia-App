@@ -65,6 +65,7 @@ func _enter_tree():
 	if current_comics !=null:
 		load_comics()
 		Globals.comics = self #updates itself to the globals singleton
+		print ('Globals Comics Node', Globals.comics)
 	pass
 
 
@@ -101,6 +102,7 @@ func load_comics():
 			
 			print ('Comic root:',_p)
 
+			Dialogs._comics_(_p)#Set's The Comic node to Dialogue singleton
 
 			comics_placeholder.add_child(Kinematic_2d)
 	
@@ -116,7 +118,7 @@ func load_comics():
 			Kinematic_2d.connect('mouse_entered',self,'_on_Kinematic_2D_mouse_entered')
 
 			emit_signal("loaded_comics")
-			#print ('loading comics') #for debug purposes 
+			print ('loading comics') #for debug purposes 
 			#emit_signal("loaded_comics")
 			var _x = current_comics.instance()
 			Kinematic_2d.add_child(_x) 
@@ -138,7 +140,7 @@ func load_comics():
 	loaded_comics = true
 	comics_placeholder.show()
 	emit_signal("comics_showing")
-	#center_page()
+	center_page()
 
 
 func _input(event): 
@@ -159,7 +161,19 @@ func _input(event):
 	elif enabled == true and event.is_action_pressed("comics") :
 		enabled = false
 
-	if event is InputEventJoypadMotion:
+#Controller for Joypad
+	if event is InputEventJoypadButton && self.visible == true:
+		if event.is_action_pressed("ui_select"): _zoom()
+
+	if event is InputEventJoypadMotion and self.visible == true:
+		var axis = event.get_axis_value()
+		print('JoyStick Axis Value' ,axis)
+		
+		#Changes Page Panels
+		if round(axis) == 1:
+			next_panel()
+		if round(axis) == -1:
+			prev_panel()
 		pass
 
 
@@ -237,14 +251,15 @@ func _process(_delta):
 
 #current frame controler
 
-	if enabled && Kinematic_2d != null:
+	if enabled != false && Kinematic_2d != null:
 		for _i in Kinematic_2d.get_children():
 			if _i is AnimatedSprite:
 				_i.set_frame(int(current_frame))  
 				#working
 				_i.update() #canvas layer not updating changes
 				if  current_frame > _i.get_frame() : 
-					comics_placeholder.queue_free()
+					comics_placeholder.queue_free() 
+					comics_placeholder = null
 					enabled = false 
 					loaded_comics = false #working buggy
 					current_frame = null # working buggy
@@ -299,7 +314,10 @@ func _zoom():
 func center_page(): #sets comic page to center of screen
 	if loaded_comics == true:
 		if zoom == false: 
-			Kinematic_2d.position = origin
+			if Kinematic_2d.position or origin != null:
+				Kinematic_2d.position = origin
+			else:
+				pass
 
 func next_panel():
 	if loaded_comics == true :
@@ -354,25 +372,25 @@ func _start_detection(position): #for swipe detection
 	if enabled == true:
 		swipe_start_position = position
 		_e.start()
-		#print ('start swipe detection :') #for debug purposes delete later
+		print ('start swipe detection :') #for debug purposes delete later
 
 
 func _end_detection(position):
 	_e.stop()
 	var direction = (position - swipe_start_position).normalized()
 	#var direction = restaVectores(position, swipe_start_position)#.normalized()
-	#print ('end detection: ','direction: ',direction ,'position',position, 'swipe position: ',swipe_start_position) #for debug purposes only
+	print ('end detection: ','direction: ',direction ,'position',position, 'swipe position: ',swipe_start_position) #for debug purposes only
 
 	if abs (direction.x) + abs(direction.y) >= MAX_DIAGONAL_SLOPE:
 		return
 	if abs (direction.x) > abs(direction.y):
 		emit_signal('swiped',Vector2(-sign(direction.x), 0.0))
-		#print ('Direction on X: ', direction.x) #horizontal swipe debug purposs
+		print ('Direction on X: ', direction.x) #horizontal swipe debug purposs
 		if round(direction.x) == -1:
-			#print('left swipe') #for debug purposes
+			print('left swipe') #for debug purposes
 			next_panel()
 		if round(direction.x) == 1:
-			#print('right swipe') #for debug purposes
+			print('right swipe') #for debug purposes
 			prev_panel()
 		emit_signal('swiped', Vector2(0.0,-sign(direction.y)))
 	#	print ('poot poot poot') #vertical swipe
@@ -398,13 +416,13 @@ func _on_Rotate_pressed():#screen rotate functionality #improve later
 			Kinematic_2d.set_rotation_degrees(0)
 			comics_placeholder.set_position ( center)
 
-func _on_chap_1_pressed(): 
+func _on_chap_1_pressed(): #Simplify this function
 	load_chapter(1)
 
-func _on_chap_2_pressed():
+func _on_chap_2_pressed(): #Simplify this function
 	load_chapter(2)
 
-func _on_chap_3_pressed():
+func _on_chap_3_pressed(): #Simplify this function
 	load_chapter(3)
 
 
@@ -417,5 +435,5 @@ func load_chapter(number):#generic load chapter function
 		current_comics = load(comics[number])
 		load_comics()
 
-func center(): #centers the page
+func wordbubble(): #Places Dialogue in wordbubbles with Dialogue singleton-aid
 	pass

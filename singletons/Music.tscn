@@ -64,6 +64,7 @@ var hit_sfx = {
 
 var grass_sfx = {0:'res://sounds/Fantozzi-SandR3.ogg'}
 
+var wind_sfx = {0:'res://music/wind_2.ogg'}
 
 var _music
 onready var Music_streamer =get_node(\"A\")  #Refrences the music player node
@@ -336,6 +337,7 @@ resource_name = "play"
 [node name="Music" type="Node"]
 pause_mode = 2
 script = SubResource( 1 )
+music_on = true
 sfx_on = true
 
 [node name="A" type="AudioStreamPlayer" parent="."]

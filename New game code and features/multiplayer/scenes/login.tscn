@@ -231,7 +231,8 @@ __meta__ = {
 }
 
 [node name="Notification" parent="." instance=ExtResource( 6 )]
-Display_text = "It doesnt work."
+visible = true
+Display_text = "It is Experimental"
 [connection signal="pressed" from="ui/grid/button_login" to="." method="_on_button_login_pressed"]
 [connection signal="pressed" from="ui/grid/button_start_server" to="." method="_on_button_start_server_pressed"]
 [connection signal="pressed" from="ui/grid/Twitter Button" to="." method="_on_Twitter_Button_pressed"]

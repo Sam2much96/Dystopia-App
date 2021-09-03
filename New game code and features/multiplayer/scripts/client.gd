@@ -7,15 +7,19 @@
 # All the client logics in one file!
 # *************************************************
 extends Node
-var debug 
+var client_debug 
 
 var my_info = { name = "Player" }
-var preload_player = preload("res://scenes/characters/Player.tscn")
-var preload_projectile = preload("res://New game code and features/multiplayer/scenes/projectile.tscn") #tweak
+var preload_player = preload("res://scenes/characters/Aarin.tscn")
+
+var player_id #my code
+export (int) var ______update_id
+var hitpoints= 3#var preload_projectile = preload("res://New game code and features/multiplayer/scenes/projectile.tscn") #tweak
 var preload_damage  #= preload("res://New game code and features/multiplayer/scenes/effects/damage.tscn") #tweak
 var preload_explosion #= preload("res://New game code and features/multiplayer/scenes/effects/explosion.tscn") #tweak
 var pos = Vector2(0,0)
-var killcount = Globals.kill_count
+var killcount = 0
+var linear_vel
 # Player info, associate ID to data
 var player_info = {}
 #var projectiles = []
@@ -23,20 +27,22 @@ var my_peer = null
 var last_update = -1 #probably used for updating the network
 onready var node_players = Node.new()#$players #p2p player nodes
 onready var node_enemies=Node.new()  #= #= $camera/projectiles #rewrote progectile nodes to enemy nodes
-onready var camera = Camera2D.new()#$Camera2D#get_tree().get_root()
+#onready var camera = Camera2D.new()#$Camera2D#get_tree().get_root()
 onready var progress_health = load('res://scenes/UI & misc/Healthbar.tscn')
 onready var chat = $UI/item_chat
 
 onready var state #im trying to send player state using rpc call and update it on the server using a remote funtion
 func _ready():
+	OS.set_window_title('Client') 
 	
-	#Networking.add_child(self)
+	#Handles Network Connectivity
 	node_enemies.name = 'node_enemies'
 	node_players.name = 'node_players'
 	self.add_child(node_players)
 	self.add_child(node_enemies)
 	
-	
+	print ('LOCAL IP ADDRESSES: ',IP.get_local_addresses())
+	print ('IP ADDRESSES: ',IP.get_local_interfaces())
 	
 	print("Server IP       : " + Networking.cfg_server_ip)
 	print("Player Name     : " + Networking.cfg_player_name)
@@ -81,20 +87,25 @@ func _process(_delta):
 
 
 
-	# Adjust camera on position
+	#Handles Client Side Player Position Calculation
 	var peer_id = get_tree().get_network_unique_id()
-	if player_info.has(peer_id): #if player if has a peer id, position.x is player_info[peer_id] position
-		pos.x = player_info[peer_id].node.position.x
+	if player_info.has(peer_id): #if player if has my peer id, position.x is player_info[peer_id] position
+		pos.x = player_info[peer_id].node.position.x 
 		pos.y = player_info[peer_id].node.position.y #updates vvarible with player's position
-		#state = player_info[peer_id].node.state 
-		#player_info[peer_id].pos = pos #im trying to add player position to player info
-		#print('player info has id', 'Client pos', pos)
-		#pass pos as a variable to server
+
+		state = player_info[peer_id].node.state
+		hitpoints = player_info[peer_id].node.hitpoints
+		#print (pos) #for debug purposes only
+		#print ('Update ID: ',peer_id) #for debug purposes only
+		
+		player_info[peer_id].position = pos #updates the player's dicitonary with current player position 
+		
+		linear_vel = player_info[peer_id].node.linear_vel
 		pass
-	#camera.set_offset(pos)
+	
 
 	# Handle input (keyboard)
-	handle_input()
+	handle_input() #Handle's Player's Input and sends it to the Servers
 		
 
 func handle_input():
@@ -108,44 +119,55 @@ func handle_input():
 		return
 		
 	# Send input events over network to the server
-	
+	var id = get_tree().get_network_unique_id()
 	# Move left
 	if Input.is_action_just_pressed("move_left"): #sends player input to the server
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"left",true) #add player state change 
+		rpc_id(1,"player_input",id,"left",true, pos, state) #sends position and state data directly to servers 
 		#rpc_id(peer_id,'set_state',ger)
 		#send player state
-		#send player position
+		#send player position using pu function
+		
+		#print ('/////////Pos Variable////////: ', pos ,'/////player_info[peer_id].position////////',player_info[id].position ) #for debug purposes only
+		
+		#print ( '/////state//////:',player_info[id].node.state)
+		#pu(id,______update_id,player_info[id].position, player_info[id].node.hitpoints,player_info[id].node.state )
+		#rset_id(id, 'position', pos)
+		print ('Player info id position/////////',player_info[id].position)
+		print ('Player info id Node state/////////',player_info[id].node.state ,'/////state/////:', state)
+		
+		
+		#print ('////////Player info id /////////',player_info[id].node.position) #for debug purposes only
 	if Input.is_action_just_released("move_left"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"left",false)
+		rpc_id(1,"player_input",id,"left",false,pos,state, linear_vel) #rpc triggers a remote function
 		
 	# Move right
 	if Input.is_action_just_pressed("move_right"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",true)
+		rpc_id(1,"player_input",id,"right",true,pos,state, linear_vel)
 	if Input.is_action_just_released("move_right"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",false)
+		rpc_id(1,"player_input",id,"right",false,pos,state, linear_vel)
 		
 	# Handle moving forward
 	if Input.is_action_just_pressed("move_up"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",true) #sends player input on the network with the player input funtion
+		rpc_id(1,"player_input",id,"up",true,pos,state, linear_vel) #sends player input on the network with the player input funtion
 	if Input.is_action_just_released("move_up"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
+		rpc_id(1,"player_input",id,"up",false,pos,state, linear_vel)
 		
 	# Handle moving backward
 	if Input.is_action_just_pressed("move_down"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",true)
+		rpc_id(1,"player_input",id,"down",true,pos,state, linear_vel)
 	if Input.is_action_just_released("move_down"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",false)
+		rpc_id(1,"player_input",id,"down",false,pos,state, linear_vel)
 		
 	# Handle player attacking
 	if Input.is_action_just_pressed("attack"): #sends these input to the server's logic
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"attack",true) #doesn't work
+		rpc_id(1,"player_input",id,"attack",true) #doesn't work
 	if Input.is_action_just_released("attack"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"attack",false)
+		rpc_id(1,"player_input",id,"attack",false)
 	#Handles player rolling #my code
 	if Input.is_action_just_pressed("roll"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"roll",true)#doesn't work
+		rpc_id(1,"player_input",id,"roll",true)#doesn't work
 	if Input.is_action_just_released("roll"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"roll",false) #doesn't work
+		rpc_id(1,"player_input",id,"roll",false) #doesn't work
 
 
 
@@ -161,7 +183,7 @@ func client_connected_ok():
 	OS.set_window_title("Connected as " + my_info.name)
 
 #####Add your codes here
-	#rpc_id(1)
+	
 
 
 func  server_disconnected(): #tweak to 'sever diconnected, change scene to login
@@ -221,7 +243,7 @@ remote func player_respawned(id, info):
 	#node_players.append(node_player)
 	node_players.add_child(node_player)
 	
-remote func player_leaving(id):
+remote func player_leaving(id): #Called when player leaves the game
 	print("Callback: player_leaving(" + str(id)+")")
 	add_chat("Player leaving: " + player_info[id].name)
 	player_info[id].node.queue_free()
@@ -241,19 +263,22 @@ remote func player_health(id, hitpoint): #where is this funtion called?
 	if id == peer_id:
 		progress_health.value = hitpoint #updates the progress bar to player life
 	
-# Player update function
+#PU updates the client's player state from the server
+# Player update function can only be called from server
 # This function is named "pu" to lower the network bandwidth usage, sending something
 # like "player_update" will use an extra 220 bytes / second for each connected player. 
-remote func pu(id, update_id, pos, hitpoints, rotation): #try and use killcounts
+remote func pu(id, update_id, pos, hitpoints, state): #try and use killcounts
 	
 	# Unreliable packets can be sent in wrong order, we only work with the latest
 	# data available.
-	if update_id < last_update:
+	#print ('//////Last update/////', last_update, '/////Update ID////' , update_id) for debug purposes only
+	______update_id = update_id+1 #stores the update id
+	if update_id < last_update: #update_id breaks the code here
 		print("Received update in wrong order. Discarding!")
 		return
 		
 	last_update = update_id
-	player_info[id].updates[OS.get_ticks_msec()] = { position = pos, hitpoints = hitpoints, killcount = killcount }
+	player_info[id].updates[OS.get_ticks_msec()] = { position = pos, hitpoints = hitpoints, killcount = killcount, state = state } #update these variables to the server
 	while len(player_info[id].updates) > 10:
 		player_info[id].updates.erase(player_info[id].updates.keys()[0]) #when length of player update is more than 10, erase some update data
 	
@@ -280,14 +305,7 @@ func add_chat(text): #used the ui grid
 	#for i in range(0,chat.get_item_count()): #iterate over chat item
 	#	chat.set_item_selectable(i,false)
 	
-func display_damage(body): #not needed #rewrite this to instance blood fx
-	#for peer_id in player_info:
-	#	if player_info[peer_id].node == body:
-	#		var node_damage = preload_damage.instance()
-	#		node_damage.name = "damage"
-	#		node_damage.get_node("particles").emitting = true
-	#		node_damage.get_node("particles").one_shot = true
-	#		player_info[peer_id].node.add_child(node_damage)
-	#		break
+func display_damage(body):#rewrite this to instance blood fx
+
 	print ('damage: ' , body)
 	

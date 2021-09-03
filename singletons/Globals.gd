@@ -11,12 +11,12 @@
 extends Node
 #update code to use global dictionaries
 
-#use variables to code ux +add a scene calculator
-var cinematics #= load ('res://scenes/levels/cinematics.tscn')
+#use variables to code ux +add a scene tree calculator
+var cinematics = preload ('res://resources/title animation/title..ogv')
 var title_screen = preload( 'res://scenes/Title screen.tscn')
 var shop = load('res://scenes/UI & misc/Shop.tscn')
 var controls = load ('res://scenes/UI & misc/Controls.tscn')
-var comics
+var comics = load ('res://scenes/UI & misc/Comics.tscn')
 var comics___2 = load ('res://scenes/UI & misc/Comics____2.tscn')
 var game_loop
 var prev_scene
@@ -32,7 +32,7 @@ var enemy_debug
 export(String, FILE, "*.tscn") var initial_level  = "res://scenes/levels/Outside.tscn" 
 var Debug = null
 var _player_state # gets state data from the player state machine
-
+var video_stream #for the video streamers
 
 export (int) var Suds #currency system
 # warning-ignore:unused_class_variable
@@ -157,3 +157,10 @@ func _restore_data(save_dict):
 	
 func update_curr_scene():
 	curr_scene= get_tree().get_current_scene().get_name() 
+	
+func _go_to_title():
+	if get_tree().get_current_scene().get_name() == 'Menu':
+		get_tree().quit(0)
+	get_tree().change_scene_to(title_screen)
+	Music.play_track(Music.ui_sfx[1])
+

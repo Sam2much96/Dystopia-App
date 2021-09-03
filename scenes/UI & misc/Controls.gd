@@ -3,13 +3,18 @@ extends Control
 Game settings
 """
 #map game settings to save file
-
+var selector #for the menu cycle selector
 
 
 func _ready():
 	$VBoxContainer/back.grab_focus() #Back button grabs focus
 
 	$TextureRect.hide()
+
+
+
+
+
 
 func _on_Button_pressed():
 	get_tree().change_scene_to(load('res://scenes/Title screen.tscn')) #changes scene to main title

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Comics.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Comics/chapter 1/Cover 1.webp" type="Texture" id=2]
@@ -11,53 +11,40 @@
 [ext_resource path="res://fonts/adamwarrenpro-bold.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/UI & misc/Like button.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scenes/Comics/chapter 5/chap 1 cover page.webp" type="Texture" id=12]
+[ext_resource path="res://scenes/Comics/chapter 7/Cover 1.webp" type="Texture" id=13]
+[ext_resource path="res://scenes/UI & misc/comics-reader-extension.gd" type="Script" id=14]
+[ext_resource path="res://resources/Buttons/UI hover buttons.webp" type="Texture" id=15]
 
-[sub_resource type="GDScript" id=1]
-script/source = "extends HBoxContainer
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.643137, 0.0470588, 0.0470588, 0.780392 )
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color( 1, 0, 0, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
-onready var loaded_comics 
+[sub_resource type="StyleBoxFlat" id=3]
+content_margin_top = 20.0
+content_margin_bottom = 20.0
+bg_color = Color( 0.741176, 0.4, 0.4, 1 )
 
-func _on_Comics_loaded_comics():
-	loaded_comics = true
-	for child in get_children(): # works
-		child.hide()
+[sub_resource type="Theme" id=4]
+HScrollBar/icons/decrement = null
+HScrollBar/icons/decrement_highlight = null
+HScrollBar/icons/increment = null
+HScrollBar/icons/increment_highlight = null
+HScrollBar/styles/grabber = SubResource( 2 )
+HScrollBar/styles/grabber_highlight = null
+HScrollBar/styles/grabber_pressed = null
+HScrollBar/styles/scroll = SubResource( 3 )
+HScrollBar/styles/scroll_focus = null
 
-
-func _on_Comics_freed_comics():
-	loaded_comics = false
-	for child in get_children(): # works
-		child.show()
-
-
-func _on_Back_button_pressed():
-	if loaded_comics == false or Globals.comics != null && Globals.comics.enabled == false :
-			get_tree().change_scene_to(Globals.title_screen)
-			Music.play_track(Music.ui_sfx[1])
-	if loaded_comics == true:
-		$\"/root/Dialogs\".show_dialog('Finish Comics First ', 'Admin')
-		yield(get_tree().create_timer(1.5), \"timeout\")
-		$\"/root/Dialogs\".dialog_box.hide()
-
-
-
-func _exit_tree(): #resets everything to default
-	OS.set_window_size(Vector2(1280, 720))
-	OS.set_screen_orientation (0)
-	pass
-
-
-
-	#$chap_6/Popup.popup_centered()
-
-
-func _on_chap_6_pressed():
-	$\"/root/Dialogs\".show_dialog('Extra Chapters locked', 'Admin')
-	yield(get_tree().create_timer(1), \"timeout\")
-	$\"/root/Dialogs\".dialog_box.hide()
-	#$\"/root/Dialogs\".
-"
-
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=1]
 size = 64
 outline_size = 6
 outline_color = Color( 0, 0, 0, 1 )
@@ -79,65 +66,90 @@ __meta__ = {
 rect_pivot_offset = Vector2( 643.969, 373.494 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Comics"]
-margin_left = 30.6277
-margin_top = 35.7155
-margin_right = 7582.63
-margin_bottom = 3613.72
-rect_scale = Vector2( 0.167794, 0.167794 )
+margin_left = 233.0
+margin_top = 38.0
+margin_right = 2545.0
+margin_bottom = 1849.0
+rect_scale = Vector2( 0.340019, 0.340019 )
+rect_clip_content = false
+theme = SubResource( 4 )
+scroll_horizontal = 1
 scroll_vertical_enabled = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Comics/ScrollContainer"]
-margin_right = 7552.0
-margin_bottom = 3566.0
-script = SubResource( 1 )
+margin_left = -1.0
+margin_right = 8813.0
+margin_bottom = 1771.0
+script = ExtResource( 14 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="chap_1" type="Button" parent="Comics/ScrollContainer/HBoxContainer"]
-margin_right = 1252.0
-margin_bottom = 3566.0
-icon = ExtResource( 2 )
-flat = true
+[node name="chap_1" type="TextureButton" parent="Comics/ScrollContainer/HBoxContainer"]
+margin_right = 1240.0
+margin_bottom = 1771.0
+focus_next = NodePath("../chap_2")
+focus_previous = NodePath(".")
+texture_normal = ExtResource( 2 )
+texture_hover = ExtResource( 15 )
+
+[node name="chap_2" type="TextureButton" parent="Comics/ScrollContainer/HBoxContainer"]
+margin_left = 1244.0
+margin_right = 2514.0
+margin_bottom = 1771.0
+focus_next = NodePath("../chap_3")
+focus_previous = NodePath("../chap_1")
+texture_normal = ExtResource( 3 )
+texture_hover = ExtResource( 15 )
+
+[node name="chap_3" type="TextureButton" parent="Comics/ScrollContainer/HBoxContainer"]
+margin_left = 2518.0
+margin_right = 3758.0
+margin_bottom = 1771.0
+focus_next = NodePath("../chap_2")
+focus_previous = NodePath(".")
+texture_normal = ExtResource( 4 )
+texture_hover = ExtResource( 15 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="chap_2" type="Button" parent="Comics/ScrollContainer/HBoxContainer"]
-margin_left = 1256.0
-margin_right = 3749.0
-margin_bottom = 3566.0
-icon = ExtResource( 3 )
-flat = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="chap_4" type="TextureButton" parent="Comics/ScrollContainer/HBoxContainer"]
+margin_left = 3762.0
+margin_right = 5048.0
+margin_bottom = 1771.0
+texture_normal = ExtResource( 6 )
+texture_hover = ExtResource( 15 )
 
-[node name="chap_3" type="Button" parent="Comics/ScrollContainer/HBoxContainer"]
-margin_left = 3753.0
-margin_right = 5005.0
-margin_bottom = 3566.0
-icon = ExtResource( 4 )
-flat = true
+[node name="chap_5" type="TextureButton" parent="Comics/ScrollContainer/HBoxContainer"]
+margin_left = 5052.0
+margin_right = 6306.0
+margin_bottom = 1771.0
+texture_normal = ExtResource( 12 )
+texture_hover = ExtResource( 15 )
 
-[node name="chap_6" type="Button" parent="Comics/ScrollContainer/HBoxContainer"]
-self_modulate = Color( 1, 1, 1, 0.392157 )
-margin_left = 5009.0
-margin_right = 6261.0
-margin_bottom = 3566.0
-icon = ExtResource( 5 )
-flat = true
+[node name="chap_6" type="TextureButton" parent="Comics/ScrollContainer/HBoxContainer"]
+margin_left = 6310.0
+margin_right = 7550.0
+margin_bottom = 1771.0
+texture_normal = ExtResource( 5 )
+texture_hover = ExtResource( 15 )
 
-[node name="chap_4" type="Button" parent="Comics/ScrollContainer/HBoxContainer"]
-self_modulate = Color( 1, 1, 1, 0.596078 )
-margin_left = 6265.0
-margin_right = 7552.0
-margin_bottom = 3566.0
-icon = ExtResource( 6 )
-flat = true
+[node name="chap_7" type="TextureButton" parent="Comics/ScrollContainer/HBoxContainer"]
+margin_left = 7554.0
+margin_right = 8814.0
+margin_bottom = 1771.0
+texture_normal = ExtResource( 13 )
+texture_hover = ExtResource( 15 )
+
+[node name="MarginContainer" type="MarginContainer" parent="Comics"]
+margin_left = 49.8966
+margin_top = 95.3481
+margin_right = 49.8966
+margin_bottom = 95.3481
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -158,7 +170,7 @@ margin_left = 1057.83
 margin_top = 11.3137
 margin_right = 1240.83
 margin_bottom = 95.3137
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 1 )
 text = "back"
 flat = true
 __meta__ = {
@@ -180,6 +192,9 @@ enabled_focus_mode = 0
 [connection signal="pressed" from="Comics/ScrollContainer/HBoxContainer/chap_1" to="Comics" method="_on_chap_1_pressed"]
 [connection signal="pressed" from="Comics/ScrollContainer/HBoxContainer/chap_2" to="Comics" method="_on_chap_2_pressed"]
 [connection signal="pressed" from="Comics/ScrollContainer/HBoxContainer/chap_3" to="Comics" method="_on_chap_3_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/HBoxContainer/chap_4" to="Comics/ScrollContainer/HBoxContainer" method="_on_chap_4_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/HBoxContainer/chap_5" to="Comics/ScrollContainer/HBoxContainer" method="_on_chap_5_pressed"]
 [connection signal="pressed" from="Comics/ScrollContainer/HBoxContainer/chap_6" to="Comics/ScrollContainer/HBoxContainer" method="_on_chap_6_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/HBoxContainer/chap_7" to="Comics/ScrollContainer/HBoxContainer" method="_on_chap_7_pressed"]
 [connection signal="pressed" from="Rotate" to="Comics" method="_on_Rotate_pressed"]
 [connection signal="pressed" from="Back_button" to="Comics/ScrollContainer/HBoxContainer" method="_on_Back_button_pressed"]

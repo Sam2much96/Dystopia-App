@@ -22,10 +22,8 @@ func _ready():
 		hide() 
 	if  str(Globals.curr_scene) ==  'HouseInside' :
 		hide()
-		#print (Globals.curr_scene)
-	#if $CenterContainer/Label == null:
-	#	return
-	if $CenterContainer/Label != null:
+
+	if $CenterContainer/Label != null &&  $CenterContainer/Label.is_inside_tree() == true :
 		$CenterContainer/Label.set_text (Display_text)
 
 func _input(event):

@@ -29,14 +29,11 @@ onready var node_enemies  = Node.new()#$Enemies
 
 #.pop_front()
 
-var preload_player = preload("res://scenes/characters/Player.tscn")
+var preload_player = preload("res://scenes/characters/Aarin.tscn")
 var preload_enemy = preload("res://scenes/characters/Enemy.tscn")
-#var velocity_speed = 500
-#var trust_origin = Vector2(0,0)
-#var rotate_origin1 = Vector2(0,64)
-#var rotate_origin2 = Vector2(0,-64)
-#var rotation_power = 10.0
-#var current_zoom = Vector2(20,20)
+
+var server_debug
+
 var update_id = 0
 
 ######for controling state machine
@@ -44,6 +41,8 @@ var update_id = 0
 #enum { STATE_BLOCKED, STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE_DIE, STATE_HURT }
 
 func _ready():
+	
+	OS.set_window_title('Server') #renames the  app Window
 	
 	node_enemies.name = 'node_enemies'
 	node_players.name = 'node_players'
@@ -58,14 +57,22 @@ func _ready():
 	
 	print("Starting the server ...")
 	print("Server port: " + str(Networking.SERVER_PORT))
+	
 	print("Max players: " + str(Networking.MAX_PLAYERS))
 	var peer = NetworkedMultiplayerENet.new()
+	
+	
+	print ('IP: ' + str (Networking.cfg_server_ip))
+	print ('LOCAL IP ADDRESSES: ',IP.get_local_addresses())
+	print ('IP ADDRESSES: ',IP.get_local_interfaces())
+	
+	
 	print("Listening on port: " + str(Networking.SERVER_PORT))
-	if peer.create_server(Networking.SERVER_PORT, Networking.MAX_PLAYERS) != OK:
+	if peer.create_server(Networking.SERVER_PORT, Networking.MAX_PLAYERS) != OK: #this code breaks in the server
 		print("Unable to create server")
 		return
 		
-	if get_tree().set_network_peer(peer) != OK:
+	if get_tree().set_network_peer(peer) != OK: #unable to set network peer on the server
 		print("Unable to set network peer!")
 	
 	# Connect the signals
@@ -82,9 +89,9 @@ func _input(_event):
 
 func _process(delta):
 	#print(player_info, state) #for debug purposes only
-
-	#camera.set_zoom(current_zoom) #sets the server's zoom to an unknown variable #fix this
-	#print (state) #for debug purposes only. check to see if it sends player state
+	#yield(get_tree().create_timer(3.5), "timeout"); print(player_info)
+	
+	
 	for peer_id in player_info: #iterates over player info
 		#print ('Server Pos',player_info[peer_id].pos)
 	
@@ -94,11 +101,8 @@ func _process(delta):
 			if player_info[peer_id].respawn_time <= 0:
 				
 				player_info[peer_id].position = get_spawn_position()  #when first instanced to the scene
-				#player_info[peer_id].velocity = 0
-				#player_info[peer_id].rotation = 0
-				#player_info[peer_id].firing = 0
-				#player_info[peer_id].firing_delta = 0
-				#player_info[peer_id].current_angle = 0
+
+
 				player_info[peer_id].hitpoints = 3
 				player_info[peer_id].respawn_time = -999
 				player_info[peer_id].destroyed = false
@@ -127,39 +131,45 @@ func _process(delta):
 func _physics_process(delta):
 	#controls the playr's movements
 	for peer_id in player_info: #player_info[peer_id].node is the player node. player_info stores player information
-		Networking.multiplayer_debug = (str(" / "+ str('Hitpoints') + str(player_info[peer_id].node.hitpoints)) + " / " + str ('Node pos: ')+ str(player_info[peer_id].node.position) + " / " +str ('Player state:')+ str(player_info[peer_id].state))
-		Networking.multiplayer_debug_2 = ("Player id:" + str(peer_id) + " = " + str ('peer id pos: ') + str(player_info[peer_id].position) + " = " + str(player_info[peer_id].node.facing)) #maps remote player debug to debug variable
+		#Networking.multiplayer_debug = (str(" / "+ str('Hitpoints') + str(player_info[peer_id].node.hitpoints)) + " / " + str ('Node pos: ')+ str(player_info[peer_id].node.position) + " / " +str ('Player state:')+ str(player_info[peer_id].state))
+		#Networking.multiplayer_debug_2 = ("Player id:" + str(peer_id) + " = " + str ('peer id pos: ') + str(player_info[peer_id].position) + " = " + str(player_info[peer_id].node.facing)) #maps remote player debug to debug variable
+		
+		
+		#debug = player_info #debugs the player info of each client
+		
+		#print (debug) #for debug purposes only
 		if player_info[peer_id].destroyed: #rewrite to use despawned #add destroyed variable to the player script
 			continue
 		
-		var v = Vector2(0,0) #not needed
+		#var v = Vector2(0,0) #not needed
 		if player_info[peer_id].node != null: #pass information from the player nodes
-			state =player_info[peer_id].node.state
+			#state =player_info[peer_id].node.state
+			pass
 		if player_info[peer_id].node.hitpoints == 0: #if playerhas no life
 			player_info[peer_id].node.despawn()
-			print('yebaayebaa__samboribobo- server') #This is where the main code's logic are
+			print('player/', player_info[peer_id], ' is dead') #
 
-		v = player_info[peer_id].node.get_position()
+		#v = player_info[peer_id].node.get_position()
 		
 		# Keep the player within boundaries
-		var world_radius = Networking.WORLD_SIZE / 2
-		if v.x > world_radius:
-			v.x = world_radius
-			player_info[peer_id].node.set_position(v)
-		if v.x < -world_radius:
-			v.x = -world_radius
-			player_info[peer_id].node.set_position(v)
-		if v.y > world_radius:
-			v.y = world_radius
-			player_info[peer_id].node.set_position(v)
-		if v.y < -world_radius:
-			v.y = -world_radius
-			player_info[peer_id].node.set_position(v)
+		#var world_radius = Networking.WORLD_SIZE / 2
+		#if v.x > world_radius:
+		#	v.x = world_radius
+		#	player_info[peer_id].node.set_position(v)
+		#if v.x < -world_radius:
+		#	v.x = -world_radius
+		#	player_info[peer_id].node.set_position(v)
+		#if v.y > world_radius:
+		#	v.y = world_radius
+		#	player_info[peer_id].node.set_position(v)
+		#if v.y < -world_radius:
+		#	v.y = -world_radius
+		#	player_info[peer_id].node.set_position(v)
 		
 		#sets each player's attribute to itself sent over the network
-		var __pos =player_info[peer_id].node.get_position()
+		#var __pos =player_info[peer_id].node.get_position()
 		
-		player_info[peer_id].node.set_position(__pos)
+		#player_info[peer_id].node.set_position(__pos)
 		
 	
 	delta_update += delta
@@ -167,7 +177,7 @@ func _physics_process(delta):
 		delta_update -= delta_interval
 		broadcast_world_positions()
 	
-func broadcast_world_positions():
+func broadcast_world_positions(): #calls the player update function on all clients
 	
 	for peer_id in player_info:
 		for peer_id_2 in player_info:
@@ -193,7 +203,7 @@ func player_disconnected(id):
 	
 ##note player_info[id] is how to call players
 
-func get_spawn_position():
+func get_spawn_position(): #Random Spawning Code
 	
 	var pos = Vector2(0,0)
 	pos.x = rand_range(-950,950)
@@ -208,18 +218,17 @@ remote func register_player(id, info): #rewrite this
 
 ##################################Gets information from player when first enters world#####################################
 	info.position = get_spawn_position()  #calls a random spawnpoint in the world
-	#info.linear_vel = Player.linear_vel #this line breaks
-	#info.rotation = 0
+
 	info.poss =Vector2()  #edit this
 	info.killcount = Globals.kill_count
-	info.state = Globals._player_state if Globals.player != null else 1
+	info.state = state
 	info.hitpoints = 3
 	info.respawn_time = -999
 	info.destroyed = false
 #####################################################################################################
 	# send list of previous players to the new one
 	for peer_id in player_info:
-		rpc_id(id, "player_joined", peer_id, player_info[peer_id])
+		rpc_id(id, "player_joined", peer_id, player_info[peer_id]) #calls the player joined function on all clients
 	
 	
 	var node_player = preload_player.instance()
@@ -243,19 +252,30 @@ remote func register_player(id, info): #rewrite this
 		rpc_id(peer_id, "player_joined", id, player_info[id])
 
 
-
-remote func player_input(id, key, pressed): # #it receives player input from rpc
-	print("Remote: player_input(" + str(id)+","+key+","+str(pressed)+")")
+#######Handles player movement from  received input from servers#######
+remote func player_input(id, key, pressed, client_position, client_state, linear_velocity): # #it receives player input through rpc
+	print("Remote: player_input(" + str(id)+","+key+","+str(pressed)+")") 
 
 	if key == "left": #sets player info from remote input
-		player_info[id].node.facing = 'left'#rotation = -1 if pressed else 0
-	if pressed == true:
-		#Globals.player.state = player_info[id].node.state 
-		player_info[id].node.state = 2
-		print ('statechanger test a',player_info[id].node.state, player_info[id].node.position )
+		player_info[id].node.facing = 'left'#sets player node to face left
+	if pressed == true: #update player position in this code block
+		
+		
+		player_info[id].position = client_position
+		player_info[id].state = client_state
+		
+		
+		_update_player_position_and_states(id,client_position, client_state,linear_velocity) #updates player's motion and states
+		
+		
+		#print ('Remote player Input is Pressed: ', pressed, 'Player Position: ',  player_info[id].node.position ) #for debug purposes only
+		#Debugs player position and State
+		print ('Player info id position/////////',player_info[id].position)
+		print ('Player info id state/////////',player_info[id].state)
 	if  pressed == false: #it changes state but not position
-		player_info[id].node.state = 1
-		print ('statechanger test b',player_info[id].node.state, player_info[id].node.position) #for debug purposes only
+		
+		pass
+	#	print ('Remote player Input is Pressed: ', pressed, ' /Player Position: ',  player_info[id].node.position) #for debug purposes only
 	elif key == "right":
 		player_info[id].node.facing = 'right'#rotation = 1 if pressed else 0
 	
@@ -264,52 +284,22 @@ remote func player_input(id, key, pressed): # #it receives player input from rpc
 	
 	elif key == "down":
 		player_info[id].node.facing ='down'#velocity = 1 if pressed else 0
-	#if pressed :
-		 #2 is state walking 
-	#if not pressed :
-		#player_info[id].node.state = 1 #1 is state idle
-		#break
-	
-	
-	
-	
-	#elif key == "fire": #replace with other functions/ keys
-	#	player_info[id].firing = 1 if pressed else 0
-		
-		
-remote func state_test(id,key,pressed): #modify code *inhumanity
-	print("Remote: function_state changer("+ str(id)+","+key+","+str(pressed)+")")
-	if key == "attack":
-		player_info[id].node.state = 3 #if pressed else player_info[id].node.state = STATE_IDLE
-	if key == "roll":
-		player_info[id].node.state = 4
 
+	
+	
+	
+	
+
+func _update_player_position_and_states(id,position ,state, linear_vel): #updates players states from the handle input function
+	player_info[id].node.position = position #updates the player node's position to the client position
+	player_info[id].node.state = state #updates player state to the client's state
+	player_info[id].linear_vel = player_info[id].linear_vel #updates player state to the client's state
+	
+	player_info[id].node.move_and_slide(linear_vel) #This line of code breaks
 
 
 
 	
 	
-	#get rid of extra variables in the networking.gd
-
 	pass
-func player_got_shot(body): #tweak code #add shooting mechanics to gameplay
-	print("player got shot!")
-	for peer_id in player_info:
-		if player_info[peer_id].node == body:
-			if not player_info[peer_id].health == 0:
-				player_info[peer_id].health -= 10
-				if player_info[peer_id].health < 0:
-					player_info[peer_id].health = 0
-					
-				# broadcast!
-				print("Broadcast health: " + str(player_info[peer_id].health))
-				for peer_id2 in player_info:
-						rpc_id(peer_id2, "player_health", peer_id, player_info[peer_id].health)
-						
-				if player_info[peer_id].health == 0:
-					player_info[peer_id].destroyed = true
-					player_info[peer_id].respawn_time = 5.0
-					player_info[peer_id].node.queue_free()
-					
-
 

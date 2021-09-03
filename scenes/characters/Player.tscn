@@ -853,6 +853,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_editor_description_": ""
 }
+state = 0
 
 [node name="sprite" type="Sprite" parent="."]
 modulate = Color( 0, 0, 0, 1 )

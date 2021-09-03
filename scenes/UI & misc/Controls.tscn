@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Controls.gd" type="Script" id=1]
 [ext_resource path="res://resources/misc/controls.png" type="Texture" id=2]
 [ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=3]
 [ext_resource path="res://scenes/Comics/chapter 4/Cover 2.webp" type="Texture" id=4]
-[ext_resource path="res://App's white paper v3. Prototype 9.webp" type="Texture" id=5]
+[ext_resource path="res://App's white paper v1.1.6.webp" type="Texture" id=5]
+[ext_resource path="res://scenes/UI & misc/generic_joystick_ui_selector.gd" type="Script" id=6]
 [ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=14]
 
 [node name="Controls" type="Control"]
@@ -22,7 +23,7 @@ margin_top = 33.6124
 margin_right = 1227.91
 margin_bottom = 1313.61
 rect_rotation = 0.411034
-rect_scale = Vector2( 0.965919, 0.765924 )
+rect_scale = Vector2( 0.77536, 0.533332 )
 texture = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -46,12 +47,13 @@ margin_top = 113.368
 margin_right = 1104.65
 margin_bottom = 480.368
 rect_scale = Vector2( 1.44567, 1.44567 )
+script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="back" type="Button" parent="VBoxContainer"]
-margin_right = 213.0
+margin_right = 210.0
 margin_bottom = 49.0
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -66,7 +68,7 @@ __meta__ = {
 
 [node name="music" type="Button" parent="VBoxContainer"]
 margin_top = 53.0
-margin_right = 213.0
+margin_right = 210.0
 margin_bottom = 102.0
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -81,7 +83,7 @@ __meta__ = {
 
 [node name="Debug" type="Button" parent="VBoxContainer"]
 margin_top = 106.0
-margin_right = 213.0
+margin_right = 210.0
 margin_bottom = 155.0
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -97,7 +99,7 @@ __meta__ = {
 
 [node name="Shuffle" type="Button" parent="VBoxContainer"]
 margin_top = 159.0
-margin_right = 213.0
+margin_right = 210.0
 margin_bottom = 208.0
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -114,7 +116,7 @@ __meta__ = {
 [node name="Networking" type="Button" parent="VBoxContainer"]
 self_modulate = Color( 0, 0, 0, 1 )
 margin_top = 212.0
-margin_right = 213.0
+margin_right = 210.0
 margin_bottom = 261.0
 custom_fonts/font = ExtResource( 3 )
 toggle_mode = true
@@ -124,7 +126,7 @@ flat = true
 
 [node name="Help" type="Button" parent="VBoxContainer"]
 margin_top = 265.0
-margin_right = 213.0
+margin_right = 210.0
 margin_bottom = 314.0
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -133,7 +135,7 @@ flat = true
 
 [node name="Direction_controls" type="Button" parent="VBoxContainer"]
 margin_top = 318.0
-margin_right = 213.0
+margin_right = 210.0
 margin_bottom = 367.0
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )

@@ -11,9 +11,9 @@
 extends HTTPRequest
 
 """
-NETWORKING SINGLETON 2.0
+NETWORKING SINGLETON 3.0
 
-To query if there's internet access
+To query if there's internet access and connect to various websites
 """
 export (bool) var enabled
 export(bool) var admob_enabled
@@ -42,8 +42,8 @@ var _connection #stores connetion status
 const DEFAULT_HOSTNAME = "127.0.0.1"
 
 ###############################multiplayer codes########################
-var multiplayer_debug
-var multiplayer_debug_2
+var multiplayer_client_debug
+var multiplayer_server_debug
 
 const SERVER_PORT = 5225
 const MAX_PLAYERS = 5
@@ -53,28 +53,33 @@ const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
 var player_info = {} 
 
 # Those variables are only used by the client-side application
-var cfg_server_ip = ""
+export (String) var cfg_server_ip 
 var cfg_color = ""
 var cfg_player_name = ""
 
 var camera #stores general camera variables
 
+#########################  Web browser codes  ############################3
+export (String) var url = ''
+
+var xml = preload('res://scenes/UI & misc/xml.tscn') #used for downloading and logging file downloads
+
+var youtube_dl = preload ('res://New game code and features/youtube streamer/Youtube-DL.gd')
+
 func _ready():
+	if cfg_server_ip == '':
+		cfg_server_ip = DEFAULT_HOSTNAME
+	print (cfg_server_ip,cfg_player_name)
+	
 	
 	if check_timer == null:
 		for _i in _y.get_children():
 			if _i is Timer:
 				check_timer = _i 
 	
-	#_y.add_child(check_timer)
-	#admob_gd_script = load(admob_gd_script)
-	#check_timer = Timer.new()
-	#yield(_init(),'') 
-	__init()
-	start_check()
-	_check_connection()
 	
 	
+	######################Used to Control the App's Networking #######################
 	pass
 
 
@@ -82,7 +87,7 @@ func _ready():
 
 func _process(_delta): 
 
-	debug = ( str(_connection) +  str(admob_debug) + str (multiplayer_debug) + str(multiplayer_debug_2)) #try and use les variables
+	debug = ( str(_connection) +  str(admob_debug) + str (multiplayer_server_debug) + str(multiplayer_client_debug)) #
 	
 	
 
@@ -146,16 +151,7 @@ func _process(_delta):
 				connect("error_ssl_handshake",self, '_on_fail_ssl_handshake')
 
 
-	#if Globals.curr_scene == 'Menu' && admob ==null: #i dont think this code block
-	#	pass
-	#if Globals.curr_scene == 'Menu' && admob !=null: #is needed
-	#	admob.show_banner()
-	#if Globals.curr_scene != 'Menu' && admob !=null:
-	#	admob.hide_banner()
 
-	
-	
-	#pass
 
 func _shutdown():
 	admob.queue_free()
@@ -168,24 +164,13 @@ func __init() :
 	#write code to check if node has been instanced
 	self.set_process(true)
 	enabled = true 
-	#if check_timer == null:
-	#	for _b in _y.get_children():
-	#		if _b is Timer:
-	#			check_timer = _b
-	
 	print ('Check_timer :' , check_timer) #code breaks here and gives cant resolve hostname errors
-	#	print ('check_timer cannot be null  ', 'parent: ', str (_y))
-	#if check_timer != null: 
-	#if check_timer.is_inside_tree() != true : 
-	#	_y.call_deferred('add_child',check_timer)
-		#write code to check if checktimer is a child of 
-	#check_timer = check_timer #bug checker
-	#if check_timer != null:
+
 	check_timer.set_name ('check_timer') 
 	check_timer.autostart = true
 	check_timer.one_shot = false
 	check_timer.wait_time = 3
-	
+
 
 
 
@@ -204,12 +189,11 @@ func start_check():
 	_connection = str('start check')
 	if check_timer.is_stopped():
 		check_timer.start()
-#		if check_timer.is_inside_tree() != true:
-#			_y.add_child(check_timer)
 
 
-func _check_connection():
-	var error = self.request('http://www.google.com',PoolStringArray(),false,0,"") 
+func _check_connection(url): 
+	#Ignore Warning
+	var error = self.request(url,PoolStringArray(),false,0,"") 
 	_connection = str (' making request  ')  + str (' Request Error: ',error)
 	print (' Networking Request Error: ',error) #for debug purposes only
 	return _connection
@@ -260,31 +244,23 @@ func _on_success():
 	print('connection success!!')
 	_connection = str ('connection success!!')
 	
-	#OS.delay_usec(1500)
-	#if admob_enabled == true:
-		#_admob() #calls admob once check timer stops
-	#stop_check()
 
 func _on_failure(code, message):
 	print('Connection Failure !!\nCode: ', code,"Message:", message)
 	_connection = str ('connection failed!!')
-	#stop_check() 
-	#enabled = false
-	
-	#_admob()
+
 
 func on_admob_init_failed():
 	push_error ('admob init failed')
 	_connection = str ('admob init failed')
-	#admob.queue_free()
+
 
 
 
 func _on_fail_ssl_handshake():
 	print('SSL Handshake Error!!')
 	_connection = str ('ssl handshake error!!')
-	#stop_check() 
-	#enabled = false
+
 
 
 #controls the admob display

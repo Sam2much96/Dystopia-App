@@ -116,6 +116,8 @@ func _physics_process(_delta):
 			
 			linear_vel = move_and_slide(linear_vel)
 			
+			#print('Player linear velocity: ', linear_vel) #for debug purposes only
+			
 			var target_speed = Vector2()
 			
 			if Input.is_action_pressed("move_down"):

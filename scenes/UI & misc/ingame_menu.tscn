@@ -1,17 +1,47 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://fonts/Comic_Andy.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/UI & misc/ingame_menu.gd" type="Script" id=2]
+[ext_resource path="res://scenes/UI & misc/generic_joystick_ui_selector.gd" type="Script" id=3]
 
-[sub_resource type="DynamicFont" id=1]
-size = 90
-font_data = ExtResource( 1 )
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.909804, 0.227451, 0.227451, 0.678431 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
-[sub_resource type="DynamicFont" id=2]
-size = 90
-font_data = ExtResource( 1 )
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 8.0
+content_margin_right = 8.0
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[sub_resource type="Theme" id=2]
+VScrollBar/icons/decrement = null
+VScrollBar/icons/decrement_highlight = null
+VScrollBar/icons/increment = null
+VScrollBar/icons/increment_highlight = null
+VScrollBar/styles/grabber = SubResource( 6 )
+VScrollBar/styles/grabber_highlight = null
+VScrollBar/styles/grabber_pressed = null
+VScrollBar/styles/scroll = SubResource( 1 )
+VScrollBar/styles/scroll_focus = null
 
 [sub_resource type="DynamicFont" id=3]
+size = 90
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 90
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=5]
 size = 90
 font_data = ExtResource( 1 )
 
@@ -35,8 +65,9 @@ __meta__ = {
 }
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
-margin_right = 325.0
+margin_right = 333.0
 margin_bottom = 667.0
+theme = SubResource( 2 )
 scroll_horizontal_enabled = false
 scroll_vertical = 1
 
@@ -44,6 +75,7 @@ scroll_vertical = 1
 margin_top = -1.0
 margin_right = 313.0
 margin_bottom = 779.0
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -53,7 +85,7 @@ margin_right = 313.0
 margin_bottom = 108.0
 focus_next = NodePath("../music on & off")
 focus_previous = NodePath("../chap 2 ")
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "comics"
 flat = true
@@ -65,7 +97,7 @@ margin_bottom = 220.0
 focus_next = NodePath("../music on & off")
 focus_previous = NodePath("../chap 2 ")
 mouse_filter = 1
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "new game"
 flat = true
@@ -76,7 +108,7 @@ margin_right = 313.0
 margin_bottom = 332.0
 focus_next = NodePath("../music on & off")
 focus_previous = NodePath("../chap 2 ")
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "continue"
 flat = true
@@ -90,7 +122,7 @@ focus_neighbour_top = NodePath("../mini game")
 focus_neighbour_bottom = NodePath("../quit Button")
 focus_next = NodePath("../quit Button")
 focus_previous = NodePath("../mini game")
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 shortcut_in_tooltip = false
 text = "Multiplayer"
@@ -102,7 +134,7 @@ margin_right = 313.0
 margin_bottom = 556.0
 focus_next = NodePath("../music on & off")
 focus_previous = NodePath("../chap 2 ")
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Anime"
 flat = true
@@ -116,7 +148,7 @@ focus_neighbour_top = NodePath("../mini game")
 focus_neighbour_bottom = NodePath("../quit Button")
 focus_next = NodePath("../quit Button")
 focus_previous = NodePath("../mini game")
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 shortcut_in_tooltip = false
 text = "Controls"
@@ -130,7 +162,7 @@ margin_bottom = 780.0
 focus_neighbour_top = NodePath("../music on & off")
 focus_next = NodePath("../chap 1 ")
 focus_previous = NodePath("../music on & off")
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "quit"
 flat = true

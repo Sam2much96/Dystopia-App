@@ -1,6 +1,6 @@
 extends Control
 
-
+var selector = 0
 signal menu_hidden
 signal menu_showing
 export (bool) var enabled 
@@ -35,23 +35,18 @@ func _process(_delta):
 
 func _input(event): #Toggles menu visibility on/off
 	if event.is_action_pressed("menu") and enabled == false:
-		enabled = true 
-		show()
-		Music._notification(NOTIFICATION_PAUSED)
-		Music.play_track(Music.ui_sfx[0])
-		set_focus_mode(2)
-		emit_signal("menu_showing")
-
+		_menu_showing()
 	elif event.is_action_pressed("menu") and enabled == true:
-		enabled = false
-		hide()
-		Music._notification(NOTIFICATION_UNPAUSED)
-		Music.play_track(Music.ui_sfx[1])
-		set_focus_mode(0)
-		emit_signal("menu_hidden")
-		#get_tree().set_pause(false)
+		_menu_not_showing()
 
 
+#input functions for gamepad
+
+
+		if event.is_action_pressed("ui_cancel") && visible == true:
+			Globals._go_to_title()
+	 
+	
 
 
 func _on_continue_pressed():
@@ -85,14 +80,31 @@ func _on_Menu_button_toggled(button_pressed):
 	game_menu.show() if button_pressed else game_menu.hide() ;return
 
 
-	#if  button_pressed :
-	#	game_menu.show()
-	#else :
-	#	game_menu.hide()
+#Handles Displaying the menu
+func _menu_showing():
+	enabled = true 
+	show()
+	Music._notification(NOTIFICATION_PAUSED)
+	Music.play_track(Music.ui_sfx[0])
+	set_focus_mode(2)
+	emit_signal("menu_showing")
+
+#Handles Hiding the menu
+func _menu_not_showing():
+	enabled = false
+	hide()
+	Music._notification(NOTIFICATION_UNPAUSED)
+	Music.play_track(Music.ui_sfx[1])
+	set_focus_mode(0)
+	emit_signal("menu_hidden")
+
+#Handles Pausing the Menu
+func _menu_pause_and_play(boolean): #pass it a boolean to custom pause and play
+	get_tree().set_pause(boolean)
 
 
 func _on_comics_pressed():
-	#print_debug ('comics pressed')
+	print_debug ('comics pressed')
 	get_tree().change_scene_to(Globals.comics___2)
 	Music.play_track(Music.ui_sfx[0])
 

@@ -32,7 +32,7 @@ THE DEBUG SINGLETON
 """
 #Add signal
 func _ready():
-	#start_debug()
+	start_debug()
 	#stop_debug()
 	"""
 	Error catcher

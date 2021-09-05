@@ -122,7 +122,7 @@ func handle_input():
 	var id = get_tree().get_network_unique_id()
 	# Move left
 	if Input.is_action_just_pressed("move_left"): #sends player input to the server
-		rpc_id(1,"player_input",id,"left",true, pos, state) #sends position and state data directly to servers 
+		rpc_id(1,"player_input",id,"left",true, pos, state, linear_vel) #sends position and state data directly to servers 
 		#rpc_id(peer_id,'set_state',ger)
 		#send player state
 		#send player position using pu function
@@ -132,11 +132,12 @@ func handle_input():
 		#print ( '/////state//////:',player_info[id].node.state)
 		#pu(id,______update_id,player_info[id].position, player_info[id].node.hitpoints,player_info[id].node.state )
 		#rset_id(id, 'position', pos)
-		print ('Player info id position/////////',player_info[id].position)
-		print ('Player info id Node state/////////',player_info[id].node.state ,'/////state/////:', state)
+		#print ('Player info id position/////////',player_info[id].position)
+		#print ('Player info id Node state/////////',player_info[id].node.state ,'/////state/////:', state)
 		
 		
 		#print ('////////Player info id /////////',player_info[id].node.position) #for debug purposes only
+		print ('////////Client Player info : Linear velocity/////////',linear_vel) #for debug purposes only
 	if Input.is_action_just_released("move_left"):
 		rpc_id(1,"player_input",id,"left",false,pos,state, linear_vel) #rpc triggers a remote function
 		

@@ -14,7 +14,7 @@ export(int) var WALK_SPEED = 350 # pixels per second
 export(int) var ROLL_SPEED = 1000 # pixels per second
 export(int) var hitpoints = 3
 
-var linear_vel = Vector2()
+export var linear_vel = Vector2()
 var roll_direction = Vector2.DOWN
 
 signal health_changed(current_hp)

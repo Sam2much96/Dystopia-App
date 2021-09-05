@@ -131,12 +131,7 @@ func _process(delta):
 func _physics_process(delta):
 	#controls the playr's movements
 	for peer_id in player_info: #player_info[peer_id].node is the player node. player_info stores player information
-		#Networking.multiplayer_debug = (str(" / "+ str('Hitpoints') + str(player_info[peer_id].node.hitpoints)) + " / " + str ('Node pos: ')+ str(player_info[peer_id].node.position) + " / " +str ('Player state:')+ str(player_info[peer_id].state))
-		#Networking.multiplayer_debug_2 = ("Player id:" + str(peer_id) + " = " + str ('peer id pos: ') + str(player_info[peer_id].position) + " = " + str(player_info[peer_id].node.facing)) #maps remote player debug to debug variable
-		
-		
-		#debug = player_info #debugs the player info of each client
-		
+
 		#print (debug) #for debug purposes only
 		if player_info[peer_id].destroyed: #rewrite to use despawned #add destroyed variable to the player script
 			continue
@@ -149,30 +144,8 @@ func _physics_process(delta):
 			player_info[peer_id].node.despawn()
 			print('player/', player_info[peer_id], ' is dead') #
 
-		#v = player_info[peer_id].node.get_position()
-		
-		# Keep the player within boundaries
-		#var world_radius = Networking.WORLD_SIZE / 2
-		#if v.x > world_radius:
-		#	v.x = world_radius
-		#	player_info[peer_id].node.set_position(v)
-		#if v.x < -world_radius:
-		#	v.x = -world_radius
-		#	player_info[peer_id].node.set_position(v)
-		#if v.y > world_radius:
-		#	v.y = world_radius
-		#	player_info[peer_id].node.set_position(v)
-		#if v.y < -world_radius:
-		#	v.y = -world_radius
-		#	player_info[peer_id].node.set_position(v)
-		
-		#sets each player's attribute to itself sent over the network
-		#var __pos =player_info[peer_id].node.get_position()
-		
-		#player_info[peer_id].node.set_position(__pos)
-		
 	
-	delta_update += delta
+	#delta_update += delta breaks
 	while delta_update >= delta_interval:
 		delta_update -= delta_interval
 		broadcast_world_positions()
@@ -261,17 +234,19 @@ remote func player_input(id, key, pressed, client_position, client_state, linear
 	if pressed == true: #update player position in this code block
 		
 		
-		player_info[id].position = client_position
-		player_info[id].state = client_state
+		#player_info[id].position = client_position
+		#player_info[id].state = client_state
 		
-		
-		_update_player_position_and_states(id,client_position, client_state,linear_velocity) #updates player's motion and states
+		#Run this code in physics process
+		_process(_update_player_position_and_states(id,client_position, client_state,linear_velocity)) #updates player's motion and states
 		
 		
 		#print ('Remote player Input is Pressed: ', pressed, 'Player Position: ',  player_info[id].node.position ) #for debug purposes only
 		#Debugs player position and State
-		print ('Player info id position/////////',player_info[id].position)
-		print ('Player info id state/////////',player_info[id].state)
+		print ('Player  ID/////////',id)
+		print ('Player  position/////////',client_position)
+		print ('Player  state/////////',client_state)
+		print ('Player  linear vel/////////',linear_velocity)
 	if  pressed == false: #it changes state but not position
 		
 		pass
@@ -293,7 +268,7 @@ remote func player_input(id, key, pressed, client_position, client_state, linear
 func _update_player_position_and_states(id,position ,state, linear_vel): #updates players states from the handle input function
 	player_info[id].node.position = position #updates the player node's position to the client position
 	player_info[id].node.state = state #updates player state to the client's state
-	player_info[id].linear_vel = player_info[id].linear_vel #updates player state to the client's state
+	player_info[id].node.linear_vel = linear_vel #updates player state to the client's state
 	
 	player_info[id].node.move_and_slide(linear_vel) #This line of code breaks
 

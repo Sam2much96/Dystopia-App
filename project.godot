@@ -85,7 +85,6 @@ config/description="Changing the World? Sigh. A very lofty dream. It is a feat f
 
 A Stable build for the Dystopia App, preloaded with Chapters 1-3. Read the Comics, Watch the Anime, Play the Game, all in one app. It's a playable comic."
 run/main_scene="res://scenes/cinematics/cinematics.tscn"
-run/low_processor_mode=true
 boot_splash/image="res://resources/title animation/Dystopia Logo Drop shadow.png"
 boot_splash/fullsize=false
 boot_splash/use_filter=false

@@ -13,6 +13,7 @@ extends Node
 
 #use variables to code ux +add a scene tree calculator
 var cinematics = preload ('res://resources/title animation/title..ogv')
+var AMV
 var title_screen = preload( 'res://scenes/Title screen.tscn')
 var shop = load('res://scenes/UI & misc/Shop.tscn')
 var controls = load ('res://scenes/UI & misc/Controls.tscn')

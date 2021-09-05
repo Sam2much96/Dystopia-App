@@ -16,7 +16,7 @@
 [ext_resource path="res://scenes/UI & misc/comics-reader-extension.gd" type="Script" id=14]
 [ext_resource path="res://resources/Buttons/UI hover buttons.webp" type="Texture" id=15]
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.643137, 0.0470588, 0.0470588, 0.780392 )
 border_width_left = 3
 border_width_top = 3
@@ -28,23 +28,23 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxFlat" id=3]
-content_margin_top = 20.0
-content_margin_bottom = 20.0
+[sub_resource type="StyleBoxFlat" id=2]
+content_margin_top = 50.0
+content_margin_bottom = 50.0
 bg_color = Color( 0.741176, 0.4, 0.4, 1 )
 
-[sub_resource type="Theme" id=4]
+[sub_resource type="Theme" id=3]
 HScrollBar/icons/decrement = null
 HScrollBar/icons/decrement_highlight = null
 HScrollBar/icons/increment = null
 HScrollBar/icons/increment_highlight = null
-HScrollBar/styles/grabber = SubResource( 2 )
+HScrollBar/styles/grabber = SubResource( 1 )
 HScrollBar/styles/grabber_highlight = null
 HScrollBar/styles/grabber_pressed = null
-HScrollBar/styles/scroll = SubResource( 3 )
+HScrollBar/styles/scroll = SubResource( 2 )
 HScrollBar/styles/scroll_focus = null
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=4]
 size = 64
 outline_size = 6
 outline_color = Color( 0, 0, 0, 1 )
@@ -67,12 +67,12 @@ rect_pivot_offset = Vector2( 643.969, 373.494 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Comics"]
 margin_left = 233.0
-margin_top = 38.0
+margin_top = -7.38455
 margin_right = 2545.0
-margin_bottom = 1849.0
+margin_bottom = 1863.62
 rect_scale = Vector2( 0.340019, 0.340019 )
 rect_clip_content = false
-theme = SubResource( 4 )
+theme = SubResource( 3 )
 scroll_horizontal = 1
 scroll_vertical_enabled = false
 __meta__ = {
@@ -170,7 +170,7 @@ margin_left = 1057.83
 margin_top = 11.3137
 margin_right = 1240.83
 margin_bottom = 95.3137
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 4 )
 text = "back"
 flat = true
 __meta__ = {

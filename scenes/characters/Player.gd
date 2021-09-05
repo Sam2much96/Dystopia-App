@@ -116,7 +116,7 @@ func _physics_process(_delta):
 			
 			linear_vel = move_and_slide(linear_vel)
 			
-			#print('Player linear velocity: ', linear_vel) #for debug purposes only
+			print('Player linear velocity: ', linear_vel) #for debug purposes only
 			
 			var target_speed = Vector2()
 			

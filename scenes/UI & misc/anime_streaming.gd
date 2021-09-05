@@ -26,10 +26,11 @@ func _on_watch_anime_pressed():
 
 	######The Streaming Site passed as a global string variable#########
 	if Globals.os != str ('Android'): #Webm doesn't play on Godot v3.2.3 Videoplayer yet
-		Networking.url = 'https://animationvideosondemand.s3.af-south-1.amazonaws.com/shots_1-8+pencil+test.webm' #for debuging video streaming
-		#Networking.url = 'https://animationvideosondemand.s3.af-south-1.amazonaws.com/AMV_3.webm'
+		#Networking.url = 'https://animationvideosondemand.s3.af-south-1.amazonaws.com/shots_1-8+pencil+test.webm' #for debuging video streaming
+		Networking.url = 'https://animationvideosondemand.s3.af-south-1.amazonaws.com/AMV_3.webm'
 	if Globals.os == str ('Android'):
-		Networking.url ='https://animationvideosondemand.s3.af-south-1.amazonaws.com/shots_1-8+pencil+test.ogv' #OGV
+		#Networking.url ='https://animationvideosondemand.s3.af-south-1.amazonaws.com/shots_1-8+pencil+test.ogv' #OGV TEST
+		Networking.url ='https://animationvideosondemand.s3.af-south-1.amazonaws.com/AMV_5.ogv' #OGV
 	
 	
 	dir.open ("user://")
@@ -42,13 +43,15 @@ func _on_watch_anime_pressed():
 	print ('Video File Exists: ', file_exists)
 
 	
-	if not file_exists:
+	if not file_exists && downloading_video != true:
 		print ('Video File Doesn.t exist,downloading' )#;_check_download_size(int(Networking.get_body_size()), Networking.get_downloaded_bytes())
 		Networking.request(Networking.url)
 		play_loading_cinematic() #Plays the Loading cinematic while the video file downloads
 		downloading_video = true
 		Networking.connect("request_completed", self, "_http_request_completed")
 		print ('download completed')
+	if not file_exists && downloading_video == true:
+		print('Already Downloading video, Please Wait or Quit and Restart')
 
 	if file_exists: 
 		print ('Video File Exists')
@@ -77,7 +80,7 @@ func _on_watch_anime_pressed():
 				Globals.AMV = ResourceLoader.load(video_file_path, "VideoStreamWebm", false)
 			if Globals.os == str ('Android'):
 				Globals.AMV = ResourceLoader.load(video_file_path, 'VideoStreamTheora', false)
-		#Music.notification(NOTIFICATION_PREDELETE) #dreaks the code. Fix Music off function
+			Music.notification(NOTIFICATION_PREDELETE) #. Fix Music off function
 			print ('Playing Global video File: ', Globals.AMV )
 			Video_Stream((Globals.AMV), Music.playlist_one[4]) #Play the video with Shootback
 
@@ -100,9 +103,10 @@ func _check_download_size(loaded,total): #Kinda works. Sort this code out first
 
 func _process(_delta):
 	#for debug purposes only
-	#if downloading_video == true:
+	if downloading_video == true:
 	#	yield(get_tree().create_timer(5), "timeout")
 	#	print (_check_download_size(int(Networking.get_body_size()), Networking.get_downloaded_bytes())) #shows a progress report on video being downloaded)
+		debug_stream()
 	pass
 
 ###########my codes###############parsing the poopbyte array as a video stream########
@@ -147,27 +151,8 @@ func _http_request_completed(result, response_code, headers, body):
 				var video_file_path = video_file.get_path_absolute() #gets the file path
 				Globals.AMV = video_file_path
 				video_file.close()
-				#print('1: Body /' + _body.get_string_from_ascii())#, '2',_r.get_string_from_utf8()) #The second ckind of decoding doesn't work
-				#print ('2: Parser /' , parser)
-				#print ('Parsing Stream','1/' ,_body,' through ', '2/',parser )
-				#print ('video file as a global: ',Globals.video_stream ) #for debug purposes only
 
-
-				
 				downloading_video = false
-				#vid_file = video_file
-				#video_file.open("user://video.webm", File.READ)
-				#var _q2 = video_file.get_path_absolute()
-				#print (_q2)
-				#Music.notification(NOTIFICATION_PREDELETE) #Shuts down Bckgrnd music. This code breaks. Fix music off
-				#Video_Stream(load(video_file_path), Music.playlist_one[4])
-				#print (str(video_file.get_modified_time(video_file))) #gets the last time file was modified
-				#print (video_file.get_path_absolute())
-				#print (vid_file)
-				#Globals.video_stream = video_file #make it a global variable
-
-			#Prints the kind of data gotten from the http request for debugging
-
 			#return Globals.video_stream
 		if file_exists:
 			print ('File Exists', file_exists)
@@ -220,7 +205,7 @@ func stop_playing_laoding_cinematic():
 	Dialogs.hide_dialogue() #Error catcher 1 
 
 func debug_stream():
-	print ('vid_stream_debug: ',vid_file)
+	Networking.debug += str (percent)
 	
 
 

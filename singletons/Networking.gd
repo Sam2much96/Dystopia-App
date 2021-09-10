@@ -17,7 +17,7 @@ To query if there's internet access and connect to various websites
 """
 export (bool) var enabled
 export(bool) var admob_enabled
-var admob_gd_script = load("res://singletons/Admob.gd") #add link to admob.gd
+var admob_gd_script = load("res://singletons/Ads.gd") #add link to admob.gd
 var debug = ''
 
 var admob_debug
@@ -82,16 +82,9 @@ func _ready():
 	######################Used to Control the App's Networking #######################
 	pass
 
-
-
-
 func _process(_delta): 
 
 	debug = ( str(_connection) +  str(admob_debug) + str (multiplayer_server_debug) + str(multiplayer_client_debug)) #
-	
-	
-
-
 	"""
 	ADMOB 
 	"""
@@ -128,14 +121,6 @@ func _process(_delta):
 					child.connect('_on_AdMob_banner_failed_to_load', self, 'admob_failed')
 					child.connect('banner_load', self, 'admob_success')
 
-
-
-
-
-
-	#Networking debug
-	#debug =  str(admob_debug) + ''
-	
 	for child in _y.get_children():
 		if child is Timer:
 			check_timer = child
@@ -149,8 +134,6 @@ func _process(_delta):
 				connect("connection_success",self, '_on_success')
 				connect("error_connection_failed",self,'_on_failure')
 				connect("error_ssl_handshake",self, '_on_fail_ssl_handshake')
-
-
 
 
 func _shutdown():
@@ -170,13 +153,6 @@ func __init() :
 	check_timer.autostart = true
 	check_timer.one_shot = false
 	check_timer.wait_time = 3
-
-
-
-
-
-
-
 
 func stop_check():
 	_connection += ' stop check '
@@ -264,26 +240,26 @@ func _on_fail_ssl_handshake():
 
 
 #controls the admob display
-func _admob(): #rearrange this code execution to prevent multiple instances of admob
+func _admob(): #rewrite this code for appodeal
 	
-	admob.set_name('admob')
-	admob.enabled = true
+	#admob.set_name('admob')
+	#admob.enabled = true
 	#admob.is_real_set(true)
-	admob.banner_id = str('ca-app-pub-1198869974398081/1991292180')
-	admob.banner_on_top = false
-	admob.banner_size = ("SMART_BANNER")
-	admob.is_real_set(true)
+	#admob.banner_id = str('ca-app-pub-1198869974398081/1991292180')
+	#admob.banner_on_top = false
+	#admob.banner_size = ("SMART_BANNER")
+	#admob.is_real_set(true)
 	
-	print('Admob nodes:........', admob_nodes,'..........')
-	_connection = str('instancing admob')
-	admob.init()
-	admob.load_banner()
-	admob.show_banner()
+	#print('Admob nodes:........', admob_nodes,'..........')
+	#_connection = str('instancing admob')
+	#admob.init()
+	#admob.load_banner()
+	#admob.show_banner()
 	
-	print ('initializing admob ',"Admob: " ,admob, 'Singleton:',_ad)
+	#print ('initializing admob ',"Admob: " ,admob, 'Singleton:',_ad)
 
 	#stop_check()
-
+	pass
 
 
 func admob_failed():

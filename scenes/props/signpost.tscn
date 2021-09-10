@@ -15,7 +15,6 @@ height = 252.134
 position = Vector2( 106.908, 32.0724 )
 monitorable = false
 script = ExtResource( 2 )
-shown = -40
 dialogue = "Dialogue Clicked"
 
 [node name="Sprite" type="Sprite" parent="."]

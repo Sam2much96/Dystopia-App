@@ -1,5 +1,8 @@
 extends CanvasLayer
 
+#update code to update game properties in game and it can be triggered on and off 
+#in controls settings ingame
+
 """
 This can be added to any scene and be use to show some properties for debug purposes
 """

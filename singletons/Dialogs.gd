@@ -22,9 +22,16 @@ var active = false
 
 var dialog_box = null setget _set_dialog_box
 
+var comics = null setget _comics_#I'm adding comics to the mix
+
 func show_dialog(text:String, speaker:String):
 	if is_instance_valid(dialog_box):
 		dialog_box.show_dialog(text, speaker)
+
+func hide_dialogue(): #can be used to hide the dialogue box. Not best Practice
+	if is_instance_valid(dialog_box):
+		dialog_box.hide_dialogue()
+
 
 func _set_dialog_box(node):
 	if not node is Node:
@@ -44,7 +51,16 @@ func _set_dialog_box(node):
 		push_error("provided node doesn't implement dialog_started signal")
 	
 	pass
+
+func _comics_(node): #This function passes the comics node to globals script
+	if not node.is_in_group('comics'):
+		push_error('Provided node isnt a Comic Node')
 	
+	comics = node #get other variables from the comic
+	print (node.name, 'connected to dialogue singleton', node, node.current_comics) #for debug purposes only
+	print ('Place Auto Translation Function Through Here')
+
+
 func _on_dialog_started():
 	active = true
 	emit_signal("dialog_started")
@@ -52,3 +68,4 @@ func _on_dialog_started():
 func _on_dialog_ended():
 	active = false
 	emit_signal("dialog_ended")
+	

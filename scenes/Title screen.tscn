@@ -1,0 +1,123 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://resources/illustrations/Game_Cover Art WEBP.webp" type="Texture" id=1]
+[ext_resource path="res://resources/title animation/Dystopia Logo webp.webp" type="Texture" id=2]
+[ext_resource path="res://scenes/UI & misc/ingame_menu.tscn" type="PackedScene" id=3]
+[ext_resource path="res://resources/Buttons/menu.png" type="Texture" id=4]
+[ext_resource path="res://resources/Buttons/Pop up menu.png" type="Texture" id=5]
+[ext_resource path="res://fonts/Comic Book.otf" type="DynamicFontData" id=6]
+[ext_resource path="res://New game code and features/Ads_test_checker.tscn" type="PackedScene" id=7]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Popup
+\"\"\"
+NOTIFICATION GENERIC BAR
+\"\"\"
+
+
+func _ready():
+
+	self.call_deferred('popup')
+#	self.popup_centered()
+
+func _exit_tree():
+	self.queue_free()
+"
+
+[sub_resource type="DynamicFont" id=2]
+size = 38
+outline_size = 6
+outline_color = Color( 0.00392157, 0.00392157, 0.00392157, 1 )
+extra_spacing_top = -1
+font_data = ExtResource( 6 )
+
+[node name="Menu" type="Control"]
+light_mask = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+focus_neighbour_left = NodePath("quit")
+focus_neighbour_top = NodePath("continue")
+focus_neighbour_right = NodePath("credits")
+focus_neighbour_bottom = NodePath("new_game")
+focus_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BG" type="TextureRect" parent="."]
+light_mask = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 303.583
+margin_top = 0.82846
+margin_right = 1873.58
+margin_bottom = 3030.83
+rect_scale = Vector2( 0.192205, 0.192205 )
+texture = ExtResource( 1 )
+stretch_mode = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="logo" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 168.482
+margin_top = 174.648
+margin_right = 641.482
+margin_bottom = 354.648
+rect_scale = Vector2( 1.03307, 1.03307 )
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu " parent="." instance=ExtResource( 3 )]
+margin_left = 20.0
+margin_top = 66.0
+margin_right = 1202.0
+margin_bottom = 665.0
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="."]
+position = Vector2( 23.4558, 31.8579 )
+normal = ExtResource( 4 )
+action = "menu"
+
+[node name="Notification" type="Popup" parent="."]
+visible = true
+margin_left = 879.642
+margin_top = 22.6274
+margin_right = 1287.64
+margin_bottom = 353.628
+rect_scale = Vector2( 0.781995, 0.781995 )
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="Notification"]
+position = Vector2( 255.6, 227.087 )
+scale = Vector2( 0.867071, 0.816826 )
+texture = ExtResource( 5 )
+
+[node name="Label" type="Label" parent="Notification"]
+margin_left = -2.05765
+margin_top = 67.8824
+margin_right = 513.942
+margin_bottom = 364.882
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.882353, 0.882353, 0.882353, 1 )
+text = "Dystopia App
+dev v.1.1.6b
+"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Ads_test_checker" parent="." instance=ExtResource( 7 )]
+layer = 0

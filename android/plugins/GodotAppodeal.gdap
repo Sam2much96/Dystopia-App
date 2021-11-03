@@ -1,0 +1,22 @@
+[config]
+
+name="GodotAppodeal"
+binary_type="local"
+binary="GodotAppodeal.1.0.0.release.aar"
+
+[dependencies]
+
+local =["GodotAppodeal.1.0.0.release.aar",
+"appodeal-debug.aar",
+]
+remote=["com.appodeal.ads.sdk:core:2.6.5",
+"com.google.android.gms:play-services-ads:15.0.0",
+"com.google.android.gms:play-services-ads:17.0.0",
+"com.appodeal.ads.sdk.networks:appodealx:2.6.5.1",
+"com.appodeal.ads.sdk.networks:facebook:2.6.5.3",
+"com.appodeal.ads.sdk.networks:admob:2.6.5.2",
+"com.appodeal.ads.sdk.networks:applovin:2.6.5.4",
+"com.appodeal.ads.sdk.networks:startapp:2.6.5.5",
+"com.appodeal.ads.sdk.networks:adcolony:2.6.5.4",]
+
+custom_maven_repos=["https://artifactory.appodeal.com/appodeal"]

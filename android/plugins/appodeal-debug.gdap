@@ -1,0 +1,9 @@
+[config]
+
+name="appodeal-debug"
+binary_type="local"
+binary="appodeal-debug.aar"
+
+[dependencies]
+
+local=["appodeal-debug.aar"]

@@ -1,0 +1,176 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://scenes/UI & misc/Comics.v3.gd" type="Script" id=1]
+[ext_resource path="res://resources/Buttons/bck.png" type="Texture" id=2]
+[ext_resource path="res://resources/Buttons/zoom.png" type="Texture" id=3]
+[ext_resource path="res://resources/misc/logo.png" type="Texture" id=4]
+[ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=5]
+[ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=6]
+
+[sub_resource type="Animation" id=1]
+resource_name = "Prev panel"
+
+[sub_resource type="Animation" id=2]
+resource_name = "next panel"
+
+[sub_resource type="Animation" id=3]
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 0.5 ),
+"update": 0,
+"values": [ Vector2( 0, 40 ), Vector2( 0, 40 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0.156863 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 2 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.517647 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 40 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[node name="Comics" type="Control" groups=[
+"Cmx_Root",
+]]
+mouse_filter = 1
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = 10.0908
+margin_top = -57.1809
+margin_right = 1312.09
+margin_bottom = 719.819
+mouse_filter = 2
+color = Color( 0.235294, 0.235294, 0.235294, 0.776471 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Buttons" type="Node2D" parent="."]
+visible = false
+modulate = Color( 1, 1, 1, 0.741176 )
+light_mask = 2
+
+[node name="Backwards" type="TouchScreenButton" parent="Buttons"]
+modulate = Color( 1, 1, 1, 0.647059 )
+self_modulate = Color( 0, 0, 0, 1 )
+position = Vector2( 342.879, 736.554 )
+rotation = -3.11961
+normal = ExtResource( 2 )
+action = "ui_focus_prev"
+
+[node name="Forward" type="TouchScreenButton" parent="Buttons"]
+modulate = Color( 1, 1, 1, 0.647059 )
+self_modulate = Color( 0, 0, 0, 1 )
+position = Vector2( 974.664, 434.948 )
+normal = ExtResource( 2 )
+action = "ui_focus_next"
+
+[node name="Zoom" type="TouchScreenButton" parent="Buttons"]
+visible = false
+position = Vector2( 610.68, 529.983 )
+scale = Vector2( 1.11574, 1.12516 )
+normal = ExtResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+"anims/Prev panel" = SubResource( 1 )
+"anims/next panel" = SubResource( 2 )
+anims/slide_in = SubResource( 3 )
+anims/slide_out = SubResource( 4 )
+anims/visible = SubResource( 5 )
+
+[node name="Watermark" type="TextureRect" parent="."]
+visible = false
+self_modulate = Color( 0, 0, 0, 0.243137 )
+margin_left = 337.735
+margin_top = 61.8388
+margin_right = 772.735
+margin_bottom = 434.839
+rect_scale = Vector2( 1.41222, 1.41222 )
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Hints" type="Popup" parent="."]
+visible = true
+margin_left = 654.064
+margin_top = 311.572
+margin_right = 694.064
+margin_bottom = 351.572
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Hints"]
+margin_left = -214.057
+margin_top = 23.7841
+margin_right = 198.943
+margin_bottom = 66.7841
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Swipe Left and Right to Change Pages
+Double Tap to zoom in/out"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( 665.956, 42.8111 )
+[connection signal="pressed" from="Buttons/Zoom" to="." method="_on_Zoom_pressed"]

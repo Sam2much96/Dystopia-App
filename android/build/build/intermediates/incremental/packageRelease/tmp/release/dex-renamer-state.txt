@@ -1,0 +1,7 @@
+#Fri Oct 01 09:07:46 WAT 2021
+base.1=/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob\=\=singletonnotfoundsnapshot++/android/build/build/intermediates/dex/release/mergeDexRelease/out/classes2.dex
+path.1=classes2.dex
+base.0=/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob\=\=singletonnotfoundsnapshot++/android/build/build/intermediates/dex/release/mergeDexRelease/out/classes.dex
+renamed.1=classes2.dex
+renamed.0=classes.dex
+path.0=classes.dex

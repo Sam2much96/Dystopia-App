@@ -1,0 +1,6 @@
+# Referenced at /home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/build/intermediates/merged_manifests/debug/AndroidManifest.xml:45
+-keep class androidx.core.app.CoreComponentFactory { <init>(); }
+# Referenced at /home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/build/intermediates/merged_manifests/debug/AndroidManifest.xml:45
+-keep class androidx.multidex.MultiDexApplication { <init>(); }
+# Referenced at /home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/build/intermediates/merged_manifests/debug/AndroidManifest.xml:30
+-keep class dystopia.app.GodotInstrumentation { <init>(); }

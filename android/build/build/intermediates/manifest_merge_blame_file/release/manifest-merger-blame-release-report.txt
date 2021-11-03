@@ -1,0 +1,529 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="dystopia.app"
+4    android:installLocation="auto"
+5    android:versionCode="1"
+6    android:versionName="1.0" >
+7
+8    <uses-sdk
+9        android:minSdkVersion="18"
+9-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml
+10        android:targetSdkVersion="29" />
+10-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml
+11
+12    <!-- Adding custom text to the manifest is fine, but do it outside the custom USER and APPLICATION BEGIN/END comments, -->
+13    <!-- as that gets rewritten. -->
+14
+15    <supports-screens
+15-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:12:5-16:40
+16        android:largeScreens="true"
+16-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:15:9-36
+17        android:normalScreens="true"
+17-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:14:9-37
+18        android:smallScreens="true"
+18-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:13:9-36
+19        android:xlargeScreens="true" />
+19-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:16:9-37
+20
+21    <!-- glEsVersion is modified by the exporter, changing this value here has no effect. -->
+22    <uses-feature
+22-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:19:5-21:35
+23        android:glEsVersion="0x00020000"
+23-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:20:9-41
+24        android:required="true" />
+24-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:21:9-32
+25
+26    <!-- Custom user permissions XML added by add-ons. It's recommended to add them from the export preset, though. -->
+27    <!-- CHUNK_USER_PERMISSIONS_BEGIN -->
+28    <uses-permission android:name="android.permission.INTERNET" />
+28-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:25:1-62
+28-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:25:18-60
+29    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+29-->[GodotAppodeal.1.0.0.release.aar] /root/.gradle/caches/transforms-2/files-2.1/8907f24da8cacad0b4d12cdeace0e982/GodotAppodeal.1.0.0.release/AndroidManifest.xml:11:5-79
+29-->[GodotAppodeal.1.0.0.release.aar] /root/.gradle/caches/transforms-2/files-2.1/8907f24da8cacad0b4d12cdeace0e982/GodotAppodeal.1.0.0.release/AndroidManifest.xml:11:22-76
+30
+31    <instrumentation
+31-->[godot-lib.release.aar] /root/.gradle/caches/transforms-2/files-2.1/2f29423de5771cd0c2f475b364e10860/godot-lib.release/AndroidManifest.xml:11:5-15:57
+32        android:name=".GodotInstrumentation"
+32-->[godot-lib.release.aar] /root/.gradle/caches/transforms-2/files-2.1/2f29423de5771cd0c2f475b364e10860/godot-lib.release/AndroidManifest.xml:12:9-45
+33        android:icon="@mipmap/icon"
+33-->[godot-lib.release.aar] /root/.gradle/caches/transforms-2/files-2.1/2f29423de5771cd0c2f475b364e10860/godot-lib.release/AndroidManifest.xml:13:9-36
+34        android:label="@string/godot_project_name_string"
+34-->[godot-lib.release.aar] /root/.gradle/caches/transforms-2/files-2.1/2f29423de5771cd0c2f475b364e10860/godot-lib.release/AndroidManifest.xml:14:9-58
+35        android:targetPackage="org.godotengine.godot" />
+35-->[godot-lib.release.aar] /root/.gradle/caches/transforms-2/files-2.1/2f29423de5771cd0c2f475b364e10860/godot-lib.release/AndroidManifest.xml:15:9-54
+36
+37    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+37-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:13:5-81
+37-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:13:22-78
+38    <uses-permission android:name="android.permission.WAKE_LOCK" />
+38-->[com.google.android.gms:play-services-measurement-sdk-api:17.1.0] /root/.gradle/caches/transforms-2/files-2.1/97fe7eae467b7c543274f9b2f42d765e/play-services-measurement-sdk-api-17.1.0/AndroidManifest.xml:25:5-68
+38-->[com.google.android.gms:play-services-measurement-sdk-api:17.1.0] /root/.gradle/caches/transforms-2/files-2.1/97fe7eae467b7c543274f9b2f42d765e/play-services-measurement-sdk-api-17.1.0/AndroidManifest.xml:25:22-65
+39    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+39-->[com.appodeal.ads.sdk.networks:startapp:2.6.5.5] /root/.gradle/caches/transforms-2/files-2.1/d9deca09365eedac353c1ba0e5cff595/jetified-startapp-2.6.5.5/AndroidManifest.xml:11:5-76
+39-->[com.appodeal.ads.sdk.networks:startapp:2.6.5.5] /root/.gradle/caches/transforms-2/files-2.1/d9deca09365eedac353c1ba0e5cff595/jetified-startapp-2.6.5.5/AndroidManifest.xml:11:22-73
+40    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+40-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:14:5-81
+40-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:14:22-78
+41    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" /> <!-- CHUNK_USER_PERMISSIONS_END -->
+41-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:15:5-110
+41-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:15:22-107
+42    <!-- Any tag in this line after android:icon will be erased when doing custom builds. -->
+43    <!-- If you want to add tags manually, do before it. -->
+44    <!-- WARNING: This should stay on a single line until the parsing code is improved. See GH-32414. -->
+45    <application
+45-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:31:5-85:20
+46        android:name="androidx.multidex.MultiDexApplication"
+46-->[GodotAppodeal.1.0.0.release.aar] /root/.gradle/caches/transforms-2/files-2.1/8907f24da8cacad0b4d12cdeace0e982/GodotAppodeal.1.0.0.release/AndroidManifest.xml:15:9-61
+47        android:allowBackup="false"
+47-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:31:18-45
+48        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+48-->[androidx.core:core:1.0.0] /root/.gradle/caches/transforms-2/files-2.1/947833f03979c6d84fcd9a8feba7ce42/core-1.0.0/AndroidManifest.xml:22:18-86
+49        android:icon="@mipmap/icon"
+49-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:31:123-150
+50        android:networkSecurityConfig="@xml/network_security_config"
+50-->[GodotAppodeal.1.0.0.release.aar] /root/.gradle/caches/transforms-2/files-2.1/8907f24da8cacad0b4d12cdeace0e982/GodotAppodeal.1.0.0.release/AndroidManifest.xml:16:9-69
+51        android:requestLegacyExternalStorage="true"
+51-->[godot-lib.release.aar] /root/.gradle/caches/transforms-2/files-2.1/2f29423de5771cd0c2f475b364e10860/godot-lib.release/AndroidManifest.xml:18:18-61
+52        android:supportsRtl="true" >
+52-->[com.facebook.android:facebook-android-sdk:5.15.3] /root/.gradle/caches/transforms-2/files-2.1/52622b5a5c16d5aab8daf367b6565469/facebook-android-sdk-5.15.3/AndroidManifest.xml:28:18-44
+53
+54        <!-- The following metadata values are replaced when Godot exports, modifying them here has no effect. -->
+55        <!-- Do these changes in the export preset. Adding new ones is fine. -->
+56
+57
+58        <!-- XR mode metadata. This is modified by the exporter based on the selected xr mode. DO NOT CHANGE the values here. -->
+59        <meta-data
+59-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:37:9-39:54
+60            android:name="xr_mode_metadata_name"
+60-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:38:13-49
+61            android:value="xr_mode_metadata_value" />
+61-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:39:13-51
+62
+63        <!-- Metadata populated at export time and used by Godot to figure out which plugins must be enabled. -->
+64        <meta-data
+64-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:42:9-44:44
+65            android:name="plugins"
+65-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:43:13-35
+66            android:value="plugins_value" />
+66-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:44:13-42
+67
+68        <activity
+68-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:46:9-63:20
+69            android:name="com.godot.game.GodotApp"
+69-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:47:13-37
+70            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
+70-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:52:13-141
+71            android:label="@string/godot_project_name_string"
+71-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:48:13-62
+72            android:launchMode="singleTask"
+72-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:50:13-44
+73            android:resizeableActivity="false"
+73-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:53:13-47
+74            android:screenOrientation="landscape"
+74-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:51:13-50
+75            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+75-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:49:13-77
+76
+77            <!-- Focus awareness metadata is updated at export time if the user enables it in the 'Xr Features' section. -->
+78            <meta-data
+78-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:57:13-88
+79                android:name="com.oculus.vr.focusaware"
+79-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:57:24-63
+80                android:value="false" />
+80-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:57:64-85
+81
+82            <intent-filter>
+82-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:59:13-62:29
+83                <action android:name="android.intent.action.MAIN" />
+83-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:60:17-69
+83-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:60:25-66
+84
+85                <category android:name="android.intent.category.LAUNCHER" />
+85-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:61:17-77
+85-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:61:27-74
+86            </intent-filter>
+87        </activity>
+88
+89        <!-- Custom application XML added by add-ons. -->
+90        <!-- CHUNK_APPLICATION_BEGIN -->
+91        <activity
+91-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:67:1-70:63
+92            android:name="com.facebook.FacebookActivity"
+92-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:67:11-55
+93            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+93-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:68:11-94
+94            android:label="@string/godot_project_name_string"
+94-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:70:11-60
+95            android:theme="@style/com_facebook_activity_theme" />
+95-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:69:11-61
+96        <activity
+96-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:71:1-78:12
+97            android:name="com.facebook.CustomTabActivity"
+97-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:71:11-56
+98            android:exported="true" >
+98-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:71:57-80
+99            <intent-filter>
+99-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:72:11-77:27
+100                <action android:name="android.intent.action.VIEW" />
+100-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:73:27-79
+100-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:73:35-76
+101
+102                <category android:name="android.intent.category.DEFAULT" />
+102-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:74:27-86
+102-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:74:37-83
+103                <category android:name="android.intent.category.BROWSABLE" />
+103-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:75:27-88
+103-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:75:37-85
+104
+105                <data android:scheme="@string/fb_login_protocol_scheme" />
+105-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:76:27-85
+105-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:76:33-82
+106            </intent-filter>
+107            <intent-filter>
+107-->[com.facebook.android:facebook-common:5.15.3] /root/.gradle/caches/transforms-2/files-2.1/60386e017272b6d1fa4fea70e4c364b7/jetified-facebook-common-5.15.3/AndroidManifest.xml:39:13-48:29
+108                <action android:name="android.intent.action.VIEW" />
+108-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:73:27-79
+108-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:73:35-76
+109
+110                <category android:name="android.intent.category.DEFAULT" />
+110-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:74:27-86
+110-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:74:37-83
+111                <category android:name="android.intent.category.BROWSABLE" />
+111-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:75:27-88
+111-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:75:37-85
+112
+113                <data
+113-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:76:27-85
+114                    android:host="cct.dystopia.app"
+115                    android:scheme="fbconnect" />
+115-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:76:33-82
+116            </intent-filter>
+117        </activity>
+118
+119        <meta-data
+119-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:79:1-100
+120            android:name="com.facebook.sdk.ApplicationId"
+120-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:79:12-57
+121            android:value="@string/facebook_app_id" />
+121-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:79:58-97
+122        <!-- CHUNK_APPLICATION_END -->
+123        <meta-data
+123-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:81:10-84:16
+124            android:name="com.google.android.gms.ads.APPLICATION_ID"
+124-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:82:13-69
+125            android:value="ca-app-pub-1198869974398081~6936537693" />
+125-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:83:13-67
+126        <meta-data
+126-->[GodotAppodeal.1.0.0.release.aar] /root/.gradle/caches/transforms-2/files-2.1/8907f24da8cacad0b4d12cdeace0e982/GodotAppodeal.1.0.0.release/AndroidManifest.xml:17:9-19:70
+127            android:name="org.godotengine.plugin.v1.GodotAppodeal"
+127-->[GodotAppodeal.1.0.0.release.aar] /root/.gradle/caches/transforms-2/files-2.1/8907f24da8cacad0b4d12cdeace0e982/GodotAppodeal.1.0.0.release/AndroidManifest.xml:18:13-67
+128            android:value="ru.poqxert.godotappodeal.GodotAppodeal" />
+128-->[GodotAppodeal.1.0.0.release.aar] /root/.gradle/caches/transforms-2/files-2.1/8907f24da8cacad0b4d12cdeace0e982/GodotAppodeal.1.0.0.release/AndroidManifest.xml:19:13-67
+129        <meta-data
+129-->[appodeal-debug.aar] /root/.gradle/caches/transforms-2/files-2.1/d613dfe8da0e2d156c226b2c1a4aba1a/appodeal-debug/AndroidManifest.xml:15:9-18:21
+130            android:name="org.godotengine.plugin.v1.appodeal"
+130-->[appodeal-debug.aar] /root/.gradle/caches/transforms-2/files-2.1/d613dfe8da0e2d156c226b2c1a4aba1a/appodeal-debug/AndroidManifest.xml:16:13-62
+131            android:value="appodeal.sdk.appodeal.appodeal" >
+131-->[appodeal-debug.aar] /root/.gradle/caches/transforms-2/files-2.1/d613dfe8da0e2d156c226b2c1a4aba1a/appodeal-debug/AndroidManifest.xml:17:13-59
+132        </meta-data>
+133        <meta-data
+133-->[GodotAdMob.4.1.1.release.aar] /root/.gradle/caches/transforms-2/files-2.1/4fc5d2b0f3ff8e8616573f1f42dccc48/GodotAdMob.4.1.1.release/AndroidManifest.xml:14:9-16:82
+134            android:name="org.godotengine.plugin.v1.GodotAdMob"
+134-->[GodotAdMob.4.1.1.release.aar] /root/.gradle/caches/transforms-2/files-2.1/4fc5d2b0f3ff8e8616573f1f42dccc48/GodotAdMob.4.1.1.release/AndroidManifest.xml:15:13-64
+135            android:value="shinnil.godot.plugin.android.godotadmob.GodotAdMob" />
+135-->[GodotAdMob.4.1.1.release.aar] /root/.gradle/caches/transforms-2/files-2.1/4fc5d2b0f3ff8e8616573f1f42dccc48/GodotAdMob.4.1.1.release/AndroidManifest.xml:16:13-79
+136
+137        <service android:name="org.godotengine.godot.GodotDownloaderService" />
+137-->[godot-lib.release.aar] /root/.gradle/caches/transforms-2/files-2.1/2f29423de5771cd0c2f475b364e10860/godot-lib.release/AndroidManifest.xml:19:9-80
+137-->[godot-lib.release.aar] /root/.gradle/caches/transforms-2/files-2.1/2f29423de5771cd0c2f475b364e10860/godot-lib.release/AndroidManifest.xml:19:18-77
+138
+139        <uses-library
+139-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:16:9-18:40
+140            android:name="org.apache.http.legacy"
+140-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:17:13-50
+141            android:required="false" />
+141-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:18:13-37
+142
+143        <activity
+143-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:20:9-22:80
+144            android:name="com.appodeal.ads.VideoPlayerActivity"
+144-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:21:13-64
+145            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+145-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:22:13-77
+146        <activity
+146-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:23:9-25:75
+147            android:name="com.appodeal.ads.TestActivity"
+147-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:24:13-57
+148            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+148-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:25:13-72
+149
+150        <receiver
+150-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:27:9-36:20
+151            android:name="com.appodeal.ads.AppodealPackageAddedReceiver"
+151-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:28:13-73
+152            android:enabled="true"
+152-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:29:13-35
+153            android:exported="true" >
+153-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:30:13-36
+154            <intent-filter>
+154-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:31:13-35:29
+155                <action android:name="android.intent.action.PACKAGE_ADDED" />
+155-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:32:17-78
+155-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:32:25-75
+156
+157                <data android:scheme="package" />
+157-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:76:27-85
+157-->/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/AndroidManifest.xml:76:33-82
+158            </intent-filter>
+159        </receiver>
+160
+161        <provider
+161-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:38:9-41:40
+162            android:name="com.appodeal.ads.ApdContentProvider"
+162-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:39:13-63
+163            android:authorities="dystopia.app.AppSessionManagerContentProvider"
+163-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:40:13-84
+164            android:exported="false" />
+164-->[com.appodeal.ads.sdk:core:2.6.5] /root/.gradle/caches/transforms-2/files-2.1/c92bc94c97c82fbcd4903575886816c5/jetified-core-2.6.5/AndroidManifest.xml:41:13-37
+165
+166        <activity android:name="com.facebook.CustomTabMainActivity" />
+166-->[com.facebook.android:facebook-common:5.15.3] /root/.gradle/caches/transforms-2/files-2.1/60386e017272b6d1fa4fea70e4c364b7/jetified-facebook-common-5.15.3/AndroidManifest.xml:34:9-71
+166-->[com.facebook.android:facebook-common:5.15.3] /root/.gradle/caches/transforms-2/files-2.1/60386e017272b6d1fa4fea70e4c364b7/jetified-facebook-common-5.15.3/AndroidManifest.xml:34:19-68
+167
+168        <meta-data
+168-->[com.appodeal.ads.sdk.networks:admob:2.6.5.2] /root/.gradle/caches/transforms-2/files-2.1/4ee430c93dfcadbc27eb01c5d3e24583/jetified-admob-2.6.5.2/AndroidManifest.xml:14:9-16:69
+169            android:name="com.google.android.gms.version"
+169-->[com.appodeal.ads.sdk.networks:admob:2.6.5.2] /root/.gradle/caches/transforms-2/files-2.1/4ee430c93dfcadbc27eb01c5d3e24583/jetified-admob-2.6.5.2/AndroidManifest.xml:15:13-58
+170            android:value="@integer/google_play_services_version" />
+170-->[com.appodeal.ads.sdk.networks:admob:2.6.5.2] /root/.gradle/caches/transforms-2/files-2.1/4ee430c93dfcadbc27eb01c5d3e24583/jetified-admob-2.6.5.2/AndroidManifest.xml:16:13-66
+171
+172        <activity
+172-->[com.appodeal.ads.sdk.networks:admob:2.6.5.2] /root/.gradle/caches/transforms-2/files-2.1/4ee430c93dfcadbc27eb01c5d3e24583/jetified-admob-2.6.5.2/AndroidManifest.xml:18:9-21:64
+173            android:name="com.google.android.gms.ads.AdActivity"
+173-->[com.appodeal.ads.sdk.networks:admob:2.6.5.2] /root/.gradle/caches/transforms-2/files-2.1/4ee430c93dfcadbc27eb01c5d3e24583/jetified-admob-2.6.5.2/AndroidManifest.xml:19:13-65
+174            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+174-->[com.appodeal.ads.sdk.networks:admob:2.6.5.2] /root/.gradle/caches/transforms-2/files-2.1/4ee430c93dfcadbc27eb01c5d3e24583/jetified-admob-2.6.5.2/AndroidManifest.xml:20:13-122
+175            android:exported="false"
+175-->[com.google.android.gms:play-services-ads-lite:19.3.0] /root/.gradle/caches/transforms-2/files-2.1/d92a04b3463e4fa1d7d09fa4a789e569/play-services-ads-lite-19.3.0/AndroidManifest.xml:32:13-37
+176            android:theme="@android:style/Theme.Translucent" />
+176-->[com.appodeal.ads.sdk.networks:admob:2.6.5.2] /root/.gradle/caches/transforms-2/files-2.1/4ee430c93dfcadbc27eb01c5d3e24583/jetified-admob-2.6.5.2/AndroidManifest.xml:21:13-61
+177
+178        <provider
+178-->[com.google.android.gms:play-services-ads-lite:19.3.0] /root/.gradle/caches/transforms-2/files-2.1/d92a04b3463e4fa1d7d09fa4a789e569/play-services-ads-lite-19.3.0/AndroidManifest.xml:35:9-39:39
+179            android:name="com.google.android.gms.ads.MobileAdsInitProvider"
+179-->[com.google.android.gms:play-services-ads-lite:19.3.0] /root/.gradle/caches/transforms-2/files-2.1/d92a04b3463e4fa1d7d09fa4a789e569/play-services-ads-lite-19.3.0/AndroidManifest.xml:36:13-76
+180            android:authorities="dystopia.app.mobileadsinitprovider"
+180-->[com.google.android.gms:play-services-ads-lite:19.3.0] /root/.gradle/caches/transforms-2/files-2.1/d92a04b3463e4fa1d7d09fa4a789e569/play-services-ads-lite-19.3.0/AndroidManifest.xml:37:13-73
+181            android:exported="false"
+181-->[com.google.android.gms:play-services-ads-lite:19.3.0] /root/.gradle/caches/transforms-2/files-2.1/d92a04b3463e4fa1d7d09fa4a789e569/play-services-ads-lite-19.3.0/AndroidManifest.xml:38:13-37
+182            android:initOrder="100" />
+182-->[com.google.android.gms:play-services-ads-lite:19.3.0] /root/.gradle/caches/transforms-2/files-2.1/d92a04b3463e4fa1d7d09fa4a789e569/play-services-ads-lite-19.3.0/AndroidManifest.xml:39:13-36
+183
+184        <activity
+184-->[com.google.android.gms:play-services-base:16.0.1] /root/.gradle/caches/transforms-2/files-2.1/f5f2663f45355aa872fd8a66d6d5bf20/jetified-play-services-base-16.0.1/AndroidManifest.xml:23:9-26:75
+185            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+185-->[com.google.android.gms:play-services-base:16.0.1] /root/.gradle/caches/transforms-2/files-2.1/f5f2663f45355aa872fd8a66d6d5bf20/jetified-play-services-base-16.0.1/AndroidManifest.xml:24:13-79
+186            android:exported="false"
+186-->[com.google.android.gms:play-services-base:16.0.1] /root/.gradle/caches/transforms-2/files-2.1/f5f2663f45355aa872fd8a66d6d5bf20/jetified-play-services-base-16.0.1/AndroidManifest.xml:25:13-37
+187            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+187-->[com.google.android.gms:play-services-base:16.0.1] /root/.gradle/caches/transforms-2/files-2.1/f5f2663f45355aa872fd8a66d6d5bf20/jetified-play-services-base-16.0.1/AndroidManifest.xml:26:13-72
+188        <!--
+189         The initialization ContentProvider will call FacebookSdk.sdkInitialize automatically
+190         with the application context. This config is merged in with the host app's manifest,
+191         but there can only be one provider with the same authority activated at any given
+192         point; so if the end user has two or more different apps that use Facebook SDK, only the
+193         first one will be able to use the provider. To work around this problem, we use the
+194         following placeholder in the authority to identify each host application as if it was
+195         a completely different provider.
+196        -->
+197        <provider
+197-->[com.facebook.android:facebook-core:5.15.3] /root/.gradle/caches/transforms-2/files-2.1/f1c4882a32797fe147188d4e72c157c4/jetified-facebook-core-5.15.3/AndroidManifest.xml:39:9-42:40
+198            android:name="com.facebook.internal.FacebookInitProvider"
+198-->[com.facebook.android:facebook-core:5.15.3] /root/.gradle/caches/transforms-2/files-2.1/f1c4882a32797fe147188d4e72c157c4/jetified-facebook-core-5.15.3/AndroidManifest.xml:40:13-70
+199            android:authorities="dystopia.app.FacebookInitProvider"
+199-->[com.facebook.android:facebook-core:5.15.3] /root/.gradle/caches/transforms-2/files-2.1/f1c4882a32797fe147188d4e72c157c4/jetified-facebook-core-5.15.3/AndroidManifest.xml:41:13-72
+200            android:exported="false" />
+200-->[com.facebook.android:facebook-core:5.15.3] /root/.gradle/caches/transforms-2/files-2.1/f1c4882a32797fe147188d4e72c157c4/jetified-facebook-core-5.15.3/AndroidManifest.xml:42:13-37
+201
+202        <receiver
+202-->[com.facebook.android:facebook-core:5.15.3] /root/.gradle/caches/transforms-2/files-2.1/f1c4882a32797fe147188d4e72c157c4/jetified-facebook-core-5.15.3/AndroidManifest.xml:44:9-50:20
+203            android:name="com.facebook.CurrentAccessTokenExpirationBroadcastReceiver"
+203-->[com.facebook.android:facebook-core:5.15.3] /root/.gradle/caches/transforms-2/files-2.1/f1c4882a32797fe147188d4e72c157c4/jetified-facebook-core-5.15.3/AndroidManifest.xml:45:13-86
+204            android:exported="false" >
+204-->[com.facebook.android:facebook-core:5.15.3] /root/.gradle/caches/transforms-2/files-2.1/f1c4882a32797fe147188d4e72c157c4/jetified-facebook-core-5.15.3/AndroidManifest.xml:46:13-37
+205            <intent-filter>
+205-->[com.facebook.android:facebook-core:5.15.3] /root/.gradle/caches/transforms-2/files-2.1/f1c4882a32797fe147188d4e72c157c4/jetified-facebook-core-5.15.3/AndroidManifest.xml:47:13-49:29
+206                <action android:name="com.facebook.sdk.ACTION_CURRENT_ACCESS_TOKEN_CHANGED" />
+206-->[com.facebook.android:facebook-core:5.15.3] /root/.gradle/caches/transforms-2/files-2.1/f1c4882a32797fe147188d4e72c157c4/jetified-facebook-core-5.15.3/AndroidManifest.xml:48:17-95
+206-->[com.facebook.android:facebook-core:5.15.3] /root/.gradle/caches/transforms-2/files-2.1/f1c4882a32797fe147188d4e72c157c4/jetified-facebook-core-5.15.3/AndroidManifest.xml:48:25-92
+207            </intent-filter>
+208        </receiver>
+209
+210        <activity
+210-->[com.appodeal.ads.sdk.networks:appodealx:2.6.5.1] /root/.gradle/caches/transforms-2/files-2.1/01a50ab94fd80705091c600887321ca0/jetified-appodealx-2.6.5.1/AndroidManifest.xml:12:9-15:74
+211            android:name="com.appodealx.mraid.MraidActivity"
+211-->[com.appodeal.ads.sdk.networks:appodealx:2.6.5.1] /root/.gradle/caches/transforms-2/files-2.1/01a50ab94fd80705091c600887321ca0/jetified-appodealx-2.6.5.1/AndroidManifest.xml:13:13-61
+212            android:configChanges="orientation|screenSize"
+212-->[com.appodeal.ads.sdk.networks:appodealx:2.6.5.1] /root/.gradle/caches/transforms-2/files-2.1/01a50ab94fd80705091c600887321ca0/jetified-appodealx-2.6.5.1/AndroidManifest.xml:14:13-59
+213            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+213-->[com.appodeal.ads.sdk.networks:appodealx:2.6.5.1] /root/.gradle/caches/transforms-2/files-2.1/01a50ab94fd80705091c600887321ca0/jetified-appodealx-2.6.5.1/AndroidManifest.xml:15:13-71
+214
+215        <provider
+215-->[com.appodeal.ads.sdk.networks:startapp:2.6.5.5] /root/.gradle/caches/transforms-2/files-2.1/d9deca09365eedac353c1ba0e5cff595/jetified-startapp-2.6.5.5/AndroidManifest.xml:14:9-16:75
+216            android:name="com.startapp.sdk.adsbase.StartAppInitProvider"
+216-->[com.appodeal.ads.sdk.networks:startapp:2.6.5.5] /root/.gradle/caches/transforms-2/files-2.1/d9deca09365eedac353c1ba0e5cff595/jetified-startapp-2.6.5.5/AndroidManifest.xml:15:13-73
+217            android:authorities="dystopia.app.startappinitprovider"
+217-->[com.appodeal.ads.sdk.networks:startapp:2.6.5.5] /root/.gradle/caches/transforms-2/files-2.1/d9deca09365eedac353c1ba0e5cff595/jetified-startapp-2.6.5.5/AndroidManifest.xml:16:13-72
+218            android:exported="false" />
+218-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:21:13-37
+219
+220        <activity
+220-->[com.explorestack:iab:0.5.6] /root/.gradle/caches/transforms-2/files-2.1/5c7836e560195ec2fd06ac82a4a8dae8/jetified-iab-0.5.6/AndroidManifest.xml:12:9-15:74
+221            android:name="com.explorestack.iab.mraid.activity.MraidActivity"
+221-->[com.explorestack:iab:0.5.6] /root/.gradle/caches/transforms-2/files-2.1/5c7836e560195ec2fd06ac82a4a8dae8/jetified-iab-0.5.6/AndroidManifest.xml:13:13-77
+222            android:configChanges="keyboardHidden|orientation|screenSize"
+222-->[com.explorestack:iab:0.5.6] /root/.gradle/caches/transforms-2/files-2.1/5c7836e560195ec2fd06ac82a4a8dae8/jetified-iab-0.5.6/AndroidManifest.xml:14:13-74
+223            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+223-->[com.explorestack:iab:0.5.6] /root/.gradle/caches/transforms-2/files-2.1/5c7836e560195ec2fd06ac82a4a8dae8/jetified-iab-0.5.6/AndroidManifest.xml:15:13-71
+224        <activity
+224-->[com.explorestack:iab:0.5.6] /root/.gradle/caches/transforms-2/files-2.1/5c7836e560195ec2fd06ac82a4a8dae8/jetified-iab-0.5.6/AndroidManifest.xml:16:9-19:74
+225            android:name="com.explorestack.iab.vast.activity.VastActivity"
+225-->[com.explorestack:iab:0.5.6] /root/.gradle/caches/transforms-2/files-2.1/5c7836e560195ec2fd06ac82a4a8dae8/jetified-iab-0.5.6/AndroidManifest.xml:17:13-75
+226            android:configChanges="keyboardHidden|orientation|screenSize"
+226-->[com.explorestack:iab:0.5.6] /root/.gradle/caches/transforms-2/files-2.1/5c7836e560195ec2fd06ac82a4a8dae8/jetified-iab-0.5.6/AndroidManifest.xml:18:13-74
+227            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+227-->[com.explorestack:iab:0.5.6] /root/.gradle/caches/transforms-2/files-2.1/5c7836e560195ec2fd06ac82a4a8dae8/jetified-iab-0.5.6/AndroidManifest.xml:19:13-71
+228        <activity
+228-->[com.facebook.android:audience-network-sdk:5.7.1] /root/.gradle/caches/transforms-2/files-2.1/5bbe84bd144f82596cf821757178e6c1/jetified-audience-network-sdk-5.7.1/AndroidManifest.xml:15:9-19:75
+229            android:name="com.facebook.ads.AudienceNetworkActivity"
+229-->[com.facebook.android:audience-network-sdk:5.7.1] /root/.gradle/caches/transforms-2/files-2.1/5bbe84bd144f82596cf821757178e6c1/jetified-audience-network-sdk-5.7.1/AndroidManifest.xml:16:13-68
+230            android:configChanges="keyboardHidden|orientation|screenSize"
+230-->[com.facebook.android:audience-network-sdk:5.7.1] /root/.gradle/caches/transforms-2/files-2.1/5bbe84bd144f82596cf821757178e6c1/jetified-audience-network-sdk-5.7.1/AndroidManifest.xml:17:13-74
+231            android:exported="false"
+231-->[com.facebook.android:audience-network-sdk:5.7.1] /root/.gradle/caches/transforms-2/files-2.1/5bbe84bd144f82596cf821757178e6c1/jetified-audience-network-sdk-5.7.1/AndroidManifest.xml:18:13-37
+232            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+232-->[com.facebook.android:audience-network-sdk:5.7.1] /root/.gradle/caches/transforms-2/files-2.1/5bbe84bd144f82596cf821757178e6c1/jetified-audience-network-sdk-5.7.1/AndroidManifest.xml:19:13-72
+233
+234        <provider
+234-->[com.facebook.android:audience-network-sdk:5.7.1] /root/.gradle/caches/transforms-2/files-2.1/5bbe84bd144f82596cf821757178e6c1/jetified-audience-network-sdk-5.7.1/AndroidManifest.xml:21:9-24:40
+235            android:name="com.facebook.ads.AudienceNetworkContentProvider"
+235-->[com.facebook.android:audience-network-sdk:5.7.1] /root/.gradle/caches/transforms-2/files-2.1/5bbe84bd144f82596cf821757178e6c1/jetified-audience-network-sdk-5.7.1/AndroidManifest.xml:22:13-75
+236            android:authorities="dystopia.app.AudienceNetworkContentProvider"
+236-->[com.facebook.android:audience-network-sdk:5.7.1] /root/.gradle/caches/transforms-2/files-2.1/5bbe84bd144f82596cf821757178e6c1/jetified-audience-network-sdk-5.7.1/AndroidManifest.xml:23:13-82
+237            android:exported="false" />
+237-->[com.facebook.android:audience-network-sdk:5.7.1] /root/.gradle/caches/transforms-2/files-2.1/5bbe84bd144f82596cf821757178e6c1/jetified-audience-network-sdk-5.7.1/AndroidManifest.xml:24:13-37
+238
+239        <activity
+239-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:15:9-19:50
+240            android:name="com.applovin.adview.AppLovinInterstitialActivity"
+240-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:16:13-76
+241            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout"
+241-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:17:13-91
+242            android:hardwareAccelerated="true"
+242-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:18:13-47
+243            android:screenOrientation="behind" />
+243-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:19:13-47
+244        <activity
+244-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:20:9-22:77
+245            android:name="com.applovin.sdk.AppLovinWebViewActivity"
+245-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:21:13-68
+246            android:configChanges="keyboardHidden|orientation|screenSize" />
+246-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:22:13-74
+247        <activity
+247-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:23:9-26:87
+248            android:name="com.applovin.mediation.MaxDebuggerActivity"
+248-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:24:13-70
+249            android:configChanges="keyboardHidden|orientation|screenSize"
+249-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:25:13-74
+250            android:theme="@style/com.applovin.mediation.MaxDebuggerActivity.Theme" />
+250-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:26:13-84
+251        <activity
+251-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:27:9-30:87
+252            android:name="com.applovin.mediation.MaxDebuggerDetailActivity"
+252-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:28:13-76
+253            android:configChanges="keyboardHidden|orientation|screenSize"
+253-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:29:13-74
+254            android:theme="@style/com.applovin.mediation.MaxDebuggerActivity.Theme" />
+254-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:30:13-84
+255
+256        <service
+256-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:32:9-35:44
+257            android:name="com.applovin.impl.sdk.utils.AppKilledService"
+257-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:33:13-72
+258            android:exported="false"
+258-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:34:13-37
+259            android:stopWithTask="false" />
+259-->[com.applovin:applovin-sdk:9.11.6] /root/.gradle/caches/transforms-2/files-2.1/23aa3e616d04aa13249865bcc4679399/applovin-sdk-9.11.6/AndroidManifest.xml:35:13-41
+260
+261        <activity
+261-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:23:9-26:64
+262            android:name="com.startapp.sdk.adsbase.consent.ConsentActivity"
+262-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:24:13-76
+263            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+263-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:25:13-87
+264            android:theme="@android:style/Theme.Translucent" />
+264-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:26:13-61
+265        <activity
+265-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:27:9-29:52
+266            android:name="com.startapp.sdk.ads.list3d.List3DActivity"
+266-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:28:13-70
+267            android:theme="@android:style/Theme" />
+267-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:29:13-49
+268        <activity
+268-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:30:9-33:64
+269            android:name="com.startapp.sdk.adsbase.activities.OverlayActivity"
+269-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:31:13-79
+270            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+270-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:32:13-87
+271            android:theme="@android:style/Theme.Translucent" />
+271-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:33:13-61
+272        <activity
+272-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:34:9-37:52
+273            android:name="com.startapp.sdk.adsbase.activities.FullScreenActivity"
+273-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:35:13-82
+274            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+274-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:36:13-87
+275            android:theme="@android:style/Theme" />
+275-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:37:13-49
+276
+277        <service android:name="com.startapp.sdk.adsbase.InfoEventService" />
+277-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:39:9-77
+277-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:39:18-74
+278        <service
+278-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:40:9-42:72
+279            android:name="com.startapp.sdk.adsbase.PeriodicJobService"
+279-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:41:13-71
+280            android:permission="android.permission.BIND_JOB_SERVICE" />
+280-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:42:13-69
+281
+282        <receiver android:name="com.startapp.sdk.adsbase.remoteconfig.BootCompleteListener" >
+282-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:44:9-48:20
+282-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:44:19-92
+283            <intent-filter>
+283-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:45:13-47:29
+284                <action android:name="android.intent.action.BOOT_COMPLETED" />
+284-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:46:17-79
+284-->[com.startapp:inapp-sdk:4.5.0] /root/.gradle/caches/transforms-2/files-2.1/584a9a38a5a668246bd49ea076a2e563/jetified-inapp-sdk-4.5.0/AndroidManifest.xml:46:25-76
+285            </intent-filter>
+286        </receiver>
+287
+288        <activity
+288-->[com.adcolony:sdk:4.1.4] /root/.gradle/caches/transforms-2/files-2.1/7e5fc3a7501646e6a229e4cd3caa73a5/jetified-sdk-4.1.4/AndroidManifest.xml:17:9-20:50
+289            android:name="com.adcolony.sdk.AdColonyInterstitialActivity"
+289-->[com.adcolony:sdk:4.1.4] /root/.gradle/caches/transforms-2/files-2.1/7e5fc3a7501646e6a229e4cd3caa73a5/jetified-sdk-4.1.4/AndroidManifest.xml:18:13-73
+290            android:configChanges="keyboardHidden|orientation|screenSize"
+290-->[com.adcolony:sdk:4.1.4] /root/.gradle/caches/transforms-2/files-2.1/7e5fc3a7501646e6a229e4cd3caa73a5/jetified-sdk-4.1.4/AndroidManifest.xml:19:13-74
+291            android:hardwareAccelerated="true" />
+291-->[com.adcolony:sdk:4.1.4] /root/.gradle/caches/transforms-2/files-2.1/7e5fc3a7501646e6a229e4cd3caa73a5/jetified-sdk-4.1.4/AndroidManifest.xml:20:13-47
+292        <activity
+292-->[com.adcolony:sdk:4.1.4] /root/.gradle/caches/transforms-2/files-2.1/7e5fc3a7501646e6a229e4cd3caa73a5/jetified-sdk-4.1.4/AndroidManifest.xml:21:9-24:50
+293            android:name="com.adcolony.sdk.AdColonyAdViewActivity"
+293-->[com.adcolony:sdk:4.1.4] /root/.gradle/caches/transforms-2/files-2.1/7e5fc3a7501646e6a229e4cd3caa73a5/jetified-sdk-4.1.4/AndroidManifest.xml:22:13-67
+294            android:configChanges="keyboardHidden|orientation|screenSize"
+294-->[com.adcolony:sdk:4.1.4] /root/.gradle/caches/transforms-2/files-2.1/7e5fc3a7501646e6a229e4cd3caa73a5/jetified-sdk-4.1.4/AndroidManifest.xml:23:13-74
+295            android:hardwareAccelerated="true" />
+295-->[com.adcolony:sdk:4.1.4] /root/.gradle/caches/transforms-2/files-2.1/7e5fc3a7501646e6a229e4cd3caa73a5/jetified-sdk-4.1.4/AndroidManifest.xml:24:13-47
+296    </application>
+297
+298</manifest>

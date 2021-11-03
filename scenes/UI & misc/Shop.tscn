@@ -1,0 +1,93 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://resources/illustrations/photo collage webp.webp" type="Texture" id=1]
+[ext_resource path="res://fonts/stats.tres" type="DynamicFont" id=2]
+[ext_resource path="res://resources/Buttons/Africa.webp" type="Texture" id=3]
+[ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=4]
+[ext_resource path="res://scenes/UI & misc/anime_streaming.gd" type="Script" id=5]
+[ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=6]
+
+[node name="Shop" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = -8.41632
+margin_top = -8.08325
+margin_right = 4952.58
+margin_bottom = 3621.92
+rect_scale = Vector2( 0.22912, 0.22912 )
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="africa icon" type="TextureRect" parent="."]
+margin_left = 695.793
+margin_top = 141.421
+margin_right = 1145.79
+margin_bottom = 741.421
+rect_scale = Vector2( 0.357228, 0.357228 )
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VideoPlayer" type="VideoPlayer" parent="."]
+margin_right = 1275.0
+margin_bottom = 723.0
+mouse_filter = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="."]
+margin_left = 32.0
+margin_top = 16.0
+margin_right = 176.0
+margin_bottom = 135.0
+custom_fonts/font = ExtResource( 4 )
+text = "Back"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="watch anime" type="Button" parent="."]
+margin_left = 980.412
+margin_top = 593.883
+margin_right = 1225.41
+margin_bottom = 712.883
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = " watch "
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 749.959
+margin_top = 86.1415
+margin_right = 1214.96
+margin_bottom = 153.142
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Watch African Anime Online"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Dialog_box" parent="." instance=ExtResource( 6 )]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = 6.0
+[connection signal="finished" from="VideoPlayer" to="." method="_on_VideoPlayer_finished"]
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="watch anime" to="." method="_on_watch_anime_pressed"]

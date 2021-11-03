@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/cinematics/cinematics.gd" type="Script" id=1]
+[ext_resource path="res://music/wind_2.ogg" type="AudioStream" id=2]
+[ext_resource path="res://resources/Buttons/bck.png" type="Texture" id=3]
+[ext_resource path="res://singletons/Title animation.tres" type="Animation" id=4]
+
+[node name="Cinematics" type="Control"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Node2D" type="Control" parent="."]
+rect_scale = Vector2( 0.65, 0.65 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VideoPlayer" type="VideoPlayer" parent="Node2D"]
+expand = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node2D"]
+stream = ExtResource( 2 )
+
+[node name="skip" type="TextureButton" parent="."]
+visible = false
+modulate = Color( 0.584314, 0.152941, 0.152941, 1 )
+margin_left = 571.07
+margin_top = 557.632
+margin_right = 931.07
+margin_bottom = 869.632
+rect_scale = Vector2( 0.488382, 0.469212 )
+texture_normal = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 20.0
+one_shot = true
+autostart = true
+
+[node name="animation player" type="AnimationPlayer" parent="."]
+autoplay = "intro_animation"
+anims/intro_animation = ExtResource( 4 )
+[connection signal="finished" from="Node2D/VideoPlayer" to="." method="_on_VideoPlayer_finished"]
+[connection signal="pressed" from="skip" to="." method="_on_skip_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

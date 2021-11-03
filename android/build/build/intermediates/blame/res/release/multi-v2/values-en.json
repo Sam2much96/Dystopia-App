@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "/home/samuel/Desktop/Dystopia app v1.1.6 vanilla+appodeal_sdk_test_3+Addmob==singletonnotfoundsnapshot++/android/build/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-en/values-en.xml",
+            "map": [
+                {
+                    "source": "/root/.gradle/caches/transforms-2/files-2.1/2f29423de5771cd0c2f475b364e10860/godot-lib.release/res/values-en/values-en.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "75",
+                        "endOffsets": "126"
+                    }
+                }
+            ]
+        }
+    ]
+}

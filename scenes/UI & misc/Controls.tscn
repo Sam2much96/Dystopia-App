@@ -1,0 +1,186 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scenes/UI & misc/Controls.gd" type="Script" id=1]
+[ext_resource path="res://resources/misc/controls.png" type="Texture" id=2]
+[ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=3]
+[ext_resource path="res://scenes/Comics/chapter 4/Cover 2.webp" type="Texture" id=4]
+[ext_resource path="res://App's white paper v1.1.6.webp" type="Texture" id=5]
+[ext_resource path="res://scenes/UI & misc/generic_joystick_ui_selector.gd" type="Script" id=6]
+[ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=14]
+
+[node name="Controls" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_horizontal_guides_": [  ],
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = 295.909
+margin_top = 33.6124
+margin_right = 1227.91
+margin_bottom = 1313.61
+rect_rotation = 0.411034
+rect_scale = Vector2( 0.77536, 0.533332 )
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+margin_left = 236.512
+margin_top = -59.7258
+margin_right = 1516.51
+margin_bottom = 1714.27
+rect_rotation = 0.411034
+rect_scale = Vector2( 0.433765, 0.433765 )
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 909.65
+margin_top = 113.368
+margin_right = 1104.65
+margin_bottom = 480.368
+rect_scale = Vector2( 1.44567, 1.44567 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="back" type="Button" parent="VBoxContainer"]
+margin_right = 210.0
+margin_bottom = 49.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0.364706, 0.364706, 0.364706, 1 )
+action_mode = 0
+text = "Back"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="music" type="Button" parent="VBoxContainer"]
+margin_top = 53.0
+margin_right = 210.0
+margin_bottom = 102.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0.364706, 0.364706, 0.364706, 1 )
+toggle_mode = true
+text = "music on/off"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Debug" type="Button" parent="VBoxContainer"]
+margin_top = 106.0
+margin_right = 210.0
+margin_bottom = 155.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0.364706, 0.364706, 0.364706, 1 )
+toggle_mode = true
+shortcut_in_tooltip = false
+text = "Debug "
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Shuffle" type="Button" parent="VBoxContainer"]
+margin_top = 159.0
+margin_right = 210.0
+margin_bottom = 208.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0.364706, 0.364706, 0.364706, 1 )
+toggle_mode = true
+shortcut_in_tooltip = false
+text = "Shuffle Music "
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Networking" type="Button" parent="VBoxContainer"]
+self_modulate = Color( 0, 0, 0, 1 )
+margin_top = 212.0
+margin_right = 210.0
+margin_bottom = 261.0
+custom_fonts/font = ExtResource( 3 )
+toggle_mode = true
+shortcut_in_tooltip = false
+text = "Networking"
+flat = true
+
+[node name="Help" type="Button" parent="VBoxContainer"]
+margin_top = 265.0
+margin_right = 210.0
+margin_bottom = 314.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Hold to Show Help"
+flat = true
+
+[node name="Direction_controls" type="Button" parent="VBoxContainer"]
+margin_top = 318.0
+margin_right = 210.0
+margin_bottom = 367.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+toggle_mode = true
+text = "Direction/controls"
+flat = true
+
+[node name="Nav docs" type="Button" parent="VBoxContainer"]
+visible = false
+margin_top = 371.0
+margin_right = 195.0
+margin_bottom = 391.0
+
+[node name="Help popup" type="Popup" parent="."]
+margin_right = 1285.0
+margin_bottom = 741.0
+script = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="Help popup"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 32.5201, 18.9355 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="controls" type="TextureRect" parent="Help popup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 11.0
+margin_top = 60.0
+margin_right = 11.0
+margin_bottom = -118.0
+texture = ExtResource( 2 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="VBoxContainer/back" to="." method="_on_Button_pressed"]
+[connection signal="toggled" from="VBoxContainer/music" to="." method="_on_music_toggled"]
+[connection signal="toggled" from="VBoxContainer/Debug" to="." method="_on_Debug_toggled"]
+[connection signal="pressed" from="VBoxContainer/Shuffle" to="." method="_on_Shuffle_pressed"]
+[connection signal="toggled" from="VBoxContainer/Networking" to="." method="_on_Networking_toggled"]
+[connection signal="pressed" from="VBoxContainer/Help" to="." method="_on_Help_pressed"]
+[connection signal="toggled" from="VBoxContainer/Direction_controls" to="." method="_on_Direction_controls_toggled"]

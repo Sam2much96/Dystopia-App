@@ -1,0 +1,35 @@
+{
+    "platforms": [
+        "all", 
+        "android"
+    ], 
+    "packages": {
+        "nativelib-export": {
+            "platforms": [
+                "all"
+            ], 
+            "version": "0.2.0", 
+            "dependencies": []
+        }, 
+        "facebook": {
+            "variables": {
+                "Facebook/FB_APP_ID": {
+                    "info": "Set your Facebook App ID here"
+                }
+            }, 
+            "autoload": {
+                "facebook": "*res://scripts/facebook.gd"
+            }, 
+            "android_module": "org/godotengine/godot/GodotFacebook", 
+            "platforms": [
+                "all", 
+                "android"
+            ], 
+            "version": "9.3.0.1", 
+            "dependencies": [
+                "nativelib-export@0.2.0"
+            ]
+        }
+    }, 
+    "id": "89d3dbfd-9bfc-4f5d-ae6d-8b370d8f73a2"
+}

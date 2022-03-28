@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://New game code and features/Ads_manager.gd" type="Script" id=1]
+[ext_resource path="res://admob-lib/admob.gd" type="Script" id=2]
+[ext_resource path="res://Appodeal/Appodeal.gd" type="Script" id=3]
+[ext_resource path="res://Yodo1-lib/yodo1mas.gd" type="Script" id=4]
+
+[node name="Ads_Manager" type="CanvasLayer"]
+script = ExtResource( 1 )
+_timeout_timer = 15
+enabled = true
+testing = false
+Fast_debug = true
+
+[node name="AdMob" type="Node" parent="."]
+script = ExtResource( 2 )
+banner_on_top = false
+banner_id = "ca-app-pub-1198869974398081/1991292180"
+interstitial_id = "ca-app-pub-1198869974398081/2289590569"
+rewarded_id = "ca-app-pub-1198869974398081/5841026609"
+max_ad_content_rate = "MA"
+
+[node name="Appodeal" type="Node" parent="."]
+script = ExtResource( 3 )
+banner_size = "SMARTBANNER"
+
+[node name="Yodo1Mas" type="Node" parent="."]
+script = ExtResource( 4 )
+app_key_android = "L6jqtVGr0V"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[connection signal="non_skippable_video_show_failed" from="Appodeal" to="." method="_on_Appodeal_non_skippable_video_show_failed"]
+[connection signal="rewarded_video_closed" from="Appodeal" to="." method="_on_Appodeal_rewarded_video_closed"]
+[connection signal="banner_ad_not_loaded" from="Yodo1Mas" to="." method="_on_Yodo1Mas_banner_ad_not_loaded"]
+[connection signal="banner_ad_opened" from="Yodo1Mas" to="." method="_on_Yodo1Mas_banner_ad_opened"]
+[connection signal="interstitial_ad_not_loaded" from="Yodo1Mas" to="." method="_on_Yodo1Mas_interstitial_ad_not_loaded"]
+[connection signal="interstitial_ad_opened" from="Yodo1Mas" to="." method="_on_Yodo1Mas_interstitial_ad_opened"]
+[connection signal="rewarded_ad_not_loaded" from="Yodo1Mas" to="." method="_on_Yodo1Mas_rewarded_ad_not_loaded"]
+[connection signal="rewarded_ad_opened" from="Yodo1Mas" to="." method="_on_Yodo1Mas_rewarded_ad_opened"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

@@ -1,0 +1,506 @@
+extends Control
+
+class_name Comics
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+#
+# This is a pluggin containing the comics logic
+# A comic book module for Godot game engine.
+# I implemented A touch input manager here
+# *************************************************
+
+#The goal of this script is to Make the UI simpler to use than Comics v3 script and implement
+#New multitouch gestures
+#it has a wierd updatable bug that's visible in the debug panel
+#connect this script with  the dialogue singleton for translation and wordbubble fx co-ordination
+
+export (bool) var enabled 
+signal comics_showing
+signal loaded_comics 
+signal freed_comics
+signal panel_change
+signal swiped(direction)
+signal swiped_canceled(start_position)
+export(float,1.0,1.5) var MAX_DIAGONAL_SLOPE =1.3  
+
+export (PackedScene) var current_comics 
+
+var comics = {
+	 1: 'res://scenes/Comics/chapter 1/chapter 1.tscn',
+	2:'res://scenes/Comics/chapter 2/chapter 2.tscn',
+	3:'res://scenes/Comics/chapter 3/chapter 3.tscn',
+	4:"res://scenes/Comics/chapter 4/chapter 4.tscn",
+	5: 'res://scenes/Comics/Outside/outside.tscn'}
+
+var swipe_start_position = Vector2()
+
+export var memory = {} #use this variable to store current frame and comics info
+
+export (int) var  current_frame   = 0
+export (int) var current_chapter 
+
+onready var next_scene = null
+
+var can_drag = false
+onready var zoom = false
+onready var comics_placeholder 
+
+#onready var animation = $AnimationPlayer 
+onready var buttons
+onready var Kinematic_2d  #the kinematic 2d node for drag and drop
+#onready var camera2d = $Kinematic_2D/placeholder/Camera2D 
+onready var position 
+onready var center
+onready var target =Vector2(0,0) 
+onready var origin = get_viewport_rect().size/2#set origin point to the center of the viewport
+
+onready var loaded_comics = false
+
+onready var _input_device
+onready var _e = Timer.new()
+onready var _comics_root = self
+
+onready var _debug_= get_tree().get_root().get_node("/root/Debug")
+
+
+func _enter_tree():
+	
+	
+	pass
+
+func _init():
+	pass
+
+func _ready():
+	#wordbubble() #for debug purposes only
+
+	
+	if current_comics !=null:
+		load_comics()
+		Globals.comics = self #updates itself to the globals singleton
+		#bookmark('load')
+		#print ('Globals Comics Node', Globals.comics)
+
+
+
+	enabled = false
+	target = Vector2() 
+	 #for swipe detection
+	_e.one_shot = true
+	_e.wait_time = 0.5
+	_e.name = str ('swipe detection timer')
+	_comics_root.call_deferred('add_child',_e)
+	for _c in get_children():
+		if _c is Timer:
+			return connect('Timeout',_e,'_on_Timer_timeout') #connect timer to node with code
+
+"""
+LOAD COMICS INTO THE SCENE TREE AS SPRITESHEETS
+"""
+
+func load_comics(): 
+	if current_comics != null && current_comics.can_instance() == true:
+		for _p in get_tree().get_nodes_in_group('Cmx_Root'):
+			enabled = true
+			zoom = false
+
+			current_frame =  int(0)
+			Kinematic_2d = KinematicBody2D.new()
+			comics_placeholder = Control.new()
+		
+			Kinematic_2d.name= 'Kinematic_2d'
+			comics_placeholder.name = 'comics_placeholder'
+	
+			comics_placeholder.set_mouse_filter(2)
+
+			_p.call_deferred('add_child',comics_placeholder) #reparents comic placeholder node 
+
+			print ('Comic root:',_p)
+
+			
+
+			comics_placeholder.add_child(Kinematic_2d)
+	
+			var collision_shape =CollisionShape2D.new()
+			var shape = RectangleShape2D.new() #new code
+			shape.set_extents((Vector2(130,130))) #new code
+			collision_shape.set_shape (shape) #new code
+	
+	
+			Kinematic_2d.add_child(collision_shape) #set the collision shape
+			#connect signals
+			Kinematic_2d.connect("mouse_exited",self,'_on_Kinematic_2D_mouse_exited') 
+			Kinematic_2d.connect('mouse_entered',self,'_on_Kinematic_2D_mouse_entered')
+
+			emit_signal("loaded_comics")
+			print ('loading comics') #for debug purposes 
+
+			var _x = current_comics.instance()
+			Kinematic_2d.add_child(_x) 
+			
+			#position pages
+			_x.position =Kinematic_2d.position
+ 
+	if current_comics == null and current_comics.can_instance() == false  :
+		push_error('unable to instance comics scene')
+		pass
+	if memory.empty() != true && current_comics == null: #error catcher 1
+		current_comics = memory[0] # load from memory
+
+	if memory.empty() == true && current_comics == null: #error catcher 2
+		push_error('current comics empty')
+		current_comics = comics[1] #default comic
+
+
+	loaded_comics = true
+	comics_placeholder.show()
+	emit_signal("comics_showing")
+	center_page()
+
+
+func _input(event): 
+	"""
+	#Comic panel changer
+	"""
+	if event.is_action_pressed("ui_focus_next") && enabled : #button controls
+		
+		next_panel()
+	if event.is_action_pressed("ui_focus_prev") && enabled:
+		prev_panel()
+
+
+#Toggles comics visibility on/off
+#It disappears if not enabled 
+	if  enabled == false and event.is_action_pressed("comics") :
+		enabled = true 
+	elif enabled == true and event.is_action_pressed("comics") :
+		enabled = false
+
+#Controller for Joypad
+	if event is InputEventJoypadButton && self.visible == true:
+		if event.is_action_pressed("ui_select"): _zoom()
+
+	if event is InputEventJoypadMotion and self.visible == true:
+		var axis = event.get_axis_value()
+		print('JoyStick Axis Value' ,axis)
+		
+		#Changes Page Panels
+		if round(axis) == 1:
+			next_panel()
+		if round(axis) == -1:
+			prev_panel()
+		pass
+
+
+	if event is InputEventMouse:
+		pass
+
+	if event in InputEventMouseMotion:
+		pass
+	 
+
+
+	# Handle Touch
+	"""
+	CONTROLS THE TOUCH INPPUT FOR THE COMICS NODE
+	"""
+	if event is InputEventScreenTouch :
+		if event is  InputEventMultiScreenDrag == true : # Breaks here
+			target =  event.get_position()
+			if event.get_index() == int(2) and event is InputEventScreenPinch : #zoom if screentouch is 2 fingers & uses input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases
+				
+				_zoom() #you can use get_index to get the number of fingers
+		if event.pressed:
+			_start_detection(event.position)
+		elif not _e.is_stopped():
+			_end_detection(event.position)
+
+	# Handles ScreenDragging
+	if event is InputEventScreenDrag && current_comics != null :
+		#if event is InputEventMultiScreenDrag: breaks
+		target = event.get_position()
+		drag()
+
+# Handles releasing 
+	#pass
+# Handles double clicking
+	#pass
+
+	if event is InputEventMouseButton && event.doubleclick && loaded_comics == true:
+		
+		_zoom() #disabled for debugging, enable when done debugging
+		return
+
+func _process(_delta):
+ 
+	
+	if current_comics != null:
+		loaded_comics = true
+	#print(position,target)
+	if current_comics == null or current_frame == null  : #error catcher 
+		emit_signal("freed_comics")
+		loaded_comics = false
+	if loaded_comics == true:
+		emit_signal("loaded_comics")
+	
+	if enabled == true: #toggles visibility
+		show()
+		
+
+	if enabled == false:
+		hide()
+
+	memory=get_tree().get_nodes_in_group("comics") #an array of all comics in the scene tree
+
+	if memory.empty() != true :
+		pass
+	elif memory.empty() == true:
+		#current_comics = load_comics()
+		pass
+	if loaded_comics == true && memory.size() >= 2: #double instancing error fix
+		get_tree().queue_delete(memory.front()) 
+		loaded_comics = false 
+
+#current frame controler
+
+	if enabled != false && Kinematic_2d != null:
+		
+		if comics_placeholder != null:
+			for _i in Kinematic_2d.get_children():
+				if _i is AnimatedSprite:
+					_i.set_frame(int(current_frame))  
+					#working
+					_i.update() #canvas layer not updating changes
+					if  current_frame > _i.get_frame() : 
+						comics_placeholder.queue_free() 
+						comics_placeholder = null
+						enabled = false 
+						loaded_comics = false #working buggy
+						current_frame = null # working buggy
+						emit_signal("freed_comics")
+
+	"""Updates the Comic Debug to a global debug singleton"""
+	if enabled:
+		if _debug_ != null && _debug_.enabled == true:
+			#var Debug  = Engine.get_singleton('Debug')
+			_debug_.Comics_debug = str(
+				'Curr frme:', current_frame , 'Cmx: ',current_comics, 'Enbled',enabled,'can drag: ',can_drag,
+				 ' Zoom: ',zoom, 'LC: ',loaded_comics
+				)
+"""
+DRAG FUNCTION
+"""
+func drag():  
+	#add more parameters
+ # Input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases 
+		
+	if loaded_comics == true:
+		target = target  
+		position = Kinematic_2d.position 
+		center = restaVectores(target, position)
+		Kinematic_2d.set_position(target)
+		can_drag = true 
+		
+		" THE TOUCH INPUT CONTROLLER"
+		
+		
+		
+		if abs(position.distance_to(target)) > 200: #if its far...
+		##use suma vectores function for vector maths
+			Kinematic_2d.move_and_slide(center) #move and slide to center
+
+		if abs(position.distance_to(target)) < 200 : 
+				#Kinematic_2d.move_and_slide(target) 
+				Kinematic_2d.set_position(target)
+
+"""
+IT AUTOMATICALLY ZOOMS IN AND OUT
+"""
+
+func _zoom()-> bool:
+	
+	if loaded_comics == true:
+		var scale =comics_placeholder.get_scale()
+		if scale == Vector2(1,1)  :
+			#print ('zoom in') #for debug purposes only
+			comics_placeholder.set_scale(scale * 2) 
+			zoom = true
+			return true 
+		if scale > Vector2(1,1):
+			#print ('zoom out') #for debug purposes only
+			scale = comics_placeholder.get_scale()
+			comics_placeholder.set_scale(scale / 2) 
+			zoom = false
+	return zoom 
+
+func center_page(): #sets comic page to center of screen
+	if loaded_comics == true:
+		if zoom == false: 
+			if Kinematic_2d.position or origin != null:
+				Kinematic_2d.position = origin
+			else:
+				pass
+
+func next_panel():
+	if loaded_comics == true :
+		current_frame = current_frame + 1
+		emit_signal("panel_change") 
+		center_page()
+		return int(current_frame) 
+	if Music.music_on == true:
+		Music.play_sfx(Music.comic_sfx)
+
+
+func prev_panel():
+	if loaded_comics == true :
+		current_frame =abs(current_frame - 1 )
+		emit_signal("panel_change")  
+		center_page()
+		return int(current_frame) 
+	if Music.music_on == true: 
+		Music.play_sfx(Music.comic_sfx)
+
+func _on_Backwards_pressed(): #Connect these signals automatically? #Produce the buttons programmatically
+	prev_panel()
+
+
+func _on_Forward_pressed():
+	next_panel()
+
+
+func next_chap(): # Unused Code
+	print ('next chapter') 
+	load_chapter(current_chapter + 1)
+
+func prev_chap():
+	print ('prev chapter') 
+	load_chapter(current_chapter - 1)
+
+
+"""
+DRAG AND DROP 
+"""
+#it requires you set mouse filter to ignore on all control nodes 
+#so the area 2d can get mouse input data
+
+
+func restaVectores(v1, v2): #vector substraction
+	if loaded_comics == true:
+		return Vector2(v1.x - v2.x, v1.y - v2.y)
+
+func sumaVectores(v1, v2): #vector sum
+	if loaded_comics == true:
+		return Vector2(v1.x + v2.x, v1.y + v2.y)
+
+
+"""
+swipe detection
+"""
+func _start_detection(_position): #for swipe detection
+	if enabled == true:
+		swipe_start_position = _position
+		_e.start()
+		print ('start swipe detection :') #for debug purposes delete later
+
+
+func _end_detection(__position):
+	_e.stop()
+	var direction = (__position - swipe_start_position).normalized()
+	print ('end detection: ','direction: ',direction ,'position',__position, 'swipe position: ',swipe_start_position) #for debug purposes only
+	if abs (direction.x) + abs(direction.y) >= MAX_DIAGONAL_SLOPE:
+		return
+	if abs (direction.x) > abs(direction.y):
+		emit_signal('swiped',Vector2(-sign(direction.x), 0.0))
+		print ('Direction on X: ', direction.x) #horizontal swipe debug purposs
+		if round(direction.x) == -1:
+			print('left swipe') #for debug purposes
+			next_panel()
+		if round(direction.x) == 1:
+			print('right swipe') #for debug purposes
+			prev_panel()
+		emit_signal('swiped', Vector2(0.0,-sign(direction.y))) #vertical swipe
+	#	print ('poot poot poot') 
+
+func _on_Timer_timeout():
+	if self.visible : # Only Swipe Detect once visible
+		emit_signal('swiped_canceled', swipe_start_position)
+		print ('on timer timeout: ',swipe_start_position) #for debug purposes delete later
+
+
+func _exit_tree(): #clear unused variables when exiting scene
+	bookmark('save') 
+	pass
+
+
+func bookmark(what): #Buggy function
+	print ( what ,' Comic Book mark...' )
+	if what == 'save' :
+	#	Globals.comics_chapter = current_chapter 
+	#	Globals.comics_page  = current_frame
+	#	Globals.save_game()
+		pass
+	if what == 'load' :
+	#	Globals.load_game()
+	#	current_chapter = Globals.comics_chapter
+	#	current_frame = Globals.comics_page
+		pass
+	else:
+		#push_warning('Not a bookmark function, the only fuctions avalable are <save> and <load>')
+		pass
+
+# Itnuses a camera 2d to simulate guided view. Should not be used when running the game
+func guided_view(): #Unwriten code
+	#It's supposed tobe a controlled zoom
+	pass
+
+
+func _on_Rotate_pressed():#Page Rotation #Rewrite this function as a module
+	if loaded_comics == true:
+		var _r = Kinematic_2d.get_rotation_degrees()
+		var _s = self.get_scale()
+	#print(_r, _s) #for debug purposes only
+		if _r <= 0:
+			self.set_scale(Vector2(0.9,0.9))
+			Kinematic_2d.set_rotation_degrees(90)
+			comics_placeholder.set_position ( center) 
+		if _r >= 90:
+			self.set_scale(Vector2(1,1))
+			Kinematic_2d.set_rotation_degrees(0)
+			comics_placeholder.set_position ( center)
+
+
+
+"""
+button connections 
+"""
+
+func _on_chap_1_pressed(): #Simplify this function
+	load_chapter(1)
+
+func _on_chap_2_pressed(): #Simplify this function
+	load_chapter(2)
+
+func _on_chap_3_pressed(): #Simplify this function
+	load_chapter(3)
+
+
+func _on_Zoom_pressed(): #temporary zoom funtion for android #connect code  with code
+	_zoom()
+
+"""
+load chapter function 
+"""
+
+func load_chapter(number):#generic load chapter function
+	if number is int:
+		print ('loading Chapter :', number)
+		current_comics = load(comics[number])
+		current_chapter = number #Update the current chapter loaded
+		load_comics()
+
+
+
+func _on_chap_4_pressed():
+	load_chapter(4)

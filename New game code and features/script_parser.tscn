@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://New game code and features/Wordbubble_dialogue_system.gd" type="Script" id=1]
+[ext_resource path="res://scenes/UI & misc/word_bubble_box.tscn" type="PackedScene" id=2]
+
+[node name="script_parser" type="Node"]
+script = ExtResource( 1 )
+
+[node name="word bubble" parent="." instance=ExtResource( 2 )]

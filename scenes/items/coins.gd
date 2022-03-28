@@ -5,14 +5,14 @@ Coins
 """
 
 export(String) var item_type = "Coins"
-export(int) var amount = 10
+export(int) var amount 
 
 func _ready():
 	connect("body_entered", self, "_on_Item_body_entered")
 	pass
 
 func _on_Item_body_entered(body): #kinda buggy -inhumanity
-	if body is Player:
+	if body is Player && amount != null:
 		call_deferred("disconnect", "body_entered", self, "_on_Item_body_entered")
 		#Inventory.add_item(item_type, amount)
 		Globals.Suds += amount

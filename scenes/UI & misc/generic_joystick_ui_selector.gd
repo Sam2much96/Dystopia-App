@@ -32,7 +32,7 @@ func _input(event):
 
 #handles button clicking
 		if event.is_action_pressed("ui_select", true):
-			buttons[selector ].ACTION_MODE_BUTTON_PRESS
-		
+#			buttons[selector ].ACTION_MODE_BUTTON_PRESS
+			return
 		buttons.clear()
 		pass

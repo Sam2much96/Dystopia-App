@@ -2,36 +2,24 @@ extends CanvasLayer
 
 
 func _ready():
-	Dialogs.connect("dialog_started", self, "_on_dialog_started")
-	Dialogs.connect("dialog_ended", self, "_on_dialog_ended")
+	return Dialogs.connect("dialog_started", self, "_on_dialog_started")
+	return Dialogs.connect("dialog_ended", self, "_on_dialog_ended")
 	
-	$Stats.connect("not_enabled",self, '_on_status_hidden')
-	$Stats.connect('enabled',self,'_on_status_showing')
-	$Comics.connect( 'freed_comics', self, '_on_comics_freed'  )
-	$Comics.connect("showing_comics",self , 'on_comics_showing') #this line is buggy
-	#connect comicss and comics button
+	return $Stats.connect("not_enabled",self, '_on_status_hidden')
+	return $Stats.connect('enabled',self,'_on_status_showing')
+	return $Comics.connect( 'freed_comics', self, '_on_comics_freed'  )
+
 	
-	$"Menu ".connect("menu_hidden",self,'on_menu_hidden')
-	$"Menu ".connect("menu_showing",self,'on_menu_showing')
+	return $"Menu ".connect("menu_hidden",self,'on_menu_hidden')
+	return $"Menu ".connect("menu_showing",self,'on_menu_showing')
 	
 func _on_dialog_started():
-	#for child in get_children():
-	#	child.hide()
 	$TouchInterface.interract()
-	#$interact.show()
 
 func _on_dialog_ended():
-	#for child in get_children():
-	#	child.show()
 	$TouchInterface.reset()
 
 
-
-	#elif what == NOTIFICATION_UNPAUSED:
-	#	for child in get_children():
-	#		if child is Node2D :
-	#				child.reset()
-	#	
 func _input(_event):
 	if Input.is_action_just_pressed("comics"):
 		if $Comics.enabled == true:

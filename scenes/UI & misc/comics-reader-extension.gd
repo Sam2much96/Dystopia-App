@@ -1,6 +1,6 @@
 extends HBoxContainer
 
-
+#A Menu for Holding and Displaying Comic book chapters
 
 onready var loaded_comics 
 
@@ -43,7 +43,7 @@ func _on_Back_button_pressed():
 
 
 func _exit_tree(): #resets everything to default
-	OS.set_window_size(Vector2(1280, 720))
+	OS.set_window_size(Vector2(1280, 720)) #Remove this code please?
 	OS.set_screen_orientation (0)
 	pass
 
@@ -60,8 +60,8 @@ func display_locked_text(): #Dis the dialogue noxplays a generic text through
 
 
 
-func _on_chap_4_pressed():
-	display_locked_text()
+#func _on_chap_4_pressed():
+#	display_locked_text()
 
 
 func _on_chap_5_pressed():

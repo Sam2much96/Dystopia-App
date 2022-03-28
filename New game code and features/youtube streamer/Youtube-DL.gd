@@ -39,7 +39,7 @@ func _http_download_complete():
 			return
 
 	elif current_os =="X11" or current_os =="OSX": # Else on Linux and OSX make youtube-dl executable
-		OS.execute("chmod", PoolStringArray(["+x", OS.get_user_data_dir()+"/youtube-dl"]), false)
+		return OS.execute("chmod", PoolStringArray(["+x", OS.get_user_data_dir()+"/youtube-dl"]), false)
 
 	ready = true
 	print("[YouTubeDl]: Ready!")

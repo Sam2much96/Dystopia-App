@@ -1,11 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://scenes/UI & misc/Comics.v3.gd" type="Script" id=1]
+[ext_resource path="res://scenes/UI & misc/Comics.v4.gd" type="Script" id=1]
 [ext_resource path="res://resources/Buttons/bck.png" type="Texture" id=2]
 [ext_resource path="res://resources/Buttons/zoom.png" type="Texture" id=3]
 [ext_resource path="res://resources/misc/logo.png" type="Texture" id=4]
-[ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=5]
-[ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=6]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Prev panel"
@@ -81,14 +79,9 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 
-[node name="Comics" type="Control" groups=[
-"Cmx_Root",
-]]
+[node name="Comics" type="Control" groups=["Cmx_Root"]]
 mouse_filter = 1
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_left = 10.0908
@@ -122,7 +115,6 @@ normal = ExtResource( 2 )
 action = "ui_focus_next"
 
 [node name="Zoom" type="TouchScreenButton" parent="Buttons"]
-visible = false
 position = Vector2( 610.68, 529.983 )
 scale = Vector2( 1.11574, 1.12516 )
 normal = ExtResource( 3 )
@@ -147,30 +139,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Hints" type="Popup" parent="."]
-visible = true
-margin_left = 654.064
-margin_top = 311.572
-margin_right = 694.064
-margin_bottom = 351.572
-script = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="Hints"]
-margin_left = -214.057
-margin_top = 23.7841
-margin_right = 198.943
-margin_bottom = 66.7841
-custom_fonts/font = ExtResource( 5 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Swipe Left and Right to Change Pages
-Double Tap to zoom in/out"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Position2D" type="Position2D" parent="."]
 position = Vector2( 665.956, 42.8111 )
+
 [connection signal="pressed" from="Buttons/Zoom" to="." method="_on_Zoom_pressed"]

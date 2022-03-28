@@ -6,7 +6,7 @@ A State Machine for the touch interface to hint player and not clutter the ui
 export (bool) var Touch_os_enabled
 #var Touch_interface = self
 onready var menu = $menu
-onready var interract = $interact
+onready var _interract = $interact
 onready var stats = $stats
 onready var roll = $roll
 onready var slash = $slash
@@ -25,7 +25,7 @@ func _ready():
 	if Globals.direction_control != '':
 		_control = Globals.direction_control
 
-#toggles touch interface visibility depending on the os
+#toggles touch interface visibility depending on the os (Pc or Mobiles)
 	if Globals.os != str('Android') or str('ios'):
 		if Touch_os_enabled == true:
 			self.hide()
@@ -44,7 +44,7 @@ func reset():  #resets node visibility statuses
 	#	child.show()
 	stats.show()
 	menu.show()
-	interract.show()
+	_interract.show()
 	comics.show()
 	slash.show()
 	roll.show()
@@ -72,7 +72,7 @@ func status():  #used by ui scene when status is clicked
 		up.hide()
 		down.hide()
 		joystick.hide()
-		interract.hide()
+		_interract.hide()
 		comics.hide()
 		slash.hide()
 		roll.hide()
@@ -87,7 +87,7 @@ func comics():  #used by ui scene when comics is clicked
 		up.hide()
 		down.hide()
 		joystick.hide()
-		interract.hide()
+		_interract.hide()
 		comics.show()
 		slash.hide()
 		roll.hide()
@@ -101,7 +101,7 @@ func menu(): #used by ui scene when menu is clicked
 		up.hide()
 		down.hide()
 		joystick.hide()
-		interract.hide()
+		_interract.hide()
 		comics.hide()
 		slash.hide()
 		roll.hide()
@@ -117,7 +117,7 @@ func interract(): #used by ui scene when interract is clicked
 		up.hide()
 		down.hide()
 		joystick.hide()
-		interract.show()
+		_interract.show()
 		comics.hide()
 		slash.hide()
 		roll.hide()
@@ -128,7 +128,7 @@ func attack(): #used by ui scene when attack is clicked
 	if Touch_os_enabled == false:
 		stats.hide()
 		menu.show()
-		interract.hide()
+		_interract.hide()
 		comics.hide()
 		slash.show()
 		roll.show()

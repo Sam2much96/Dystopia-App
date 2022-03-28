@@ -17,7 +17,9 @@ func _ready():
 
 func _on_body_entered(body):
 	if body is Player:
-		Debug.Autosave_debug = str(' Autosaving player position:', (body.position) ) #improve code to not rely on the globals player script
+		if Engine.has_singleton('Debug'):
+			var Debug = Engine.get_singleton('Debug')
+			Debug.Autosave_debug = str(' Autosaving player position:', (body.position) ) #improve code to not rely on the globals player script
 		#Globals.current_level = Globals.curr_scene
 		Globals.spawn_x = body.position.x #saves the player's position to spawnpoint
 		Globals.spawn_y = body.position.y
@@ -28,4 +30,6 @@ func _on_body_entered(body):
 
 func _on_body_exited(body):
 	if body is Player:
-		Debug.Autosave_debug = str ('')
+		if Engine.has_singleton('Debug'):
+			var Debug = Engine.get_singleton('Debug')
+			Debug.Autosave_debug = str ('')

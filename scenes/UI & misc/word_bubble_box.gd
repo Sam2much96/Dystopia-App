@@ -1,10 +1,20 @@
 extends AnimatedSprite
 
+export (String) var dialogue = ''  
+
+#Write Different States for the word bubbles
+enum { STATE_NARRATION, STATE_ANGRY ,STATE_THOUGHTS, STATE_TALK_RIGHT, STATE_TALK_LEFT, STATE_TALK_LEFT_2, STATE_TALK_RIGHT_2, STATE_TALK_RIGHT_3 }
+
+export var state = STATE_NARRATION
+#Use a polygon2d to build the word bubbles
+
 signal dialog_started
 signal dialog_ended
 func show_dialog(text, speaker):
 	pass
 var lines_to_skip = 0
+
+
 
 func _ready():
 	Dialogs.dialog_box = self
@@ -18,6 +28,9 @@ func _ready():
 	#dialog_text.lines_skipped = lines_to_skip
 	#$anims.play("appear")
 	#pass
+
+func sort_frames(): #Gets the frames of the spritesheet and sorts it out into the state machine
+	self.get_frame() #Write an automatic state changer
 
 func hide_dialogue(): #my code
 	$anims.play("disappear")

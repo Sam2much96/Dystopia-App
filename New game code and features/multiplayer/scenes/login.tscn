@@ -117,16 +117,16 @@ __meta__ = {
 }
 
 [node name="label_player" type="Label" parent="ui/grid"]
-margin_right = 279.0
+margin_right = 273.0
 margin_bottom = 52.0
 rect_min_size = Vector2( 128, 0 )
-custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Player name:"
 
 [node name="text_player" type="LineEdit" parent="ui/grid"]
-margin_left = 283.0
-margin_right = 413.0
+margin_left = 277.0
+margin_right = 407.0
 margin_bottom = 52.0
 rect_min_size = Vector2( 128, 0 )
 custom_fonts/font = SubResource( 4 )
@@ -134,30 +134,30 @@ text = "Player"
 
 [node name="label_color" type="Label" parent="ui/grid"]
 margin_top = 56.0
-margin_right = 279.0
+margin_right = 273.0
 margin_bottom = 104.0
-custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 6 )
 text = "Team Color:"
 
 [node name="input_color" type="OptionButton" parent="ui/grid"]
-margin_left = 283.0
+margin_left = 277.0
 margin_top = 56.0
-margin_right = 413.0
+margin_right = 407.0
 margin_bottom = 104.0
 
 [node name="label_hostname" type="Label" parent="ui/grid"]
 margin_top = 108.0
-margin_right = 279.0
+margin_right = 273.0
 margin_bottom = 148.0
-custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 7 )
 text = "Hostname:"
 
 [node name="text_hostname" type="LineEdit" parent="ui/grid"]
-margin_left = 283.0
+margin_left = 277.0
 margin_top = 108.0
-margin_right = 413.0
+margin_right = 407.0
 margin_bottom = 148.0
 rect_min_size = Vector2( 128, 0 )
 custom_fonts/font = SubResource( 9 )
@@ -165,39 +165,39 @@ text = "192.168.10.111"
 
 [node name="label_spacer" type="Label" parent="ui/grid"]
 margin_top = 159.0
-margin_right = 279.0
+margin_right = 273.0
 margin_bottom = 173.0
 
 [node name="button_login" type="Button" parent="ui/grid"]
-margin_left = 283.0
+margin_left = 277.0
 margin_top = 152.0
-margin_right = 413.0
+margin_right = 407.0
 margin_bottom = 180.0
 custom_fonts/font = SubResource( 11 )
 text = "Play!"
 
 [node name="label_spacer2" type="Label" parent="ui/grid"]
 margin_top = 191.0
-margin_right = 279.0
+margin_right = 273.0
 margin_bottom = 205.0
 
 [node name="button_start_server" type="Button" parent="ui/grid"]
-margin_left = 283.0
+margin_left = 277.0
 margin_top = 184.0
-margin_right = 413.0
+margin_right = 407.0
 margin_bottom = 212.0
 custom_fonts/font = SubResource( 13 )
 text = "Start Server"
 
 [node name="label_spacer3" type="Label" parent="ui/grid"]
 margin_top = 226.0
-margin_right = 279.0
+margin_right = 273.0
 margin_bottom = 240.0
 
 [node name="Twitter Button" type="Button" parent="ui/grid"]
-margin_left = 283.0
+margin_left = 277.0
 margin_top = 216.0
-margin_right = 413.0
+margin_right = 407.0
 margin_bottom = 250.0
 custom_fonts/font = SubResource( 14 )
 text = "Twitter"
@@ -210,8 +210,8 @@ margin_left = 75.0638
 margin_top = 389.842
 margin_right = 336.064
 margin_bottom = 570.842
-custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0.992157, 1, 0, 1 )
+custom_fonts/font = ExtResource( 5 )
 text = "Use WASD keys to move, SPACEBAR to fire on PC. You will respawn upon death."
 autowrap = true
 __meta__ = {
@@ -233,6 +233,7 @@ __meta__ = {
 [node name="Notification" parent="." instance=ExtResource( 6 )]
 visible = true
 Display_text = "It is Experimental"
+
 [connection signal="pressed" from="ui/grid/button_login" to="." method="_on_button_login_pressed"]
 [connection signal="pressed" from="ui/grid/button_start_server" to="." method="_on_button_start_server_pressed"]
 [connection signal="pressed" from="ui/grid/Twitter Button" to="." method="_on_Twitter_Button_pressed"]

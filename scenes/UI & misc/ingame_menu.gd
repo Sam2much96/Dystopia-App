@@ -28,16 +28,20 @@ func _ready():
 		continue_game.disabled = true
 
 func _process(_delta):
-	if Debug.debug_panel != null: #turns multiplayer on when debugging
-		_multiplayer.show()
-	if Debug.debug_panel == null:
-		_multiplayer.hide()
-
+	#_hide_some_menu_options() #turning this off temporarily to debug the debug singleton
+	pass
 func _input(event): #Toggles menu visibility on/off
-	if event.is_action_pressed("menu") and enabled == false:
-		_menu_showing()
-	elif event.is_action_pressed("menu") and enabled == true:
-		_menu_not_showing()
+	if event.is_action_pressed("menu") == true :# 
+		if enabled == false:
+			#self.show()
+			_menu_showing()
+			#print('sahdashfvsh')
+			return
+		if enabled == true:
+			#self.hide()
+			#print ('askjabsfkbsdfbs')
+			_menu_not_showing()
+			return
 
 
 #input functions for gamepad
@@ -56,6 +60,7 @@ func _on_continue_pressed():
 		if get_tree().change_scene(Globals.current_level) != OK:
 			push_error("Error changing scenes")
 	else:
+		$MarginContainer/ScrollContainer/HSeparator/continue.hide()
 		push_error("Error: current_level shouldn't be empty")
 	pass # Replace with function body.
 
@@ -76,28 +81,39 @@ func _on_new_game_pressed():
 
 
 
-func _on_Menu_button_toggled(button_pressed):
-	game_menu.show() if button_pressed else game_menu.hide() ;return
+func _on_Menu_button_toggled(button_pressed): # Broken Function
+	if button_pressed :
+		print (' Showing Game Menu ') # For Debug purposes only
+		game_menu.show() 
+	else: 
+		print (' Hiding Game Menu') # For Debug purposes only
+		game_menu.hide() 
 
 
 #Handles Displaying the menu
-func _menu_showing():
+func _menu_showing(): #Broken funtions
 	enabled = true 
 	show()
-	Music._notification(NOTIFICATION_PAUSED)
+	
 	Music.play_track(Music.ui_sfx[0])
+	Music._notification(NOTIFICATION_PAUSED) #brken function
+	
 	set_focus_mode(2)
 	emit_signal("menu_showing")
+	return
 
 #Handles Hiding the menu
 func _menu_not_showing():
 	enabled = false
 	hide()
-	Music._notification(NOTIFICATION_UNPAUSED)
+	
 	Music.play_track(Music.ui_sfx[1])
+	Music._notification(NOTIFICATION_UNPAUSED)
+	
 	set_focus_mode(0)
 	emit_signal("menu_hidden")
-
+	
+	return
 #Handles Pausing the Menu
 func _menu_pause_and_play(boolean): #pass it a boolean to custom pause and play
 	get_tree().set_pause(boolean)
@@ -105,13 +121,11 @@ func _menu_pause_and_play(boolean): #pass it a boolean to custom pause and play
 
 func _on_comics_pressed():
 	print_debug ('comics pressed')
-	get_tree().change_scene_to(Globals.comics___2)
 	Music.play_track(Music.ui_sfx[0])
-
+	return get_tree().change_scene_to(Globals.comics___2)
 func _on_controls_pressed():
-	get_tree().change_scene_to(Globals.controls)
 	Music.play_track(Music.ui_sfx[0])
-
+	return get_tree().change_scene_to(Globals.controls)
 
 
 func _on_quit_Button_pressed():
@@ -119,22 +133,28 @@ func _on_quit_Button_pressed():
 		Music.play_track(Music.ui_sfx[1])
 		get_tree().quit()
 	else:
-		get_tree().change_scene_to(Globals.title_screen)
 		Music.play_track(Music.ui_sfx[1])
-	#print ('quit button pressed')
+		return get_tree().change_scene_to(Globals.title_screen)
 
 
 
 func _on_multiplayer_pressed():
-	get_tree().change_scene_to(load ('res://New game code and features/multiplayer/scenes/login.tscn'))
 	Music.play_track(Music.ui_sfx[0])
-	
+	return get_tree().change_scene_to(load ('res://New game code and features/multiplayer/scenes/login.tscn'))
+
 func _exit_tree():
 	Music._notification(NOTIFICATION_UNPAUSED) #resets music when exiting scene tree
 
 
 func _on_Shop_pressed():
-	get_tree().change_scene_to(Globals.shop)
 	Music.play_track(Music.ui_sfx[0])
+	return get_tree().change_scene_to((load('res://scenes/UI & misc/Shop.tscn')))
 
-
+func _hide_some_menu_options():
+	if Engine.has_singleton ('Debug'):
+		var Debug = Engine.get_singleton('Debug')
+		if Debug.debug_panel != null: #turns multiplayer on when debugging000
+			_multiplayer.show()
+		if Debug.debug_panel == null:
+			_multiplayer.hide()
+		pass

@@ -61,21 +61,13 @@ func _ready():
 		player = null
 
 func _process(_delta):
-	#update_facing()
-	if player != null:
+	"FACE THE PLAYER, IF HE'S VISIBLE"
+	if player != null: 
 		update_facing()
-		#state = STATE_WALKING + STATE_MOB
-		#linear_vel = player.position
-	#print(state)
-	
 	pass
 
 
 func _physics_process(_delta):
-
-
-
-
 	match state:
 		STATE_IDLE:
 			new_anim = "idle_" + facing
@@ -137,41 +129,30 @@ func _physics_process(_delta):
 		STATE_HURT:
 			new_anim = "hurt"
 		STATE_MOB:
-			#update_facing()
-			#linear_vel = self.position.direction_to(player.position) #* run_speed #my code
-			#print (linear_vel)
 			
 			player =get_tree().get_nodes_in_group('player').pop_front()
-			#linear_vel = player.position
-			#Globals.player.pop_front()
-			#velocity = self.position.direction_to(player.position) * run_speed
-			#velocity = move_and_slide(velocity) #movement to the player
 
-			#update_facing()
 			var target = player.position  
 			var position = self.position 
 			var center = restaVectores(target, position)
-			
-			#update_facing()
-			move_and_slide(center)
-			#move_and_slide(target.y)
-			
-			#if abs(position.distance_to(target)) > 200: #if its far...
-			##use suma vectores function for vector maths
-				#update_facing()
-				#move_and_slide(target) #move and slide to center
 
-			if abs(position.distance_to(target)) < 150 :
-				
+			var enemy_distance_to_player = abs(position.distance_to(target))
+
+
+			if enemy_distance_to_player < 150 :
+				move_and_slide(center)
 				yield(get_tree().create_timer(rand_range(0,1)), "timeout")
 				state= STATE_ATTACK 
-				#Kinematic_2d.move_and_slide(target) 
-			#	move_and_slide(restaVectores(target,position))
-				#print ('player near me: state:', state) #for debug purposes only
+				print ('player near me: True (', enemy_distance_to_player,')' ,' state: ', state) #for debug purposes only
+
+			if enemy_distance_to_player == 150 :
+				print ('player near me: False (', enemy_distance_to_player,')' ,' state: ', state) #for debug purposes only
+				_on_state_changer_timeout() #randomizes enemy actions
 				return
-
-
-			#STATE_WALKING;STATE_ATTACK
+			if enemy_distance_to_player > 150 :
+				print ('player near me: False (', enemy_distance_to_player,')' ,' state: ', state) #for debug purposes only
+				goto_idle() 
+				return
 
 	if new_anim != anim:
 		anim = new_anim
@@ -183,11 +164,13 @@ func goto_idle():
 	state = STATE_IDLE
 
 func _on_state_changer_timeout():
+	"A  RANDOM STATE CHANGER  "
+	
 	$state_changer.wait_time = rand_range(1.0, 5.0)
 	state = randi() %3
-	#state = STATE_IDLE
+	
 	facing = ["left", "right", "up", "down"][randi()%3]
-	#update_facing()
+	
 	pass # Replace with function body.
 
 
@@ -238,25 +221,19 @@ func _on_enemy_eyesight_body_entered(body):
 	if body is Player :
 		#player = body
 		run_speed = 150 #increase run speed if player is seen
-		state =  STATE_MOB   #+ STATE_WALKING #+STATE_WALKING +STATE_ATTACK #+ STATE_WALKING +STATE_ATTACK #+ STATE_WALKING #fix this up
-		#update_facing()
-		#state += STATE_WALKING
-		print('player seen')
-		#print('enemy facing: ',self.position.direction_to(player.position))
-	#if Globals.player.empty() == true:
-		#pass
+		state = STATE_MOB
+		print('player seen', 'State: ', state)
+
 
 func _on_enemy_eyesight_body_exited(body):
 	#help detect the player when he leaves
 	if body is Player:
 		run_speed = 100
-		#player = null
-		#update_facing()
-		state = STATE_WALKING #+ STATE_ATTACK
+		
+		#state = STATE_WALKING # makes the enemy duller
 		print ('player hidden')
-func mob():
-	#place all new mob codes here
-	pass
+
+
 
 func update_facing():
 

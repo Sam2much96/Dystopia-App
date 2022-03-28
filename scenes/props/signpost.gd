@@ -13,8 +13,8 @@ export(String) var dialogue #signpost dialogue
 export (bool) var _player_near 
 func _ready():
 	#shown = false
-	connect("area_entered", self, "_on_player_area_entered")
-	connect("area_exited", self, "_on_player_area_exited")
+	return connect("area_entered", self, "_on_player_area_entered")
+	return connect("area_exited", self, "_on_player_area_exited")
 	#Dialogs.connect("dialog_started", self, "_on_dialog_started")
 	#Dialogs.connect("dialog_ended", self, "_on_dialog_ended")
 	pass

@@ -1,9 +1,28 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Stats.gd" type="Script" id=1]
 [ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=2]
 [ext_resource path="res://fonts/stats.tres" type="DynamicFont" id=3]
 [ext_resource path="res://scenes/UI & misc/stats.stylebox" type="StyleBox" id=4]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends \"res://singletons/Debug.gd\"
+
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = \"text\"
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	debug_panel = self
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+"
 
 [node name="Stats" type="PanelContainer"]
 pause_mode = 2
@@ -17,6 +36,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+enabled = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_left = 20.0
@@ -73,17 +93,23 @@ margin_right = 1240.0
 margin_bottom = 633.0
 size_flags_horizontal = 3
 
-[node name="Title" type="Label" parent="VBoxContainer/HBoxContainer/Inventory"]
+[node name="Debug" type="Label" parent="VBoxContainer/HBoxContainer/Inventory"]
 margin_right = 618.0
-margin_bottom = 43.0
+margin_bottom = 14.0
+script = SubResource( 1 )
+
+[node name="Title" type="Label" parent="VBoxContainer/HBoxContainer/Inventory"]
+margin_top = 18.0
+margin_right = 618.0
+margin_bottom = 61.0
 custom_fonts/font = ExtResource( 2 )
 text = "Inventory"
 align = 1
 
 [node name="Details" type="Label" parent="VBoxContainer/HBoxContainer/Inventory"]
-margin_top = 47.0
+margin_top = 65.0
 margin_right = 618.0
-margin_bottom = 338.0
+margin_bottom = 347.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
@@ -91,7 +117,7 @@ text = "Item 1
 "
 
 [node name="Kill_count" type="Label" parent="VBoxContainer/HBoxContainer/Inventory"]
-margin_top = 342.0
+margin_top = 351.0
 margin_right = 618.0
 margin_bottom = 633.0
 size_flags_horizontal = 3

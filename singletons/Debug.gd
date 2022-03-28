@@ -1,4 +1,11 @@
-extends Node
+extends Node 
+
+var error_splash_page = load ('res://New game code and features/Error splash page for crashes.tscn')
+
+
+export (bool) var logging = false
+export (int) var user_font_size = 80
+onready var __label  
 #lists of labels being used by the debug panel
 onready var music_label 
 onready var player_label 
@@ -10,9 +17,10 @@ onready var comics_label
 onready var autosave_label
 onready var misc_label
 onready var globals_label
-
+onready var ads_label
+onready var avail_thread_label
 #class_name Debug
-export (bool) var enabled 
+export (bool) var enabled = false 
 
 onready var Autosave_debug ='' 
 onready var Music_debug 
@@ -27,19 +35,24 @@ onready var kill_count = 0
 onready var enemy = ''
 onready var Network_debug =''
 onready var Globals_debug
+onready var Ads_debug = ''
+onready var avail_thread = 0
 """
 THE DEBUG SINGLETON
 """
 #Add signal
-func _ready():
-	#start_debug()
+
+
+#func _ready():
+	
+	#start_debug_v1()
+	#show_debug_v1()
+	
+	#start_debug_2()
+	#show_debug_2() #Buggy
 	#stop_debug()
-	"""
-	Error catcher
-	"""
-	if enabled == true and debug_panel == null:
-		push_error("Error getting Debug panel")
-		print_debug( 'Instancing Debug panel') #Fix this piece of code, to create the labels with code
+
+
 
 
 
@@ -53,14 +66,19 @@ func _input(event):
 	if event.is_action_pressed("Debug") and debug_panel != null: #stops the debug code #catch the error that occurs
 		stop_debug()
 	elif event.is_action_pressed("Debug") and debug_panel == null:
-		start_debug()
+		start_debug_2()
 func _process(_delta):
-
+	"""
+	Error catcher
+	"""
+	if enabled == true and debug_panel == null:
+		push_error("Error getting Debug panel, turning off debug.")
+		enabled = false
 	"""
 	The debugged variables
 	"""
 	#add more variables
-	enabled = true
+	#enabled = true
 	Music_debug ='Music debug:' + (Music.music_debug)
 	Player_debug ='Player debug:'+ str(Globals.player) + 'Spawn point:' + str(Globals.spawnpoint) + 'Current level: ' + str(Globals.current_level) 
 	
@@ -76,10 +94,12 @@ func _process(_delta):
 	misc_debug = str(misc_debug)
 	Globals_debug='Direction type' + '/'+ str(Globals.direction_control)
 	
-	show_debug() 
+	avail_thread = str('Available threads: ',int (OS.get_processor_count())) 
+	 
 	
-
-
+	#show_debug_2() buggy
+	if enabled == true:
+		show_debug_v1() #causes the double instance bug
 
 
 
@@ -103,8 +123,9 @@ func stop_debug():
 		Enemy_debug= null
 		Network_debug = null
 		misc_debug = null
+		avail_thread = null
 		enabled = false
-func start_debug(): 
+func start_debug_v1():  #Update start debug to use for loops
 	enabled = true
 	#creates and loads dynamic fonts
 	var dynamic_font = DynamicFont.new()
@@ -113,11 +134,7 @@ func start_debug():
 	dynamic_font.outline_size = 2
 	dynamic_font.outline_color= Color(0,0,0,1)
 	dynamic_font.use_filter = true
-	#label.add_colour_override('font_colour', Color.red) 
-	#changes font colour # look up how to change colour modulation on a vbox
-	#Create new labels and add them as children of the debug panel 
-	#optimize code to use less words
-	debug_panel =CanvasLayer.new() #works
+	debug_panel =CanvasLayer.new() 
 	#add debug layer as child of debug singleton #fixes touch input bug
 	get_tree().get_root().get_node("/root/Debug").call_deferred('add_child',debug_panel) 
 	debug_panel.add_to_group('debug') #adds to a group, dont know if it works
@@ -140,6 +157,8 @@ func start_debug():
 	autosave_label= Label.new()
 	misc_label =Label.new()
 	globals_label = Label.new()
+	ads_label = Label.new()
+	avail_thread_label = Label.new()
 	vbox.add_child(music_label) #update code to use for loop
 	vbox.add_child(player_label)
 	vbox.add_child(ram_label)
@@ -150,6 +169,9 @@ func start_debug():
 	vbox.add_child(autosave_label)
 	vbox.add_child(misc_label)
 	vbox.add_child(globals_label)
+	vbox.add_child(ads_label)
+	vbox.add_child(avail_thread_label)
+	
 	#add font data #use label.rect_size.x and .y= 100 to manually increase label size
 	#vbox.ALIGN_CENTER #aligns vbox to center #fix code
 	music_label.add_font_override('font', dynamic_font) #adds dynamc font data
@@ -162,28 +184,73 @@ func start_debug():
 	autosave_label.add_font_override('font', dynamic_font)
 	misc_label.add_font_override('font', dynamic_font)
 	globals_label.add_font_override('font', dynamic_font)
-	
+	ads_label.add_font_override('font', dynamic_font)
+	avail_thread_label.add_font_override('font', dynamic_font)
+
+func start_debug_2():  #Works with some bugs
+	enabled = true
+	debug_panel =CanvasLayer.new() 
+	__label =  RichTextLabel.new()
+	debug_panel.add_to_group('debug') 
+	debug_panel.set_layer(1) 
+	debug_panel.add_child(__label) #draws vbox on screen
+	__label.set_mouse_filter(2)
+	'Error Catcher 1- Makes script a child of globals if debug singleton goes down'
+	if get_tree().get_root().get_node("/root/Debug") == null:
+		#add debug layer as child of debug singleton 
+		get_tree().get_root().get_node("/root/Globals").call_deferred('add_child',debug_panel)
+		return false
+	elif get_tree().get_root().get_node("/root/Debug") != null:
+		get_tree().get_root().get_node("/root/Debug").call_deferred('add_child',debug_panel)
+		return true
 
 
-func show_debug():
+
+func show_debug_v1():
 	if debug_panel != null :
-		music_label.set_text (Music_debug) 
-		player_label.set_text (Player_debug)
-		ram_label.set_text (Ram_debug) 
-		fps_label.set_text (FPS_debug)
-		enemy_label.set_text (Enemy_debug)
-		network_label.set_text (Network_debug)
-		comics_label.set_text  (Comics_debug)
-		autosave_label.set_text (Autosave_debug)
-		misc_label.set_text( misc_debug)
-		globals_label.set_text(Globals_debug)
+		if Music_debug!= null && music_label != null:
+			music_label.set_text (Music_debug) 
+		if Player_debug != null && player_label != null:
+			player_label.set_text (Player_debug)
+		if Ram_debug != null && ram_label != null:
+			ram_label.set_text (Ram_debug) 
+		if FPS_debug != null && fps_label != null:
+			fps_label.set_text (FPS_debug)
+		if Enemy_debug != null && enemy_label != null:
+			enemy_label.set_text (Enemy_debug)
+		if Network_debug != null && network_label != null:
+			network_label.set_text (Network_debug)
+		if Comics_debug != null && comics_label != null:
+			comics_label.set_text  (Comics_debug)
+		if Autosave_debug != null && autosave_label != null:
+			autosave_label.set_text (Autosave_debug)
+		if misc_debug != null && misc_label != null:
+			misc_label.set_text( misc_debug)
+		if Globals_debug != null && globals_label != null:
+			globals_label.set_text(Globals_debug)
+		if Ads_debug != null && ads_label != null:
+			ads_label.set_text(Ads_debug)
+		if avail_thread != null && avail_thread_label != null:
+			avail_thread_label.set_text(str(avail_thread))
+	if debug_panel != null and enabled: 
+		return
+	if debug_panel == null and !enabled :
+		push_error('error getting debug panel')
+		return
+
+func show_debug_2(): #works, but the label spawn point breaks
+	if debug_panel != null && __label != null:
+		__label.add_text (str(Music_debug) + str ( Player_debug ) )
+		__label.append_bbcode("[center]" + str(__label.text) + "[/center]\n")
+		__label.set_use_bbcode(true)
+		__label.set_modulate(Color( 0.86, 0.08, 0.24, 1)) 
+		__label.update()
 	if debug_panel != null and enabled: 
 		return
 	if debug_panel == null and !enabled :
 		push_error('error getting debug panel')
 
-func _print_debug(): #use to debug variables to terminal og
-	print (FPS_debug,Music_debug,Ram_debug, enabled)
+
 
 func log_debug(): #improvve logging code run at exit tree  #Copy log files to documents
 	if ProjectSettings.get_setting('logging/file_logging/enable_file_logging'):
@@ -191,15 +258,19 @@ func log_debug(): #improvve logging code run at exit tree  #Copy log files to do
 		var _dir =Directory.new()
 		var _log = File.new()
 		_log.open('user://logs/godot.log', File.READ_WRITE)
+		_log.store_string ( 'dystopia_app_log'+ str(OS.get_time(true)) +
+			Music_debug + Player_debug + Ram_debug + FPS_debug + Enemy_debug + Network_debug + Comics_debug +
+			Autosave_debug + misc_debug + Globals_debug + Ads_debug + avail_thread
+			) 
 		
 		
-		_dir.copy(_log,_doc) #buggy
 		#('user://logs/godot.log' from, _doc to)
 		print ('Doc:',_doc,'  log: ', _log) #works
-		#print ('logging debug, saved to  ', _doc)
-		#_log.close()
-		pass
+		print ('logging debug, saved to  ', _doc, ', user://logs/godot.log')
+		_log.close()
+		_dir.copy('user://logs/godot.log',str(_doc)) #buggy
 
 func _exit_tree():
-	#log_debug()
+	if logging == true:
+		log_debug() #Attempts to save this run's log file
 	pass

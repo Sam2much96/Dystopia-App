@@ -17,6 +17,7 @@ extends Node
 #add more controls to this script, it breaks the singleton
 export (bool) var music_on 
 export (bool) var sfx_on
+export (int) var volume # volume controller code is not yet written
 
 export(String, FILE, \"*.ogg\") var music_track = \"\"
 
@@ -90,14 +91,19 @@ onready var music_bus_2 = AudioServer.get_bus_index($B.bus)
 onready var music_bus = AudioServer.get_bus_index($A.bus)
 
 func _ready():
+	#load on/off music settings
+	
+	
 	
 	if music_on == true:
 		randomize() #randomizes shuffle code seed
 		shuffle(playlist_one) #disabled for debugging
 		_music = music_track.get_file()
 		play(music_track) #Not needed for release
+		Globals.Music_on_settings = true
 	elif music_on == false:
 		$A.stop()
+		Globals.Music_on_settings = false
 		pass
 
 
@@ -109,8 +115,8 @@ func _process(_delta):
 	\"\"\"
 	_music_debug()
 	
+	#Auto sets Globals Music Settings
 
-	
 	\"\"\"
 	AUTO SHUFFLE
 	\"\"\"
@@ -122,7 +128,7 @@ func _process(_delta):
 
 
 func _music_debug():
-	if  music_on == true :
+	if  music_on == true && get_tree().get_root().get_node(\"/root/Debug\") != null: #Only Debugs if the debug singleton is running
 		if music_track != null:
 			for child in get_children() :
 				if child is AudioStreamPlayer:
@@ -131,9 +137,9 @@ func _music_debug():
 						
 						var stream = Music_streamer.get_stream()
 						var stream_length = int(stream.get_length())
-						var track = music_track.get_file()
+						var _track = music_track.get_file()
 						var Playback_position = int(Music_streamer.get_playback_position())
-						music_debug = str(stream , track, Playback_position , '/', stream_length, sfx_streamer)
+						music_debug = str(stream , _track, Playback_position , '/', stream_length, sfx_streamer)
 
 
 
@@ -172,13 +178,21 @@ func _notification(what):
 	if what == NOTIFICATION_UNPAUSED:
 		AudioServer.set_bus_effect_enabled(music_bus,0,false)
 		AudioServer.set_bus_volume_db(music_bus,0)
-	elif what == NOTIFICATION_PREDELETE:
+	if what == NOTIFICATION_PREDELETE:
 		AudioServer.set_bus_volume_db(music_bus,-100)
 		AudioServer.set_bus_volume_db(music_bus_2,-100)
-		music_on = false
-		print ('music off')
-
-
+		#turn_off()
+		print ('music off- Notificationh Predelete')
+	if what == NOTIFICATION_APP_PAUSED:
+		AudioServer.set_bus_mute(music_bus, true)
+		AudioServer.set_bus_mute(music_bus_2, true)
+		clear()
+		#pass
+	if what == NOTIFICATION_APP_RESUMED:
+		AudioServer.set_bus_mute(music_bus, false)
+		AudioServer.set_bus_mute(music_bus_2, false)
+		shuffle(playlist_one)
+		play(music_track)
 
 
 
@@ -210,18 +224,30 @@ func play_sfx(list): #a separate bus channel for sfx using dictionary playlist
 		$C.stop()
 
 func play_track(_track): #for playing single sample tracks
-	if _track  and Music_streamer_2 != null :
+	if _track != null  and Music_streamer_2 != null :
 		if music_on == true:
-			$D.stream = load(_track) #it bugs up
-			$D.play()
+			#print (_track)# For debug purposes only
+
+			$D.set_stream ( load (_track)) 
+			$D.play(0.0)
 			sfx_streamer  = str('playing sfx: ',_track.get_file())
 			yield(get_tree().create_timer(0.8), \"timeout\")
 			$D.stop()
 
-func _exit_tree(): 
-	sfx_on = false
-	music_on = false
+func sound(what): #Turns on/ off and saves it via a global script
+	#Globals.Music_on_settings = false
+	if what == 'off' or 'Off' or 'OFF': #Debug
+		music_on = false
+		sfx_on = false
+		_notification(NOTIFICATION_APP_PAUSED)
+		#print ('Turned off Music', Globals.Music_on_settings) #For Debug purposes only
+	if what == 'on' or 'On' or 'ON':
+		music_on = true
+		sfx_on = true
 
+func _exit_tree(): 
+	#turn_off()
+	sound('off')
 
 "
 
@@ -337,7 +363,6 @@ resource_name = "play"
 [node name="Music" type="Node"]
 pause_mode = 2
 script = SubResource( 1 )
-music_on = true
 sfx_on = true
 
 [node name="A" type="AudioStreamPlayer" parent="."]
@@ -357,4 +382,5 @@ anims/BtoA = SubResource( 3 )
 "anims/Change track (straight)" = SubResource( 4 )
 anims/pause = SubResource( 5 )
 anims/play = SubResource( 6 )
+
 [connection signal="finished" from="A" to="." method="_on_A_finished"]

@@ -3,7 +3,7 @@ extends Area2D
 
 func _ready():
 	$AnimationPlayer.play("normal",-1,1.0,0.0)
-	connect("body_entered", self, "_on_grass_area_entered")
+	return connect("body_entered", self, "_on_grass_area_entered")
 	#var sfx = load (Music.grass_sfx[0])
 	pass
 

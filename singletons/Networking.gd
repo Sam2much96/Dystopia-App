@@ -16,11 +16,11 @@ NETWORKING SINGLETON 3.0
 To query if there's internet access and connect to various websites
 """
 export (bool) var enabled
-export(bool) var admob_enabled
-var admob_gd_script = load("res://singletons/Ads.gd") #add link to admob.gd
+#export(bool) var admob_enabled
+#var admob_gd_script = load("res://singletons/Ads.gd") #add link to admob.gd
 var debug = ''
 
-var admob_debug
+var admob_debug = '' #Debugs the Ad methods being used
 
 signal connection_success
 signal error_connection_failed(code,message)
@@ -28,14 +28,13 @@ signal error_ssl_handshake
 
 onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
-var admob #used to instance the admob node to the scene
-#var admob_script  = load ('res://admob-lib/admob.gd')
+
 onready var _ad #leave it, it updates from the admob node
 var _admob_singleton #it updates from the admob node
 
 onready var _y =get_node('/root/Networking')
 onready var check_timer #= Timer.new()
-var admob_nodes =[] #stores all the admob nodes instanced in the scene
+#var admob_nodes =[] #stores all the admob nodes instanced in the scene
 
 var _connection #stores connetion status
 # Default hostname used by the login form
@@ -62,7 +61,7 @@ var camera #stores general camera variables
 #########################  Web browser codes  ############################3
 export (String) var url = ''
 
-var xml = preload('res://scenes/UI & misc/xml.tscn') #used for downloading and logging file downloads
+#var xml = preload('res://scenes/UI & misc/xml.tscn') #used for downloading and logging file downloads
 
 var youtube_dl = preload ('res://New game code and features/youtube streamer/Youtube-DL.gd')
 
@@ -84,42 +83,10 @@ func _ready():
 
 func _process(_delta): 
 
-	debug = ( str(_connection) +  str(admob_debug) + str (multiplayer_server_debug) + str(multiplayer_client_debug)) #
-	"""
-	ADMOB 
-	"""
-	if admob_enabled == true: #use admob_enabled to control admob triggering
-		admob_debug  = ( 'Admob:'+ str(admob)+'_Ad' + str(_ad) + 'Singleton:'+ str(_admob_singleton) + 'Ad no_' + str (admob_nodes.size()))
-		if admob_nodes.empty() == true or admob_nodes.size() <=0: #handles no instance
-			var _r = admob_gd_script #originally preload('res://admob-lib/admob.gd')
-			print ('instancing admob from script', _r)
-			admob  = _r.new()
-			_y.add_child(admob)
-			_admob()
-			admob_nodes.append(admob)
-			return admob
-		if admob_nodes.empty() != true: #multple instances
-			if admob_nodes.size() >= 2:
-				admob = admob_nodes.front()
-				admob_nodes.empty()
-				push_warning('Do not Instance Multiple Admob Nodes ')
-			if admob_nodes.size() == 1:
-				admob = admob_nodes[0]
-				return admob
-		for child in _y.get_children():
-			if child is admob_gd_script.AdMob: #tries to load the Admob class
-				if admob_enabled == true:
-					child.set_name('admooo00b')
-					_y.add_child(child)
-					print( 'Admob nodes: ',child)
-					if admob_nodes.has(child):
-						pass
-					if not admob_nodes.has(child):
-						admob_nodes.append(child)
-						return admob_nodes
-					child.connect('init_failed',self,"_on_failure") #place this colde bloc in process
-					child.connect('_on_AdMob_banner_failed_to_load', self, 'admob_failed')
-					child.connect('banner_load', self, 'admob_success')
+	debug = ( str(_connection)  + str (multiplayer_server_debug) + str(multiplayer_client_debug)) #
+
+
+
 
 	for child in _y.get_children():
 		if child is Timer:
@@ -134,15 +101,7 @@ func _process(_delta):
 				connect("connection_success",self, '_on_success')
 				connect("error_connection_failed",self,'_on_failure')
 				connect("error_ssl_handshake",self, '_on_fail_ssl_handshake')
-
-
-func _shutdown():
-	admob.queue_free()
-	debug = "shutdown"
-	admob.hide_banner()
-	self.set_process(false)
-	if _admob_singleton != null :
-		_admob_singleton.queue_free() 
+ 
 func __init() :
 	#write code to check if node has been instanced
 	self.set_process(true)
@@ -215,7 +174,7 @@ func on_request_result(result, response_code, headers, body):
 			emit_signal("error_connection_failed",RESULT_REDIRECT_LIMIT_REACHED, 'RESULT_REDIRECT_LIMIT_REACHED')
 			_connection =(str ('connection failed')) 
 	#stop_check()
-
+	
 func _on_success():
 	print('connection success!!')
 	_connection = str ('connection success!!')
@@ -226,9 +185,9 @@ func _on_failure(code, message):
 	_connection = str ('connection failed!!')
 
 
-func on_admob_init_failed():
-	push_error ('admob init failed')
-	_connection = str ('admob init failed')
+#func on_admob_init_failed():
+#	push_error ('admob init failed')
+#	_connection = str ('admob init failed')
 
 
 
@@ -240,7 +199,7 @@ func _on_fail_ssl_handshake():
 
 
 #controls the admob display
-func _admob(): #rewrite this code for appodeal
+#func _admob(): #rewrite this code for appodeal
 	
 	#admob.set_name('admob')
 	#admob.enabled = true
@@ -259,15 +218,15 @@ func _admob(): #rewrite this code for appodeal
 	#print ('initializing admob ',"Admob: " ,admob, 'Singleton:',_ad)
 
 	#stop_check()
-	pass
+#	pass
 
 
-func admob_failed():
-	_connection= str('admob failed')
+#func admob_failed():
+#	_connection= str('admob failed')
 
 
-func admob_success():
-	_connection= str('admob success')
+#func admob_success():
+#	_connection= str('admob success')
 
 ########################Unused Codes##################################
 

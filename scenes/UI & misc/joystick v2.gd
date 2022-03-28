@@ -2,7 +2,7 @@ extends Control
 
 
 ##################################################
-#Improve the state changer
+#Improve the state changer to run without process function
 #Pressing the stick direction again helps to clear it
 
 ###############JoyStick Controller################
@@ -137,7 +137,7 @@ func _input(event):
 					start_debug()
 					#state = 1
 					the_action = __input.action
-					return the_action
+					#return the_action
 					#print(__input.as_text()) #for debugging release
 					if x == (1) and y == (1):
 						state = MOVE_RIGHT
@@ -213,7 +213,7 @@ func _input(event):
 						if __input.get_action_strength(the_action) != 0:
 							__input.pressed =false #stuck button bug
 							__input.strength = 0
-							#reset()
+							#reset() # The code breaks here
 							#print('The current action',the_action) #for debug purposes only
 							Input.parse_input_event(__input)
 							print ('1111')
@@ -262,7 +262,9 @@ func start_debug():
 			'Joypad Debug')+ '/'+'x ' +str(x) + ',' +'y ' +str(y) + ' state: '+str (state) + '/'+' Touch inside Joystick:'+ str(touchInsideJoystick)+ '/'+ 'Input Action: '+str(__input.action + 'Pressed: '+ str(__input.pressed) +'/'# + str(the_event)
 			)
 	#print (joystick_debug) #disable when not debugging
-		Debug.misc_debug = joystick_debug
+		if Engine.has_singleton('Debug'):
+			var Debug = Engine.get_singleton('Debug')
+			Debug.misc_debug = joystick_debug
 		#print(__input.as_text(), the_event) #for debugging release
 	else:
 		stop_debug()
@@ -270,8 +272,11 @@ func start_debug():
 
 
 func stop_debug():
-	joystick_debug = str ('')
-	Debug.misc_debug = joystick_debug
+	if Engine.has_singleton('Debug'):
+		var Debug = Engine.get_singleton('Debug')
+		Debug.misc_debug = joystick_debug
+		joystick_debug = str ('')
+		Debug.misc_debug = joystick_debug
 
 
 

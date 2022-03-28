@@ -24,6 +24,10 @@ script = ExtResource( 9 )
 margin_right = 14.0
 
 [node name="Menu " parent="." instance=ExtResource( 6 )]
+margin_left = 54.6968
+margin_top = 65.2761
+margin_right = 1236.7
+margin_bottom = 664.276
 
 [node name="Comics" parent="." instance=ExtResource( 7 )]
 margin_left = -20.0

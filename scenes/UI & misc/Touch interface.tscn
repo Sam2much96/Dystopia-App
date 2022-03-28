@@ -25,7 +25,7 @@ _control = "direction"
 
 [node name="menu" type="TouchScreenButton" parent="."]
 modulate = Color( 0, 0, 0, 1 )
-position = Vector2( 14.5111, 21.527 )
+position = Vector2( 6, 44 )
 scale = Vector2( 0.607283, 0.565069 )
 normal = ExtResource( 2 )
 action = "menu"
@@ -73,8 +73,8 @@ action = "attack"
 visibility_mode = 1
 
 [node name="right" type="TouchScreenButton" parent="."]
-position = Vector2( 243.367, 397.53 )
-scale = Vector2( 1.5, 1.5 )
+position = Vector2( 255.24, 355.008 )
+scale = Vector2( 1.6, 1.6 )
 normal = ExtResource( 15 )
 shape = SubResource( 1 )
 passby_press = true
@@ -82,9 +82,9 @@ action = "move_right"
 visibility_mode = 1
 
 [node name="up" type="TouchScreenButton" parent="."]
-position = Vector2( 139.62, 424.503 )
+position = Vector2( 146.454, 378.201 )
 rotation = -1.5708
-scale = Vector2( 1.5, 1.5 )
+scale = Vector2( 1.6, 1.6 )
 normal = ExtResource( 15 )
 shape = SubResource( 1 )
 passby_press = true
@@ -92,9 +92,9 @@ action = "move_up"
 visibility_mode = 1
 
 [node name="left" type="TouchScreenButton" parent="."]
-position = Vector2( 165.886, 531.368 )
+position = Vector2( 170.2, 488.846 )
 rotation = -3.14159
-scale = Vector2( 1.5, 1.5 )
+scale = Vector2( 1.6, 1.6 )
 normal = ExtResource( 15 )
 shape = SubResource( 1 )
 passby_press = true
@@ -102,9 +102,9 @@ action = "move_left"
 visibility_mode = 1
 
 [node name="down" type="TouchScreenButton" parent="."]
-position = Vector2( 267.462, 499.127 )
+position = Vector2( 278.076, 462.904 )
 rotation = 1.5708
-scale = Vector2( 1.5, 1.5 )
+scale = Vector2( 1.6, 1.6 )
 normal = ExtResource( 15 )
 shape = SubResource( 1 )
 passby_press = true

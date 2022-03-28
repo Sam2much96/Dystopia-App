@@ -5,15 +5,18 @@
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends StaticBody2D
-
+\"SMOKE FX TURNS OFF AND ON DEPENDEING ON THE PLAYER'S POSITION\"
 export (int) var counter #= 0 #used to off and on the comics placeholder
-
+onready var smoke_fx = $smoke_fx
+onready var smoke_fx_2 = $smoke_fx2
 #toggles comics placeholder visible on player contact
 func _on_Area2D_body_entered(body):
 	var comic_placeholder=get_tree().get_nodes_in_group('Cmx_Root')
 	if body is Player :
-		if comic_placeholder.empty() != true && counter == 0:
+		smoke_fx.emitting = true
+		smoke_fx_2.emitting = true
 		
+		if comic_placeholder.empty() != true && counter == 0: # Turns on the comic placeholder once the player is near
 			comic_placeholder = comic_placeholder.pop_front()
 			#print(comic_placeholder) #for debug purposes, delete after
 			comic_placeholder.enabled= true
@@ -25,12 +28,13 @@ func _on_Area2D_body_entered(body):
 
 func _on_Area2D_body_exited(body):
 	if body == Player:
-		pass # Replace with function body.
+		smoke_fx.emitting = false
+		smoke_fx_2.emitting = false
 "
 
 [sub_resource type="CapsuleShape2D" id=2]
-radius = 21.7369
-height = 20.7335
+radius = 315.119
+height = 0.0
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 165.057, 119.893 )
@@ -50,6 +54,8 @@ rotation = -0.452562
 scale = Vector2( 1, 1.29969 )
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( -155.98, -175.933 )
+rotation = 2.98319
 shape = SubResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -90,5 +96,6 @@ one_shot = false
 preprocess = 6.0
 emission_shape = 2
 emission_rect_extents = Vector2( 1, 1 )
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]

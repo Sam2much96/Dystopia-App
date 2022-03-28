@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://resources/props/desert dunes tex.webp" type="Texture" id=1]
 [ext_resource path="res://scenes/props/Dune big.tscn" type="PackedScene" id=2]
@@ -25,6 +25,7 @@
 [ext_resource path="res://scenes/props/Puddle.tscn" type="PackedScene" id=23]
 [ext_resource path="res://scenes/props/Mushroom_2.tscn" type="PackedScene" id=24]
 [ext_resource path="res://scenes/Shaders/Reflection.shader" type="Shader" id=25]
+[ext_resource path="res://scenes/UI & misc/Rain_Fx.tscn" type="PackedScene" id=26]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 261.431
@@ -151,9 +152,7 @@ position = Vector2( 208.024, -128.355 )
 position = Vector2( 1278.5, 974.105 )
 scale = Vector2( 1.32349, 1.32349 )
 
-[node name="temple spawnpoint" type="Position2D" parent="level/Temple" groups=[
-"spawnpoints",
-]]
+[node name="temple spawnpoint" type="Position2D" parent="level/Temple" groups=["spawnpoints"]]
 position = Vector2( -188.706, 30.601 )
 
 [node name="House" type="StaticBody2D" parent="level"]
@@ -318,6 +317,8 @@ position = Vector2( 3751.76, 3080.52 )
 [node name="Node2D2" parent="level" instance=ExtResource( 23 )]
 material = SubResource( 3 )
 position = Vector2( 4015.46, 575.35 )
+
+[node name="Rain_Fx" parent="." instance=ExtResource( 26 )]
 
 [node name="UI" parent="." instance=ExtResource( 15 )]
 

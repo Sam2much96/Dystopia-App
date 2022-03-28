@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-# Dystopia-App-Stabe v1.1.8
+# Dystopia-App-Stable v1.1.8
 ''''
 Documentation by INhumanity_arts 
 
@@ -127,8 +127,8 @@ Builds to Add
 -HTML5 build for the comic placeholder
 -
 -Building with Ads
-	Build with gradle 7.0.2 and upgrade the gradle wrapper and Android Manifest.xml in GodotAppodeal.1.0.1-release.aar
-[![Watch a playtest trailer video](https://img.youtube.com/vi/WLTgP-Axb-g/hqdefault.jpg)](https://youtu.be/WLTgP-Axb-g)	
+Build with gradle 7.0.2 and upgrade the gradle wrapper and Android Manifest.xml in GodotAppodeal.1.0.1-release.aar
+	[![Watch a playtest trailer video](https://img.youtube.com/vi/WLTgP-Axb-g/hqdefault.jpg)](https://youtu.be/WLTgP-Axb-g)	
 Import and compile with Godot IDE from source with linked libraries. Build with Gradle 7.0.2-all Copy the Android.xml file before compiling and change the gradle wrapper version in /android/build/gradle/wrapper/gradle-wrapper.properties to '7.0.2-all' 
 ...
 distributionUrl = "https\://services.gradle.org/distributions/gradle-7.0.2-all.zip"

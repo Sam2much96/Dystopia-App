@@ -1,0 +1,23 @@
+{
+    "platforms": [
+        "all", 
+        "android"
+    ], 
+    "packages": {
+        "nativelib-export": {
+            "platforms": [
+                "all"
+            ], 
+            "version": "0.2.0", 
+            "dependencies": []
+        }, 
+        "multidex": {
+            "platforms": [
+                "android"
+            ], 
+            "version": "2.0.1", 
+            "dependencies": []
+        }
+    }, 
+    "id": "89d3dbfd-9bfc-4f5d-ae6d-8b370d8f73a2"
+}

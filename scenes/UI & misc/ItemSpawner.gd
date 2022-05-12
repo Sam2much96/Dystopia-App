@@ -5,7 +5,14 @@
 #
 # This is the random item spawner script
 # information used by the enemy and player nodes .
-# 
+# Features
+# (1) Spawns an item randomly
+# To do
+# (1) Random spawn function
+# Bugs
+# (1) Spawns an item most of the time. It's spawn function should be more randomized
+# Reasons:
+# It makes the player work harder
 # *************************************************
 
 extends Position2D

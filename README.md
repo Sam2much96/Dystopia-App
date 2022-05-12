@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-# Dystopia-App-Stable v1.1.8
+# Dystopia-App-Stabe v1.1.9
 ''''
 Documentation by INhumanity_arts 
 
@@ -50,85 +50,82 @@ FEATURES
 		'func GLobals.store_video_files(_body)', and Globals._Video_Stream(node , stream, _sound, viewport). The mobile engine doesn't handle high-res videos well.
 (16) I implemented A touch input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases to fix the comics section ux problem
 (17) The Project uses a custom AndroidManifest.xml, backup_rule.xml, build.grade and config.gradle scripts to build for android.
-
 -Features to Fix
--Enemy Animation 
--Fix up Game's spawnpoints (look at the Exit code in the Temple interior scene)
--Fix up game's assets and animation
--auto enemy spawner
--Idol autosave
--A better state machine
--Cinematic video loading code system	
--changing pages centers new page 
--Multitouch settings in control
--Better Combat System
--Comic placeholder code
--Joystick code
--Horizontal Swipe gestures for the Comic placeholder code
--Auto rotate gestures for the Comic placeholder code
--Guided view ( Controlled zoom )
--Pond FX to follow player
--Game Optimizations
--Appodeal's SDK integration
-
+	-Enemy Animation 
+	-Fix up Game's spawnpoints (look at the Exit code in the Temple interior scene)
+	-Fix up game's assets and animation
+	-auto enemy spawner
+	-Idol autosave
+	-A better state machine
+	-Cinematic video loading code system	
+	-changing pages centers new page 
+	-Multitouch settings in control
+	-Better Combat System
+	-Comic placeholder code
+	-Joystick code
+	-Horizontal Swipe gestures for the Comic placeholder code
+	-Auto rotate gestures for the Comic placeholder code
+	-Guided view ( Controlled zoom )
+	-Pond FX to follow player
+	-Game Optimizations
+	-Appodeal's SDK integration
 -Features to Add
--Achievement System 
--Game Vibrations
--Comic book dialogue system
--Improve game loading speed
--Enemy AI (using G.O.A.P)
--Hints system
--Expanded Dialogue System (Word bubble system)
--update control art with new button maps
--Ingame Tokens	
--Add multiplayer Network and DLC network code/singleton
--Shop & Merch Store
--Guided view system
--Login UI
--Mana meter (Ogun meter)
--NPC_2 Quests
--New Environment(Create forest environment)
--Create Dungeon	
--YouTube load video
--Global scenes system
--Spritesheet animation upgrade
--UI art upgrade
--Model player & enemy characters (Rig with mixamo)
--Translate feature using .json files
--Attack sfx
--Multiple Languages (localization and dubbing to French and Spanish).
--Procedurally generated sand dunes
--Update Game instructionals visuals
--Throw mechanics for enemy types
--Inventory system
--Colour changing joystick
--Save Email
--Create Dungeons
--Polygon 2d to deconstruct comic panels
--Host game server with
--Apache
--SSL
--Net tools
--Port Forwarding
--Reprogrammable joystick
--Ads
--Interstitial Ads at the end of comic book page
--Video ads inbetween the pilot 
--Banner Ads over video footage
-
+	-Achievement System 
+	-Game Vibrations
+	-Comic book dialogue system
+	-Improve game loading speed
+	-Enemy AI (using G.O.A.P)
+	-Hints system
+	-Expanded Dialogue System (Word bubble system)
+	-update control art with new button maps
+	-Ingame Tokens	
+	-Add multiplayer Network and DLC network code/singleton
+	-Shop & Merch Store
+	-Guided view system
+	-Login UI
+	-Mana meter (Ogun meter)
+	-NPC_2 Quests
+	-New Environment(Create forest environment)
+	-Create Dungeon	
+	-YouTube load video
+	-Global scenes system
+	-Spritesheet animation upgrade
+	-UI art upgrade
+	-Model player & enemy characters (Rig with mixamo)
+	-Translate feature using .json files
+	-Attack sfx
+	-Multiple Languages (localization and dubbing to French and Spanish).
+	-Procedurally generated sand dunes
+	-Update Game instructionals visuals
+	-Throw mechanics for enemy types
+	-Inventory system
+	-Colour changing joystick
+	-Save Email
+	-Create Dungeons
+	-Sandbox mechanics
+	-Polygon 2d to deconstruct comic panels
+	-Host game server with
+		-Apache
+		-SSL
+		-Net tools
+		-Port Forwarding
+	-Reprogrammable joystick
+	-Ads
+		-Interstitial Ads at the end of comic book page
+		-Video ads inbetwen the pilot 
+		-Banner Ads over video footage
 -Bugs to fix
--Player scent mechanics
--Debug double instance
--Form entering breaks
--GodotAppodeal is broken (lol).
-
-Builds to Add
--IOS builds
--HTML5 build for the comic placeholder
--
+	-Player scent mechanics
+	-Debug double instance
+	-Form entering breaks
+	-GodotAppodeal is broken (lol). I won't bother to fix it
+-Builds to Add
+	-IOS builds
+	-HTML5 build for the comic placeholder
+	-
 -Building with Ads
-Build with gradle 7.0.2 and upgrade the gradle wrapper and Android Manifest.xml in GodotAppodeal.1.0.1-release.aar
-	[![Watch a playtest trailer video](https://img.youtube.com/vi/WLTgP-Axb-g/hqdefault.jpg)](https://youtu.be/WLTgP-Axb-g)	
+	Build with gradle 7.0.2 and upgrade the gradle wrapper and Android Manifest.xml in GodotAppodeal.1.0.1-release.aar
+[![Watch a playtest trailer video](https://img.youtube.com/vi/WLTgP-Axb-g/hqdefault.jpg)](https://youtu.be/WLTgP-Axb-g)	
 Import and compile with Godot IDE from source with linked libraries. Build with Gradle 7.0.2-all Copy the Android.xml file before compiling and change the gradle wrapper version in /android/build/gradle/wrapper/gradle-wrapper.properties to '7.0.2-all' 
 ...
 distributionUrl = "https\://services.gradle.org/distributions/gradle-7.0.2-all.zip"

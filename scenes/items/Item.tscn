@@ -10,25 +10,13 @@ radius = 63.7874
 [sub_resource type="Animation" id=2]
 resource_name = "collected"
 length = 0.4
-tracks/0/type = "value"
-tracks/0/path = NodePath("pickup:playing")
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/1/type = "method"
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
 "times": PoolRealArray( 0.4 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
@@ -36,13 +24,13 @@ tracks/1/keys = {
 "method": "queue_free"
 } ]
 }
-tracks/2/type = "value"
-tracks/2/path = NodePath("sprite:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
@@ -152,12 +140,11 @@ tracks/3/keys = {
 "values": [ true ]
 }
 
-[node name="Item" type="Area2D" groups=[
-"items",
-]]
+[node name="Item" type="Area2D" groups=["items"]]
 script = ExtResource( 2 )
 
 [node name="sprite" type="Sprite" parent="."]
+visible = false
 scale = Vector2( 1.72, 0.159999 )
 texture = ExtResource( 1 )
 offset = Vector2( 0.36261, -19.2809 )

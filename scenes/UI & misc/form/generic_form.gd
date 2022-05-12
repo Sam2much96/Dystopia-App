@@ -2,12 +2,17 @@
 # godot3-Dystopia-game by INhumanity_arts
 # Released under MIT License
 # *************************************************
-#
+# Description:
 # This is a login form to gatekeep the app
-# And check for user's internet access
-# It triggers an error splash page in the debug script if user is offline
-# It aids monetization through online advertising
+# Features
+# (1) It check for user's internet access
+# (2)It triggers an error splash page in the debug script if user is offline
+# (3) It aids monetization through online advertising on Mobile
 # *************************************************
+# To Do:
+# (1) Languague functionality to convert to various languages via a global script variable or a state machine
+		# How?
+		#parse a csv file and trigger language functions / states through the dialogue singleton at res://singletons/Dialogs.gd
 extends CanvasLayer
 """
 This is a gate-keeper script to keep check user's internet connections, restrict their access

@@ -1,3 +1,20 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# The Debug singleton 
+#(1) It processes and Debugs the Player  and Enemy AI states, as well as the other singletons
+# (2) reate State Machine
+#
+# Bugs 
+# (1) it is hard coded and requires both a looser code and a general update
+#  (2) Version 2 of the Debug codes have yet to be implemented
+# (6) Use return to end functions instead of Pass, pass breaks the code
+# (7) It's Now a Huge performance hog. Lmfao
+# *************************************************
+
+
+
 extends Node 
 
 var error_splash_page = load ('res://New game code and features/Error splash page for crashes.tscn')
@@ -5,102 +22,130 @@ var error_splash_page = load ('res://New game code and features/Error splash pag
 
 export (bool) var logging = false
 export (int) var user_font_size = 80
-onready var __label  
-#lists of labels being used by the debug panel
-onready var music_label 
-onready var player_label 
-onready var ram_label
-onready var fps_label
-onready var enemy_label
-onready var network_label
-onready var comics_label
-onready var autosave_label
-onready var misc_label
-onready var globals_label
-onready var ads_label
-onready var avail_thread_label
-#class_name Debug
-export (bool) var enabled = false 
+var __label  
 
-onready var Autosave_debug ='' 
-onready var Music_debug 
-onready var Player_debug 
-onready var Ram_debug 
-onready var FPS_debug 
-onready var Enemy_debug 
-onready var debug_panel  
-onready var Comics_debug = ''
-onready var misc_debug = ''
-onready var kill_count = 0
-onready var enemy = ''
-onready var Network_debug =''
-onready var Globals_debug
-onready var Ads_debug = ''
-onready var avail_thread = 0
+#lists of labels being used by the debug panel
+var music_label 
+var player_label 
+var ram_label
+var fps_label
+var enemy_label
+var network_label
+var comics_label
+var autosave_label
+var misc_label
+var globals_label
+var ads_label
+var avail_thread_label
+#class_name Debug
+export (bool) var enabled = true
+
+var Autosave_debug ='' 
+var Music_debug 
+var Player_debug 
+var Ram_debug 
+var FPS_debug 
+var Enemy_debug 
+var debug_panel  
+var Comics_debug = ''
+var misc_debug = ''
+var kill_count = 0
+var enemy = ''
+var Network_debug =''
+var Globals_debug
+var Ads_debug = ''
+var avail_thread = 0
+
+# State Machine Variables
+enum {START_DEBUG, STOP_DEBUG}
+var _state_ = STOP_DEBUG
+
+# Debug panel cannot be more than 1
+var debug_panels_cr8ted = [] # append the debug pannel to this array to stop double instance bug
 """
 THE DEBUG SINGLETON
 """
-#Add signal
+
 
 
 #func _ready():
-	
+	#if enabled == true : #and debug_panel != null: #breaks the code, diabling for debug purposes
 	#start_debug_v1()
-	#show_debug_v1()
-	
-	#start_debug_2()
-	#show_debug_2() #Buggy
-	#stop_debug()
+	#return
 
 
 
-
-
-
-## Called when the node enters the scene tree for the first time.
 
 func _input(event): 
 	"""
 	functions that control the debug process
 	"""
 	if event.is_action_pressed("Debug") and debug_panel != null: #stops the debug code #catch the error that occurs
-		stop_debug()
+		stop_debug() #Disabling to Debug
+		return
 	elif event.is_action_pressed("Debug") and debug_panel == null:
-		start_debug_2()
+		start_debug_v1() #Disabling to Debug
+		return
+
+
 func _process(_delta):
+
+
+
+	" DEBUG STATE MACHINE " #Disabling to Debug
+	match _state_:
+		START_DEBUG: # works
+			#start_debug_v1() # creates multiple instances bug
+			Music_debug ='Music debug:' + str(Music.music_debug)
+			Player_debug ='Player debug:'+ str(Globals.player) + 'Spawn point:' + str(Globals.spawnpoint) + 'Current level: ' + str(Globals.current_level) 
+		
+			#it uses the ram_mb funtion to convert bytes to mb
+			Ram_debug= ('Ram Used :'+ ((_ram_debug())) + 'mb') 
+			FPS_debug = 'FPS: '+ str(Engine.get_frames_per_second())
+			Enemy_debug = 'Enemy debug:' + str('Killcount:' , Globals.kill_count)
+			Autosave_debug = Autosave_debug
+
+			Network_debug =  str(Networking.debug )
+			misc_debug = str(misc_debug) #+ str("/")  + _new_debug('new debugs are run in this function: ')
+			Globals_debug='Direction type' + '/'+ str(Globals.direction_control)
+			avail_thread = str('Available threads: ',int (OS.get_processor_count())) 
+
+			
+			
+			return show_debug_v1() #causes the double instance bug
+		STOP_DEBUG:
+			if not debug_panel == null:
+				debug_panel.queue_free()
+				debug_panel = null # Null instance bug from the debug panel
+				enabled = false
+				Music_debug = null
+				Player_debug = null
+				Ram_debug= null
+				FPS_debug= null
+				Enemy_debug= null
+				Network_debug = null
+				misc_debug = null
+				avail_thread = null
+				enabled = false
+				return
+			if debug_panel == null:
+				return
+
+
+
 	"""
 	Error catcher
 	"""
+	# Turns off debuging if the debug panel isn't created
 	if enabled == true and debug_panel == null:
 		push_error("Error getting Debug panel, turning off debug.")
 		enabled = false
-	"""
-	The debugged variables
-	"""
-	#add more variables
-	#enabled = true
-	Music_debug ='Music debug:' + (Music.music_debug)
-	Player_debug ='Player debug:'+ str(Globals.player) + 'Spawn point:' + str(Globals.spawnpoint) + 'Current level: ' + str(Globals.current_level) 
 	
-	#it uses the ram_mb funtion to convert bytes to mb
-	Ram_debug= ('Ram Used :'+ ((_ram_debug())) + 'mb') 
-	FPS_debug = 'FPS: '+ str(Engine.get_frames_per_second())
-	Enemy_debug = 'Enemy debug:' + str('Killcount:' , Globals.kill_count)
-	Autosave_debug = Autosave_debug
-	
-	Network_debug =  str(Networking.debug ) 
-	
-	
-	misc_debug = str(misc_debug)
-	Globals_debug='Direction type' + '/'+ str(Globals.direction_control)
-	
-	avail_thread = str('Available threads: ',int (OS.get_processor_count())) 
-	 
-	
-	#show_debug_2() buggy
-	if enabled == true:
-		show_debug_v1() #causes the double instance bug
-
+	# Prevents double instance bug
+		#(1) create an array and add new debug panels to it when instanced
+		#(2) Delete the previous array entry once they are == 2
+	if debug_panels_cr8ted.size() >= 2:
+		debug_panel = debug_panels_cr8ted.pop_front()
 
 
 func _ram_debug():
@@ -112,21 +157,16 @@ func _ram_debug():
 
 
 func stop_debug():
-	if debug_panel != null:
-		debug_panel.queue_free()
-		debug_panel = null
-		enabled = false
-		Music_debug = null
-		Player_debug = null
-		Ram_debug= null
-		FPS_debug= null
-		Enemy_debug= null
-		Network_debug = null
-		misc_debug = null
-		avail_thread = null
-		enabled = false
-func start_debug_v1():  #Update start debug to use for loops
-	enabled = true
+	_state_ = STOP_DEBUG
+
+"""
+VERSION 1 CODE CREATES THE DEBUG PANEL TO SHOW THE DEBUG VALUES
+"""
+"Uses THe Input Function to control it"
+func start_debug_v1():  #Creates multiple instances bug
+	enabled = true # write to create only single insances of children 
+
+
 	#creates and loads dynamic fonts
 	var dynamic_font = DynamicFont.new()
 	dynamic_font.font_data = load('res://fonts/spiritmedium.ttf')
@@ -138,6 +178,8 @@ func start_debug_v1():  #Update start debug to use for loops
 	#add debug layer as child of debug singleton #fixes touch input bug
 	get_tree().get_root().get_node("/root/Debug").call_deferred('add_child',debug_panel) 
 	debug_panel.add_to_group('debug') #adds to a group, dont know if it works
+	
+	debug_panels_cr8ted.append(debug_panel) # Appends to an array
 	#set draw order
 	debug_panel.set_layer(1) 
 
@@ -186,6 +228,8 @@ func start_debug_v1():  #Update start debug to use for loops
 	globals_label.add_font_override('font', dynamic_font)
 	ads_label.add_font_override('font', dynamic_font)
 	avail_thread_label.add_font_override('font', dynamic_font)
+	
+	_state_ = START_DEBUG
 
 func start_debug_2():  #Works with some bugs
 	enabled = true
@@ -205,7 +249,9 @@ func start_debug_2():  #Works with some bugs
 		return true
 
 
-
+"""
+VERSION 1 CODE SETS THE DEBUG LABELS TO THEIR CALCULATED VALUES
+"""
 func show_debug_v1():
 	if debug_panel != null :
 		if Music_debug!= null && music_label != null:
@@ -268,9 +314,13 @@ func log_debug(): #improvve logging code run at exit tree  #Copy log files to do
 		print ('Doc:',_doc,'  log: ', _log) #works
 		print ('logging debug, saved to  ', _doc, ', user://logs/godot.log')
 		_log.close()
-		_dir.copy('user://logs/godot.log',str(_doc)) #buggy
+		_dir.copy('user://logs/godot.log',str(_doc)) #buggy ## Low Priority Program. Does not execute
 
+# Low Priority Program. Does not execute
 func _exit_tree():
+	print (get_tree().get_node_count())  # a new commit
 	if logging == true:
 		log_debug() #Attempts to save this run's log file
+	
+	
 	pass

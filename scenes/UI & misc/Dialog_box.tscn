@@ -203,7 +203,7 @@ tracks/1/keys = {
 }
 
 [node name="Dialog_box" type="TextureRect"]
-visible = false
+modulate = Color( 1, 1, 1, 0 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -224,8 +224,8 @@ margin_left = 168.0
 margin_top = 45.0
 margin_right = -185.0
 margin_bottom = -34.0002
-custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In semper molestie erat, id aliquam nulla iaculis a. Suspendisse consectetur vehicula consequat. Integer mollis libero sed sem convallis, vitae rutrum metus dapibus. Phasellus purus quam, euismod id diam ut, semper sagittis ipsum. Aenean vel mollis lectus, quis placerat eros. Donec elementum vestibulum augue dignissim vehicula. Mauris ultricies lacus id odio aliquet, eu iaculis urna sodales. "
 autowrap = true
 clip_text = true
@@ -271,8 +271,8 @@ margin_left = -226.5
 margin_top = -15.5
 margin_right = 228.5
 margin_bottom = 15.5
-custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Character Name"
 align = 1
 clip_text = true

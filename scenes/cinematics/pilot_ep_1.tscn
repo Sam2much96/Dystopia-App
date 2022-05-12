@@ -32,7 +32,8 @@ stream = ExtResource( 2 )
 volume_db = 10.0
 
 [node name="Ads_Manager" parent="." instance=ExtResource( 3 )]
-_ad_type = "video_ad"
+singleton = "GodotYodo1Mas"
+_ad_type = "banner_ad"
 enabled = false
 
 [connection signal="finished" from="VideoPlayer" to="." method="_on_VideoPlayer_finished"]

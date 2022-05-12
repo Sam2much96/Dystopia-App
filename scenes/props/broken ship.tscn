@@ -2,35 +2,7 @@
 
 [ext_resource path="res://resources/props/broken ship_3.webp" type="Texture" id=1]
 [ext_resource path="res://scenes/UI & misc/smoke_FX.tscn" type="PackedScene" id=2]
-
-[sub_resource type="GDScript" id=1]
-script/source = "extends StaticBody2D
-\"SMOKE FX TURNS OFF AND ON DEPENDEING ON THE PLAYER'S POSITION\"
-export (int) var counter #= 0 #used to off and on the comics placeholder
-onready var smoke_fx = $smoke_fx
-onready var smoke_fx_2 = $smoke_fx2
-#toggles comics placeholder visible on player contact
-func _on_Area2D_body_entered(body):
-	var comic_placeholder=get_tree().get_nodes_in_group('Cmx_Root')
-	if body is Player :
-		smoke_fx.emitting = true
-		smoke_fx_2.emitting = true
-		
-		if comic_placeholder.empty() != true && counter == 0: # Turns on the comic placeholder once the player is near
-			comic_placeholder = comic_placeholder.pop_front()
-			#print(comic_placeholder) #for debug purposes, delete after
-			comic_placeholder.enabled= true
-			counter+=1
-	else:
-		pass
-
-
-
-func _on_Area2D_body_exited(body):
-	if body == Player:
-		smoke_fx.emitting = false
-		smoke_fx_2.emitting = false
-"
+[ext_resource path="res://scenes/props/broken ship.gd" type="Script" id=3]
 
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 315.119
@@ -46,7 +18,7 @@ height = 193.662
 [node name="broken ship" type="StaticBody2D"]
 position = Vector2( -260.216, -181.02 )
 scale = Vector2( 1.4119, 1.4119 )
-script = SubResource( 1 )
+script = ExtResource( 3 )
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2( 905.31, 529.374 )
@@ -77,7 +49,6 @@ shape = SubResource( 4 )
 [node name="smoke_fx" parent="." instance=ExtResource( 2 )]
 modulate = Color( 0.380392, 0.380392, 0.380392, 0.352941 )
 position = Vector2( 782.553, 295.806 )
-emitting = true
 amount = 12
 lifetime = 3.0
 one_shot = false
@@ -89,7 +60,6 @@ emission_colors = PoolColorArray( 0, 0, 0, 0.705882, 0, 0, 0, 0.835294, 0, 0, 0,
 [node name="smoke_fx2" parent="." instance=ExtResource( 2 )]
 modulate = Color( 0.321569, 0.321569, 0.321569, 0.333333 )
 position = Vector2( 818.613, 530.19 )
-emitting = true
 amount = 5
 lifetime = 4.0
 one_shot = false

@@ -1,6 +1,3 @@
-extends Control
-
-class_name Comics
 # *************************************************
 # godot3-Dystopia-game by INhumanity_arts
 # Released under MIT License
@@ -10,11 +7,23 @@ class_name Comics
 # A comic book module for Godot game engine.
 # I implemented A touch input manager here
 # *************************************************
+# Features
+#(1) Loads, Zooms and Drags Comic Pages
+#(2) Uses New multitouch gestures by implementing a touch input manager
+#
+# To DO:
+#(1) connect this script with  the dialogue singleton for translation and wordbubble fx co-ordination
+# *************************************************
+# Bugs:
+# (1) it has a wierd updatable bug that's visible in the debug panel
+#
+# *************************************************
 
-#The goal of this script is to Make the UI simpler to use than Comics v3 script and implement
-#New multitouch gestures
-#it has a wierd updatable bug that's visible in the debug panel
-#connect this script with  the dialogue singleton for translation and wordbubble fx co-ordination
+
+
+extends Control
+
+class_name Comics
 
 export (bool) var enabled 
 signal comics_showing

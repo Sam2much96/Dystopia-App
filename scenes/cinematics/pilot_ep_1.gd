@@ -1,6 +1,26 @@
-extends Control
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Pilot 1 episode run script
+# Features
+# 
+#(1) Functions that Make the Playing the episode easier for mobiles to process
+# (2) Extends Cinematics class
+#
+# To Do
+#(1) Implement subtitle feature
+# (2) Re-render animation  pilot ep
+# (3) Compress video file as a zip and unzip before runtime
+#  Bugs
+# (1) There's a couple of seconds lag in between Pilot A and pilot b codes
+# *************************************************
 
-#This code should run a global function to unzip the video files to 'user://' when the user first funs the app
+
+extends cinematic
+
+##This code should run a global function to unzip the video files to 'user://' when the user first funs the app
+# It extends cinematic class
 
 export (bool) var enabled 
 
@@ -75,7 +95,9 @@ func _init()-> void:
 		return
 
 func _ready():
-	ads_manager.enabled = false # Disables the ads manager initially
+	#ads_manager.enabled = false # Disables the ads manager initially
+	pass
+
 
 func _process(_delta):
 	#Globals.unzip_file_to_video(path_to_zip_file) # Disable after debugging #Unzip function breaks 
@@ -129,16 +151,15 @@ func stop_playing():
 	Music.sound('off')
 
 # Video Monetization code
-func _show_video_ads():
+func _show_video_ads(): # Not properly tested, disabling this until it is.
 	# Initialises the Admob singleton through the ads manager for video ads
 	if (OS.get_name()) == "Android"or  "iOS": # Activates the ads only on mobiles
-		ads_manager.singleton = "GodotYodo1Mas"
-		ads_manager.enabled = true
-		ads_manager._ad_type = "video_ad"
-		ads_manager.init()
-		ads_manager.yodo1mas()
-	else:
-		counter == 4
+	#	ads_manager.singleton = "GodotYodo1Mas"
+	#	ads_manager.enabled = true
+	#	ads_manager._ad_type = "video_ad"
+	#	ads_manager.init()
+	#	ads_manager.yodo1mas()
+		counter = 4 # stops everything
 		check_counter()
 		return
 

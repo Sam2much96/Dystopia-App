@@ -33,14 +33,21 @@ Turns Music on and off & shuffles current track. Fix code later
 func _on_Debug_toggled(button_pressed): 
 	if get_tree().get_root().get_node("/root/Debug") != null:
 		if button_pressed:
-			debug__.stop_debug()
+		
+			var a = InputEventAction.new()
+			a.action = "Debug"
+			a.pressed = true
+			Input.parse_input_event(a)
+
+			#debug__.stop_debug()
 			$TextureRect2.show() #Shows Debug hint when in debug mode
 			$TextureRect.hide()
-		else:
-			debug__.start_debug_v1()
-			debug__.show_debug_v1()
-			$TextureRect2.hide()
-			$TextureRect.show()
+			#a.free()
+		#else:
+#			debug__.start_debug_v1()
+#			debug__.show_debug_v1()
+#			$TextureRect2.hide()
+#			$TextureRect.show()
 
 
 

@@ -1,3 +1,15 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Quest Giver
+# 
+#Needs:
+# (1) Documentation
+#
+# *************************************************
+
+
 extends Node
 
 """

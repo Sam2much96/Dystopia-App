@@ -190,3 +190,34 @@ func _on_rewarded_ad_earned() -> void:
 func _on_rewarded_ad_error(error_code:int) -> void:
 	emit_signal("rewarded_ad_error", error_code)
 	
+
+
+
+# Connect signals programmatically to Ads manager script for improved performance
+func _on_Yodo1Mas_banner_ad_not_loaded():
+	push_error('Yodo1 Banner not loaded')
+	#_are_the_ads_displaying_ = false
+
+
+func _on_Yodo1Mas_interstitial_ad_not_loaded():
+	push_error('Yodo1 Intersitital not loaded')
+	#_are_the_ads_displaying_ = false
+
+
+
+func _on_Yodo1Mas_rewarded_ad_not_loaded():
+	push_error('Yodo1 Rewarded Ad not loaded')
+	#_are_the_ads_displaying_ = false
+
+
+func _on_Yodo1Mas_banner_ad_opened():
+	return#_are_the_ads_displaying_ = true
+
+
+func _on_Yodo1Mas_interstitial_ad_opened():
+	
+	return#_are_the_ads_displaying_ = true
+
+
+func _on_Yodo1Mas_rewarded_ad_opened():
+	return#_are_the_ads_displaying_ = true

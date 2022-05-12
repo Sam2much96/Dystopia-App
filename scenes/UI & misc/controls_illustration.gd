@@ -1,3 +1,14 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Controls Illustation COntroller
+# 
+# 
+#
+# *************************************************
+
+
 extends TextureRect
 
 var mobile_texture = load('res://resources/misc/Controls_illustration_touch_controls_webp.webp')

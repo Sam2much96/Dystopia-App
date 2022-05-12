@@ -1,29 +1,37 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Enemy Spawner
+# Spawns enemy instances Within the Scene Tree
+# Features
+# (1) Spawns 12 enemies and turns off once the ememy count is at 3
+# (2) Plays a flames animation once Enemy node is bieng instanced
+# To Do:
+#(1) Spawn different enemy types
+# (2) Expand code's functionaliy
+# *************************************************
+
 extends Position2D
 
-#Enemy spawner code
-#Center of an Area2d
 
-#var centerpos
-var size
+export (bool) var enabled 
 onready var position_in_area = self.position #origin point
 var enemy = load('res://scenes/characters/Enemy.tscn') 
 
-#onready var position2d = get_node('Area2D/Position2D')
-#onready var collision_shape = get_node("Area2D/CollisionShape2D")
 
 export(int) var spawn_count = -1
 
 func _ready():
 	randomize()
 	print ('spawning enemy...')
-	#print(size) #for debug purposes
 	spawn_enemy()
 	pass
 
 
 
 func spawn_enemy(): 
-	if spawn_count <= 12:
+	if spawn_count <= 12 && enabled == true:
 		spawn_count += 1
 
 		#spawn an object in the position

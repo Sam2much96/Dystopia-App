@@ -1,3 +1,16 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# YouTubeDl
+# Youtube Download Script
+# To Do:
+#(1) Document Code
+#(2) Connect OBject to the Networking script
+# *************************************************
+
+
+
 extends Object
 
 class_name YouTubeDl

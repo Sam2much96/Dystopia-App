@@ -10,9 +10,10 @@ extends Control
 # organize this code 
 # *************************************************
 #It Plays an 'Opening Cinematic' which is also used as a loading progress.
-
-
-
+# Bugs:
+#(1) Breaks on Mobile devices. Debug 
+#(2) Lack of Documentation.
+#(3)  
 
 class_name cinematic
 
@@ -59,6 +60,7 @@ func _on_skip_pressed():
 
 
 
+# Try Using Global Functions
 func Video_Stream(stream): #This code works
 	if stream!= null:
 		#stream = stream.get_resource()
@@ -75,6 +77,7 @@ func _on_Intro_animation_animation_finished(anim_name): #unused animation code
 	pass
 
 
+# Write youtube Download function
 
 func yt_download(): #downloads videos from the yt channel. streams it in app
 	var yt =load('res://New game code and features/youtube streamer/Youtube-DL.gd')
@@ -108,3 +111,5 @@ func play_opening_cinematic():
 	$Node2D/AudioStreamPlayer.play(0.0)
 	#opening_cinematic_playing = false
 	pass
+
+

@@ -1,3 +1,18 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Joystick UI selector
+# Cycles through a list of UI items once the joystick is being used
+# To Do:
+#(1) Update DOcumentation
+# (2) Improve Code
+# Bugs:
+# (1) Doesn't select well
+# (2) Doesn't show button hints
+# *************************************************
+
+
 extends Control
 
 var selector = 0
@@ -11,8 +26,8 @@ func _input(event):
 		buttons = self.get_children() 
 		
 		if selector == 0:
-			print ('Game menu UI Selector: ', buttons) #for debug purposes only
-		
+			#print ('Game menu UI Selector: ', buttons) #for debug purposes only
+			return
 
 		
 		

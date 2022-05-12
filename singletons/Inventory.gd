@@ -1,3 +1,22 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Inventory Singleton
+# Saves and Manipulates Item Objects Within the Scene Tree
+# Features:
+#(1) Saves Itself and it's count to a .json save file via the Globals save() and load() functions
+#(2) Records all nodes in the Items group and stores a copy of them
+#(3) Interracts with the Items node at res://scenes/items/Item.tscn
+#(4) Interracts with the Quest singleton at res://singletons/Quest.gd
+# *************************************************
+# To do:
+# (1) Update
+# (2) Documents Functions 
+# *************************************************
+
+
+
 extends Node
 
 """

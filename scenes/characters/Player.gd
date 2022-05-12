@@ -1,3 +1,16 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# THe Player Script
+# Features
+# (1) THe world's camera
+# (2) Player hitboxes
+# (3) It's a class and stores variables to the UI, Globals singleton, PlayersSave Files, and the Debug SIngleton
+# To Do:
+#(1) Update Documentation
+# *************************************************
+
 extends KinematicBody2D
 
 class_name Player
@@ -208,10 +221,7 @@ func despawn():  #this code breaks
 	yield(get_tree().create_timer(5.0), "timeout")
 	#Update this code to update player position
 	
-	get_tree().reload_current_scene() #This code reboots the game
-	
-	#removes itself from Globals.player
-	pass
+	return get_tree().reload_current_scene() #Reboots the current scene if the Player Dies
 
 
 func _on_hurtbox_area_entered(area):

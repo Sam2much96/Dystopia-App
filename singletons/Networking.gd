@@ -6,7 +6,20 @@
 # This is a auto-included singleton containing
 # information used by the client and server codes.
 # also used as a networking node 
+# Bugs
+# (1) Singleton's start and stop state is not properly defined
+# 
 # ************************************************* 
+# Contains Logic for querying internet access. Used by Game Form
+# ************************************************* 
+# Features to Add
+# (1) Smart contract implementation using GDteal and Algodot
+# (2) Multiplayer lobby room logic And Client and Server Netcodes
+# (3) Youtube Download Streamer Logic impementation
+# (4) Proper Documentation
+# (5) Run an online for PC and mobile Devices. The Hardware is available now
+# (6) NetCodes
+
 
 extends HTTPRequest
 
@@ -76,14 +89,12 @@ func _ready():
 			if _i is Timer:
 				check_timer = _i 
 	
-	
-	
 	######################Used to Control the App's Networking #######################
-	pass
+	
 
 func _process(_delta): 
 
-	debug = ( str(_connection)  + str (multiplayer_server_debug) + str(multiplayer_client_debug)) #
+	debug = ( str(_connection)  + str (multiplayer_server_debug) + str(multiplayer_client_debug)) # Debugs the Networking and Multiplayer states
 
 
 
@@ -96,11 +107,11 @@ func _process(_delta):
 		if child is HTTPRequest:
 #checks connection status
 			if child.is_connected("connection_success",self, '_on_success') != true:
-				connect("request_completed", self,'on_request_result')
+				return connect("request_completed", self,'on_request_result')
 		
-				connect("connection_success",self, '_on_success')
-				connect("error_connection_failed",self,'_on_failure')
-				connect("error_ssl_handshake",self, '_on_fail_ssl_handshake')
+				return connect("connection_success",self, '_on_success')
+				return connect("error_connection_failed",self,'_on_failure')
+				return connect("error_ssl_handshake",self, '_on_fail_ssl_handshake')
  
 func __init() :
 	#write code to check if node has been instanced
@@ -114,14 +125,14 @@ func __init() :
 	check_timer.wait_time = 3
 
 func stop_check():
-	_connection += ' stop check '
+	_connection += ' stop check ' # Debug Variable
 	if not check_timer.is_stopped():
 		check_timer.stop()
 		self.cancel_request()
 		return _connection
 
 func start_check():
-	_connection = str('start check')
+	_connection = str('start check') # Debug Variable
 	if check_timer.is_stopped():
 		check_timer.start()
 
@@ -139,95 +150,69 @@ func on_request_result(result, response_code, headers, body):
 	match result:
 		RESULT_SUCCESS:
 			emit_signal("connection_success") 
-			_connection =(str ('connection success')) 
+			_connection =(str ('connection success')) # Debugs to the Debug singleton
+			return (str(result) + str(response_code) + str(headers)+ str (body))  
 		RESULT_CHUNKED_BODY_SIZE_MISMATCH:
 			emit_signal("error_connection_failed", RESULT_CHUNKED_BODY_SIZE_MISMATCH,'RESULT_CHUNKED_BODY_SIZE_MISMATCH')
-			_connection =(str ('connection failed')) 
+			_connection =(str ('connection failed')) # Debugs to the Debug singleton
+			return (str(result) + str(response_code) + str(headers)+ str (body)) 
 		RESULT_CANT_CONNECT:
 			emit_signal("error_connection_failed",RESULT_CANT_CONNECT,'RESULT_CANT_CONNECT')
-			_connection =(str ('connection failed')) 
+			_connection =(str ('connection failed')) # Debugs to the Debug singleton
+			return (str(result) + str(response_code) + str(headers)+ str (body)) 
 		RESULT_CANT_RESOLVE:
 			emit_signal("error_connection_failed",RESULT_CANT_RESOLVE,'RESULT_CANT_RESOLVE')
-			_connection = (str ('connection failed')) 
+			_connection = (str ('connection failed')) # Debugs to the Debug singleton
+			return (str(result) + str(response_code) + str(headers)+ str (body)) 
 		RESULT_CONNECTION_ERROR:
 			emit_signal("error_connection_failed",RESULT_CONNECTION_ERROR,'RESULT_CONNECTION_ERROR')
-			_connection =(str ('connection failed')) 
+			_connection =(str ('connection failed')) # Debugs to the Debug singleton
+			return (str(result) + str(response_code) + str(headers)+ str (body)) 
 		RESULT_SSL_HANDSHAKE_ERROR:
 			emit_signal("error_ssl_handshake")
-			_connection = (str ('connection failed')) 
+			_connection = (str ('connection failed')) # Debugs to the Debug singleton
+			return (str(result) + str(response_code) + str(headers)+ str (body)) 
 		RESULT_NO_RESPONSE:
 			emit_signal("error_connection_failed",RESULT_NO_RESPONSE,'RESULT_NO_RESPONSE')
-			_connection =(str ('connection failed')) 
+			_connection =(str ('connection failed')) # Debugs to the Debug singleton
+			return (str(result) + str(response_code) + str(headers)+ str (body)) 
 		RESULT_BODY_SIZE_LIMIT_EXCEEDED:
 			emit_signal("error_connection_failed", RESULT_BODY_SIZE_LIMIT_EXCEEDED,'RESULT_BODY_SIZE_LIMIT_EXCEEDED')
-			_connection =(str ('connection failed')) 
+			_connection =(str ('connection failed')) # Debugs to the Debug singleton
+			return (str(result) + str(response_code) + str(headers)+ str (body)) 
 		RESULT_REQUEST_FAILED:
 			emit_signal("error_connection_failed", RESULT_REQUEST_FAILED, 'RESULT_REQUEST_FAILED')
-			_connection =(str ('connection failed')) 
+			_connection =(str ('connection failed')) # Debugs to the Debug singleton
+			return (str(result) + str(response_code) + str(headers)+ str (body)) 
 		RESULT_DOWNLOAD_FILE_CANT_OPEN:
 			emit_signal("error_connection_failed",RESULT_DOWNLOAD_FILE_CANT_OPEN,'RESULT_DOWNLOAD_FILE_CANT_OPEN')
-			_connection =(str ('connection failed')) 
+			_connection =(str ('connection failed')) # Debugs to the Debug singleton
+			return (str(result) + str(response_code) + str(headers)+ str (body)) 
 		RESULT_DOWNLOAD_FILE_WRITE_ERROR:
 			emit_signal("error_connection_failed", RESULT_DOWNLOAD_FILE_WRITE_ERROR, 'RESULT_DOWNLOAD_FILE_WRITE_ERROR')
-			_connection =(str ('connection failed')) 
+			_connection =(str ('connection failed')) # Debugs to the Debug singleton
+			return (str(result) + str(response_code) + str(headers)+ str (body)) 
 		RESULT_REDIRECT_LIMIT_REACHED:
 			emit_signal("error_connection_failed",RESULT_REDIRECT_LIMIT_REACHED, 'RESULT_REDIRECT_LIMIT_REACHED')
-			_connection =(str ('connection failed')) 
-	#stop_check()
+			_connection =(str ('connection failed')) # Debugs to the Debug singleton
+			return (str(result) + str(response_code) + str(headers)+ str (body)) 
+	#stop_check() # Disabled
 	
 func _on_success():
 	print('connection success!!')
-	_connection = str ('connection success!!')
+	_connection = str ('connection success!!') # Debug Variable
 	
 
 func _on_failure(code, message):
 	print('Connection Failure !!\nCode: ', code,"Message:", message)
-	_connection = str ('connection failed!!')
-
-
-#func on_admob_init_failed():
-#	push_error ('admob init failed')
-#	_connection = str ('admob init failed')
-
-
+	_connection = str ('connection failed!!') # Debug Variable
 
 
 func _on_fail_ssl_handshake():
 	print('SSL Handshake Error!!')
-	_connection = str ('ssl handshake error!!')
+	_connection = str ('ssl handshake error!!') # Debug Variable
 
 
 
-#controls the admob display
-#func _admob(): #rewrite this code for appodeal
-	
-	#admob.set_name('admob')
-	#admob.enabled = true
-	#admob.is_real_set(true)
-	#admob.banner_id = str('ca-app-pub-1198869974398081/1991292180')
-	#admob.banner_on_top = false
-	#admob.banner_size = ("SMART_BANNER")
-	#admob.is_real_set(true)
-	
-	#print('Admob nodes:........', admob_nodes,'..........')
-	#_connection = str('instancing admob')
-	#admob.init()
-	#admob.load_banner()
-	#admob.show_banner()
-	
-	#print ('initializing admob ',"Admob: " ,admob, 'Singleton:',_ad)
-
-	#stop_check()
-#	pass
-
-
-#func admob_failed():
-#	_connection= str('admob failed')
-
-
-#func admob_success():
-#	_connection= str('admob success')
-
-########################Unused Codes##################################
 
 

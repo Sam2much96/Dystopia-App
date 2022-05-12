@@ -175,7 +175,7 @@ __meta__ = {
 }
 
 [node name="Ads_Manager" parent="." instance=ExtResource( 16 )]
-singleton = "GodotYodo1Mas"
+singleton = "GodotAdMob"
 _ad_type = "banner_ad"
 
 [node name="Book" type="TouchScreenButton" parent="."]

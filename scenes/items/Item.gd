@@ -1,3 +1,14 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Generic Item Spawner
+# Spawns Item Objects of various amounts Within the Scene Tree
+# Its in the items group and saves iteslf to the Inventory Singleton
+# To Do:
+#(1) Play Pickup sound with Music Singleton to reduce Performance labour
+# *************************************************
+
 extends Area2D
 
 export(String) var item_type = "Generic Item"
@@ -10,6 +21,8 @@ func _ready():
 func _on_Item_body_entered(body):
 	if body is Player:
 		call_deferred("disconnect", "body_entered", self, "_on_Item_body_entered")
+		# Adds Items to the Inventory Singleton
 		Inventory.add_item(item_type, amount)
 		$anims.play("collected")
+		Music.play_track(load("res://sounds/item_collected.ogg")) # Plays sound via singleton
 	pass

@@ -5,7 +5,22 @@
 #
 # This is a auto-included singleton containing
 # information used by the Game 
-#
+# Features
+# (1) Savings function
+# (2) A Call to find the current scene
+# (3) Both save and load functions
+# (4) A video streaming function, which should originally have been a child of the video streamers, 
+#     but it runs faster on a singleton script and so, was called from here
+# (5) Store video files functions
+# (6) It loads scenes for faster switiching between
+# To Add
+# (1) A working zip and unzip function through GDUnzip repurposed as an editor plugin #('insert GDUNzip github address')
+# (2) ArrAnge code base, make it easier to read at a glance
+# (3) Use resource oader for video loading script
+# Bugs
+# (1) COnnect to GDUNZIP via editor script to zip and unzip 
+# (2) Lacks proper documentation
+
 # *************************************************
 
 extends Node
@@ -18,14 +33,14 @@ var cinematics = preload ('res://resources/title animation/title..ogv')
 var pilot_ep 
 var VIDEO
 
-var form = load ('res://New game code and features/multiplayer/scenes/form.tscn')
+onready var form = load ('res://scenes/UI & misc/form/form.tscn')
 var title_screen = preload( 'res://scenes/Title screen.tscn')
 #var shop = load('res://scenes/UI & misc/Shop.tscn')
 var controls = load ('res://scenes/UI & misc/Controls.tscn')
 
 #Comics  Book Module variables
-var comics = load ('res://scenes/UI & misc/Comics.tscn')
-var comics___2 = load ('res://scenes/UI & misc/Comics____2.tscn')
+onready var comics = load ('res://scenes/UI & misc/Comics.tscn')
+onready var comics___2 = load ('res://scenes/UI & misc/Comics____2.tscn')
 var comics_chapter 
 var comics_page 
 
@@ -47,7 +62,7 @@ var Debug = null
 var _player_state # gets state data from the player state machine
 var video_stream #for the video streamers
 
-var metamask_wallet #Stores your wallet for the nft transactions
+#var metamask_wallet #Stores your wallet for the nft transactions
 var languague #Stores the user's lingua franca
 
 export (int) var Suds #currency system
@@ -64,8 +79,8 @@ var direction_control = '' #toggles btw analogue and d-pad
 
 var uncompressed # Varible holds uncompressed zip files
 func _ready():
-	print('Blood fx:',blood_fx)
-	
+	#print('Blood fx:',blood_fx)
+	#
 
 	
 	player.append( get_tree().get_nodes_in_group('player') )#gets all player nodes in the scene
@@ -78,7 +93,7 @@ func _ready():
 
 
 func _process(_delta):
-	if spawn_x and spawn_y != null:
+	if spawn_x and spawn_y != null: # Calculates a vector point for spawning
 		spawnpoint =Vector2(spawn_x,spawn_y)
 	if player_hitpoints == int (0):
 		player_hitpoints = 1 #stops the game from saving zero lives
@@ -166,11 +181,7 @@ func _restore_data(save_dict):
 	prev_scene_spawnpoint = save_dict.prev_scene_spawnpoint 
 	direction_control = save_dict.direction_control
 	
-	#Music_on_settings = save_dict.Music_on_settings 
-		#Comics Variables
-	#comics_chapter = save_dict.comics_chapter
-	#comics_page = save_dict.comics_page
-	
+	######################################################
 	
 func update_curr_scene(): 
 	curr_scene= get_tree().get_current_scene().get_name() 
@@ -189,9 +200,9 @@ func _go_to_cinematics():
 VIDEO STREAMER
 """
 """
-It uses plays a video and music stream, and sets the videoplayer to the viewport's size
+Quickly sets a videoplayer to Play music and videos
 """
-
+# Would break if passed to anything other than videosteam player
 func _Video_Stream(node , stream, _sound, viewport):
 	if stream and node != null or '':
 		print('Playing Video Stream:/',stream)
@@ -261,7 +272,7 @@ func store_video_files(_body, size) -> VideoStreamTheora: # FUnvtion breaks here
 		return video_file
 	return video_file
 
-
+# Does not work
 func unzip_file_to_video(path_to_zip): # Unzips the pilot ep. #Rewrite to use globally
 	print ('Path to zip: ', path_to_zip)
 	var file2Check = File.new()
@@ -282,22 +293,9 @@ func unzip_file_to_video(path_to_zip): # Unzips the pilot ep. #Rewrite to use gl
 		print ('Uncompressed file : ',uncompressed) #it fails to uncompress  # For debug purposes only
 # You can iterate over the "files" variable from the gdunzip instance, to
 # see all the available files:
-		for f in gdunzip.files:
-			 # Works
-			#pilot_ep = f
-			print ('File in zip file: ',f, '  //  ', 'Pilot ep', pilot_ep )
-			#print ()
-			#print(f['file_name'])
-			#dir.copy(f, 'user://video.ogv')
 
-			#store_video_files(f,50.2)
+	#	print ('File in zip file: ',f, '  //  ', 'Pilot ep', pilot_ep )
 
-
-			
-	# - if loaded is true you can try to uncompress a file:
-		#	uncompressed = _w.uncompress(_q) #Breaks, unzips a 0 file, write error checkers
-	# - now you have got a PoolByteArray named "uncompressed" with the
-	#   uncompressed data for the given file
 		print ('The uncompression algorithm code fails to uncompress and breaks if pilot_a.ogv is moved')
 		
 		# Stores the uncompresed pool byte array to a video file

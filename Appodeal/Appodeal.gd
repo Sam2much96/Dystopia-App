@@ -1,5 +1,16 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Appodeal
+# Broken Initialization function. Requires fixing
+# To Do:
+#(1) Update to work
+# (2) Implement their new sdk version
+# *************************************************
+
 tool
-#extends Node
+
 extends Node
 '''A Implementation Of Appodeals banner add in Godot '''
 

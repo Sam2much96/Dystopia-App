@@ -150,6 +150,7 @@ tracks/4/keys = {
 
 [node name="grass" type="Area2D"]
 scale = Vector2( 1.16146, 1.16146 )
+input_pickable = false
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -166,6 +167,7 @@ scale = Vector2( 2.29674, 2.69787 )
 shape = SubResource( 2 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2( -42.6165, -46.2693 )
@@ -191,4 +193,5 @@ anims/normal = SubResource( 5 )
 
 [node name="steam" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 3 )
+
 [connection signal="area_entered" from="." to="." method="_on_grass_area_entered"]

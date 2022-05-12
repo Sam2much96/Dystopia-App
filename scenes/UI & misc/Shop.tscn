@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/cinematics/pilot_ep_1.tscn" type="PackedScene" id=1]
 [ext_resource path="res://fonts/stats.tres" type="DynamicFont" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://scenes/UI & misc/anime_streaming.gd" type="Script" id=5]
 [ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=6]
+[ext_resource path="res://New game code and features/Ads_manager.tscn" type="PackedScene" id=7]
 
 [node name="Shop" type="Control"]
 anchor_right = 1.0
@@ -58,6 +59,10 @@ custom_fonts/font = ExtResource( 2 )
 text = "Watch Afro Anime"
 
 [node name="Dialog_box" parent="." instance=ExtResource( 6 )]
+
+[node name="Ads_Manager2" parent="." instance=ExtResource( 7 )]
+singleton = "GodotYodo1Mas"
+_ad_type = "interstitial"
 
 [connection signal="pressed" from="watch anime" to="." method="_on_watch_anime_pressed"]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

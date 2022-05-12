@@ -7,7 +7,18 @@ extends CanvasLayer
 # This is an ads manager used to activate
 # and manage the ad mediator sdk's built with the project
 # ************************************************* 
-
+# Features
+# (1) Codes for selecting and initializing an ads mediator for Android mobile phones 
+# (2) Switches Between Ads Mediator Programmatically
+# (3) Changwes the Ad type Programmatically
+#To DO
+# OS specific implementation calls to determine os differences
+# DIfferent AD states to expand codes
+# Unified debug for ell ad mediators
+# Bugs
+# (2) Yodo1Mas implementation code might be broken
+# (3) Compilong Appodeal SDK with yodo1mas creates a bug on the java side of the codes
+# (4) Remove yodo1mas signals from code base
 
 
 """
@@ -132,7 +143,7 @@ func __appodeal_debug():
 
 
 # Loads admob banner
-func admob():
+func admob() ->  void :
 	if (Engine.has_singleton(singleton)) == true && enabled == true:
 		Admob.init()
 		Admob.connect_signals()
@@ -158,7 +169,7 @@ func admob():
 		if Admob.is_rewarded_video_loaded() == false: # if rewarded video fails to load
 			# resets ad type to banner ad
 			_ad_type = 'banner_ad'
-			return _ad_type
+			#return _ad_type
 		print ( 'Is',(singleton), 'Initialized ' , str(Admob.init())) # Checks if the singleton initializes
 		#print ( 'Connect Signal :', str(Admob.connect_signals()))
 		
@@ -171,7 +182,8 @@ func admob():
 	if not bool(Engine.has_singleton(singleton)) == true && enabled == true: # AUTOMATICALLY FAST DEBUS IF THE ENGINE SINGLETON ISN'T THERE
 		fast_debug()
 
-func yodo1mas():
+" Breaking the code here. To Debug Later"
+func yodo1mas()-> bool:
 	if DoEngineCheck3 == true && enabled == true:
 		#var _y =Engine.get_singleton("GodotYodo1Mas")
 		if _ad_type == str ('banner_ad'):
@@ -187,14 +199,19 @@ func yodo1mas():
 		_Debug.Ads_debug = str ('Singleton', singleton, 'is not present in the testing device') 
 	if Engine.has_singleton("GodotYodo1Mas") && enabled == false:
 		print ('Ads manager is not enabled')
-		pass
+		
+		
+		return true # Retuns a boolean if the ads is implemented or not
+	return false # code not yet written. Broken for now
 
-func _facebook(): #checks if the facebook sdk is initiated
 
-	#The facebook script was removed in the scene tree as a singleton. Facebiik tracking is loosing unprofitable
-	print ("Facebook Is Initiated, Executing facebook function")
-	push_warning ("Please Delete FB SDK from app")
-	#facebook.set_advertiser_tracking(true)
+
+# delete this>>>>>>
+func _facebook() -> void: #checks if the facebook sdk is initiated
+	pass
+
+
+
 func check_ads_mediators():
 	#check if engine has the singleton installed and erases them from the mediators dictionary if they aren't 
 	if not Engine.has_singleton('GodotAdMob') :
@@ -212,7 +229,7 @@ func check_ads_mediators():
 func change_ads_mediator(): #selects a random ads mediator ##temporarily disabling until i'm able to properly debug
 	# Don't change ads mediator in process function
 	# Not yet properly debugged
-	
+	# Kind of works?
 	print ("//Ad mediators: ",mediators)
 	singleton = ''
 	if mediators.size() > 1: # Only activates when more than one mediator is installed
@@ -367,7 +384,7 @@ func _on_Timer_timeout():
 					_how_many_times = _how_many_times +1
 					__appodeal(_ad_type, testing)
 	
-	"""
+	"""#####################################################################################
 	CHECKS IF THE ENGINE HAS THE ENGINE SINGLETON AND RUNS A LOOP TO INITIALIZE IT
 	"""
 	
@@ -392,38 +409,10 @@ func fast_debug():
 		print('GodotYodo1Mas :',  DoEngineCheck3)
 	elif Fast_debug == false:
 		push_warning('Fast debug is turned off in the inspector tab')
-
+		return
 			#appodeal.sdk.appodeal.BuildConfig"
 
 
 """
-AD'S LOGICS
+CONNECT SIGNALS FROM YODO1mAS
 """
-
-# Connect signals programmatically for improved performance
-func _on_Yodo1Mas_banner_ad_not_loaded():
-	push_error('Yodo1 Banner not loaded')
-	_are_the_ads_displaying_ = false
-
-
-func _on_Yodo1Mas_interstitial_ad_not_loaded():
-	push_error('Yodo1 Intersitital not loaded')
-	_are_the_ads_displaying_ = false
-
-
-
-func _on_Yodo1Mas_rewarded_ad_not_loaded():
-	push_error('Yodo1 Rewarded Ad not loaded')
-	_are_the_ads_displaying_ = false
-
-
-func _on_Yodo1Mas_banner_ad_opened():
-	_are_the_ads_displaying_ = true
-
-
-func _on_Yodo1Mas_interstitial_ad_opened():
-	_are_the_ads_displaying_ = true
-
-
-func _on_Yodo1Mas_rewarded_ad_opened():
-	_are_the_ads_displaying_ = true

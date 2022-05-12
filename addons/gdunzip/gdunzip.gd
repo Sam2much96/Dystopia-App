@@ -51,6 +51,28 @@
 # - for f in gdunzip.files:
 #       print(f['file_name'])
 
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Zips and Unzips objects .GDUNZIP
+# Zips and Unzips objects within GOdot engine
+# To Do:
+#(1) Make Run
+# *************************************************
+# Features:
+# (1) Presently runs as an editor script
+
+# Bugs
+#(1) Does not work as a process during runtime
+# (2) Does not work at all
+# To do
+# (1) Fix to be able to use at runtime
+# (2) Write a debug code for it
+# (3) Update to use Editor script to run
+
+tool
+extends EditorPlugin
 
 
 # The path of the currently loaded zip file

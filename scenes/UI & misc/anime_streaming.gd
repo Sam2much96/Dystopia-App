@@ -1,3 +1,18 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Description:
+# Anime Streamer Code
+# Features
+# (1) It Plays video through a global variable
+# (2)It triggers an error splash page in the debug script if user is offline
+# (3) It aids monetization through online advertising on Mobile
+# *************************************************
+# To DO:
+#(1) integrade youtube download through networking singleton
+# (2) Integrate video stream with proper documentation
+# (3) Integrate youtube links
 extends Control
 """
 THIS IS THE LOGIC FOR THE ANIME VIDEO STREAMER. iT WILL RENDER THE PILOT AND THE OPENING IN GODOT GAME ENGINE

@@ -1,3 +1,15 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Quest Singleton
+# 
+# To Do:
+#(1) Write Proper Documentation
+# (2) Connect to Playstore through the Networking singleton
+# *************************************************
+
+
 extends Node
 
 """
@@ -75,3 +87,9 @@ func remove_quest(quest_name:String) -> bool:
 		return false
 	pass
 	
+
+# Attemplts to save thye quest list  and the quest state to your Google Play Profile
+func playstore_connects() -> void:
+	
+	
+	pass

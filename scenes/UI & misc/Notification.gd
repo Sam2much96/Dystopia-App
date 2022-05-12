@@ -1,6 +1,17 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Generic notification bar
+# Features:
+# To Do:
+#(1) Debug and Fix bugs
+# *************************************************
+
+
 extends Popup
 
-
+####
 """
 NOTIFICATION GENERIC BAR
 """

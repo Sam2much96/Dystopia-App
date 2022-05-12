@@ -1,3 +1,16 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Dialogue box
+# Used by UI and player scenes to trigger text
+# Features:
+# (1) Is a class
+#(2) Plays an animation that shows text via the dialogue singletom
+# Bugs:
+#(1) Broken Alignment with long texts
+# *************************************************
+
 extends TextureRect
 class_name DialogBox
 

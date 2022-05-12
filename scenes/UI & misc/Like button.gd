@@ -1,3 +1,14 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Like Button
+# A Texture Button that connects to an online API
+# To Do:
+#(1) Actually write the code
+# *************************************************
+
+
 extends TextureButton
 
 

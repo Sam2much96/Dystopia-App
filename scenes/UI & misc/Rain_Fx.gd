@@ -1,3 +1,17 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+#
+# This is the Rain FX controller script
+# information used by the Rain FX scenes .
+# 
+# Bugs
+# (1) Performance Hog. It slows frame ate  considerably/
+# *************************************************
+#It Emits a Particle 2D and turnis it off and on through a timer.
+
+
 extends CanvasLayer
 
 onready var rain_particles = $Particles2D
@@ -18,7 +32,8 @@ func _process(_delta):
 	
 	if enable == true:
 		rain_particles.emitting = true
-		print ('Emitting Rain Particles')
+		#print ('Emitting Rain Particles') -introducees a bug
+		
 	if enable == false:
 		rain_particles.emitting = false
 	else:

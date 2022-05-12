@@ -1,3 +1,13 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Ingame Menu
+# 
+# To Do:
+#(1) Impement State Machine
+# *************************************************
+
 extends Control
 
 var selector = 0

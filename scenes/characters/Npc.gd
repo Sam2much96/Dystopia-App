@@ -1,3 +1,16 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# NPC
+# 
+# information used by the Quest giving NPC.
+# AI code written here, should be written with Polymorphism in mind as it is shared by all Quest givers
+# TO do:
+# (1) Copy Mob code from enemy and implement it for NPC to follow Player
+# *************************************************
+
+
 extends Area2D
 
 """

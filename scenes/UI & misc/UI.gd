@@ -1,3 +1,15 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+#
+# This is an Ingame UI (Separate from Ingame Menu) containing
+# information used by the player's Dialogue, Inventory, Health bar,.
+# Kill count, Directional, Comics.
+# On the 16/04/22 , i started an update to the dialogue button.
+# *************************************************
+
+
 extends CanvasLayer
 
 

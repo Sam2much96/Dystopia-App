@@ -1,3 +1,14 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Coin
+# Coin Objects Within the Scene Tree
+# To Do:
+#(1) Run on Web3
+# (2) Proper Documentation
+# *************************************************
+
 extends Area2D
 
 """

@@ -41,10 +41,12 @@ onready var the_event
 onready var joystick_circle = $joystick_circle
 onready var outer_circle = $joystick_circle2
 
-enum {MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, RELEASE}
+enum {MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, RELEASE, NULL}
 
 
 export var state = RELEASE
+
+var prev_inputs = [] # An aray to store the last two joystick inputs
 
 func _ready():
 	pass
@@ -162,6 +164,11 @@ func _input(event):
 #should be a proces function
 func _process(_delta):
 	
+	if prev_inputs.size() >= 10: # Stores only 2 input values max
+		prev_inputs.erase(prev_inputs.pop_front()) # Removes the first values
+		# Remove values that already exist
+	
+	"Debug Input Actions"
 	var debug = false
 	#print (state) # For debug purposes only 
 	if debug == true: # For Debug Purposes Only 
@@ -185,18 +192,7 @@ func _process(_delta):
 				the_action = __input.action
 				return the_action
 				#print(__input.as_text()) #for debugging release
-			# State changer within state?
-			#if x ==(1) and y ==(-1) : 
-			#	state = MOVE_RIGHT
-			#if x == (-1) and y == (-1):
-			#	state = MOVE_LEFT
-			#if x == (0) and y ==(1) :
-			#	state = MOVE_DOWN
-			#if x == abs(0) and y == abs(0)  : 
-			#	release() # why double release?
-			#	#state = RELEASE 
-			#else:
-				#state = RELEASE
+			
 				return state
 		MOVE_DOWN:
 			if joystick_circle.is_pressed() == true:
@@ -214,22 +210,7 @@ func _process(_delta):
 				the_action = __input.action
 				#return the_action
 				#print(__input.as_text()) #for debugging release
-				# Why Repeat this block of codes?
-				# State changer within state?
-				# Disabling for debug purposes
-				#if x == (1) and y == (1):
-				#	state = MOVE_RIGHT
-				#if x == (-1) and y == (1):
-				#	state = MOVE_LEFT
-				#if x == (0) and y == (-1)  : 
-				#	state = MOVE_UP
-				#if x == abs(0) and y == abs(0)  : 
-				#	release()
-				#	#state = RELEASE
-				#else:
-					#state = RELEASE
-					#release()
-				#	return state
+
 		MOVE_RIGHT:
 			if joystick_circle.is_pressed() == true:
 				#release()
@@ -247,23 +228,7 @@ func _process(_delta):
 				return the_action
 				#print(__input.as_text()) #for debugging release
 				#reset()
-				
-				# Nested Loop
-				# Why Repeat this block of codes?
-				# State changer within state?
-				#if x == (-1) and y ==(0): 
-				#	state = MOVE_LEFT
-				#if x == (0) and y ==(1) :
-				#	state = MOVE_DOWN
-				#if x == (0) and y == (-1) : 
-				#	state = MOVE_UP
-				#if x == abs(0) and y == abs(0) : 
-				#	release()
-					#state = RELEASE
-				#else:
-					#state = RELEASE
-					#release()
-				#	return state
+
 		MOVE_LEFT:
 			if joystick_circle.is_pressed() == true:
 				#release()
@@ -278,23 +243,9 @@ func _process(_delta):
 				return the_action
 				#print(__input.as_text()) #for debugging release
 				#reset()
-				
-				# Why Repeat this block of codes?
-				# State changer within state?
-				#if x == (1) and y == (0) : # selected release?
-				#	release()
-					#state = RELEASE
-				#if x == (0) and y == (-1) : 
-				#	state = MOVE_UP
-				#if x == (0) and y ==(1) :
-				#	state =  MOVE_DOWN
-				#if x == abs(0) and y == abs(0)  : 
-				#	release()
-					#state = RELEASE
-				#else:
-					#state = RELEASE
-					#release()
-				#	return state
+
+		NULL:
+			return
 		RELEASE: #this is buggy it introduces a stuck button bug
 			release() 
 			if joystick_circle.is_pressed()!= true:
@@ -331,20 +282,34 @@ func _process(_delta):
 	if (__input.action)== "move_left" or "move_right" or "move_up" or "move_down":
 		if bool(__input.pressed) == false :
 			if (x)== 0 && (y) == (0): # The bug occurs at this logic
-			
-				print ("sdfghsdofgnjsd;ofghsdgo;osdighdoifh")
+			# Attempt to reset the stuck action
+				#print ("Fix Stuck Joystick Bug- Logic Broken here, Fix written below")
+				#print("attempting to fix Joystick Bug: ", str (__input.action), str(__input.strength))
+				#print (__input.as_text()) #for debugging release
+				#print(prev_inputs)
+				# How to fix bug
+				# create an array of max 2, store all input actions in it. Once this code bloc is triggered
+				# parse the first action as input to reset the joystick
 				#release()
 				#release_the_action(__input.action) # Doesnt work
 				#state = RELEASE
-				__input.action =="" # Attempt to reset the stuck action
-				parse_input_function(__input)
-				return __input
+				" Fixes Stuck input bug"
+				for _i in prev_inputs: 
+					__input.action = _i #uses a for loop to release all previous inputs
+				
+					__input.strength = 0
+					__input.pressed = false
+					#release_the_action(__input)
+					return parse_input_function(__input)
+					#return #state = NULL
+				
 			else: return
 			if bool(__input.pressed) == true:
 				return
 			if (x)!= 0 or (y) != (0):
 				return
 			return state
+		
 
 
 
@@ -381,6 +346,12 @@ func stop_debug():
 
 # Tries Fixing code duplicates in the Joystick logic and state Machine
 func parse_input_function(event):
+	if not prev_inputs.has(event.action): # Saves the Input to an Array
+		prev_inputs.append(event.action) # if it doesn't exist in the Array
+	if prev_inputs.has(event.action): #array data manipulation
+		prev_inputs.erase(event.action)
+		prev_inputs.append(event.action)
+	
 	return Input.parse_input_event(event)
 
 # Tries Fixing code duplicates in the Joystick logic and state Machine

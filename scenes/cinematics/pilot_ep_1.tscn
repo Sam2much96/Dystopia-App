@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scenes/cinematics/pilot_ep_1.gd" type="Script" id=1]
 [ext_resource path="res://scenes/cinematics/Pilot_a.ogv" type="VideoStream" id=2]
-[ext_resource path="res://New game code and features/Ads_manager.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ads/Ads_manager.tscn" type="PackedScene" id=3]
 
 [node name="AnimationPlayer" type="Control"]
 anchor_right = 1.0

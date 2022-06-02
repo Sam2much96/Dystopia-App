@@ -39,17 +39,24 @@ FEATURES
 (11) Watch Anime:
 	  Stream Dystopia Anime from the app
 
-(12)Environment animation
+(12)Environment animation:
+		Environment objects are animated and optimized to trigger upon player's interractions
 
 (13)FFmpeg Decoder Libraries from 'https://github.com/kidrigger/godot-videodecoder ' are used in the Anime streaming section. I rendered the
 	video in 720p, the game's resolution.
 
 (14) Adaptable Ads
-		A part of my partnership with Appodeal, i implemented their SDK, Facebook's SDK, and Admob into the app for mobile builds.
+		A part of my partnership with Appodeal, i implemented their SDK, Facebook's SDK, and Admob into the app for mobile builds. 
+		Also implemented an Ads manager system to implement a smart ads system
+
 (15) Storing video files and loading video streams are now global functions
 		'func GLobals.store_video_files(_body)', and Globals._Video_Stream(node , stream, _sound, viewport). The mobile engine doesn't handle high-res videos well.
 (16) I implemented A touch input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases to fix the comics section ux problem
 (17) The Project uses a custom AndroidManifest.xml, backup_rule.xml, build.grade and config.gradle scripts to build for android.
+(18) Dialogic:
+		It implements dialogic to handle storytelling and rpg interractions
+(19) Translation:
+		It implements a global Dialogue function to parse .csv translation files and change dialogue depending on Player's preferred language settings.
 -Features to Fix
 	-Enemy Animation 
 	-Fix up Game's spawnpoints (look at the Exit code in the Temple interior scene)
@@ -62,7 +69,7 @@ FEATURES
 	-Multitouch settings in control
 	-Better Combat System
 	-Comic placeholder code
-	-Joystick code
+	-Joystick code (fixed)
 	-Horizontal Swipe gestures for the Comic placeholder code
 	-Auto rotate gestures for the Comic placeholder code
 	-Guided view ( Controlled zoom )
@@ -74,12 +81,12 @@ FEATURES
 	-Game Vibrations
 	-Comic book dialogue system
 	-Improve game loading speed
-	-Enemy AI (using G.O.A.P)
+	-
 	-Hints system
-	-Expanded Dialogue System (Word bubble system)
+	-Expanded Dialogue System (Word bubble system + Dialogic)
 	-update control art with new button maps
-	-Ingame Tokens	
-	-Add multiplayer Network and DLC network code/singleton
+	-Ingame Tokens (implement monero's c++ library)	
+	-Add multiplayer Network and DLC network code/singleton (Roll back peer to peer multiplayer)
 	-Shop & Merch Store
 	-Guided view system
 	-Login UI
@@ -92,7 +99,7 @@ FEATURES
 	-Spritesheet animation upgrade
 	-UI art upgrade
 	-Model player & enemy characters (Rig with mixamo)
-	-Translate feature using .json files
+	-Translate feature using .json files (code added)
 	-Attack sfx
 	-Multiple Languages (localization and dubbing to French and Spanish).
 	-Procedurally generated sand dunes
@@ -116,9 +123,9 @@ FEATURES
 		-Banner Ads over video footage
 -Bugs to fix
 	-Player scent mechanics
-	-Debug double instance
+	-Debug double instance (fixed)
 	-Form entering breaks
-	-GodotAppodeal is broken (lol). I won't bother to fix it
+	-GodotAppodeal is broken (lol).
 -Builds to Add
 	-IOS builds
 	-HTML5 build for the comic placeholder

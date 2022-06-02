@@ -5,6 +5,7 @@
 # CLIENT-SIDE CODE
 #
 # All the client logics in one file!
+# Needs Mesh network for peer to peer
 # *************************************************
 extends Node
 var client_debug 

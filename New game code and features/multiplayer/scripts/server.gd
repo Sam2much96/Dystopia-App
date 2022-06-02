@@ -5,7 +5,8 @@
 # SERVER-SIDE CODE
 #
 # All the server  logics in one file!
-#it also contains the worls logics *inhumanity
+#it also contains the world's logics *inhumanity
+# It implements roll back netcode
 # *************************************************
 extends Node
 

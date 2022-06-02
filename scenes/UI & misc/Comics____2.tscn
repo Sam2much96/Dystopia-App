@@ -15,7 +15,7 @@
 [ext_resource path="res://scenes/Comics/chapter 7/Cover 1.webp" type="Texture" id=13]
 [ext_resource path="res://scenes/UI & misc/comics-reader-extension.gd" type="Script" id=14]
 [ext_resource path="res://resources/misc/UI hover buttons.webp" type="Texture" id=15]
-[ext_resource path="res://New game code and features/Ads_manager.tscn" type="PackedScene" id=16]
+[ext_resource path="res://ads/Ads_manager.tscn" type="PackedScene" id=16]
 [ext_resource path="res://fonts/Word_bubble_dialogue.tres" type="DynamicFont" id=17]
 [ext_resource path="res://scenes/Comics/chapter 1/Cover 1_pressed.webp" type="Texture" id=18]
 [ext_resource path="res://scenes/Comics/chapter 2/cover 2_pressed.webp" type="Texture" id=19]

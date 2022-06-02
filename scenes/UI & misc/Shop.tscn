@@ -6,7 +6,7 @@
 [ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://scenes/UI & misc/anime_streaming.gd" type="Script" id=5]
 [ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=6]
-[ext_resource path="res://New game code and features/Ads_manager.tscn" type="PackedScene" id=7]
+[ext_resource path="res://ads/Ads_manager.tscn" type="PackedScene" id=7]
 
 [node name="Shop" type="Control"]
 anchor_right = 1.0

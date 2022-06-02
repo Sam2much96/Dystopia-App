@@ -18,7 +18,7 @@
 # (3) Youtube Download Streamer Logic impementation
 # (4) Proper Documentation
 # (5) Run an online for PC and mobile Devices. The Hardware is available now
-# (6) NetCodes
+# (6) Implement Rollback NetCodes for Multiplayer Gameplay
 
 
 extends HTTPRequest

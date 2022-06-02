@@ -6,11 +6,13 @@
 # I sure as fvck don't know what it does. Ama fuck around and find out!
 # To Do:
 #(1) Write a documentation
+#(2) Connect it to dialogic addon
 # *************************************************
 # fEATURES:
 #(1) Converts Text to speech
 # (2) shows a dialogue function, hide_a dialogue function (1/2)
 # (3) Has two signals for when dialogue starts and when it ends.
+# (4) Translates between languages using a translation .csv file
 
 #Questions. WHy not just make it a class instead?
 # why all the complicated codes
@@ -40,7 +42,7 @@ var active = false
 
 var dialog_box = null setget _set_dialog_box
 
-
+var language # stores the current language the user selects
 
 func show_dialog(text:String, speaker:String):
 	if is_instance_valid(dialog_box): # If an instance of dialogue box hasn't been deleted from memory?
@@ -78,3 +80,10 @@ func _on_dialog_ended():
 	active = false
 	emit_signal("dialog_ended")
 	
+
+ # Uses the translate feature from the Form at res://scenes/UI & misc/form/form.tscn
+ # It parses from translations .csv and returns a string
+func translate_to(language)-> String:
+	if language != null:
+		return (tr(language))
+	else: return ("") # returns an empty string

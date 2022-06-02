@@ -1,0 +1,15 @@
+{ "columns":9,
+ "image":"trees_1.webp",
+ "imageheight":90,
+ "imagewidth":104,
+ "margin":0,
+ "name":"trees_1",
+ "spacing":0,
+ "tilecount":72,
+ "tiledversion":"1.8.5",
+ "tileheight":11,
+ "tilewidth":11,
+ "transparentcolor":"#ff00ff",
+ "type":"tileset",
+ "version":"1.8"
+}

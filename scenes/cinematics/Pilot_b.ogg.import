@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Pilot_b.ogg-e4c9617ac4bc2146442a28716abf6f1d.oggstr"
+
+[deps]
+
+source_file="res://scenes/cinematics/Pilot_b.ogg"
+dest_files=[ "res://.import/Pilot_b.ogg-e4c9617ac4bc2146442a28716abf6f1d.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

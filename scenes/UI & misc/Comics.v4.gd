@@ -216,7 +216,7 @@ func _input(event):
 	CONTROLS THE TOUCH INPPUT FOR THE COMICS NODE
 	"""
 	if event is InputEventScreenTouch :
-		if event is  InputEventMultiScreenDrag == true : # Breaks here
+		if event is  InputEventMultiScreenDrag == true : # Works
 			target =  event.get_position()
 			if event.get_index() == int(2) and event is InputEventScreenPinch : #zoom if screentouch is 2 fingers & uses input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases
 				

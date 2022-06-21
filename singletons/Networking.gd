@@ -76,7 +76,7 @@ export (String) var url = ''
 
 #var xml = preload('res://scenes/UI & misc/xml.tscn') #used for downloading and logging file downloads
 
-var youtube_dl = preload ('res://New game code and features/youtube streamer/Youtube-DL.gd')
+#var youtube_dl = preload ('res://New game code and features/youtube streamer/Youtube-DL.gd') #what if youtube goes down lool
 
 func _ready():
 	if cfg_server_ip == '':

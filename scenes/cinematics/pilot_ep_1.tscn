@@ -35,5 +35,6 @@ volume_db = 10.0
 singleton = "GodotYodo1Mas"
 _ad_type = "banner_ad"
 enabled = false
+Fast_debug = false
 
 [connection signal="finished" from="VideoPlayer" to="." method="_on_VideoPlayer_finished"]

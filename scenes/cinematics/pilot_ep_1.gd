@@ -20,12 +20,13 @@
 extends cinematic
 
 ##This code should run a global function to unzip the video files to 'user://' when the user first funs the app
-# It extends cinematic class
+# It extends cinematic class, and causes a bug break from the root cinematic node
+#it also gives access to cinematic source funtions
 
 export (bool) var enabled 
 
 # Preload for fast loading. Also used Global functions as well
-
+# use Globals.cinematics for video files
 onready var Pilot_a = load ('res://scenes/cinematics/Pilot_a.ogv') # Ogv works best for mobile phones
 onready var Pilot_b = load ('res://scenes/cinematics/Pilot_b.ogv')
 
@@ -47,7 +48,7 @@ var error_code
 export (bool )var new_feature  # A switch for the zip folder new function.
 # The Video Code is broken, Fix it.
 
-var path_to_zip_file = 'res://scenes/cinematics/Pilot_a.zip' # Used in a 
+var path_to_zip_file = 'res://scenes/cinematics/Pilot_a.zip' # Used in a #doesn't work
 func _init()-> void:
 	#Check if the uncompressed videos are available in the directory
 	var file2Check = File.new()
@@ -108,23 +109,23 @@ func _process(_delta):
 
 
 	# Checks if the Video Ads load
-	
-	if ads_manager.Admob.emit_signal("rewarded_video_loaded"):
-		print (' Video Ads loaded')
-	if ads_manager.Admob.emit_signal("rewarded_video_failed_to_load", error_code) :
-		print ("rewarded_video_failed_to_load")
-		counter = 4 # Triggers a quit action through the counter function
-		check_counter()
-	else:
-		pass
+	# why is this code here?
+	#if ads_manager.Admob.emit_signal("rewarded_video_loaded"):
+	#	print (' Video Ads loaded')
+	#if ads_manager.Admob.emit_signal("rewarded_video_failed_to_load", error_code) :
+	#	print ("rewarded_video_failed_to_load")
+	#	counter = 4 # Triggers a quit action through the counter function
+	#	check_counter()
+	#else:
+	#	pass
 
 func _play_pilot_a():
 	if enabled == true && Pilot_a != null:
 		_video_player.show()
 		
 		#It uses a global videostream function
-		
-		Globals._Video_Stream(_video_player , Pilot_a, Pilot_a_sound, viewport)
+		Globals.cinematics = Pilot_a
+		_Video_Stream(_video_player , Globals.cinematics, Pilot_a_sound, viewport)# Rewrite function to root script
 		audio.set_stream(load(Pilot_a_sound))
 		audio.play(0.0)
 
@@ -132,8 +133,8 @@ func _play_pilot_b():
 	if enabled == true && Pilot_b != null:
 		_video_player.show()
 		#It uses a global videostream function
-		
-		Globals._Video_Stream(_video_player , Pilot_b, Pilot_b_sound, viewport)
+		Globals.cinematics = Pilot_b
+		_Video_Stream(_video_player , Globals.cinematics, Pilot_b_sound, viewport)
 		audio.set_stream(load(Pilot_b_sound))
 		audio.play(0.0)
 
@@ -141,18 +142,20 @@ func _play_AMV():
 	if enabled == true && Pilot_b != null:
 		_video_player.show()
 		#It uses a global videostream function
-		
-		Globals._Video_Stream(_video_player , AMV, '', viewport)
+		Globals.cinematics = AMV #makes the video file a global for improved playspeed
+		_Video_Stream(_video_player , Globals.cinematics, '', viewport)
 		audio.set_stream(load('res://music/chuks-dane_chuks-dane-shoot-back.ogg'))
 		audio.play(0.0)
 
 func stop_playing():
 	_video_player.hide()
-	Music.sound('off')
+	Music.sound('off') # Check THe GLobal Music settings and adjust accordingly
 
+'should connect to ADS mANAGER'
 # Video Monetization code
 func _show_video_ads(): # Not properly tested, disabling this until it is.
 	# Initialises the Admob singleton through the ads manager for video ads
+	print ('showing video ads by connecting to Ads manager function')
 	if (OS.get_name()) == "Android"or  "iOS": # Activates the ads only on mobiles
 	#	ads_manager.singleton = "GodotYodo1Mas"
 	#	ads_manager.enabled = true
@@ -165,7 +168,14 @@ func _show_video_ads(): # Not properly tested, disabling this until it is.
 
 
 func _exit_tree():
-	print ('Deleting Videoplayer from scene')
+	print ('Deleting All Videoplayer items from scene')
+	_free_memory(Globals.cinematics)
+	_free_memory(Pilot_a_sound)
+	_free_memory(Pilot_b_sound)
+	_free_memory(Pilot_a)
+	_free_memory(Pilot_b)
+	_video_player.queue_free()
+
 
 
 
@@ -192,3 +202,8 @@ func check_counter():
 		queue_free()
 	else:
 		return
+
+
+func _input(_event):
+	if Input.is_action_pressed("ui_cancel") :#Press escape to quit
+		Globals._go_to_title()

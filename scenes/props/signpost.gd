@@ -1,3 +1,12 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Features:
+# An interractible environment object
+# To Do:
+# SHould connect to a signal from UI to trigger the UI once player is nearby
+
 extends Area2D
 
 
@@ -38,7 +47,8 @@ func _on_player_area_entered(body):
 	#print('_on_player_area_entered_ functin running', body.get_parent().name)
 	if  body.get_parent().name == 'Player' :
 		_player_near = true
-		print ('player near signpost: ', _player_near)
+		print ('player near signpost: ', _player_near) #send this information to the UI viab a global variable
+		Globals.near_interractible_objects = _player_near
 
 
 
@@ -47,4 +57,8 @@ func _on_player_area_exited(body):
 		_player_near = false
 		interract = false
 		print ('player near signpost: ', _player_near)
+		Globals.near_interractible_objects = _player_near
 		shown = false
+
+func _process(delta): # Triggers the UI if _player_near is true.
+	return 

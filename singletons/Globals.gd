@@ -26,7 +26,7 @@
 extends Node
 
 #use variables to code ux +add a scene tree calculator
-var cinematics = preload ('res://resources/title animation/title..ogv')
+var cinematics = preload ('res://resources/title animation/title..ogv') #I free memory once this is used
 #var Pilot_ep
 
 #var AMV 
@@ -34,11 +34,11 @@ var pilot_ep
 var VIDEO
 
 onready var form = load ('res://scenes/UI & misc/form/form.tscn')
-var title_screen = preload( 'res://scenes/Title screen.tscn')
+var title_screen = load( 'res://scenes/Title screen.tscn')
 #var shop = load('res://scenes/UI & misc/Shop.tscn')
 var controls = load ('res://scenes/UI & misc/Controls.tscn')
 
-#Comics  Book Module variables
+"Comics  Book Module variables"
 onready var comics = load ('res://scenes/UI & misc/Comics.tscn')
 onready var comics___2 = load ('res://scenes/UI & misc/Comics____2.tscn')
 var comics_chapter 
@@ -57,7 +57,7 @@ export var player  = []
 var player_hitpoints
 var enemy = null
 var enemy_debug
-export(String, FILE, "*.tscn") var initial_level  = "res://scenes/levels/Outside.tscn" 
+var initial_level  = "res://scenes/levels/Outside.tscn"  # loading outside environment bug fixed
 var Debug = null
 var _player_state # gets state data from the player state machine
 var video_stream #for the video streamers
@@ -65,7 +65,7 @@ var video_stream #for the video streamers
 #var metamask_wallet #Stores your wallet for the nft transactions
 var languague #Stores the user's lingua franca
 
-export (int) var Suds #currency system
+export (int) var Suds #currency system, connect to $xmr protocol
 # warning-ignore:unused_class_variable
 export (Vector2) var spawnpoint 
 var spawn_x
@@ -78,6 +78,11 @@ export (bool) var Music_on_settings
 var direction_control = '' #toggles btw analogue and d-pad
 
 var uncompressed # Varible holds uncompressed zip files
+
+
+'ingame Environment Variables'
+var near_interractible_objects
+
 func _ready():
 	#print('Blood fx:',blood_fx)
 	#
@@ -187,9 +192,12 @@ func update_curr_scene():
 	curr_scene= get_tree().get_current_scene().get_name() 
 	
 func _go_to_title():
+	'Quits if already at title screen'
 	if get_tree().get_current_scene().get_name() == 'Menu':
 		get_tree().quit()
 	Music.play_track(Music.ui_sfx[1])
+	
+	'changes scene to title_screen'
 	return get_tree().change_scene_to(title_screen)
 
 func _go_to_cinematics():
@@ -199,78 +207,6 @@ func _go_to_cinematics():
 """
 VIDEO STREAMER
 """
-"""
-Quickly sets a videoplayer to Play music and videos
-"""
-# Would break if passed to anything other than videosteam player
-func _Video_Stream(node , stream, _sound, viewport):
-	if stream and node != null or '':
-		print('Playing Video Stream:/',stream)
-		#node._set_size((viewport))
-		node.set_stream(stream) 
-		node.play() 
-		print ('Video player is playing: ',node.is_playing())
-		
-		# Plays the sound through the music singleton
-		#get_tree().get_root().get_node("/root/Music").play(sound)
-		return
-	else:
-		push_error('Video player uses the video player node, and music singleton')
-		push_warning(str(node) +"/" +str(stream) + "/"+ str (_sound))
-
-
-"""
-CREATES AN VideoStreamTheora  .OGV  VIDEO FILE FROM A POOLBYE ARRAY
-"""
-
-# It needs a video file size and it will run as a loop as long as both aren't equal
-func store_video_files(_body, size) -> VideoStreamTheora: # FUnvtion breaks here
-	var video_file = File.new()
-	var error_checker = File.new()
-	
-	if _body != null:
-		# Add more error File error checkers
-		
-		#Writes a video file to the godot user's directory from a pool byte array
-		video_file.open('user://video.ogv',File.WRITE)
-		
-		# Checks the Video file
-		var err = (error_checker.open('user://video.ogv', File.READ))
-		#Debug.misc_debug = str('VIdeo buffer: ' ,_body) # Debugs the video file
-		 #store pool byte array as video buffer
-		var video_file_path = video_file.get_path_absolute() #gets the file path
-		print ('Video File path: ', video_file_path)
-		VIDEO = load(video_file_path)
-		
-		#return print ('Video FIle Path',video_file_path)
-		#Comvert size to MB usingConvertfunctiion
-		
-		 # Gets VIdeo file length in bytes, converts it to MB
-		var __video_file_size_mb = _ram_convert(video_file.get_len())
-
-		print ('Video file size: ',__video_file_size_mb, '/',' Est file size: ', size)# For debug purposes only
-		#Stores PoolbyteArray into video file while the video file size is not the user's inputed video size
-		if not error_checker.eof_reached() : # Original code uses a while loop. CHanging it because code breaks
-			if _body != null:
-				print ('Storing video buffer')
-				video_file.store_buffer(_body.get_buffer())
-		# Error checkers
-			if __video_file_size_mb != size :
-				print ('Video File size is not equal or greater than the inputed video file size 1')
-				print ('Body (poolbytearray)',_body)
-			if error_checker.get_len() != size:
-				print('Video File size is not equal or greater than the inputed video file size 2')
-			
-
-			if error_checker.eof_reached(): # If the error checker has read through the body
-				#break
-				return video_file
-			if __video_file_size_mb != null :
-				if __video_file_size_mb >= size: 
-					print ('STORAGE SUCCESS')
-		video_file.close()
-		return video_file
-	return video_file
 
 # Does not work
 func unzip_file_to_video(path_to_zip): # Unzips the pilot ep. #Rewrite to use globally

@@ -5,13 +5,17 @@
 #
 # This is a touch interface consisting of Touch 2d buttons and a Touch screen Joystick
 # information used by the ingame UI node.
-# Touch OS enables or Disables the touch interface depending on if a touch screen is present.
+# Touch OS enables or Disables the touch interface depending on if a touch screen is present. _Hide_touch_interface boolean variable
+# Emits it's state as a signal
 
 # A State Machine for the touch interface to hint the player and not clutter the ui
 # on the 16/04/22 i discovered that this code is a mess and requires urgent Rewritting
 # The old state machine used functions, thenew one will use a process function with blocs of code
-# I'll also attempt fixing the joystick code 
-# (2) Ipdate the interract state
+# I'll also attempt fixing the joystick code  (fixed)
+# (2) Update the interract state to be usable
+# (3) Hidetouch interface / Touch interface reset bug
+#		(workaround) CLicking other buttons on the touch UI resets this bug on touch UI
+#(4) Edit DOcumentation to be neater
 # *************************************************
 
 
@@ -35,8 +39,15 @@ onready var right = $right
 onready var comics = $comics
 onready var joystick = $Joystick
 
-#Old state Machine. Depereciated!
-export(String, "menu", "interract", "attack", "stats", 'comics', 'reset') var state 
+#Old state Machine. Depereciated! Reuse as signals
+#export(String, "menu", "interract", "attack", "stats", 'comics', 'reset') var state 
+
+signal menu
+signal interract
+signal attack
+signal stats
+signal comics
+signal reset
 
 #Rewritten State Machine
 enum { MENU, INTERRACT, ATTACK, STATS, COMICS, RESET }
@@ -46,7 +57,7 @@ export var _state_controller = RESET
 
 export (String, 'analogue', 'direction') var _control
 func _ready():
-#Changes D-pad Controls from control
+#Changes D-pad Controls from control once the Touch Interface is ready
 	if Globals.direction_control != '':
 		_control = Globals.direction_control
 
@@ -98,11 +109,11 @@ func attack(): #used by ui scene when attack is clicked
 # Handles Debugging Variables from the touch interface system
 func touch_interface_debug(): #Debug singleton is broken
 	if _Hide_touch_interface == false:
-		print ('Touch Interface Debug: ', 'State: ',state, " COntrol: ",_control)
+		print ('Touch Interface Debug: ', " COntrol: ",_control)
 
 func _process(_delta):
-	#if _Debug == true:
-	#	touch_interface_debug() # For Debug Purposes only
+	if _Debug == true:
+		touch_interface_debug() # For Debug Purposes only
 	
 	"""
 	State Machine For the TOuch interface
@@ -122,13 +133,15 @@ func _process(_delta):
 				comics.hide()
 				slash.hide()
 				roll.hide()
-				state = 'menu'
+				#state = 'menu' #depreciated, use signal instead
+				emit_signal("menu")
 			pass
 		INTERRACT:
 			#The interract state should only show when it's close to an interactible object 
 			if _Hide_touch_interface == false:
-				state = 'interract'
+				#state = 'interract'
 				#if Touch_os_enabled == false:
+				emit_signal('interract')
 				stats.hide()
 				menu.show()
 				right.hide()
@@ -140,7 +153,8 @@ func _process(_delta):
 				comics.hide()
 				slash.hide()
 				roll.hide()
-					
+				return
+				
 			pass
 		ATTACK:
 		
@@ -150,7 +164,8 @@ func _process(_delta):
 				# Writing it as a state machine, makes it easier to change and improve #Using children nodes
 				# rather than direct calls to each node
 				# rearrange the scene to sort it into sections
-				state = 'attack'
+				#state = 'attack'
+				emit_signal('attack')
 				stats.hide()
 				menu.show()
 				_interract.hide()
@@ -172,7 +187,8 @@ func _process(_delta):
 
 			pass
 		STATS:
-			state = 'status'
+			#state = 'status'
+			emit_signal('status')
 			if _Hide_touch_interface == false :
 				stats.show()
 				menu.hide()
@@ -201,31 +217,34 @@ func _process(_delta):
 				comics.show()
 				slash.hide()
 				roll.hide()
-				state = 'comics'
+				#state = 'comics' #depreciated, uses signal instead
+				emit_signal('comics')
 			
 		
 			pass
-		RESET:
+		RESET: #$ Too many ifs conditions #simplify state?
 			if _Hide_touch_interface == false :
-				state = 'reset'
+				#state = 'reset'
+				emit_signal('reset')
 				#for child in get_children():
 				#	child.show()
+				"shows all the UI options"
 				stats.show()
 				menu.show()
 				_interract.show()
 				comics.show()
 				slash.show()
 				roll.show()
-				
+				return
 				#touch_interface_debug() # For Debug Purposes only
-				
+				"SHows the directional based on a global variable?"
 				if _control == 'analogue':
 					joystick.show()
 					up.hide()
 					down.hide()
 					left.hide()
 					right.hide()
-					
+					return
 					#touch_interface_debug() # For Debug Purposes only
 				if _control == 'direction':
 					joystick.hide()
@@ -235,7 +254,8 @@ func _process(_delta):
 					right.show()
 					
 					#touch_interface_debug() # For Debug Purposes only
-
+					return
+			
 		
 			pass
 	pass

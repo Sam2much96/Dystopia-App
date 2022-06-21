@@ -7,9 +7,6 @@
 
 [node name="Cinematics" type="Control"]
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Node2D" type="Control" parent="."]
 rect_scale = Vector2( 0.65, 0.65 )

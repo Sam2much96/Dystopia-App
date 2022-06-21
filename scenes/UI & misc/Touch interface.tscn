@@ -21,7 +21,6 @@ radius = 50.0
 [node name="TouchInterface" type="Node2D"]
 modulate = Color( 1, 1, 1, 0.698039 )
 script = ExtResource( 4 )
-_Debug = true
 _control = "analogue"
 
 [node name="menu" type="TouchScreenButton" parent="."]

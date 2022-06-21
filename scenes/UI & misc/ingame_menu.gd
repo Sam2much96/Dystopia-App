@@ -6,6 +6,10 @@
 # 
 # To Do:
 #(1) Impement State Machine
+#Bugs
+
+#(1) Emitting signals fail
+#(2) Broken functions
 # *************************************************
 
 extends Control
@@ -13,6 +17,7 @@ extends Control
 var selector = 0
 signal menu_hidden
 signal menu_showing
+signal loading_game
 export (bool) var enabled 
 
 """
@@ -25,12 +30,15 @@ onready var game_menu = get_node("MarginContainer")
 
 onready var _multiplayer = $MarginContainer/ScrollContainer/HSeparator/multiplayer
 
-
+enum { SHOWING, HIDDEN, LOADING}
 #func _enter_tree():
 	#hide()
+export (String) var menu_state
 
 func _ready():
-	hide()
+	'Hides the Menu once the scene tree is ready'
+	#hide()
+	menu_state =  HIDDEN
 	
 	if Globals.load_game(true) and continue_game != null:
 		continue_game.disabled = false 
@@ -39,20 +47,36 @@ func _ready():
 
 func _process(_delta):
 	#_hide_some_menu_options() #turning this off temporarily to debug the debug singleton
+	"Visibility State Machine"
+	match menu_state:
+		SHOWING:
+			return _menu_showing()
+		HIDDEN:
+			return _menu_not_showing()
+		LOADING:
+			'simply emits a signal in this state'
+			emit_signal("loading_game")
 	pass
 func _input(event): #Toggles menu visibility on/off
 	if event.is_action_pressed("menu") == true :# 
-		if enabled == false:
+		if menu_state == HIDDEN:
+		#if enabled == false:
 			#self.show()
-			_menu_showing()
+			#_menu_showing() #use state machine instead
 			#print('sahdashfvsh')
-			return
-		if enabled == true:
+			menu_state = SHOWING
+			#print ("Menu State: ",menu_state) #For debug purposes only
+			return menu_state
+		if menu_state== SHOWING:
+		#if enabled == true:
 			#self.hide()
 			#print ('askjabsfkbsdfbs')
-			_menu_not_showing()
+			#_menu_not_showing() #Use state machine instead
+			menu_state = HIDDEN
+			#print ("Menu State: ",menu_state) #For debug purposes only
+			return menu_state
+		else:
 			return
-
 
 #input functions for gamepad
 
@@ -78,10 +102,14 @@ func _on_continue_pressed():
 func _on_new_game_pressed():
 	if Globals.initial_level != "":
 		Globals.current_level = Globals.initial_level
-		Music.play_track(Music.ui_sfx[0])
+		#emit_signal("loading_game") #other functions connect to theis signal
+		menu_state= LOADING # new state function
+		print (" Emitting signal--loading game--")
+		return Music.play_track(Music.ui_sfx[0]) #plays ui sfx in a loop
+		# play cinematic via an Autoload singletom #missing function
 		if Globals.save_game() == false:
 			push_error("Error saving game")
-		var err = get_tree().change_scene(Globals.initial_level)
+		var err = get_tree().change_scene(Globals.initial_level) # Loads the initial scene from 
 		if err != OK:
 			push_error("Error changing scene: %s" % err)
 	else:
@@ -91,17 +119,20 @@ func _on_new_game_pressed():
 
 
 
-func _on_Menu_button_toggled(button_pressed): # Broken Function
+func _on_Menu_button_toggled(button_pressed): # Broken Function #rewriting with State_Machine
 	if button_pressed :
 		print (' Showing Game Menu ') # For Debug purposes only
-		game_menu.show() 
+		game_menu.show()
+		# new animation
+		emit_signal('menu_showing') 	
 	else: 
 		print (' Hiding Game Menu') # For Debug purposes only
 		game_menu.hide() 
+		emit_signal('menu_hidden')
 
 
 #Handles Displaying the menu
-func _menu_showing(): #Broken funtions
+func _menu_showing(): #Broken funtions #rewrite with state machine
 	enabled = true 
 	show()
 	
@@ -168,3 +199,8 @@ func _hide_some_menu_options():
 		if Debug.debug_panel == null:
 			_multiplayer.hide()
 		pass
+
+
+func _on_Anime_pressed():
+	Music.play_track(Music.ui_sfx[0])
+	return get_tree().change_scene_to((load('res://scenes/UI & misc/Shop.tscn')))

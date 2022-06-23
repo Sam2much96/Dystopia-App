@@ -28,7 +28,7 @@ export (bool) var enabled
 # Preload for fast loading. Also used Global functions as well
 # use Globals.cinematics for video files
 onready var Pilot_a = load ('res://scenes/cinematics/Pilot_a.ogv') # Ogv works best for mobile phones
-onready var Pilot_b = load ('res://scenes/cinematics/Pilot_b.ogv')
+onready var Pilot_b = load ('res://scenes/cinematics/Pilot_b.ogv') # it decodes webm as well
 
 onready var AMV = load ('res://scenes/cinematics/AMV.ogv')
 

@@ -24,5 +24,5 @@ func _on_Item_body_entered(body):
 		# Adds Items to the Inventory Singleton
 		Inventory.add_item(item_type, amount)
 		$anims.play("collected")
-		Music.play_track(load("res://sounds/item_collected.ogg")) # Plays sound via singleton
+		Music.play_track("res://sounds/item_collected.ogg") # Plays sound via singleton
 	pass

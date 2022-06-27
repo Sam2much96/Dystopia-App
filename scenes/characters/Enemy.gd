@@ -13,6 +13,7 @@
 # (1) Enemy AI is too simple to beat (i.e Dumb)
 # (2) Enemy AI lacks ability to throw Projectiles
 # (3) No Documentation
+# (4) Enemy mob uses too much computer procesing power
 # *************************************************
 # New Features
 #(1) Raycast 2d for precision 

@@ -240,7 +240,7 @@ func play_track(_track): #for playing single sample tracks
 		if music_on == true:
 			#print (_track)# For debug purposes only
 
-			$D.set_stream ( load (_track)) 
+			$D.set_stream ( load (_track)) #Children Scripts should not load the soundtracks
 			$D.play(0.0)
 			sfx_streamer  = str('playing sfx: ',_track.get_file())
 			yield(get_tree().create_timer(0.8), "timeout")

@@ -15,12 +15,8 @@ onready	var menu = $"Menu "
 #onready var 
 "Plays UI animations from ingame menu signals"
 
-#func _process(_delta):
-#	'Triggers Logic from INgame Menu State machine'
-#	#print ("menu state debug: ",str(menu.menu_state )) # for debug purposes only
-#	if menu.menu_state == 2: #(loading new game state)
-#		anim.play("eyes_loop") #plays an animation loop as new game loads
-
+func _ready():
+	_connect_signals() #connect Loadingsignals from the Ingame Menu
 
 func _on_Menu__menu_showing(): #not using this signal for now
 	return
@@ -31,6 +27,9 @@ func _on_Menu__menu_hidden(): #unused function
 	#anim.play("RESET")
 	return
 
-func _on_Menu__loading_game(): #unused function
-	#anim.play("eyes_loop")
+func _on_Menu__loading_game(): 
+	anim.play("eyes_loop")
 	return
+
+func _connect_signals():
+	menu.connect("loading_game", self,"_on_Menu__loading_game")

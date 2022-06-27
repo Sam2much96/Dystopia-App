@@ -1181,8 +1181,9 @@ height = 67.6021
 
 [node name="Enemy" type="KinematicBody2D" groups=["enemies"]]
 position = Vector2( 585.638, 309.087 )
-scale = Vector2( 0.8, 0.8 )
+scale = Vector2( 0.719999, 0.719999 )
 script = ExtResource( 6 )
+hitpoints = 1
 
 [node name="sprite" type="Sprite" parent="."]
 modulate = Color( 0.292036, 0.292036, 0.292036, 1 )

@@ -105,8 +105,10 @@ func _on_new_game_pressed():
 		#emit_signal("loading_game") #other functions connect to theis signal
 		menu_state= LOADING # new state function
 		print (" Emitting signal--loading game--")
-		return Music.play_track(Music.ui_sfx[0]) #plays ui sfx in a loop
+		Music.play_track(Music.ui_sfx[0]) #plays ui sfx in a loop
+		return get_tree().change_scene(Globals.current_level) 
 		# play cinematic via an Autoload singletom #missing function
+		
 		if Globals.save_game() == false:
 			push_error("Error saving game")
 		var err = get_tree().change_scene(Globals.initial_level) # Loads the initial scene from 
@@ -136,8 +138,8 @@ func _menu_showing(): #Broken funtions #rewrite with state machine
 	enabled = true 
 	show()
 	
-	Music.play_track(Music.ui_sfx[0])
-	Music._notification(NOTIFICATION_PAUSED) #brken function
+	#Music.play_track(Music.ui_sfx[0]) #introduces a sound bug
+	#Music._notification(NOTIFICATION_PAUSED) #brken function 
 	
 	set_focus_mode(2)
 	emit_signal("menu_showing")
@@ -148,8 +150,8 @@ func _menu_not_showing():
 	enabled = false
 	hide()
 	
-	Music.play_track(Music.ui_sfx[1])
-	Music._notification(NOTIFICATION_UNPAUSED)
+	#Music.play_track(Music.ui_sfx[1]) #introduces a sound bug
+	#Music._notification(NOTIFICATION_UNPAUSED) #introduces a sound bug
 	
 	set_focus_mode(0)
 	emit_signal("menu_hidden")

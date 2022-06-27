@@ -41,7 +41,7 @@ extends CPUParticles2D
 
 func _ready():
 	emitting = true
-	Music.play_track(load(\"res://sounds/blood-spilling.ogg\")) # Calls the music singleton to play this track
+	Music.play_track(\"res://sounds/blood-spilling.ogg\") # Calls the music singleton to play this track
 	#$sloosh.play(0.0) depreciated
 	#yield(get_tree().create_timer(1.0), \"timeout\") 
 

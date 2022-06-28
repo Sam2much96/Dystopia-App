@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-# Dystopia-App-Stabe v1.1.9
+# Dystopia-App-Stable v1.1.9
 ''''
 Documentation by INhumanity_arts 
 
@@ -42,8 +42,7 @@ FEATURES
 
 (12)Environment animation
 
-(13)FFmpeg Decoder Libraries from 'https://github.com/kidrigger/godot-videodecoder ' are used in the Anime streaming section. I rendered the
-	video in 720p, the game's resolution.
+(13)FFmpeg Decoder Libraries from 'https://github.com/kidrigger/godot-videodecoder ' are used in the Anime streaming section. I rendered the video in 720p, the game's resolution.
 (14) Adaptable Ads
 	A part of my partnership with Appodeal, i implemented their SDK, Facebook's SDK, and Admob into the app for mobile builds.
 (15) Storing video files and loading video streams are done with Cinematics class scripts

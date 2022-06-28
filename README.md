@@ -43,11 +43,10 @@ FEATURES
 (12)Environment animation
 
 (13)FFmpeg Decoder Libraries from 'https://github.com/kidrigger/godot-videodecoder ' are used in the Anime streaming section. I rendered the video in 720p, the game's resolution.
-(14) Adaptable Ads
-	A part of my partnership with Appodeal, i implemented their SDK, Facebook's SDK, and Admob into the app for mobile builds.
+(14) Adaptable Ads:
+   A part of my partnership with Appodeal, i implemented their SDK, Facebook's SDK, and Admob into the app for mobile builds.
 (15) Storing video files and loading video streams are done with Cinematics class scripts
-	'store_video_files(_body)', and '_Video_Stream(node , stream, _sound, viewport)'. The mobile engine doesn't handle high-res videos well.
-	
+    'store_video_files(_body)', and '_Video_Stream(node , stream, _sound, viewport)'. The mobile engine doesn't handle high-res videos well.
 (16) I implemented A touch input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases to fix the comics section ux problem
 (17) The Project uses a custom AndroidManifest.xml, backup_rule.xml, build.grade and config.gradle scripts to build for android.
 (18) Implementing Dialogic as a child of Dialogues Singleton
@@ -129,4 +128,3 @@ distributionUrl = "https\://services.gradle.org/distributions/gradle-7.0.2-all.z
 .
 =======
 
->>>>>>> d773880c57d821ca303684a28b90f394507dabd8

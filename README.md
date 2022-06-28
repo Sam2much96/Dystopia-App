@@ -8,9 +8,9 @@ FEATURES
 (1) Auto Music shuffle:
 	This shuffles a selected music playlist (dictionary). It is in the Music singleton and uses the shuffle( function)
 
-(2)Globals.comicbook[1]
-	This is a shortcut for calling the comicbook scenes. use the change_scene_to(load(...INSERT ...)) to call it. 
-	check for other callable functions and variables in the globals singleton 
+(2)Globals.comicbook[1]:
+   This is a shortcut for calling the comicbook scenes. use the change_scene_to(load(...INSERT ...)) to call it. 
+  check for other callable functions and variables in the globals singleton 
 (3)Debug
 	It calls debug funtions like Debug.start_debug(), Debug.stop_debug(), and passes its variables to the viewport
 
@@ -43,8 +43,9 @@ FEATURES
 (12)Environment animation
 
 (13)FFmpeg Decoder Libraries from 'https://github.com/kidrigger/godot-videodecoder ' are used in the Anime streaming section. I rendered the video in 720p, the game's resolution.
+
 (14) Adaptable Ads:
-   A part of my partnership with Appodeal, i implemented their SDK, Facebook's SDK, and Admob into the app for mobile builds.
+   A part of my partnership with Appodeal, i implemented their SDK, Facebook's SDK, and Admob into the app for mobile    builds.
 (15) Storing video files and loading video streams are done with Cinematics class scripts
     'store_video_files(_body)', and '_Video_Stream(node , stream, _sound, viewport)'. The mobile engine doesn't handle high-res videos well.
 (16) I implemented A touch input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases to fix the comics section ux problem

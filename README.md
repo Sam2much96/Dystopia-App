@@ -27,6 +27,7 @@ FEATURES
 	Added a couple of custom input maps to enable and disable the comics and game menu scenes 
 
 (7) Enemy kill count:
+	This is a global variable that can be an indicator of player's progress
 
 (8) Twitter Login & Comments
 
@@ -43,21 +44,19 @@ FEATURES
 
 (13)FFmpeg Decoder Libraries from 'https://github.com/kidrigger/godot-videodecoder ' are used in the Anime streaming section. I rendered the
 	video in 720p, the game's resolution.
-
 (14) Adaptable Ads
-		A part of my partnership with Appodeal, i implemented their SDK, Facebook's SDK, and Admob into the app for mobile builds.
-(15) Storing video files and loading video streams are now global functions
-		'func GLobals.store_video_files(_body)', and Globals._Video_Stream(node , stream, _sound, viewport). The mobile engine doesn't handle high-res videos well.
+	A part of my partnership with Appodeal, i implemented their SDK, Facebook's SDK, and Admob into the app for mobile builds.
+(15) Storing video files and loading video streams are done with Cinematics class scripts
+	'store_video_files(_body)', and '_Video_Stream(node , stream, _sound, viewport)'. The mobile engine doesn't handle high-res videos well.
+	
 (16) I implemented A touch input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases to fix the comics section ux problem
 (17) The Project uses a custom AndroidManifest.xml, backup_rule.xml, build.grade and config.gradle scripts to build for android.
+(18) Implementing Dialogic as a child of Dialogues Singleton
+(19) Implementing Leaderboard and Achievements on Android Devices
 -Features to Fix
 	-Enemy Animation 
 	-Fix up Game's spawnpoints (look at the Exit code in the Temple interior scene)
-	-Fix up game's assets and animation
-	-auto enemy spawner
-	-Idol autosave
-	-A better state machine
-	-Cinematic video loading code system	
+	-Fix up game's animation	
 	-changing pages centers new page 
 	-Multitouch settings in control
 	-Better Combat System
@@ -69,26 +68,24 @@ FEATURES
 	-Pond FX to follow player
 	-Game Optimizations
 	-Appodeal's SDK integration
+	- New Game Loading Animation from title screen
+	-Better Scene loading management system via global functions
+	- Translation (Spanish, French, Yoruba)
 -Features to Add
-	-Achievement System 
 	-Game Vibrations
 	-Comic book dialogue system
-	-Improve game loading speed
 	-Enemy AI (using G.O.A.P)
 	-Hints system
 	-Expanded Dialogue System (Word bubble system)
 	-update control art with new button maps
-	-Ingame Tokens	
+	-Ingame Tokens	(On the Monero & Solana Blockchain)
 	-Add multiplayer Network and DLC network code/singleton
 	-Shop & Merch Store
 	-Guided view system
-	-Login UI
 	-Mana meter (Ogun meter)
 	-NPC_2 Quests
 	-New Environment(Create forest environment)
 	-Create Dungeon	
-	-YouTube load video
-	-Global scenes system
 	-Spritesheet animation upgrade
 	-UI art upgrade
 	-Model player & enemy characters (Rig with mixamo)

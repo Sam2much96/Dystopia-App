@@ -10,7 +10,10 @@ extends CanvasLayer
 # Features
 # (1) Codes for selecting and initializing an ads mediator for Android mobile phones 
 # (2) Switches Between Ads Mediator Programmatically
-# (3) Changwes the Ad type Programmatically
+# (3) Changes the Ad type Programmatically
+# (4) Uses a Dictionary to manage ads initialization
+# (5) Works only on Android Mobiles
+# (6) Uses a 5 second timer to run an initialization loop
 #To DO
 # OS specific implementation calls to determine os differences
 # DIfferent AD states to expand codes
@@ -27,7 +30,8 @@ THIS CODE STARTED OUT AS A DEBUGGER FOR THE AD'S . IT IS EVOLVING TO AN AD MANAG
 """
 # Debug change_mediators function, especially the dictionary implementation
 
-var Ads_debug
+#var Ads_debug (
+'Reference to the Ad Mediators'
 onready var Admob = $AdMob
 onready var _Appodeal = $Appodeal
 onready var _yodo1mas = $Yodo1Mas
@@ -37,15 +41,21 @@ onready var timer = $Timer
 onready var java_singleton
 
 export (int) var  _timeout_timer = 10
+
+'Ads Mediators'
 var mediators = {0:'GodotAppodeal',1: "GodotAdMob",2:"GodotYodo1Mas"}
+
+'Ads Selector For Inspector Tab'
 export (String, 'GodotAppodeal', "GodotAdMob", "GodotYodo1Mas") var singleton #It can't auto detect during runtimes
+
+'Ads Type'
 export (String, 'banner_ad', "video_ad", 'interstitial') var _ad_type #='GodotAppodeal' #It can't auto detect during runtimes
 export var ads_debug:String
 export (bool) var enabled
 export (bool) var testing = true
-export (int) var _how_many_times 
-export (bool) var _are_the_ads_displaying_ 
-export (bool) var Fast_debug
+export (int) var _how_many_times #used for an initialization Loop
+var _are_the_ads_displaying_ 
+export (bool) var Fast_debug # runs a fast debug loop (depreciated)
 
 onready var _Debug = get_tree().get_root().get_node("/root/Debug")
 
@@ -58,12 +68,12 @@ export (bool) var _Has_singleton_compiled # Stores engine data if the ad singlet
 
 func _enter_tree():
 	fast_debug() # for debug purposes only
+	check_ads_mediators() # Checks and modifies the Mediators dictionary
 
 func init() -> bool:
 	
 	# A counting integer for an init loop
 	_how_many_times = _how_many_times+1
-	#print('Singleton Debug//', str(singleton)) #duplicate of fast_debug()
 	if _Has_singleton_compiled  == true && enabled == true:
 		print('initializing ',mediators, ' plugin', 'checking for / ', mediators, ' singleton' )
 		return true
@@ -75,32 +85,37 @@ func _ready():
 	
 	if enabled == true:
 		"# Checks the available ad mediators and modifies a mediator dictionary from the result"
-		check_ads_mediators() 
+		#check_ads_mediators() #duplicate code
 		
 		"""
 		ERROR CHECKER 1
 		"""
-		if Engine.has_singleton(singleton)== true:
-			if singleton == str ('GodotAdMob'):
-				admob()
-				java_singleton = Engine.get_singleton(singleton)
-				enabled = false # Deactivates the ads manager to avoid a stack overflow
-				
-				
-			if singleton == str('GodotAppodeal'):
-				# initializes the appodeal ads for either smart banner or video
-				__appodeal(_ad_type, testing)
-				java_singleton = Engine.get_singleton(singleton)
-				enabled = false # Deactivates the ads manager to avoid a stack overflow
-				
-				_are_the_ads_displaying_ = true
+		#sets the java singleton for initialization
+		#if Engine.has_singleton(singleton)== true: #depreciated. Should use a function to initialize ads
+		'Uses The Check Ads Mediators Function To Initialize ther Ads'
+		
+		if mediators.has(1) && singleton == str ('GodotAdMob'):
+			
+			java_singleton = Engine.get_singleton(singleton) #sets the Java singleton
+			
+			admob() # it returns a boolean if initialized successfully
+			print ('Has Admob initialized: ', str(admob()))
+			enabled = false # Deactivates the ads manager to avoid a stack overflow
+			
+		if mediators.has(0) && singleton == str('GodotAppodeal'):
+			# initializes the appodeal ads for either smart banner or video
+			__appodeal(_ad_type, testing) #rewrite
+			java_singleton = Engine.get_singleton(singleton) #sets the Java singleton
+			enabled = false # Deactivates the ads manager to avoid a stack overflow
+			
+			_are_the_ads_displaying_ = true #????
 				#_facebook() #checks for facebook login
-			if singleton == str ("GodotYodo1Mas"):
-				 
-				java_singleton = Engine.get_singleton(singleton)
-				yodo1mas()
-				
-				enabled = false # Deactivates the ads manager to avoid a stack overflow
+		if mediators.has(2) &&  singleton == str ("GodotYodo1Mas"):
+			 
+			java_singleton = Engine.get_singleton(singleton) #sets the Java singleton
+			yodo1mas() #rewrite
+			
+			enabled = false # Deactivates the ads manager to avoid a stack overflow
 
 
 """
@@ -111,13 +126,13 @@ APPODEAL AD LOADING FUNCTION
 func __appodeal(_ad_type, testing):
 	if (Engine.has_singleton(singleton)) == true && enabled == true:
 		
-		if _ad_type == 'banner' && testing != null or '':
+		if _ad_type == 'banner' && testing != null or '': #???? what?
 			# Initializes banner Ads
 			_Appodeal.appodeal.setTestingEnabled(testing) 
 			_Appodeal.appodeal.setSmartBannersEnabled(true)
 			_Appodeal.appodeal.initialize(_Appodeal.key, 2, true) #initializes and show banner ads
 
-			_how_many_times = _how_many_times + 1
+			_how_many_times = _how_many_times + 1 #initialization loop
 			print ('Is /', singleton,' /Initialized: ', _Appodeal.appodeal.isInitializedForAdType(2)) #checks if ads is initialized
 
 			_Appodeal.appodeal.setLogLevel(1) 
@@ -135,7 +150,7 @@ func __appodeal(_ad_type, testing):
 			
 		__appodeal_debug() # For debug purposes only, disable on release build
 
-func __appodeal_debug(): 
+func __appodeal_debug(): # Each Ad mediator has it's own debug function
 #Debugs the current status of the appodeal ads
 	print (' Appodeal debug //')
 	print ('Is Appodeal initialized for Banner Ads: ',str(_Appodeal.appodeal.isInitializedForAdType(2))) 
@@ -147,26 +162,30 @@ func __appodeal_debug():
 
 
 # Loads admob banner
-func admob() ->  void :
+func admob() ->   bool : #rewrite
 	if (Engine.has_singleton(singleton)) == true && enabled == true:
 		Admob.init()
-		Admob.connect_signals()
-		print('initializing ', (singleton),' Debugging ', singleton,' : ', Admob._admob_singleton, _ad_type)
+		
+		print('initializing ', (singleton),' Debugging ', singleton,' : ', Admob._admob_singleton, _ad_type) #pass these variables to debug string
 		if _ad_type == 'banner_ad':
 			Admob.load_banner()
 			Admob.show_banner()
 			_are_the_ads_displaying_ = true
-			print ( 'Banner Dimensions :', str(Admob.get_banner_dimension()))
-		if _ad_type == 'interstitial':
+			return true
+			print ( 'Banner Dimensions :', str(Admob.get_banner_dimension())) #pass these variables to debug string
+		elif _ad_type == 'interstitial':
 			Admob.load_interstitial()
 			Admob.show_interstitial()
 			_are_the_ads_displaying_ = true
-			print ('Is interstitial initialised: ', str(Admob.is_interstitial_loaded()))
-		if _ad_type == "video_ad": # I have no rewards to give the users
+			return true
+			print ('Is interstitial initialised: ', str(Admob.is_interstitial_loaded())) #pass these variables to debug string
+		elif _ad_type == "video_ad": # I have no rewards to give the users
 			Admob.load_rewarded_video()
 			Admob.show_rewarded_video()
 			_are_the_ads_displaying_ = true
-			print ('Is rewarded video loaded: ', str(Admob.is_rewarded_video_loaded()))
+			print ('Is rewarded video loaded: ', str(Admob.is_rewarded_video_loaded())) #pass these variables to debug string
+			return true
+		else: return false
 		
 		
 		# Error Handlers
@@ -175,16 +194,11 @@ func admob() ->  void :
 			_ad_type = 'banner_ad'
 			#return _ad_type
 		print ( 'Is',(singleton), 'Initialized ' , str(Admob.init())) # Checks if the singleton initializes
-		#print ( 'Connect Signal :', str(Admob.connect_signals()))
-		
-		#print ( 'Show Banner :', str(Admob.show_banner()))
-		#if str(Admob.show_banner()) == 'true':
-		#	_are_the_ads_displaying_ = true #breaks the admob loop
-
-
 
 	if not bool(Engine.has_singleton(singleton)) == true && enabled == true: # AUTOMATICALLY FAST DEBUS IF THE ENGINE SINGLETON ISN'T THERE
 		fast_debug()
+		return false
+	else: return false
 
 " Breaking the code here. To Debug Later"
 func yodo1mas()-> bool:
@@ -271,25 +285,35 @@ func change_ads_type(ads):
 	else:
 		push_error('Ads can only be'+ 'banner_ad'+ "video_ad"+ 'interstitial')
 
-func _connect_ads_signals():
-	"connects Ads signals" #Changes the ads mediator if the ads fail to load
+func _connect_ads_signals(): # Documented
+	"connects Ads signals"
+	# Uses the Ads Dictionary to connect ads signals
 	#Yodo1Mas
-	if _yodo1mas.connect('banner_ad_not_loaded', self, "change_ads_mediators") != OK:
-		return _yodo1mas.connect('banner_ad_not_loaded', self, "change_ads_mediators")
-		return _yodo1mas.connect("interstitial_ad_not_loaded", self, "change_ads_mediators")
-		return _yodo1mas.connect("rewarded_ad_not_loaded", self, "change_ads_mediators")
+	if mediators.has(2) :
+		if _yodo1mas.connect('banner_ad_not_loaded', self, "change_ads_mediators") != OK:
+			_yodo1mas.connect('banner_ad_not_loaded', self, "change_ads_mediators")
+			_yodo1mas.connect("interstitial_ad_not_loaded", self, "change_ads_mediators")
+			_yodo1mas.connect("rewarded_ad_not_loaded", self, "change_ads_mediators")
+	if not mediators.has(2) : return
 
 	#Appodeal
-	if _Appodeal.connect("banner_load_failed", self, "change_ads_mediators") != OK:
-		return _Appodeal.connect("banner_load_failed", self, "change_ads_mediators")
-		return _Appodeal.connect("interstitial_load_failed", self, "change_ads_mediators")
-		return _Appodeal.connect("rewarded_video_load_failed", self, "change_ads_mediators")
+	if mediators.has(0) :
+		if _Appodeal.connect("banner_load_failed", self, "change_ads_mediators") != OK:
+			_Appodeal.connect("banner_load_failed", self, "change_ads_mediators")
+			_Appodeal.connect("interstitial_load_failed", self, "change_ads_mediators")
+			_Appodeal.connect("rewarded_video_load_failed", self, "change_ads_mediators")
+	if not mediators.has(0): return
+	
 	
 	#Admob
-	if Admob.connect("banner_failed_to_load", self, "change_ads_mediators") != OK:
-		return Admob.connect("banner_failed_to_load", self, "change_ads_mediators")
-		return Admob.connect("interstitial_failed_to_load", self, "change_ads_mediators")
-		return Admob.connect("rewarded_video_failed_to_load", self, "change_ads_mediators")
+	if mediators.has(1) :
+		if Admob.connect("banner_failed_to_load", self, "change_ads_mediators") != OK:
+			Admob.connect_signals()  #admob connects emitted signals within it's own function
+			Admob.connect("banner_failed_to_load", self, "change_ads_mediators")
+			Admob.connect("interstitial_failed_to_load", self, "change_ads_mediators")
+			Admob.connect("rewarded_video_failed_to_load", self, "change_ads_mediators")
+	if not mediators.has(1) : return
+	
 
 func _process(_delta):
 	# Logic for Checking Ad singletons from fast_debug()
@@ -371,7 +395,7 @@ AD REFRESHER LOOP LOGIC
 """
 func _on_Timer_timeout(): 
 	#Ad refresher loop
-	
+	# needs Documentation
 	
 	if _Has_singleton_compiled == true && enabled == true:
 		
@@ -412,7 +436,7 @@ func _on_Timer_timeout():
 	"""
 	
 	if not _Has_singleton_compiled== true: # If the engine does not have the singleton
-		Ads_debug = str ('Engine has singleton' , '/: ',_Has_singleton_compiled, '/GodotAdMob :', DoEngineCheck1, '/GodotAppodeal :', DoEngineCheck2, '/GodotYodo1Mas :',  DoEngineCheck3)
+		ads_debug = str ('Engine has singleton' , '/: ',_Has_singleton_compiled, '/GodotAdMob :', DoEngineCheck1, '/GodotAppodeal :', DoEngineCheck2, '/GodotYodo1Mas :',  DoEngineCheck3)
 		init()
 		print ('Engine might not contain', mediators, 'test with fast debug')
 		print ('initializing ', mediators ,' again for the/', _how_many_times, ' /time', ' Did it Work: ', str(init()) )
@@ -431,7 +455,7 @@ func fast_debug():
 		print('GodotAppodeal :', DoEngineCheck2)
 		print('GodotYodo1Mas :',  DoEngineCheck3)
 	elif Fast_debug == false:
-		push_warning('Fast debug is turned off in the inspector tab')
+		print('Fast debug is turned off in the inspector tab')
 		return
 			#appodeal.sdk.appodeal.BuildConfig"
 

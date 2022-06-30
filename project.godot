@@ -19,10 +19,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ads/admob-lib/admob.gd"
 }, {
+"base": "",
+"class": "Algod",
+"language": "NativeScript",
+"path": "res://addons/algodot/gdnative/algod.gdns"
+}, {
 "base": "Node",
 "class": "Appodeal",
 "language": "GDScript",
 "path": "res://ads/Appodeal/Appodeal.gd"
+}, {
+"base": "",
+"class": "AsyncExecutorDriver",
+"language": "NativeScript",
+"path": "res://addons/algodot/gdnative/async_executor.gdns"
 }, {
 "base": "Control",
 "class": "Comics",
@@ -134,6 +144,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://singletons/CustomInputEvents/InputEventSingleScreenTouch.gd"
 }, {
+"base": "",
+"class": "Monero",
+"language": "NativeScript",
+"path": "res://addons/monero/monero.gdns"
+}, {
 "base": "AnimationPlayer",
 "class": "NetworkAnimationPlayer",
 "language": "GDScript",
@@ -177,7 +192,9 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "Aarin": "",
 "AdMob": "res://ads/admob-lib/icon.png",
+"Algod": "",
 "Appodeal": "res://ads/Appodeal/appodeal_logo.png",
+"AsyncExecutorDriver": "",
 "Comics": "",
 "DTS": "",
 "DialogBox": "",
@@ -200,6 +217,7 @@ _global_script_class_icons={
 "InputEventSingleScreenDrag": "",
 "InputEventSingleScreenTap": "",
 "InputEventSingleScreenTouch": "",
+"Monero": "",
 "NetworkAnimationPlayer": "",
 "NetworkRandomNumberGenerator": "",
 "NetworkTimer": "",

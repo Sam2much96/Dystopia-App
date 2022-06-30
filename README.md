@@ -3,6 +3,8 @@
 ''''
 Documentation by INhumanity_arts 
 
+![Screenshot](https://github.com/Sam2much96/Dystopia-App/blob/master/icon.png)
+
 ''''
 FEATURES
 (1) Auto Music shuffle:

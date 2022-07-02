@@ -64,20 +64,17 @@ var DoEngineCheck1 #Admob
 var DoEngineCheck2 # Appodeal
 var DoEngineCheck3 # Yodo1Mas
 
-export (bool) var _Has_singleton_compiled # Stores engine data if the ad singleton is compiled
+#export (bool) var _Has_singleton_compiled # Stores engine data if the ad singleton is compiled (depreciated)
 
 func _enter_tree():
-	fast_debug() # for debug purposes only
+	fast_debug() # used in Ads logic, always leave on
 	check_ads_mediators() # Checks and modifies the Mediators dictionary
 
-func init() -> bool:
+func init(): #just counts an inititalization loop
 	
 	# A counting integer for an init loop
 	_how_many_times = _how_many_times+1
-	if _Has_singleton_compiled  == true && enabled == true:
-		print('initializing ',mediators, ' plugin', 'checking for / ', mediators, ' singleton' )
-		return true
-	return false
+	print ('Singleton: ',singleton)
 
 func _ready():
 	_connect_ads_signals()
@@ -124,6 +121,9 @@ APPODEAL AD LOADING FUNCTION
 ####################################### the dependencies for this code are broken          #########################################
 #################################### THe initialize is also broken. Disabling this for now #########################################
 func __appodeal(_ad_type, testing):
+	if singleton == null: #Error catcher
+		print ('singleton is null, deactivating')
+		return false
 	if (Engine.has_singleton(singleton)) == true && enabled == true:
 		
 		if _ad_type == 'banner' && testing != null or '': #???? what?
@@ -162,7 +162,10 @@ func __appodeal_debug(): # Each Ad mediator has it's own debug function
 
 
 # Loads admob banner
-func admob() ->   bool : #rewrite
+func admob() ->   bool : 
+	if singleton == null: #Error catcher
+		print ('singleton is null, deactivating')
+		return false
 	if (Engine.has_singleton(singleton)) == true && enabled == true:
 		Admob.init()
 		
@@ -202,32 +205,29 @@ func admob() ->   bool : #rewrite
 
 " Breaking the code here. To Debug Later"
 func yodo1mas()-> bool:
-	if DoEngineCheck3 == true && enabled == true:
+	if singleton == null: #Error catcher
+		print ('singleton is null, deactivating')
+		return false
+	if (Engine.has_singleton(singleton)) == true && enabled == true:
 		#var _y =Engine.get_singleton("GodotYodo1Mas")
 		if _ad_type == str ('banner_ad'):
 			_yodo1mas.show_banner_ad()
-			
+			return true
 		if _ad_type == str ( "video_ad"):
 			_yodo1mas.show_rewarded_ad()
 			_are_the_ads_displaying_ = true
+			return true
 		if _ad_type == str (  'interstitial'):
 			_yodo1mas.show_interstitial_ad() 
 			_are_the_ads_displaying_ = true
-	if not Engine.has_singleton("GodotYodo1Mas"):
+			return true
+	if not (Engine.has_singleton(singleton)) == true:
 		_Debug.Ads_debug = str ('Singleton', singleton, 'is not present in the testing device') 
-	if Engine.has_singleton("GodotYodo1Mas") && enabled == false:
-		print ('Ads manager is not enabled')
-		
-		
-		return true # Retuns a boolean if the ads is implemented or not
-	return false # code not yet written. Broken for now
-
-
-
-# delete this>>>>>>
-func _facebook() -> void: #checks if the facebook sdk is initiated
-	pass
-
+		return false
+	if DoEngineCheck3 == true && enabled == false:
+		_Debug.Ads_debug = str ('Ads manager is not enabled')
+		return false # Retuns a boolean if the ads is implemented or not
+	return true # Requires Testing
 
 
 func check_ads_mediators():
@@ -253,13 +253,17 @@ func change_ads_mediator(): #selects a random ads mediator ##temporarily disabli
 	if mediators.size() > 1: # Only activates when more than one mediator is installed
 		var _no = int(rand_range(-1,mediators.size())) #selects a random mediator number
 	
-		print ("Selected Mediator: ", str(mediators[_no]))
+		print ("Selected Mediator: ", str(mediators[_no])) #for debug Purposes only
 		singleton = mediators[_no]
+		return singleton
 	if mediators.size() == 1: #Use only 1 dictionary value if the app has only 1 mediator
-		print ("//Mediator Installed://",mediators.values())
+		print ("//Mediator Installed://",mediators.values()) #for debug purposes only
 		singleton = (mediators.values())
-	
-	return singleton
+		return singleton
+		
+	if mediators.size() == 0: #if mediator sdk not compiled
+		singleton = null #should throw up an error or break
+		return 
 	init() #initialises ads manager with new ads manager singleton
 
 func change_ads_type(ads):
@@ -288,6 +292,7 @@ func change_ads_type(ads):
 func _connect_ads_signals(): # Documented
 	"connects Ads signals"
 	# Uses the Ads Dictionary to connect ads signals
+	#Autochanges ads mediator
 	#Yodo1Mas
 	if mediators.has(2) :
 		if _yodo1mas.connect('banner_ad_not_loaded', self, "change_ads_mediators") != OK:
@@ -317,38 +322,43 @@ func _connect_ads_signals(): # Documented
 
 func _process(_delta):
 	# Logic for Checking Ad singletons from fast_debug()
-	if DoEngineCheck1 or DoEngineCheck2 or DoEngineCheck3 == true : # if any of the singletons are available
-		 _Has_singleton_compiled = true 
+	#if DoEngineCheck1 or DoEngineCheck2 or DoEngineCheck3 == true : # if any of the singletons are available
+	#	 _Has_singleton_compiled = true 
 	
 	
 	 #Debugs the Ad state to the Debug Panel
 	if enabled == true :
-		if _Has_singleton_compiled == false:
+		if mediators.size() == 0: #use mediators dictionary instead
 			if _Debug != null:
-				_Debug.Ads_debug = '//Engine does not have singleton' +'//Automatically changing Ads mediator server//'
+				_Debug.Ads_debug = '//Engine does not have any Advertising  singleton' 
 				
-				#Don't change ads mediator in process function
-				#change_ads_mediator() #Automatically changes ad mediator #fix dictionary parsing bug #temporarily disabling until i'm able to properly debug
-				
-		if _Has_singleton_compiled == true : #engine has singleton funtion breaks
-			#if _Debug != null: #
-			_Debug.Ads_debug = '//Engine has singleton'+ '//Ads debug//'+str(ads_debug) + "//Are the Ads showning" + (_are_the_ads_displaying_)
+		if not mediators.size() == 0 : #engine has singleton funtion breaks 
+			#Updates the Ads debug to the ads debug
+			_Debug.Ads_debug = '//Engine has singleton'+ '//Ads debug//'+(ads_debug) + "//Are the Ads showning" + (_are_the_ads_displaying_)
 			
 			"""
 			CHECKS IF THE AD MEDIATORS EMITS A /failed to load/ SIGNAL
 			"""
 			"Admob"
+		if mediators.has(1):
 			var error_code   
 			if Admob.emit_signal("banner_failed_to_load", error_code):
 				ads_debug += ('//banner failed to load/'+' Singleton: '+"Admob"+'/Error Code:'+ str(error_code))
 			if Admob.emit_signal("banner_loaded"):
 				ads_debug += ('//banner loaded')
+			
 			"Appodeal"
-			#if _Appodeal.showAdForPlacement() == false: # Add more parameters
-			#	ads_debug += ('//Ads failed to load/'+' Singleton: '+str(singleton))
+		if mediators.has(0):
+			if _Appodeal.emit_signal("banner_load_failed") :
+				ads_debug += ('banner_load_failed')
+			if _Appodeal.emit_signal("interstitial_load_failed") :
+				ads_debug += ("interstitial_load_failed")
+			if _Appodeal.emit_signal("rewarded_video_load_failed"):
+				ads_debug += ("rewarded_video_load_failed")
+			
 			
 			"Yodo1Mas"
-			
+		if mediators.has(2):
 			if _yodo1mas.emit_signal("banner_ad_not_loaded"):
 				ads_debug += ('//Banner Ads failed to load/')
 				_are_the_ads_displaying_ = false
@@ -358,19 +368,25 @@ func _process(_delta):
 			if _yodo1mas.emit_signal("rewarded_ad_not_loaded"):
 				ads_debug += ('//Rewarded Ads failed to load/')
 				_are_the_ads_displaying_ = true
+		if not mediators.has(0):
+			return
+		if not mediators.has(1):
+			return
+		if not mediators.has(2):
+			return
 			"""
 			# Supposed to programmatically change the ad server once an ad mediator fails
 			"""
-			if _are_the_ads_displaying_ == false: 
-				if mediators == str ('GodotAdMob'): # Account for the 3 ad mediators ads failing to load
-					_Debug.Ads_debug  += str('ads fail to display')
-					#change_ads_mediator() #temporarily disabling until i'm able to properly debug
-				if mediators == str ('GodotAppodeal'):
-					_Debug.Ads_debug  += str('ads fail to display')
-					#change_ads_mediator() #temporarily disabling until i'm able to properly debug
-				if mediators == str ("GodotYodo1Mas"):
-					_Debug.Ads_debug  += str('ads fail to display')
-					#change_ads_mediator() #temporarily disabling until i'm able to properly debug
+		if _are_the_ads_displaying_ == false: 
+			if mediators == str ('GodotAdMob'): # Account for the 3 ad mediators ads failing to load
+				ads_debug  += str('ads fail to display')
+				
+			if mediators == str ('GodotAppodeal'):
+				ads_debug  += str('ads fail to display')
+				
+			if mediators == str ("GodotYodo1Mas"):
+				ads_debug  += str('ads fail to display')
+				
 
 	"""
 	Ads initialization loop
@@ -387,7 +403,7 @@ func _exit_tree():
 	print ('Ads Tester Exits Tree')
 	#_Appodeal.appodeal.
 	
-	if not bool(Engine.has_singleton(singleton)) == true:
+	if DoEngineCheck1 or DoEngineCheck2 or DoEngineCheck3 == true: # Disables the Ads manager node
 		enabled = false
 
 """
@@ -395,12 +411,15 @@ AD REFRESHER LOOP LOGIC
 """
 func _on_Timer_timeout(): 
 	#Ad refresher loop
-	# needs Documentation
+	# Checks if the Ads are Initialized everytime Timer times out
+	# Stops if Ads are initialized for specific ads
+	# Doesn't have a code bloc for Yodo1mas, requires testing for that
+	#Also functions as a secondary ads debugger
 	
-	if _Has_singleton_compiled == true && enabled == true:
+	if mediators.size() != 0 && enabled == true:
 		
 		# Admob
-		if mediators == str ('GodotAdMob'):
+		if mediators.has(1) && singleton =="GodotAdMob":
 			if Admob.get_banner_dimension() == Vector2(0,0):
 				print ('Timer Timeout, Trying Again')
 				admob()
@@ -410,7 +429,7 @@ func _on_Timer_timeout():
 				_are_the_ads_displaying_ = true
 		
 		# Appodeal
-		if mediators == str ('GodotAppodeal'):
+		if mediators.has(0) && singleton =='GodotAppodeal': #Update to use _ad_type
 			if java_singleton != null:
 				if (java_singleton.isInitializedForAdType(2)) == false : #if banner ad initialization fails
 					print ('Is /', singleton,' /Initialized: ', java_singleton.isInitializedForAdType(2), 'trying again for the', _how_many_times, ' time') #checks if ads is initialized
@@ -431,16 +450,16 @@ func _on_Timer_timeout():
 					_how_many_times = _how_many_times +1
 					__appodeal(_ad_type, testing)
 	
-	"""#####################################################################################
-	CHECKS IF THE ENGINE HAS THE ENGINE SINGLETON AND RUNS A LOOP TO INITIALIZE IT
-	"""
+		#No Yodo1Mas?
 	
-	if not _Has_singleton_compiled== true: # If the engine does not have the singleton
-		ads_debug = str ('Engine has singleton' , '/: ',_Has_singleton_compiled, '/GodotAdMob :', DoEngineCheck1, '/GodotAppodeal :', DoEngineCheck2, '/GodotYodo1Mas :',  DoEngineCheck3)
+
+	
+	if not mediators.size() == 0: # Does a secondary Debug
+		ads_debug = str ('Engine has singleton' , '/: ','/GodotAdMob :', DoEngineCheck1, '/GodotAppodeal :', DoEngineCheck2, '/GodotYodo1Mas :',  DoEngineCheck3)
 		init()
 		print ('Engine might not contain', mediators, 'test with fast debug')
-		print ('initializing ', mediators ,' again for the/', _how_many_times, ' /time', ' Did it Work: ', str(init()) )
-		return null
+		print ('initializing ', mediators ,' again for the/', _how_many_times, ' /time' )
+		
 
 
 func fast_debug():
@@ -457,9 +476,6 @@ func fast_debug():
 	elif Fast_debug == false:
 		print('Fast debug is turned off in the inspector tab')
 		return
-			#appodeal.sdk.appodeal.BuildConfig"
 
 
-"""
-CONNECT SIGNALS FROM YODO1mAS
-"""
+

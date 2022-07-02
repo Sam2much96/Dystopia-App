@@ -3,6 +3,8 @@
 ''''
 Documentation by INhumanity_arts 
 
+![Screenshot](https://github.com/Sam2much96/Dystopia-App/blob/master/resources/illustrations/cover%201.png)
+
 ''''
 FEATURES
 (1) Auto Music shuffle:
@@ -44,8 +46,8 @@ FEATURES
 
 (13)FFmpeg Decoder Libraries from 'https://github.com/kidrigger/godot-videodecoder ' are used in the Anime streaming section. I rendered the video in 720p, the game's resolution.
 
-(14) Adaptable Ads:
-   A part of my partnership with Appodeal, i implemented their SDK, Facebook's SDK, and Admob into the app for mobile    builds.
+ (14) Adaptable Ads:
+A part of my partnership with Appodeal, i implemented their SDK, Facebook's SDK, and Admob into the app for mobile    builds.
 (15) Storing video files and loading video streams are done with Cinematics class scripts
     'store_video_files(_body)', and '_Video_Stream(node , stream, _sound, viewport)'. The mobile engine doesn't handle high-res videos well.
 (16) I implemented A touch input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases to fix the comics section ux problem

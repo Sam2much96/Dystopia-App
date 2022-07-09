@@ -20,7 +20,9 @@
 # Bugs
 # (1) COnnect to GDUNZIP via editor script to zip and unzip 
 # (2) Lacks proper documentation
-
+# (3) Lacks Performance Optimization and Proper variable mnaming conventions
+# (4) Causes a performance hog with process functions
+# (5) Causes a ram hog with loaded adn preloaded variables
 # *************************************************
 
 extends Node
@@ -54,10 +56,10 @@ onready var curr_scene #= get_tree().get_current_scene().get_name()
 onready var os = str(OS.get_name())
 onready var kill_count = 0 #update to load from savefile
 export var player  = []
-var player_hitpoints
+var player_hitpoints : int
 var enemy = null
 var enemy_debug
-var initial_level  = "res://scenes/levels/Outside.tscn"  # loading outside environment bug fixed
+var initial_level : String = "res://scenes/levels/Outside.tscn"  # loading outside environment bug fixed
 var Debug = null
 var _player_state # gets state data from the player state machine
 var video_stream #for the video streamers
@@ -67,25 +69,35 @@ var languague #Stores the user's lingua franca
 
 export (int) var Suds #currency system, connect to $xmr protocol
 # warning-ignore:unused_class_variable
-export (Vector2) var spawnpoint 
-var spawn_x
-var spawn_y
+var spawnpoint : Vector2
+var spawn_x : int
+var spawn_y : int
 var current_level 
 
-var blood_fx = load ('res://scenes/UI & misc/Blood_Splatter_FX.tscn')
+var blood_fx = load ('res://scenes/UI & misc/Blood_Splatter_FX.tscn') #only load this once gameplay is on (optimization)
 
-export (bool) var Music_on_settings
-var direction_control = '' #toggles btw analogue and d-pad
+var Music_on_settings
+var direction_control : String = '' #toggles btw analogue and d-pad
 
 var uncompressed # Varible holds uncompressed zip files
 
 
 'ingame Environment Variables'
-var near_interractible_objects
+var near_interractible_objects #which objects use this?
+
+'Scene Loading variables'
+var _q #: PackedScene 
+var _r
+var _o #for polling resource loader
+var err
+var loading_resource : bool = false
+onready var scene_loader= ResourceLoader
+#onready var wait_frames : int = 10 #not used, delete later
+onready var progress : float
 
 func _ready():
-	#print('Blood fx:',blood_fx)
-	#
+	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
+	
 
 	
 	player.append( get_tree().get_nodes_in_group('player') )#gets all player nodes in the scene
@@ -94,14 +106,67 @@ func _ready():
 	
 	
 	
-	VisualServer.set_default_clear_color(ColorN("white"))
+	VisualServer.set_default_clear_color(ColorN("white")) #what does this do?
 
 
-func _process(_delta):
+func _process(_delta): #Turn process off if not in use (optimiztion)
+	"When Game is running"
 	if spawn_x and spawn_y != null: # Calculates a vector point for spawning
 		spawnpoint =Vector2(spawn_x,spawn_y)
 	if player_hitpoints == int (0):
 		player_hitpoints = 1 #stops the game from saving zero lives
+
+	'Loading Scenes'
+# Resource loader
+	 #resource loader debugger
+	#print ("_q: ",_q," _r: ",_r," Error: ",str(err), "/",progress, "%") #Debugger
+
+	if _r is String && _r != "" && _q == null:
+		var time_max = 50000 #sets an estimate maximum time to load scene
+		var t = OS.get_ticks_msec()
+		#_q #loaded resource placeholder 
+		scene_loader.load_interactive(_r) #code duplicate
+		
+		_o= (scene_loader.load_interactive(_r)) #function returns a resourceInteractiveLoader
+
+		scene_loader.load_interactive(_r) #function returns a resourceInteractiveLoader
+		
+	
+		print (" Loader Debug Outer loop >>> Inner Loop")
+		while OS.get_ticks_msec() < (t + time_max) && _o != null: #timemax breaks the loop #2 It keeps on relooping at the first stage of loading
+			#_o= (scene_loader.load_interactive(_r)) #function returns a resourceInteractiveLoader
+			
+			err = _o.poll()
+			#loading_resource = true
+			
+			print ("_q: ",_q," _r: ",_r," Error: ",str(err),"Loop Debug") #Debugger
+			
+			
+			
+			if err == ERR_FILE_EOF: # Finished Loading #Works
+				#progress = 0
+				
+				_q = (_o.get_resource()) #use resource loader? # works
+				print (_q , "1Resource Loaded")
+				change_scene_to( _q) # auto changes the scene
+				#_r = null
+				break
+				#return _q
+			elif err == OK: #works
+				var a = _o.get_stage()
+				var b = _o.get_stage_count() 
+				
+				#progress = (_o.get_stage()) / _o.get_stage_count() # you can set a progress bar to this variable
+				progress = (a/b) * 100
+				print (a, "/",b,'/',"Progress: ", progress) #progress doesnt increase #progress Debug?
+			else: # Error during loading
+				push_error("Problems loading Scene.  Debug Gloabls scene loader")
+				print (str(progress) + "% " + str (_r))
+				#scene_loader = null
+				break
+	if _r is String && _q != null: # Doesn't WOrk
+		return
+
 
 
 
@@ -204,11 +269,8 @@ func _go_to_cinematics():
 	return get_tree().change_scene('res://scenes/cinematics/cinematics.tscn') 
 
 
-"""
-VIDEO STREAMER
-"""
 
-# Does not work
+# Does not work #rewrite?
 func unzip_file_to_video(path_to_zip): # Unzips the pilot ep. #Rewrite to use globally
 	print ('Path to zip: ', path_to_zip)
 	var file2Check = File.new()
@@ -244,3 +306,20 @@ func _ram_convert(bytes) :
 	if bytes >= int(1):
 		var _mb = String(round(float(bytes) / 1_048_576))
 		return _mb
+
+func change_scene_to(scene): #Loads scenes faster?
+	if scene is PackedScene: #if scene is a packed scene
+		if scene != null: return get_tree().change_scene_to(scene)  
+	elif scene is String: #if sce is a string path to a packed scene
+		if scene != "": 
+			#print (str(_q),str(scene)+"11111111")
+			#i have to run another function here that passes through processes function
+			_r = scene # triggers an auto scene loader in the processes 
+			return _r
+
+	else: return (print (typeof(scene) ,"is not supported in this function"))
+	#if scene is 
+	
+
+func load_large_scene_resource() : #Runs, doesn't load the scene
+	pass

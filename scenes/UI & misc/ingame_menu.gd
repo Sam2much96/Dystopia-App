@@ -20,6 +20,8 @@ signal menu_showing
 signal loading_game
 export (bool) var enabled 
 
+var shop = load('res://scenes/UI & misc/Shop.tscn')
+
 """
 The game menu script. 
 """
@@ -55,23 +57,16 @@ func _process(_delta):
 			return _menu_not_showing()
 		LOADING:
 			'simply emits a signal in this state'
-			emit_signal("loading_game")
+			print ("Emitting Signa--Loading game")
+			return emit_signal("loading_game")
 	pass
 func _input(event): #Toggles menu visibility on/off
 	if event.is_action_pressed("menu") == true :# 
 		if menu_state == HIDDEN:
-		#if enabled == false:
-			#self.show()
-			#_menu_showing() #use state machine instead
-			#print('sahdashfvsh')
 			menu_state = SHOWING
 			#print ("Menu State: ",menu_state) #For debug purposes only
 			return menu_state
 		if menu_state== SHOWING:
-		#if enabled == true:
-			#self.hide()
-			#print ('askjabsfkbsdfbs')
-			#_menu_not_showing() #Use state machine instead
 			menu_state = HIDDEN
 			#print ("Menu State: ",menu_state) #For debug purposes only
 			return menu_state
@@ -88,10 +83,13 @@ func _input(event): #Toggles menu visibility on/off
 
 
 func _on_continue_pressed():
+	emit_signal("loading_game") 
+	print (" Emitting signal--loading game--")
+	#menu_state= LOADING  #DOESNT WORK
 	Music.play_track(Music.ui_sfx[0])
 	Globals.load_game()
 	if Globals.current_level != null:
-		if get_tree().change_scene(Globals.current_level) != OK:
+		if Globals.change_scene_to(Globals.current_level) != OK:
 			push_error("Error changing scenes")
 	else:
 		$MarginContainer/ScrollContainer/HSeparator/continue.hide()
@@ -102,18 +100,22 @@ func _on_continue_pressed():
 func _on_new_game_pressed():
 	if Globals.initial_level != "":
 		Globals.current_level = Globals.initial_level
-		#emit_signal("loading_game") #other functions connect to theis signal
-		menu_state= LOADING # new state function
+		emit_signal("loading_game") #other functions connect to theis signal
+		#menu_state= LOADING # Loading State #DOESNT WORK
 		print (" Emitting signal--loading game--")
 		Music.play_track(Music.ui_sfx[0]) #plays ui sfx in a loop
-		return get_tree().change_scene(Globals.current_level) 
-		# play cinematic via an Autoload singletom #missing function
 		
+		'Auto Scene Changer Shorthand' # Expantiate Later
+		if Globals._q == null:
+			Globals._r =Globals.current_level # triggers an auto scene loader.changer
+		if Globals._q != null:
+			Globals.change_scene_to(Globals._q)
 		if Globals.save_game() == false:
 			push_error("Error saving game")
-		var err = get_tree().change_scene(Globals.initial_level) # Loads the initial scene from 
-		if err != OK:
-			push_error("Error changing scene: %s" % err)
+		#var err =Globals.change_scene_to(Globals.initial_level) # Loads the initial scene 
+		#print (" Menu Error: "+str(err))
+		#if err != OK:
+		#	push_error("Error changing scene from menu: %s" % err)
 	else:
 		push_error("Error: initial_level shouldn't be empty")
 		
@@ -126,7 +128,7 @@ func _on_Menu_button_toggled(button_pressed): # Broken Function #rewriting with 
 		print (' Showing Game Menu ') # For Debug purposes only
 		game_menu.show()
 		# new animation
-		emit_signal('menu_showing') 	
+		emit_signal('menu_showing')
 	else: 
 		print (' Hiding Game Menu') # For Debug purposes only
 		game_menu.hide() 
@@ -137,10 +139,7 @@ func _on_Menu_button_toggled(button_pressed): # Broken Function #rewriting with 
 func _menu_showing(): #Broken funtions #rewrite with state machine
 	enabled = true 
 	show()
-	
-	#Music.play_track(Music.ui_sfx[0]) #introduces a sound bug
-	#Music._notification(NOTIFICATION_PAUSED) #brken function 
-	
+
 	set_focus_mode(2)
 	emit_signal("menu_showing")
 	return
@@ -165,10 +164,10 @@ func _menu_pause_and_play(boolean): #pass it a boolean to custom pause and play
 func _on_comics_pressed():
 	print_debug ('comics pressed')
 	Music.play_track(Music.ui_sfx[0])
-	return get_tree().change_scene_to(Globals.comics___2)
+	Globals.change_scene_to(Globals.comics___2)
 func _on_controls_pressed():
 	Music.play_track(Music.ui_sfx[0])
-	return get_tree().change_scene_to(Globals.controls)
+	Globals.change_scene_to(Globals.controls)
 
 
 func _on_quit_Button_pressed():
@@ -177,11 +176,11 @@ func _on_quit_Button_pressed():
 		get_tree().quit()
 	else:
 		Music.play_track(Music.ui_sfx[1])
-		return get_tree().change_scene_to(Globals.title_screen)
+		Globals.change_scene_to(Globals.title_screen)
 
 
 
-func _on_multiplayer_pressed():
+func _on_multiplayer_pressed(): # Experimental feature
 	Music.play_track(Music.ui_sfx[0])
 	return get_tree().change_scene_to(load ('res://New game code and features/multiplayer/scenes/login.tscn'))
 
@@ -191,7 +190,7 @@ func _exit_tree():
 
 func _on_Shop_pressed():
 	Music.play_track(Music.ui_sfx[0])
-	return get_tree().change_scene_to((load('res://scenes/UI & misc/Shop.tscn')))
+	Globals.change_scene_to(shop)
 
 func _hide_some_menu_options():
 	if Engine.has_singleton ('Debug'):

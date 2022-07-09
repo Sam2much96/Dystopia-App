@@ -363,7 +363,3 @@ rect_scale = Vector2( 1.03307, 1.03307 )
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 6
-
-[connection signal="loading_game" from="Menu " to="." method="_on_Menu__loading_game"]
-[connection signal="menu_hidden" from="Menu " to="." method="_on_Menu__menu_hidden"]
-[connection signal="menu_showing" from="Menu " to="." method="_on_Menu__menu_showing"]

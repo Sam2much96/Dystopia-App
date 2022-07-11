@@ -83,14 +83,17 @@ func _input(event): #Toggles menu visibility on/off
 
 
 func _on_continue_pressed():
-	emit_signal("loading_game") 
-	print (" Emitting signal--loading game--")
+	#emit_signal("loading_game") 
+	print (" --loading game--")
 	#menu_state= LOADING  #DOESNT WORK
 	Music.play_track(Music.ui_sfx[0])
 	Globals.load_game()
 	if Globals.current_level != null:
-		if Globals.change_scene_to(Globals.current_level) != OK:
-			push_error("Error changing scenes")
+		
+		change_scenes_via_globals_script()
+		
+		#if Globals.change_scene_to(Globals.current_level) != OK:
+		#	push_error("Error changing scenes")
 	else:
 		$MarginContainer/ScrollContainer/HSeparator/continue.hide()
 		push_error("Error: current_level shouldn't be empty")
@@ -100,16 +103,14 @@ func _on_continue_pressed():
 func _on_new_game_pressed():
 	if Globals.initial_level != "":
 		Globals.current_level = Globals.initial_level
-		emit_signal("loading_game") #other functions connect to theis signal
+		#emit_signal("loading_game") #other functions connect to theis signal
 		#menu_state= LOADING # Loading State #DOESNT WORK
 		print (" Emitting signal--loading game--")
 		Music.play_track(Music.ui_sfx[0]) #plays ui sfx in a loop
 		
 		'Auto Scene Changer Shorthand' # Expantiate Later
-		if Globals._q == null:
-			Globals._r =Globals.current_level # triggers an auto scene loader.changer
-		if Globals._q != null:
-			Globals.change_scene_to(Globals._q)
+		change_scenes_via_globals_script()
+		
 		if Globals.save_game() == false:
 			push_error("Error saving game")
 		#var err =Globals.change_scene_to(Globals.initial_level) # Loads the initial scene 
@@ -201,6 +202,12 @@ func _hide_some_menu_options():
 			_multiplayer.hide()
 		pass
 
+func change_scenes_via_globals_script():
+	'Auto Scene Changer Shorthand' # E
+	if Globals._q == null:
+		Globals._r =Globals.current_level # triggers an auto scene loader.changer from globals script
+	if Globals._q != null:
+		return (Globals.change_scene_to(Globals._q))
 
 func _on_Anime_pressed():
 	Music.play_track(Music.ui_sfx[0])

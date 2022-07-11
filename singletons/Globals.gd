@@ -86,10 +86,12 @@ var uncompressed # Varible holds uncompressed zip files
 var near_interractible_objects #which objects use this?
 
 'Scene Loading variables'
-var _q #: PackedScene 
-var _r
+var _q : PackedScene # Large Resouce Scene Placeholder
+var _r # Large Resource Placeholder Variable
 var _o #for polling resource loader
 var err
+var a : int # Loader progress variable (a/b) 
+var b : int
 var loading_resource : bool = false
 onready var scene_loader= ResourceLoader
 #onready var wait_frames : int = 10 #not used, delete later
@@ -109,23 +111,20 @@ func _ready():
 	VisualServer.set_default_clear_color(ColorN("white")) #what does this do?
 
 
-func _process(_delta): #Turn process off if not in use (optimiztion)
+func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_processing()
 	"When Game is running"
 	if spawn_x and spawn_y != null: # Calculates a vector point for spawning
 		spawnpoint =Vector2(spawn_x,spawn_y)
 	if player_hitpoints == int (0):
 		player_hitpoints = 1 #stops the game from saving zero lives
 
-	'Loading Scenes'
-# Resource loader
-	 #resource loader debugger
-	#print ("_q: ",_q," _r: ",_r," Error: ",str(err), "/",progress, "%") #Debugger
+	'Resource Loader FOr Large Scenes'
 
 	if _r is String && _r != "" && _q == null:
 		var time_max = 50000 #sets an estimate maximum time to load scene
 		var t = OS.get_ticks_msec()
-		#_q #loaded resource placeholder 
-		scene_loader.load_interactive(_r) #code duplicate
+		
+		scene_loader.load_interactive(_r) 
 		
 		_o= (scene_loader.load_interactive(_r)) #function returns a resourceInteractiveLoader
 
@@ -133,9 +132,8 @@ func _process(_delta): #Turn process off if not in use (optimiztion)
 		
 	
 		print (" Loader Debug Outer loop >>> Inner Loop")
-		while OS.get_ticks_msec() < (t + time_max) && _o != null: #timemax breaks the loop #2 It keeps on relooping at the first stage of loading
-			#_o= (scene_loader.load_interactive(_r)) #function returns a resourceInteractiveLoader
-			
+		while OS.get_ticks_msec() < (t + time_max) && _o != null: 
+
 			err = _o.poll()
 			#loading_resource = true
 			
@@ -144,27 +142,25 @@ func _process(_delta): #Turn process off if not in use (optimiztion)
 			
 			
 			if err == ERR_FILE_EOF: # Finished Loading #Works
-				#progress = 0
+				loading_resource = false
 				
-				_q = (_o.get_resource()) #use resource loader? # works
-				print (_q , "1Resource Loaded")
+				_q = (_o.get_resource()) 
+				print (_q , "Resource Loaded")
 				change_scene_to( _q) # auto changes the scene
 				#_r = null
 				break
 				#return _q
 			elif err == OK: #works
-				var a = _o.get_stage()
-				var b = _o.get_stage_count() 
-				
-				#progress = (_o.get_stage()) / _o.get_stage_count() # you can set a progress bar to this variable
-				progress = (a/b) * 100
-				print (a, "/",b,'/',"Progress: ", progress) #progress doesnt increase #progress Debug?
+				a = _o.get_stage()
+				b = _o.get_stage_count() 
+				progress = (b/a) 
+				print (a, "/",b,'/',"Progress: ", progress) #progress Debug?
 			else: # Error during loading
 				push_error("Problems loading Scene.  Debug Gloabls scene loader")
 				print (str(progress) + "% " + str (_r))
-				#scene_loader = null
+				
 				break
-	if _r is String && _q != null: # Doesn't WOrk
+	if _r is String && _q != null: # 
 		return
 
 
@@ -312,14 +308,19 @@ func change_scene_to(scene): #Loads scenes faster?
 		if scene != null: return get_tree().change_scene_to(scene)  
 	elif scene is String: #if sce is a string path to a packed scene
 		if scene != "": 
-			#print (str(_q),str(scene)+"11111111")
-			#i have to run another function here that passes through processes function
+			loading_resource = true
 			_r = scene # triggers an auto scene loader in the processes 
 			return _r
 
 	else: return (print (typeof(scene) ,"is not supported in this function"))
 	#if scene is 
 	
-
-func load_large_scene_resource() : #Runs, doesn't load the scene
-	pass
+func turn_off_processing(toggle): # to improve game speed and turn off idle processsing
+	if toggle is String:
+		if toggle == "on":
+			set_process(true)
+		elif toggle == "off":
+			set_process(false)
+		else:
+			push_warning ("This function only uses on/off strings to control the globals processing functon")
+	else: return

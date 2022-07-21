@@ -55,8 +55,8 @@ extends Control
 "Bugs in Level"
 # (1) Too many particles emitting at once, creates a performance hog
 # (2) Too many AI processes calculating, produced a performance hog
-# (3) Scene loading scene is long. (improved)
+# (3) Scene loading scene is long. (fixed)
 # (4) Deleting the world boundary creates crazy new bugs in enemy AI
-# (5) Scene uses to much RAM
-func show_loading_scene(): # Blank Function for showing loading scene while the Scene tree is loading
-	pass
+# (5) Scene uses to much RAM (Redesign desert dunes to use Line 2d instead of textures)
+
+

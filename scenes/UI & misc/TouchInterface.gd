@@ -32,12 +32,13 @@ onready var _interract = $interact
 onready var stats = $stats
 onready var roll = $roll
 onready var slash = $slash
-onready var up = $up
-onready var down = $down
-onready var left = $left
-onready var right = $right
+#onready var up = $up
+#onready var down = $down
+#onready var left = $left
+#onready var right = $right
 onready var comics = $comics
 onready var joystick = $Joystick
+onready var D_pad = $"D-pad"
 
 #Old state Machine. Depereciated! Reuse as signals
 #export(String, "menu", "interract", "attack", "stats", 'comics', 'reset') var state 
@@ -58,16 +59,14 @@ export var _state_controller = RESET
 export (String, 'analogue', 'direction') var _control
 func _ready():
 #Changes D-pad Controls from control once the Touch Interface is ready
-	if Globals.direction_control != '':
-		_control = Globals.direction_control
+	if _control != null:
+		Globals.direction_control = _control 
+		touch_interface_debug()
 
 #toggles touch interface visibility depending on the os (Pc or Mobiles)
 	if Globals.os != str('Android') or str('ios'): # Detecting OS type is buggy on Android builds
 		if _Hide_touch_interface == true: #
 			self.hide()
-			#for _e in get_parent().get_node("TouchInterface").get_children():
-			#	if _e is TouchScreenButton:
-			#		_e.hide()
 			print('Hiding touch interface', Globals.os)
 
 #########Auto sets the controller button
@@ -109,11 +108,13 @@ func attack(): #used by ui scene when attack is clicked
 # Handles Debugging Variables from the touch interface system
 func touch_interface_debug(): #Debug singleton is broken
 	if _Hide_touch_interface == false:
-		print ('Touch Interface Debug: ', " COntrol: ",_control)
+		print ('Touch Interface Debug: ', " COntrol: ",_control, "Global Control", Globals.direction_control )
 
 func _process(_delta):
 	if _Debug == true:
 		touch_interface_debug() # For Debug Purposes only
+	
+	#write a rule that Joystick and Dpad cannot be visible at the same time
 	
 	"""
 	State Machine For the TOuch interface
@@ -124,10 +125,11 @@ func _process(_delta):
 			if _Hide_touch_interface == false: #include analogue controls
 				stats.hide()
 				menu.show()
-				right.hide()
-				left.hide()
-				up.hide()
-				down.hide()
+				D_pad.hide()
+				#right.hide()
+				#left.hide()
+				#up.hide()
+				#down.hide()
 				joystick.hide()
 				_interract.hide()
 				comics.hide()
@@ -144,10 +146,11 @@ func _process(_delta):
 				emit_signal('interract')
 				stats.hide()
 				menu.show()
-				right.hide()
-				left.hide()
-				up.hide()
-				down.hide()
+				D_pad.hide()
+				#right.hide()
+				#left.hide()
+				#up.hide()
+				#down.hide()
 				joystick.hide()
 				_interract.show()
 				comics.hide()
@@ -173,17 +176,19 @@ func _process(_delta):
 				slash.show()
 				roll.show()
 				if _control == 'analogue':
-					right.hide()
-					left.hide()
-					up.hide()
-					down.hide()
+					D_pad.hide()
+					#right.hide()
+					#left.hide()
+					#up.hide()
+					#down.hide()
 					joystick.show()
 				if _control == 'direction':
 					joystick.hide()
-					right.show()
-					left.show()
-					up.show()
-				down.show()
+					D_pad.show()
+					#right.show()
+					#left.show()
+					#up.show()
+					#down.show()
 
 			pass
 		STATS:
@@ -192,10 +197,11 @@ func _process(_delta):
 			if _Hide_touch_interface == false :
 				stats.show()
 				menu.hide()
-				right.hide()
-				left.hide()
-				up.hide()
-				down.hide()
+				D_pad.hide()
+				#right.hide()
+				#left.hide()
+				#up.hide()
+				#down.hide()
 				joystick.hide()
 				_interract.hide()
 				comics.hide()
@@ -208,10 +214,11 @@ func _process(_delta):
 			if _Hide_touch_interface== false: 
 				stats.hide()
 				menu.hide()
-				right.hide()
-				left.hide()
-				up.hide()
-				down.hide()
+				D_pad.hide()
+				#right.hide()
+				#left.hide()
+				#up.hide()
+				#down.hide()
 				joystick.hide()
 				_interract.hide()
 				comics.show()
@@ -240,20 +247,24 @@ func _process(_delta):
 				"SHows the directional based on a global variable?"
 				if _control == 'analogue':
 					joystick.show()
-					up.hide()
-					down.hide()
-					left.hide()
-					right.hide()
+					D_pad.hide()
+					#up.hide()
+					#down.hide()
+					#left.hide()
+					#right.hide()
 					return
 					#touch_interface_debug() # For Debug Purposes only
-				if _control == 'direction':
+				elif _control == 'direction':
 					joystick.hide()
-					up.show()
-					down.show()
-					left.show()
-					right.show()
+					D_pad.show()
+					#up.show()
+					#down.show()
+					#left.show()
+					#right.show()
 					
 					#touch_interface_debug() # For Debug Purposes only
+					return
+				else:
 					return
 			
 		

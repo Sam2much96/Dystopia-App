@@ -11,6 +11,7 @@
 #Bugs
 #(1) Ingame menu bug
 # (2) UI connects to depreciated state machine
+# (3) UI joystick and d pad changes 
 # *************************************************
 
 

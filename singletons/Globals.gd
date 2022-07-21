@@ -54,13 +54,14 @@ var prev_scene_spawnpoint
 var next_scene = null
 onready var curr_scene #= get_tree().get_current_scene().get_name()
 onready var os = str(OS.get_name())
-onready var kill_count = 0 #update to load from savefile
-export var player  = []
+onready var kill_count : int = 0 #update to load from savefile
+var player  = []
+#var _p # Player placeholder
 var player_hitpoints : int
 var enemy = null
 var enemy_debug
 var initial_level : String = "res://scenes/levels/Outside.tscn"  # loading outside environment bug fixed
-var Debug = null
+#var _Debug = null
 var _player_state # gets state data from the player state machine
 var video_stream #for the video streamers
 
@@ -70,14 +71,14 @@ var languague #Stores the user's lingua franca
 export (int) var Suds #currency system, connect to $xmr protocol
 # warning-ignore:unused_class_variable
 var spawnpoint : Vector2
-var spawn_x : int
-var spawn_y : int
+var spawn_x : int 
+var spawn_y : int 
 var current_level 
 
 var blood_fx = load ('res://scenes/UI & misc/Blood_Splatter_FX.tscn') #only load this once gameplay is on (optimization)
 
 var Music_on_settings
-var direction_control : String = '' #toggles btw analogue and d-pad
+var direction_control : String  #toggles btw analogue and d-pad
 
 var uncompressed # Varible holds uncompressed zip files
 
@@ -112,11 +113,8 @@ func _ready():
 
 
 func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_processing()
-	"When Game is running"
-	if spawn_x and spawn_y != null: # Calculates a vector point for spawning
-		spawnpoint =Vector2(spawn_x,spawn_y)
-	if player_hitpoints == int (0):
-		player_hitpoints = 1 #stops the game from saving zero lives
+
+
 
 	'Resource Loader FOr Large Scenes'
 
@@ -124,7 +122,7 @@ func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_pr
 		var time_max = 50000 #sets an estimate maximum time to load scene
 		var t = OS.get_ticks_msec()
 		
-		scene_loader.load_interactive(_r) 
+		#scene_loader.load_interactive(_r) 
 		
 		_o= (scene_loader.load_interactive(_r)) #function returns a resourceInteractiveLoader
 
@@ -147,7 +145,7 @@ func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_pr
 				_q = (_o.get_resource()) 
 				print (_q , "Resource Loaded")
 				change_scene_to( _q) # auto changes the scene
-				#_r = null
+				turn_off_processing("off")
 				break
 				#return _q
 			elif err == OK: #works
@@ -196,7 +194,7 @@ func save_game(): #modify code to include current scene and player position. als
 	
 	save_game.store_line(to_json(save_dict))
 	save_game.close()
-	pass
+	print ("saved gameplay")
 
 """
 If check_only is true it will only check for a valid save file and return true or false without
@@ -248,7 +246,8 @@ func _restore_data(save_dict):
 	direction_control = save_dict.direction_control
 	
 	######################################################
-	
+	print ("Loaded gameplay")
+
 func update_curr_scene(): 
 	curr_scene= get_tree().get_current_scene().get_name() 
 	

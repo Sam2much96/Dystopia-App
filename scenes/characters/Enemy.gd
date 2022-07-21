@@ -10,10 +10,12 @@
 # To Add
 #(1) Different enemy behaviours and classes
 #Bugs 
-# (1) Enemy AI is too simple to beat (i.e Dumb)
-# (2) Enemy AI lacks ability to throw Projectiles
+# (1) Enemy AI is too simple to beat (i.e Dumb) (fixed)
+# (2) Enemy AI lacks ability to throw Projectiles (fixed not implemented)
 # (3) No Documentation
 # (4) Enemy mob uses too much computer procesing power
+# (5) Too much Physics procesing (fixed)
+# (6) Navigation 
 # *************************************************
 # New Features
 #(1) Raycast 2d for precision 
@@ -33,11 +35,13 @@ onready var player # = get_tree().get_nodes_in_group('player')  #reference to pl
 var m=0;  #distance variable
 
 var enemy_distance_to_player # used to calculate how closely the enemy should follow the layer
+export (int) var attack_wait_time #attack pause time
 
 onready var raycast := $enemy_eyesight/pointer/RayCast2D
 onready var pointer := $enemy_eyesight/pointer
 
-export (String, 'Assassin', "Soldier", "Drone") var enemy_type #changes enemy behaviour depending on the enemy tpe
+#not used
+export (String, 'Easy', "Intermediate", "Hard") var enemy_type #changes enemy behaviour depending on the enemy tpype # 
 """
  the  MOB AI script works on the assumption there will
  be only one player type
@@ -48,9 +52,10 @@ export(int) var WALK_SPEED = 350
 export(int) var ROLL_SPEED = 1000
 export(int) var hitpoints = 3 #enemy life
 
-export (bool) var mob
+#export (bool) var mob
 var despawn_fx = preload("res://scenes/UI & misc/DespawnFX.tscn")
-#export (PackedScene) var blood_fx #= load("res://scenes/UI & misc/Blood_Splatter_FX.tscn")
+#export (PackedScene) var blood_fx #= load("res://scenes/UI & misc/Blood_Splatter_FX.tscn") #uses globals scene instead
+var Bullet = load ("res://scenes/items/Bullet.tscn")
 
 
 var linear_vel = Vector2()
@@ -70,40 +75,48 @@ var center
 
 func _ready():
 	randomize_state()
-	#randomize()
-	#debugs the enemy's codes to a global variable
+	randomize_enemy_type() #disabling to debug
+	
 	update_facing()#for debug purposes only
 	state = STATE_WALKING#for debug purposes only
 	
-	#Debug.enemy = self 
-	if  mob == true: #selcts a player out of the array
-		player= get_tree().get_nodes_in_group('player') 
-		# Globals.player
-		player = player.pop_front() 
-		print ('auto mob')
-		
-	if mob == false: #broken function. Turns mob state on/ off. Depreciated
-		player = null
 
 func _process(_delta):
 	"FACE THE PLAYER, IF HE'S VISIBLE"
 	if player != null: 
 		update_facing()
 
-
-	"Detects player through a raycast and auto kills them"
-	if raycast.is_colliding() && player != null:
-		calculate_center() #calculates distance to plaer
-		move_and_slide(center) # moves to plater
-		state = STATE_WALKING
-		enemy_distance_to_player = abs(position.distance_to(player.position )) # Calculates the enemy distance to playrer
-		
-		#print (enemy_distance_to_player)
-		if enemy_distance_to_player < 80: #uses enemy distance to auto attack
-			state = STATE_ATTACK
-
 	if hitpoints <= 0: # Dies if hitpoint is zero
 		state = STATE_DIE
+		#despawn()
+
+	"Enemy Behaviour Logic"
+	
+	if raycast.is_enabled() == true:
+		if raycast.is_colliding() && player != null:
+			calculate_center() #calculates distance to plaer
+			move_and_slide(center) # moves to plater
+			state = STATE_WALKING
+			enemy_distance_to_player = abs(position.distance_to(player.position )) # Calculates the enemy distance to playrer
+			
+			#print (enemy_distance_to_player) # For debug purposes only
+			if enemy_distance_to_player < 80: #uses enemy distance to auto attack
+				yield(get_tree().create_timer(attack_wait_time), "timeout")
+				state = STATE_ATTACK
+				#return state 
+			if enemy_distance_to_player > 80:
+				#shoot() #Disabling for now
+				if enemy_type == "Hard":
+					state = STATE_ROLL
+					#return state
+				if enemy_type == "Easy":
+					state = STATE_WALKING
+					#return state
+				if enemy_type == "Intermediate":
+					state = STATE_WALKING
+				else: return
+
+
 
 
 func _physics_process(_delta):
@@ -111,11 +124,7 @@ func _physics_process(_delta):
 		STATE_IDLE:
 			new_anim = "idle_" + facing
 		STATE_WALKING:
-			
 			linear_vel = move_and_slide(linear_vel)
-			
-			
-			
 			var target_speed = Vector2()
 			
 			if facing == "down":
@@ -172,7 +181,6 @@ func _physics_process(_delta):
 		STATE_MOB: # Calculates enemy Mob ai to player
 			 # create a behavioural tree using raycast 2d
 			player =get_tree().get_nodes_in_group('player').pop_front() # Incase there are more than 1 players
-			
 			var target = player.position  
 			
 			# update assumed distance to use both x and y co-ordinate planes and update outside mob state
@@ -183,16 +191,9 @@ func _physics_process(_delta):
 			# Enemy Detection needs improvement
 		
 			if enemy_distance_to_player < assumed_distance : # compares the real distance to an assumed distance
-
-				#state = STATE_WALKING
 				print ('player near me: True (', enemy_distance_to_player,')' ,' state: ', state) #for debug purposes only
-
 			# Enemy distance is always greater than asumed distance
 			if enemy_distance_to_player >  assumed_distance  : # compares the real distance to an assumed distance
-				#center = restaVectores(position, target)
-				
-			
-				#print ("sldgnsljgaglksg")
 				print ('player near me: False (', enemy_distance_to_player,')' ,' state: ', state) #for debug purposes only
 				#goto_idle() 
 				#state = STATE_ATTACK
@@ -204,6 +205,7 @@ func _physics_process(_delta):
 			
 			if not raycast.is_colliding() :
 				return
+			
 
 	if new_anim != anim:
 		anim = new_anim
@@ -228,6 +230,12 @@ func randomize_state():
 	randomize()
 	state = randi() %3
 	facing = ["left", "right", "up", "down"][randi()%3]
+	return state 
+
+func randomize_enemy_type():
+	randomize()
+	enemy_type = ['Easy', "Intermediate", "Hard"][randi()%3]
+	return enemy_type
 
 # Hurt Box collission is closest to the body's collision
 func _on_hurtbox_area_entered(area):
@@ -243,7 +251,7 @@ func _on_hurtbox_area_entered(area):
 		blood.global_position = global_position # Makes the fx position global?
 		
 		#$state_changer.start() # Disabled Random State Changer For Debugging
-
+		
 
 
 # Despawn Logic
@@ -270,18 +278,24 @@ func despawn()->  void:
 
 func _on_enemy_eyesight_body_entered(body):
 	if body is Player :
-		#player = body
+		player = body
+		raycast.set_enabled(true)
 		run_speed = 150 #increase run speed if player is seen
 		state = STATE_MOB
 		print('player seen', 'State: ', state)
+		print ("Enemy Type:", enemy_type) # for debug purposes
 		#update_facing()
 
 func _on_enemy_eyesight_body_exited(body):
 	#help detect the player when he leaves
 	if body is Player:
-		#state= STATE_MOB
+		
 		run_speed = 300
-		print ('player hidden, CATCH UP!')
+		raycast.set_enabled(false) 
+		player = null
+		print ('player hidden, Turning of Raycast Detection')
+		randomize_state()
+		
 
 
 
@@ -326,3 +340,16 @@ func calculate_center()-> Vector2:
 	var position = self.position 
 	center = restaVectores(target, position) 
 	return center
+
+func shoot(): #spawns a bullet at a particular position
+	#Disabling for now
+	print ('shooting player')
+	var b = Bullet.instance()
+	self.add_child(b)
+	b.transform = pointer.global_transform
+
+
+func _on_hurtbox_area_exited(area):
+	if state == STATE_DIE && area.name == "player_sword":
+		if hitpoints <= 0:
+			despawn()

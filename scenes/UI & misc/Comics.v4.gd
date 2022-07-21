@@ -41,7 +41,10 @@ var comics = {
 	2:'res://scenes/Comics/chapter 2/chapter 2.tscn',
 	3:'res://scenes/Comics/chapter 3/chapter 3.tscn',
 	4:"res://scenes/Comics/chapter 4/chapter 4.tscn",
-	5: 'res://scenes/Comics/Outside/outside.tscn'}
+	5:"res://scenes/Comics/chapter 5/chapter 5.tscn",
+	6:"res://scenes/Comics/chapter 6/chapter 6.tscn",
+	7:"res://scenes/Comics/chapter 7/chapter 7.tscn",
+	8: 'res://scenes/Comics/Outside/outside.tscn'}
 
 var swipe_start_position = Vector2()
 
@@ -513,3 +516,15 @@ func load_chapter(number):#generic load chapter function
 
 func _on_chap_4_pressed():
 	load_chapter(4)
+
+
+func _on_chap_5_pressed():
+	load_chapter(5)
+
+
+func _on_chap_6_pressed():
+	load_chapter(6)
+
+
+func _on_chap_7_pressed():
+	load_chapter(7)

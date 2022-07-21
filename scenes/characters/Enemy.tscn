@@ -1166,7 +1166,10 @@ height = 67.6021
 
 [node name="Enemy" type="KinematicBody2D" groups=["enemies"]]
 position = Vector2( 585.638, 309.087 )
+scale = Vector2( 0.84, 0.84 )
 script = ExtResource( 1 )
+attack_wait_time = 3
+enemy_type = "Easy"
 hitpoints = 1
 
 [node name="sprite" type="Sprite" parent="."]
@@ -1244,5 +1247,6 @@ collide_with_areas = true
 autostart = true
 
 [connection signal="area_entered" from="hurtbox" to="." method="_on_hurtbox_area_entered" flags=3]
+[connection signal="area_exited" from="hurtbox" to="." method="_on_hurtbox_area_exited"]
 [connection signal="body_entered" from="enemy_eyesight" to="." method="_on_enemy_eyesight_body_entered"]
 [connection signal="body_exited" from="enemy_eyesight" to="." method="_on_enemy_eyesight_body_exited"]

@@ -83,9 +83,8 @@ func _input(event): #Toggles menu visibility on/off
 
 
 func _on_continue_pressed():
-	#emit_signal("loading_game") 
 	print (" --loading game--")
-	#menu_state= LOADING  #DOESNT WORK
+	
 	Music.play_track(Music.ui_sfx[0])
 	Globals.load_game()
 	if Globals.current_level != null:
@@ -103,16 +102,16 @@ func _on_continue_pressed():
 func _on_new_game_pressed():
 	if Globals.initial_level != "":
 		Globals.current_level = Globals.initial_level
-		#emit_signal("loading_game") #other functions connect to theis signal
-		#menu_state= LOADING # Loading State #DOESNT WORK
 		print (" Emitting signal--loading game--")
 		Music.play_track(Music.ui_sfx[0]) #plays ui sfx in a loop
 		
-		'Auto Scene Changer Shorthand' # Expantiate Later
-		change_scenes_via_globals_script()
+
 		
 		if Globals.save_game() == false:
 			push_error("Error saving game")
+		
+		'Auto Scene Changer Shorthand'
+		change_scenes_via_globals_script()
 		#var err =Globals.change_scene_to(Globals.initial_level) # Loads the initial scene 
 		#print (" Menu Error: "+str(err))
 		#if err != OK:
@@ -203,7 +202,7 @@ func _hide_some_menu_options():
 		pass
 
 func change_scenes_via_globals_script():
-	'Auto Scene Changer Shorthand' # E
+	'Auto Scene Changer Shorthand' 
 	if Globals._q == null:
 		Globals._r =Globals.current_level # triggers an auto scene loader.changer from globals script
 	if Globals._q != null:

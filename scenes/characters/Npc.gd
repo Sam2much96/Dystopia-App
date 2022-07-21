@@ -8,6 +8,7 @@
 # AI code written here, should be written with Polymorphism in mind as it is shared by all Quest givers
 # TO do:
 # (1) Copy Mob code from enemy and implement it for NPC to follow Player
+# (2) Add walking Animation
 # *************************************************
 
 
@@ -56,3 +57,5 @@ func _on_body_entered(body):
 func _on_body_exited(body):
 	if body is Player:
 		active = false
+
+

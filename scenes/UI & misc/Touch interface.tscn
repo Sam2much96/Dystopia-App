@@ -21,6 +21,7 @@ radius = 50.0
 [node name="TouchInterface" type="Node2D"]
 modulate = Color( 1, 1, 1, 0.698039 )
 script = ExtResource( 4 )
+_Hide_touch_interface = true
 _control = "analogue"
 
 [node name="menu" type="TouchScreenButton" parent="."]
@@ -72,7 +73,9 @@ passby_press = true
 action = "attack"
 visibility_mode = 1
 
-[node name="right" type="TouchScreenButton" parent="."]
+[node name="D-pad" type="YSort" parent="."]
+
+[node name="right" type="TouchScreenButton" parent="D-pad"]
 position = Vector2( 255.24, 355.008 )
 scale = Vector2( 1.6, 1.6 )
 normal = ExtResource( 15 )
@@ -81,7 +84,7 @@ passby_press = true
 action = "move_right"
 visibility_mode = 1
 
-[node name="up" type="TouchScreenButton" parent="."]
+[node name="up" type="TouchScreenButton" parent="D-pad"]
 position = Vector2( 146.454, 378.201 )
 rotation = -1.5708
 scale = Vector2( 1.6, 1.6 )
@@ -91,7 +94,7 @@ passby_press = true
 action = "move_up"
 visibility_mode = 1
 
-[node name="left" type="TouchScreenButton" parent="."]
+[node name="left" type="TouchScreenButton" parent="D-pad"]
 position = Vector2( 170.2, 488.846 )
 rotation = -3.14159
 scale = Vector2( 1.6, 1.6 )
@@ -101,7 +104,7 @@ passby_press = true
 action = "move_left"
 visibility_mode = 1
 
-[node name="down" type="TouchScreenButton" parent="."]
+[node name="down" type="TouchScreenButton" parent="D-pad"]
 position = Vector2( 278.076, 462.904 )
 rotation = 1.5708
 scale = Vector2( 1.6, 1.6 )

@@ -64,11 +64,11 @@ func display_locked_text(): #Dis the dialogue noxplays a generic text through
 #	display_locked_text()
 
 
-func _on_chap_5_pressed():
-	display_locked_text()
+#func _on_chap_5_pressed():
+#	display_locked_text()
 
-func _on_chap_6_pressed():
-	display_locked_text()
+#func _on_chap_6_pressed():
+#	display_locked_text()
 
-func _on_chap_7_pressed():
-	display_locked_text()
+#func _on_chap_7_pressed():
+#	display_locked_text()

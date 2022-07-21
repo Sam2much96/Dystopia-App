@@ -50,13 +50,15 @@ onready var player_camera = $camera #the player's camera
 
 func _enter_tree():
 	Globals.update_curr_scene()
-	if Globals.player_hitpoints != null:
-		hitpoints = Globals.player_hitpoints #Updates player health across scenes
+	#if Globals.player_hitpoints != null:
+	#	hitpoints = Globals.player_hitpoints #Updates player health across scenes
 	if Globals.player != null:
 		if Globals.player.empty() == true  :
-			Globals.player.append(self)  #saves player to the player variable
+			Globals.player.append(self)  #saves player to the Global player variable
+	
+	'Makes Player Hitpoint a Global Variable'
+	Globals.player_hitpoints = hitpoints
 
-	#print (Globals.spawnpoint)
 
 func _ready():
 
@@ -216,13 +218,19 @@ func despawn():  #this code breaks
 	get_parent().add_child(blood) 
 	despawn_particles.global_position = global_position
 	blood.global_position = global_position
+	
+	
+	
 	hide()
 	print ('Update Player code for proper despawing')
-	yield(get_tree().create_timer(5.0), "timeout")
+	yield(get_tree().create_timer(0.5), "timeout")
 	#Update this code to update player position
 	
-	return get_tree().reload_current_scene() #Reboots the current scene if the Player Dies
-
+	print ("player respawn is broken")
+	#get_tree().reload_current_scene() #Reboots the current scene if the Player Dies
+	if Globals._q != null:
+		Globals.change_scene_to(Globals._q)
+	else: get_tree().reload_current_scene()
 
 func _on_hurtbox_area_entered(area):
 	if state != STATE_DIE and area.is_in_group("enemy_weapons"):

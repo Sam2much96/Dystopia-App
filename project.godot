@@ -34,6 +34,11 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://addons/algodot/gdnative/async_executor.gdns"
 }, {
+"base": "Area2D",
+"class": "Bullet",
+"language": "GDScript",
+"path": "res://scenes/items/Bullet.gd"
+}, {
 "base": "Control",
 "class": "Comics",
 "language": "GDScript",
@@ -195,6 +200,7 @@ _global_script_class_icons={
 "Algod": "",
 "Appodeal": "res://ads/Appodeal/appodeal_logo.png",
 "AsyncExecutorDriver": "",
+"Bullet": "",
 "Comics": "",
 "DTS": "",
 "DialogBox": "",

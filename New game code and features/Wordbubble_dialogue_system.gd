@@ -1,3 +1,13 @@
+# *************************************************
+# Word Bubble Dialogue System
+# Implements a Wordbubble system using line2D, Animation Player, Player's Language and Comic book's current frame
+# To Do:
+#(1) Finish Building System
+#(2) Make a child of Comic book node scene
+#(3) Implement multilanguage functionality
+#(4) Use Line2d for wordbubble and dialogue boxes
+# *************************************************
+
 extends Node
 
 """

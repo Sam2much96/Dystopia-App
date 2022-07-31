@@ -259,6 +259,7 @@ Music="*res://singletons/Music.tscn"
 Networking="*res://singletons/Networking.tscn"
 InputManager="*res://singletons/InputManager.gd"
 SyncManager="res://addons/godot-rollback-netcode/SyncManager.gd"
+AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
 
 [debug]
 
@@ -274,7 +275,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/NativeLib/plugin.cfg", "res://addons/dialogic/plugin.cfg", "res://addons/gdunzip/plugin.cfg", "res://addons/monero/plugin.cfg", "res://addons/nativelib-export/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/NativeLib/plugin.cfg", "res://addons/algodot/plugin.cfg", "res://addons/dialogic/plugin.cfg", "res://addons/gdunzip/plugin.cfg", "res://addons/monero/plugin.cfg", "res://addons/nativelib-export/plugin.cfg" )
 
 [gdnative]
 

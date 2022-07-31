@@ -1,4 +1,28 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Algorand Script for Godot
+# Processess transactions to the Algorand blockchain
+# To Do:
+#(1) Make into a Domain Specific Language
+#(2) Implement the following functions
+#
+# - sign in wallet
+# - sign transactions
+# - send transactions
+# - send NFT's
+# - Parse NFT to image file
+# - Receive transactions
+# Goals
+#(1) To make creating web3 games easier and intuitive to implement on Algorand
+#(2) To implement NFT's in my own game
+#(3) To write a comprehensive documentation for users
+#(4) To win the Hackathon
+# *************************************************
+
 extends Node
+
 
 
 var algod: Algod

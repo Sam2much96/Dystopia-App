@@ -3,6 +3,7 @@ extends Node
 A RUDIMENTARY IMPLEMENTATION OF AN ONLINE HIGHSCORE SYSTEM
 """
 #This Should run as a child of the Server scene
+# Depreciated, Use Google Play games services instead
 var leaderboard = {}
 
 # Called when the node enters the scene tree for the first time.

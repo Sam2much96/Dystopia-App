@@ -98,6 +98,11 @@ onready var scene_loader= ResourceLoader
 #onready var wait_frames : int = 10 #not used, delete later
 onready var progress : float
 
+"Crypto Variables" 
+var address
+var mnemonic
+
+
 func _ready():
 	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	

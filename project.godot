@@ -19,17 +19,22 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ads/admob-lib/admob.gd"
 }, {
-"base": "",
+"base": "Node",
 "class": "Algod",
 "language": "NativeScript",
 "path": "res://addons/algodot/gdnative/algod.gdns"
+}, {
+"base": "Node",
+"class": "Algodot",
+"language": "GDScript",
+"path": "res://addons/algodot/Algod.gd"
 }, {
 "base": "Node",
 "class": "Appodeal",
 "language": "GDScript",
 "path": "res://ads/Appodeal/Appodeal.gd"
 }, {
-"base": "",
+"base": "Node",
 "class": "AsyncExecutorDriver",
 "language": "NativeScript",
 "path": "res://addons/algodot/gdnative/async_executor.gdns"
@@ -154,6 +159,11 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://addons/monero/monero.gdns"
 }, {
+"base": "TextureRect",
+"class": "NFT",
+"language": "GDScript",
+"path": "res://New game code and features/NFT_image_parser.gd"
+}, {
 "base": "AnimationPlayer",
 "class": "NetworkAnimationPlayer",
 "language": "GDScript",
@@ -173,6 +183,11 @@ _global_script_classes=[ {
 "class": "Player",
 "language": "GDScript",
 "path": "res://scenes/characters/Player.gd"
+}, {
+"base": "EditorScript",
+"class": "ReferenceCollector",
+"language": "GDScript",
+"path": "res://addons/algodot/Documentation/Scripts/DocsReferenceCollector.gd"
 }, {
 "base": "Node",
 "class": "StateMachine",
@@ -198,6 +213,7 @@ _global_script_class_icons={
 "Aarin": "",
 "AdMob": "res://ads/admob-lib/icon.png",
 "Algod": "",
+"Algodot": "res://addons/algodot/icon.png",
 "Appodeal": "res://ads/Appodeal/appodeal_logo.png",
 "AsyncExecutorDriver": "",
 "Bullet": "",
@@ -224,10 +240,12 @@ _global_script_class_icons={
 "InputEventSingleScreenTap": "",
 "InputEventSingleScreenTouch": "",
 "Monero": "",
+"NFT": "",
 "NetworkAnimationPlayer": "",
 "NetworkRandomNumberGenerator": "",
 "NetworkTimer": "",
 "Player": "",
+"ReferenceCollector": "",
 "StateMachine": "",
 "Yodo1Mas": "",
 "cinematic": "",
@@ -240,7 +258,7 @@ config/name="Dystopia App stable==GodotAdmob+GodotAppodeal"
 config/description="Changing the World? Sigh. A very lofty dream. It is a feat few men ever really achieve.It's an idea that infectts men to hope, fight, kill and to die. It was for this dream we hoped, fought, killed, starved, bled and died for in a hellish war that lasted 5 years. After fighting for so long, you lose sight if what you're really fighting for; and when you lose someone you love, all those lofty dreams you so valiantly fought for suddenly lose meaning. After all, what is the point of changing the world, when you have no one left to share it with.
 
 A Stable build for the Dystopia App, preloaded with Chapters 1-3. Read the Comics, Watch the Anime, Play the Game, all in one app. It's a playable comic."
-run/main_scene="res://New game code and features/crypto_testing.tscn"
+run/main_scene="res://New game code and features/NFT_image_parser.tscn"
 boot_splash/image="res://resources/title animation/Dystopia Logo Drop shadow.png"
 boot_splash/fullsize=false
 boot_splash/use_filter=false
@@ -260,6 +278,7 @@ Networking="*res://singletons/Networking.tscn"
 InputManager="*res://singletons/InputManager.gd"
 SyncManager="res://addons/godot-rollback-netcode/SyncManager.gd"
 AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
+DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
 
 [debug]
 
@@ -275,11 +294,11 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/NativeLib/plugin.cfg", "res://addons/algodot/plugin.cfg", "res://addons/dialogic/plugin.cfg", "res://addons/gdunzip/plugin.cfg", "res://addons/monero/plugin.cfg", "res://addons/nativelib-export/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/NativeLib/plugin.cfg", "res://addons/algodot/plugin.cfg", "res://addons/gdunzip/plugin.cfg", "res://addons/nativelib-export/plugin.cfg" )
 
 [gdnative]
 
-singletons=[ "res://addons/monero/monero.gdnlib", "res://addons/videodecoder.gdnlib" ]
+singletons=[ "res://addons/monero/monero.gdnlib", "res://addons/videodecoder/videodecoder.gdnlib" ]
 
 [input]
 

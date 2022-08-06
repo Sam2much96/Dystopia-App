@@ -54,6 +54,7 @@ A part of my partnership with Appodeal, i implemented their SDK, Facebook's SDK,
 (17) The Project uses a custom AndroidManifest.xml, backup_rule.xml, build.grade and config.gradle scripts to build for android.
 (18) Implementing Dialogic as a child of Dialogues Singleton
 (19) Implementing Leaderboard and Achievements on Android Devices
+(20) Networking.download_image_(image url, image save path): Downloads a png image from a url and saves it at a given path 
 -Features to Fix
 	-Enemy Animation 
 	-Fix up Game's spawnpoints (look at the Exit code in the Temple interior scene)

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://New game code and features/NFT_image_parser.gd" type="Script" id=1]
+[ext_resource path="res://addons/algodot/Algod.gd" type="Script" id=2]
+
+[node name="TextureRect" type="TextureRect"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 15.563, 19.384 )
+script = ExtResource( 1 )
+
+[node name="Algodot" type="Node" parent="."]
+script = ExtResource( 2 )
+
+[node name="account_info_text" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0

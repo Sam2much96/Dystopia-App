@@ -5,3 +5,5 @@
 [node name="Networking" type="HTTPRequest"]
 script = ExtResource( 1 )
 enabled = true
+
+[node name="Timer2" type="Timer" parent="."]

@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/items/coins.gd" type="Script" id=1]
 [ext_resource path="res://sounds/item_collected.ogg" type="AudioStream" id=2]
 [ext_resource path="res://resources/item.png" type="Texture" id=3]
+[ext_resource path="res://addons/algodot/Algod.gd" type="Script" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 63.7874
@@ -176,3 +177,6 @@ autoplay = "spawn"
 anims/collected = SubResource( 2 )
 anims/reset = SubResource( 3 )
 anims/spawn = SubResource( 4 )
+
+[node name="Algodot" type="Node" parent="."]
+script = ExtResource( 4 )

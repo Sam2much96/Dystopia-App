@@ -7,6 +7,7 @@
 # To Do:
 #(1) Run on Web3
 # (2) Proper Documentation
+# (3) Should Use Algos
 # *************************************************
 
 extends Area2D
@@ -18,8 +19,13 @@ Coins
 export(String) var item_type = "Coins"
 export(int) var amount 
 
+onready var algos = $Algodot
+var status
+
 func _ready():
 	connect("body_entered", self, "_on_Item_body_entered")
+	connect("body_entered", self, "_send_algo_transaction") #for algo transaction
+	
 	pass
 
 func _on_Item_body_entered(body): #kinda buggy -inhumanity
@@ -32,3 +38,9 @@ func _on_Item_body_entered(body): #kinda buggy -inhumanity
 		yield(get_tree().create_timer(0.8), "timeout")
 		$pickup.stop()
 	pass
+
+
+func _send_algo_transaction():
+	status = status && yield(algos._send_transaction_to_receiver_addr(funder_address , funder_mnemonic , receivers_address , receivers_mnemonic), "completed") #works
+	#status = status && yield(_send_asset_transfers_to_receivers_address(funder_address , funder_mnemonic , receivers_address , receivers_mnemonic), "completed") #works
+	print (status)

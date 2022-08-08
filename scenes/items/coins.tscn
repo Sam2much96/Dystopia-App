@@ -1,8 +1,14 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/items/coins.gd" type="Script" id=1]
 [ext_resource path="res://sounds/item_collected.ogg" type="AudioStream" id=2]
 [ext_resource path="res://resources/misc/algos.png" type="Texture" id=3]
+[ext_resource path="res://scenes/Shaders/outline.shader" type="Shader" id=4]
+
+[sub_resource type="ShaderMaterial" id=7]
+shader = ExtResource( 4 )
+shader_param/line_color = Color( 0, 0, 0, 1 )
+shader_param/line_thickness = 3.267
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 63.7874
@@ -213,7 +219,7 @@ item_type = "algos"
 amount = 10
 
 [node name="sprite" type="Sprite" parent="."]
-visible = false
+material = SubResource( 7 )
 texture = ExtResource( 3 )
 offset = Vector2( 0.36261, -19.2809 )
 

@@ -26,7 +26,7 @@ extends TextureRect
 
 class_name NFT
 
-export (String) var local_image_path ="" #Loads the image file path from a folder to prevent redownloads
+export (String) var local_image_path ="res://img0.png" #Loads the image file path from a folder to prevent redownloads
 var image_url
 var account_info: Dictionary = {}
 var is_image_available_at_local_storage : bool 

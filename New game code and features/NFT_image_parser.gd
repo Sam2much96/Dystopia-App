@@ -110,5 +110,41 @@ func return_account_info():
 	if not account_info.empty():
 		account_info_text.set_text(account_info)
 
-func store_NFT_variables(): #should store the image variables
+func store_wallet_details_locally(): #should store the wallet details
+	# Create new ConfigFile object.
+	var wallet_data = ConfigFile.new()
+	
+	# Store some values.
+	wallet_data.set_value("Player ", "player_name", Globals.player_name)
+	wallet_data.set_value("Address", "address", Globals.address)
+	wallet_data.set_value("Mnemonic", "mnemonic", Globals.mnemonic)
+	
+	
+	# Save it to a file and encrypts it (overwrite if already exists).
+	wallet_data.save_encrypted ( "res://wallet_data.cfg", 1234 )
+	
 	pass
+
+func load_wallet_details_from_local(): #should load the wallet details
+	var wallet_data = ConfigFile.new()
+
+	# Load encrpyted data from a file.
+	var err = wallet_data.load_encrypted_pass ( "res://wallet_data.cfg", 1234 )
+
+	# If the file didn't load, ignore it.
+	if err != OK:
+		return
+	# Iterate over all sections.
+	for player in wallet_data.get_sections():
+	# Fetch the data for each section.
+		Globals.player_name = wallet_data.get_value(player, "player_name") #place holder values
+		Globals.address = wallet_data.get_value(player, "best_score") #place holder values
+		Globals.mnemonic = wallet_data.get_value(player, "best_score") #place holder values
+	pass
+
+func _on_withraw(): #withdraws Algos from wallet data into algorand wallet
+	#status = status && yield(algos._send_transaction_to_receiver_addr(funder_address , funder_mnemonic , receivers_address , receivers_mnemonic), "completed") #works
+	#status = status && yield(_send_asset_transfers_to_receivers_address(funder_address , funder_mnemonic , receivers_address , receivers_mnemonic), "completed") #works
+	print (status)
+
+

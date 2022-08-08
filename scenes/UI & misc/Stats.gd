@@ -33,8 +33,8 @@ func _input(event):
 
 
 
-func _update_killcount(): #Updates killcount and Suds
-	$VBoxContainer/HBoxContainer/Inventory/Kill_count.text = 'killcount: '+str (Globals.kill_count) + ' Suds: ' + str (Globals.Suds)
+func _update_killcount(): #Updates killcount and Algos
+	$VBoxContainer/HBoxContainer/Inventory/Kill_count.text = 'killcount: '+str (Globals.kill_count) + ' Algos: ' + str (Globals.algos)
 
 
 func _update_quest_listing():

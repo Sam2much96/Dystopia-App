@@ -33,9 +33,6 @@ focus_neighbour_bottom = NodePath("VBoxContainer/Exit")
 focus_mode = 2
 custom_styles/panel = ExtResource( 4 )
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 enabled = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]

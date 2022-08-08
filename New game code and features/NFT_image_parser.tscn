@@ -12,6 +12,28 @@ script = ExtResource( 1 )
 [node name="Algodot" type="Node" parent="."]
 script = ExtResource( 2 )
 
-[node name="account_info_text" type="Label" parent="."]
-margin_right = 40.0
-margin_bottom = 14.0
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 49.5406
+margin_top = 2.37309
+margin_right = 180.541
+margin_bottom = 74.3731
+rect_scale = Vector2( 0.221977, 0.150108 )
+
+[node name="account_info_text" type="Label" parent="VBoxContainer"]
+margin_right = 131.0
+margin_bottom = 48.0
+text = "Account Information
+==+
+"
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_top = 52.0
+margin_right = 131.0
+margin_bottom = 66.0
+text = "Ingame Algos:"
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+margin_top = 70.0
+margin_right = 131.0
+margin_bottom = 90.0
+text = "withdraw"

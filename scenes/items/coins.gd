@@ -17,30 +17,31 @@ Coins
 """
 
 export(String) var item_type = "Coins"
-export(int) var amount 
+export(int) var amount #microalgos
 
-onready var algos = $Algodot
+
 var status
 
 func _ready():
 	connect("body_entered", self, "_on_Item_body_entered")
-	connect("body_entered", self, "_send_algo_transaction") #for algo transaction
+	if Globals.player[0]._ready():
+		$anims.play("spawn")
 	
-	pass
+	yield(get_tree().create_timer(2),"timeout")
+	
+	$anims.play("idle")
+	
 
 func _on_Item_body_entered(body): #kinda buggy -inhumanity
 	if body is Player && amount != null:
 		call_deferred("disconnect", "body_entered", self, "_on_Item_body_entered")
 		#Inventory.add_item(item_type, amount)
-		Globals.Suds += amount
+		Globals.algos = Globals.algos + amount #should be Algos instead
 		$anims.play("collected")
+		Music.play_track("res://sounds/item_collected.ogg")
 		#body.emit_signal("health_changed", body.hitpoints)
 		yield(get_tree().create_timer(0.8), "timeout")
 		$pickup.stop()
 	pass
 
 
-func _send_algo_transaction():
-	status = status && yield(algos._send_transaction_to_receiver_addr(funder_address , funder_mnemonic , receivers_address , receivers_mnemonic), "completed") #works
-	#status = status && yield(_send_asset_transfers_to_receivers_address(funder_address , funder_mnemonic , receivers_address , receivers_mnemonic), "completed") #works
-	print (status)

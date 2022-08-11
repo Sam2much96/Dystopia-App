@@ -42,83 +42,124 @@ onready var refresh = $VBoxContainer/refresh
 #*****************************************************
 onready var NFT= $"."
 var status
+var file_checker = File.new()
+
+#************** Algo Variables *************************
+var load_from_local_wallet : bool
+var amount
+var address
+var _wallet_algos: int
+var asset_name
+var asset_url
+
+
+
 func _ready():
 	
-	Algorand._test_algod_connection()
+	
 	
 	#status = status && yield(Algorand.create_NFT("NFT001", "L5ESENBL23J2GJGM64Y767IXWGBCKXMGS2OGZ3MC5BBGWJAKJJAUK7BJK4", 1, "NFT", "res://body.json"), "completed") #doesnt work
 	#print ("Status",status)
 	
 	#works
 	
-	#returns a dictionary
-	account_info=(yield(Algorand._check_account_information("2NFCY7HBAFJ5YP7TXUOFHHMGAZ7AHEXPS5F3NENXSC3WXRVATBR4Y23AUM", "rigid steak better media circle nothing range tray firm fatigue pool damage welcome supply police spoon soul topic grant offer chimney total bronze able human", ""), "completed"))
-	#print ("created assets: ",account_info['created-assets']) # lists assetscreated #for debug purposes only
-	print (account_info["created-assets"][2]["index"]) #try using 3
-	#print (account_info["created-assets"][2]["params"]['unit-name'])
-	#print (account_info["address"])
 	
+	if not file_checker.file_exists("res://account_info.token"): # if account info doesn't exist
+		#Make sure an algod node is running or connet to mainnet or testnet
+		Algorand._test_algod_connection()
+		
+		"gets account info returns a dictionary"
+		account_info=(yield(Algorand._check_account_information("2NFCY7HBAFJ5YP7TXUOFHHMGAZ7AHEXPS5F3NENXSC3WXRVATBR4Y23AUM", "rigid steak better media circle nothing range tray firm fatigue pool damage welcome supply police spoon soul topic grant offer chimney total bronze able human", ""), "completed"))
+		#print (account_info["created-assets"][2]["index"]) #try using 3
+		#print (account_info["created-assets"][2]["params"]['unit-name'])
+		"saves account info"
+		save_account_info(account_info, 2) #works
 	
-	#[2]gets the second asset created parameters
-	#var nft = account_info["created-assets"][2]['params']['url']
-	#print(nft)
-	#print (nft.keys())
-	
-	
-	"works but saves a raw dictionary"
-	#save_account_info(account_info) #works
-	
-	#print (account_info)
-	#for asset in account_info["assets"]:
-	#	print ("keys: ",asset.keys(), "values: ",asset.values())
-
-	#show_account_info()
+	"it's always load account details when ready"
+	if file_checker.file_exists("res://account_info.token"):
+		load_account_info()
+		
+		#load_wallet_mnemonic_from_local() #disabling for now
+		show_account_info()
 	
 	
 	"Checks if the Image is avalable Locally and either downloads or loads it"
 	if check_is_image_avalable_() == false: #works
-		#Networking.url= get_asset_url(Globals.address, Globals.mnemonic)
-		Networking.url= "https://192.168.0.104/body.png"
-		print ("Image url :", Networking.url)#for debug purposes
+		print('NFT image is not available locally, Downloading now') 
+		var b = HTTPClient.new() #testing http client
+		
+		Networking.url= str(asset_url) #it needs to run 2 checks to download json
+		print ("Image url :", Networking.url)# Downloads a .json
 		
 		# Connects the Networking signal
-		Networking.connect("request_completed", self, "_http_request_completed")
-		#Networking.start_check()
-		#Networking.download_image_(Networking._check_connection( Networking.url), "res://")
-		#Networking.download_file
-		Networking._check_connection( Networking.url)
+		connect_signals()
+		#b.connect("request_completed", self, "_http_request_completed")
 		
+		#Networking._check_connection( Networking.url) #returns a read and write error
+		
+		Networking._check_connection_secured(Networking.url) #returns read and write erro
+		
+		
+		#port code bloc to Networking singleton
 	elif check_is_image_avalable_() == true:
 			load_local_image_texture()
 	else: return
 
 
-func show_account_info(): #should load from saved account info 
-	if account_info.empty() == false: #load from wallet
-		account_address.text += account_info["address"]
+func show_account_info(): #loads from saved account info 
+	if load_from_local_wallet == true: #load from wallet
+		account_address.text = Globals.address
 		ingame_algos.text += str (Globals.algos)
-		wallet_algos.text += str (account_info["amount"])
+		wallet_algos.text += str(_wallet_algos)
 
 func connect_signals()-> void: #connects all required signals in the parent node
-	pass
+	Networking.connect("request_completed", self, "_http_request_completed")
 
 #saves account information to a dictionary
-func save_account_info( info : Dictionary):
-	var save_game = File.new()
+#i don't know what number does ngl. It jusst works
+func save_account_info( info : Dictionary, number: int): 
+	var save_game = File.new() #change from save game
 	save_game.open("res://account_info.token", File.WRITE)
 	var save_dict = {}
 	#save_dict= info #saves the raw dictionary
 	save_dict.address =info["address"]
 	save_dict.amount =info["amount"]
-	save_dict.asset_index =info["created-assets"][2]["index"]
-	save_dict.asset_name = info["created-assets"][2]["params"]["name"]
-	save_dict.asset_unit_name = info["created-assets"][2]["params"]['unit-name']
-	save_dict.asset_url = info["created-assets"][2]['params']['url'] #saves the url of the second asset
+	save_dict.asset_index =info["created-assets"][number]["index"]
+	save_dict.asset_name = info["created-assets"][number]["params"]["name"]
+	save_dict.asset_unit_name = info["created-assets"][number]["params"]['unit-name']
+	save_dict.asset_url = info["created-assets"][number]['params']['url'] #saves the url of the second asset
 	
 	save_game.store_line(to_json(save_dict))
 	save_game.close()
 	print ("saved account info")
+	
+	store_wallet_mnemonic_to_local()
+	print ("saved account mnemonic")
 
+
+func load_account_info(check_only=false):
+	var save_game = File.new()
+	
+	if not save_game.file_exists("res://account_info.token"):
+		return false
+	
+	save_game.open("res://account_info.token", File.READ)
+	
+	var save_dict = parse_json(save_game.get_line())
+	if typeof(save_dict) != TYPE_DICTIONARY:
+		return false
+	if not check_only:
+		_restore_wallet_data(save_dict)
+
+func _restore_wallet_data(info: Dictionary):
+	# JSON numbers are always parsed as floats. In this case we need to turn them into ints
+	address = str(info.address)
+	Globals.address = info.address
+	_wallet_algos = info.amount 
+	asset_name = str (info.asset_name) 
+	asset_url = str(info.asset_url)
+	load_from_local_wallet = true
+	print ('wallet data restored from local database')
 
 # Parses Asset MetaData
 func get_asset_url(address, mnemonic) :
@@ -140,14 +181,24 @@ func check_is_image_avalable_()-> bool:
 	return is_image_available_at_local_storage
 	
 func _http_request_completed(result, response_code, headers, body):
-	print (" request done", result)
+	print (" request done: ", result)
 	if is_image_available_at_local_storage== false:
+		var response = parse_json(body.get_string_from_utf8())
+		print("Response: ",response)
+		print (headers)
+		#var json = JSON.parse(body.get_string_from_utf8()) #should work
+		#print ("NF metadata: ",json.result) #has ssl dertificate error
+		#print ("NF metadata: ",json.print('image')) #has ssl dertificate error
+		
+		"Should Parse the NFT's meta-data to get the image ink"
 		if body.empty() != true:
-			print (" request successful")
-			NFT.set_image_(Networking.download_image_(body, "res://img0")) #kina works?
-			#return_account_info()
-		if body.empty():
-			push_error(str(Networking.result))
+			print ('fdsdfsfsdf')
+			"Downloads the NFT image"
+		#	print (" request successful")
+		#	NFT.set_image_(Networking.download_image_(body, "res://img0")) #works?
+		
+		if body.empty(): #returns an empty body
+			push_error("Result Unsuccessful")
 			Networking.stop_check()
 
 
@@ -172,35 +223,30 @@ func return_account_info(): #not needed
 #	if not account_info.empty():
 #		account_info_text.set_text(account_info)
 
-func store_wallet_details_locally(): #should store the wallet details
+
+	
+
+func store_wallet_mnemonic_to_local(): #should store the wallet details
 	# Create new ConfigFile object.
 	var wallet_data = ConfigFile.new()
 	
 	# Store some values.
-	wallet_data.set_value("Player ", "player_name", Globals.player_name)
-	wallet_data.set_value("Address", "address", Globals.address)
 	wallet_data.set_value("Mnemonic", "mnemonic", Globals.mnemonic)
-	
-	
 	# Save it to a file and encrypts it (overwrite if already exists).
-	wallet_data.save_encrypted ( "res://wallet_data.cfg", 1234 )
+	wallet_data.save_encrypted ( "res://wallet_keys.cfg", 1234 )
 	
 	pass
 
-func load_wallet_details_from_local(): #should load the wallet details
+func load_wallet_mnemonic_from_local(): #should load the wallet details
 	var wallet_data = ConfigFile.new()
-
 	# Load encrpyted data from a file.
-	var err = wallet_data.load_encrypted_pass ( "res://wallet_data.cfg", 1234 )
-
+	var err = wallet_data.load_encrypted_pass ( "res://wallet_keys.cfg", 1234 )
 	# If the file didn't load, ignore it.
 	if err != OK:
 		return
 	# Iterate over all sections.
 	for player in wallet_data.get_sections():
 	# Fetch the data for each section.
-		Globals.player_name = wallet_data.get_value(player, "player_name") #place holder values
-		Globals.address = wallet_data.get_value(player, "best_score") #place holder values
 		Globals.mnemonic = wallet_data.get_value(player, "best_score") #place holder values
 	pass
 

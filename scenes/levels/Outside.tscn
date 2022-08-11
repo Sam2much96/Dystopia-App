@@ -18,8 +18,6 @@ script = ExtResource( 28 )
 [node name="Outside" parent="." instance=ExtResource( 1 )]
 position = Vector2( -22, 186 )
 
-[node name="Rain_Fx" parent="." instance=ExtResource( 26 )]
-
 [node name="UI" parent="." instance=ExtResource( 15 )]
 
 [node name="Worldboundary" type="YSort" parent="."]
@@ -54,3 +52,5 @@ position = Vector2( 1102, 1458 )
 [node name="enemy_spawner2" parent="." instance=ExtResource( 2 )]
 position = Vector2( 5396, 2466 )
 enabled = false
+
+[node name="Rain_Fx" parent="." instance=ExtResource( 26 )]

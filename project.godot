@@ -300,6 +300,10 @@ enabled=PoolStringArray( "res://addons/NativeLib/plugin.cfg", "res://addons/algo
 
 singletons=[ "res://addons/monero/monero.gdnlib", "res://addons/videodecoder/videodecoder.gdnlib" ]
 
+[global]
+
+keys=NodePath("")
+
 [input]
 
 move_up={
@@ -392,6 +396,10 @@ pointing/emulate_touch_from_mouse=true
 [locale]
 
 locale_filter=[ 0, [ "es_ES" ] ]
+
+[network]
+
+ssl/certificates="res://web certificates/localhost.crt"
 
 [rendering]
 

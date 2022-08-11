@@ -132,7 +132,7 @@ func create_algorand_node()-> void:
 
  
 # Creates a Networking timer
-func _create_timer() :
+func _create_timer() : #rewrite to use actual timer
 	#write code to check if node has been instanced
 	self.set_process(true)
 	enabled = true 
@@ -158,7 +158,7 @@ func start_check(): #Starts time check using Check timer
 		check_timer.start()
 
 
-func _check_connection(url): # Check Url connection
+func _check_connection(url): # Check http unsecured Url connection
 	#Ignore Warning
 	var error = .request(url,PoolStringArray(),false,0,"") 
 	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
@@ -166,6 +166,26 @@ func _check_connection(url): # Check Url connection
 
 	#push_error("Networking: ---returns wrong details, should return body Instead")
 #	return _connection #
+
+func _check_connection_secured(url): #connects to https
+	var client = HTTPClient.new()
+	var error =client.connect_to_host(url, -1, true , false)
+	var status = client.get_status()
+	#var error = client.request(HTTPClient.METHOD_GET,Networking.url, PoolStringArray(), "") 
+	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
+	print (' Networking Request Error: ',error) #for debug purposes only
+	print("connection status: ", status)
+	if status != 5:
+		yield(get_tree().create_timer(3.0), "timeout") #waiting for 3 secs. #rewrite to use check timer
+		client.poll()
+		print("connection status: ", client.get_status())
+	if status == 5:
+		#break
+		print ("connection status connected: ", status)
+	#if error ==0:
+	#	error = client.request(HTTPClient.METHOD_GET,'/body.json', PoolStringArray(), "")
+	#	print (' Networking Request Error 2: ',error) #for debug purposes only
+	return
 
 # Should return body
 

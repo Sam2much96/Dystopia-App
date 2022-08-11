@@ -1,11 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://New game code and features/NFT_image_parser.gd" type="Script" id=1]
 [ext_resource path="res://addons/algodot/Algod.gd" type="Script" id=2]
+[ext_resource path="res://fonts/wallet.tres" type="Theme" id=3]
 
 [node name="TextureRect" type="TextureRect"]
-margin_right = 40.0
-margin_bottom = 40.0
+anchor_right = 0.486
+anchor_bottom = 1.077
+margin_right = -582.08
+margin_bottom = -735.44
 rect_scale = Vector2( 15.563, 19.384 )
 script = ExtResource( 1 )
 
@@ -13,27 +16,43 @@ script = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 49.5406
-margin_top = 2.37309
-margin_right = 180.541
-margin_bottom = 74.3731
-rect_scale = Vector2( 0.221977, 0.150108 )
+margin_left = 5.1404
+margin_top = 0.670656
+margin_right = 340.14
+margin_bottom = 601.671
+rect_scale = Vector2( 0.048605, 0.048605 )
 
-[node name="account_info_text" type="Label" parent="VBoxContainer"]
-margin_right = 131.0
-margin_bottom = 48.0
-text = "Account Information
-==+
+[node name="address" type="Label" parent="VBoxContainer"]
+margin_right = 335.0
+margin_bottom = 193.0
+theme = ExtResource( 3 )
+text = "Address: 
 "
 
-[node name="Label" type="Label" parent="VBoxContainer"]
-margin_top = 52.0
-margin_right = 131.0
-margin_bottom = 66.0
+[node name="ingame_algos" type="Label" parent="VBoxContainer"]
+margin_top = 197.0
+margin_right = 335.0
+margin_bottom = 292.0
+theme = ExtResource( 3 )
 text = "Ingame Algos:"
 
-[node name="Button" type="Button" parent="VBoxContainer"]
-margin_top = 70.0
-margin_right = 131.0
-margin_bottom = 90.0
+[node name="wallet_algos" type="Label" parent="VBoxContainer"]
+margin_top = 296.0
+margin_right = 335.0
+margin_bottom = 391.0
+theme = ExtResource( 3 )
+text = "wallet algos: "
+
+[node name="withdraw" type="Button" parent="VBoxContainer"]
+margin_top = 395.0
+margin_right = 335.0
+margin_bottom = 496.0
+theme = ExtResource( 3 )
 text = "withdraw"
+
+[node name="refresh" type="Button" parent="VBoxContainer"]
+margin_top = 500.0
+margin_right = 335.0
+margin_bottom = 601.0
+theme = ExtResource( 3 )
+text = "Refresh"

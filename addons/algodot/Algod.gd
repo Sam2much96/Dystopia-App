@@ -38,7 +38,7 @@ var params
 export (String) var receivers_mnemonic
 export (String) var receivers_address
 
-onready var parent = get_tree().get_root() #for holding algod child node
+#onready var parent = get_tree().get_root() #for holding algod child node
 
 # placeholder variables
 export ( bool) var debug_txn   #debugs my code
@@ -59,9 +59,13 @@ var optin_tx #placeholder for opt in asset transaction
 var _info : Dictionary# account asset info placeholder
 
 var wait # debugs the transaction by waiting until it's completed
+var status: bool
+
 
 
 func _ready():
+	create_algod_node()
+	
 	if  debug_txn:
 		_run_debug_test()
 
@@ -69,23 +73,24 @@ func create_algod_node():
 	print(" -- Initialize Algod")
 	algod = Algod.new() 
 
-	algod.url = "http://localhost:4001" #duplicate of Url variable
-	algod.token = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+	#duplicate of Url variable
+	algod.url = "http://localhost:4001"  #for sandbox environment. Used Change this variable for testnet
+	algod.token = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" #for sandbox environment. Used Change this variable for testnet
 	
 	
 	# Sorts Node arrangement in the scene tree
-	parent.add_child(algod)
+	#get_tree().get_root().add_child(algod)
 
 
 
 func _run_debug_test():
-	create_algod_node()
+	#create_algod_node()
 	
 	# Sorts Node arrangement in the scene tree
 	#parent.add_child(algod)
 
 
-	var status = true
+	
 
 	print(" -- Get funder account")
 
@@ -290,16 +295,16 @@ func _send_asset_transfers_to_receivers_address(_funder_address : String, _funde
 
 " This function can be expanded upon to print lots of Account specific details"
 #expand to include asset Url
-func _check_account_information(address : String, mnemonic : String, info : String)-> Dictionary: #account debugger #works
+func _check_account_information(address : String, mnemonic : String, info : String) -> Dictionary: #account debugger #works
 	_info = yield(algod.account_information(address,mnemonic), "completed")
 	if info == "" or null:
-		return (print (_info))
+		return (_info)
 	elif info == "assets" :
 		var _a = _info.assets
-		return (print (_a))
+		return (_a)
 	elif info == "asset-id":
 		var _b = _info.get("asset-id")
-		return (print (_b))
+		return (_b)
 	else:
 		return 
 

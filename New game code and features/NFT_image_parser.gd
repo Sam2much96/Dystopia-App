@@ -28,25 +28,57 @@ class_name NFT
 
 export (String) var local_image_path ="res://img0.png" #Loads the image file path from a folder to prevent redownloads
 var image_url
-var account_info: Dictionary = {}
+var account_info: Dictionary = {1:[]}
 var is_image_available_at_local_storage : bool 
 onready var Algorand = $Algodot
-onready var account_info_text = $account_info_text
 
-onready var NFT= self
+#*****************************************************
+onready var account_address = $VBoxContainer/address
+onready var ingame_algos = $VBoxContainer/ingame_algos
+onready var wallet_algos = $VBoxContainer/wallet_algos
+onready var withdraw_button = $VBoxContainer/withdraw
+onready var refresh = $VBoxContainer/refresh
+
+#*****************************************************
+onready var NFT= $"."
 var status
 func _ready():
 	
+	Algorand._test_algod_connection()
+	
+	#status = status && yield(Algorand.create_NFT("NFT001", "L5ESENBL23J2GJGM64Y767IXWGBCKXMGS2OGZ3MC5BBGWJAKJJAUK7BJK4", 1, "NFT", "res://body.json"), "completed") #doesnt work
+	#print ("Status",status)
+	
+	#works
+	
+	#returns a dictionary
+	account_info=(yield(Algorand._check_account_information("2NFCY7HBAFJ5YP7TXUOFHHMGAZ7AHEXPS5F3NENXSC3WXRVATBR4Y23AUM", "rigid steak better media circle nothing range tray firm fatigue pool damage welcome supply police spoon soul topic grant offer chimney total bronze able human", ""), "completed"))
+	#print ("created assets: ",account_info['created-assets']) # lists assetscreated #for debug purposes only
+	print (account_info["created-assets"][2]["index"]) #try using 3
+	#print (account_info["created-assets"][2]["params"]['unit-name'])
+	#print (account_info["address"])
 	
 	
-	#status = status && yield(Algorand.create_NFT("NFT001", Globals.address, 1, "NFT", "http://localhost:8000/body.png"), "completed") #untested
-	#print (status)
-	check_is_image_avalable_()
+	#[2]gets the second asset created parameters
+	#var nft = account_info["created-assets"][2]['params']['url']
+	#print(nft)
+	#print (nft.keys())
+	
+	
+	"works but saves a raw dictionary"
+	#save_account_info(account_info) #works
+	
+	#print (account_info)
+	#for asset in account_info["assets"]:
+	#	print ("keys: ",asset.keys(), "values: ",asset.values())
+
+	#show_account_info()
+	
 	
 	"Checks if the Image is avalable Locally and either downloads or loads it"
-	if is_image_available_at_local_storage == false:
+	if check_is_image_avalable_() == false: #works
 		#Networking.url= get_asset_url(Globals.address, Globals.mnemonic)
-		Networking.url= "http://localhost:8000/body.png"
+		Networking.url= "https://192.168.0.104/body.png"
 		print ("Image url :", Networking.url)#for debug purposes
 		
 		# Connects the Networking signal
@@ -56,10 +88,36 @@ func _ready():
 		#Networking.download_file
 		Networking._check_connection( Networking.url)
 		
-	elif is_image_available_at_local_storage == true:
+	elif check_is_image_avalable_() == true:
 			load_local_image_texture()
 	else: return
 
+
+func show_account_info(): #should load from saved account info 
+	if account_info.empty() == false: #load from wallet
+		account_address.text += account_info["address"]
+		ingame_algos.text += str (Globals.algos)
+		wallet_algos.text += str (account_info["amount"])
+
+func connect_signals()-> void: #connects all required signals in the parent node
+	pass
+
+#saves account information to a dictionary
+func save_account_info( info : Dictionary):
+	var save_game = File.new()
+	save_game.open("res://account_info.token", File.WRITE)
+	var save_dict = {}
+	#save_dict= info #saves the raw dictionary
+	save_dict.address =info["address"]
+	save_dict.amount =info["amount"]
+	save_dict.asset_index =info["created-assets"][2]["index"]
+	save_dict.asset_name = info["created-assets"][2]["params"]["name"]
+	save_dict.asset_unit_name = info["created-assets"][2]["params"]['unit-name']
+	save_dict.asset_url = info["created-assets"][2]['params']['url'] #saves the url of the second asset
+	
+	save_game.store_line(to_json(save_dict))
+	save_game.close()
+	print ("saved account info")
 
 
 # Parses Asset MetaData
@@ -76,7 +134,9 @@ func check_is_image_avalable_()-> bool:
 	if local_image_path != '':
 		"Checks if image file is available"
 		var file_check = ResourceLoader
-		is_image_available_at_local_storage = file_check.exists(local_image_path, "ImageTexture")
+		var _r = file_check.exists(local_image_path, "ImageTexture")
+		#print ("Is local image available: ", _r) #for debug purposes only
+		is_image_available_at_local_storage = _r
 	return is_image_available_at_local_storage
 	
 func _http_request_completed(result, response_code, headers, body):
@@ -104,11 +164,13 @@ func set_image_(texture):
 func load_local_image_texture():
 	if is_image_available_at_local_storage:
 		NFT.set_texture(load(local_image_path))
+		#print (NFT.texture) for debug purposes only
+		NFT.set_expand(true)
 
-func return_account_info():
+func return_account_info(): #not needed
 	"Prints the Account info"
-	if not account_info.empty():
-		account_info_text.set_text(account_info)
+#	if not account_info.empty():
+#		account_info_text.set_text(account_info)
 
 func store_wallet_details_locally(): #should store the wallet details
 	# Create new ConfigFile object.

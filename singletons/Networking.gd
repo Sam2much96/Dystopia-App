@@ -20,6 +20,15 @@
 # (5) Run an online for PC and mobile Devices. The Hardware is available now
 # (6) Implement Rollback NetCodes for Multiplayer Gameplay
 # (7) Video Downloaders
+# (8) Downloads several files
+
+#Note
+#if using https connection on a self hosted server with self signed certificate
+#make sure the .crt file exported from your web browser contains the private key generated
+# from your server's .pem file
+
+#Note 
+# This script cannot print pool byte array and wuld return it as an empty array
 
 
 extends HTTPRequest
@@ -164,36 +173,13 @@ func _check_connection(url): # Check http unsecured Url connection
 	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
 	print (' Networking Request Error: ',error) #for debug purposes only
 
-	#push_error("Networking: ---returns wrong details, should return body Instead")
-#	return _connection #
 
-func _check_connection_secured(url): #connects to https
-	var client = HTTPClient.new()
-	var error =client.connect_to_host(url, -1, true , false)
-	var status = client.get_status()
-	#var error = client.request(HTTPClient.METHOD_GET,Networking.url, PoolStringArray(), "") 
-	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
-	print (' Networking Request Error: ',error) #for debug purposes only
-	print("connection status: ", status)
-	if status != 5:
-		yield(get_tree().create_timer(3.0), "timeout") #waiting for 3 secs. #rewrite to use check timer
-		client.poll()
-		print("connection status: ", client.get_status())
-	if status == 5:
-		#break
-		print ("connection status connected: ", status)
-	#if error ==0:
-	#	error = client.request(HTTPClient.METHOD_GET,'/body.json', PoolStringArray(), "")
-	#	print (' Networking Request Error 2: ',error) #for debug purposes only
-	return
-
-# Should return body
 
 func on_request_result(result, response_code, headers, body): # I need to pass variables to this code bloc
 	"HTTP REQUEST RESULT'S STATE MACHINE"
 	#connected to results and works as an auto emitter
 	match result:
-		RESULT_SUCCESS: #what happens to body?
+		RESULT_SUCCESS: #what happens to body? #always write a http request cmpleted function in the connecting script
 			emit_signal("connection_success") 
 			#_connection =(str ('connection success')) # Debugs to the Debug singleton # Depreciated--Delete
 			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body))  
@@ -258,8 +244,27 @@ func _on_fail_ssl_handshake():
 	print('SSL Handshake Error!!')
 	#_connection = str ('ssl handshake error!!') # Debug Variable # Depreciated--Delete
 
-#download a given image from a given http request
-# returns a PNG texture file, saves image file
+'Downloads a Json file and Stores it Locally'
+func download_json_(body: PoolByteArray, Save_path: String) -> JSON:
+	var json = File.new()
+	if body != null:
+		json.open((Save_path +"json"), File.WRITE)
+		while not get_downloaded_bytes() > get_body_size() && json.eof_reached() == false: #causes a large file bug, generates a 3gb file
+				print ("Loading Json--------", ( get_body_size()/1000), " kb") # for debug purposes 
+				json.store_buffer(body) #stores image locally
+				#if local_tex.eof_reached() == true: #causes a significant lag
+				if get_downloaded_bytes() == get_body_size(): #causes a significant lag
+					json.close()
+					break
+		
+	if body == null:
+		push_error("Problem fetching json download")
+	return json
+
+"""
+download a given image from a given http request
+returns a PNG texture file, saves image file
+"""
 func download_image_(body: PoolByteArray, Save_path: String) -> ImageTexture:
 	var image = Image.new()
 	var texture = ImageTexture.new()

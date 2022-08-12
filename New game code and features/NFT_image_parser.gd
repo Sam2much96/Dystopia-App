@@ -53,6 +53,7 @@ var asset_name
 var asset_url
 
 
+var counter: int = 0 # used to trigger between json download and Image download
 
 func _ready():
 	
@@ -91,15 +92,21 @@ func _ready():
 		Networking.url= str(asset_url) #it needs to run 2 checks to download json
 		print ("Image url :", Networking.url)# Downloads a .json
 		
+
+		
 		# Connects the Networking signal
 		connect_signals()
 		#b.connect("request_completed", self, "_http_request_completed")
 		
-		#Networking._check_connection( Networking.url) #returns a read and write error
+		Networking._check_connection( 'https://192.168.0.104/body.png') #works
 		
-		Networking._check_connection_secured(Networking.url) #returns read and write erro
+		#Networking._check_connection_secured(Networking.url) #returns read and write erro
+		#Networking._check_connection_secured("192.168.0.104") #gets stuck making connection
 		
 		
+		
+		
+		#Networking.download_image_('http://localhost:8000/body.png', 'res:')
 		#port code bloc to Networking singleton
 	elif check_is_image_avalable_() == true:
 			load_local_image_texture()
@@ -127,7 +134,7 @@ func save_account_info( info : Dictionary, number: int):
 	save_dict.asset_index =info["created-assets"][number]["index"]
 	save_dict.asset_name = info["created-assets"][number]["params"]["name"]
 	save_dict.asset_unit_name = info["created-assets"][number]["params"]['unit-name']
-	save_dict.asset_url = info["created-assets"][number]['params']['url'] #saves the url of the second asset
+	save_dict.asset_url = info["created-assets"][number]['params']['url'] #asset Uro and asset uri are different. Separate them
 	
 	save_game.store_line(to_json(save_dict))
 	save_game.close()
@@ -157,7 +164,7 @@ func _restore_wallet_data(info: Dictionary):
 	Globals.address = info.address
 	_wallet_algos = info.amount 
 	asset_name = str (info.asset_name) 
-	asset_url = str(info.asset_url)
+	asset_url = str(info.asset_url) #asset url and asset meta data are different
 	load_from_local_wallet = true
 	print ('wallet data restored from local database')
 
@@ -179,13 +186,16 @@ func check_is_image_avalable_()-> bool:
 		#print ("Is local image available: ", _r) #for debug purposes only
 		is_image_available_at_local_storage = _r
 	return is_image_available_at_local_storage
-	
-func _http_request_completed(result, response_code, headers, body):
+
+#*************for https request below
+#var response = parse_json(body.get_string_from_ascii())
+#		print("Response: ",response)
+
+'add functionality to download json file'
+func _http_request_completed(result, response_code, headers, body): #works with https connection
 	print (" request done: ", result)
 	if is_image_available_at_local_storage== false:
-		var response = parse_json(body.get_string_from_utf8())
-		print("Response: ",response)
-		print (headers)
+		#print (body)
 		#var json = JSON.parse(body.get_string_from_utf8()) #should work
 		#print ("NF metadata: ",json.result) #has ssl dertificate error
 		#print ("NF metadata: ",json.print('image')) #has ssl dertificate error
@@ -194,8 +204,8 @@ func _http_request_completed(result, response_code, headers, body):
 		if body.empty() != true:
 			print ('fdsdfsfsdf')
 			"Downloads the NFT image"
-		#	print (" request successful")
-		#	NFT.set_image_(Networking.download_image_(body, "res://img0")) #works?
+			print (" request successful")
+			NFT.set_image_(Networking.download_image_(body, "res://img0")) #works?
 		
 		if body.empty(): #returns an empty body
 			push_error("Result Unsuccessful")

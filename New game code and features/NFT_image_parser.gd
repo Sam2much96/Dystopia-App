@@ -98,7 +98,8 @@ func _ready():
 		connect_signals()
 		#b.connect("request_completed", self, "_http_request_completed")
 		
-		Networking._check_connection( 'https://192.168.0.104/body.png') #works
+		#Networking._check_connection( 'https://192.168.0.104/body.png') #works with https
+		Networking._check_connection( 'https://192.168.0.104/body.json') #works with https
 		
 		#Networking._check_connection_secured(Networking.url) #returns read and write erro
 		#Networking._check_connection_secured("192.168.0.104") #gets stuck making connection
@@ -199,14 +200,18 @@ func _http_request_completed(result, response_code, headers, body): #works with 
 		#var json = JSON.parse(body.get_string_from_utf8()) #should work
 		#print ("NF metadata: ",json.result) #has ssl dertificate error
 		#print ("NF metadata: ",json.print('image')) #has ssl dertificate error
+		Networking.download_json_(body,'res://nft_metadata')
 		
 		"Should Parse the NFT's meta-data to get the image ink"
 		if body.empty() != true:
-			print ('fdsdfsfsdf')
-			"Downloads the NFT image"
-			print (" request successful")
-			NFT.set_image_(Networking.download_image_(body, "res://img0")) #works?
-		
+			print ('request successful')
+			
+			
+			if counter == 1:
+				"Downloads the NFT image"
+				print (" request successful")
+				NFT.set_image_(Networking.download_image_(body, "res://img0")) #works?
+			
 		if body.empty(): #returns an empty body
 			push_error("Result Unsuccessful")
 			Networking.stop_check()

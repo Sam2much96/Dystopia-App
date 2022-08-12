@@ -92,13 +92,13 @@ const MAX_PLAYERS = 5
 const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
 
 
-
+onready var timer = $Timer2
 
 
 #var youtube_dl = preload ('res://New game code and features/youtube streamer/Youtube-DL.gd') #what if youtube goes down lool
 
 func _ready():
-	_create_timer()
+	_init_timer()
 	
 	
 	if cfg_server_ip == '':
@@ -106,10 +106,10 @@ func _ready():
 	print ("Networking Server Config and Player Name: ",cfg_server_ip,cfg_player_name, "/")
 	
 	
-	if check_timer == null: #Error catcher #stops multiple instance?
-		for _i in _reference_to_self.get_children():
-			if _i is Timer:
-				check_timer = _i 
+	#if check_timer == null: #Error catcher #stops multiple instance?
+	#	for _i in _reference_to_self.get_children():
+	#		if _i is Timer:
+	#			check_timer = _i 
 	
 	######################Used to Control the App's Networking #######################
 	
@@ -135,23 +135,16 @@ func _process(_delta):
 				return connect("error_connection_failed",self,'_on_failure')
 				return connect("error_ssl_handshake",self, '_on_fail_ssl_handshake')
 
-#Creates an Algodot Node
-func create_algorand_node()-> void:
-	pass
 
  
 # Creates a Networking timer
-func _create_timer() : #rewrite to use actual timer
+func _init_timer() : #rewrite to use actual timer
 	#write code to check if node has been instanced
 	self.set_process(true)
 	enabled = true 
+	check_timer = timer
 	print ('Check_timer :' , check_timer) #code breaks here and gives cant resolve hostname errors
-	check_timer = Timer.new()
-	check_timer.set_name("Networking timer")
-	check_timer.set_name ('check_timer') 
-	check_timer.autostart = false
-	check_timer.one_shot = true
-	check_timer.wait_time = 3
+	
 
 "Stops a check using Check timer Node"
 func stop_check(): #Stops timer check
@@ -163,8 +156,8 @@ func stop_check(): #Stops timer check
 "Starts a check using Check timer Node"
 func start_check(): #Starts time check using Check timer
 	connection_debug = str('start check') # Debug Variable
-	if check_timer.is_stopped():
-		check_timer.start()
+	print ("start check")
+	check_timer.start()
 
 
 func _check_connection(url): # Check http unsecured Url connection
@@ -245,18 +238,29 @@ func _on_fail_ssl_handshake():
 	#_connection = str ('ssl handshake error!!') # Debug Variable # Depreciated--Delete
 
 'Downloads a Json file and Stores it Locally'
-func download_json_(body: PoolByteArray, Save_path: String) -> JSON:
+#consider running 2 operations here. A read operation and a write operation
+func download_json_(body: PoolByteArray, Save_path: String) -> File:
 	var json = File.new()
 	if body != null:
-		json.open((Save_path +"json"), File.WRITE)
-		while not get_downloaded_bytes() > get_body_size() && json.eof_reached() == false: #causes a large file bug, generates a 3gb file
-				print ("Loading Json--------", ( get_body_size()/1000), " kb") # for debug purposes 
-				json.store_buffer(body) #stores image locally
-				#if local_tex.eof_reached() == true: #causes a significant lag
-				if get_downloaded_bytes() == get_body_size(): #causes a significant lag
-					json.close()
-					break
 		
+		print ("Loading Json--------", ( get_body_size()), " bytes")# wprks # for debug purposes 
+		
+		
+		
+		
+		json.open((Save_path +".json"), File.WRITE )
+		
+		while not json.get_len() > get_body_size() : #kinda works
+		
+			#json.store_string(to_json(download_file.to_utf8())) #returns encrypted data #kinda works #backup
+			json.store_string(to_json(download_file.to_utf8())) #returns encrypted data #kinda works #backup
+			
+			if json.get_len() == get_body_size(): break #works perfectly
+			
+
+		json.close()                                             
+		print ('json download successful: ',get_downloaded_bytes(), '/', json.get_len()) 
+		return json
 	if body == null:
 		push_error("Problem fetching json download")
 	return json
@@ -297,3 +301,7 @@ func download_image_(body: PoolByteArray, Save_path: String) -> ImageTexture:
 		push_error("Problem fetching image download")
 	return texture
 
+
+
+func _on_Timer2_timeout():
+	print ('check timer stopped')

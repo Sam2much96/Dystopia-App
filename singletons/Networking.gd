@@ -167,6 +167,14 @@ func _check_connection(url): # Check http unsecured Url connection
 	print (' Networking Request Error: ',error) #for debug purposes only
 
 
+func _check_connection_secured(url): # Check http secured Url connection
+	#Ignore Warning
+	url =url.http_escape()
+	var error = .request(url,PoolStringArray(),false,HTTPClient.METHOD_GET) 
+	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
+	print (' Networking Request Error: ',error) #for debug purposes only
+
+
 
 func on_request_result(result, response_code, headers, body): # I need to pass variables to this code bloc
 	"HTTP REQUEST RESULT'S STATE MACHINE"
@@ -241,11 +249,10 @@ func _on_fail_ssl_handshake():
 #consider running 2 operations here. A read operation and a write operation
 func download_json_(body: PoolByteArray, Save_path: String) -> File:
 	var json = File.new()
+	var cunt = []
 	if body != null:
 		
 		print ("Loading Json--------", ( get_body_size()), " bytes")# wprks # for debug purposes 
-		
-		
 		
 		
 		json.open((Save_path +".json"), File.WRITE )
@@ -253,13 +260,36 @@ func download_json_(body: PoolByteArray, Save_path: String) -> File:
 		while not json.get_len() > get_body_size() : #kinda works
 		
 			#json.store_string(to_json(download_file.to_utf8())) #returns encrypted data #kinda works #backup
-			json.store_string(to_json(download_file.to_utf8())) #returns encrypted data #kinda works #backup
+			
+			#json.store_line(to_json(download_file.to_utf8())) #returns encrypted data #kinda works #backup #better
+			#*****************************
+			#for _i in download_file:
+			#for _i in download_file:
+			#	for _t in _i:
+			#	cunt.append(_i)
+				#poop = _i
+			#pussy.parse( body.get_string_from_utf8())
+			#pussy.print(body,'', true
+			#******************************
+			#json.store_line(to_json(body.get_string_from_utf8())) #It stores each string as a character #returns encrypted data
+			cunt = body.get_string_from_utf8() #works with local storage
+			
+			json.store_line(str(cunt)) #works
+			
+			#*****************************************************
 			
 			if json.get_len() == get_body_size(): break #works perfectly
 			
 
-		json.close()                                             
-		print ('json download successful: ',get_downloaded_bytes(), '/', json.get_len()) 
+		json.close()  
+		# it's sending the data across the network, but its not decoding it properly                                           
+		var data = get_downloaded_bytes()
+		print ("data: ",data)
+		if data == 0 :
+			print("Download failed. Problem with the Server side Networking connection")
+		elif data != 0:
+			print ('json download successful: ',data, '/bytes') #works
+		#print ("cunt debug: ",cunt) #for debug purposes only
 		return json
 	if body == null:
 		push_error("Problem fetching json download")

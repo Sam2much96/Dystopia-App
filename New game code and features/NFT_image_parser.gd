@@ -28,6 +28,7 @@ class_name NFT
 
 export (String) var local_image_path ="res://img0.png" #Loads the image file path from a folder to prevent redownloads
 var image_url
+var json= File.new()
 var account_info: Dictionary = {1:[]}
 var is_image_available_at_local_storage : bool 
 onready var Algorand = $Algodot
@@ -57,8 +58,7 @@ var counter: int = 0 # used to trigger between json download and Image download
 
 func _ready():
 	
-	
-	
+
 	#status = status && yield(Algorand.create_NFT("NFT001", "L5ESENBL23J2GJGM64Y767IXWGBCKXMGS2OGZ3MC5BBGWJAKJJAUK7BJK4", 1, "NFT", "res://body.json"), "completed") #doesnt work
 	#print ("Status",status)
 	
@@ -67,6 +67,7 @@ func _ready():
 	
 	if not file_checker.file_exists("res://account_info.token"): # if account info doesn't exist
 		#Make sure an algod node is running or connet to mainnet or testnet
+		Algorand.create_algod_node()
 		Algorand._test_algod_connection()
 		
 		"gets account info returns a dictionary"
@@ -87,7 +88,6 @@ func _ready():
 	"Checks if the Image is avalable Locally and either downloads or loads it"
 	if check_is_image_avalable_() == false: #works
 		print('NFT image is not available locally, Downloading now') 
-		var b = HTTPClient.new() #testing http client
 		
 		Networking.url= str(asset_url) #it needs to run 2 checks to download json
 		print ("Image url :", Networking.url)# Downloads a .json
@@ -97,10 +97,33 @@ func _ready():
 		# Connects the Networking signal
 		connect_signals()
 		#b.connect("request_completed", self, "_http_request_completed")
-		
+		#*******************************************************************
 		#Networking._check_connection( 'https://192.168.0.104/body.png') #works with https
-		Networking._check_connection( 'https://192.168.0.104/body.json') #works with https
+		#******************************************************************
+		'theres a problem with the network connection'
+		'my server isnt serving the json file to godot properly'
+		"using python instead"
 		
+		json.open(("res://nft_metadata.json"), File.WRITE ) #check of file exists to save bandwidth
+		
+		json.store_line($Node._ready())#)makes a http request to server returns a string
+		json.close()
+		print ('nft metadata stored locally')
+		json.open("res://nft_metadata.json", File.READ)
+		var p =  parse_json(json.get_as_text()) #return a dictionary
+		image_url= p.get('image')
+		print ('nft host site',image_url)
+		#print (nft_metadata)
+		#Networking._check_connection_secured( json_url) #using python intead
+		
+		#Networking._check_connection( 'https://192.168.0.104/testing.txt') #testing 2
+		
+		
+		Networking.url=image_url
+		Networking._check_connection( image_url) #testing 3 #works with local storage
+		
+		
+		#***************************************************************
 		#Networking._check_connection_secured(Networking.url) #returns read and write erro
 		#Networking._check_connection_secured("192.168.0.104") #gets stuck making connection
 		
@@ -195,27 +218,29 @@ func check_is_image_avalable_()-> bool:
 'add functionality to download json file'
 func _http_request_completed(result, response_code, headers, body): #works with https connection
 	print (" request done: ", result)
+	print (" headers: ", headers)
+	print (" response code: ", response_code)
 	if is_image_available_at_local_storage== false:
-		#print (body)
-		#var json = JSON.parse(body.get_string_from_utf8()) #should work
-		#print ("NF metadata: ",json.result) #has ssl dertificate error
-		#print ("NF metadata: ",json.print('image')) #has ssl dertificate error
-		Networking.download_json_(body,'res://nft_metadata')
+		
+		
+		 #for debug purposes only
+		
 		
 		"Should Parse the NFT's meta-data to get the image ink"
 		if body.empty() != true:
 			print ('request successful')
 			
 			
-			if counter == 1:
-				"Downloads the NFT image"
-				print (" request successful")
-				NFT.set_image_(Networking.download_image_(body, "res://img0")) #works?
+			
+			
+			"Downloads the NFT image"
+			print (" request successful")
+			NFT.set_image_(Networking.download_image_(body, "res://img0")) #works?
 			
 		if body.empty(): #returns an empty body
 			push_error("Result Unsuccessful")
 			Networking.stop_check()
-
+	Networking.cancel_request()
 
 func set_image_(texture):
 	if not is_image_available_at_local_storage:

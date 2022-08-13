@@ -64,12 +64,12 @@ var status: bool
 
 
 func _ready():
-	create_algod_node()
+	#create_algod_node() #causes a bug
 	
 	if  debug_txn:
 		_run_debug_test()
 
-func create_algod_node():
+func create_algod_node(): #causes a wierd bug
 	print(" -- Initialize Algod")
 	algod = Algod.new() 
 

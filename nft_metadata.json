@@ -1,0 +1,13 @@
+{
+  "name": "Example Name #1",
+  "description": "An NFT test file for godot engine",
+  "image": "https://192.168.0.104/body.png",
+  "edition": 1,
+  "attributes": [
+    {
+      "trait_type": "Body",
+      "value": "body"
+    }
+  ]
+}
+

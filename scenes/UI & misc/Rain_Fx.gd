@@ -32,7 +32,7 @@ func _process(_delta):
 	
 	if enable == true:
 		rain_particles.emitting = true
-		print ('Emitting Rain Particles') #-introducees a bug
+		#print ('Emitting Rain Particles') #-introducees a bug
 		
 	if enable == false:
 		rain_particles.emitting = false

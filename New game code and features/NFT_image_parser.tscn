@@ -58,4 +58,14 @@ margin_bottom = 601.0
 theme = ExtResource( 3 )
 text = "Refresh"
 
+[node name="Main menu" type="Button" parent="VBoxContainer"]
+margin_top = 605.0
+margin_right = 335.0
+margin_bottom = 706.0
+theme = ExtResource( 3 )
+text = "main menu"
+
 [node name="Node" parent="." instance=ExtResource( 4 )]
+
+[connection signal="pressed" from="VBoxContainer/withdraw" to="." method="_on_withdraw_pressed"]
+[connection signal="pressed" from="VBoxContainer/Main menu" to="." method="_on_Main_menu_pressed"]

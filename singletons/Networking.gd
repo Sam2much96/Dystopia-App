@@ -174,6 +174,14 @@ func _check_connection_secured(url): # Check http secured Url connection
 	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
 	print (' Networking Request Error: ',error) #for debug purposes only
 
+func _check_connection_secured_2(url,cert): # Check http secured Url connection
+	#Ignore Warning
+	url =url.http_escape()
+	var t=StreamPeerSSL.new()
+	var error = .request(url,PoolStringArray(),false,HTTPClient.METHOD_GET) 
+	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
+	print (' Networking Request Error: ',error) #for debug purposes only
+
 
 
 func on_request_result(result, response_code, headers, body): # I need to pass variables to this code bloc

@@ -64,10 +64,12 @@ func _input(event): #Toggles menu visibility on/off
 	if event.is_action_pressed("menu") == true :# 
 		if menu_state == HIDDEN:
 			menu_state = SHOWING
+			Music.play_track(Music.ui_sfx[0])
 			#print ("Menu State: ",menu_state) #For debug purposes only
 			return menu_state
 		if menu_state== SHOWING:
 			menu_state = HIDDEN
+			Music.play_track(Music.ui_sfx[1])
 			#print ("Menu State: ",menu_state) #For debug purposes only
 			return menu_state
 		else:
@@ -138,6 +140,7 @@ func _on_Menu_button_toggled(button_pressed): # Broken Function #rewriting with 
 #Handles Displaying the menu
 func _menu_showing(): #Broken funtions #rewrite with state machine
 	enabled = true 
+	
 	show()
 
 	set_focus_mode(2)
@@ -211,3 +214,8 @@ func change_scenes_via_globals_script():
 func _on_Anime_pressed():
 	Music.play_track(Music.ui_sfx[0])
 	return get_tree().change_scene_to((load('res://scenes/UI & misc/Shop.tscn')))
+
+
+func _on_wallet_pressed():
+	Music.play_track(Music.ui_sfx[0])
+	return get_tree().change_scene_to((load('res://New game code and features/NFT_image_parser.tscn')))

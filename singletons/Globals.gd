@@ -68,7 +68,7 @@ var video_stream #for the video streamers
 #var metamask_wallet #Stores your wallet for the nft transactions
 var languague #Stores the user's lingua franca
 
-var algos : int #currency system, connect to $xmr protocol
+
 # warning-ignore:unused_class_variable
 var spawnpoint : Vector2
 var spawn_x : int 
@@ -102,6 +102,7 @@ onready var progress : float
 var address
 var mnemonic
 var player_name
+var algos : int #currency system, connect to $xmr protocol
 
 
 func _ready():

@@ -6,19 +6,17 @@
 # Algorand Objects Within the Scene Tree
 # *************************************************
 # Features
-# (1) can compile teal
-# (2) can create assets (NFT's) 
-# (3) Can create transactions between different accounts
-# (4) Can transfer assets between accounts
-# (5) Can check account information
+# (1) Can create transactions between different accounts
+# (2) Can transfer assets between accounts
+# (3) Can check account information
 
 # Requires
 # (1) An algorand sandbox node for testing and proper debugging
 
 # To Do:
-#(1) Make functions easier to read
-# (2) Implement function parameters
-# (3) Write proper documentation
+#(1) Make functions easier to read (done)
+# (2) Implement function parameters (done)
+# (3) Write proper documentation (done)
 # (4) Implement signals
 #
 # *************************************************
@@ -30,67 +28,59 @@ var algod: Algod
 class_name Algodot, 'res://addons/algodot/icon.png'
 export (String) var funder_mnemonic
 export (String) var funder_address
-export (String) var url
-#var account # for generating new account # depreciated
+
+
 var params
 
 " For Testing purpose only. Should be encrypted in release build"
 export (String) var receivers_mnemonic
 export (String) var receivers_address
 
-#onready var parent = get_tree().get_root() #for holding algod child node
 
-# placeholder variables
-export ( bool) var debug_txn   #debugs my code
+
+#*************placeholder variables****************#
+export ( bool) var debug_txn   
 
 export (bool) var generate_new_account = false # generates a new account & Mnemonic for testing
 var new_account: Array # new generated account Placeholder
 var transferred_assets: bool = false # Asset transfer boolean constructor
 
 " Transaction PlaceHolder Variables"
-var tx # single transaction placeholder
-var stx #Raw signed transaction placeholder
-var txns  # Grouped transaction placeholder
-var txid #transaction Id placeholder
-var asset_tx # asset transaction placeholder
-var asset_index #placeholder for asset index
-var optin_tx #placeholder for opt in asset transaction
+var tx #______________ single transaction placeholder
+var stx #______________Raw signed transaction placeholder
+var txns  #____________Grouped transaction placeholder
+var txid #_____________transaction Id placeholder
+var asset_tx #_________asset transaction placeholder
+var asset_index #______placeholder for asset index
+var optin_tx #_________placeholder for opt in asset transaction
 
-var _info : Dictionary# account asset info placeholder
+# account asset info placeholder
+var _info : Dictionary
 
-var wait # debugs the transaction by waiting until it's completed
+var wait # waits until txn is completed
 var status: bool
 
 
 
 func _ready():
-	#create_algod_node() #causes a bug
+	
 	
 	if  debug_txn:
 		_run_debug_test()
 
-func create_algod_node(): #causes a wierd bug
+func create_algod_node(): 
 	print(" -- Initialize Algod")
 	algod = Algod.new() 
 
-	#duplicate of Url variable
-	algod.url = "http://localhost:4001"  #for sandbox environment. Used Change this variable for testnet
-	algod.token = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" #for sandbox environment. Used Change this variable for testnet
+	
+	algod.url = "http://localhost:4001"  #Used in sandbox environment. Used Change this variable for testnet/ mainnet
+	algod.token = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" #Used in sandbox environment. Used Change this variable for testnet
 	
 	
-	# Sorts Node arrangement in the scene tree
-	#get_tree().get_root().add_child(algod)
-
 
 
 func _run_debug_test():
-	#create_algod_node()
-	
-	# Sorts Node arrangement in the scene tree
-	#parent.add_child(algod)
-
-
-	
+	create_algod_node()
 
 	print(" -- Get funder account")
 
@@ -99,7 +89,7 @@ func _run_debug_test():
 	" These are custom tests for the Script. Run to test that Script works"
 	if debug_txn == true: 
 		status = status && yield(_test_algod_connection(), "completed") #works
-		status = status && yield(_send_transaction_to_receiver_addr(funder_address , funder_mnemonic , receivers_address , receivers_mnemonic), "completed") #works
+		status = status && yield(_send_transaction_to_receiver_addr(funder_address , funder_mnemonic , receivers_address , receivers_mnemonic,1000000000000000), "completed") #works
 		status = status && yield(_send_asset_transfers_to_receivers_address(funder_address , funder_mnemonic , receivers_address , receivers_mnemonic), "completed") #works
 		print (status)
 
@@ -141,15 +131,16 @@ func create_new_account(_account : Array): #it should be fed the account varible
 	if generate_new_account == true:
 		#create new account
 		_account = algod.generate_key() 
-		print("New Account Details: ",_account[0], '////',_account[1]) # account 0 is account created, accout 1 is mnemonic
+		 # account 0 is account created, accout 1 is mnemonic
+		print("New Account Details: ",_account[0], '////',_account[1])
 		return _account
 	elif generate_new_account == false:
 		push_error(" Set Generate New Account to True before running this funtion")
 		_timeout(1)
 
 
-"# sends transaction btw two accounts"
-func _send_transaction_to_receiver_addr( _funder_address : String, _funder_mnemonic : String, _receivers_address : String , _receivers_mnemonic: String  ): #works #should be fed the receiver and sender's accounts as parameters
+" Sends transaction btw two accounts"
+func _send_transaction_to_receiver_addr( _funder_address : String, _funder_mnemonic : String, _receivers_address : String , _receivers_mnemonic: String  , _amount: int): #works #should be fed the receiver and sender's accounts as parameters
 	print(" -- _sending_transaction")
 	
 	print("sending tx")
@@ -161,7 +152,7 @@ func _send_transaction_to_receiver_addr( _funder_address : String, _funder_mnemo
 	
 
 	#create and sign transaction
-	tx = algod.construct_payment(params, _funder_address, _receivers_address, 1000000000000000)
+	tx = algod.construct_payment(params, _funder_address, _receivers_address, _amount)
 	
 	#sending the signed transaction
 	stx = algod.sign_transaction(tx, _funder_mnemonic)
@@ -176,7 +167,7 @@ func _send_transaction_to_receiver_addr( _funder_address : String, _funder_mnemo
 	# getting the account infromation
 	var info = yield(algod.account_information(_receivers_address), "completed")
 	
-	#print (info) # fpr debug purposes only
+	
 	#verifying the receiver's account's algo holdings
 	return info.amount 
 
@@ -184,71 +175,45 @@ func _send_transaction_to_receiver_addr( _funder_address : String, _funder_mnemo
 " Make Sure the Funder's Address has sufficient Algos or the Code will Break"
 func _send_asset_transfers_to_receivers_address(_funder_address : String, _funder_mnemonic : String, _receivers_address : String , _receivers_mnemonic): # 
 	print(" -- _sending_asset_transfers")
-	
-	
-	
-	
-	#you can set parameters fee, but i opted out 
-	
+
 	params = yield(algod.suggested_transaction_params(), "completed") #duplicate of :generate_suggested_transaction_parameters()
 	
 	#creates assets
 	create_assets("SamCoin", _receivers_address, 1000, "SC") 
 	
-	#____________________________
-	# Whichever account creates the asset must sign the raw transaction
-	#____________________________
-	
-	
-	#debug Tx details
-	#print (tx)
-	
+
 	#generates Raw signed transaction
 	
 	stx = algod.sign_transaction(tx, _receivers_mnemonic)
 	
-	#__________________________________________________________
-	#print (stx)#for debug purposes only #works
-	#_check_account_information(funder_address, funder_mnemonic) #debugger
-	#____________________________________________________________________
-	
-	
-	#Generating transaction Id from signed transaction
-	txid = yield(algod.send_transaction(stx), "completed") #breaks and returns null if account doesnt have asset
-	
-	#print (txid) #for debug purposes only
-	#print(new_account[0], '////',new_account[1]) # account 0 is account creator, accout 1 is mnemonic
-	
-	#wait for transaction to finish sending
-	wait= yield(algod.wait_for_transaction(txid), "completed") #returns null if account doesn't have asset
-	
-	
-	
-	var tx_info = yield(algod.transaction_information(txid), "completed") #returns null parameters (fixed)
-	
-	#print (tx_info) #for debug purposes only #returns null value
-	
-	
-	asset_index = int(tx_info.get("asset-index")) # Would return "error non existent int constructor" if the transaction Id fails to generate
 
-	#Opts in to the Asset transaction from the Asset creator's account
+	#Generating transaction Id from signed transaction
+	txid = yield(algod.send_transaction(stx), "completed") 
+	
+
+	#wait for transaction to finish sending
+	wait= yield(algod.wait_for_transaction(txid), "completed") 
+	
+	
+	
+	var tx_info = yield(algod.transaction_information(txid), "completed") 
+	
+
+	asset_index = int(tx_info.get("asset-index")) 
+
+	#Opts in to the Asset transaction 
 	opt_in_asset_transaction(_funder_address, asset_index)
-	
-	
 	
 	
 	# Signs the Raw transaction
 	raw_sign_transactions(optin_tx, _funder_mnemonic)
-	#stx = algod.sign_transaction(optin_tx, _funder_mnemonic) duplicate of above line
-	#print (stx)
-	
+		
 	yield(algod.send_transaction(stx), "completed") # sends raw signed transaction to the network
-
 
 
 	print("atomic swap")
 
-# constructs a new transaction ; possible for the tx fee
+# constructs a new transaction 
 	var algo_tx = algod.construct_payment(
 		params,
 		_funder_address,
@@ -268,9 +233,7 @@ func _send_asset_transfers_to_receivers_address(_funder_address : String, _funde
 	txns[0] = algod.sign_transaction(txns[0], _funder_mnemonic)
 	txns[1] = algod.sign_transaction(txns[1], _receivers_mnemonic)
 #----------------------------------------------
- 
-	#print (txns[0]) #for debug purposes only
-	#print (txns[1]) #for debug purposes only
+
 	# send signed transaction
 	yield(algod.send_transactions(txns), "completed") 
 	
@@ -285,7 +248,7 @@ func _send_asset_transfers_to_receivers_address(_funder_address : String, _funde
 	for asset in funder_assets: # Checks users account for certain variables
 		if transferred_assets == true:
 			#check https://github.com/lucasvanmol/algodot/issues/5#issuecomment-1196307682 for more details about the below conditional
-			#if asset["asset-id"] == asset_index && asset["amount"] == 1: #Amount should be the same amount as amount of asset transfered if both accounts are new accounts
+
 			if asset["asset-id"] && asset_index && asset["amount"] != null:
 				return true
 		else:
@@ -294,7 +257,7 @@ func _send_asset_transfers_to_receivers_address(_funder_address : String, _funde
 			return false
 
 " This function can be expanded upon to print lots of Account specific details"
-#expand to include asset Url
+
 func _check_account_information(address : String, mnemonic : String, info : String) -> Dictionary: #account debugger #works
 	_info = yield(algod.account_information(address,mnemonic), "completed")
 	if info == "" or null:
@@ -342,12 +305,14 @@ func construct_asset_transfer( from_address : String, to_address : String, amoun
 	)
 	return asset_tx
 
-func generate_suggested_transaction_parameters(): #generates a suggested transaction parameter instead of manually creating one
-	params = yield(algod.suggested_transaction_params(), "completed") #it a creates a suggested transaction fee instead of manually inputing one
+#generates a suggested transaction parameter instead of manually creating one
+
+func generate_suggested_transaction_parameters(): 
+	params = yield(algod.suggested_transaction_params(), "completed") 
 	return params
 
 func opt_in_asset_transaction( from_address: String, _asset_index):
-	print("opt in") # rewrite as separate function
+	print("opt in")
 	optin_tx = algod.construct_asset_opt_in(
 		params,
 		from_address,
@@ -355,32 +320,4 @@ func opt_in_asset_transaction( from_address: String, _asset_index):
 		)
 	return optin_tx
 
-func create_NFT(asset_name : String, to_address : String, Total_supply: int, Unit_name: String, url: String): # a modified version of create assets
-	print("-----creating NFT----", asset_name, "/", url)
-	generate_suggested_transaction_parameters()
-	tx = algod.construct_asset_create( #breaks
-		params,
-		to_address, # Creator #SDK uses default sandbox wallet and ignores this creator (fixed)
-		asset_name,	# Asset name
-		0,			# Decimals #i.e how many decimals from the total supply
-		false,		# Default frozen?
-		Total_supply,		# Total supply # This is 1000.00
-		Unit_name,		# Unit name eg GTC, TC, GC
-		url		# Unit name eg GTC, TC, GC
-	)
-	return tx
 
-# Path is the loaded path to the teal script to be compiled
-func compile_teal(path : String): # Teal programs only use Approve()  and Clear() functions
-	yield (algod.compile_teal( path), "completed") #compiling teal from pyteal seems more efficient, this is a placeholder code
-
-"Placeholder Functions"
-func encrypt():
-	print ("Placeholder function")
-	Crypto.new() #check Crypto documentation to cryptographically sign script
-	pass
-
-func decrypt():
-	print ("Placeholder function")
-	Crypto.new() #check Crypto documentation to cryptographically sign script
-	pass

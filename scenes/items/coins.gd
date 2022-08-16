@@ -24,8 +24,7 @@ var status
 
 func _ready():
 	connect("body_entered", self, "_on_Item_body_entered")
-	if Globals.player[0]._ready():
-		$anims.play("spawn")
+	$anims.play("spawn")
 	
 	yield(get_tree().create_timer(2),"timeout")
 	

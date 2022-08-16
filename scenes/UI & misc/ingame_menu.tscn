@@ -70,7 +70,7 @@ scroll_horizontal_enabled = false
 
 [node name="HSeparator" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
 margin_right = 281.0
-margin_bottom = 668.0
+margin_bottom = 780.0
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -136,11 +136,26 @@ custom_fonts/font = SubResource( 4 )
 text = "Anime"
 flat = true
 
-[node name="controls" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
+[node name="wallet" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
 show_behind_parent = true
 margin_top = 448.0
 margin_right = 281.0
 margin_bottom = 556.0
+focus_neighbour_top = NodePath("../mini game")
+focus_neighbour_bottom = NodePath("../quit Button")
+focus_next = NodePath("../quit Button")
+focus_previous = NodePath("../mini game")
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 5 )
+shortcut_in_tooltip = false
+text = "Wallet"
+flat = true
+
+[node name="controls" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
+show_behind_parent = true
+margin_top = 560.0
+margin_right = 281.0
+margin_bottom = 668.0
 focus_neighbour_top = NodePath("../mini game")
 focus_neighbour_bottom = NodePath("../quit Button")
 focus_next = NodePath("../quit Button")
@@ -153,9 +168,9 @@ flat = true
 
 [node name="quit Button" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
 show_behind_parent = true
-margin_top = 560.0
+margin_top = 672.0
 margin_right = 281.0
-margin_bottom = 668.0
+margin_bottom = 780.0
 focus_neighbour_top = NodePath("../music on & off")
 focus_next = NodePath("../chap 1 ")
 focus_previous = NodePath("../music on & off")
@@ -171,5 +186,6 @@ flat = true
 [connection signal="pressed" from="MarginContainer/ScrollContainer/HSeparator/continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="MarginContainer/ScrollContainer/HSeparator/multiplayer" to="." method="_on_multiplayer_pressed"]
 [connection signal="pressed" from="MarginContainer/ScrollContainer/HSeparator/Anime" to="." method="_on_Anime_pressed"]
+[connection signal="pressed" from="MarginContainer/ScrollContainer/HSeparator/wallet" to="." method="_on_wallet_pressed"]
 [connection signal="pressed" from="MarginContainer/ScrollContainer/HSeparator/controls" to="." method="_on_controls_pressed"]
 [connection signal="pressed" from="MarginContainer/ScrollContainer/HSeparator/quit Button" to="." method="_on_quit_Button_pressed"]

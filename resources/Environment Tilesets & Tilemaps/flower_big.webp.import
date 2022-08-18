@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/portal.webp-93e5c827a18657e55d87ad6285a0e423.stex"
+path="res://.import/flower_big.webp-b9a30a28ab615bb7c187b8d670455211.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/props/portal.webp"
-dest_files=[ "res://.import/portal.webp-93e5c827a18657e55d87ad6285a0e423.stex" ]
+source_file="res://resources/Environment Tilesets & Tilemaps/flower_big.webp"
+dest_files=[ "res://.import/flower_big.webp-b9a30a28ab615bb7c187b8d670455211.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

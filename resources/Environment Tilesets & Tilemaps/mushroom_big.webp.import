@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/puddle_big.webp-76159787d6de662a3a64e27a5353bdc5.stex"
+path="res://.import/mushroom_big.webp-6013ffe4747fb34c538cddcd3a970ed8.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/props/puddle_big.webp"
-dest_files=[ "res://.import/puddle_big.webp-76159787d6de662a3a64e27a5353bdc5.stex" ]
+source_file="res://resources/Environment Tilesets & Tilemaps/mushroom_big.webp"
+dest_files=[ "res://.import/mushroom_big.webp-6013ffe4747fb34c538cddcd3a970ed8.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

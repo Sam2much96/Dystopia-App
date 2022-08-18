@@ -131,7 +131,7 @@ func _ready():
 		
 		print ('nft host site',image_url) #image_url should not be null
 		Networking.url=image_url
-		
+		 
 		#makes a https request to download image from local server
 		Networking._check_connection( image_url) 
 		#***************************************************************

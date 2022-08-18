@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/broken ship webp.webp-de3addb66cb3cdf6d82acda07c568cb8.stex"
+path="res://.import/temple exterior 3d WEBP.webp-437fd46ded6bf0dd0d409af7a791d83e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/props/broken ship webp.webp"
-dest_files=[ "res://.import/broken ship webp.webp-de3addb66cb3cdf6d82acda07c568cb8.stex" ]
+source_file="res://resources/Environment Tilesets & Tilemaps/temple exterior 3d WEBP.webp"
+dest_files=[ "res://.import/temple exterior 3d WEBP.webp-437fd46ded6bf0dd0d409af7a791d83e.stex" ]
 
 [params]
 
@@ -23,11 +23,12 @@ flags/repeat=0
 flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
-flags/srgb=2
+flags/srgb=0
 process/fix_alpha_border=false
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

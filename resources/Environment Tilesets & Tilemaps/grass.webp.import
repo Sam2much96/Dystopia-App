@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/desert dunes 3d 2.webp-8abe4b7659cd7b5008d11a48a7b20c60.stex"
+path="res://.import/grass.webp-34f07320ba66c7d75eefbf90406a39f3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/props/desert dunes 3d 2.webp"
-dest_files=[ "res://.import/desert dunes 3d 2.webp-8abe4b7659cd7b5008d11a48a7b20c60.stex" ]
+source_file="res://resources/Environment Tilesets & Tilemaps/grass.webp"
+dest_files=[ "res://.import/grass.webp-34f07320ba66c7d75eefbf90406a39f3.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

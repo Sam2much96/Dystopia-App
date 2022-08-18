@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/house.webp-f5fe8732f36939c02caf3cf222c0c384.stex"
+path="res://.import/puddle_big.webp-c5bcd4d57b394aff0ec75e5f08f3720c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/props/house.webp"
-dest_files=[ "res://.import/house.webp-f5fe8732f36939c02caf3cf222c0c384.stex" ]
+source_file="res://resources/Environment Tilesets & Tilemaps/puddle_big.webp"
+dest_files=[ "res://.import/puddle_big.webp-c5bcd4d57b394aff0ec75e5f08f3720c.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

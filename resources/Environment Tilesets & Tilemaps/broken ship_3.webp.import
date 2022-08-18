@@ -2,19 +2,19 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/flower_big.webp-556ce3a335f8741b57266d0c4fbb7d6b.stex"
+path="res://.import/broken ship_3.webp-28ec948984979995c140ff92a4c6ed2d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/props/flower_big.webp"
-dest_files=[ "res://.import/flower_big.webp-556ce3a335f8741b57266d0c4fbb7d6b.stex" ]
+source_file="res://resources/Environment Tilesets & Tilemaps/broken ship_3.webp"
+dest_files=[ "res://.import/broken ship_3.webp-28ec948984979995c140ff92a4c6ed2d.stex" ]
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
@@ -23,12 +23,13 @@ flags/repeat=0
 flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
-flags/srgb=2
+flags/srgb=0
 process/fix_alpha_border=true
-process/premult_alpha=false
+process/premult_alpha=true
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

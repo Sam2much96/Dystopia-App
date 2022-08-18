@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/mushroom_small.webp-82d454c8ff1c36b67b3adb23477b4155.stex"
+path="res://.import/citymap_exterior_webp.webp-278b74faed4d3e08930bfd89c92f6649.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/props/mushroom_small.webp"
-dest_files=[ "res://.import/mushroom_small.webp-82d454c8ff1c36b67b3adb23477b4155.stex" ]
+source_file="res://resources/Environment Tilesets & Tilemaps/citymap_exterior_webp.webp"
+dest_files=[ "res://.import/citymap_exterior_webp.webp-278b74faed4d3e08930bfd89c92f6649.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

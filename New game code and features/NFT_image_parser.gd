@@ -15,10 +15,12 @@
 #Features
 #(1) Curerntly implements on the ALgorand blockchain, other chains not supported
 # *************************************************
+# To-DO:
+# (1) Implement as State Machine
 # Testing
-#(1) Image Downloder
-# (2) Create NFT
-# (3) Parse NFT
+#(1) Image Downloder (works)
+# (2) Create NFT (doesnt work)
+# (3) Parse NFT (works)
 # *************************************************
 
 
@@ -55,6 +57,13 @@ var Escrow_mnemoic: String="""
 							able broccoli
 							"""
 
+
+var Player_account: String="2NFCY7HBAFJ5YP7TXUOFHHMGAZ7AHEXPS5F3NENXSC3WXRVATBR4Y23AUM"
+var Player_mnemonic: String ="""rigid steak better media circle nothing range 
+								tray firm fatigue pool damage welcome supply
+								 police spoon soul topic grant offer chimney 
+								total bronze able human"""
+
 #var load_from_local_wallet : bool
 var amount
 var address
@@ -86,9 +95,9 @@ func _ready():
 		Algorand._test_algod_connection()
 		
 		"gets account info returns a dictionary"
-		account_info=(yield(Algorand._check_account_information("2NFCY7HBAFJ5YP7TXUOFHHMGAZ7AHEXPS5F3NENXSC3WXRVATBR4Y23AUM", "rigid steak better media circle nothing range tray firm fatigue pool damage welcome supply police spoon soul topic grant offer chimney total bronze able human", ""), "completed"))
-		#print (account_info["created-assets"][2]["index"]) #try using 3
-		#print (account_info["created-assets"][2]["params"]['unit-name'])
+		account_info=(yield(Algorand._check_account_information(Player_account, Player_mnemonic, ""), "completed"))
+		
+		
 		"saves account info"
 		save_account_info(account_info, 2) #works
 	

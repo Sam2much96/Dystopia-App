@@ -66,6 +66,7 @@ position = Vector2( 1600.61, 2690.46 )
 scale = Vector2( 0.5, 0.5 )
 
 [node name="dune_tex 1" type="TextureRect" parent="Dune textures"]
+visible = false
 self_modulate = Color( 1, 1, 1, 0.552941 )
 margin_left = -603.22
 margin_top = -5738.92
@@ -613,6 +614,7 @@ position = Vector2( 2710.78, -8994.92 )
 position = Vector2( -6849.22, -7278.92 )
 
 [node name="Tall_grass" type="TextureRect" parent="Outside/flowers and grass"]
+light_mask = 2
 margin_right = 40.0
 margin_bottom = 40.0
 texture = ExtResource( 10 )

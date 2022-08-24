@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://fonts/Comic Book.otf" type="DynamicFontData" id=1]
-[ext_resource path="res://scenes/UI & misc/form/generic_form.gd" type="Script" id=2]
+[ext_resource path="res://scenes/UI & misc/form/Form.gd" type="Script" id=2]
 [ext_resource path="res://resources/illustrations/coins silver.png" type="Texture" id=3]
 [ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=4]
 [ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=5]
@@ -92,7 +92,6 @@ __meta__ = {
 position = Vector2( 7.62939e-06, 18 )
 
 [node name="label_player" type="Label" parent="ui/grid"]
-visible = false
 margin_right = 229.0
 margin_bottom = 52.0
 rect_min_size = Vector2( 128, 0 )
@@ -101,58 +100,61 @@ custom_fonts/font = SubResource( 2 )
 text = "Your name:"
 
 [node name="text_player" type="LineEdit" parent="ui/grid"]
-visible = false
-margin_right = 130.0
-margin_bottom = 40.0
+margin_left = 233.0
+margin_right = 363.0
+margin_bottom = 52.0
 rect_min_size = Vector2( 128, 0 )
 custom_fonts/font = SubResource( 4 )
-text = "Player"
+text = "wallet id"
 
 [node name="label_email" type="Label" parent="ui/grid"]
-visible = false
-margin_right = 96.0
-margin_bottom = 40.0
+margin_top = 56.0
+margin_right = 229.0
+margin_bottom = 96.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_fonts/font = SubResource( 5 )
-text = "Email:"
+text = "mnemonic:"
 
 [node name="text_email" type="LineEdit" parent="ui/grid"]
-visible = false
-margin_right = 128.0
-margin_bottom = 32.0
+margin_left = 233.0
+margin_top = 56.0
+margin_right = 363.0
+margin_bottom = 96.0
 rect_min_size = Vector2( 128, 0 )
 custom_fonts/font = SubResource( 7 )
-text = "  @gmail.com"
+text = "mnemonic"
 
 [node name="label_spacer3" type="Label" parent="ui/grid"]
-margin_right = 96.0
-margin_bottom = 14.0
+margin_top = 100.0
+margin_right = 229.0
+margin_bottom = 114.0
 
 [node name="label_spacer" type="Label" parent="ui/grid"]
-margin_left = 100.0
-margin_right = 100.0
-margin_bottom = 14.0
+margin_left = 233.0
+margin_top = 100.0
+margin_right = 363.0
+margin_bottom = 114.0
 
 [node name="play" type="Button" parent="ui/grid"]
-margin_top = 18.0
-margin_right = 96.0
-margin_bottom = 46.0
+margin_top = 118.0
+margin_right = 229.0
+margin_bottom = 146.0
 custom_fonts/font = SubResource( 9 )
 text = "Play!"
 
 [node name="label_spacer2" type="Label" parent="ui/grid"]
-margin_left = 100.0
-margin_top = 25.0
-margin_right = 100.0
-margin_bottom = 39.0
+margin_left = 233.0
+margin_top = 125.0
+margin_right = 363.0
+margin_bottom = 139.0
 
 [node name="language" type="OptionButton" parent="ui/grid"]
-margin_top = 50.0
-margin_right = 96.0
-margin_bottom = 70.0
+margin_top = 150.0
+margin_right = 229.0
+margin_bottom = 170.0
 text = "Languague"
 
-[node name="Label" type="Label" parent="ui"]
+[node name="instructions" type="Label" parent="ui"]
 visible = false
 margin_left = 75.0638
 margin_top = 389.842

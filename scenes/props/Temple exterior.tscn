@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://resources/props/temple exterior 3d WEBP.webp" type="Texture" id=1]
+[ext_resource path="res://resources/Environment Tilesets & Tilemaps/temple exterior 3d WEBP.webp" type="Texture" id=1]
 [ext_resource path="res://scenes/UI & misc/Exit.gd" type="Script" id=2]
 
 [sub_resource type="GDScript" id=1]

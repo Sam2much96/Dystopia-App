@@ -1,3 +1,5 @@
+
+
 extends Node #It should Extend  MONERO CLASS, BUT THERES A PARSER ERROR
 
 #class_name 

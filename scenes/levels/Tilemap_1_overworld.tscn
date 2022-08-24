@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://scenes/items/Item.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/props/Pond.tscn" type="PackedScene" id=2]
@@ -6,9 +6,10 @@
 [ext_resource path="res://scenes/items/extra life.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/Shaders/Reflection.shader" type="Shader" id=5]
 [ext_resource path="res://scenes/props/Mushroom.tscn" type="PackedScene" id=6]
-[ext_resource path="res://resources/props/house.webp" type="Texture" id=7]
+[ext_resource path="res://resources/Environment Tilesets & Tilemaps/house.webp" type="Texture" id=7]
 [ext_resource path="res://scenes/props/Temple exterior.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/props/broken ship.tscn" type="PackedScene" id=9]
+[ext_resource path="res://resources/Environment Tilesets & Tilemaps/grass.webp" type="Texture" id=10]
 [ext_resource path="res://scenes/props/Mushroom_2.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/props/Grass.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/props/idol.tscn" type="PackedScene" id=17]
@@ -18,7 +19,7 @@
 [ext_resource path="res://scenes/props/Dune small.tscn" type="PackedScene" id=24]
 [ext_resource path="res://scenes/props/flowers.tscn" type="PackedScene" id=25]
 [ext_resource path="res://scenes/props/stone walkway.tscn" type="PackedScene" id=26]
-[ext_resource path="res://resources/props/desert dunes tex.webp" type="Texture" id=28]
+[ext_resource path="res://resources/Environment Tilesets & Tilemaps/desert dunes tex.webp" type="Texture" id=28]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 261.431
@@ -65,6 +66,7 @@ position = Vector2( 1600.61, 2690.46 )
 scale = Vector2( 0.5, 0.5 )
 
 [node name="dune_tex 1" type="TextureRect" parent="Dune textures"]
+visible = false
 self_modulate = Color( 1, 1, 1, 0.552941 )
 margin_left = -603.22
 margin_top = -5738.92
@@ -610,6 +612,54 @@ position = Vector2( 2710.78, -8994.92 )
 
 [node name="mushroom9" parent="Outside/flowers and grass" instance=ExtResource( 12 )]
 position = Vector2( -6849.22, -7278.92 )
+
+[node name="Tall_grass" type="TextureRect" parent="Outside/flowers and grass"]
+light_mask = 2
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 10 )
+
+[node name="Tall_grass2" type="TextureRect" parent="Outside/flowers and grass"]
+margin_left = 3982.78
+margin_top = -2034.92
+margin_right = 4338.78
+margin_bottom = -1343.92
+texture = ExtResource( 10 )
+
+[node name="Tall_grass3" type="TextureRect" parent="Outside/flowers and grass"]
+margin_left = 800.78
+margin_top = -4404.92
+margin_right = 1156.78
+margin_bottom = -3713.92
+texture = ExtResource( 10 )
+
+[node name="Tall_grass4" type="TextureRect" parent="Outside/flowers and grass"]
+margin_left = -6055.22
+margin_top = -4254.92
+margin_right = -5699.22
+margin_bottom = -3563.92
+texture = ExtResource( 10 )
+
+[node name="Tall_grass5" type="TextureRect" parent="Outside/flowers and grass"]
+margin_left = 7142.78
+margin_top = -4424.92
+margin_right = 7498.78
+margin_bottom = -3733.92
+texture = ExtResource( 10 )
+
+[node name="Tall_grass6" type="TextureRect" parent="Outside/flowers and grass"]
+margin_left = 5286.78
+margin_top = -7492.92
+margin_right = 5642.78
+margin_bottom = -6801.92
+texture = ExtResource( 10 )
+
+[node name="Tall_grass7" type="TextureRect" parent="Outside/flowers and grass"]
+margin_left = 2686.78
+margin_top = -7800.92
+margin_right = 3042.78
+margin_bottom = -7109.92
+texture = ExtResource( 10 )
 
 [node name="Trees_TileMap" type="TileMap" parent="."]
 position = Vector2( -65606, 2364 )

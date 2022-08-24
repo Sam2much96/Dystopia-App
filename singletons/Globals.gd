@@ -68,7 +68,7 @@ var video_stream #for the video streamers
 #var metamask_wallet #Stores your wallet for the nft transactions
 var languague #Stores the user's lingua franca
 
-export (int) var Suds #currency system, connect to $xmr protocol
+
 # warning-ignore:unused_class_variable
 var spawnpoint : Vector2
 var spawn_x : int 
@@ -97,6 +97,13 @@ var loading_resource : bool = false
 onready var scene_loader= ResourceLoader
 #onready var wait_frames : int = 10 #not used, delete later
 onready var progress : float
+
+"Crypto Variables" 
+var address
+var mnemonic
+var player_name
+var algos : int #currency system, connect to $xmr protocol
+
 
 func _ready():
 	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
@@ -181,7 +188,7 @@ func save_game(): #modify code to include current scene and player position. als
 	#my code
 	save_dict.os = os
 	save_dict.kill_count = kill_count
-	save_dict.currency = Suds
+	#save_dict.currency = Suds #should load from encrypted wallet.cfg
 	save_dict.prev_scene = prev_scene
 	save_dict.prev_scene_spawnpoint = prev_scene_spawnpoint
 	save_dict.player_hitpoints = player_hitpoints
@@ -239,7 +246,7 @@ func _restore_data(save_dict):
 	
 	os = save_dict.os 
 	kill_count = save_dict.kill_count 
-	Suds = save_dict.currency 
+	#Suds = save_dict.currency #should load from encrypted wallet.cfg. Check NFT parser 
 	player_hitpoints = save_dict.player_hitpoints
 	prev_scene =save_dict.prev_scene 
 	prev_scene_spawnpoint = save_dict.prev_scene_spawnpoint 

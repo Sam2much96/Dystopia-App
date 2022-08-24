@@ -42,7 +42,13 @@ var playlist_one = {
 	5:'res://music/Astrolife chike san.ogg',
 	6:'res://music/chuks-dane_chuks-dane-new-breed-prod-base.ogg',
 	7:'res://music/a-2-3-groovy-bgm.ogg',
-	8:'res://music/Spooky-Chike-san song.ogg'
+	8:'res://music/Spooky-Chike-san song.ogg',
+	9:'res://music/6Feet.ogg',
+	10:'res://music/Blow.ogg',
+	11:'res://music/HENSONN_SAHARA.ogg',
+	12:'res://music/Moya.ogg',
+	13:'res://music/Turn up.ogg',
+	14:'res://music/wind_2.ogg'
 }
 var comic_sfx = {
 	0: 'res://sounds/book_flip.1.ogg',

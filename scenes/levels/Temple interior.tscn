@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://resources/props/temple interior1.webp" type="Texture" id=1]
+[ext_resource path="res://resources/Environment Tilesets & Tilemaps/temple interior1.webp" type="Texture" id=1]
 [ext_resource path="res://scenes/characters/Npc CHIEFPRIEST.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/UI & misc/Exit.gd" type="Script" id=3]
 [ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=4]

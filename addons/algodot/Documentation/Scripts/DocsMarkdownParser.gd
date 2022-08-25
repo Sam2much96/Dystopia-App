@@ -2,6 +2,7 @@
 
 extends Node
 
+var regex: RegEx
 
 var heading1_font = "res://addons/algodot/Documentation/Theme/DocumentationH1.tres"
 var heading2_font = "res://addons/algodot/Documentation/Theme/DocumentationH2.tres"
@@ -51,7 +52,7 @@ func parse(content : String):
 	lists = []
 	underlined = []
 
-	var regex = RegEx.new()
+	regex=regex.new()
 
 	## Find all occurences of bold text
 	regex.compile('\\*\\*(?<boldtext>.*)\\*\\*')
@@ -198,5 +199,22 @@ func parse(content : String):
 	return content
 
 func _exit_tree(): #delete leaked objects from the scene tree
-	for _i in self.get_children():
-		_i.queue_free()
+	heading1s=null
+	heading2s=null
+	heading3s=null
+	heading4s=null
+	heading5s=null
+	result=null 
+	bolded=null 
+	italics=null 
+	striked=null 
+	coded=null 
+	linknames=null 
+	links=null 
+	imagenames=null 
+	imagelinks=null 
+	lists=null 
+	underlined=null 
+
+	italics= null
+	self.queue_free()

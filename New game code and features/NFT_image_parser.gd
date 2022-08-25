@@ -95,7 +95,7 @@ func _ready():
 		Algorand._test_algod_connection()
 		
 		"gets account info returns a dictionary"
-		account_info=(yield(Algorand._check_account_information(Player_account, Player_mnemonic, ""), "completed"))
+		account_info=(yield(Algorand._check_account_information(Player_mnemonic, ""), "completed"))
 		
 		
 		"saves account info"
@@ -292,7 +292,7 @@ func load_wallet_mnemonic_from_local(): #should load the wallet details (Unused)
 func _on_withraw(): #withdraws Algos from wallet data into my test algorand wallet
 	if Globals.algos != 0: #cannot withdraw with zero balance
 		Algorand.create_algod_node() #from an escrow account
-		status = status && yield(Algorand._send_transaction_to_receiver_addr(Escrow_account , Escrow_mnemoic , "2NFCY7HBAFJ5YP7TXUOFHHMGAZ7AHEXPS5F3NENXSC3WXRVATBR4Y23AUM", "rigid steak better media circle nothing range tray firm fatigue pool damage welcome supply police spoon soul topic grant offer chimney total bronze able human", Globals.algos), "completed") #works
+		status = status && yield(Algorand._send_transaction_to_receiver_addr(Escrow_mnemoic ,"rigid steak better media circle nothing range tray firm fatigue pool damage welcome supply police spoon soul topic grant offer chimney total bronze able human", Globals.algos), "completed") #works
 		#status = status && yield(_send_asset_transfers_to_receivers_address(funder_address , funder_mnemonic , receivers_address , receivers_mnemonic), "completed") #works
 		print (status)
 	if Globals.algos == 0:

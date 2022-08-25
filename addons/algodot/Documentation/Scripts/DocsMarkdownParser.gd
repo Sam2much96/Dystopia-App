@@ -196,3 +196,6 @@ func parse(content : String):
 			content = content.replace("+"+element,"[indent]-"+element+"[/indent]")
 	#print (" DocsMarkdown Parser debug : ",content) #for deug purposes only
 	return content
+
+func _exit_tree(): #delete leaked objects from the scene tree
+	self.queue_free()

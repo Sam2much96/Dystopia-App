@@ -2,7 +2,7 @@
 
 [ext_resource path="res://singletons/Music.gd" type="Script" id=1]
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=1]
 tracks/0/type = "value"
 tracks/0/path = NodePath("A:volume_db")
 tracks/0/interp = 1
@@ -52,7 +52,7 @@ tracks/3/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 tracks/0/type = "value"
 tracks/0/path = NodePath("A:volume_db")
 tracks/0/interp = 1
@@ -102,18 +102,20 @@ tracks/3/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "Change track (straight)"
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 length = 0.5
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 resource_name = "play"
 
 [node name="Music" type="Node"]
 pause_mode = 2
 script = ExtResource( 1 )
+music_on = true
+sfx_on = true
 
 [node name="A" type="AudioStreamPlayer" parent="."]
 bus = "Music"
@@ -127,10 +129,10 @@ bus = "Music"
 [node name="D" type="AudioStreamPlayer" parent="."]
 
 [node name="anims" type="AnimationPlayer" parent="."]
-anims/AtoB = SubResource( 2 )
-anims/BtoA = SubResource( 3 )
-"anims/Change track (straight)" = SubResource( 4 )
-anims/pause = SubResource( 5 )
-anims/play = SubResource( 6 )
+anims/AtoB = SubResource( 1 )
+anims/BtoA = SubResource( 2 )
+"anims/Change track (straight)" = SubResource( 3 )
+anims/pause = SubResource( 4 )
+anims/play = SubResource( 5 )
 
 [connection signal="finished" from="A" to="." method="_on_A_finished"]

@@ -28,3 +28,4 @@ func _run() -> void:
 		files.append_array(Collector.find_files(dirpath, patterns, is_recursive))
 	var json: String = Collector.print_pretty_json(Collector.get_reference(files))
 	Collector.save_text(save_path, json)
+

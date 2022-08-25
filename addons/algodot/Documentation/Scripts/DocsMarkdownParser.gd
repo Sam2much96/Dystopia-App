@@ -10,22 +10,22 @@ var heading4_font = "res://addons/algodot/Documentation/Theme/DocumentationH4.tr
 var heading5_font = "res://addons/algodot/Documentation/Theme/DocumentationH5.tres"
 
 ## These will change with each parsing, but can be saved manually after parsing 
-var heading1s = []
-var heading2s = []
-var heading3s = []
-var heading4s = []
-var heading5s = []
-var result = ""
-var bolded = []
-var italics = []
-var striked = []
-var coded = []
-var linknames = []
-var links = []
-var imagenames = []
-var imagelinks = []
-var lists = []
-var underlined = []
+var heading1s
+var heading2s
+var heading3s
+var heading4s
+var heading5s
+var result 
+var bolded 
+var italics 
+var striked 
+var coded 
+var linknames 
+var links 
+var imagenames 
+var imagelinks 
+var lists 
+var underlined 
 
 ################################################################################
 ##							PUBLIC FUNCTIONS 								  ##
@@ -198,4 +198,5 @@ func parse(content : String):
 	return content
 
 func _exit_tree(): #delete leaked objects from the scene tree
-	self.queue_free()
+	for _i in self.get_children():
+		_i.queue_free()

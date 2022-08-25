@@ -15,8 +15,11 @@
 #Features
 #(1) Curerntly implements on the ALgorand blockchain, other chains not supported
 # *************************************************
+#Bugs:
+#(1) Doesn't work
 # To-DO:
 # (1) Implement as State Machine
+# (2) Update transaction logic
 # Testing
 #(1) Image Downloder (works)
 # (2) Create NFT (doesnt work)
@@ -56,13 +59,14 @@ var Escrow_mnemoic: String="""
 							armed thrive then grief spy away medal quiz copper 
 							able broccoli
 							"""
-
+#Not needed, can be gotten from mnemonic alone
 
 var Player_account: String="2NFCY7HBAFJ5YP7TXUOFHHMGAZ7AHEXPS5F3NENXSC3WXRVATBR4Y23AUM"
 var Player_mnemonic: String ="""rigid steak better media circle nothing range 
 								tray firm fatigue pool damage welcome supply
 								 police spoon soul topic grant offer chimney 
 								total bronze able human"""
+#Not needed, can be gotten from mnemonic alone
 
 #var load_from_local_wallet : bool
 var amount

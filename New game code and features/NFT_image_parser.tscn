@@ -6,10 +6,10 @@
 [ext_resource path="res://New game code and features/Server-Client.tscn" type="PackedScene" id=4]
 
 [node name="TextureRect" type="TextureRect"]
-anchor_right = 0.486
-anchor_bottom = 1.077
-margin_right = -582.08
-margin_bottom = -735.44
+anchor_right = 0.474
+anchor_bottom = 0.996
+margin_right = -567.72
+margin_bottom = -680.12
 rect_scale = Vector2( 15.563, 19.384 )
 script = ExtResource( 1 )
 

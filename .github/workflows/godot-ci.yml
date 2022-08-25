@@ -41,6 +41,9 @@ jobs:
         uses: actions/checkout@v2
         with:
           lfs: true
+      - name: Dependencies
+        run: |
+          apt install libssl-dev
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/templates

@@ -8,33 +8,35 @@ var _editor_view
 
 
 func _init():
-
+	
 	var gui = get_editor_interface().get_base_control()
 	var node_icon = gui.get_icon("Node", "EditorIcons")
-
+	
 	add_custom_type(
 		"Algod",
 		"Node",
 		preload("res://addons/algodot/gdnative/algod.gdns"),
 		node_icon
 	)
-	add_autoload_singleton("AsyncExecutorDriver", "res://addons/algodot/gdnative/async_executor.gdns")
-	add_autoload_singleton('DocsHelper', "res://addons/algodot/Documentation/Scripts/DocsHelper.gd")
-	#*********For Built in Documentation**********#
-	
+func _ready():
+	add_autoload_singleton("AsyncExecutorDriver", "res://addons/algodot/gdnative/async_executor.gdns") #creates an orphaned node
+	add_autoload_singleton('DocsHelper', "res://addons/algodot/Documentation/Scripts/DocsHelper.gd") #creates an orphanned node
+		#*********For Built in Documentation**********#
+		
 	_add_custom_editor_view()
-	
+		
 	"Adds a Custom Tab for Documentations"
 	get_editor_interface().get_editor_viewport().add_child(_editor_view)
 	make_visible(false)
-
-
-
-func _exit_tree():
 	
+	
+func _exit_tree():
+	#Disable singleton
+	
+	#Remove Singleton Name
 	remove_custom_type("Algod")
-	remove_autoload_singleton("AsyncExecutorDriver")
-
+	#remove_autoload_singleton("AsyncExecutorDriver") #leaks resources #creates an orphaned node
+	
 #************For Builtin Documentation***********#
 	
 	remove_autoload_singleton("DocsHelper")

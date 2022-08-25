@@ -135,5 +135,11 @@ func _on_RefreshPage_pressed():
 	load_page(current_page)
 
 func _exit_tree():
-	MarkdownParser.clear_memory()
-	MarkdownParser.free()
+	MarkdownParser.clear_memory() #clears orphaned nodes
+	MarkdownParser.free() #clears broken strings
+	
+	#print_stray_nodes()
+
+
+
+

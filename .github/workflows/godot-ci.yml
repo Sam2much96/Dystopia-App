@@ -43,7 +43,8 @@ jobs:
           lfs: true
       - name: Dependencies
         run: |
-          apt install libssl-dev
+          apt-get update
+          apt-get install libssl-dev
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/templates

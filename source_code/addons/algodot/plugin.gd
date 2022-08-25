@@ -19,7 +19,7 @@ func _init():
 		node_icon
 	)
 func _ready():
-	add_autoload_singleton("AsyncExecutorDriver", "res://addons/algodot/gdnative/async_executor.gdns") #creates an orphaned node
+	#add_autoload_singleton("AsyncExecutorDriver", "res://addons/algodot/gdnative/async_executor.gdns") #creates an orphaned node
 	add_autoload_singleton('DocsHelper', "res://addons/algodot/Documentation/Scripts/DocsHelper.gd") #creates an orphanned node
 		#*********For Built in Documentation**********#
 		

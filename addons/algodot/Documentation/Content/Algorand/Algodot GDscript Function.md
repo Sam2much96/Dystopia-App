@@ -1,7 +1,9 @@
 # Algodot GDscript Functions
 
 (1) create_algot_node()
-    creates an algod node, tokens, url and other parameters can be specified
+    creates an algod node, tokens, url and other parameters can be specified.
+    It must be run before any transaction logic is done, else the script would
+    return a null Algod variable as an error.
 
 (2) _timeout()
     quits the entire scene tree once the wait time runs out

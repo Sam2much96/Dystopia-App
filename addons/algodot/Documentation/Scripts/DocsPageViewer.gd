@@ -34,7 +34,7 @@ signal open_non_html_link(link, section)
 ## The section can either be passed as a second argument or in the PAGE_PATH with #
 ## E.g.: "Tuts/welcome#how-to-use-the-plugin" == "Tuts/welcome", "#how-to-use-the-plugin"
 func load_page(page_path: String, section : String=''):
-	print ("loading page") # for debug purposes only
+	#print ("loading page") # for debug purposes only
 	# return if no path is given
 	if page_path == '' and not section:
 		return

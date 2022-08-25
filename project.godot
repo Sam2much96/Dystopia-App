@@ -34,7 +34,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ads/Appodeal/Appodeal.gd"
 }, {
-"base": "Node",
+"base": "",
 "class": "AsyncExecutorDriver",
 "language": "NativeScript",
 "path": "res://addons/algodot/gdnative/async_executor.gdns"
@@ -204,9 +204,9 @@ Globals="*res://singletons/Globals.gd"
 Music="*res://singletons/Music.tscn"
 Networking="*res://singletons/Networking.tscn"
 InputManager="*res://singletons/InputManager.gd"
-SyncManager="res://addons/godot-rollback-netcode/SyncManager.gd"
-AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
+SyncManager="*res://addons/godot-rollback-netcode/SyncManager.gd"
 DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
+AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
 
 [debug]
 
@@ -222,7 +222,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/NativeLib/plugin.cfg", "res://addons/algodot/plugin.cfg", "res://addons/gdunzip/plugin.cfg", "res://addons/nativelib-export/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/NativeLib/plugin.cfg", "res://addons/algodot/plugin.cfg", "res://addons/gdunzip/plugin.cfg", "res://addons/godot-rollback-netcode/plugin.cfg", "res://addons/nativelib-export/plugin.cfg" )
 
 [gdnative]
 

@@ -198,7 +198,7 @@ func parse(content : String):
 	#print (" DocsMarkdown Parser debug : ",content) #for deug purposes only
 	return content
 
-func _exit_tree(): #delete leaked objects from the scene tree
+func clear_memory(): #delete leaked objects from the scene tree
 	heading1s=null
 	heading2s=null
 	heading3s=null

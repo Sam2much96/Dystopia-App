@@ -135,4 +135,5 @@ func _on_RefreshPage_pressed():
 	load_page(current_page)
 
 func _exit_tree():
-	MarkdownParser.queue_free()
+	MarkdownParser.clear_memory()
+	MarkdownParser.free()

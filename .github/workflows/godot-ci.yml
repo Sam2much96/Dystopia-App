@@ -20,10 +20,7 @@ jobs:
       - name: Dependencies
         run: |
           apt-get update
-          apt-get install libssl-dev -y
-      - name: Debug
-        run: |
-         echo ${{ secrets.BUTLER_API_KEY }}
+          apt-get install libssl-dev -y  
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/templates

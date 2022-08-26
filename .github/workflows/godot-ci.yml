@@ -35,11 +35,3 @@ jobs:
         with:
           name: linux
           path: build/linux
-      - name: Publish to itch.io
-        uses: manleydev/butler-publish-itchio-action@master
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
-          CHANNEL: linux
-          ITCH_GAME: dystopia-app
-          ITCH_USER: inhumanity_arts
-          PACKAGE: project/${{ env.EXPORT_NAME }}/build/linux

@@ -44,10 +44,3 @@ jobs:
           path: build/linux
       - name: Butler Push
         uses: manleydev/butler-publish-itchio-action@master
-         env:| 
-           GITHUB_TOKEN:"${{ secrets.TOKEN }}"
-           BUTLER_CREDENTIALS:"${{ secrets.BUTLER_CREDENTIALS }}"
-           CHANNEL:linux
-           ITCH_GAME:dystopia-app
-           ITCH_USER:inhumanity_arts
-           PACKAGE:build/linux

@@ -5,13 +5,6 @@ env:
   GODOT_VERSION: 3.3.4
   EXPORT_NAME: source_code
  
-  GITHUB_TOKEN: "${{ secrets.TOKEN }}"
-  BUTLER_CREDENTIALS: "${{ secrets.BUTLER_CREDENTIALS }}"
-  CHANNEL: linux
-  ITCH_GAME: dystopia-app
-  ITCH_USER: inhumanity_arts
-  PACKAGE: build/linux
-
 jobs:
 
   export-linux:
@@ -42,5 +35,11 @@ jobs:
         with:
           name: linux
           path: build/linux
-      - name: Butler Push
-        uses: manleydev/butler-publish-itchio-action@master
+      - name: Publish to itch.io
+        uses: josephbmanley/butler-publish-itchio-action@v1.0.2
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+          CHANNEL: linux
+          ITCH_GAME: dystopia-app
+          ITCH_USER: inhumanity_arts
+          PACKAGE: project/${{ env.EXPORT_NAME }}/build/linux

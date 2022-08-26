@@ -38,7 +38,7 @@ jobs:
       - name: Butler Push
         uses: manleydev/butler-publish-itchio-action@master
         env:
-          GITHUB_TOKEN: "${{ secrets.TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.BUTLER_API_KEY }}"
           BUTLER_CREDENTIALS: "${{ secrets.BUTLER_CREDENTIALS }}"
           CHANNEL: linux
           ITCH_GAME: dystopia-app

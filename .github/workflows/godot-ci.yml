@@ -4,11 +4,6 @@ on: push
 env:
   GODOT_VERSION: 3.3.4
   EXPORT_NAME: source_code
-  BUTLER_CREDENTIALS: ${{ secrets.hAbZmUrUw8lmVBkKP5SQvNikJGRiM5jCHnKhjXj9 }}
-  CHANNEL: linux
-  ITCH_GAME: dystopia-app
-  ITCH_USER: inhumanity_arts
-  PACKAGE: build/linux
 
 jobs:
 

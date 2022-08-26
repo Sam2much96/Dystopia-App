@@ -35,8 +35,7 @@ jobs:
         with:
           name: linux
           path: build/linux
-      - name: Butler Push
-        uses: manleydev/butler-publish-itchio-action@v1.0.2
+    
 	
 	    
 

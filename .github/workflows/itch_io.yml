@@ -26,11 +26,10 @@ jobs:
       - uses: manleydev/butler-publish-itchio-action@master
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Butler Publish
         env:
          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
          CHANNEL: linux
          ITCH_GAME: dystopia-app
          ITCH_USER: inhumanity-arts
-         PACKAGE: project/${{ env.EXPORT_NAME }}/build/linux
+         PACKAGE: build/linux

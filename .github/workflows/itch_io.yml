@@ -26,8 +26,9 @@ jobs:
       - name: Butler Publish
         uses: manleydev/butler-publish-itchio-action@master
         env:
+         EXPORT_NAME: source_code
          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
          CHANNEL: linux
          ITCH_GAME: dystopia-app
          ITCH_USER: inhumanity-arts
-         PACKAGE: /Dystopia-App/artefacts/linux
+         PACKAGE: project/${{ env.EXPORT_NAME }}/build/linux

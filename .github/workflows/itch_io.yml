@@ -31,4 +31,4 @@ jobs:
          CHANNEL: linux
          ITCH_GAME: dystopia-app
          ITCH_USER: inhumanity-arts
-         PACKAGE: project/${{ env.EXPORT_NAME }}/build/linux
+         PACKAGE: /Dystopia-App/actions/runs/2937793782/linux

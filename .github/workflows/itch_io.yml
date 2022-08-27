@@ -21,6 +21,10 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: manleydev/butler-publish-itchio-action@master
+      - uses: actions/upload-artifact@v3
+        with:
+          name: linux
+          path: build/linux
 
       # Runs a single command using the runners shell
       - name: Butler Publish

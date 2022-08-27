@@ -24,6 +24,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Butler Publish
+        uses: manleydev/butler-publish-itchio-action@master
         env:
          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
          CHANNEL: linux

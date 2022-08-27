@@ -42,6 +42,10 @@ jobs:
     runs-on: ubuntu-20.04
     needs: export-linux
     steps:
+     - name: Download content
+       uses: actions/download-artifact@v2
+       with: 
+         name: linux
      - name: Butler Publish
        uses: manleydev/butler-publish-itchio-action@master
        env:
@@ -50,7 +54,7 @@ jobs:
          CHANNEL: linux
          ITCH_GAME: dystopia-app
          ITCH_USER: inhumanity-arts
-         PACKAGE: build/linux
+         PACKAGE: linux
 
   export-linux:
     name: Linux Export

@@ -54,7 +54,7 @@ jobs:
          CHANNEL: linux
          ITCH_GAME: dystopia-app
          ITCH_USER: inhumanity-arts
-         PACKAGE: linux
+         PACKAGE: application/zip
 
   export-linux:
     name: Linux Export

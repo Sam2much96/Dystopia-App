@@ -6,6 +6,18 @@ env:
   EXPORT_NAME: source_code
  
 jobs:
+  Itch_io:
+    runs-on: ubuntu-20.04
+    needs: export-linux
+    steps:
+     - name: Butler Publish
+       uses: manleydev/butler-publish-itchio-action@master
+       env:
+         BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+         CHANNEL: linux
+         ITCH_GAME: dystopia-app
+         ITCH_USER: inhumanity-arts
+         PACKAGE: build/linux
 
   export-linux:
     name: Linux Export

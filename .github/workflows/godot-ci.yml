@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: export-linux
     steps:
-      - name: Download content
+      - name: Download-content
         uses: actions/download-artifact@v2
         with: 
           name: linux
@@ -40,7 +40,7 @@ jobs:
     
   Itch_io:
     runs-on: ubuntu-20.04
-    needs: export-linux
+    needs: release
     steps:
      - name: Download content
        uses: actions/download-artifact@v2

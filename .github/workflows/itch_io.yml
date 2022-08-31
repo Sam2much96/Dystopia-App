@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Android Push
 
 # Controls when the workflow will run
 on:
@@ -23,12 +23,15 @@ jobs:
       - uses: manleydev/butler-publish-itchio-action@master
    
       # Runs a single command using the runners shell
-      - name: Butler Publish
-        uses: manleydev/butler-publish-itchio-action@master
-        env:
-         EXPORT_NAME: source_code
-         BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
-         CHANNEL: linux
-         ITCH_GAME: dystopia-app
-         ITCH_USER: inhumanity-arts
-         PACKAGE: /:linux-64
+      - name: Android Publish
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ SERVICE_ACCOUNT_JSON }}
+          packageName: com.example.MyApp
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: production
+          status: inProgress
+          inAppUpdatePriority: 2
+          userFraction: 0.33
+          whatsNewDirectory: distribution/whatsnew
+          mappingFile: app/build/outputs/mapping/release/mapping.txt

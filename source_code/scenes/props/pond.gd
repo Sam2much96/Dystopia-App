@@ -31,7 +31,7 @@ var final_pos
 onready var maxlength = $CollisionShape2D.shape.radius
 
 func _on_pond_body_entered(body): #Low level program, would not execute
-	if body is Player or Enemy: 
+	if body is Player: 
 		
 		
 
@@ -82,5 +82,5 @@ func _process(_delta):
 
 
 func _on_pond_body_exited(body):
-	if body is Player or Enemy: 
+	if body is Player: 
 		state = STATE_IDLE

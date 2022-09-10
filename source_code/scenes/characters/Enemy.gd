@@ -101,7 +101,8 @@ func _process(_delta):
 			
 			#print (enemy_distance_to_player) # For debug purposes only
 			if enemy_distance_to_player < 80: #uses enemy distance to auto attack
-				yield(get_tree().create_timer(attack_wait_time), "timeout")
+				#yield(get_tree().create_timer(attack_wait_time), "timeout") #adds an error #
+				#IMPLEMENT TIMER TIMEOUT
 				state = STATE_ATTACK
 				#return state 
 			if enemy_distance_to_player > 80:

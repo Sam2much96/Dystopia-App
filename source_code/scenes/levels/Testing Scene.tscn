@@ -12,7 +12,7 @@
 [ext_resource path="res://scenes/props/signpost.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/items/coins.tscn" type="PackedScene" id=12]
-[ext_resource path="res://scenes/characters/Bandits.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=13]
 
 [node name="Node2D" type="Node2D"]
 
@@ -49,6 +49,7 @@ position = Vector2( 332.978, 187.895 )
 position = Vector2( 847.733, 29.8275 )
 
 [node name="Player" parent="." instance=ExtResource( 7 )]
+position = Vector2( 361.145, -63.5705 )
 hitpoints = 30
 
 [node name="coins" parent="." instance=ExtResource( 12 )]
@@ -61,4 +62,4 @@ position = Vector2( -130, 461 )
 position = Vector2( -11, 617 )
 
 [node name="Enemy" parent="." instance=ExtResource( 13 )]
-position = Vector2( -274, 282 )
+position = Vector2( 347.676, 44.186 )

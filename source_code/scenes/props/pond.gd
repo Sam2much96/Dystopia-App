@@ -4,7 +4,10 @@
 # *************************************************
 # Puddle
 # An area2d that triggers a moving effect once it detects the Player
-# Bugs:
+# To Do:
+# (1) State machine (done)
+# (2) Update ripple animation
+#Bugs:
 # (1) It only works on the player. It should work on Player and Enemy
 # (2) The puddle FX whith is a kinematic body 2d is supposed to follow the Body collissions movement, it currently does not
 # (3 Puddle FX is supposed to instance multiple times as the player moves
@@ -15,17 +18,69 @@ extends Area2D
 
 onready var puddle_fx = $Puddle_FX
 
+enum {STATE_ACTIVE, STATE_IDLE}
 
+export var state = STATE_IDLE
+
+var x :float
+var y: float
+var  body_pos
+var puddle_pos
+var final_pos
+
+onready var maxlength = $CollisionShape2D.shape.radius
 
 func _on_pond_body_entered(body): #Low level program, would not execute
-	if body is Player: 
-		#var player_pos = body.get_position()
-		#var fx_pos = puddle_fx.get_position()
-		#print ('Pond FX Debug: ', 'Player Position', player_pos, 'Pond Fx Position: ', puddle_fx.get_position())
-		#$pond.move_and_slide(  Vector2(player_pos))
+	if body is Player or Enemy: 
+		
+		
+
+		
+		
 		'Include Code Here for Puddle Fx to follow player and instance multiple times'
 		#puddle_fx.duplicate(3)
+		body_pos = body.position
+		puddle_pos =  puddle_fx.get_position()
+		final_pos= Globals.restaVectores(body.position, puddle_pos)
 		
-		puddle_fx.show()
 		
-		puddle_fx.splash()
+		
+		#print ('Pond FX Debug: ',"body pos ", body_pos , 'final pos',final_pos, 'Pond Fx Position: ', puddle_pos)
+		
+		#puddle_fx.show()
+		state= STATE_ACTIVE
+		
+
+func clamp_fx():
+	################################################################# 
+
+	###################Clamps the Joystick cirle withing a radius#############################
+	if body_pos.length() > maxlength: # SHould be in a separate functio
+		var angle = puddle_fx.position.angle()
+		puddle_fx.position.x = cos(angle) * maxlength 
+		puddle_fx.position.y = sin(angle) * maxlength
+
+
+func _process(_delta):
+
+
+
+	## PROCESS STATES
+	match state:
+		STATE_ACTIVE:
+			#puddle_fx.ripple() #needs new ripple animation
+			
+			
+			
+			puddle_fx.change_position(final_pos)
+			clamp_fx() #works
+			
+			puddle_fx.splash()
+			pass
+		STATE_IDLE:
+			puddle_fx.change_position(Vector2(0, 0))
+
+
+func _on_pond_body_exited(body):
+	if body is Player or Enemy: 
+		state = STATE_IDLE

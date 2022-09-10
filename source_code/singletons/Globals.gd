@@ -330,3 +330,9 @@ func turn_off_processing(toggle): # to improve game speed and turn off idle proc
 		else:
 			push_warning ("This function only uses on/off strings to control the globals processing functon")
 	else: return
+
+func restaVectores(v1, v2): #vector substraction
+	return Vector2(v1.x - v2.x, v1.y - v2.y)
+
+func sumaVectores(v1, v2): #vector sum
+	return Vector2(v1.x + v2.x, v1.y + v2.y)

@@ -35,7 +35,7 @@ jobs:
         run: |
           mkdir -v -p build/android
           cd $EXPORT_NAME
-          godot -v --path /source_code/project.godot --export "Android" ../build/linux/$EXPORT_NAME.apk
+          godot -v --path /source_code/project.godot --export "Android/apk" ../build/linux/$EXPORT_NAME.apk
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:

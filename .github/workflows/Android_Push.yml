@@ -23,7 +23,9 @@ jobs:
           mkdir -v -p ~/.config/godot/
           cp /root/.config/godot/editor_settings-3.tres ~/.config/godot/editor_settings-3.tres
           ls -al
-          cd source_code/android/build
+          cd source_code
+          cp export_presets.cfg /android/build
+          cd /android/build
           ls
           chmod +x gradlew
           godot --verbose --debug --export-debug "Android" mpw-debug.apk

@@ -23,16 +23,29 @@ jobs:
           apt-get update
           apt-get install libssl-dev -y 
           
+      - name: Checkout
       - uses: actions/checkout@v2.3.2
       - run: |
           
           mkdir -v -p ~/.local/share/godot/templates
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
-          mkdir -v -p build/linux
+          mkdir -v -p build/android
+      - name: Android
+        env:
+          SECRET_RELEASE_KEYSTORE_BASE64 :   $SECRET_RELEASE_KEYSTORE_BASE64
+          SECRET_RELEASE_KEYSTORE_USER :     $SECRET_RELEASE_KEYSTORE_USER
+          SECRET_RELEASE_KEYSTORE_PASSWORD : $SECRET_RELEASE_KEYSTORE_PASSWORD
+      - run : |
+          echo $SECRET_RELEASE_KEYSTORE_BASE64 | base64 --decode > /root/release.keystore
+          mkdir -v -p build/android
           cd $EXPORT_NAME
-          godot -v --path /source_code/project.godot --export "Android" ../build/linux/$EXPORT_NAME.apk
+          sed 's@keystore/release=".*"@keystore/release="'/root/release.keystore'"@g' -i export_presets.cfg
+          sed 's@keystore/release_user=".*"@keystore/release_user="'$SECRET_RELEASE_KEYSTORE_USER'"@g' -i export_presets.cfg
+          sed 's@keystore/release_password=".*"@keystore/release_password="'$SECRET_RELEASE_KEYSTORE_PASSWORD'"@g' -i export_presets.cfg
+          godot -v --export "Android" ../build/android/$EXPORT_NAME.apk
+        
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: linux
-          path: build/linux
+          name: android
+          path: build/android

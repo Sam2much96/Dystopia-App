@@ -29,7 +29,8 @@ jobs:
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
           mkdir -v -p ~/.config/godot/
           cp /root/.config/godot/editor_settings-3.tres ~/.config/godot/editor_settings-3.tres
-          cd android/build
+          cd ~/source_code/android/build
+          ls
           chmod +x gradlew
           cd
           mkdir -v -p build/linux

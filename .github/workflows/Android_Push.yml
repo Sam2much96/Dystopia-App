@@ -15,7 +15,7 @@ jobs:
 
   export-android:
     name: Android Export
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     container:
       image: myood/godot-ci-android-export:godot-3.2.2
     steps:

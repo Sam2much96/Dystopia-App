@@ -24,6 +24,8 @@ jobs:
           cp /root/.config/godot/editor_settings-3.tres ~/.config/godot/editor_settings-3.tres
           ls -al
           cd source_code
+          ls
+          chmod +x export_presets.cfg 
           cp export_presets.cfg ~/source_code/android/build/export_presets.cfg
           cd /android/build
           ls

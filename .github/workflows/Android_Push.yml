@@ -25,5 +25,5 @@ jobs:
           ls -al
           cd source_code/android/build
           ls
-          chmod +x /source_code/android/build/gradlew
+          chmod +x gradlew
           godot --verbose --debug --export-debug "Android" mpw-debug.apk

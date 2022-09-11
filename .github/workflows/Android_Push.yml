@@ -28,14 +28,14 @@ jobs:
           
           mkdir -v -p ~/.local/share/godot/templates
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
-          mkdir -v -p build/linux
+          mkdir -v -p build/android
           cd $EXPORT_NAME
           
-          echo $SECRET_RELEASE_KEYSTORE_BASE64 | base64 --decode > /root/release.keystore
+          echo $SECRET_RELEASE_KEYSTORE_BASE64 | base64 --decode > /root/release.keystore #doesnt work
           
-          godot -v --path /source_code/project.godot --export "Android" ../build/linux/$EXPORT_NAME.apk
+          godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: linux
-          path: build/linux
+          path: build/android

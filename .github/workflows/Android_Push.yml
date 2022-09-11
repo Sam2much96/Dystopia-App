@@ -31,11 +31,15 @@ jobs:
           mkdir -v -p build/android
           cd $EXPORT_NAME
           
-          echo $SECRET_RELEASE_KEYSTORE_BASE64 | base64 --decode > /root/release.keystore #doesnt work
+          echo ${{ secrets.SECRET_RELEASE_KEYSTORE_BASE64 }} | base64 --decode > /root/release.keystore #doesnt work
+          
+          sed 's@keystore/release=".*"@keystore/release="'/root/release.keystore'"@g' -i export_presets.cfg
+          sed 's@keystore/release_user=".*"@keystore/release_user="'${{ secrets.SECRET_RELEASE_KEYSTORE_USER }}'"@g' -i export_presets.cfg
+          sed 's@keystore/release_password=".*"@keystore/release_password="'${{ secrets.SECRET_RELEASE_KEYSTORE_PASSWORD}}'"@g' -i export_presets.cfg
           
           godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: linux
+          name: android
           path: build/android

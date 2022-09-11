@@ -17,7 +17,7 @@ jobs:
     name: Android Export
     runs-on: ubuntu-20.04
     container:
-      image: barichello/godot-ci:3.3.4
+      image: myood/godot-ci-android-export:godot-3.2.2
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -33,9 +33,12 @@ jobs:
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
       - name: Android Build
         run: |
-          mkdir -v -p build/android
-          cd $EXPORT_NAME
-          godot -v --path /source_code/project.godot --export "Android" ../build/linux/$EXPORT_NAME.apk
+          mkdir -v -p ~/.local/share/godot/templates
+          mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
+          mkdir -v -p ~/.config/godot/
+          cp /root/.config/godot/editor_settings-3.tres ~/.config/godot/editor_settings-3.tres
+          chmod +x android/build/gradlew
+          godot --verbose --debug --export-debug "Android" mpw-debug.apk
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:

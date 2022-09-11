@@ -31,10 +31,6 @@ jobs:
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
           mkdir -v -p build/android
       - name: Android
-        env:
-          SECRET_RELEASE_KEYSTORE_BASE64 :   $SECRET_RELEASE_KEYSTORE_BASE64
-          SECRET_RELEASE_KEYSTORE_USER :     $SECRET_RELEASE_KEYSTORE_USER
-          SECRET_RELEASE_KEYSTORE_PASSWORD : $SECRET_RELEASE_KEYSTORE_PASSWORD
       - run : |
           echo $SECRET_RELEASE_KEYSTORE_BASE64 | base64 --decode > /root/release.keystore
           mkdir -v -p build/android

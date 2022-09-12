@@ -25,6 +25,7 @@ jobs:
           apt-get install libssl-dev -y 
           apt install android-sdk -y
           
+          mkdir ~/Android/android-sdk
           cd ~/Android/android-sdk
           
           #downloads sdk manager

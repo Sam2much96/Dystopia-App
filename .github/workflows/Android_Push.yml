@@ -24,7 +24,14 @@ jobs:
         
           apt-get install libssl-dev -y 
           apt install android-sdk -y
-          apt install sdkmanager -y
+          wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+          unzip sdk-tools-linux-4333796.zip
+          ls
+          sdkmanager --version
+          
+          sdkmanager --sdk_root="/usr/lib/android-sdk" "platform-tools" "build-tools;30.0.3" "platforms;android-29" "cmdline-tools;latest" "cmake;3.10.2.4988404" "ndk;21.4.7075529"
+
+          echo 'export/android/android_sdk_path = "/usr/lib/android-sdk"' >> ~/.config/godot/editor_settings-3.tres
           
       - name: Compile for android    
         uses: actions/checkout@v2.3.2
@@ -32,11 +39,6 @@ jobs:
           #make template
           mkdir -v -p ~/.local/share/godot/templates
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
-          
-          #configure sdk paths
-          sdkmanager --sdk_root="/usr/lib/android-sdk" "platform-tools" "build-tools;30.0.3" "platforms;android-29" "cmdline-tools;latest" "cmake;3.10.2.4988404" "ndk;21.4.7075529"
-
-          echo 'export/android/android_sdk_path = "/usr/lib/android-sdk"' >> ~/.config/godot/editor_settings-3.tres
           
           mkdir -v -p build/android
           cd $EXPORT_NAME

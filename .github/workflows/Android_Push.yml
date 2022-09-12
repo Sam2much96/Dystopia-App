@@ -25,9 +25,9 @@ jobs:
         
           apt-get install libssl-dev -y 
          
-          apt install snapd
+          apt install snapd -y
           
-          snap install androidsdk
+          snap install androidsdk -y
           
           sdkmanager --sdk_root="/usr/lib/android-sdk" "platform-tools" "build-tools;30.0.3" "platforms;android-29" "cmdline-tools;latest" "cmake;3.10.2.4988404" "ndk;21.4.7075529"
           

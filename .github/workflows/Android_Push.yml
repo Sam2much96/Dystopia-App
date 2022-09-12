@@ -25,19 +25,7 @@ jobs:
           apt-get install libssl-dev -y 
           apt install android-sdk -y
           
-          mkdir -v -p ~/Android/android-sdk
-          cd ~/Android/android-sdk
-          
-          #downloads sdk manager
-          wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
-          unzip sdk-tools-linux-4333796.zip
-          ls -al #debugger
-          cd tools/bin
-          ls -al #debugger
-          ./sdkmanager --version
-          
-          ./sdkmanager --sdk_root="/usr/lib/android-sdk" "platform-tools" "build-tools;30.0.3" "platforms;android-29" "cmdline-tools;latest" "cmake;3.10.2.4988404" "ndk;21.4.7075529"
-          cd
+          sdkmanager --sdk_root="/usr/lib/android-sdk" "platform-tools" "build-tools;30.0.3" "platforms;android-29" "cmdline-tools;latest" "cmake;3.10.2.4988404" "ndk;21.4.7075529"
           
           
       - name: Compile for android    

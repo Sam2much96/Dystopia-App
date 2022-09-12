@@ -25,7 +25,7 @@ jobs:
           apt-get install libssl-dev -y 
           apt install android-sdk -y
           
-          mkdir ~/Android/android-sdk
+          mkdir -v -p ~/Android/android-sdk
           cd ~/Android/android-sdk
           
           #downloads sdk manager
@@ -56,6 +56,7 @@ jobs:
           sed 's@keystore/release_user=".*"@keystore/release_user="'${{ secrets.SECRET_RELEASE_KEYSTORE_USER }}'"@g' -i export_presets.cfg
           sed 's@keystore/release_password=".*"@keystore/release_password="'${{ secrets.SECRET_RELEASE_KEYSTORE_PASSWORD}}'"@g' -i export_presets.cfg
           
+          #stops a bug. Debug keystore is invalid
           echo ${{ secrets.SECRET_RELEASE_KEYSTORE_BASE64 }} | base64 --decode > /root/debug.keystore 
           
           sed 's@keystore/debug=".*"@keystore/debug="'/root/release.keystore'"@g' -i export_presets.cfg

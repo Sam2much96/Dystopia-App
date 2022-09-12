@@ -1,8 +1,10 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/cinematics/pilot_ep_1.gd" type="Script" id=1]
-[ext_resource path="res://scenes/cinematics/Pilot_a.ogv" type="VideoStream" id=2]
 [ext_resource path="res://ads/Ads_manager.tscn" type="PackedScene" id=3]
+
+[sub_resource type="VideoStreamTheora" id=1]
+file = "res://scenes/cinematics/Pilot_a.ogv"
 
 [node name="AnimationPlayer" type="Control"]
 anchor_right = 1.0
@@ -26,7 +28,7 @@ margin_top = 2.0
 margin_right = 39.0
 margin_bottom = 42.0
 rect_scale = Vector2( 32.0412, 17.9981 )
-stream = ExtResource( 2 )
+stream = SubResource( 1 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 volume_db = 10.0

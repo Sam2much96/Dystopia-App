@@ -80,7 +80,9 @@ func _on_watch_anime_pressed():
 	#_Video_Stream((Globals.pilot_ep))
 	
 	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
-	videoplayer._play_pilot_a()
+	#videoplayer._play_pilot_a() #depreciated in v1.1.9 for size problems
+	
+	OS.shell_open("https://youtu.be/oJY1rIxC4kk")
 	
 	$Label.hide()
 	#print ('Video Stream: ' , str(videoplayer.stream)) # For debug purposes only

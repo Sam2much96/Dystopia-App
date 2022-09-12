@@ -61,11 +61,13 @@ jobs:
           
           godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
           
-          cd ..
-          cd  build/android
-          
-          ls -al
-        
+     
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: android
+          path: build/android/$EXPORT_NAME.apk
+     
       - name: Google play push
         uses: r0adkll/upload-google-play@v1
         with:
@@ -75,11 +77,4 @@ jobs:
          track: production
          status: completed
          inAppUpdatePriority: 3
-         userFraction: 0.9
-     
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: android
-          path: build/android
-         
+         userFraction: 0.9      

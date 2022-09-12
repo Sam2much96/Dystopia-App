@@ -25,7 +25,7 @@ jobs:
         
           apt-get install libssl-dev -y 
          
-          apt-get install default-jdk
+          apt-get install default-jdk -y
           
           wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
           

@@ -1,7 +1,7 @@
 name: CI
 
 env:
-  GODOT_VERSION: 3.3.4
+  GODOT_VERSION: 3.4.4
   EXPORT_NAME: source_code
 
 # Controls when the action will run. Triggers the workflow on push or pull request
@@ -14,20 +14,34 @@ on:
 
 jobs:
   container:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container:
-      image: barichello/godot-ci:3.3.4
+      image: barichello/godot-ci:3.4.4
     steps:
       - name: Dependencies
         run: |
-          apt-get update
+          apt-get update -y
+       
+        
           apt-get install libssl-dev -y 
+         
+          apt-get install default-jdk -y
+          apt-get install android-sdk -y
           
-      - uses: actions/checkout@v2.3.2
+        
+      - name: Compile for android    
+        uses: actions/checkout@v2.3.2
       - run: |
-          
+          #make template
           mkdir -v -p ~/.local/share/godot/templates
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
+          
+          # Android sdk path
+          sed 's|export/android/android_sdk_path = ".*"|export/android/android_sdk_path = "'/usr/lib/android-sdk'"|g' -i /root/.config/godot/editor_settings-3.tres
+          mkdir -v -p ~/.config/godot
+          cp -v /root/.config/godot/editor_settings-3.tres ~/.config/godot/
+          
+          
           mkdir -v -p build/android
           cd $EXPORT_NAME
           
@@ -36,6 +50,13 @@ jobs:
           sed 's@keystore/release=".*"@keystore/release="'/root/release.keystore'"@g' -i export_presets.cfg
           sed 's@keystore/release_user=".*"@keystore/release_user="'${{ secrets.SECRET_RELEASE_KEYSTORE_USER }}'"@g' -i export_presets.cfg
           sed 's@keystore/release_password=".*"@keystore/release_password="'${{ secrets.SECRET_RELEASE_KEYSTORE_PASSWORD}}'"@g' -i export_presets.cfg
+          
+          #stops a bug. Debug keystore is invalid
+          echo ${{ secrets.SECRET_RELEASE_KEYSTORE_BASE64 }} | base64 --decode > /root/debug.keystore 
+          
+          sed 's@keystore/debug=".*"@keystore/debug="'/root/release.keystore'"@g' -i export_presets.cfg
+          sed 's@keystore/debug_user=".*"@keystore/debug_user="'${{ secrets.SECRET_RELEASE_KEYSTORE_USER }}'"@g' -i export_presets.cfg
+          sed 's@keystore/debug_password=".*"@keystore/debug_password="'${{ secrets.SECRET_RELEASE_KEYSTORE_PASSWORD}}'"@g' -i export_presets.cfg
           
           godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
       - name: Upload Artifact

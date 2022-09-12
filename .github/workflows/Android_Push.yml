@@ -26,6 +26,7 @@ jobs:
           apt-get install libssl-dev -y 
          
           apt-get install default-jdk -y
+          apt-get install android-sdk -y
           
         
       - name: Compile for android    

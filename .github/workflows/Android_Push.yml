@@ -72,7 +72,7 @@ jobs:
           cd $EXPORT_NAME
           
           #android version
-          sed 's@version/code=".*"version/code="'${{ github.run_number }}'"@g' -i export_presets.cfg
+          
           
           
           #sets release keystore

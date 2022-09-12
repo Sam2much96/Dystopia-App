@@ -1,7 +1,7 @@
 name: CI
 
 env:
-  GODOT_VERSION: 3.3.4
+  GODOT_VERSION: 3.4.4
   EXPORT_NAME: source_code
 
 # Controls when the action will run. Triggers the workflow on push or pull request
@@ -16,7 +16,7 @@ jobs:
   container:
     runs-on: ubuntu-20.04
     container:
-      image: barichello/godot-ci:3.3.4
+      image: barichello/godot-ci:3.4.4
     steps:
       - name: Dependencies
         run: |
@@ -37,11 +37,9 @@ jobs:
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
           
           # Android sdk path
-          #echo 'export/android/android_sdk_path = "/usr/lib/android-sdk"' >> ~/.config/godot/editor_settings-3.tres
-          
-          #sed 's|export/android/android_sdk_path = ".*"|export/android/android_sdk_path = "'/usr/lib/android-sdk'"|g' -i /root/.config/godot/editor_settings-3.tres
-          #mkdir -v -p ~/.config/godot
-          #cp -v /root/.config/godot/editor_settings-3.tres ~/.config/godot/
+          sed 's|export/android/android_sdk_path = ".*"|export/android/android_sdk_path = "'/usr/lib/android-sdk'"|g' -i /root/.config/godot/editor_settings-3.tres
+          mkdir -v -p ~/.config/godot
+          cp -v /root/.config/godot/editor_settings-3.tres ~/.config/godot/
           
           
           mkdir -v -p build/android

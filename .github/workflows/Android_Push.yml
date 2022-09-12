@@ -13,6 +13,30 @@ on:
     branches: [ master ]
 
 jobs:
+  Android_Push:
+    runs-on: ubuntu-latest
+    needs: container
+    steps:
+      - name: Download-content
+        uses: actions/download-artifact@v2
+        with: 
+          name: android
+      - name: Archive site content
+        uses: thedoctor0/zip-release@master
+        with:
+          filename: app.apk
+          
+      - name: Google play push
+        uses: r0adkll/upload-google-play@v1
+        with:
+         serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+         packageName: dystopia.app
+         releaseFiles: ./app.apk
+         track: production
+         status: completed
+         inAppUpdatePriority: 3
+         userFraction: 0.9    
+  
   container:
     runs-on: ubuntu-20.04
     container:
@@ -66,15 +90,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: android
-          path: build/android/$EXPORT_NAME.apk
-     
-      - name: Google play push
-        uses: r0adkll/upload-google-play@v1
-        with:
-         serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-         packageName: dystopia.app
-         releaseFiles: ~/build/android/source_code.apk
-         track: production
-         status: completed
-         inAppUpdatePriority: 3
-         userFraction: 0.9      
+          path: build/android/
+   
+
+        

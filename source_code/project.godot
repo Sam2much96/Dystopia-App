@@ -19,10 +19,25 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ads/admob-lib/admob.gd"
 }, {
+"base": "",
+"class": "Algod",
+"language": "NativeScript",
+"path": "res://addons/algodot/gdnative/algod.gdns"
+}, {
+"base": "Node",
+"class": "Algodot",
+"language": "GDScript",
+"path": "res://addons/algodot/Algod.gd"
+}, {
 "base": "Node",
 "class": "Appodeal",
 "language": "GDScript",
 "path": "res://ads/Appodeal/Appodeal.gd"
+}, {
+"base": "",
+"class": "AsyncExecutorDriver",
+"language": "NativeScript",
+"path": "res://addons/algodot/gdnative/async_executor.gdns"
 }, {
 "base": "Area2D",
 "class": "Bullet",
@@ -94,6 +109,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/characters/Player.gd"
 }, {
+"base": "EditorScript",
+"class": "ReferenceCollector",
+"language": "GDScript",
+"path": "res://addons/algodot/Documentation/Scripts/DocsReferenceCollector.gd"
+}, {
 "base": "Node",
 "class": "StateMachine",
 "language": "GDScript",
@@ -117,7 +137,10 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "Aarin": "",
 "AdMob": "res://ads/admob-lib/icon.png",
+"Algod": "",
+"Algodot": "res://addons/algodot/icon.png",
 "Appodeal": "res://ads/Appodeal/appodeal_logo.png",
+"AsyncExecutorDriver": "",
 "Bullet": "",
 "Comics": "",
 "DialogBox": "",
@@ -132,6 +155,7 @@ _global_script_class_icons={
 "InputEventSingleScreenTouch": "",
 "NFT": "",
 "Player": "",
+"ReferenceCollector": "",
 "StateMachine": "",
 "Yodo1Mas": "",
 "cinematic": "",

@@ -14,18 +14,19 @@ on:
 
 jobs:
   container:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container:
       image: barichello/godot-ci:3.3.4
     steps:
       - name: Dependencies
         run: |
           apt-get update -y
+          apt-get upgrade -y
         
           apt-get install libssl-dev -y 
           apt install android-sdk -y
           
-          apt install sdkmanager -y
+          apt-get install sdkmanager -y
           
           sdkmanager --sdk_root="/usr/lib/android-sdk" "platform-tools" "build-tools;30.0.3" "platforms;android-29" "cmdline-tools;latest" "cmake;3.10.2.4988404" "ndk;21.4.7075529"
           

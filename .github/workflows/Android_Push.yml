@@ -14,7 +14,7 @@ on:
 
 jobs:
   container:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container:
       image: barichello/godot-ci:3.3.4
     steps:
@@ -27,7 +27,7 @@ jobs:
          
           apt install snapd -y
           
-          snap install androidsdk -y
+          snap install androidsdk 
           
           sdkmanager --sdk_root="/usr/lib/android-sdk" "platform-tools" "build-tools;30.0.3" "platforms;android-29" "cmdline-tools;latest" "cmake;3.10.2.4988404" "ndk;21.4.7075529"
           

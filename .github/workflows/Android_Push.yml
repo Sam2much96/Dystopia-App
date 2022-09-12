@@ -60,12 +60,9 @@ jobs:
           sed 's@keystore/debug_password=".*"@keystore/debug_password="'${{ secrets.SECRET_RELEASE_KEYSTORE_PASSWORD}}'"@g' -i export_presets.cfg
           
           godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: android
-          path: build/android
           
+          ls -al
+        
       - name: Google play push
         uses: r0adkll/upload-google-play@v1
         with:
@@ -76,4 +73,10 @@ jobs:
          status: completed
          inAppUpdatePriority: 3
          userFraction: 0.9
+     
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: android
+          path: build/android
          

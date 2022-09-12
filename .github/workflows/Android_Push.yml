@@ -61,6 +61,8 @@ jobs:
           
           godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
           
+          cd ..
+          
           ls -al
         
       - name: Google play push

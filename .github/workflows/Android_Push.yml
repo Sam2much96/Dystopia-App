@@ -18,20 +18,21 @@ jobs:
     needs: container
     steps:
       - name: Download-content
-        uses: actions/download-artifact@v2
+        uses: actions/checkout@v2
+        
+      - uses: actions/download-artifact@v3
         with: 
           name: android
-      - name: Archive site content
-        uses: thedoctor0/zip-release@master
-        with:
-          filename: app.apk
           
+      - name: Verify Download
+        run: ls -al
+        
       - name: Google play push
         uses: r0adkll/upload-google-play@v1
         with:
          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
          packageName: dystopia.app
-         releaseFiles: ./app.apk
+         releaseFiles: ./source_code.apk
          track: production
          status: completed
          inAppUpdatePriority: 3
@@ -87,10 +88,8 @@ jobs:
           
      
       - name: Upload Artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: android
-          path: build/android/
+          path: build/android/source_code.apk
    
-
-        

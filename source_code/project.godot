@@ -20,24 +20,9 @@ _global_script_classes=[ {
 "path": "res://ads/admob-lib/admob.gd"
 }, {
 "base": "Node",
-"class": "Algod",
-"language": "NativeScript",
-"path": "res://addons/algodot/gdnative/algod.gdns"
-}, {
-"base": "Node",
-"class": "Algodot",
-"language": "GDScript",
-"path": "res://addons/algodot/Algod.gd"
-}, {
-"base": "Node",
 "class": "Appodeal",
 "language": "GDScript",
 "path": "res://ads/Appodeal/Appodeal.gd"
-}, {
-"base": "Node",
-"class": "AsyncExecutorDriver",
-"language": "NativeScript",
-"path": "res://addons/algodot/gdnative/async_executor.gdns"
 }, {
 "base": "Area2D",
 "class": "Bullet",
@@ -104,30 +89,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://New game code and features/NFT_image_parser.gd"
 }, {
-"base": "AnimationPlayer",
-"class": "NetworkAnimationPlayer",
-"language": "GDScript",
-"path": "res://addons/godot-rollback-netcode/NetworkAnimationPlayer.gd"
-}, {
-"base": "Node",
-"class": "NetworkRandomNumberGenerator",
-"language": "GDScript",
-"path": "res://addons/godot-rollback-netcode/NetworkRandomNumberGenerator.gd"
-}, {
-"base": "Node",
-"class": "NetworkTimer",
-"language": "GDScript",
-"path": "res://addons/godot-rollback-netcode/NetworkTimer.gd"
-}, {
 "base": "KinematicBody2D",
 "class": "Player",
 "language": "GDScript",
 "path": "res://scenes/characters/Player.gd"
-}, {
-"base": "EditorScript",
-"class": "ReferenceCollector",
-"language": "GDScript",
-"path": "res://addons/algodot/Documentation/Scripts/DocsReferenceCollector.gd"
 }, {
 "base": "Node",
 "class": "StateMachine",
@@ -152,10 +117,7 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "Aarin": "",
 "AdMob": "res://ads/admob-lib/icon.png",
-"Algod": "",
-"Algodot": "res://addons/algodot/icon.png",
 "Appodeal": "res://ads/Appodeal/appodeal_logo.png",
-"AsyncExecutorDriver": "",
 "Bullet": "",
 "Comics": "",
 "DialogBox": "",
@@ -169,11 +131,7 @@ _global_script_class_icons={
 "InputEventSingleScreenTap": "",
 "InputEventSingleScreenTouch": "",
 "NFT": "",
-"NetworkAnimationPlayer": "",
-"NetworkRandomNumberGenerator": "",
-"NetworkTimer": "",
 "Player": "",
-"ReferenceCollector": "",
 "StateMachine": "",
 "Yodo1Mas": "",
 "cinematic": "",
@@ -222,11 +180,11 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/NativeLib/plugin.cfg", "res://addons/algodot/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/NativeLib/plugin.cfg" )
 
 [gdnative]
 
-singletons=[ "res://addons/pythonscript.gdnlib", "res://addons/videodecoder/videodecoder.gdnlib" ]
+singletons=[ "res://addons/videodecoder/videodecoder.gdnlib" ]
 singletons_disabled=[  ]
 
 [global]

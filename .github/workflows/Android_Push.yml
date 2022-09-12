@@ -87,8 +87,8 @@ jobs:
           
      
       - name: Upload Artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: android
-          path: build/android/
+          path: build/android/$EXPORT_NAME.apk
    

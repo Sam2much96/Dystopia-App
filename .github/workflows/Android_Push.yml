@@ -4,6 +4,7 @@ env:
   GODOT_VERSION: 3.4.4
   EXPORT_NAME: source_code
 
+
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
@@ -31,9 +32,9 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-         packageName: dystopia.app
+         packageName:   dystopia.app
          releaseFiles: ./source_code.apk
-         track: production
+         track: 'production'
          status: completed
          inAppUpdatePriority: 3
          userFraction: 0.9    
@@ -69,6 +70,10 @@ jobs:
           
           mkdir -v -p build/android
           cd $EXPORT_NAME
+          
+          #android version
+          
+          
           
           #sets release keystore
           echo ${{ secrets.SECRET_RELEASE_KEYSTORE_BASE64 }} | base64 --decode > /root/release.keystore 

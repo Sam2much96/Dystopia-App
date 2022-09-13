@@ -3,7 +3,7 @@ name: CI
 env:
   GODOT_VERSION: 3.4.4
   EXPORT_NAME: source_code
-  APP_NAME: dystopia.app
+
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -33,7 +33,7 @@ jobs:
         with:
          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
          packageName: dystopia.app
-         releaseFiles: ./dystopia.app.apk
+         releaseFiles: ./source_code.apk
          track: production
          status: completed
          inAppUpdatePriority: 3
@@ -89,12 +89,12 @@ jobs:
           sed 's@keystore/debug_user=".*"@keystore/debug_user="'${{ secrets.SECRET_RELEASE_KEYSTORE_USER }}'"@g' -i export_presets.cfg
           sed 's@keystore/debug_password=".*"@keystore/debug_password="'${{ secrets.SECRET_RELEASE_KEYSTORE_PASSWORD}}'"@g' -i export_presets.cfg
           
-          godot -v --path /source_code/project.godot --export "Android" ../build/android/$APP_NAME.apk
+          godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
           
      
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: android
-          path: build/android/dystopia.app.apk
+          path: build/android/source_code.apk
    

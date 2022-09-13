@@ -32,7 +32,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-         packageName: dystopia.app
+         packageName: "The Dystopia app"
          releaseFiles: ./source_code.apk
          track: 'production'
          status: completed

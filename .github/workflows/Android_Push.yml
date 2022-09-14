@@ -39,7 +39,7 @@ jobs:
          status: completed
          inAppUpdatePriority: 3
          changesNotSentForReview: true
-           
+            
   
   container:
     runs-on: ubuntu-20.04

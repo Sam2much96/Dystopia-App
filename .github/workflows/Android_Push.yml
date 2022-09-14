@@ -35,7 +35,7 @@ jobs:
          packageName: dystopia.app
          releaseName: '40 (v1.1.9)'
          releaseFiles: ./source_code.apk
-         track: draft
+         track: beta
          status: completed
          inAppUpdatePriority: 3
          userFraction: 0.9    

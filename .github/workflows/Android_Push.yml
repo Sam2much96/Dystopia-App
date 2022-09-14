@@ -38,7 +38,7 @@ jobs:
          track: production
          status: completed
          inAppUpdatePriority: 3
-         changesNotSentForReview: true
+         
             
   
   container:

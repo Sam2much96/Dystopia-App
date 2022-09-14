@@ -90,7 +90,7 @@ jobs:
           sed 's@keystore/debug_user=".*"@keystore/debug_user="'${{ secrets.SECRET_RELEASE_KEYSTORE_USER }}'"@g' -i export_presets.cfg
           sed 's@keystore/debug_password=".*"@keystore/debug_password="'${{ secrets.SECRET_RELEASE_KEYSTORE_PASSWORD}}'"@g' -i export_presets.cfg
           
-          godot -v --path /source_code/project.godot --export "dystopia.app" ../build/android/$EXPORT_NAME.apk
+          godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
           
      
       - name: Upload Artifact

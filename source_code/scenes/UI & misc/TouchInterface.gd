@@ -5,17 +5,20 @@
 #
 # This is a touch interface consisting of Touch 2d buttons and a Touch screen Joystick
 # information used by the ingame UI node.
-# Touch OS enables or Disables the touch interface depending on if a touch screen is present. _Hide_touch_interface boolean variable
-# Emits it's state as a signal
+# 
 
+# Features:
 # A State Machine for the touch interface to hint the player and not clutter the ui
-# on the 16/04/22 i discovered that this code is a mess and requires urgent Rewritting
-# The old state machine used functions, thenew one will use a process function with blocs of code
-# I'll also attempt fixing the joystick code  (fixed)
+# Emits it's state as a signal
+#Touch OS enables or Disables the touch interface depending on if a touch screen is present and the Globals.os. _Hide_touch_interface boolean variable
+# uses Globals.screenOrientation to change the button arrangements for mobiles
+
+# TO DO:
+# (1) Fix the joystick code  (fixed)
 # (2) Update the interract state to be usable
-# (3) Hidetouch interface / Touch interface reset bug
-#		(workaround) CLicking other buttons on the touch UI resets this bug on touch UI
-#(4) Edit DOcumentation to be neater
+# (3) Hidetouch interface / Touch interface reset bug (workaround) CLicking other buttons on the touch UI resets this bug on touch UI
+#(4) Edit Documentation to be neater (Online documetation)
+# (5) Joystick Colors?
 # *************************************************
 
 
@@ -32,16 +35,13 @@ onready var _interract = $interact
 onready var stats = $stats
 onready var roll = $roll
 onready var slash = $slash
-#onready var up = $up
-#onready var down = $down
-#onready var left = $left
-#onready var right = $right
+
 onready var comics = $comics
 onready var joystick = $Joystick
 onready var D_pad = $"D-pad"
 
-#Old state Machine. Depereciated! Reuse as signals
-#export(String, "menu", "interract", "attack", "stats", 'comics', 'reset') var state 
+onready var Anim = $AnimationPlayer
+
 
 signal menu
 signal interract
@@ -114,6 +114,14 @@ func _process(_delta):
 	if _Debug == true:
 		touch_interface_debug() # For Debug Purposes only
 	
+	# Changes the button Layout depending on the screen orientation
+	if Globals.screenOrientation == 1: #works
+		Anim.play("SCREEN_VERTICAL");
+	elif Globals.screenOrientation == 0:
+		Anim.play("SCREEN_HORIZONTAL");
+	else: pass;
+	
+	
 	#write a rule that Joystick and Dpad cannot be visible at the same time
 	
 	"""
@@ -126,31 +134,24 @@ func _process(_delta):
 				stats.hide()
 				menu.show()
 				D_pad.hide()
-				#right.hide()
-				#left.hide()
-				#up.hide()
-				#down.hide()
+
 				joystick.hide()
 				_interract.hide()
 				comics.hide()
 				slash.hide()
 				roll.hide()
-				#state = 'menu' #depreciated, use signal instead
+
 				emit_signal("menu")
 			pass
 		INTERRACT:
 			#The interract state should only show when it's close to an interactible object 
 			if _Hide_touch_interface == false:
-				#state = 'interract'
-				#if Touch_os_enabled == false:
+
 				emit_signal('interract')
 				stats.hide()
 				menu.show()
 				D_pad.hide()
-				#right.hide()
-				#left.hide()
-				#up.hide()
-				#down.hide()
+
 				joystick.hide()
 				_interract.show()
 				comics.hide()
@@ -162,12 +163,7 @@ func _process(_delta):
 		ATTACK:
 		
 			if _Hide_touch_interface == false:
-			
-				# Try to simplify this codebloc
-				# Writing it as a state machine, makes it easier to change and improve #Using children nodes
-				# rather than direct calls to each node
-				# rearrange the scene to sort it into sections
-				#state = 'attack'
+
 				emit_signal('attack')
 				stats.hide()
 				menu.show()
@@ -177,18 +173,12 @@ func _process(_delta):
 				roll.show()
 				if _control == 'analogue':
 					D_pad.hide()
-					#right.hide()
-					#left.hide()
-					#up.hide()
-					#down.hide()
+
 					joystick.show()
 				if _control == 'direction':
 					joystick.hide()
 					D_pad.show()
-					#right.show()
-					#left.show()
-					#up.show()
-					#down.show()
+
 
 			pass
 		STATS:
@@ -198,10 +188,7 @@ func _process(_delta):
 				stats.show()
 				menu.hide()
 				D_pad.hide()
-				#right.hide()
-				#left.hide()
-				#up.hide()
-				#down.hide()
+
 				joystick.hide()
 				_interract.hide()
 				comics.hide()
@@ -215,23 +202,20 @@ func _process(_delta):
 				stats.hide()
 				menu.hide()
 				D_pad.hide()
-				#right.hide()
-				#left.hide()
-				#up.hide()
-				#down.hide()
+
 				joystick.hide()
 				_interract.hide()
 				comics.show()
 				slash.hide()
 				roll.hide()
-				#state = 'comics' #depreciated, uses signal instead
+
 				emit_signal('comics')
 			
 		
 			pass
 		RESET: #$ Too many ifs conditions #simplify state?
 			if _Hide_touch_interface == false :
-				#state = 'reset'
+
 				emit_signal('reset')
 				#for child in get_children():
 				#	child.show()
@@ -248,19 +232,13 @@ func _process(_delta):
 				if _control == 'analogue':
 					joystick.show()
 					D_pad.hide()
-					#up.hide()
-					#down.hide()
-					#left.hide()
-					#right.hide()
+
 					return
 					#touch_interface_debug() # For Debug Purposes only
 				elif _control == 'direction':
 					joystick.hide()
 					D_pad.show()
-					#up.show()
-					#down.show()
-					#left.show()
-					#right.show()
+
 					
 					#touch_interface_debug() # For Debug Purposes only
 					return

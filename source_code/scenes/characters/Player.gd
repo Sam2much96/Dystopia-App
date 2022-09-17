@@ -46,7 +46,8 @@ enum { STATE_BLOCKED, STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE
 export var state = STATE_IDLE
 
 onready var player_camera = $camera #the player's camera
-# Move the player to the corresponding spawnpoint, if any and connect to the dialog system
+onready var impact_fx = $Impact
+
 
 func _enter_tree():
 	Globals.update_curr_scene()
@@ -68,7 +69,7 @@ func _ready():
 	Autospawn Code
 	"""
 	#Globals.load_game()
-	
+	# Move the player to the corresponding spawnpoint, if any and connect to the dialog system
 	if Globals.spawnpoint is Vector2 and Globals.spawnpoint != null: #auto spawn code
 		if Globals.curr_scene == 'Outside' :
 			if Globals.current_level != null:

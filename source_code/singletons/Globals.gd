@@ -104,12 +104,19 @@ var mnemonic
 var player_name
 var algos : int #currency system, connect to $xmr protocol
 
+'Screen Size Resolution'
+var screenSize : Vector2
+enum { SCREEN_HORIZONTAL, SCREEN_VERTICAL} 
+
+var screenOrientation 
 
 func _ready():
 	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	
+	# Resizes window the preselected sizes
+	screenOrientation = SCREEN_VERTICAL 
+	print ("Screen orientation is: ", screenOrientation)
 
-	
 	player.append( get_tree().get_nodes_in_group('player') )#gets all player nodes in the scene
 	if player.empty() == true: #error catcher 1             #it shows deleted object once player is despawns. Fix pls
 		player = null
@@ -121,7 +128,15 @@ func _ready():
 
 func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_processing()
 
-
+# Handles Screen Orientation
+	if screenOrientation == SCREEN_VERTICAL :
+		
+		resize_window(480,853);
+		turn_off_processing("off");
+	elif screenOrientation == SCREEN_HORIZONTAL:
+		resize_window(1280,720);
+		turn_off_processing("off");
+	else: return 1;
 
 	'Resource Loader FOr Large Scenes'
 
@@ -272,36 +287,9 @@ func _go_to_cinematics():
 
 
 
-# Does not work #rewrite?
-func unzip_file_to_video(path_to_zip): # Unzips the pilot ep. #Rewrite to use globally
-	print ('Path to zip: ', path_to_zip)
-	var file2Check = File.new()
-	var dir = Directory.new() # Testing some new code
-	var doZipFileExists = file2Check.file_exists(path_to_zip) # Path to Zip file
-	if doZipFileExists == true :
-		print ('Video file: '+str(doZipFileExists) + 'does  exist. ')
-		
-		var gdunzip = load('res://addons/gdunzip/gdunzip.gd').new()
-# - load a zip file:
-		var loaded = gdunzip.load('res://scenes/cinematics/Pilot_a.zip')
-# - if loaded is true you can try to uncompress a file:
-		var uncompressed = gdunzip.uncompress('res://scenes/cinematics/Pilot_a.zip/Pilot_a.ogv')
-		#var uncompressed = gdunzip.uncompress('res://scenes/cinematics/Pilot_a.zip/')
-# - now you have got a PoolByteArray named "uncompressed" with the
-#   uncompressed data for the given file
-		print ('Loaded zip : ',loaded) #for debug purposes only
-		print ('Uncompressed file : ',uncompressed) #it fails to uncompress  # For debug purposes only
-# You can iterate over the "files" variable from the gdunzip instance, to
-# see all the available files:
-
-	#	print ('File in zip file: ',f, '  //  ', 'Pilot ep', pilot_ep )
-
-		print ('The uncompression algorithm code fails to uncompress and breaks if pilot_a.ogv is moved')
-		
-		# Stores the uncompresed pool byte array to a video file
-		#store_video_files(uncompressed,50.2) # Stores the video file with a global function, disabling for now
-		# It creates a corrupted video file of 0 mb. Try running in a process() function
-
+func resize_window(x,y): #resizes the game window
+	screenSize = Vector2(x,y);
+	return OS.set_window_size(Vector2(x,y));
 
 # Convert bytes to Megabytes
 func _ram_convert(bytes) :

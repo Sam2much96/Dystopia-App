@@ -8,10 +8,14 @@
 # Kill count, Directional, Comics.
 # The touch interface functions control it's state machine
 # On the 16/04/22 , i started an update to the dialogue button.
+# Features
+# To DO
+#(1) Implement State Machine to goggle between different Screen orientations using global orientation state
 #Bugs
 #(1) Ingame menu bug
-# (2) UI connects to depreciated state machine
-# (3) UI joystick and d pad changes 
+# (2) UI connects to depreciated state machine (fixed)
+# (3) UI joystick and D pad changes 
+# (4) 
 # *************************************************
 
 

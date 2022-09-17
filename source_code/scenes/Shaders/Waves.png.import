@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/citymap_exterior_webp.webp-278b74faed4d3e08930bfd89c92f6649.stex"
+path="res://.import/Waves.png-82ea5a154a8a46e60206630919a199d0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/Environment Tilesets & Tilemaps/citymap_exterior_webp.webp"
-dest_files=[ "res://.import/citymap_exterior_webp.webp-278b74faed4d3e08930bfd89c92f6649.stex" ]
+source_file="res://scenes/Shaders/Waves.png"
+dest_files=[ "res://.import/Waves.png-82ea5a154a8a46e60206630919a199d0.stex" ]
 
 [params]
 

@@ -1,9 +1,10 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://scenes/characters/Player.gd" type="Script" id=1]
 [ext_resource path="res://resources/Aarin/spritesheet_3.webp" type="Texture" id=2]
 [ext_resource path="res://scenes/Shaders/BlueNoise.webp" type="Texture" id=3]
 [ext_resource path="res://scenes/Shaders/DirectionalBlur.shader" type="Shader" id=4]
+[ext_resource path="res://scenes/Shaders/Impact.tscn" type="PackedScene" id=5]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 4 )
@@ -48,6 +49,18 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Impact:_impact")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
@@ -699,6 +712,18 @@ tracks/7/keys = {
 "update": 1,
 "values": [ null ]
 }
+tracks/8/type = "value"
+tracks/8/path = NodePath("Impact:_impact")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
 [sub_resource type="Animation" id=12]
 length = 0.4
@@ -799,6 +824,18 @@ tracks/7/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 1,
 "values": [ null ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Impact:_impact")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }
 
 [sub_resource type="Animation" id=13]
@@ -901,6 +938,18 @@ tracks/7/keys = {
 "update": 1,
 "values": [ null ]
 }
+tracks/8/type = "value"
+tracks/8/path = NodePath("Impact:_impact")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
 [sub_resource type="Animation" id=14]
 length = 0.4
@@ -1001,6 +1050,18 @@ tracks/7/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 1,
 "values": [ null ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Impact:_impact")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }
 
 [sub_resource type="Animation" id=15]
@@ -1183,7 +1244,7 @@ position = Vector2( 6.30249, -86.9744 )
 texture = ExtResource( 2 )
 hframes = 9
 vframes = 8
-frame = 2
+frame = 29
 
 [node name="hitbox" type="CollisionShape2D" parent="."]
 position = Vector2( -0.882385, -27.9806 )
@@ -1239,5 +1300,8 @@ __meta__ = {
 
 [node name="ScentTimer" type="Timer" parent="."]
 wait_time = 0.1
+
+[node name="Impact" parent="." instance=ExtResource( 5 )]
+position = Vector2( 20.7633, -48.054 )
 
 [connection signal="area_entered" from="hurtbox" to="." method="_on_hurtbox_area_entered"]

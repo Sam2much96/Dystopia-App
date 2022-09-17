@@ -42,9 +42,9 @@ func _on_Back_button_pressed():
 
 
 
-func _exit_tree(): #resets everything to default
-	OS.set_window_size(Vector2(1280, 720)) #Remove this code please?
-	OS.set_screen_orientation (0)
+func _exit_tree()-> void: #resets everything to default
+	OS.set_window_size(Globals.screenSize) #uses a default screensize
+	#OS.set_screen_orientation (0)
 	pass
 
 

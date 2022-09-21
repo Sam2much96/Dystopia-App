@@ -3,7 +3,7 @@
 ''''
 Documentation by INhumanity_arts 
 
-![Screenshot](https://github.com/Sam2much96/Dystopia-App/blob/master/resources/illustrations/cover%201.png)
+![Screenshot](https://github.com/Sam2much96/Dystopia-App/blob/master/source_code/resources/illustrations/cover%201.png)
 
 ''''
 FEATURES

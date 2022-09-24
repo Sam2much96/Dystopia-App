@@ -65,8 +65,6 @@ var initial_level : String = "res://scenes/levels/Outside.tscn"  # loading outsi
 var _player_state # gets state data from the player state machine
 var video_stream #for the video streamers
 
-#var metamask_wallet #Stores your wallet for the nft transactions
-var languague #Stores the user's lingua franca
 
 
 # warning-ignore:unused_class_variable
@@ -75,7 +73,6 @@ var spawn_x : int
 var spawn_y : int 
 var current_level 
 
-var blood_fx = load ('res://scenes/UI & misc/Blood_Splatter_FX.tscn') #only load this once gameplay is on (optimization)
 
 var Music_on_settings
 var direction_control : String  #toggles btw analogue and d-pad
@@ -110,11 +107,20 @@ enum { SCREEN_HORIZONTAL, SCREEN_VERTICAL}
 
 var screenOrientation 
 
+"In Game FX"
+var blood_fx: PackedScene = load ('res://scenes/UI & misc/Blood_Splatter_FX.tscn') #only load this once gameplay is on (optimization)
+var despawn_fx: PackedScene = load ("res://scenes/UI & misc/DespawnFX.tscn")
+var bullet_fx : PackedScene
+
+
 func _ready():
 	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	
 	# Resizes window the preselected sizes
-	screenOrientation = SCREEN_VERTICAL 
+	
+	if os == "Android":
+		screenOrientation = SCREEN_VERTICAL
+	else: screenOrientation = SCREEN_HORIZONTAL 
 	print ("Screen orientation is: ", screenOrientation)
 
 	player.append( get_tree().get_nodes_in_group('player') )#gets all player nodes in the scene
@@ -131,11 +137,13 @@ func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_pr
 # Handles Screen Orientation
 	if screenOrientation == SCREEN_VERTICAL :
 		
-		resize_window(480,853);
-		turn_off_processing("off");
+		#resize_window(480,853); #performance bug
+		#turn_off_processing("off"); #introduces bug
+		pass
 	elif screenOrientation == SCREEN_HORIZONTAL:
-		resize_window(1280,720);
-		turn_off_processing("off");
+		#resize_window(1280,720);
+		#turn_off_processing("off"); #introduces bug
+		pass
 	else: return 1;
 
 	'Resource Loader FOr Large Scenes'
@@ -167,7 +175,7 @@ func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_pr
 				_q = (_o.get_resource()) 
 				print (_q , "Resource Loaded")
 				change_scene_to( _q) # auto changes the scene
-				turn_off_processing("off")
+				#turn_off_processing("off") #introduces bugs
 				break
 				#return _q
 			elif err == OK: #works
@@ -298,9 +306,9 @@ func _ram_convert(bytes) :
 		return _mb
 
 func change_scene_to(scene): #Loads scenes faster?
-	if scene is PackedScene: #if scene is a packed scene
+	if scene is PackedScene: 
 		if scene != null: return get_tree().change_scene_to(scene)  
-	elif scene is String: #if sce is a string path to a packed scene
+	elif scene is String: 
 		if scene != "": 
 			loading_resource = true
 			_r = scene # triggers an auto scene loader in the processes 
@@ -324,3 +332,15 @@ func restaVectores(v1, v2): #vector substraction
 
 func sumaVectores(v1, v2): #vector sum
 	return Vector2(v1.x + v2.x, v1.y + v2.y)
+
+func memory_leak_management():
+	return print_stray_nodes() #prints all orphaned nodes in project
+
+"Memory Leak/ Orphaned Nodes Management System"
+static func queue_free_children(node: Node) -> void:
+	for idx in node.get_child_count():
+		node.queue_free()
+		
+static func free_children(node: Node) -> void:
+	for idx in node.get_child_count():
+		node.free()

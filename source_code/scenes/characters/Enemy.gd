@@ -40,7 +40,7 @@ export (int) var attack_wait_time #attack pause time
 onready var raycast := $enemy_eyesight/pointer/RayCast2D
 onready var pointer := $enemy_eyesight/pointer
 
-#not used
+
 export (String, 'Easy', "Intermediate", "Hard") var enemy_type #changes enemy behaviour depending on the enemy tpype # 
 """
  the  MOB AI script works on the assumption there will
@@ -52,10 +52,9 @@ export(int) var WALK_SPEED = 350
 export(int) var ROLL_SPEED = 1000
 export(int) var hitpoints = 3 #enemy life
 
-#export (bool) var mob
+
 var despawn_fx = preload("res://scenes/UI & misc/DespawnFX.tscn")
-#export (PackedScene) var blood_fx #= load("res://scenes/UI & misc/Blood_Splatter_FX.tscn") #uses globals scene instead
-var Bullet = load ("res://scenes/items/Bullet.tscn")
+#var Bullet = Globals.bullet_fx#load ("res://scenes/items/Bullet.tscn") #null resource
 
 
 var linear_vel = Vector2()
@@ -66,12 +65,13 @@ var new_anim = ""
 
 enum { STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE_DIE, STATE_HURT, STATE_MOB } # state machine needs expansion
 
-# Expansion of State Machine into?
-#(1) State Chase
-#(2) State Shoot
-# 
+
 var state = STATE_MOB #mob state is broken, needs to cast to raycast 2d
 var center
+
+"Enemy FX"
+var despawn_particles
+var blood
 
 func _ready():
 	randomize_state()
@@ -82,6 +82,9 @@ func _ready():
 	
 
 func _process(_delta):
+	#debug() #turn off when not debugging
+	
+	
 	"FACE THE PLAYER, IF HE'S VISIBLE"
 	if player != null: 
 		update_facing()
@@ -91,7 +94,7 @@ func _process(_delta):
 		#despawn()
 
 	"Enemy Behaviour Logic"
-	
+	# Provides Randomized enemy behaviour
 	if raycast.is_enabled() == true:
 		if raycast.is_colliding() && player != null:
 			calculate_center() #calculates distance to plaer
@@ -101,8 +104,6 @@ func _process(_delta):
 			
 			#print (enemy_distance_to_player) # For debug purposes only
 			if enemy_distance_to_player < 80: #uses enemy distance to auto attack
-				#yield(get_tree().create_timer(attack_wait_time), "timeout") #adds an error #
-				#IMPLEMENT TIMER TIMEOUT
 				state = STATE_ATTACK
 				#return state 
 			if enemy_distance_to_player > 80:
@@ -116,6 +117,9 @@ func _process(_delta):
 				if enemy_type == "Intermediate":
 					state = STATE_WALKING
 				else: return
+	if raycast.is_enabled() == false && player != null:
+		#use state changer timer to turn off processing
+		print ('Debug Enenmy Behaviour Check')
 
 
 
@@ -189,8 +193,7 @@ func _physics_process(_delta):
 			enemy_distance_to_player = abs(position.distance_to(target)) # Calculates the enemy distance to playrer
 
 			"Enemy Distance to Player Can Be used to create Behavioral Trees"
-			# Enemy Detection needs improvement
-		
+
 			if enemy_distance_to_player < assumed_distance : # compares the real distance to an assumed distance
 				print ('player near me: True (', enemy_distance_to_player,')' ,' state: ', state) #for debug purposes only
 			# Enemy distance is always greater than asumed distance
@@ -217,13 +220,13 @@ func _physics_process(_delta):
 func goto_idle():
 	state = STATE_IDLE
 
-func _on_state_changer_timeout(): # Disabled to write better enemy ai
-	"A  RANDOM STATE CHANGER  "
+#func _on_state_changer_timeout(): # Disabled to write better enemy ai
+#	"A  RANDOM STATE CHANGER  "
 	
-	$state_changer.wait_time = rand_range(1.0, 5.0)
-	state = randi() %3
+#	$state_changer.wait_time = rand_range(1.0, 5.0)
+#	state = randi() %3
 	
-	facing = ["left", "right", "up", "down"][randi()%3]
+#	facing = ["left", "right", "up", "down"][randi()%3]
 	
 
 # Sets the enemy to a random state btw the first 3 states and a random direction
@@ -256,10 +259,11 @@ func _on_hurtbox_area_entered(area):
 
 
 # Despawn Logic
+# despawn logic is buggy
 func despawn()->  void:
 	Globals.kill_count +=1
-	var despawn_particles = despawn_fx.instance()
-	var blood = Globals.blood_fx.instance()
+	despawn_particles = Globals.despawn_fx.instance()
+	blood = Globals.blood_fx.instance()
 	get_parent().add_child(despawn_particles)
 	get_parent().add_child(blood)
 	despawn_particles.global_position = global_position
@@ -267,9 +271,9 @@ func despawn()->  void:
 	if has_node("item_spawner"):
 		get_node("item_spawner").spawn()
 	
+	#Prevents memory leaks
+	Globals.queue_free_children(self)
 	get_parent().remove_child(self)
-
-
 
 
 
@@ -277,7 +281,7 @@ func despawn()->  void:
 # warning-ignore:unused_argument
 "Detects Player's entry and exit with an area 2d"
 
-func _on_enemy_eyesight_body_entered(body):
+func _on_enemy_eyesight_body_entered(body)-> void:
 	if body is Player :
 		player = body
 		raycast.set_enabled(true)
@@ -287,7 +291,7 @@ func _on_enemy_eyesight_body_entered(body):
 		print ("Enemy Type:", enemy_type) # for debug purposes
 		#update_facing()
 
-func _on_enemy_eyesight_body_exited(body):
+func _on_enemy_eyesight_body_exited(body)-> void:
 	#help detect the player when he leaves
 	if body is Player:
 		
@@ -300,7 +304,7 @@ func _on_enemy_eyesight_body_exited(body):
 
 
 
-func update_facing(): # Updates the Enemy to face the Player
+func update_facing()-> void: # Updates the Enemy to face the Player
 
 	if player != null: #handles enemy facing player
 		
@@ -342,10 +346,10 @@ func calculate_center()-> Vector2:
 	center = restaVectores(target, position) 
 	return center
 
-func shoot(): #spawns a bullet at a particular position
+func shoot()-> void: #spawns a bullet at a particular position
 	#Disabling for now
 	print ('shooting player')
-	var b = Bullet.instance()
+	var b = Globals.bullet_fx.instance()
 	self.add_child(b)
 	b.transform = pointer.global_transform
 
@@ -354,3 +358,25 @@ func _on_hurtbox_area_exited(area):
 	if state == STATE_DIE && area.name == "player_sword":
 		if hitpoints <= 0:
 			despawn()
+
+# to improve game speed and turn off idle processsing
+# use wisely
+func turn_processing(toggle): 
+	if toggle is String:
+		if toggle == "on":
+			set_process(true)
+			set_physics_process(true)
+		elif toggle == "off":
+			set_process(false)
+			set_physics_process(false)
+		else:
+			push_warning ("This function only uses on/off strings to control the globals processing functon")
+	else: return
+
+# Debugs AI variables to the Console log
+func debug()-> void:
+	print ("State: ",state,"/ Distance to player " ,enemy_distance_to_player, "/ Enemy Type",enemy_type)
+
+func _exit_tree():
+	Globals.queue_free_children(self)
+	#Globals.free_children(self)

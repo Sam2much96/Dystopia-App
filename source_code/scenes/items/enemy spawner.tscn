@@ -51,6 +51,7 @@ tracks/1/keys = {
 script = ExtResource( 1 )
 enabled = true
 enemy_spawn_1 = ExtResource( 3 )
+spawn_count = -1
 
 [node name="enemy spawner" type="Timer" parent="."]
 wait_time = 20.0

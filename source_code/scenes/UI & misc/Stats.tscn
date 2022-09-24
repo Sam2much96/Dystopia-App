@@ -38,13 +38,13 @@ enabled = true
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_left = 20.0
 margin_top = 20.0
-margin_right = 1260.0
-margin_bottom = 700.0
+margin_right = 1004.0
+margin_bottom = 580.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Paused" type="Label" parent="VBoxContainer"]
-margin_right = 1240.0
+margin_right = 984.0
 margin_bottom = 43.0
 custom_fonts/font = ExtResource( 2 )
 text = "Paused"
@@ -52,20 +52,20 @@ align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 47.0
-margin_right = 1240.0
-margin_bottom = 680.0
+margin_right = 984.0
+margin_bottom = 560.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
 [node name="Quests" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
-margin_right = 618.0
-margin_bottom = 633.0
+margin_right = 490.0
+margin_bottom = 513.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Title" type="Label" parent="VBoxContainer/HBoxContainer/Quests"]
-margin_right = 618.0
+margin_right = 490.0
 margin_bottom = 43.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
@@ -74,8 +74,8 @@ align = 1
 
 [node name="Details" type="Label" parent="VBoxContainer/HBoxContainer/Quests"]
 margin_top = 47.0
-margin_right = 618.0
-margin_bottom = 633.0
+margin_right = 490.0
+margin_bottom = 513.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
@@ -85,19 +85,19 @@ Quest 3
 Quest 4"
 
 [node name="Inventory" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 622.0
-margin_right = 1240.0
-margin_bottom = 633.0
+margin_left = 494.0
+margin_right = 984.0
+margin_bottom = 513.0
 size_flags_horizontal = 3
 
 [node name="Debug" type="Label" parent="VBoxContainer/HBoxContainer/Inventory"]
-margin_right = 618.0
+margin_right = 490.0
 margin_bottom = 14.0
 script = SubResource( 1 )
 
 [node name="Title" type="Label" parent="VBoxContainer/HBoxContainer/Inventory"]
 margin_top = 18.0
-margin_right = 618.0
+margin_right = 490.0
 margin_bottom = 61.0
 custom_fonts/font = ExtResource( 2 )
 text = "Inventory"
@@ -105,8 +105,8 @@ align = 1
 
 [node name="Details" type="Label" parent="VBoxContainer/HBoxContainer/Inventory"]
 margin_top = 65.0
-margin_right = 618.0
-margin_bottom = 347.0
+margin_right = 490.0
+margin_bottom = 287.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
@@ -114,9 +114,9 @@ text = "Item 1
 "
 
 [node name="Kill_count" type="Label" parent="VBoxContainer/HBoxContainer/Inventory"]
-margin_top = 351.0
-margin_right = 618.0
-margin_bottom = 633.0
+margin_top = 291.0
+margin_right = 490.0
+margin_bottom = 513.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )

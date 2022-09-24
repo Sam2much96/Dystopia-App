@@ -32,3 +32,5 @@ damping = 100.0
 scale_amount_random = 0.5
 scale_amount_curve = SubResource( 2 )
 script = ExtResource( 2 )
+
+[node name="Timer" type="Timer" parent="."]

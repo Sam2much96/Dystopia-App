@@ -36,14 +36,15 @@ func _on_Back_button_pressed():
 	if loaded_comics == false or Globals.comics != null: #&& Globals.comics.enabled == false :
 		Globals._go_to_title()
 	if loaded_comics == true:
-		$"/root/Dialogs".show_dialog('Finish Comics First ', 'Admin')
-		yield(get_tree().create_timer(1.5), "timeout")
-		$"/root/Dialogs".dialog_box.hide()
-
+		#$"/root/Dialogs".show_dialog('Finish Comics First ', 'Admin')
+		
+		#$"/root/Dialogs".dialog_box.hide()
+		pass
 
 
 func _exit_tree()-> void: #resets everything to default
-	OS.set_window_size(Globals.screenSize) #uses a default screensize
+	if Globals.screenSize != Vector2(0,0):
+		OS.set_window_size(Globals.screenSize) #uses a default screensize
 	#OS.set_screen_orientation (0)
 	pass
 

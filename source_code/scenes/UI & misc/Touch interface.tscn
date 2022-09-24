@@ -252,7 +252,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 904.39, 1493.78 ) ]
+"values": [ Vector2( 717.714, 1493.78 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("slash:position")
@@ -264,7 +264,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 1014.57, 1341.47 ) ]
+"values": [ Vector2( 856.178, 1341.47 ) ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("comics:position")
@@ -276,7 +276,7 @@ tracks/4/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 1103.5, 136.16 ) ]
+"values": [ Vector2( 894.197, 136.16 ) ]
 }
 tracks/5/type = "value"
 tracks/5/path = NodePath("interact:position")
@@ -288,7 +288,19 @@ tracks/5/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 1073.75, 1215.16 ) ]
+"values": [ Vector2( 921.015, 1215.16 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("stats:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 884.206, 29.2283 ) ]
 }
 
 [node name="TouchInterface" type="Node2D"]

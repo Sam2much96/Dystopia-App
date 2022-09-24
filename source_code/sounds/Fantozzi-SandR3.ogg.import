@@ -11,5 +11,5 @@ dest_files=[ "res://.import/Fantozzi-SandR3.ogg-41bd5a8668e75c19e9275eaa5c9f0de4
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

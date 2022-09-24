@@ -177,6 +177,7 @@ __meta__ = {
 [node name="Ads_Manager" parent="." instance=ExtResource( 16 )]
 singleton = "GodotAdMob"
 _ad_type = "banner_ad"
+testing = true
 
 [node name="Book" type="TouchScreenButton" parent="."]
 normal = ExtResource( 7 )
@@ -191,15 +192,14 @@ scale = Vector2( 0.516441, 0.516441 )
 normal = ExtResource( 8 )
 
 [node name="Back_button" type="Button" parent="."]
-margin_left = 1057.83
+margin_left = 808.378
 margin_top = 11.3137
-margin_right = 1240.83
+margin_right = 991.378
 margin_bottom = 95.3137
 custom_fonts/font = SubResource( 4 )
 text = "back"
 flat = true
 __meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 

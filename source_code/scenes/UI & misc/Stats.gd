@@ -1,3 +1,13 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Stats
+# Updates Game Stats to the UI
+# currenty updates quests, Killcount and Algos
+
+# *************************************************
+
 extends PanelContainer
 
 export (bool) var enabled #= false

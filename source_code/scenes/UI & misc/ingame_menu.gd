@@ -10,6 +10,7 @@
 
 #(1) Emitting signals fail
 #(2) Broken functions
+#(3) Spagetti code
 # *************************************************
 
 extends Control
@@ -84,7 +85,7 @@ func _input(event): #Toggles menu visibility on/off
 	
 
 
-func _on_continue_pressed():
+func _on_continue_pressed(): #breaks the Globals.current_level script
 	print (" --loading game--")
 	
 	Music.play_track(Music.ui_sfx[0])
@@ -101,7 +102,7 @@ func _on_continue_pressed():
 	pass # Replace with function body.
 
 
-func _on_new_game_pressed():
+func _on_new_game_pressed(): #breaks the Globals.current_level script
 	if Globals.initial_level != "":
 		Globals.current_level = Globals.initial_level
 		print (" Emitting signal--loading game--")
@@ -179,6 +180,7 @@ func _on_quit_Button_pressed():
 		get_tree().quit()
 	else:
 		Music.play_track(Music.ui_sfx[1])
+		#Globals.memory_leak_management()
 		Globals.change_scene_to(Globals.title_screen)
 
 
@@ -204,7 +206,7 @@ func _hide_some_menu_options():
 			_multiplayer.hide()
 		pass
 
-func change_scenes_via_globals_script():
+func change_scenes_via_globals_script(): #breaks the Globals.current_level script
 	'Auto Scene Changer Shorthand' 
 	if Globals._q == null:
 		Globals._r =Globals.current_level # triggers an auto scene loader.changer from globals script
@@ -219,3 +221,12 @@ func _on_Anime_pressed():
 func _on_wallet_pressed():
 	Music.play_track(Music.ui_sfx[0])
 	return get_tree().change_scene_to((load('res://New game code and features/NFT_image_parser.tscn')))
+
+
+func _on_Testing_Scene_pressed(): # turn off in release build
+	Globals.current_level = 'res://scenes/levels/Testing Scene.tscn' #breaks the Globals.current_level script
+	change_scenes_via_globals_script() 
+
+func _on_City_scape_pressed(): #turn off in release build
+	Globals.current_level = "res://scenes/levels/Cityscape Exterior.tscn"
+	change_scenes_via_globals_script()

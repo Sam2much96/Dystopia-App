@@ -3,7 +3,7 @@
 ''''
 Documentation by INhumanity_arts 
 
-![Screenshot](https://github.com/Sam2much96/Dystopia-App/blob/master/resources/illustrations/cover%201.png)
+![Screenshot](https://github.com/Sam2much96/Dystopia-App/blob/master/source_code/resources/illustrations/cover%201.png)
 
 ''''
 FEATURES
@@ -46,13 +46,11 @@ FEATURES
 
 (13)FFmpeg Decoder Libraries from 'https://github.com/kidrigger/godot-videodecoder ' are used in the Anime streaming section. I rendered the video in 720p, the game's resolution.
 
- (14) Adaptable Ads:
-A part of my partnership with Appodeal, i implemented their SDK, Facebook's SDK, and Admob into the app for mobile    builds.
-(15) Storing video files and loading video streams are done with Cinematics class scripts
-    'store_video_files(_body)', and '_Video_Stream(node , stream, _sound, viewport)'. The mobile engine doesn't handle high-res videos well.
+(14) Adaptable Ads:
+
 (16) I implemented A touch input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases to fix the comics section ux problem
 (17) The Project uses a custom AndroidManifest.xml, backup_rule.xml, build.grade and config.gradle scripts to build for android.
-(18) Implementing Dialogic as a child of Dialogues Singleton
+
 (19) Implementing Leaderboard and Achievements on Android Devices
 (20) Networking.download_image_(image url, image save path): Downloads a png image from a url and saves it at a given path 
 -Features to Fix
@@ -67,10 +65,10 @@ A part of my partnership with Appodeal, i implemented their SDK, Facebook's SDK,
 	-Horizontal Swipe gestures for the Comic placeholder code
 	-Auto rotate gestures for the Comic placeholder code
 	-Guided view ( Controlled zoom )
-	-Pond FX to follow player
+	
 	-Game Optimizations
 	-Appodeal's SDK integration
-	- New Game Loading Animation from title screen
+	
 	-Better Scene loading management system via global functions
 	- Translation (Spanish, French, Yoruba)
 -Features to Add
@@ -123,12 +121,3 @@ A part of my partnership with Appodeal, i implemented their SDK, Facebook's SDK,
 	-HTML5 build for the comic placeholder
 	-
 -Building with Ads
-	Build with gradle 7.0.2 and upgrade the gradle wrapper and Android Manifest.xml in GodotAppodeal.1.0.1-release.aar
-[![Watch a playtest trailer video](https://img.youtube.com/vi/WLTgP-Axb-g/hqdefault.jpg)](https://youtu.be/WLTgP-Axb-g)	
-Import and compile with Godot IDE from source with linked libraries. Build with Gradle 7.0.2-all Copy the Android.xml file before compiling and change the gradle wrapper version in /android/build/gradle/wrapper/gradle-wrapper.properties to '7.0.2-all' 
-...
-distributionUrl = "https\://services.gradle.org/distributions/gradle-7.0.2-all.zip"
-...
-.
-=======
-

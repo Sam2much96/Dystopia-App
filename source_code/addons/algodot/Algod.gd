@@ -76,8 +76,8 @@ func create_algod_node(network_type: String):
 		algod.url = "http://localhost:4001"  #Used in sandbox environment. Used Change this variable for testnet/ mainnet
 		algod.token = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" #Used in sandbox environment. Used Change this variable for testnet
 	elif network_type == "TESTNET":
-		algod.url = "https://academy-algod.dev.aws.algodev.network"
-		algod.token = "2f3203f21e738a1de6110eba6984f9d03e5a95d7a577b34616854064cf2c0e7b"
+		algod.url = "node.testnet.algoexplorerapi.io"
+		#algod.token = ""
 	elif network_type == "MAINNET":
 		return
 

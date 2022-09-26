@@ -49,10 +49,12 @@ scale = Vector2( 0.72, 0.72 )
 
 [node name="enemy_spawner" parent="." instance=ExtResource( 2 )]
 position = Vector2( 1102, 1458 )
+spawn_count = 5
 
 [node name="enemy_spawner2" parent="." instance=ExtResource( 2 )]
 position = Vector2( 5396, 2466 )
 enabled = false
+spawn_count = 5
 
 [node name="coins" parent="." instance=ExtResource( 3 )]
 position = Vector2( 2755, 2746 )

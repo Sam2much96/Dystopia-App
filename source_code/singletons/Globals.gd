@@ -343,3 +343,13 @@ static func queue_free_children(node: Node) -> void:
 static func free_children(node: Node) -> void:
 	for idx in node.get_child_count():
 		node.free()
+
+'Delete Files'
+func delete_local_file(path_to_file: String) -> void:
+	var dir = Directory.new()
+	if dir.file_exists(path_to_file):
+		dir.remove(path_to_file)
+		dir.queue_free()
+	else:
+		push_error('File To Delete Doesnt Exist')
+		return

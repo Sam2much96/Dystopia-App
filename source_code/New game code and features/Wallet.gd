@@ -34,7 +34,7 @@
 
 extends Control
 
-class_name wallet
+#class_name wallet
 
 export (String) var local_image_path ="res://wallet/img0.png" #Loads the image file path from a folder to prevent redownloads (depreciated)
 var image_url
@@ -47,14 +47,14 @@ onready var Algorand = $Algodot
 onready var account_address = $VBoxContainer/address
 onready var ingame_algos = $VBoxContainer/ingame_algos
 onready var wallet_algos = $VBoxContainer/wallet_algos
-onready var withdraw_button = $VBoxContainer/withdraw
-onready var refresh_button= $VBoxContainer/refresh
+onready var withdraw_button = $VBoxContainer/HBoxContainer/withdraw
+onready var refresh_button= $VBoxContainer/HBoxContainer/refresh
 
 #*****************************************************
 onready var NFT= $TextureRect
 var status
 #var file_checker = File.new() #use FileCheck instead (depreciated)
-onready var python_request=$Node
+#onready var python_request=$Node (depreciated)
 
 #************** Algo Variables *************************
 var Escrow_account: String #="L5ESENBL23J2GJGM64Y767IXWGBCKXMGS2OGZ3MC5BBGWJAKJJAUK7BJK4"  #should ideally be a smart contract
@@ -64,6 +64,8 @@ var Escrow_mnemoic: String
 var Player_account: String  #="2NFCY7HBAFJ5YP7TXUOFHHMGAZ7AHEXPS5F3NENXSC3WXRVATBR4Y23AUM"
 var Player_mnemonic: String 
 
+var Player_account_details: Array =[]
+var Player_account_temp: Array =[]
 #var load_from_local_wallet : bool
 var amount
 var address
@@ -85,14 +87,18 @@ var FileDirectory=Directory.new() #deletes all theon reset
 
 "State Machine"
 
-enum {ACCOUNTS, COLLECTIBLES}
+enum {ACCOUNTS, COLLECTIBLES, IDLE}
 export var state = ACCOUNTS
+
+#'On/off Switch'
+#export (bool) var enabled
 
 func _ready():
 	
 	#Tests Accounts State
-	state= ACCOUNTS
-	
+	#if enabled:
+	state= ACCOUNTS #collectibles state is untested with Testsnet
+
 
 
 func _process(_delta):
@@ -101,33 +107,39 @@ func _process(_delta):
 		ACCOUNTS:
 			
 			error_checkers()
-			if not FileCheck1.file_exists("res://wallet/account_info.token"): # if account info doesn't exist
+			if not FileCheck1.file_exists("user://wallet/account_info.token"): # if account info doesn't exist
 		
 			#Make sure an algod node is running or connet to mainnet or testnet
-				Algorand.create_algod_node()
+				Algorand.create_algod_node('Testnet')
 				Algorand._test_algod_connection()
 		
 				'Generate new Account'
-				Player_mnemonic=Algorand.create_new_account()
+				Algorand.generate_new_account = true
+				Player_account_details=Algorand.create_new_account(Player_account_temp)
+				
+				
 				
 				'Gets the Users Wallet Address'
-				Player_account =get_wallet_address_from_mnemonic(Player_mnemonic)
-				Escrow_account =get_wallet_address_from_mnemonic(Escrow_account)
-				 
+				#Player_account =get_wallet_address_from_mnemonic(Player_account_details[1])
+				#Escrow_account =get_wallet_address_from_mnemonic(Escrow_account)
+				Player_account= Player_account_details[0]
+				Player_mnemonic= Player_account_details[1]
 				
 				
 				"gets account info returns a dictionary"
-				account_info=(yield(Algorand._check_account_information(Player_mnemonic, ""), "completed"))
+				account_info=(yield(Algorand._check_account_information(Player_account_details[1], ""), "completed"))
 		
 		
 				"saves account info"
 				save_account_info(account_info, 2) #works
 	
 				"it's always load account details when ready"
-			if FileCheck1.file_exists("res://wallet/account_info.token"):
+			if FileCheck1.file_exists("user://wallet/account_info.token"):
 				load_account_info()
 				#load_wallet_mnemonic_from_local() #disabling for now
 				show_account_info(true)
+				
+				state = IDLE
 			return
 		COLLECTIBLES:
 			"Checks if the Image is avalable Locally and either downloads or loads it"
@@ -168,11 +180,13 @@ func _process(_delta):
 			elif FileCheck3.file_exists("res://wallet/img0.png"):
 					load_local_image_texture()
 			else: return
+		IDLE:
+			
 			return
 
-func get_wallet_address_from_mnemonic(mnemonic: String)-> String:
-	var address = Algod.get_address(mnemonic)
-	return address
+#func get_wallet_address_from_mnemonic(mnemonic: String)-> String:
+#	var address = Algod.get_address(mnemonic)
+#	return address
 
 #loads from saved account info 
 func show_account_info(load_from_local_wallet: bool): 
@@ -203,7 +217,7 @@ func debug_signal_connections()->void:
 #i don't know what number does ngl. It jusst works, lol
 func save_account_info( info : Dictionary, number: int): 
 	var save_game = File.new() #change from save game
-	save_game.open("res://wallet/account_info.token", File.WRITE)
+	save_game.open("user://wallet/account_info.token", File.WRITE)
 	var save_dict = {}
 	#save_dict= info #saves the raw dictionary
 	save_dict.address =info["address"]
@@ -354,8 +368,10 @@ func error_checkers()-> void:
 	FileCheck1.open('res://wallet/account_info.token',File.READ)
 	if FileCheck1.get_len() == 0: #prevents a  0 bytes error
 		FileCheck1.close()
-		FileDirectory.remove("res://wallet/account_info.token")
+		FileDirectory.remove("res://wallet/account_info.token") #use Globals delete function instead
 		return
+
+
 
 func _exit_tree():
 #	if account_info != null: #(untested) (buggy
@@ -371,3 +387,12 @@ func _on_withdraw_pressed():
 func _on_Main_menu_pressed():
 	Music.play_track(Music.ui_sfx[0])
 	return Globals._go_to_title()
+
+
+func _on_testnetdispenser_pressed():
+	OS.shell_open('https://testnet.algoexplorer.io/dispenser')
+
+
+#Deletes Local Account Info
+func _on_refresh_pressed():
+	Globals.delete_local_file("res://wallet/account_info.token")

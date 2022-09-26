@@ -33,7 +33,7 @@ margin_bottom = 601.671
 rect_scale = Vector2( 0.0399747, 0.0399747 )
 
 [node name="address" type="Label" parent="VBoxContainer"]
-margin_right = 335.0
+margin_right = 873.0
 margin_bottom = 193.0
 theme = ExtResource( 3 )
 text = "Address: 
@@ -41,38 +41,51 @@ text = "Address:
 
 [node name="ingame_algos" type="Label" parent="VBoxContainer"]
 margin_top = 197.0
-margin_right = 335.0
+margin_right = 873.0
 margin_bottom = 292.0
 theme = ExtResource( 3 )
 text = "Ingame Algos:"
 
 [node name="wallet_algos" type="Label" parent="VBoxContainer"]
 margin_top = 296.0
-margin_right = 335.0
+margin_right = 873.0
 margin_bottom = 391.0
 theme = ExtResource( 3 )
 text = "wallet algos: "
 
-[node name="withdraw" type="Button" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 395.0
-margin_right = 335.0
+margin_right = 873.0
 margin_bottom = 496.0
+
+[node name="withdraw" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_right = 216.0
+margin_bottom = 101.0
 theme = ExtResource( 3 )
 text = "withdraw"
 
-[node name="refresh" type="Button" parent="VBoxContainer"]
-margin_top = 500.0
-margin_right = 335.0
-margin_bottom = 601.0
+[node name="refresh" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_left = 220.0
+margin_right = 423.0
+margin_bottom = 101.0
 theme = ExtResource( 3 )
 text = "Refresh"
 
-[node name="Main menu" type="Button" parent="VBoxContainer"]
-margin_top = 605.0
-margin_right = 335.0
-margin_bottom = 706.0
+[node name="testnet-dispenser" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_left = 427.0
+margin_right = 634.0
+margin_bottom = 101.0
+theme = ExtResource( 3 )
+text = "Dispense"
+
+[node name="Main menu" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_left = 638.0
+margin_right = 873.0
+margin_bottom = 101.0
 theme = ExtResource( 3 )
 text = "main menu"
 
-[connection signal="pressed" from="VBoxContainer/withdraw" to="." method="_on_withdraw_pressed"]
-[connection signal="pressed" from="VBoxContainer/Main menu" to="." method="_on_Main_menu_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/withdraw" to="." method="_on_withdraw_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/refresh" to="." method="_on_refresh_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/testnet-dispenser" to="." method="_on_testnetdispenser_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Main menu" to="." method="_on_Main_menu_pressed"]

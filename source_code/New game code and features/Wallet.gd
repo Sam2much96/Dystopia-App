@@ -108,7 +108,10 @@ func _process(_delta):
 			
 			error_checkers()
 			if not FileCheck1.file_exists("user://wallet/account_info.token"): # if account info doesn't exist
-		
+				
+				"Creates Wallet Directory if it doesn't exist"
+				create_wallet_directory()
+				
 			#Make sure an algod node is running or connet to mainnet or testnet
 				Algorand.create_algod_node('Testnet')
 				Algorand._test_algod_connection()
@@ -365,13 +368,17 @@ func _on_reset():
 
 func error_checkers()-> void:
 	'Fixes account token 0 bytes bug'
-	FileCheck1.open('res://wallet/account_info.token',File.READ)
+	FileCheck1.open('user://wallet/account_info.token',File.READ)
 	if FileCheck1.get_len() == 0: #prevents a  0 bytes error
 		FileCheck1.close()
-		FileDirectory.remove("res://wallet/account_info.token") #use Globals delete function instead
+		FileDirectory.remove("user://wallet/account_info.token") #use Globals delete function instead
 		return
 
-
+func create_wallet_directory()-> void:
+# Creates a Wallet folder.
+	if not FileDirectory. dir_exists("user://wallet"):
+		FileDirectory.make_dir("user://wallet")
+	else: return 
 
 func _exit_tree():
 #	if account_info != null: #(untested) (buggy

@@ -12,6 +12,8 @@
 # Emits it's state as a signal
 #Touch OS enables or Disables the touch interface depending on if a touch screen is present and the Globals.os. _Hide_touch_interface boolean variable
 # uses Globals.screenOrientation to change the button arrangements for mobiles
+# Bugs
+#(1) using animation player resets the Joystick/D-pad optionality
 
 # TO DO:
 # (1) Fix the joystick code  (fixed)

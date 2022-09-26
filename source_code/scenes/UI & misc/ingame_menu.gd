@@ -11,6 +11,7 @@
 #(1) Emitting signals fail
 #(2) Broken functions
 #(3) Spagetti code
+#(4) change_scenes_via_global_scripts() breaks scene continuity
 # *************************************************
 
 extends Control
@@ -220,7 +221,7 @@ func _on_Anime_pressed():
 
 func _on_wallet_pressed():
 	Music.play_track(Music.ui_sfx[0])
-	return get_tree().change_scene_to((load('res://New game code and features/NFT_image_parser.tscn')))
+	return get_tree().change_scene_to((load('res://New game code and features/Wallet.tscn')))
 
 
 func _on_Testing_Scene_pressed(): # turn off in release build

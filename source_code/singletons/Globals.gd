@@ -112,6 +112,8 @@ var blood_fx: PackedScene = load ('res://scenes/UI & misc/Blood_Splatter_FX.tscn
 var despawn_fx: PackedScene = load ("res://scenes/UI & misc/DespawnFX.tscn")
 var bullet_fx : PackedScene
 
+'Temporary variants'
+var temp
 
 func _ready():
 	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
@@ -136,13 +138,10 @@ func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_pr
 
 # Handles Screen Orientation
 	if screenOrientation == SCREEN_VERTICAL :
-		
-		#resize_window(480,853); #performance bug
-		#turn_off_processing("off"); #introduces bug
+
 		pass
 	elif screenOrientation == SCREEN_HORIZONTAL:
-		#resize_window(1280,720);
-		#turn_off_processing("off"); #introduces bug
+
 		pass
 	else: return 1;
 

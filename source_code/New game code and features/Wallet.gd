@@ -34,7 +34,7 @@
 
 extends Control
 
-class_name Wallet
+class_name wallet
 
 export (String) var local_image_path ="res://wallet/img0.png" #Loads the image file path from a folder to prevent redownloads (depreciated)
 var image_url

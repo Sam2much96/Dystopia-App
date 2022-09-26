@@ -114,11 +114,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/characters/State Machine.gd"
 }, {
-"base": "Control",
-"class": "Wallet",
-"language": "GDScript",
-"path": "res://New game code and features/Wallet.gd"
-}, {
 "base": "Node",
 "class": "Yodo1Mas",
 "language": "GDScript",
@@ -133,6 +128,11 @@ _global_script_classes=[ {
 "class": "smoke_fx",
 "language": "GDScript",
 "path": "res://scenes/UI & misc/smoke_FX.gd"
+}, {
+"base": "Control",
+"class": "wallet",
+"language": "GDScript",
+"path": "res://New game code and features/Wallet.gd"
 } ]
 _global_script_class_icons={
 "Aarin": "",
@@ -156,10 +156,10 @@ _global_script_class_icons={
 "Player": "",
 "ReferenceCollector": "",
 "StateMachine": "",
-"Wallet": "",
 "Yodo1Mas": "",
 "cinematic": "",
-"smoke_fx": ""
+"smoke_fx": "",
+"wallet": ""
 }
 
 [application]

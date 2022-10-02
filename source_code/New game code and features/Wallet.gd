@@ -10,6 +10,8 @@
 #(1) Fix Hacky Spagetti Code
 #(2) Implement NFT subcode.
 # (3) Unimplement Networking Singleton i.e. script should run it's own networking node
+# (4) Users should be able to copy wallet details
+# (5) SHould be able to send algods and tokens
 #Logic
 # It uses the Networking singleton and Algorand library
 # to get an asset's url and download the image from
@@ -21,10 +23,16 @@
 # (2) Uses two states -a Accounts State & -Collectible state
 # *************************************************
 #Bugs:
-#(1) Doesn't work
+#(1) Doesn't work (fixed)
+#(2) CHeck account state is broken
 # To-DO:
-# (1) Implement as State Machine
+# (1) Implement as State Machine (done)(requires testing)
 # (2) Update transaction logic
+# (3) Test Smart Contracts
+# (4) Implement Proper wallet security (needs encryption and decryption algorithm)
+# (5) Copy and Paste Wallet Address (done)
+# (6) Use time timeout to transition btw states
+# (7) Import wallet
 # Testing
 #(1) Image Downloder (works)
 # (2) Create NFT (doesnt work)
@@ -44,12 +52,15 @@ var is_image_available_at_local_storage : bool  #(depreciated)
 onready var Algorand = $Algodot
 
 #*****************Wallet UI ************************************
-onready var account_address = $VBoxContainer/address
-onready var ingame_algos = $VBoxContainer/ingame_algos
-onready var wallet_algos = $VBoxContainer/wallet_algos
-onready var withdraw_button = $VBoxContainer/HBoxContainer/withdraw
-onready var refresh_button= $VBoxContainer/HBoxContainer/refresh
+onready var account_address = $wallet_ui/address
+onready var ingame_algos = $wallet_ui/ingame_algos
+onready var wallet_algos = $wallet_ui/wallet_algos
+onready var withdraw_button = $wallet_ui/HBoxContainer/withdraw
+onready var refresh_button= $wallet_ui/HBoxContainer/refresh
 
+onready var wallet_ui = $wallet_ui
+onready var mnemonic_ui = $mnemonic_ui
+onready var transaction_ui = $transaction_ui
 #*****************************************************
 onready var NFT= $TextureRect
 var status
@@ -69,6 +80,7 @@ var Player_account_temp: Array =[]
 #var load_from_local_wallet : bool
 var amount
 var address
+var mnemonic
 var _wallet_algos: int
 var asset_name
 var asset_url
@@ -85,68 +97,169 @@ var FileCheck4=File.new() # checks wallet mnemonic
 
 var FileDirectory=Directory.new() #deletes all theon reset
 
+
+#************Wallet Save Path**********************#
+var token_path : String = "user://wallet/account_info.token"
+#var keys_path : String = "user://wallet/wallet_keys.cfg"
+#var keys_passwrd : PoolByteArray = [1234]
+
 "State Machine"
 
-enum {ACCOUNTS, COLLECTIBLES, IDLE}
-export var state = ACCOUNTS
+enum {NEW_ACCOUNT,CHECK_ACCOUNT, SHOW_ACCOUNT, IMPORT_ACCOUNT, TRANSACTIONS ,COLLECTIBLES, IDLE}
+export var state = IDLE
 
+var wallet_check : int = 0
 #'On/off Switch'
 #export (bool) var enabled
+#************Helper Booleans ****************************#
+var algod_node_exists: bool 
+var algod_node_health_is_good: bool
+var imported_mnemonic : bool = false
+var transaction_valid: bool =false
+
+#	Algorand.create_algod_node("TESTNET")
+
 
 func _ready():
+	"Hides UI by default"
+	mnemonic_ui.hide()
+	transaction_ui.hide()
+	
 	
 	#Tests Accounts State
 	#if enabled:
-	state= ACCOUNTS #collectibles state is untested with Testsnet
+	#state= NEW_ACCOUNT #collectibles state is untested with Testsnet
+	 #collectibles state is untested with Testsnet
+	load_account_info(false)
+	state= SHOW_ACCOUNT
+	#state = IMPORT_ACCOUNT #(works)
+	
+	#if address != null:
+	#	print (yield(Algorand._check_account_information(address,mnemonic, ''), "completed"))
+
 
 
 
 func _process(_delta):
-	## PROCESS STATES (untested)
+	## PROCESS STATES (testing)
+	
 	match state:
-		ACCOUNTS:
+		NEW_ACCOUNT: #loads wallet details if account already exists
 			
 			error_checkers()
-			if not FileCheck1.file_exists("user://wallet/account_info.token"): # if account info doesn't exist
+			if not algod_node_exists:
+				#Make sure an algod node is running or connet to mainnet or testnet
+				Algorand.create_algod_node('TESTNET')
+				Algorand._test_algod_connection()
+				algod_node_exists= true
+		
+			
+			'Generates New Account'
+			if not FileDirectory.file_exists(token_path) : # if account info doesn't exist
 				
 				"Creates Wallet Directory if it doesn't exist"
 				create_wallet_directory()
 				
-			#Make sure an algod node is running or connet to mainnet or testnet
-				Algorand.create_algod_node('Testnet')
-				Algorand._test_algod_connection()
-		
+
 				'Generate new Account'
 				Algorand.generate_new_account = true
 				Player_account_details=Algorand.create_new_account(Player_account_temp)
 				
-				
-				
+				#wallet_check += 1
 				'Gets the Users Wallet Address'
 				#Player_account =get_wallet_address_from_mnemonic(Player_account_details[1])
 				#Escrow_account =get_wallet_address_from_mnemonic(Escrow_account)
-				Player_account= Player_account_details[0]
-				Player_mnemonic= Player_account_details[1]
+				address= Player_account_details[0]
+				mnemonic= Player_account_details[1]
 				
+				#save_new_account_info(Player_account_details)
+				'Attempts saving new account info'
+				#breaks
+				var dict = {'address': address, 'amount': 0, 'mnemonic': mnemonic}
 				
-				"gets account info returns a dictionary"
-				account_info=(yield(Algorand._check_account_information(Player_account_details[1], ""), "completed"))
-		
-		
-				"saves account info"
-				save_account_info(account_info, 2) #works
+				"saves more account info"
+				save_account_info(dict,1)
+				
+				state = SHOW_ACCOUNT
+				#wallet_check += 1
+			if FileDirectory.file_exists(token_path) :
+				state = SHOW_ACCOUNT
+				return
 	
-				"it's always load account details when ready"
-			if FileCheck1.file_exists("user://wallet/account_info.token"):
-				load_account_info()
-				#load_wallet_mnemonic_from_local() #disabling for now
+		CHECK_ACCOUNT:  #Doesnt WOrk
+			#if FileCheck1.file_exists("user://wallet/account_info.token") :
+			if wallet_check == 0:
+				#Make sure an algod node is running or connet to mainnet or testnet
+				Algorand.create_algod_node('TESTNET')
+
+				var status= status && yield(Algorand.algod.health(), "completed") 
+				
+				if status: #testing using a method instead
+					check_wallet_info() 
+					wallet_check += 1
+		
+		SHOW_ACCOUNT:
+			"it's always load account details when ready"
+			if FileCheck1.file_exists("user://wallet/account_info.token") :
+				wallet_ui.show()
+				mnemonic_ui.hide()
+				
+				load_account_info(false)
+				
 				show_account_info(true)
 				
+				#wallet_check += 1 
+				#print ("Address Debug: ",address) #for debug purposes only
+				#print ("Mnemonic Debug: ",mnemonic) #for debug purposes only
 				state = IDLE
 			return
-		COLLECTIBLES:
+		IMPORT_ACCOUNT:
+			# hide wallet ui, show mnemonic ui
+			wallet_ui.hide()
+			mnemonic_ui.show()
+			# show screen keyboard on android devices
+			
+			if imported_mnemonic:
+				#create algod node
+				Algorand.create_algod_node("TESTNET")
+				# save user's mnemonic
+				mnemonic = mnemonic_ui.text
+				# generate address from mnemonic
+				address=Algorand.algod.get_address(mnemonic)
+				# save address 
+				'savins imported account info'
+				
+				#var dict = {'address': address, 'amount': 0, 'mnemonic': mnemonic}
+				
+				"saves more account info"
+				#save_account_info(dict,1)
+				
+				# check account and saves automatically
+				check_wallet_info()
+				
+				# show account
+				state = SHOW_ACCOUNT
+			pass
+		TRANSACTIONS:
+			#hide other ui states
+			transaction_ui.show()
+			mnemonic_ui.hide()
+			wallet_ui.hide()
+			
+			if transaction_valid:
+				Algorand.create_algod_node("TESTNET")
+				var recievers_addr = transaction_ui.text
+				var amount = $transaction_ui/amount.text
+				
+				
+				Algorand._send_asset_transfers_to_receivers_address(mnemonic,recievers_addr, amount)
+				
+
+			
+			pass
+		COLLECTIBLES: #should  handle only 1 nft
 			"Checks if the Image is avalable Locally and either downloads or loads it"
-			if not FileCheck3.file_exists("res://wallet/img0.png"): #works
+			if not FileCheck3.file_exists("user://wallet/img0.png"): #works
 				print('NFT image is not available locally, Downloading now') 
 				
 				# Connects the Networking signal
@@ -156,16 +269,16 @@ func _process(_delta):
 				'my server isnt serving the json file to godot properly'
 				"using python instead"
 				
-				if not FileCheck2.file_exists('res://wallet/nft_metadata.json'): #checks for nft metadata
+				if not FileCheck2.file_exists('user://wallet/nft_metadata.json'): #checks for nft metadata
 					#$Node.activate=bool(1) #doesn't work
-					json.open(("res://wallet/nft_metadata.json"), File.WRITE ) #check of file exists to save bandwidth
+					json.open(("user://wallet/nft_metadata.json"), File.WRITE ) #check of file exists to save bandwidth
 					#makes a Python  http request to server returns a string
 					json.store_line($Node._ready()) #create an entry boolean
 					json.close()
 					#$Node.activate=bool(0) #doesn't work
 					print ('nft metadata stored locally')
-				if FileCheck2.file_exists('res://wallet/nft_metadata.json'): #check for file size, so it doesn't save a 0 byte json
-					json.open("res://wallet/nft_metadata.json", File.READ)
+				if FileCheck2.file_exists('user://wallet/nft_metadata.json'): #check for file size, so it doesn't save a 0 byte json
+					json.open("user://wallet/nft_metadata.json", File.READ)
 					var p =  parse_json(json.get_as_text()) #return a dictionary
 					#*********Parse Json For Details***********#
 					image_url= p.get('image')
@@ -180,22 +293,20 @@ func _process(_delta):
 				#makes a https request to download image from local server
 				Networking._check_connection( image_url) 
 				#***************************************************************
-			elif FileCheck3.file_exists("res://wallet/img0.png"):
+			elif FileCheck3.file_exists("user://wallet/img0.png"):
 					load_local_image_texture()
 			else: return
 		IDLE:
-			
+			set_process(false)
 			return
 
-#func get_wallet_address_from_mnemonic(mnemonic: String)-> String:
-#	var address = Algod.get_address(mnemonic)
-#	return address
 
 #loads from saved account info 
 func show_account_info(load_from_local_wallet: bool): 
 	"load from local wallet"
 	if load_from_local_wallet == true: 
-		account_address.text = str(Globals.address)
+		#account_address.text = str(Globals.address)
+		account_address.text = str(address)
 		ingame_algos.text += str (Globals.algos)
 		wallet_algos.text += str(_wallet_algos)
 	
@@ -220,15 +331,19 @@ func debug_signal_connections()->void:
 #i don't know what number does ngl. It jusst works, lol
 func save_account_info( info : Dictionary, number: int): 
 	var save_game = File.new() #change from save game
-	save_game.open("user://wallet/account_info.token", File.WRITE)
+	save_game.open(token_path, File.WRITE)
 	var save_dict = {}
 	#save_dict= info #saves the raw dictionary
 	save_dict.address =info["address"]
 	save_dict.amount =info["amount"]
-	save_dict.asset_index =info["created-assets"][number]["index"]
-	save_dict.asset_name = info["created-assets"][number]["params"]["name"]
-	save_dict.asset_unit_name = info["created-assets"][number]["params"]['unit-name']
-	save_dict.asset_url = info["created-assets"][number]['params']['url'] #asset Uro and asset uri are different. Separate them
+	save_dict.mnemonic = mnemonic #info['mnemonic']
+	
+	#************Disabling for now*******************************#
+	
+	#save_dict.asset_index =info["created-assets"][number]["index"]
+	#save_dict.asset_name = info["created-assets"][number]["params"]["name"]
+	#save_dict.asset_unit_name = info["created-assets"][number]["params"]['unit-name']
+	#save_dict.asset_url = info["created-assets"][number]['params']['url'] #asset Uro and asset uri are different. Separate them
 	
 	save_game.store_line(to_json(save_dict))
 	save_game.close()
@@ -237,32 +352,43 @@ func save_account_info( info : Dictionary, number: int):
 	
 	print ("saved account info")
 	
-	#store_wallet_mnemonic_to_local() #breaks, disabling for now
+	'Stores Mnemonic securely'
+	store_wallet_mnemonic_to_local() #breaks #disabled for now
 	
 	print ("saved account mnemonic")
+
+	
+
 
 
 func load_account_info(check_only=false):
 	var save_game = File.new()
 	
-	if not save_game.file_exists("res://wallet/account_info.token"):
+	if not save_game.file_exists(token_path):
 		return false
 	
-	save_game.open("res://wallet/account_info.token", File.READ)
+	save_game.open(token_path, File.READ)
 	
 	var save_dict = parse_json(save_game.get_line())
+
 	if typeof(save_dict) != TYPE_DICTIONARY:
 		return false
 	if not check_only:
 		_restore_wallet_data(save_dict)
+	
 
 func _restore_wallet_data(info: Dictionary):
 	# JSON numbers are always parsed as floats. In this case we need to turn them into ints
 	address = str(info.address)
+
+	#***********Disabling for now*****************#
 	Globals.address = info.address
+	mnemonic = str(info.mnemonic)
 	_wallet_algos = info.amount 
-	asset_name = str (info.asset_name) 
-	asset_url = str(info.asset_url) #asset url and asset meta data are different
+	#asset_name = str (info.asset_name) 
+	#asset_url = str(info.asset_url) #asset url and asset meta data are different
+	
+	
 	print ('wallet data restored from local database')
 
 func check_is_image_avalable_()-> bool:
@@ -314,27 +440,22 @@ func load_local_image_texture():
 
 func store_wallet_mnemonic_to_local(): #should store the wallet details (Unused)
 	# Create new ConfigFile object.
-	var wallet_data = ConfigFile.new()
+#	var wallet_data = ConfigFile.new()
 	
-	# Store some values.
-	wallet_data.set_value("Mnemonic", "mnemonic", Globals.mnemonic)
-	# Save it to a file and encrypts it (overwrite if already exists).
-	wallet_data.save_encrypted ( "res://wallet/wallet_keys.cfg", 1234 )
+#	# Store some values.
+#	wallet_data.set_value("mnemonic", "mnemonic", mnemonic)
+#	# Save it to a file and encrypts it (overwrite if already exists).
+#	wallet_data.save_encrypted (keys_path, keys_passwrd )
 	
 	pass
 
 func load_wallet_mnemonic_from_local(): #should load the wallet details (Unused)
-	var wallet_data = ConfigFile.new()
-	# Load encrpyted data from a file.
-	var err = wallet_data.load_encrypted_pass ( "res://wallet/wallet_keys.cfg", 1234 )
-	# If the file didn't load, ignore it.
-	if err != OK:
-		return
-	# Iterate over all sections.
-	for player in wallet_data.get_sections():
-	# Fetch the data for each section.
-		Globals.mnemonic = wallet_data.get_value(player, "best_score") #place holder values
 	pass
+
+func check_wallet_info(): #works
+	account_info = yield(Algorand.algod.account_information(address), "completed")
+	save_account_info(account_info, 0) #testing
+	print (account_info) 
 
 func _on_withraw(): #withdraws Algos from wallet data into my test algorand wallet
 	if Globals.algos != 0: #cannot withdraw with zero balance
@@ -368,11 +489,12 @@ func _on_reset():
 
 func error_checkers()-> void:
 	'Fixes account token 0 bytes bug'
-	FileCheck1.open('user://wallet/account_info.token',File.READ)
-	if FileCheck1.get_len() == 0: #prevents a  0 bytes error
-		FileCheck1.close()
-		FileDirectory.remove("user://wallet/account_info.token") #use Globals delete function instead
-		return
+	if FileDirectory.file_exists("user://wallet/account_info.token"):
+		FileCheck1.open('user://wallet/account_info.token',File.READ)
+		if FileCheck1.get_len() == 0: #prevents a  0 bytes error
+			FileCheck1.close()
+			FileDirectory.remove("user://wallet/account_info.token") #use Globals delete function instead
+			return
 
 func create_wallet_directory()-> void:
 # Creates a Wallet folder.
@@ -385,6 +507,7 @@ func _exit_tree():
 #		save_account_info(account_info,2)
 	pass
 
+"UI Buttons"
 
 func _on_withdraw_pressed():
 	Music.play_track(Music.ui_sfx[0])
@@ -400,6 +523,29 @@ func _on_testnetdispenser_pressed():
 	OS.shell_open('https://testnet.algoexplorer.io/dispenser')
 
 
-#Deletes Local Account Info
+#Updates Local Account Info
 func _on_refresh_pressed():
-	Globals.delete_local_file("res://wallet/account_info.token")
+	#Algorand.algod.url = "node.testnet.algoexplorerapi.io"
+	#print (Algorand.algod.url)
+	check_wallet_info()
+
+
+#Deletes Local Account Info
+func reset()-> void:
+	Globals.delete_local_file(token_path)
+
+
+'Copies Wallet Addresss to Clipboard'
+func _on_Copy_address_pressed():
+	print ("copied wallet address to clipboard")
+	OS.set_clipboard(address) 
+
+
+
+
+func _on_enter_mnemonic_pressed():
+	imported_mnemonic = true
+
+
+func _on_enter_transaction_pressed():
+	transaction_valid = true

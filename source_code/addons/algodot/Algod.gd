@@ -18,6 +18,7 @@
 # (2) Implement function parameters (done)
 # (3) Write proper documentation (done)
 # (4) Implement signals
+# (5) Implement Testnet/ Localhost switch
 #
 # *************************************************
 
@@ -60,6 +61,15 @@ var _info : Dictionary
 var wait # waits until txn is completed
 var status: bool
 
+#***********Node State Parameters************#
+#var algod_node_health_is_good: bool
+var algod_node_count: int = 0 #stops multiple instance bug
+export (String, 'TESTNET', 'LOCALHOST', "MAINNET") var network_type
+
+'Prevents Algod nnode from reverting to default settings'
+func _enter_tree():
+	if network_type != null:
+		create_algod_node(network_type)
 
 
 func _ready():
@@ -68,18 +78,24 @@ func _ready():
 	if  debug_txn:
 		_run_debug_test()
 
-func create_algod_node(network_type: String): 
-	print(" -- Initialize Algod", network_type)
-	algod = Algod.new() 
+'Node url are set in _enter_tree()'
+func create_algod_node(network_type: String):
+	if algod_node_count == 0: 
+		print(" -- Initialize Algod", network_type)
 
-	if network_type == "localhost" or '' or null:
-		algod.url = "http://localhost:4001"  #Used in sandbox environment. Used Change this variable for testnet/ mainnet
-		algod.token = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" #Used in sandbox environment. Used Change this variable for testnet
-	elif network_type == "TESTNET":
-		algod.url = "node.testnet.algoexplorerapi.io"
-		#algod.token = ""
-	elif network_type == "MAINNET":
-		return
+		if network_type == "localhost":
+			algod = Algod.new() 
+			algod.url = "http://localhost:4001"  #Used in sandbox environment. Used Change this variable for testnet/ mainnet
+			algod.token = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" #Used in sandbox environment. Used Change this variable for testnet
+			algod_node_count += 1
+		elif network_type == "TESTNET":
+			algod = Algod.new() 
+			algod.url = "https://node.testnet.algoexplorerapi.io"
+			algod.token = ""
+			algod_node_count += 1
+		elif network_type == "MAINNET":
+			algod_node_count += 1
+			return
 
 
 func _run_debug_test():
@@ -120,6 +136,8 @@ func _test_algod_connection(): # original Dev Github Action test
 	
 	if !status:
 		printerr("   !! _test_algod_connection failed")
+	#if status:
+	#	#algod_node_health_is_good = true
 
 	return status
 	
@@ -143,14 +161,16 @@ func create_new_account(_account : Array): #it should be fed the account varible
 
 
 " Sends transaction btw two accounts"
-func _send_transaction_to_receiver_addr( _funder_mnemonic : String, _receivers_mnemonic: String  , _amount: int): #works #should be fed the receiver and sender's accounts as parameters
+func _send_transaction_to_receiver_addr( _funder_mnemonic : String, _receivers_address: String  , _amount: int): #works #should be fed the receiver and sender's accounts as parameters
 	
 	
 	print(" -- _sending_transaction")
 	
 	print("sending tx")
 	var _funder_address=algod.get_address(_funder_mnemonic)
-	var _receivers_address=algod.get_address(_receivers_mnemonic)
+	
+	
+	#var _receivers_address=algod.get_address(_receivers_mnemonic)
 	
 	#get suggested parameters
 	params = yield(algod.suggested_transaction_params(), "completed")

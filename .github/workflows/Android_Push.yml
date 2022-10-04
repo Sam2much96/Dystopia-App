@@ -33,7 +33,7 @@ jobs:
         with:
          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
          packageName: dystopia.app
-         releaseName: '40 (v1.1.9)'
+         releaseName: v1.1.9_${{ github.run_number }}
          releaseFiles: ./source_code.apk
          track: production
          status: completed

@@ -100,7 +100,7 @@ _global_script_classes=[ {
 "path": "res://scenes/characters/Player.gd"
 }, {
 "base": "KinematicBody2D",
-"class": "Player_v2",
+"class": "Player_v2_networking",
 "language": "GDScript",
 "path": "res://scenes/characters/Player v2.gd"
 }, {
@@ -148,7 +148,7 @@ _global_script_class_icons={
 "InputEventSingleScreenTap": "",
 "InputEventSingleScreenTouch": "",
 "Player": "",
-"Player_v2": "",
+"Player_v2_networking": "",
 "ReferenceCollector": "",
 "StateMachine": "",
 "Yodo1Mas": "",

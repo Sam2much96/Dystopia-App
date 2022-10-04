@@ -15,7 +15,7 @@
 
 extends KinematicBody2D
 
-class_name Player_v2
+class_name Player_v2_networking
 
 """
 This implements a very rudimentary state machine. There are better implementations

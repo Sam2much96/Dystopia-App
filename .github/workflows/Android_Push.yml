@@ -1,4 +1,4 @@
-name: CI
+name: Android CI
 
 env:
   GODOT_VERSION: 3.4.4
@@ -38,7 +38,7 @@ jobs:
          track: production
          status: completed
          inAppUpdatePriority: 3
-         changesNotSentForReview: true
+
          
             
   

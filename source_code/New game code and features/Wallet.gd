@@ -61,9 +61,17 @@ onready var refresh_button= $wallet_ui/HBoxContainer/refresh
 onready var wallet_ui = $wallet_ui
 onready var mnemonic_ui = $mnemonic_ui
 onready var transaction_ui = $transaction_ui
-#*****************************************************
+onready var txn_ui_options = $transaction_ui/txn_ui_options
+
+onready var nft_asset_id = $transaction_ui/nft
+onready var txn_amount = $transaction_ui/amount 
+onready var txn_ui_options_button = $transaction_ui/txn_ui_options
+
 onready var NFT= $TextureRect
-var status
+onready var state_controller = $state_controller
+#*****************************************************
+
+#var status
 #var file_checker = File.new() #use FileCheck instead (depreciated)
 #onready var python_request=$Node (depreciated)
 
@@ -105,7 +113,7 @@ var token_path : String = "user://wallet/account_info.token"
 
 "State Machine"
 
-enum {NEW_ACCOUNT,CHECK_ACCOUNT, SHOW_ACCOUNT, IMPORT_ACCOUNT, TRANSACTIONS ,COLLECTIBLES, IDLE}
+enum {NEW_ACCOUNT,CHECK_ACCOUNT, SHOW_ACCOUNT, IMPORT_ACCOUNT, TRANSACTIONS ,COLLECTIBLES, SMARTCONTRACTS, IDLE}
 export var state = IDLE
 
 var wallet_check : int = 0
@@ -117,30 +125,53 @@ var algod_node_health_is_good: bool
 var imported_mnemonic : bool = false
 var transaction_valid: bool =false
 
+var loaded_wallet: bool= false #fixes looping loading bug
 #	Algorand.create_algod_node("TESTNET")
 
 
 func _ready():
-	"Hides UI by default"
-	mnemonic_ui.hide()
-	transaction_ui.hide()
+	
+	#*****Txn UI options************#
+	txn_ui_options.add_item('Transactions') 
+	txn_ui_options.add_item('Assets') 
+	
+	#**********State Controller Options***********#
+	state_controller.add_item("Show Account")
+	state_controller.add_item("Check Account")
+	state_controller.add_item("New Account")
+	state_controller.add_item("Import Account")
+	state_controller.add_item("Transactions")
+	state_controller.add_item("SmartContacts") #should be a sub of Transactions
 	
 	
-	#Tests Accounts State
-	#if enabled:
-	#state= NEW_ACCOUNT #collectibles state is untested with Testsnet
-	 #collectibles state is untested with Testsnet
-	load_account_info(false)
-	state= SHOW_ACCOUNT
-	#state = IMPORT_ACCOUNT #(works)
 	
-	#if address != null:
-	#	print (yield(Algorand._check_account_information(address,mnemonic, ''), "completed"))
+	
 
 
 
 
 func _process(_delta):
+	# UI state Processing (works-ish)
+	if state_controller.get_selected() == 0:
+		state = SHOW_ACCOUNT #only loads wallet once
+		
+	elif state_controller.get_selected() == 1:
+		wallet_check = 0 # resets the wallet check stopper
+		state = CHECK_ACCOUNT
+	elif state_controller.get_selected() == 2:
+		wallet_check = 0 # resets the wallet check stopper
+		state = NEW_ACCOUNT
+	elif state_controller.get_selected() == 3:
+		wallet_check = 0 # resets the wallet check stopper
+		state = IMPORT_ACCOUNT
+	elif state_controller.get_selected() == 4:
+		wallet_check = 0 # resets the wallet check stopper
+		state = TRANSACTIONS
+	elif state_controller.get_selected() == 5:
+		wallet_check = 0 # resets the wallet check stopper
+		state = SMARTCONTRACTS
+	
+	
 	## PROCESS STATES (testing)
 	
 	match state:
@@ -178,7 +209,7 @@ func _process(_delta):
 				var dict = {'address': address, 'amount': 0, 'mnemonic': mnemonic}
 				
 				"saves more account info"
-				save_account_info(dict,1)
+				save_account_info(dict,1, false)
 				
 				state = SHOW_ACCOUNT
 				#wallet_check += 1
@@ -192,31 +223,32 @@ func _process(_delta):
 				#Make sure an algod node is running or connet to mainnet or testnet
 				Algorand.create_algod_node('TESTNET')
 
-				var status= status && yield(Algorand.algod.health(), "completed") 
+				var status
+				status = status && yield(Algorand.algod.health(), "completed") 
 				
 				if status: #testing using a method instead
 					check_wallet_info() 
 					wallet_check += 1
 		
-		SHOW_ACCOUNT:
+		SHOW_ACCOUNT: #buggy with state controller
 			"it's always load account details when ready"
-			if FileCheck1.file_exists("user://wallet/account_info.token") :
+			if FileCheck1.file_exists("user://wallet/account_info.token")  :
 				wallet_ui.show()
 				mnemonic_ui.hide()
+				transaction_ui.hide()
 				
 				load_account_info(false)
 				
 				show_account_info(true)
-				
-				#wallet_check += 1 
-				#print ("Address Debug: ",address) #for debug purposes only
-				#print ("Mnemonic Debug: ",mnemonic) #for debug purposes only
-				state = IDLE
+
 			return
 		IMPORT_ACCOUNT:
 			# hide wallet ui, show mnemonic ui
 			wallet_ui.hide()
 			mnemonic_ui.show()
+			
+			#hide mnemonic characters
+			mnemonic_ui.set_secret(true) 
 			# show screen keyboard on android devices
 			
 			if imported_mnemonic:
@@ -246,21 +278,41 @@ func _process(_delta):
 			mnemonic_ui.hide()
 			wallet_ui.hide()
 			
-			if transaction_valid:
-				Algorand.create_algod_node("TESTNET")
-				var recievers_addr = transaction_ui.text
-				var amount = $transaction_ui/amount.text
-				
-				
-				Algorand._send_asset_transfers_to_receivers_address(mnemonic,recievers_addr, amount)
-				
+			txn_amount.hide()
+			nft_asset_id.hide()
+			
+			" Swtiches Between Assets and Normal Transactions UI"
+			if txn_ui_options.get_selected() == 0:
+				txn_amount.show()
+				nft_asset_id.hide()
+				if transaction_valid && txn_amount.text != "": #user selected normal transactions
 
+					Algorand.create_algod_node("TESTNET")
+					var recievers_addr = transaction_ui.text
+					var _amount = txn_amount.text
+					Algorand._send_asset_transfers_to_receivers_address(mnemonic,recievers_addr, _amount)
+				
+			if txn_ui_options.get_selected() == 1:
+				txn_amount.hide()
+				nft_asset_id.show()
+				if transaction_valid : # user selected asset transaction
+					Algorand.create_algod_node("TESTNET")
+					var _asset_id =nft_asset_id.text
+					var recievers_addr = transaction_ui.text
+					
+					Algorand.transferAssets(mnemonic, recievers_addr,_asset_id)
 			
 			pass
-		COLLECTIBLES: #should  handle only 1 nft
+			
+		COLLECTIBLES: #Buggy #should  handle only 1 nft
 			"Checks if the Image is avalable Locally and either downloads or loads it"
 			if not FileCheck3.file_exists("user://wallet/img0.png"): #works
 				print('NFT image is not available locally, Downloading now') 
+				
+				#load assets id from memory
+				#download asset image throug ipfs web2 gate
+				#save image locally
+				#run image check
 				
 				# Connects the Networking signal
 				connect_signals()
@@ -296,19 +348,36 @@ func _process(_delta):
 			elif FileCheck3.file_exists("user://wallet/img0.png"):
 					load_local_image_texture()
 			else: return
+		SMARTCONTRACTS: #opts into smart contracts with wallet
+			#hide other ui states
+			transaction_ui.show()
+			mnemonic_ui.hide()
+			wallet_ui.hide()
+			
+			txn_amount.hide()
+			nft_asset_id.hide()
+			txn_ui_options.hide()
+			if transaction_valid:
+				print (" Opt into Smartcontract")
+			
+			pass
+		
 		IDLE:
 			set_process(false)
-			return
+			pass
 
 
 #loads from saved account info 
 func show_account_info(load_from_local_wallet: bool): 
 	"load from local wallet"
-	if load_from_local_wallet == true: 
+	if load_from_local_wallet == true && loaded_wallet == false: 
 		#account_address.text = str(Globals.address)
+		#looping bug : fix is bolean
 		account_address.text = str(address)
 		ingame_algos.text += str (Globals.algos)
 		wallet_algos.text += str(_wallet_algos)
+		loaded_wallet = true
+		return 
 	
 	"load from Algorand Node"
 	if load_from_local_wallet== false:
@@ -329,67 +398,64 @@ func debug_signal_connections()->void:
 
 #saves account information to a dictionary
 #i don't know what number does ngl. It jusst works, lol
-func save_account_info( info : Dictionary, number: int): 
+func save_account_info( info : Dictionary, number: int, assets: bool): 
 	var save_game = File.new() #change from save game
 	save_game.open(token_path, File.WRITE)
 	var save_dict = {}
 	#save_dict= info #saves the raw dictionary
-	save_dict.address =info["address"]
-	save_dict.amount =info["amount"]
-	save_dict.mnemonic = mnemonic #info['mnemonic']
+	if not assets:
+		save_dict.address =info["address"]
+		save_dict.amount =info["amount"]
+		save_dict.mnemonic = mnemonic #info['mnemonic']
 	
-	#************Disabling for now*******************************#
-	
-	#save_dict.asset_index =info["created-assets"][number]["index"]
-	#save_dict.asset_name = info["created-assets"][number]["params"]["name"]
-	#save_dict.asset_unit_name = info["created-assets"][number]["params"]['unit-name']
-	#save_dict.asset_url = info["created-assets"][number]['params']['url'] #asset Uro and asset uri are different. Separate them
+	#************Use Assets parameter ,Disabling for now*******************************#
+	if assets:
+		save_dict.asset_index =info["created-assets"][number]["index"]
+		save_dict.asset_name = info["created-assets"][number]["params"]["name"]
+		save_dict.asset_unit_name = info["created-assets"][number]["params"]['unit-name']
+		save_dict.asset_url = info["created-assets"][number]['params']['url'] #asset Uro and asset uri are different. Separate them
 	
 	save_game.store_line(to_json(save_dict))
 	save_game.close()
-
-	
 	
 	print ("saved account info")
-	
-	'Stores Mnemonic securely'
-	store_wallet_mnemonic_to_local() #breaks #disabled for now
-	
-	print ("saved account mnemonic")
 
-	
 
 
 
 func load_account_info(check_only=false):
-	var save_game = File.new()
-	
-	if not save_game.file_exists(token_path):
-		return false
-	
-	save_game.open(token_path, File.READ)
-	
-	var save_dict = parse_json(save_game.get_line())
+	if !loaded_wallet:
+		var save_game = File.new()
+		
+		if not save_game.file_exists(token_path):
+			return false
+		
+		save_game.open(token_path, File.READ)
+		
+		var save_dict = parse_json(save_game.get_line())
 
-	if typeof(save_dict) != TYPE_DICTIONARY:
-		return false
-	if not check_only:
-		_restore_wallet_data(save_dict)
+		if typeof(save_dict) != TYPE_DICTIONARY:
+			return false
+		if not check_only:
+			_restore_wallet_data(save_dict)
 	
 
 func _restore_wallet_data(info: Dictionary):
 	# JSON numbers are always parsed as floats. In this case we need to turn them into ints
 	address = str(info.address)
 
-	#***********Disabling for now*****************#
+	
 	Globals.address = info.address
 	mnemonic = str(info.mnemonic)
 	_wallet_algos = info.amount 
+	
+	#***********Disabling for now*****************#
 	#asset_name = str (info.asset_name) 
 	#asset_url = str(info.asset_url) #asset url and asset meta data are different
 	
 	
 	print ('wallet data restored from local database')
+	
 
 func check_is_image_avalable_()-> bool:
 	if local_image_path != '':
@@ -438,28 +504,16 @@ func load_local_image_texture():
 	NFT.set_expand(true)
 
 
-func store_wallet_mnemonic_to_local(): #should store the wallet details (Unused)
-	# Create new ConfigFile object.
-#	var wallet_data = ConfigFile.new()
-	
-#	# Store some values.
-#	wallet_data.set_value("mnemonic", "mnemonic", mnemonic)
-#	# Save it to a file and encrypts it (overwrite if already exists).
-#	wallet_data.save_encrypted (keys_path, keys_passwrd )
-	
-	pass
-
-func load_wallet_mnemonic_from_local(): #should load the wallet details (Unused)
-	pass
-
 func check_wallet_info(): #works
 	account_info = yield(Algorand.algod.account_information(address), "completed")
-	save_account_info(account_info, 0) #testing
+	save_account_info(account_info, 0, false) #testing
 	print (account_info) 
 
 func _on_withraw(): #withdraws Algos from wallet data into my test algorand wallet
+	var status
 	if Globals.algos != 0: #cannot withdraw with zero balance
 		Algorand.create_algod_node() #from an escrow account
+		
 		status = status && yield(Algorand._send_transaction_to_receiver_addr(Escrow_mnemoic ,"rigid steak better media circle nothing range tray firm fatigue pool damage welcome supply police spoon soul topic grant offer chimney total bronze able human", Globals.algos), "completed") #works
 		#status = status && yield(_send_asset_transfers_to_receivers_address(funder_address , funder_mnemonic , receivers_address , receivers_mnemonic), "completed") #works
 		print (status)
@@ -520,7 +574,7 @@ func _on_Main_menu_pressed():
 
 
 func _on_testnetdispenser_pressed():
-	OS.shell_open('https://testnet.algoexplorer.io/dispenser')
+	return OS.shell_open('https://testnet.algoexplorer.io/dispenser')
 
 
 #Updates Local Account Info
@@ -549,3 +603,6 @@ func _on_enter_mnemonic_pressed():
 
 func _on_enter_transaction_pressed():
 	transaction_valid = true
+
+
+

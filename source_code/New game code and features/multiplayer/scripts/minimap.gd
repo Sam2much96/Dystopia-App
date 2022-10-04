@@ -2,11 +2,14 @@
 # godot3-spacegame by Yanick Bourbeau
 # Released under MIT License
 # *************************************************
-# CLIENT-SIDE CODE
+# CLIENT-SIDE Minimap CODE
 #
 # Display current player and other objects (players)
 # on a 128x128 minimap (bottom-right)
 #
+# Bug:
+# (1) Doesn't work
+
 # *************************************************
 extends TextureRect
 #tweak code for multiplayer

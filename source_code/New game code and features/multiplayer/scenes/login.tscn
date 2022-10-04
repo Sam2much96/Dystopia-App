@@ -1,11 +1,9 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://New game code and features/multiplayer/scripts/login.gd" type="Script" id=1]
 [ext_resource path="res://resources/illustrations/coins silver.png" type="Texture" id=2]
 [ext_resource path="res://fonts/Comic Book.otf" type="DynamicFontData" id=3]
 [ext_resource path="res://fonts/DigitalStripBB_BoldItal.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=5]
-[ext_resource path="res://scenes/UI & misc/Notification.tscn" type="PackedScene" id=6]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://fonts/Comic Book.otf"
@@ -205,34 +203,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="ui"]
-margin_left = 75.0638
-margin_top = 389.842
-margin_right = 336.064
-margin_bottom = 570.842
-custom_colors/font_color = Color( 0.992157, 1, 0, 1 )
-custom_fonts/font = ExtResource( 5 )
-text = "Use WASD keys to move, SPACEBAR to fire on PC. You will respawn upon death."
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Back_Button" type="Button" parent="."]
-margin_left = 1057.21
-margin_top = 31.748
-margin_right = 1222.21
-margin_bottom = 115.748
+margin_left = 53.9717
+margin_top = 28.5732
+margin_right = 218.972
+margin_bottom = 112.573
 custom_fonts/font = SubResource( 15 )
 text = "Back"
 flat = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Notification" parent="." instance=ExtResource( 6 )]
-visible = true
-Display_text = "It is Experimental"
 
 [connection signal="pressed" from="ui/grid/button_login" to="." method="_on_button_login_pressed"]
 [connection signal="pressed" from="ui/grid/button_start_server" to="." method="_on_button_start_server_pressed"]

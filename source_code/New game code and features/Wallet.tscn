@@ -24,7 +24,6 @@ margin_right = 40.0
 margin_bottom = 40.0
 
 [node name="mnemonic_ui" type="LineEdit" parent="."]
-visible = false
 margin_left = 9.15687
 margin_top = 0.561343
 margin_right = 531.156
@@ -66,10 +65,16 @@ margin_left = -7.0
 margin_top = 84.0
 margin_right = 143.0
 margin_bottom = 108.0
-text = "NFT"
+text = "Asset-ID"
+
+[node name="txn_ui_options" type="OptionButton" parent="transaction_ui"]
+margin_left = -10.0
+margin_top = 131.0
+margin_right = 154.0
+margin_bottom = 151.0
+text = "Transaction"
 
 [node name="wallet_ui" type="VBoxContainer" parent="."]
-visible = false
 margin_left = 5.1404
 margin_top = 0.670656
 margin_right = 340.14
@@ -149,6 +154,14 @@ text = "main menu"
 
 [node name="Algodot" type="Node" parent="."]
 script = ExtResource( 2 )
+
+[node name="state_controller" type="OptionButton" parent="."]
+margin_left = 4.0
+margin_top = 22.0
+margin_right = 132.0
+margin_bottom = 42.0
+rect_scale = Vector2( 0.1, 0.1 )
+text = "State Controller"
 
 [connection signal="pressed" from="mnemonic_ui/enter_mnemonic" to="." method="_on_enter_mnemonic_pressed"]
 [connection signal="pressed" from="transaction_ui/enter_transaction" to="." method="_on_enter_transaction_pressed"]

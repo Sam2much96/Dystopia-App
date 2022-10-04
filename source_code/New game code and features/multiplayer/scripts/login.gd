@@ -6,6 +6,8 @@
 #
 # Populate the login form and handle callbacks
 # on buttons.
+# To DO
+#(1) should use player's wallet address
 #
 # *************************************************
 extends CanvasLayer
@@ -30,7 +32,7 @@ func _on_button_login_pressed(): #others join
 	
 	# Store information about spaceship color and player name #modify #spaceship colour to player colour
 	#Networking.cfg_color = input_color.text
-	Networking.cfg_player_name = input_player.text
+	Networking.cfg_player_name = input_player.text + Globals.address
 	
 	# Lookup hostname and store resolved IP
 	Networking.cfg_server_ip = IP.resolve_hostname(input_hostname.text)

@@ -29,7 +29,7 @@ export(int) var spawn_count
 func _ready():
 	randomize()
 	anim.play("normal") #hides spriite animation by default
-	print ('spawning enemy...')
+	
 	if enemy_spawn_1 != null:
 		spawn_enemy()
 
@@ -44,6 +44,7 @@ func spawn_enemy():
 		anim.play("spawning")
 		spawn.position = position_in_area
 		get_parent().call_deferred('add_child', spawn)
+		print ('spawning enemy...')
 	elif spawn_count <= 0:
 		return
 

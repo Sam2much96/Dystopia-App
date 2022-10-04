@@ -29,5 +29,5 @@ func set_timer()->void:
 #func _on_Timer_timeout():
 #	queue_free()
 
-func queue_free():
-	self.queue_free()
+#func queue_free():
+#	self.queue_free()

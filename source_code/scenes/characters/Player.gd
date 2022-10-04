@@ -9,6 +9,7 @@
 # (3) It's a class and stores variables to the UI, Globals singleton, PlayersSave Files, and the Debug SIngleton
 # To Do:
 #(1) Update Documentation
+# (2) Implement Networking Calls
 # *************************************************
 
 extends KinematicBody2D
@@ -45,9 +46,11 @@ enum { STATE_BLOCKED, STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE
 
 export var state = STATE_IDLE
 
+#********Miscellaneous***********#
 onready var player_camera = $camera #the player's camera
-onready var impact_fx = $Impact
-
+#onready var impact_fx = $Impact
+onready var timer = $ScentTimer
+var timeout: bool = false
 
 func _enter_tree():
 	Globals.update_curr_scene()
@@ -222,13 +225,18 @@ func despawn():  #this code breaks
 	
 	
 	
-	hide()
-	print ('Update Player code for proper despawing')
-	yield(get_tree().create_timer(0.5), "timeout")
-	#Update this code to update player position
+	self.hide()
 	
-	print ("player respawn is broken")
-	#get_tree().reload_current_scene() #Reboots the current scene if the Player Dies
+	'Uses Animation Player to Respawn'
+	# waits for 0.5 seconds to respawn
+	#start_timer(0.5)
+	
+	#respawn()
+
+func respawn()-> void:
+	'Updated Respawn Code'
+	#Reboots the current scene if the Player Dies
+	# Triggered with animation player
 	if Globals._q != null:
 		Globals.change_scene_to(Globals._q)
 	else: get_tree().reload_current_scene()
@@ -247,3 +255,13 @@ func _on_hurtbox_area_entered(area):
 		if hitpoints <= 0:
 			state = STATE_DIE
 	pass
+
+func start_timer(time: float):
+	timer.start(time)
+
+
+
+
+func _on_ScentTimer_timeout()-> void:
+	timeout = true
+	#print ('timer debug 2: ', timeout) #works

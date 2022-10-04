@@ -253,16 +253,16 @@ script = ExtResource( 9 )
 
 [node name="Dialog_box" parent="." instance=ExtResource( 1 )]
 margin_top = 427.0
-margin_right = 4352.0
+margin_right = 5376.0
 margin_bottom = 601.0
 
 [node name="Stats" parent="." instance=ExtResource( 2 )]
-margin_right = 4352.0
-margin_bottom = 2520.0
+margin_right = 5376.0
+margin_bottom = 3120.0
 
 [node name="Status_text" parent="." instance=ExtResource( 3 )]
 margin_top = 450.609
-margin_right = 4352.0
+margin_right = 5376.0
 margin_bottom = 545.609
 
 [node name="Healthbar" parent="." instance=ExtResource( 4 )]
@@ -283,7 +283,6 @@ enabled = true
 current_comics = ExtResource( 5 )
 
 [node name="TouchInterface" parent="." instance=ExtResource( 8 )]
-_Hide_touch_interface = false
 _control = "direction"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

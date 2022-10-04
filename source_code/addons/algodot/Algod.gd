@@ -202,6 +202,7 @@ func _send_transaction_to_receiver_addr( _funder_mnemonic : String, _receivers_a
 
 
 " Make Sure the Funder's Address has sufficient Algos or the Code will Break"
+#need logic fix
 func _send_asset_transfers_to_receivers_address( _funder_mnemonic : String, _receivers_mnemonic : String): # 
 	print(" -- _sending_asset_transfers")
 
@@ -352,4 +353,27 @@ func opt_in_asset_transaction( from_address: String, _asset_index):
 		)
 	return optin_tx
 
+func opt_in_smart_contract(from_address: String):
+	print ("opt in")
+	
+
+
+func transferAssets(_funder_mnemonic, _receiver_address,_asset_id):
+	generate_suggested_transaction_parameters()
+	
+	var _funder_address=algod.get_address(_funder_mnemonic)
+	
+	# Construct Aset tx
+	construct_asset_transfer(_funder_address, _receiver_address, 100, _asset_id)
+	
+	# Raw Sign Asset tx
+	stx = algod.sign_transaction(asset_tx, _funder_mnemonic)
+	
+	#Generating transaction Id from signed transaction
+	txid = yield(algod.send_transaction(stx), "completed") 
+	
+	print (txid)
+	
+	#wait for transaction to finish sending
+	wait= yield(algod.wait_for_transaction(txid), "completed") 
 

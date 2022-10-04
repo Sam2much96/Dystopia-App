@@ -14,7 +14,7 @@ extends Area2D
 onready var timer : Node = $Timer
 onready var anim : Node = $AnimationPlayer
 func _ready():
-	anim.play("normal",-1,1.0,0.0)
+	anim.play("idle",-1,1.0,0.0) 
 	connect("body_entered", self, "_on_grass_area_entered")
 	
 	timer.connect("timeout", self, "_queue_free")

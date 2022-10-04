@@ -66,6 +66,13 @@ step = 1.0
 value = 100.0
 percent_visible = false
 
+[node name="ColorRect" type="ColorRect" parent="UI"]
+margin_left = 9.0
+margin_top = 470.0
+margin_right = 498.0
+margin_bottom = 595.0
+color = Color( 0.247059, 0.247059, 0.247059, 1 )
+
 [node name="item_chat" type="ItemList" parent="UI"]
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -77,6 +84,3 @@ custom_styles/bg_focus = SubResource( 3 )
 custom_styles/bg = SubResource( 4 )
 allow_rmb_select = true
 max_text_lines = 8
-__meta__ = {
-"_edit_use_anchors_": false
-}

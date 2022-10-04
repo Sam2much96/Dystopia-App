@@ -5,8 +5,13 @@
 # SERVER-SIDE CODE
 #
 # All the server  logics in one file!
-#it also contains the world's logics *inhumanity
-# It implements roll back netcode
+# It also contains the world's logics *inhumanity
+# Bugs:
+# (1) It implements roll back netcode (depreciated)
+# (2) Player Control affects both client and server player: use rpc_id to control player movement
+# (3) Client player's movement is choppy, doesn't show animations
+# (4) Implement remote pfunctions for server player inputs (remote functions are used via nodes rpc calls)
+# (5) Implement a separate player for the server
 # *************************************************
 extends Node
 
@@ -30,16 +35,13 @@ onready var node_enemies  = Node.new()#$Enemies
 
 #.pop_front()
 
-var preload_player = preload("res://scenes/characters/Aarin.tscn")
-var preload_enemy = preload("res://scenes/characters/Enemy.tscn")
+var preload_player = preload("res://scenes/characters/Aarin.tscn") #spawn different players
+var preload_enemy = preload("res://scenes/characters/Enemy.tscn") # spawn different enemies
 
 var server_debug
 
 var update_id = 0
 
-######for controling state machine
-#var state
-#enum { STATE_BLOCKED, STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE_DIE, STATE_HURT }
 
 func _ready():
 	
@@ -85,6 +87,9 @@ func _ready():
 
 
 func _input(_event):
+	if Input.is_action_just_pressed("move_left"):
+		server_debug()
+	
 	#handle_input()
 	pass
 
@@ -226,7 +231,7 @@ remote func register_player(id, info): #rewrite this
 		rpc_id(peer_id, "player_joined", id, player_info[id])
 
 
-#######Handles player movement from  received input from servers#######
+#Handles player movement from  received input from Clients via rpc calls
 remote func player_input(id, key, pressed, client_position, client_state, linear_velocity): # #it receives player input through rpc
 	print("Remote: player_input(" + str(id)+","+key+","+str(pressed)+")") 
 
@@ -238,16 +243,13 @@ remote func player_input(id, key, pressed, client_position, client_state, linear
 		#player_info[id].position = client_position
 		#player_info[id].state = client_state
 		
-		#Run this code in physics process
+		#Run this code in physics process (does this work?)
 		_process(_update_player_position_and_states(id,client_position, client_state,linear_velocity)) #updates player's motion and states
 		
 		
 		#print ('Remote player Input is Pressed: ', pressed, 'Player Position: ',  player_info[id].node.position ) #for debug purposes only
-		#Debugs player position and State
-		print ('Player  ID/////////',id)
-		print ('Player  position/////////',client_position)
-		print ('Player  state/////////',client_state)
-		print ('Player  linear vel/////////',linear_velocity)
+		player_input_debug(id, client_position, client_state, linear_velocity)
+		
 	if  pressed == false: #it changes state but not position
 		
 		pass
@@ -273,9 +275,19 @@ func _update_player_position_and_states(id,position ,state, linear_vel): #update
 	
 	player_info[id].node.move_and_slide(linear_vel) #This line of code breaks
 
-
-
-	
-	
 	pass
+
+#server debug 1
+func player_input_debug(id, client_position, client_state, linear_velocity)-> void:
+	#Debugs player position and State
+	print ('Player  ID/////////',id)
+	print ('Player  position/////////',client_position)
+	print ('Player  state/////////',client_state)
+	print ('Player  linear vel/////////',linear_velocity)
+
+
+# server debug 2
+
+func server_debug()-> void:
+	print ("Server ID:", get_tree().get_network_unique_id())
 

@@ -6,6 +6,8 @@
 #
 # All the client logics in one file!
 # Needs Mesh network for peer to peer
+# To Do:
+# (1) Send Player inputs via remote functions
 # *************************************************
 extends Node
 var client_debug 
@@ -30,7 +32,11 @@ onready var node_players = Node.new()#$players #p2p player nodes
 onready var node_enemies=Node.new()  #= #= $camera/projectiles #rewrote progectile nodes to enemy nodes
 #onready var camera = Camera2D.new()#$Camera2D#get_tree().get_root()
 onready var progress_health = load('res://scenes/UI & misc/Healthbar.tscn')
+
+
+#*******Chat Item*************#
 onready var chat = $UI/item_chat
+
 
 onready var state #im trying to send player state using rpc call and update it on the server using a remote funtion
 func _ready():
@@ -39,9 +45,11 @@ func _ready():
 	#Handles Network Connectivity
 	node_enemies.name = 'node_enemies'
 	node_players.name = 'node_players'
+	
 	self.add_child(node_players)
 	self.add_child(node_enemies)
 	
+	#lists all local ip addresses on Device
 	print ('LOCAL IP ADDRESSES: ',IP.get_local_addresses())
 	print ('IP ADDRESSES: ',IP.get_local_interfaces())
 	
@@ -107,7 +115,9 @@ func _process(_delta):
 
 	# Handle input (keyboard)
 	handle_input() #Handle's Player's Input and sends it to the Servers
-		
+	
+	
+	
 
 func handle_input():
 	
@@ -123,28 +133,22 @@ func handle_input():
 	var id = get_tree().get_network_unique_id()
 	# Move left
 	if Input.is_action_just_pressed("move_left"): #sends player input to the server
+		
+		# calls a remote player input method in the client via rpc
 		rpc_id(1,"player_input",id,"left",true, pos, state, linear_vel) #sends position and state data directly to servers 
-		#rpc_id(peer_id,'set_state',ger)
-		#send player state
-		#send player position using pu function
 		
-		#print ('/////////Pos Variable////////: ', pos ,'/////player_info[peer_id].position////////',player_info[id].position ) #for debug purposes only
+		#1 is peer ID
 		
-		#print ( '/////state//////:',player_info[id].node.state)
-		#pu(id,______update_id,player_info[id].position, player_info[id].node.hitpoints,player_info[id].node.state )
-		#rset_id(id, 'position', pos)
-		#print ('Player info id position/////////',player_info[id].position)
-		#print ('Player info id Node state/////////',player_info[id].node.state ,'/////state/////:', state)
-		
-		
-		#print ('////////Player info id /////////',player_info[id].node.position) #for debug purposes only
-		print ('////////Client Player info : Linear velocity/////////',linear_vel) #for debug purposes only
+		client_debug()
 	if Input.is_action_just_released("move_left"):
-		rpc_id(1,"player_input",id,"left",false,pos,state, linear_vel) #rpc triggers a remote function
+		#rpc triggers a remote function that changes Client player's Linear Velocity
+		rpc_id(1,"player_input",id,"left",false,pos,state, linear_vel) 
 		
-	# Move right
+	# Move right presssed
 	if Input.is_action_just_pressed("move_right"):
 		rpc_id(1,"player_input",id,"right",true,pos,state, linear_vel)
+	
+	# Move right released
 	if Input.is_action_just_released("move_right"):
 		rpc_id(1,"player_input",id,"right",false,pos,state, linear_vel)
 		
@@ -174,7 +178,7 @@ func handle_input():
 
 
 
-		
+"When Client Succcessfully Connects"
 func client_connected_ok():
 	push_error("Callback: client_connected_ok")
 	add_chat("Connected. Enjoy!")
@@ -187,7 +191,7 @@ func client_connected_ok():
 #####Add your codes here
 	
 
-
+"When Server Disconnects"
 func  server_disconnected(): #tweak to 'sever diconnected, change scene to login
 	push_error("Callback: server_disconnected")
 	OS.alert('You have been disconnected!', 'Connection Closed')
@@ -297,17 +301,21 @@ remote func attack(id, position, facing): #update code to be an attack #inhumani
 	print('attack',id,position, facing)
 	
 
+"Adds Messages to ingame Chat"
 func add_chat(text): #used the ui grid  
-	#fix this function
-	#print (text) #breaks here. returns nill
-	#if chat.get_item_count() == 7:
-	#	chat.remove_item(0)
-	print('Add chat text: ',text)
+	chat.add_item(text)
+	if chat.get_item_count() == 7:
+		chat.remove_item(0)
 
-	#for i in range(0,chat.get_item_count()): #iterate over chat item
-	#	chat.set_item_selectable(i,false)
-	
+	for i in range(0,chat.get_item_count()):
+		chat.set_item_selectable(i,false)
+
+
 func display_damage(body):#rewrite this to instance blood fx
 
 	print ('damage: ' , body)
 	
+
+
+func client_debug()-> void:
+	print ('/Client Player info : Linear velocity: ',linear_vel, "// Peer ID: ", get_tree().get_network_unique_id()) #for debug purposes only

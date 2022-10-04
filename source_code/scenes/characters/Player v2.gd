@@ -10,6 +10,7 @@
 # To Do:
 #(1) Update Documentation
 # (2) Implement Networking Calls
+# (3) Im not sure how to implement sstate machine calls to the client/server
 # *************************************************
 
 extends KinematicBody2D

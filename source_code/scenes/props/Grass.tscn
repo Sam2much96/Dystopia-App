@@ -458,6 +458,3 @@ stream = ExtResource( 3 )
 [node name="Timer" type="Timer" parent="."]
 
 [connection signal="area_entered" from="." to="." method="_on_grass_area_entered"]
-[connection signal="area_exited" from="." to="." method="_on_grass_area_exited"]
-[connection signal="body_entered" from="." to="." method="_on_grass_body_entered"]
-[connection signal="body_exited" from="." to="." method="_on_grass_body_exited"]

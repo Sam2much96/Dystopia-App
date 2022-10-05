@@ -430,5 +430,3 @@ emission_sphere_radius = 80.0
 [node name="Timer" type="Timer" parent="."]
 
 [connection signal="area_entered" from="." to="." method="_on_flowers_area_entered"]
-[connection signal="body_entered" from="." to="." method="_on_flowers_body_entered"]
-[connection signal="body_exited" from="." to="." method="_on_flowers_body_exited"]

@@ -8,6 +8,8 @@
 # Needs Mesh network for peer to peer
 # To Do:
 # (1) Send Player inputs via remote functions
+# (2) Duplicate Input Functions btw Client and Server (Using ROll back netcode as a reference)
+# (3)  
 # *************************************************
 extends Node
 var client_debug 
@@ -41,7 +43,7 @@ onready var chat = $UI/item_chat
 onready var state #im trying to send player state using rpc call and update it on the server using a remote funtion
 func _ready():
 	OS.set_window_title('Client') 
-	
+	#sdgagdfasdfasdf
 	#Handles Network Connectivity
 	node_enemies.name = 'node_enemies'
 	node_players.name = 'node_players'

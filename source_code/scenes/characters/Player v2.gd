@@ -11,6 +11,7 @@
 #(1) Update Documentation
 # (2) Implement Networking Calls
 # (3) Im not sure how to implement sstate machine calls to the client/server
+# (4) Too much Detection going on
 # *************************************************
 
 extends KinematicBody2D
@@ -216,3 +217,5 @@ func despawn():  #this code breaks
 		Globals.change_scene_to(Globals._q)
 	else: get_tree().reload_current_scene()
 
+func _on_hurtbox_area_entered()-> void:
+	pass

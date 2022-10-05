@@ -18,17 +18,11 @@
 # (3) Youtube Download Streamer Logic impementation 
 # (4) Proper Documentation (done)
 # (5) Run an online for PC and mobile Devices. The Hardware is available now
-# (6) Implement Rollback NetCodes for Multiplayer Gameplay
+# (6) Implement Rollback NetCodes for Multiplayer Gameplay (Depreciated)
 # (7) Video Downloaders
 # (8) Downloads several files
+# (9) Regex parser for IPFS (test)
 
-#Note
-#if using https connection on a self hosted server with self signed certificate
-#make sure the .crt file exported from your web browser contains the private key generated
-# from your server's .pem file
-
-#Note 
-# This script cannot print pool byte array and wuld return it as an empty array
 
 
 extends HTTPRequest
@@ -43,13 +37,12 @@ export(String) var connection_debug
 export (String) var cfg_server_ip 
 #########################  Web browser codes  ############################3
 var url : String = ''
-var check_timer #= Timer.new()
+var check_timer 
 var debug = ''
-#var _connection #stores connetion status
+
 # Default hostname used by the login form
 const DEFAULT_HOSTNAME = "127.0.0.1"
 
-var admob_debug = '' #Debugs the Ad methods being used
 
 var player_info = {} # should store Crypto info
 
@@ -78,14 +71,6 @@ onready var WORLD_SIZE = 40000.0
 onready var _reference_to_self =get_node('/root/Networking') #formerly _y
 
 
-#onready var _ad #leave it, it updates from the admob node
-#var _admob_singleton #it updates from the admob node
-
-#var admob_nodes =[] #stores all the admob nodes instanced in the scene
-
-
-
-
 const SERVER_PORT = 5225
 const MAX_PLAYERS = 5
 
@@ -97,6 +82,9 @@ onready var timer = $Timer2
 
 #var youtube_dl = preload ('res://New game code and features/youtube streamer/Youtube-DL.gd') #what if youtube goes down lool
 
+
+
+
 func _ready():
 	_init_timer()
 	
@@ -106,13 +94,7 @@ func _ready():
 	print ("Networking Server Config and Player Name: ",cfg_server_ip,cfg_player_name, "/")
 	
 	
-	#if check_timer == null: #Error catcher #stops multiple instance?
-	#	for _i in _reference_to_self.get_children():
-	#		if _i is Timer:
-	#			check_timer = _i 
-	
-	######################Used to Control the App's Networking #######################
-	
+
 
 func _process(_delta): 
 
@@ -174,15 +156,23 @@ func _check_connection_secured(url): # Check http secured Url connection
 	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
 	print (' Networking Request Error: ',error) #for debug purposes only
 
-func _check_connection_secured_2(url,cert): # Check http secured Url connection
+func _connect_to_ipfs_gateway(url): # Check http secured Url connection
 	#Ignore Warning
-	url =url.http_escape()
+	url = _parse(url) 
+	#url =url.http_escape()
+
+	# uses ipfs web 2 gateway
+	url = "https://ipfs.io/ipfs/" + url
 	var t=StreamPeerSSL.new()
 	var error = .request(url,PoolStringArray(),false,HTTPClient.METHOD_GET) 
 	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
 	print (' Networking Request Error: ',error) #for debug purposes only
 
-
+'Removes IPFS Domain from Asset url'
+func _parse(_url : String)-> String: #works
+	_url=_url.replace('ipfs://', '')
+	#print (_url) # for debug purposes only
+	return _url
 
 func on_request_result(result, response_code, headers, body): # I need to pass variables to this code bloc
 	"HTTP REQUEST RESULT'S STATE MACHINE"
@@ -266,26 +256,9 @@ func download_json_(body: PoolByteArray, Save_path: String) -> File:
 		json.open((Save_path +".json"), File.WRITE )
 		
 		while not json.get_len() > get_body_size() : #kinda works
-		
-			#json.store_string(to_json(download_file.to_utf8())) #returns encrypted data #kinda works #backup
-			
-			#json.store_line(to_json(download_file.to_utf8())) #returns encrypted data #kinda works #backup #better
-			#*****************************
-			#for _i in download_file:
-			#for _i in download_file:
-			#	for _t in _i:
-			#	cunt.append(_i)
-				#poop = _i
-			#pussy.parse( body.get_string_from_utf8())
-			#pussy.print(body,'', true
-			#******************************
-			#json.store_line(to_json(body.get_string_from_utf8())) #It stores each string as a character #returns encrypted data
 			cunt = body.get_string_from_utf8() #works with local storage
 			
 			json.store_line(str(cunt)) #works
-			
-			#*****************************************************
-			
 			if json.get_len() == get_body_size(): break #works perfectly
 			
 

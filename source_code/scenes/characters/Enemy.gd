@@ -15,7 +15,8 @@
 # (3) No Documentation
 # (4) Enemy mob uses too much computer procesing power
 # (5) Too much Physics procesing (fixed)
-# (6) Navigation 
+# (6) Navigation AI
+# (7) Too much Detection
 # *************************************************
 # New Features
 #(1) Raycast 2d for precision 

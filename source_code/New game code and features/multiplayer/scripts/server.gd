@@ -12,6 +12,9 @@
 # (3) Client player's movement is choppy, doesn't show animations
 # (4) Implement remote pfunctions for server player inputs (remote functions are used via nodes rpc calls)
 # (5) Implement a separate player for the server
+
+# (6) Send Player inputs via remote functions
+# (7) Duplicate Input Functions btw Client and Server (Using ROll back netcode as a reference)
 # *************************************************
 extends Node
 
@@ -53,7 +56,7 @@ func _ready():
 	self.add_child(node_enemies)
 
 	
-	
+	#adfadfadfa
 	
 	#print('Networking Camera: ' ,Networking.camera, 'Server Camera: ', server_camera) #for debug purposes only
 	#print ('Networking world: ', Networking.world , 'Online world', self)

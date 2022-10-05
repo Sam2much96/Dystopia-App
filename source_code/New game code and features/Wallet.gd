@@ -33,6 +33,10 @@
 # (5) Copy and Paste Wallet Address (done)
 # (6) Use time timeout to transition btw states
 # (7) Import wallet
+# (8) Implement IPFS web 2 Gateway as a callale Networking SIngleton function
+# (9) Implement brainfuck or any compatible encryption algorithm for mnemonic
+# (10) IMplement tradeable characters
+
 # Testing
 #(1) Image Downloder (works)
 # (2) Create NFT (doesnt work)
@@ -142,10 +146,11 @@ func _ready():
 	state_controller.add_item("Import Account")
 	state_controller.add_item("Transactions")
 	state_controller.add_item("SmartContacts") #should be a sub of Transactions
+	state_controller.add_item('NFT')
 	
 	
-	
-	
+	#ipfs test (works) # delete later
+	#Networking._parse('ipfs://bafybeihhnvmussfrgymhytoykwymzhshgzdfdmshnwapiplmosdzcr4zxi#i')
 
 
 
@@ -170,6 +175,9 @@ func _process(_delta):
 	elif state_controller.get_selected() == 5:
 		wallet_check = 0 # resets the wallet check stopper
 		state = SMARTCONTRACTS
+	elif state_controller.get_selected() == 6:
+		wallet_check = 0 # resets the wallet check stopper
+		state = COLLECTIBLES
 	
 	
 	## PROCESS STATES (testing)
@@ -304,15 +312,21 @@ func _process(_delta):
 			
 			pass
 			
+		# implement regex for parsing collectibles ipfs url 
 		COLLECTIBLES: #Buggy #should  handle only 1 nft
 			"Checks if the Image is avalable Locally and either downloads or loads it"
 			if not FileCheck3.file_exists("user://wallet/img0.png"): #works
 				print('NFT image is not available locally, Downloading now') 
 				
-				#load assets id from memory
-				#download asset image throug ipfs web2 gate
+				#************NFT Logic***********#
+				# check asset id for its url
+				# save asset-id url locally
+				#load assets id url from memory 
+				#download asset image throug ipfs web2 gate (implemented in networking)
+				# parse asset uri to remove "ipfs://" link name
 				#save image locally
 				#run image check
+				#load image
 				
 				# Connects the Networking signal
 				connect_signals()
@@ -321,34 +335,19 @@ func _process(_delta):
 				'my server isnt serving the json file to godot properly'
 				"using python instead"
 				
-				if not FileCheck2.file_exists('user://wallet/nft_metadata.json'): #checks for nft metadata
-					#$Node.activate=bool(1) #doesn't work
-					json.open(("user://wallet/nft_metadata.json"), File.WRITE ) #check of file exists to save bandwidth
-					#makes a Python  http request to server returns a string
-					json.store_line($Node._ready()) #create an entry boolean
-					json.close()
-					#$Node.activate=bool(0) #doesn't work
-					print ('nft metadata stored locally')
-				if FileCheck2.file_exists('user://wallet/nft_metadata.json'): #check for file size, so it doesn't save a 0 byte json
-					json.open("user://wallet/nft_metadata.json", File.READ)
-					var p =  parse_json(json.get_as_text()) #return a dictionary
-					#*********Parse Json For Details***********#
-					image_url= p.get('image')
-					_description= p.get('description')
-					_name= p.get('name')
-					print ('nft host site',image_url)
-					#******************************************#
+				#image url should be gotten from asset-id
 				
 				print ('nft host site',image_url) #image_url should not be null
 				Networking.url=image_url
 				 
 				#makes a https request to download image from local server
-				Networking._check_connection( image_url) 
+				
+				Networking. _connect_to_ipfs_gateway(image_url) 
 				#***************************************************************
 			elif FileCheck3.file_exists("user://wallet/img0.png"):
 					load_local_image_texture()
 			else: return
-		SMARTCONTRACTS: #opts into smart contracts with wallet
+		SMARTCONTRACTS: # doesnt work #opts into smart contracts with wallet
 			#hide other ui states
 			transaction_ui.show()
 			mnemonic_ui.hide()
@@ -466,7 +465,7 @@ func check_is_image_avalable_()-> bool:
 		is_image_available_at_local_storage = _r
 	return is_image_available_at_local_storage
 
-'add functionality to download json file'
+'Downloads NFT Image from IPFS'
 func _http_request_completed(result, response_code, headers, body): #works with https connection
 	print (" request done: ", result) #********for debug purposes only
 	print (" headers: ", headers)#*************for debug purposes only

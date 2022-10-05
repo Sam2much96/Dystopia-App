@@ -176,7 +176,7 @@ func _ready():
 	#load it as mnemonic
 	
 	
-	load_account_info(false)
+	#load_account_info(false)
 	
 	#print (mnemonic)
 	

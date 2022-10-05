@@ -21,6 +21,7 @@
 # Bugs:
 # (1) Music debug function breaks
 # (2) Debug Function breaks
+# (3) Music Volume is unimplemented
 # *************************************************
 """
 THERE ARE TWO FUNCTIONS FOR PLAYING MUSIC TRACKS AND MUSIC PLAYLISTS

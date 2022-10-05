@@ -56,6 +56,8 @@ func _ready():
 	self.add_child(node_enemies)
 
 	
+	print (' Who is more Authoritative? the client or the server? ') #question?
+	
 	#adfadfadfa
 	
 	#print('Networking Camera: ' ,Networking.camera, 'Server Camera: ', server_camera) #for debug purposes only

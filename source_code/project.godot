@@ -300,10 +300,6 @@ pointing/emulate_touch_from_mouse=true
 
 locale_filter=[ 0, [ "es_ES" ] ]
 
-[network]
-
-ssl/certificates="res://web certificates/samuel.crt"
-
 [rendering]
 
 quality/driver/driver_name="GLES2"

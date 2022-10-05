@@ -21,21 +21,24 @@
 #Features
 #(1) Curerntly implements on the ALgorand blockchain, other chains not supported
 # (2) Uses two states -a Accounts State & -Collectible state
+# (3) Implements Binary > Utf-8 encryption
 # *************************************************
 #Bugs:
 #(1) Doesn't work (fixed)
 #(2) CHeck account state is broken
 # To-DO:
 # (1) Implement as State Machine (done)(requires testing)
-# (2) Update transaction logic
+# (2) Update transaction logic (done)
 # (3) Test Smart Contracts
-# (4) Implement Proper wallet security (needs encryption and decryption algorithm)
+# (4) Implement Proper wallet security (needs encryption and decryption algorithm) (step 1 done)
 # (5) Copy and Paste Wallet Address (done)
-# (6) Use time timeout to transition btw states
-# (7) Import wallet
-# (8) Implement IPFS web 2 Gateway as a callale Networking SIngleton function
-# (9) Implement brainfuck or any compatible encryption algorithm for mnemonic
-# (10) IMplement tradeable characters
+# (6) Use time timeout to transition btw states (depreciated)
+# (7) Import wallet (done)
+# (8) Implement IPFS web 2 Gateway as a callale Networking SIngleton function (done)
+# 
+# (10) IMplement Tokenized characters (player_v2)
+# (11) Implement cryptographic encryption and decryption
+# (12) Implement show mnemonic button
 
 # Testing
 #(1) Image Downloder (works)
@@ -89,10 +92,16 @@ var Player_mnemonic: String
 
 var Player_account_details: Array =[]
 var Player_account_temp: Array =[]
-#var load_from_local_wallet : bool
+
+#************Wallet variables**************#
+
 var amount
 var address
 var mnemonic
+
+var encoded_mnemonic : PoolByteArray
+var encrypted_mnemonic 
+
 var _wallet_algos: int
 var asset_name
 var asset_url
@@ -152,6 +161,33 @@ func _ready():
 	#ipfs test (works) # delete later
 	#Networking._parse('ipfs://bafybeihhnvmussfrgymhytoykwymzhshgzdfdmshnwapiplmosdzcr4zxi#i')
 
+	"Testing encoded mnemonic"
+	# logic to encrpypt
+	# load mnemonc
+	#convert mnemonic to unicode integers
+	#encode converted mnemonic cryptographically
+	# save it locally
+	
+	
+	# logic to decrypt
+	#load encoded mnemonc
+	# crytographically decrypt it
+	# convert it from unicode integers to string
+	#load it as mnemonic
+	
+	
+	load_account_info(false)
+	
+	#print (mnemonic)
+	
+	# convert mnemonic to bytes
+	#encoded_mnemonic.append_array(convert_string_to_binary(mnemonic))
+	
+	#convert_binary_to_string(encoded_mnemonic) #works
+	
+	#encrypt(encoded_mnemonic)
+	# store mnemonic as a pool byte array 
+	#x() # save and print encoded pool byte array
 
 
 
@@ -405,7 +441,9 @@ func save_account_info( info : Dictionary, number: int, assets: bool):
 	if not assets:
 		save_dict.address =info["address"]
 		save_dict.amount =info["amount"]
-		save_dict.mnemonic = mnemonic #info['mnemonic']
+		
+		# encode mnemonic
+		save_dict.mnemonic = convert_string_to_binary(mnemonic)  
 	
 	#************Use Assets parameter ,Disabling for now*******************************#
 	if assets:
@@ -445,7 +483,10 @@ func _restore_wallet_data(info: Dictionary):
 
 	
 	Globals.address = info.address
-	mnemonic = str(info.mnemonic)
+	
+	#decode mnemonic
+	
+	mnemonic = convert_binary_to_string(info.mnemonic)
 	_wallet_algos = info.amount 
 	
 	#***********Disabling for now*****************#
@@ -555,10 +596,23 @@ func create_wallet_directory()-> void:
 		FileDirectory.make_dir("user://wallet")
 	else: return 
 
-func _exit_tree():
-#	if account_info != null: #(untested) (buggy
-#		save_account_info(account_info,2)
-	pass
+
+'Encryption and Decryption ALgorithms'
+# cryptographically encrypt users mnemonic
+func convert_string_to_binary(string : String)-> PoolByteArray:
+	var binary : PoolByteArray = []
+	for i in string:
+		binary.append(ord(i))
+	print( 'Encoded Mnemonic: ',binary) #for debug purposes only
+	return binary
+
+
+func convert_binary_to_string(binary : PoolByteArray)-> String:
+	var string : String
+	string =binary.get_string_from_utf8()
+	#print (string)# for debug purposes only
+	return string
+
 
 "UI Buttons"
 

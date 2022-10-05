@@ -12,6 +12,8 @@
 # (2) Implement Networking Calls
 # (3) Im not sure how to implement sstate machine calls to the client/server
 # (4) Too much Detection going on
+# (5) Implement RPC calls as methods
+# (6) Implement tokenized player asset
 # *************************************************
 
 extends KinematicBody2D

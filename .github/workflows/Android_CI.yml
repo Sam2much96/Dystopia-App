@@ -33,7 +33,7 @@ jobs:
         with:
          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
          packageName: dystopia.app
-         releaseName: v1.1.9_${{ github.run_number }}
+         releaseName: v1.1.9__${{ github.run_number }}
          releaseFiles: ./source_code.apk
          track: production
          status: completed
@@ -91,6 +91,12 @@ jobs:
           sed 's@keystore/debug=".*"@keystore/debug="'/root/release.keystore'"@g' -i export_presets.cfg
           sed 's@keystore/debug_user=".*"@keystore/debug_user="'${{ secrets.SECRET_RELEASE_KEYSTORE_USER }}'"@g' -i export_presets.cfg
           sed 's@keystore/debug_password=".*"@keystore/debug_password="'${{ secrets.SECRET_RELEASE_KEYSTORE_PASSWORD}}'"@g' -i export_presets.cfg
+          
+          #changes the verion name and number
+          sed 's@version/name=".*"@version/name="'${{ github.run_number }}'"@g' -i export_presets.cfg
+
+          #if the version number is set to "", this line of code works
+          sed 's@version/code=".*"@version/code=${{ github.run_number }}@g' -i export_presets.cfg
           
           godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
           

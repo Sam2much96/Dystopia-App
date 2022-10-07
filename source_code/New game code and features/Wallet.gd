@@ -39,6 +39,7 @@
 # (10) IMplement Tokenized characters (player_v2)
 # (11) Implement cryptographic encryption and decryption
 # (12) Implement show mnemonic button
+# (13) Improve UI
 
 # Testing
 #(1) Image Downloder (works)
@@ -176,9 +177,9 @@ func _ready():
 	#load it as mnemonic
 	
 	
-	#load_account_info(false)
+	load_account_info(false)
 	
-	#print (mnemonic)
+	print (mnemonic)
 	
 	# convert mnemonic to bytes
 	#encoded_mnemonic.append_array(convert_string_to_binary(mnemonic))

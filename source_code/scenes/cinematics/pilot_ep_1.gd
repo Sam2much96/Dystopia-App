@@ -108,16 +108,6 @@ func _process(_delta):
 		self.queue_free()
 
 
-	# Checks if the Video Ads load
-	# why is this code here?
-	#if ads_manager.Admob.emit_signal("rewarded_video_loaded"):
-	#	print (' Video Ads loaded')
-	#if ads_manager.Admob.emit_signal("rewarded_video_failed_to_load", error_code) :
-	#	print ("rewarded_video_failed_to_load")
-	#	counter = 4 # Triggers a quit action through the counter function
-	#	check_counter()
-	#else:
-	#	pass
 
 func _play_pilot_a():
 	if enabled == true && Pilot_a != null:

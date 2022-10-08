@@ -13,7 +13,8 @@ func _ready():
 	$TextureRect.hide()
 
 
-
+	if Globals.screenOrientation == 1:
+		upscale_ui()
 
 
 
@@ -42,13 +43,11 @@ func _on_Debug_toggled(button_pressed):
 			#debug__.stop_debug()
 			$TextureRect2.show() #Shows Debug hint when in debug mode
 			$TextureRect.hide()
-			#a.free()
-		#else:
-#			debug__.start_debug_v1()
-#			debug__.show_debug_v1()
-#			$TextureRect2.hide()
-#			$TextureRect.show()
 
+'Changes Button Sizes for mobile UI'
+func upscale_ui():
+	var newScale = Vector2(3,3)
+	$VBoxContainer.set_scale(newScale)
 
 
 func _on_Shuffle_pressed():

@@ -17,6 +17,7 @@
 # (5) Too much Physics procesing (fixed)
 # (6) Navigation AI
 # (7) Too much Detection
+# (8) Stop Enemy Collision with Enemy bug
 # *************************************************
 # New Features
 #(1) Raycast 2d for precision 

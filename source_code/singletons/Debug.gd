@@ -11,6 +11,7 @@
 #  (2) Version 2 of the Debug codes have yet to be implemented
 # (6) Use return to end functions instead of Pass, pass breaks the code
 # (7) It's Now a Huge performance hog. Lmfao
+#(8) Implement font size increase
 # *************************************************
 
 
@@ -20,8 +21,8 @@ extends Node
 var error_splash_page = load ('res://New game code and features/Error splash page for crashes.tscn')
 
 
-export (bool) var logging = false
-export (int) var user_font_size = 80
+var logging = false
+#var user_font_size = 80
 var __label  
 
 #lists of labels being used by the debug panel
@@ -169,8 +170,14 @@ func start_debug_v1():  #Creates multiple instances bug
 
 	#creates and loads dynamic fonts
 	var dynamic_font = DynamicFont.new()
-	dynamic_font.font_data = load('res://fonts/spiritmedium.ttf')
-	dynamic_font.size = 26
+	dynamic_font.font_data = load('res://fonts/adamwarrenpro.ttf')
+	
+	"Changes Font Size for Mobile Ui"
+	if Globals.screenOrientation == 1:
+		dynamic_font.size = 50
+	else : dynamic_font.size = 26
+	
+	#dynamic_font.size = 26
 	dynamic_font.outline_size = 2
 	dynamic_font.outline_color= Color(0,0,0,1)
 	dynamic_font.use_filter = true

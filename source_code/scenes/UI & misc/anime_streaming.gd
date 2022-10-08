@@ -49,7 +49,7 @@ func _on_Button_pressed():
 
 
 
-func _download_video():
+func _download_video(): #(depreciated)
 	#use URL: https://youtu.be/ETtpGXDwe08 to test video streaming.
 #Original youtube amv url: https://youtu.be/sh0ygItcpBg
 	#video_file = File.new()

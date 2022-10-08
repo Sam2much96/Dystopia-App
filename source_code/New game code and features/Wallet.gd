@@ -24,8 +24,9 @@
 # (3) Implements Binary > Utf-8 encryption
 # *************************************************
 #Bugs:
-#(1) Doesn't work (fixed)
+
 #(2) CHeck account state is broken
+#(3) Import Mnemonic doesnt work on free app installs without wallets
 # To-DO:
 # (1) Implement as State Machine (done)(requires testing)
 # (2) Update transaction logic (done)
@@ -39,7 +40,9 @@
 # (10) IMplement Tokenized characters (player_v2)
 # (11) Implement cryptographic encryption and decryption
 # (12) Implement show mnemonic button
-# (13) Improve UI
+# (13) Improve UI 
+		#alter UI scale for mobiles (done)
+		#use animation player to alter UI
 
 # Testing
 #(1) Image Downloder (works)
@@ -77,6 +80,7 @@ onready var txn_ui_options_button = $transaction_ui/txn_ui_options
 
 onready var NFT= $TextureRect
 onready var state_controller = $state_controller
+onready var anim = $AnimationPlayer
 #*****************************************************
 
 #var status
@@ -159,6 +163,13 @@ func _ready():
 	state_controller.add_item('NFT')
 	
 	
+	
+	"Mobile UI"
+	print ('Screen orientation debug; ',Globals.screenOrientation)
+	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
+		#anim.play("MOBILE UI")
+		
+		upscale_wallet_ui()
 	#ipfs test (works) # delete later
 	#Networking._parse('ipfs://bafybeihhnvmussfrgymhytoykwymzhshgzdfdmshnwapiplmosdzcr4zxi#i')
 
@@ -177,9 +188,9 @@ func _ready():
 	#load it as mnemonic
 	
 	
-	load_account_info(false)
+	#load_account_info(false)
 	
-	print (mnemonic)
+	#print (mnemonic)
 	
 	# convert mnemonic to bytes
 	#encoded_mnemonic.append_array(convert_string_to_binary(mnemonic))
@@ -278,6 +289,8 @@ func _process(_delta):
 		SHOW_ACCOUNT: #buggy with state controller
 			"it's always load account details when ready"
 			if FileCheck1.file_exists("user://wallet/account_info.token")  :
+				#use animation player to alter UI
+				
 				wallet_ui.show()
 				mnemonic_ui.hide()
 				transaction_ui.hide()
@@ -289,12 +302,14 @@ func _process(_delta):
 			return
 		IMPORT_ACCOUNT:
 			# hide wallet ui, show mnemonic ui
+			#use animation player to alter UI
+			
 			wallet_ui.hide()
 			mnemonic_ui.show()
 			
 			#hide mnemonic characters
-			mnemonic_ui.set_secret(true) 
-			# show screen keyboard on android devices
+			#mnemonic_ui.set_secret(true) 
+			
 			
 			if imported_mnemonic:
 				#create algod node
@@ -314,11 +329,16 @@ func _process(_delta):
 				# check account and saves automatically
 				check_wallet_info()
 				
+				
+				
 				# show account
 				state = SHOW_ACCOUNT
+				
+				
 			pass
 		TRANSACTIONS:
 			#hide other ui states
+			#use animation player to alter UI
 			transaction_ui.show()
 			mnemonic_ui.hide()
 			wallet_ui.hide()
@@ -386,6 +406,7 @@ func _process(_delta):
 			else: return
 		SMARTCONTRACTS: # doesnt work #opts into smart contracts with wallet
 			#hide other ui states
+			#use animation player to alter UI
 			transaction_ui.show()
 			mnemonic_ui.hide()
 			wallet_ui.hide()
@@ -616,6 +637,30 @@ func convert_binary_to_string(binary : PoolByteArray)-> String:
 
 
 "UI Buttons"
+#increases all UI parents scale for horizontal screens
+func upscale_wallet_ui()-> void:
+	var newScale = Vector2(0.08, 0.08)
+	var newScale2 = Vector2(0.25,0.25)
+	var newScale3 = Vector2(1.5,1.5)
+	
+	wallet_ui.set_scale(newScale) 
+	mnemonic_ui.set_scale(newScale2)
+	transaction_ui.set_scale(newScale2)
+	
+	#upscale their childern
+	
+	for i in wallet_ui.get_children():
+		i.set_scale(newScale)
+	
+	for t in mnemonic_ui.get_children():
+		if not t is Timer:
+			t.set_scale(newScale3)
+	
+	#transaction_ui.get_children().set_scale(newScale)
+	
+	#scale selection button
+	state_controller.set_scale(newScale2) #doenst work. Using aniamtion player instead
+	pass
 
 func _on_withdraw_pressed():
 	Music.play_track(Music.ui_sfx[0])

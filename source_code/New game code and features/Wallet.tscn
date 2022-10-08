@@ -1,8 +1,28 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://New game code and features/Wallet.gd" type="Script" id=1]
 [ext_resource path="res://addons/algodot/Algod.gd" type="Script" id=2]
 [ext_resource path="res://fonts/wallet.tres" type="Theme" id=3]
+
+[sub_resource type="Animation" id=1]
+resource_name = "MOBILE UI"
+tracks/0/type = "method"
+tracks/0/path = NodePath("..")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "upscale_wallet_ui"
+} ]
+}
+
+[sub_resource type="Animation" id=2]
+length = 0.001
 
 [node name="Node" type="Control"]
 anchor_right = 0.474
@@ -28,14 +48,14 @@ margin_left = 9.15687
 margin_top = 0.561343
 margin_right = 531.156
 margin_bottom = 24.5614
-rect_scale = Vector2( 0.09, 0.09 )
+rect_scale = Vector2( 0.1, 0.1 )
 text = "Import mnemonic"
 
 [node name="enter_mnemonic" type="Button" parent="mnemonic_ui"]
-margin_left = -79.5251
-margin_top = 3.21459
-margin_right = -34.5251
-margin_bottom = 23.2146
+margin_left = 2.24064
+margin_top = 30.1888
+margin_right = 47.2406
+margin_bottom = 50.1888
 text = "Enter"
 
 [node name="transaction_ui" type="LineEdit" parent="."]
@@ -43,14 +63,14 @@ margin_left = 9.15687
 margin_top = 0.561343
 margin_right = 531.156
 margin_bottom = 24.5614
-rect_scale = Vector2( 0.09, 0.09 )
+rect_scale = Vector2( 0.1, 0.1 )
 text = "To Address"
 
 [node name="enter_transaction" type="Button" parent="transaction_ui"]
-margin_left = -79.5251
-margin_top = 3.21459
-margin_right = -34.5251
-margin_bottom = 23.2146
+margin_left = 153.224
+margin_top = 84.0803
+margin_right = 198.224
+margin_bottom = 104.08
 text = "Enter"
 
 [node name="amount" type="LineEdit" parent="transaction_ui"]
@@ -156,12 +176,18 @@ text = "main menu"
 script = ExtResource( 2 )
 
 [node name="state_controller" type="OptionButton" parent="."]
-margin_left = 4.0
-margin_top = 22.0
-margin_right = 132.0
-margin_bottom = 42.0
+margin_left = 4.92053
+margin_top = 22.0719
+margin_right = 132.921
+margin_bottom = 42.0719
 rect_scale = Vector2( 0.1, 0.1 )
 text = "State Controller"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../state_controller")
+method_call_mode = 1
+"anims/MOBILE UI" = SubResource( 1 )
+anims/RESET = SubResource( 2 )
 
 [connection signal="pressed" from="mnemonic_ui/enter_mnemonic" to="." method="_on_enter_mnemonic_pressed"]
 [connection signal="pressed" from="transaction_ui/enter_transaction" to="." method="_on_enter_transaction_pressed"]

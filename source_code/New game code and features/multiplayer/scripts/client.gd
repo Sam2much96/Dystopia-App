@@ -322,6 +322,9 @@ func display_damage(body):#rewrite this to instance blood fx
 	print ('damage: ' , body)
 	
 
+#'what is a sync function'
+#sync func test(id, info):
+#	pass
 
 func client_debug()-> void:
 	print ('/Client Player info : Linear velocity: ',linear_vel, "// Peer ID: ", get_tree().get_network_unique_id()) #for debug purposes only

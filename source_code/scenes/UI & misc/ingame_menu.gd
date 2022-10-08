@@ -5,7 +5,8 @@
 # Ingame Menu
 # 
 # To Do:
-#(1) Impement State Machine
+#(1) Impement State Machine (done)
+# (2) Scales for mobile UI
 #Bugs
 
 #(1) Emitting signals fail
@@ -40,6 +41,11 @@ enum { SHOWING, HIDDEN, LOADING}
 export (String) var menu_state
 
 func _ready():
+	"Scales for Mobile UI"
+	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
+		upscale()
+	
+	
 	'Hides the Menu once the scene tree is ready'
 	#hide()
 	menu_state =  HIDDEN
@@ -231,3 +237,11 @@ func _on_Testing_Scene_pressed(): # turn off in release build
 func _on_City_scape_pressed(): #turn off in release build
 	Globals.current_level = "res://scenes/levels/Cityscape Exterior.tscn"
 	change_scenes_via_globals_script()
+
+func upscale()-> void:
+	# This is a quick fix. It should ideally find the center of the screen and 
+	#position by an offset
+	var newScale = Vector2(2,2)
+	var newPosition = Vector2(-650,250)
+	self.set_scale(newScale)
+	self.set_position(newPosition)

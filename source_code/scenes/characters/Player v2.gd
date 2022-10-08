@@ -9,7 +9,7 @@
 # (3) It's a class and stores variables to the UI, Globals singleton, PlayersSave Files, and the Debug SIngleton
 # To Do:
 #(1) Update Documentation
-# (2) Implement Networking Calls
+# (2) Implement Remote Proceedure calls Networking
 # (3) Im not sure how to implement sstate machine calls to the client/server
 # (4) Too much Detection going on
 # (5) Implement RPC calls as methods
@@ -20,11 +20,6 @@ extends KinematicBody2D
 
 class_name Player_v2_networking
 
-"""
-This implements a very rudimentary state machine. There are better implementations
-in the AssetLib if you want to make something more complex. Also it shares code with Enemy.gd
-and probably both should extend some parent script
-"""
 
 
 

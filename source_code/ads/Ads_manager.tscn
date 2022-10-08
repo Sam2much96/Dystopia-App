@@ -14,8 +14,6 @@ Fast_debug = true
 
 [node name="AdMob" type="Node" parent="."]
 script = ExtResource( 2 )
-enabled = true
-is_real = true
 banner_on_top = false
 banner_id = "ca-app-pub-1198869974398081/1991292180"
 interstitial_id = "ca-app-pub-1198869974398081/2289590569"

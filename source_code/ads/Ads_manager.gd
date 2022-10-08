@@ -22,7 +22,7 @@ extends CanvasLayer
 # Bugs
 # (2) Yodo1Mas implementation code might be broken (testing)
 # (3) Compilong Appodeal SDK with yodo1mas creates a bug on the java side of the codes
-# (4) 
+# (4) Admob is banned. Attempt implementing yodo1mas
 
 
 """

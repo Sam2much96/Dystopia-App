@@ -1,16 +1,17 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/__a__webp.webp" type="Texture" id=1]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/__c__webp.webp" type="Texture" id=2]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/__b__webp.webp" type="Texture" id=3]
-[ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=4]
 
 [node name="StaticBody2D" type="StaticBody2D"]
 position = Vector2( 1838.86, 1377.52 )
 scale = Vector2( 1.5, 1.5 )
 
 [node name="CollisionPolygon2D19" type="CollisionPolygon2D" parent="."]
-polygon = PoolVector2Array( -2145.39, -1614.32, -2052.27, 3247.62, 6266.57, 3247.62, 6175.24, -2056.46, -2213.12, -2088.42, -2157.31, -1676.07, -1976.76, -1714.08, -2009.94, -1902.17, 5935.78, -1793.05, 6055.51, 3020.07, -1905.05, 3052.01, -1967.26, -1666.56 )
+position = Vector2( 0, 365.031 )
+scale = Vector2( 1, 1.09894 )
+polygon = PoolVector2Array( -2145.39, -1614.32, -2052.27, 3247.62, 6266.57, 3247.62, 6175.24, -2056.46, -2213.12, -2088.42, -2157.31, -1676.07, -1976.76, -1714.08, -2009.94, -1902.17, 5251.27, -1804.44, 5247.5, -1749.53, 4906.2, -1746.1, 4889.29, -1145.04, 5885.06, -1117.62, 5926.13, -120.534, 5387.57, -120.378, 5396.27, 245.344, 5360.4, 243.304, 5362.64, 316.762, 5284.16, 322.883, 5212.4, 400.422, 5212.68, 1056.76, 5251.85, 1078.36, 5386.05, 1078.36, 5386.05, 1158.05, 5281.01, 1160.91, 5200.24, 1212.79, 5200.24, 1550.04, 5044.02, 1550.91, 5040.46, 1481.27, 4737.89, 1486.13, 4742.98, 1563.25, 4508.05, 1570.03, 4524.33, 2322.22, 5515.21, 2325.86, 5511.22, 2129.53, 5551.17, 2133.16, 5695.01, 2209.51, 6010.46, 2213.58, 6055.51, 3020.07, -1905.05, 3052.01, -1883.94, 1061.46, -277.398, 1054.6, -247.228, 834.97, 46.9286, 793.79, 24.3011, -91.5859, -1947.04, -133.148, -1967.26, -1666.56 )
 
 [node name="YSort" type="YSort" parent="."]
 position = Vector2( -2154.77, -1276.3 )
@@ -38,5 +39,3 @@ margin_right = 9123.52
 margin_bottom = 5735.72
 rect_scale = Vector2( 1.00282, 1.00282 )
 texture = ExtResource( 2 )
-
-[node name="Player" parent="." instance=ExtResource( 4 )]

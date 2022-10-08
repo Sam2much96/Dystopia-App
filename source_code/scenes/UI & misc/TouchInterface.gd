@@ -29,7 +29,7 @@ extends Node2D
 REWROTE THE STATEMACHINE 16/04/22 
 """
 
-export (bool) var _Hide_touch_interface
+var _Hide_touch_interface : bool
 
 export (bool) var _Debug
 onready var menu = $menu
@@ -65,11 +65,11 @@ func _ready():
 		Globals.direction_control = _control 
 		touch_interface_debug()
 
-#toggles touch interface visibility depending on the os (Pc or Mobiles)
-	if Globals.os != str('Android') or str('ios'): # Detecting OS type is buggy on Android builds
-		if _Hide_touch_interface == true: #
-			self.hide()
-			print('Hiding touch interface', Globals.os)
+#toggles touch interface visibility depending on the os and screen orientation (Pc or Mobiles)
+	if Globals.os != 'Android' && Globals.screenOrientation == 0: 
+		_Hide_touch_interface = true
+		self.hide()
+		print('Hiding touch interface', Globals.os)
 
 #########Auto sets the controller button
 

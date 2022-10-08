@@ -18,7 +18,6 @@ extends Control
 #(3)  
 # TO DO:
 #(1) Update Documentation
-# (2) Use center y center of screen calculation to position video player
 
 class_name cinematic
 
@@ -130,7 +129,24 @@ func play_opening_cinematic():
 func _free_memory(items): # A Generic function to clear global variables once they've been used
 	items = null
 
-
+"""
+Quickly sets a videoplayer to Play music and videos
+"""
+# Would break if passed to anything other than videosteam player
+func _Video_Stream(node , stream, _sound, viewport):
+	if stream and node != null or '':
+		print('Playing Video Stream:/',stream)
+		#node._set_size((viewport))
+		node.set_stream(stream) 
+		node.play() 
+		print ('Video player is playing: ',node.is_playing())
+		
+		# Plays the sound through the music singleton
+		#get_tree().get_root().get_node("/root/Music").play(sound)
+		return
+	else:
+		push_error('Video player uses the video player node, and music singleton')
+		push_warning(str(node) +"/" +str(stream) + "/"+ str (_sound))
 
 
 """

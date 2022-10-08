@@ -75,7 +75,7 @@ var current_level
 
 
 var Music_on_settings
-var direction_control : String  #toggles btw analogue and d-pad
+export (String, 'analogue', 'direction') var direction_control : String  #toggles btw analogue and d-pad
 
 var uncompressed # Varible holds uncompressed zip files
 

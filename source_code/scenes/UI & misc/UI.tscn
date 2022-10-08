@@ -284,7 +284,6 @@ enabled = true
 current_comics = ExtResource( 5 )
 
 [node name="TouchInterface" parent="." instance=ExtResource( 8 )]
-_control = "direction"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 1 )

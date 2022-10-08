@@ -61,9 +61,9 @@ export var _state_controller = RESET
 export (String, 'analogue', 'direction') var _control
 func _ready():
 #Changes D-pad Controls from control once the Touch Interface is ready
-	if _control != null:
-		Globals.direction_control = _control 
-		touch_interface_debug()
+	if Globals.direction_control != '':
+		_control = Globals.direction_control  
+	#touch_interface_debug() disabling for now
 
 #toggles touch interface visibility depending on the os and screen orientation (Pc or Mobiles)
 	if Globals.os != 'Android' && Globals.screenOrientation == 0: 
@@ -110,15 +110,19 @@ func attack(): #used by ui scene when attack is clicked
 # Handles Debugging Variables from the touch interface system
 func touch_interface_debug(): #Debug singleton is broken
 	if _Hide_touch_interface == false:
-		print ('Touch Interface Debug: ', " COntrol: ",_control, "Global Control", Globals.direction_control )
+		print ('Touch Interface Debug: ', " COntrol: ",Globals.direction_control, "Global Control", Globals.direction_control )
 
 func _process(_delta):
 	if _Debug == true:
 		touch_interface_debug() # For Debug Purposes only
 	
-	# Changes the button Layout depending on the screen orientation
-	if Globals.screenOrientation == 1: #works
-		Anim.play("SCREEN_VERTICAL");
+	'Changes the button Layout depending on the screen orientation for Mobile UI'
+	#implement joystick and D-pad variations
+	if Globals.screenOrientation == 1 && _control == 'direction': #works
+		Anim.play("SCREEN_VERTICAL_1");
+	if Globals.screenOrientation == 1 && _control == 'analogue': #works
+		Anim.play("SCREEN_VERTICAL_2");
+	#If screen Is Horizontal, it would be PC UI, making this code obsolete
 	elif Globals.screenOrientation == 0:
 		Anim.play("SCREEN_HORIZONTAL");
 	else: pass;

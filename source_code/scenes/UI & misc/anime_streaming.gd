@@ -81,10 +81,10 @@ func _on_watch_anime_pressed():
 	
 	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
 	#videoplayer._play_pilot_a() #depreciated in v1.1.9 for size problems
-	
-	OS.shell_open("https://youtu.be/oJY1rIxC4kk")
-	
 	$Label.hide()
+	return OS.shell_open("https://youtu.be/oJY1rIxC4kk")
+	
+	
 	#print ('Video Stream: ' , str(videoplayer.stream)) # For debug purposes only
 		
 

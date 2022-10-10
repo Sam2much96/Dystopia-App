@@ -7,6 +7,7 @@ env:
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
+# android push can only be used once per day without errors
 on:
   push:
     branches: [ master ]
@@ -38,7 +39,7 @@ jobs:
          track: production
          status: completed
          inAppUpdatePriority: 3
-         changesNotSentForReview: true
+      
 
          
             

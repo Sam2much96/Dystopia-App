@@ -9,6 +9,7 @@
 #(2) Plays an animation that shows text via the dialogue singletom
 # Bugs:
 #(1) Broken Alignment with long texts
+#(2) Broken Alignment on Mobiles with Horizontal UI
 # *************************************************
 
 extends TextureRect

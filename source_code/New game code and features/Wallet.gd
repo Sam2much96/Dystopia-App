@@ -135,6 +135,7 @@ enum {NEW_ACCOUNT,CHECK_ACCOUNT, SHOW_ACCOUNT, IMPORT_ACCOUNT, TRANSACTIONS ,COL
 export var state = IDLE
 
 var wallet_check : int = 0
+var wallet_check_counter : int = 0
 #'On/off Switch'
 #export (bool) var enabled
 #************Helper Booleans ****************************#
@@ -201,6 +202,7 @@ func _ready():
 	# store mnemonic as a pool byte array 
 	#x() # save and print encoded pool byte array
 
+	
 
 
 func _process(_delta):
@@ -209,7 +211,7 @@ func _process(_delta):
 		state = SHOW_ACCOUNT #only loads wallet once
 		
 	elif state_controller.get_selected() == 1:
-		wallet_check = 0 # resets the wallet check stopper
+		#wallet_check = 0 # resets the wallet check stopper
 		state = CHECK_ACCOUNT
 	elif state_controller.get_selected() == 2:
 		wallet_check = 0 # resets the wallet check stopper
@@ -273,18 +275,27 @@ func _process(_delta):
 				state = SHOW_ACCOUNT
 				return
 	
-		CHECK_ACCOUNT:  #Doesnt WOrk
+		#"Try running outside process funtion"
+		CHECK_ACCOUNT:  #Works too well. Overprints texts
 			#if FileCheck1.file_exists("user://wallet/account_info.token") :
 			if wallet_check == 0:
 				#Make sure an algod node is running or connet to mainnet or testnet
-				Algorand.create_algod_node('TESTNET')
+				if Algorand.algod == null:
+					Algorand.create_algod_node('TESTNET')
 
-				var status
-				status = status && yield(Algorand.algod.health(), "completed") 
+					
+					#var status
+				var status : bool
+				status= yield(Algorand.algod.health(), "completed")
 				
-				if status: #testing using a method instead
-					check_wallet_info() 
-					wallet_check += 1
+				print ("Status debug: ", status,' ',wallet_check_counter)
+				check_wallet_info()
+				
+				# Escape Current State to Show Account State
+				state_controller.select(0) 
+				state = SHOW_ACCOUNT
+				
+
 		
 		SHOW_ACCOUNT: #buggy with state controller
 			"it's always load account details when ready"
@@ -423,6 +434,28 @@ func _process(_delta):
 			set_process(false)
 			pass
 
+# Uses Connection Health to check Account info
+func check_account(): # works
+#if wallet_check == 0:
+	#Make sure an algod node is running or connet to mainnet or testnet
+	if Algorand.algod == null:
+		Algorand.create_algod_node('TESTNET')
+	
+	wallet_check_counter+= 1
+	#var status
+	var status : bool
+	status= yield(Algorand.algod.health(), "completed")
+	
+	print ("Status debug: ", status,' ',wallet_check_counter)
+	check_wallet_info()
+	
+	if status:
+		print ("sadgnasdknslgknsalgk")
+	#wallet_check += 1
+#	if status: #testing using a method instead
+#		check_wallet_info() 
+#		(print ("----wallet check done------"))
+#		return 0;
 
 #loads from saved account info 
 func show_account_info(load_from_local_wallet: bool): 
@@ -465,7 +498,7 @@ func save_account_info( info : Dictionary, number: int, assets: bool):
 		save_dict.amount =info["amount"]
 		
 		# encode mnemonic
-		save_dict.mnemonic = convert_string_to_binary(mnemonic)  
+		save_dict.mnemonic = convert_string_to_binary(mnemonic)  #saves mnemonic as string error
 	
 	#************Use Assets parameter ,Disabling for now*******************************#
 	if assets:
@@ -507,6 +540,8 @@ func _restore_wallet_data(info: Dictionary):
 	Globals.address = info.address
 	
 	#decode mnemonic
+	#fixes string conversion error with regex
+	
 	
 	mnemonic = convert_binary_to_string(info.mnemonic)
 	_wallet_algos = info.amount 
@@ -518,6 +553,10 @@ func _restore_wallet_data(info: Dictionary):
 	
 	print ('wallet data restored from local database')
 	
+	#print ("mnemonic load debug: ",mnemonic) #for debug purposes only
+
+
+
 
 func check_is_image_avalable_()-> bool:
 	if local_image_path != '':
@@ -570,6 +609,9 @@ func check_wallet_info(): #works
 	account_info = yield(Algorand.algod.account_information(address), "completed")
 	save_account_info(account_info, 0, false) #testing
 	print (account_info) 
+	
+	#increases a wallet check timer
+	wallet_check += 1
 
 func _on_withraw(): #withdraws Algos from wallet data into my test algorand wallet
 	var status
@@ -621,11 +663,11 @@ func create_wallet_directory()-> void:
 
 'Encryption and Decryption ALgorithms'
 # cryptographically encrypt users mnemonic
-func convert_string_to_binary(string : String)-> PoolByteArray:
-	var binary : PoolByteArray = []
+func convert_string_to_binary(string : String)-> Array:
+	var binary : Array = []
 	for i in string:
 		binary.append(ord(i))
-	print( 'Encoded Mnemonic: ',binary) #for debug purposes only
+	#print( 'Encoded Mnemonic: ',binary) #for debug purposes only
 	return binary
 
 
@@ -680,7 +722,8 @@ func _on_testnetdispenser_pressed():
 func _on_refresh_pressed():
 	#Algorand.algod.url = "node.testnet.algoexplorerapi.io"
 	#print (Algorand.algod.url)
-	check_wallet_info()
+	check_account()
+	#check_wallet_info()
 
 
 #Deletes Local Account Info

@@ -11,7 +11,7 @@
 #(2) Implement NFT subcode.
 # (3) Unimplement Networking Singleton i.e. script should run it's own networking node
 # (4) Users should be able to copy wallet details
-# (5) SHould be able to send algods and tokens
+# (5) Test transaction state for Tokens and Algos
 #Logic
 # It uses the Networking singleton and Algorand library
 # to get an asset's url and download the image from
@@ -25,8 +25,11 @@
 # *************************************************
 #Bugs:
 
-#(2) CHeck account state is broken
+#(2) CHeck account state is broken (fixed)
 #(3) Import Mnemonic doesnt work on free app installs without wallets
+#(4) UI logic breaks apart once Account details are missing (duplicate of #3)
+
+
 # To-DO:
 # (1) Implement as State Machine (done)(requires testing)
 # (2) Update transaction logic (done)
@@ -73,6 +76,8 @@ onready var wallet_ui = $wallet_ui
 onready var mnemonic_ui = $mnemonic_ui
 onready var transaction_ui = $transaction_ui
 onready var txn_ui_options = $transaction_ui/txn_ui_options
+
+onready var address_ui_options = $mnemonic_ui/address_ui_options
 
 onready var nft_asset_id = $transaction_ui/nft
 onready var txn_amount = $transaction_ui/amount 
@@ -147,6 +152,9 @@ var transaction_valid: bool =false
 var loaded_wallet: bool= false #fixes looping loading bug
 #	Algorand.create_algod_node("TESTNET")
 
+
+#*************Signals************************************#
+signal completed
 
 func _ready():
 	
@@ -289,7 +297,7 @@ func _process(_delta):
 				status= yield(Algorand.algod.health(), "completed")
 				
 				print ("Status debug: ", status,' ',wallet_check_counter)
-				check_wallet_info()
+				yield(check_wallet_info(),"completed")#ddd
 				
 				# Escape Current State to Show Account State
 				state_controller.select(0) 
@@ -309,33 +317,70 @@ func _process(_delta):
 				load_account_info(false)
 				
 				show_account_info(true)
+				
+			
+					#state = GENERATE_ADDRESS
+				
+			'Handles if account info is deleted'
+			if not FileCheck1.file_exists("user://wallet/account_info.token"):
+				#Revert to Import account state
+				
+				push_error('account info file does not exist')
+				#state_controller.select(3) #rewrite as a method
+				#state = IMPORT_ACCOUNT  #rewrite as a method
+			
+
 
 			return
-		IMPORT_ACCOUNT:
+		IMPORT_ACCOUNT: #works ish. But kinda broken too 
 			# hide wallet ui, show mnemonic ui
-			#use animation player to alter UI
-			
+			#use animation player to alter UI 
+			transaction_ui.hide()
 			wallet_ui.hide()
 			mnemonic_ui.show()
 			
 			#hide mnemonic characters
-			#mnemonic_ui.set_secret(true) 
+			mnemonic_ui.set_secret(true) 
 			
 			
-			if imported_mnemonic:
+			var status : bool
+			Algorand.create_algod_node("TESTNET")
+			
+			status= yield(Algorand.algod.health(), "completed")
+			
+			print ("Status Debug: ", status)
+			
+			if status && imported_mnemonic:
+				#address=(Algorand.algod.get_address(mnemonic))
+				#var address : String
+				'Cannot convert argument error'
+				#address = Algorand.algod.get_address(mnemonic) 
+				address = address_ui_options.text 
+				#print ("address debug: ", address)
+				account_info = {'address': address, 'amount': 0, 'mnemonic': mnemonic}
+				
+				save_account_info(account_info,1, false)
+			
+				state_controller.select(0)
+			
+			if imported_mnemonic  :
 				#create algod node
-				Algorand.create_algod_node("TESTNET")
+				#Algorand.create_algod_node("TESTNET")
 				# save user's mnemonic
+				#address = address_ui_options.text
 				mnemonic = mnemonic_ui.text
-				# generate address from mnemonic
-				address=Algorand.algod.get_address(mnemonic)
+				
+				# generate address from mnemonic (causes Lag)
+				#address=(Algorand.algod.get_address(mnemonic))
 				# save address 
 				'savins imported account info'
 				
-				#var dict = {'address': address, 'amount': 0, 'mnemonic': mnemonic}
+				#print(address)
+				account_info = {'address': address, 'amount': 0, 'mnemonic': mnemonic}
 				
 				"saves more account info"
-				#save_account_info(dict,1)
+				save_account_info(account_info,1, false)
+				
 				
 				# check account and saves automatically
 				check_wallet_info()
@@ -345,6 +390,8 @@ func _process(_delta):
 				# show account
 				state = SHOW_ACCOUNT
 				
+			#if address == null && mnemonic != null:
+			#	state = GENERATE_ADDRESS
 				
 			pass
 		TRANSACTIONS:
@@ -433,6 +480,21 @@ func _process(_delta):
 		IDLE:
 			set_process(false)
 			pass
+		
+		#GENERATE_ADDRESS: #doesnt work
+		#	if address == null:
+		#		if mnemonic != null :
+		#			if Algorand.algod != null:
+		#				address=(Algorand.algod.get_address(mnemonic))
+		#				print ("address debug: ",address) #for debug purposes only
+		#				#save generate address to local storage
+		#			elif Algorand.algod == null:
+		#				Algorand.create_algod_node('TESTNET')
+		#				address=(Algorand.algod.get_address(mnemonic))
+						
+		#				print ("address debug: ",address) #for debug purposes only
+						#save generate address to local storage
+			pass
 
 # Uses Connection Health to check Account info
 func check_account(): # works
@@ -484,6 +546,13 @@ func connect_signals(): #connects all required signals in the parent node
 func debug_signal_connections()->void:
 	#debuggers
 	print("Networking Connected: ",Networking.is_connected("request_completed", self, "_http_request_completed"))
+
+
+func generate_address()-> void:
+	address =Algorand.algod.get_address(mnemonic)
+	print ('address; ', address)
+	
+
 
 
 #saves account information to a dictionary
@@ -553,7 +622,7 @@ func _restore_wallet_data(info: Dictionary):
 	
 	print ('wallet data restored from local database')
 	
-	#print ("mnemonic load debug: ",mnemonic) #for debug purposes only
+	print ("mnemonic load debug: ",mnemonic) #for debug purposes only
 
 
 
@@ -605,11 +674,17 @@ func load_local_image_texture():
 	NFT.set_expand(true)
 
 
-func check_wallet_info(): #works
-	account_info = yield(Algorand.algod.account_information(address), "completed")
-	save_account_info(account_info, 0, false) #testing
+func check_wallet_info(): #works. Pass a variable check
+	if address != null && mnemonic != null:
+		account_info = yield(Algorand.algod.account_information(address), "completed")
+		save_account_info(account_info, 0, false) #testing
+	else : 
+		push_error('Either address or mnemonic cannot be null')
+		print ("check info Address debug: ",address)
+		print ("check info Mnemonic debug: ", mnemonic)
 	print (account_info) 
 	
+	emit_signal('completed')
 	#increases a wallet check timer
 	wallet_check += 1
 
@@ -738,7 +813,7 @@ func _on_Copy_address_pressed():
 
 
 
-
+'For Importing Mnemonic and Address'
 func _on_enter_mnemonic_pressed():
 	imported_mnemonic = true
 

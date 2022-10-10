@@ -49,16 +49,31 @@ margin_top = 0.561343
 margin_right = 531.156
 margin_bottom = 24.5614
 rect_scale = Vector2( 0.1, 0.1 )
-text = "Import mnemonic"
+text = "     123456"
 
 [node name="enter_mnemonic" type="Button" parent="mnemonic_ui"]
-margin_left = 2.24064
-margin_top = 30.1888
-margin_right = 47.2406
-margin_bottom = 50.1888
+margin_left = 8.60156
+margin_top = 125.034
+margin_right = 53.6016
+margin_bottom = 145.034
 text = "Enter"
 
+[node name="address_ui_options" type="LineEdit" parent="mnemonic_ui"]
+margin_left = 2.0
+margin_top = 35.0
+margin_right = 210.0
+margin_bottom = 59.0
+text = "wallet address"
+
+[node name="Label" type="Label" parent="mnemonic_ui"]
+margin_left = -81.6111
+margin_top = 7.90176
+margin_right = -5.61105
+margin_bottom = 21.9018
+text = "Mnemonic: "
+
 [node name="transaction_ui" type="LineEdit" parent="."]
+visible = false
 margin_left = 9.15687
 margin_top = 0.561343
 margin_right = 531.156
@@ -95,6 +110,7 @@ margin_bottom = 151.0
 text = "Transaction"
 
 [node name="wallet_ui" type="VBoxContainer" parent="."]
+visible = false
 margin_left = 5.1404
 margin_top = 0.670656
 margin_right = 340.14
@@ -189,7 +205,7 @@ method_call_mode = 1
 "anims/MOBILE UI" = SubResource( 1 )
 anims/RESET = SubResource( 2 )
 
-[connection signal="pressed" from="mnemonic_ui/enter_mnemonic" to="." method="_on_enter_mnemonic_pressed"]
+[connection signal="text_entered" from="mnemonic_ui" to="." method="_on_mnemonic_ui_text_entered"]
 [connection signal="pressed" from="transaction_ui/enter_transaction" to="." method="_on_enter_transaction_pressed"]
 [connection signal="pressed" from="wallet_ui/HBoxContainer/withdraw" to="." method="_on_withdraw_pressed"]
 [connection signal="pressed" from="wallet_ui/HBoxContainer/refresh" to="." method="_on_refresh_pressed"]

@@ -26,8 +26,9 @@
 #Bugs:
 
 #(2) CHeck account state is broken (fixed)
-#(3) Import Mnemonic doesnt work on free app installs without wallets
-#(4) UI logic breaks apart once Account details are missing (duplicate of #3)
+#(3) Import Mnemonic doesnt work on free app installs without wallets (fixed)
+#(4) UI logic breaks apart once Account details are missing (duplicate of #3) (fixed)
+# (5) Algorand._check_account_information() doesnt work on testnet
 
 
 # To-DO:
@@ -45,7 +46,7 @@
 # (12) Implement show mnemonic button
 # (13) Improve UI 
 		#alter UI scale for mobiles (done)
-		#use animation player to alter UI
+		#use animation player to alter UI (depreciated. Functions work faster)
 
 # Testing
 #(1) Image Downloder (works)
@@ -58,7 +59,7 @@ extends Control
 
 #class_name wallet
 
-export (String) var local_image_path ="res://wallet/img0.png" #Loads the image file path from a folder to prevent redownloads (depreciated)
+
 var image_url
 var json= File.new()
 var account_info: Dictionary = {1:[]}
@@ -105,16 +106,17 @@ var Player_account_temp: Array =[]
 
 #************Wallet variables**************#
 
-var amount
-var address
-var mnemonic
+var amount : int
+var address : String
+var mnemonic : String
 
 var encoded_mnemonic : PoolByteArray
 var encrypted_mnemonic 
 
 var _wallet_algos: int
-var asset_name
-var asset_url
+var asset_name : String
+var asset_url : String
+var asset_unit_name : String
 
 #************NFT variables**************#
 var _name : String
@@ -126,11 +128,15 @@ var FileCheck2=File.new() #checks NFT metadata .json
 var FileCheck3=File.new()#checks local image storage
 var FileCheck4=File.new() # checks wallet mnemonic
 
+var FileCheck5 = ResourceLoader #checks if the image texture is stored locally
+
 var FileDirectory=Directory.new() #deletes all theon reset
+
 
 
 #************Wallet Save Path**********************#
 var token_path : String = "user://wallet/account_info.token"
+export (String) var local_image_path ="user://wallet/img0.png" #Loads the image file path from a folder to prevent redownloads (depreciated)
 #var keys_path : String = "user://wallet/wallet_keys.cfg"
 #var keys_passwrd : PoolByteArray = [1234]
 
@@ -150,8 +156,9 @@ var imported_mnemonic : bool = false
 var transaction_valid: bool =false
 
 var loaded_wallet: bool= false #fixes looping loading bug
-#	Algorand.create_algod_node("TESTNET")
+var good_internet : bool #debugs user's internet
 
+var passed_all_connectivity_checks : bool = false #debugs all connectivity checks
 
 #*************Signals************************************#
 signal completed
@@ -209,8 +216,9 @@ func _ready():
 	#encrypt(encoded_mnemonic)
 	# store mnemonic as a pool byte array 
 	#x() # save and print encoded pool byte array
-
-	
+	'Connect and Debug Networking signals'
+	connect_signals()
+	debug_signal_connections()
 
 
 func _process(_delta):
@@ -243,7 +251,7 @@ func _process(_delta):
 	match state:
 		NEW_ACCOUNT: #loads wallet details if account already exists
 			
-			error_checkers()
+			wallet_checks()
 			if not algod_node_exists:
 				#Make sure an algod node is running or connet to mainnet or testnet
 				Algorand.create_algod_node('TESTNET')
@@ -272,10 +280,10 @@ func _process(_delta):
 				#save_new_account_info(Player_account_details)
 				'Attempts saving new account info'
 				#breaks
-				var dict = {'address': address, 'amount': 0, 'mnemonic': mnemonic}
+				var dict = {'address': address, 'amount': 0, 'mnemonic': mnemonic, 'asset_index': '','asset_name': '','asset_unit_name': '', 'asset_url': '' }
 				
 				"saves more account info"
-				save_account_info(dict,1, false)
+				save_account_info(dict,1)
 				
 				state = SHOW_ACCOUNT
 				#wallet_check += 1
@@ -326,7 +334,7 @@ func _process(_delta):
 				#Revert to Import account state
 				
 				push_error('account info file does not exist')
-				#state_controller.select(3) #rewrite as a method
+				state_controller.select(3) #rewrite as a method
 				#state = IMPORT_ACCOUNT  #rewrite as a method
 			
 
@@ -344,51 +352,47 @@ func _process(_delta):
 			
 			
 			var status : bool
+			
+			#rewrite this as a method
 			Algorand.create_algod_node("TESTNET")
 			
 			status= yield(Algorand.algod.health(), "completed")
 			
-			print ("Status Debug: ", status)
+			print ("Status Debug: ", status) #debugs connection health
+			
+			if status: #Only shows this button if Algod node has good health
+				address_ui_options.show()
 			
 			if status && imported_mnemonic:
 				#address=(Algorand.algod.get_address(mnemonic))
 				#var address : String
+				
+				
 				'Cannot convert argument error'
-				#address = Algorand.algod.get_address(mnemonic) 
+				
+				mnemonic = mnemonic_ui.text
+				#address = Algorand.algod.get_address(mnemonic) #doesnt work well
 				address = address_ui_options.text 
 				#print ("address debug: ", address)
-				account_info = {'address': address, 'amount': 0, 'mnemonic': mnemonic}
-				
-				save_account_info(account_info,1, false)
-			
-				state_controller.select(0)
-			
-			if imported_mnemonic  :
-				#create algod node
-				#Algorand.create_algod_node("TESTNET")
-				# save user's mnemonic
-				#address = address_ui_options.text
-				mnemonic = mnemonic_ui.text
-				
-				# generate address from mnemonic (causes Lag)
-				#address=(Algorand.algod.get_address(mnemonic))
-				# save address 
+
+
 				'savins imported account info'
 				
-				#print(address)
-				account_info = {'address': address, 'amount': 0, 'mnemonic': mnemonic}
+				#FIxes null parameters errors
+				account_info = {'address': address, 'amount': 0, 'mnemonic': mnemonic, 'asset_index': '','asset_name': '','asset_unit_name': '', 'asset_url': '' }
 				
 				"saves more account info"
-				save_account_info(account_info,1, false)
+				save_account_info(account_info,1)
 				
 				
 				# check account and saves automatically
-				check_wallet_info()
+				#check_wallet_info() #breaks sometimes
 				
 				
 				
 				# show account
-				state = SHOW_ACCOUNT
+				state_controller.select(0)
+				#state = SHOW_ACCOUNT
 				
 			#if address == null && mnemonic != null:
 			#	state = GENERATE_ADDRESS
@@ -428,38 +432,53 @@ func _process(_delta):
 			pass
 			
 		# implement regex for parsing collectibles ipfs url 
-		COLLECTIBLES: #Buggy #should  handle only 1 nft
+		#duplacte of check account state
+		COLLECTIBLES: #works but stores image at wrong site
 			"Checks if the Image is avalable Locally and either downloads or loads it"
-			if not FileCheck3.file_exists("user://wallet/img0.png"): #works
-				print('NFT image is not available locally, Downloading now') 
+			if not FileCheck3.file_exists(local_image_path): #works
+				
+				
+				#print('NFT image is not available locally, Downloading now') 
 				
 				#************NFT Logic***********#
-				# check asset id for its url
-				# save asset-id url locally
-				#load assets id url from memory 
-				#download asset image throug ipfs web2 gate (implemented in networking)
-				# parse asset uri to remove "ipfs://" link name
-				#save image locally
-				#run image check
-				#load image
-				
-				# Connects the Networking signal
-				connect_signals()
-				debug_signal_connections()
-				'theres a problem with the network connection'
-				'my server isnt serving the json file to godot properly'
-				"using python instead"
-				
-				#image url should be gotten from asset-id
-				
-				print ('nft host site',image_url) #image_url should not be null
-				Networking.url=image_url
-				 
-				#makes a https request to download image from local server
-				
-				Networking. _connect_to_ipfs_gateway(image_url) 
+				if wallet_check == 0 && asset_url == '':
+					#Make sure an algod node is running or connet to mainnet or testnet
+					if Algorand.algod == null:
+						Algorand.create_algod_node('TESTNET')
+
+						
+						#var status
+					var status : bool
+					status= yield(Algorand.algod.health(), "completed")
+					
+					print ("Status debug: ", status,' ',wallet_check_counter)
+					yield(check_wallet_info(),"completed") #saves account info with assets details
+					
+					#asset id save #bug, wipes out revious information
+					#save_account_info(account_info,0) #saves account with asset infro 
+					
+					# show account
+					state_controller.select(0)
+				if asset_url && asset_name != '':
+
+					
+					'theres a problem with the network connection'
+					'my server isnt serving the json file to godot properly'
+					"using python instead"
+					
+					#image url should be gotten from asset-id
+					# some hosted assets might be meta data, 
+					#thats why image url is different fromasset-url
+					image_url=asset_url 
+					
+					print ('nft host site',image_url) #image_url should not be null
+					Networking.url=image_url #disabling for now
+					 
+					#makes a https request to download image from local server
+					
+					Networking. _connect_to_ipfs_gateway(image_url)  
 				#***************************************************************
-			elif FileCheck3.file_exists("user://wallet/img0.png"):
+			elif FileCheck3.file_exists(local_image_path):
 					load_local_image_texture()
 			else: return
 		SMARTCONTRACTS: # doesnt work #opts into smart contracts with wallet
@@ -481,43 +500,55 @@ func _process(_delta):
 			set_process(false)
 			pass
 		
-		#GENERATE_ADDRESS: #doesnt work
-		#	if address == null:
-		#		if mnemonic != null :
-		#			if Algorand.algod != null:
-		#				address=(Algorand.algod.get_address(mnemonic))
-		#				print ("address debug: ",address) #for debug purposes only
-		#				#save generate address to local storage
-		#			elif Algorand.algod == null:
-		#				Algorand.create_algod_node('TESTNET')
-		#				address=(Algorand.algod.get_address(mnemonic))
-						
-		#				print ("address debug: ",address) #for debug purposes only
-						#save generate address to local storage
-			pass
 
-# Uses Connection Health to check Account info
-func check_account(): # works
+
+# Uses Connection Health and internet health to check Account info
+#Rewrite to include local NFT images check and all checks
+func wallet_checks()-> bool: # works #run networking internet checks test before running this function
 #if wallet_check == 0:
 	#Make sure an algod node is running or connet to mainnet or testnet
 	if Algorand.algod == null:
 		Algorand.create_algod_node('TESTNET')
+	
+	if !good_internet:
+		Networking._check_if_device_is_online()
 	
 	wallet_check_counter+= 1
 	#var status
 	var status : bool
 	status= yield(Algorand.algod.health(), "completed")
 	
-	print ("Status debug: ", status,' ',wallet_check_counter)
-	check_wallet_info()
+	print ("Status debug: ", status,' ',wallet_check_counter, " good internet: ", good_internet)
+	
+	
+	
 	
 	if status:
-		print ("sadgnasdknslgknsalgk")
-	#wallet_check += 1
-#	if status: #testing using a method instead
-#		check_wallet_info() 
-#		(print ("----wallet check done------"))
-#		return 0;
+		print ("Node Health is Ok")
+	if good_internet:
+		print ('Internet connection is Ok')
+	
+	
+	if status and good_internet: #prevents app breaking bug
+		passed_all_connectivity_checks = true
+		pass
+
+	if local_image_path != '' && !is_image_available_at_local_storage:
+		"Checks if image file is available"
+		is_image_available_at_local_storage = FileCheck5.exists(local_image_path, "ImageTexture")
+		#print ("Is local image available: ", _r) #for debug purposes only
+		 #= _r
+	#return is_image_available_at_local_storage
+	'Fixes account token 0 bytes bug'
+	if FileDirectory.file_exists(token_path ):
+		FileCheck1.open(token_path ,File.READ)
+		if FileCheck1.get_len() == 0: #prevents a  0 bytes error
+			FileCheck1.close()
+			FileDirectory.remove(token_path ) #use Globals delete function instead
+
+
+	print ("----wallet check done------")
+	return 0;
 
 #loads from saved account info 
 func show_account_info(load_from_local_wallet: bool): 
@@ -557,24 +588,24 @@ func generate_address()-> void:
 
 #saves account information to a dictionary
 #i don't know what number does ngl. It jusst works, lol
-func save_account_info( info : Dictionary, number: int, assets: bool): 
+func save_account_info( info : Dictionary, number: int): 
 	var save_game = File.new() #change from save game
 	save_game.open(token_path, File.WRITE)
 	var save_dict = {}
-	#save_dict= info #saves the raw dictionary
-	if not assets:
-		save_dict.address =info["address"]
-		save_dict.amount =info["amount"]
-		
-		# encode mnemonic
-		save_dict.mnemonic = convert_string_to_binary(mnemonic)  #saves mnemonic as string error
 	
 	#************Use Assets parameter ,Disabling for now*******************************#
-	if assets:
-		save_dict.asset_index =info["created-assets"][number]["index"]
-		save_dict.asset_name = info["created-assets"][number]["params"]["name"]
-		save_dict.asset_unit_name = info["created-assets"][number]["params"]['unit-name']
-		save_dict.asset_url = info["created-assets"][number]['params']['url'] #asset Uro and asset uri are different. Separate them
+	
+	save_dict.address =info["address"] # stops presaved info from deletion
+	save_dict.amount =info["amount"]
+		
+	# encode mnemonic
+	save_dict.mnemonic = convert_string_to_binary(mnemonic)  #saves mnemonic as string error
+		
+		
+	save_dict.asset_index =info["created-assets"][number]["index"]
+	save_dict.asset_name = info["created-assets"][number]["params"]["name"]
+	save_dict.asset_unit_name = info["created-assets"][number]["params"]['unit-name']
+	save_dict.asset_url = info["created-assets"][number]['params']['url'] #asset Uro and asset uri are different. Separate them
 	
 	save_game.store_line(to_json(save_dict))
 	save_game.close()
@@ -615,10 +646,12 @@ func _restore_wallet_data(info: Dictionary):
 	mnemonic = convert_binary_to_string(info.mnemonic)
 	_wallet_algos = info.amount 
 	
-	#***********Disabling for now*****************#
-	#asset_name = str (info.asset_name) 
-	#asset_url = str(info.asset_url) #asset url and asset meta data are different
-	
+	#***********Assets Information*****************#
+	#might break if wallet has no assets. 
+	#Write proper fix for this function and save asset function which duplicates code
+	asset_name = str (info.asset_name) 
+	asset_url = str(info.asset_url) #asset url and asset meta data are different
+	asset_unit_name = str(info.asset_unit_name)
 	
 	print ('wallet data restored from local database')
 	
@@ -626,50 +659,58 @@ func _restore_wallet_data(info: Dictionary):
 
 
 
+#;; include this under account checks
+#func check_is_image_avalable_()-> bool:
 
-func check_is_image_avalable_()-> bool:
-	if local_image_path != '':
-		"Checks if image file is available"
-		var file_check = ResourceLoader
-		var _r = file_check.exists(local_image_path, "ImageTexture")
-		#print ("Is local image available: ", _r) #for debug purposes only
-		is_image_available_at_local_storage = _r
-	return is_image_available_at_local_storage
-
-'Downloads NFT Image from IPFS'
+'Performs a Bunch of HTTP requests'
 func _http_request_completed(result, response_code, headers, body): #works with https connection
 	print (" request done: ", result) #********for debug purposes only
 	print (" headers: ", headers)#*************for debug purposes only
 	print (" response code: ", response_code) #for debug purposes only
+	
+	if not body.empty():
+		good_internet = true
+	
+	
+	if body.empty(): #returns an empty body
+		push_error("Result Unsuccessful")
+		good_internet = false
+		Networking.stop_check()
+	
 	if is_image_available_at_local_storage== false: 
 		"Should Parse the NFT's meta-data to get the image ink"
-		if body.empty() != true:
-			print ('request successful')
+		#if body.empty() != true:
+		print ('request successful')
 			
-			"Downloads the NFT image"
-			print (" request successful")
-			NFT.set_image_(Networking.download_image_(body, "res://wallet/img0")) #works?
+		"Downloads the NFT image"
+		print (" request successful")
 			
-		if body.empty(): #returns an empty body
-			push_error("Result Unsuccessful")
-			Networking.stop_check()
+			#disabling for now
+		set_image_(Networking.download_image_(body, "user://wallet/img0")) #works
+			
 	Networking.cancel_request()
 
 func set_image_(texture):
-	if FileCheck3.file_exists("res://wallet/img0.png"):#use file check
+	if FileCheck3.file_exists(local_image_path):#use file check
 		#dowmload image
 		NFT.set_texture(texture)
 		"update Local image"
 		print("Image Tex: ",NFT.texture)
 		print("Image Format: ",NFT.texture.get_format() )
-		local_image_path = "res://wallet/img0.png"
-		print ("Is stored locally: ",check_is_image_avalable_())
+		#local_image_path = "user://wallet/img0.png"
+
+		
+		print ("Is stored locally: ",is_image_available_at_local_storage)
 
 func load_local_image_texture():
 	"Doesn't load Image with proper aspect ratio"
 	#improve this code base
-	
-	NFT.set_texture(load(local_image_path))
+	var texture = ImageTexture.new()
+	var image = Image.new()
+	image.load(local_image_path)
+	texture.create_from_image(image)
+
+	NFT.set_texture(texture) #cannot load directly from local storage without permissions
 		#print (NFT.texture) for debug purposes only
 	NFT.set_expand(true)
 
@@ -677,12 +718,12 @@ func load_local_image_texture():
 func check_wallet_info(): #works. Pass a variable check
 	if address != null && mnemonic != null:
 		account_info = yield(Algorand.algod.account_information(address), "completed")
-		save_account_info(account_info, 0, false) #testing
+		save_account_info(account_info, 0) #testing
 	else : 
 		push_error('Either address or mnemonic cannot be null')
 		print ("check info Address debug: ",address)
 		print ("check info Mnemonic debug: ", mnemonic)
-	print (account_info) 
+	print (account_info) #for debug purposes only 
 	
 	emit_signal('completed')
 	#increases a wallet check timer
@@ -708,26 +749,21 @@ func _on_withraw(): #withdraws Algos from wallet data into my test algorand wall
 func _on_reset():
 	#should deleta all account details
 	print ('----Resetting')
-	var a="res://wallet/account_info.token"
-	var b="res://wallet/img0"
-	var c="res://wallet/wallet_keys.cfg"
-	var d="res://wallet/nft_metadata.json"
+	var a=token_path 
+	var b=local_image_path
+	#var c="res://wallet/wallet_keys.cfg"
+	#var d="res://wallet/nft_metadata.json"
 	var FilesToDelete=[]#stores all files in an array
-	FilesToDelete.append(a,b,c,d)
+	FilesToDelete.append(a,b)
 	for _i in FilesToDelete: #looped delete
 		var error=FileDirectory.remove(_i)
 		if error==OK:
-			print ('Refreshing Wallet')
+			print ('Deleting Wallet Details')
 	return _ready()
 
-func error_checkers()-> void:
-	'Fixes account token 0 bytes bug'
-	if FileDirectory.file_exists("user://wallet/account_info.token"):
-		FileCheck1.open('user://wallet/account_info.token',File.READ)
-		if FileCheck1.get_len() == 0: #prevents a  0 bytes error
-			FileCheck1.close()
-			FileDirectory.remove("user://wallet/account_info.token") #use Globals delete function instead
-			return
+#func error_checkers()-> void:
+
+#			return
 
 func create_wallet_directory()-> void:
 # Creates a Wallet folder.
@@ -794,11 +830,14 @@ func _on_testnetdispenser_pressed():
 
 
 #Updates Local Account Info
-func _on_refresh_pressed():
-	#Algorand.algod.url = "node.testnet.algoexplorerapi.io"
-	#print (Algorand.algod.url)
-	check_account()
-	#check_wallet_info()
+func _on_refresh_pressed(): #disabling refresh button
+
+	#check_account()
+	if passed_all_connectivity_checks:
+		check_wallet_info()
+	
+	pass
+	#
 
 
 #Deletes Local Account Info

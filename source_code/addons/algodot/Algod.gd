@@ -291,6 +291,7 @@ func _send_asset_transfers_to_receivers_address( _funder_mnemonic : String, _rec
 
 " This function can be expanded upon to print lots of Account specific details"
 
+# broken in testnet
 func _check_account_information(address : String, mnemonic : String, info : String) -> Dictionary: #account debugger #works
 	_info = yield(algod.account_information(address,mnemonic), "completed")
 	if info == "" or null:

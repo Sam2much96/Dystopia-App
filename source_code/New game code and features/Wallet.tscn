@@ -31,7 +31,6 @@ margin_right = -567.72
 margin_bottom = -680.12
 rect_scale = Vector2( 15.563, 19.384 )
 script = ExtResource( 1 )
-local_image_path = "user://wallet/img0.png"
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 40.0
@@ -206,6 +205,7 @@ method_call_mode = 1
 anims/RESET = SubResource( 2 )
 
 [connection signal="text_entered" from="mnemonic_ui" to="." method="_on_mnemonic_ui_text_entered"]
+[connection signal="pressed" from="mnemonic_ui/enter_mnemonic" to="." method="_on_enter_mnemonic_pressed"]
 [connection signal="pressed" from="transaction_ui/enter_transaction" to="." method="_on_enter_transaction_pressed"]
 [connection signal="pressed" from="wallet_ui/HBoxContainer/withdraw" to="." method="_on_withdraw_pressed"]
 [connection signal="pressed" from="wallet_ui/HBoxContainer/refresh" to="." method="_on_refresh_pressed"]

@@ -82,7 +82,8 @@ onready var timer = $Timer2
 
 #var youtube_dl = preload ('res://New game code and features/youtube streamer/Youtube-DL.gd') #what if youtube goes down lool
 
-
+#**********Helper Booleans***********#
+var running_request : bool = false
 
 
 func _ready():
@@ -141,13 +142,17 @@ func start_check(): #Starts time check using Check timer
 	print ("start check")
 	check_timer.start()
 
-
-func _check_connection(url): # Check http unsecured Url connection
+# Check http unsecured Url connection
+# fix multiple check bug
+func _check_connection(url): 
 	#Ignore Warning
-	var error = .request(url,PoolStringArray(),false,0,"") 
-	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
-	print (' Networking Request Error: ',error) #for debug purposes only
-
+	if not running_request :
+		var error = .request(url,PoolStringArray(),false,0,"") 
+		connection_debug = str (' making request  ')  + str (' Request Error: ',error)
+		print (' Networking Request Error: ',error) #for debug purposes only
+		running_request = true
+	elif running_request:
+		return
 
 func _check_connection_secured(url): # Check http secured Url connection
 	#Ignore Warning
@@ -158,15 +163,19 @@ func _check_connection_secured(url): # Check http secured Url connection
 
 func _connect_to_ipfs_gateway(url): # Check http secured Url connection
 	#Ignore Warning
-	url = _parse(url) 
-	#url =url.http_escape()
+	if not running_request :
+		url = _parse(url) 
+		#url =url.http_escape()
 
-	# uses ipfs web 2 gateway
-	url = "https://ipfs.io/ipfs/" + url
-	var t=StreamPeerSSL.new()
-	var error = .request(url,PoolStringArray(),false,HTTPClient.METHOD_GET) 
-	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
-	print (' Networking Request Error: ',error) #for debug purposes only
+		# uses ipfs web 2 gateway
+		url = "https://ipfs.io/ipfs/" + url
+		var t=StreamPeerSSL.new()
+		var error = .request(url,PoolStringArray(),false,HTTPClient.METHOD_GET) 
+		connection_debug = str (' making request  ')  + str (' Request Error: ',error)
+		print (' Networking Request Error: ',error) #for debug purposes only
+	elif running_request:
+		return
+
 
 'Removes IPFS Domain from Asset url'
 func _parse(_url : String)-> String: #works
@@ -174,8 +183,20 @@ func _parse(_url : String)-> String: #works
 	#print (_url) # for debug purposes only
 	return _url
 
+'Internet COnnectivity Check'
+func _check_if_device_is_online():
+	
+	#index = index + 1
+	#dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
+	url = 'https://mfts.io'
+	_check_connection( url)#url('https://play.google.com/store/apps/details?id=dystopia.app')
+	
+
+
 func on_request_result(result, response_code, headers, body): # I need to pass variables to this code bloc
 	"HTTP REQUEST RESULT'S STATE MACHINE"
+	#resets result if completed successfully
+	running_request = false
 	#connected to results and works as an auto emitter
 	match result:
 		RESULT_SUCCESS: #what happens to body? #always write a http request cmpleted function in the connecting script

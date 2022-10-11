@@ -22,19 +22,17 @@
 #(1) Curerntly implements on the ALgorand blockchain, other chains not supported
 # (2) Uses two states -a Accounts State & -Collectible state
 # (3) Implements Binary > Utf-8 encryption
+# (4) Networking Test for Algorand node health, Good internet connection and local img storage
 # *************************************************
 #Bugs:
 
-#(2) CHeck account state is broken (fixed)
-#(3) Import Mnemonic doesnt work on free app installs without wallets (fixed)
-#(4) UI logic breaks apart once Account details are missing (duplicate of #3) (fixed)
-# (5) Algorand._check_account_information() doesnt work on testnet
-
+#(1) UI is not intuitive 
 
 # To-DO:
-# (1) Implement as State Machine (done)(requires testing)
+# (1) Implement as State Machine (done)
 # (2) Update transaction logic (done)
-# (3) Test Smart Contracts
+# (3) Test Smart Contracts 
+		#for minting NFT's
 # (4) Implement Proper wallet security (needs encryption and decryption algorithm) (step 1 done)
 # (5) Copy and Paste Wallet Address (done)
 # (6) Use time timeout to transition btw states (depreciated)
@@ -47,10 +45,13 @@
 # (13) Improve UI 
 		#alter UI scale for mobiles (done)
 		#use animation player to alter UI (depreciated. Functions work faster)
+# (14) Implement SHow mnemonic button
+# (15) Implement Comic book interface for interractible NFT
+# (16) Implement better NFT UI 
 
 # Testing
 #(1) Image Downloder (works)
-# (2) Create NFT (doesnt work)
+# (2) Create NFT (work with python script)
 # (3) Parse NFT (works)
 # *************************************************
 
@@ -63,7 +64,7 @@ extends Control
 var image_url
 var json= File.new()
 var account_info: Dictionary = {1:[]}
-var is_image_available_at_local_storage : bool  #(depreciated)
+
 onready var Algorand = $Algodot
 
 #*****************Wallet UI ************************************
@@ -84,14 +85,12 @@ onready var nft_asset_id = $transaction_ui/nft
 onready var txn_amount = $transaction_ui/amount 
 onready var txn_ui_options_button = $transaction_ui/txn_ui_options
 
-onready var NFT= $TextureRect
+onready var NFT =  Globals.NFT#get_tree().get_nodes_in_group('NFT')#$Control/TextureRect
 onready var state_controller = $state_controller
 onready var anim = $AnimationPlayer
 #*****************************************************
 
-#var status
-#var file_checker = File.new() #use FileCheck instead (depreciated)
-#onready var python_request=$Node (depreciated)
+
 
 #************** Algo Variables *************************
 var Escrow_account: String #="L5ESENBL23J2GJGM64Y767IXWGBCKXMGS2OGZ3MC5BBGWJAKJJAUK7BJK4"  #should ideally be a smart contract
@@ -128,7 +127,7 @@ var FileCheck2=File.new() #checks NFT metadata .json
 var FileCheck3=File.new()#checks local image storage
 var FileCheck4=File.new() # checks wallet mnemonic
 
-var FileCheck5 = ResourceLoader #checks if the image texture is stored locally
+#var FileCheck5 = ResourceLoader #checks if the image texture is stored locally (depreciiated)
 
 var FileDirectory=Directory.new() #deletes all theon reset
 
@@ -159,7 +158,7 @@ var loaded_wallet: bool= false #fixes looping loading bug
 var good_internet : bool #debugs user's internet
 
 var passed_all_connectivity_checks : bool = false #debugs all connectivity checks
-
+var is_image_available_at_local_storage : bool  = FileCheck4.file_exists(local_image_path)
 #*************Signals************************************#
 signal completed
 
@@ -186,40 +185,16 @@ func _ready():
 		#anim.play("MOBILE UI")
 		
 		upscale_wallet_ui()
-	#ipfs test (works) # delete later
-	#Networking._parse('ipfs://bafybeihhnvmussfrgymhytoykwymzhshgzdfdmshnwapiplmosdzcr4zxi#i')
 
-	"Testing encoded mnemonic"
-	# logic to encrpypt
-	# load mnemonc
-	#convert mnemonic to unicode integers
-	#encode converted mnemonic cryptographically
-	# save it locally
-	
-	
-	# logic to decrypt
-	#load encoded mnemonc
-	# crytographically decrypt it
-	# convert it from unicode integers to string
-	#load it as mnemonic
-	
-	
-	#load_account_info(false)
-	
-	#print (mnemonic)
-	
-	# convert mnemonic to bytes
-	#encoded_mnemonic.append_array(convert_string_to_binary(mnemonic))
-	
-	#convert_binary_to_string(encoded_mnemonic) #works
-	
-	#encrypt(encoded_mnemonic)
-	# store mnemonic as a pool byte array 
-	#x() # save and print encoded pool byte array
 	'Connect and Debug Networking signals'
 	connect_signals()
 	debug_signal_connections()
 
+	'NFT checks'
+	print ("NFT debug: ", NFT)
+
+	"General Wallet Checks"
+	run_wallet_checks() #should be used sparingly?
 
 func _process(_delta):
 	# UI state Processing (works-ish)
@@ -251,7 +226,7 @@ func _process(_delta):
 	match state:
 		NEW_ACCOUNT: #loads wallet details if account already exists
 			
-			wallet_checks()
+			run_wallet_checks()
 			if not algod_node_exists:
 				#Make sure an algod node is running or connet to mainnet or testnet
 				Algorand.create_algod_node('TESTNET')
@@ -433,54 +408,65 @@ func _process(_delta):
 			
 		# implement regex for parsing collectibles ipfs url 
 		#duplacte of check account state
-		COLLECTIBLES: #works but stores image at wrong site
+		COLLECTIBLES: #works but buggy now
 			"Checks if the Image is avalable Locally and either downloads or loads it"
-			if not FileCheck3.file_exists(local_image_path): #works
-				
-				
-				#print('NFT image is not available locally, Downloading now') 
-				
-				#************NFT Logic***********#
-				if wallet_check == 0 && asset_url == '':
-					#Make sure an algod node is running or connet to mainnet or testnet
-					if Algorand.algod == null:
-						Algorand.create_algod_node('TESTNET')
+			if wallet_check == 0:
+				if not FileCheck3.file_exists(local_image_path): #works
+					
+					
+					#print('NFT image is not available locally, Downloading now') 
+					
+					#************NFT Logic***********#
+					if wallet_check == 0 && asset_url == '':
+						#Make sure an algod node is running or connet to mainnet or testnet
+						if Algorand.algod == null:
+							Algorand.create_algod_node('TESTNET')
+
+							
+							#var status
+						var status : bool
+						status= yield(Algorand.algod.health(), "completed")
+						
+						print ("Status debug: ", status,' ',wallet_check_counter)
+						yield(check_wallet_info(),"completed") #saves account info with assets details
+						
+						#asset id save #bug, wipes out revious information
+						#save_account_info(account_info,0) #saves account with asset infro 
+						
+						# show account
+						state_controller.select(0)
+					if asset_url && asset_name != '':
 
 						
-						#var status
-					var status : bool
-					status= yield(Algorand.algod.health(), "completed")
+						'theres a problem with the network connection'
+						'my server isnt serving the json file to godot properly'
+						"using python instead"
+						
+						#image url should be gotten from asset-id
+						# some hosted assets might be meta data, 
+						#thats why image url is different fromasset-url
+						image_url=asset_url 
+						
+						print ('nft host site',image_url) #image_url should not be null
+						Networking.url=image_url #disabling for now
+						 
+						#makes a https request to download image from local server
+						
+						Networking. _connect_to_ipfs_gateway(image_url)  
+						
+						wallet_check += 1
+					#***************************************************************
+				if FileCheck3.file_exists(local_image_path) or is_image_available_at_local_storage:
+					#print ('adfbsdjfbasdfjsdfs') #works
+					#load_local_image_texture()
+					wallet_check += 1
+					NFT.load_local_image_texture(local_image_path) #loop error
 					
-					print ("Status debug: ", status,' ',wallet_check_counter)
-					yield(check_wallet_info(),"completed") #saves account info with assets details
-					
-					#asset id save #bug, wipes out revious information
-					#save_account_info(account_info,0) #saves account with asset infro 
-					
-					# show account
+					#change states
 					state_controller.select(0)
-				if asset_url && asset_name != '':
-
-					
-					'theres a problem with the network connection'
-					'my server isnt serving the json file to godot properly'
-					"using python instead"
-					
-					#image url should be gotten from asset-id
-					# some hosted assets might be meta data, 
-					#thats why image url is different fromasset-url
-					image_url=asset_url 
-					
-					print ('nft host site',image_url) #image_url should not be null
-					Networking.url=image_url #disabling for now
-					 
-					#makes a https request to download image from local server
-					
-					Networking. _connect_to_ipfs_gateway(image_url)  
-				#***************************************************************
-			elif FileCheck3.file_exists(local_image_path):
-					load_local_image_texture()
-			else: return
+				 #duplicate of above for bug catching
+					#load_local_image_texture()
+				else: return
 		SMARTCONTRACTS: # doesnt work #opts into smart contracts with wallet
 			#hide other ui states
 			#use animation player to alter UI
@@ -504,7 +490,7 @@ func _process(_delta):
 
 # Uses Connection Health and internet health to check Account info
 #Rewrite to include local NFT images check and all checks
-func wallet_checks()-> bool: # works #run networking internet checks test before running this function
+func run_wallet_checks()-> bool: # works #run networking internet checks test before running this function
 #if wallet_check == 0:
 	#Make sure an algod node is running or connet to mainnet or testnet
 	if Algorand.algod == null:
@@ -518,7 +504,7 @@ func wallet_checks()-> bool: # works #run networking internet checks test before
 	var status : bool
 	status= yield(Algorand.algod.health(), "completed")
 	
-	print ("Status debug: ", status,' ',wallet_check_counter, " good internet: ", good_internet)
+	print ("Status debug:" , status, wallet_check_counter,  "good internet:", good_internet)
 	
 	
 	
@@ -533,10 +519,11 @@ func wallet_checks()-> bool: # works #run networking internet checks test before
 		passed_all_connectivity_checks = true
 		pass
 
-	if local_image_path != '' && !is_image_available_at_local_storage:
-		"Checks if image file is available"
-		is_image_available_at_local_storage = FileCheck5.exists(local_image_path, "ImageTexture")
-		#print ("Is local image available: ", _r) #for debug purposes only
+	"Checks if image file is available"
+	if local_image_path != '':
+		#"Checks if image file is available"
+		is_image_available_at_local_storage = FileCheck4.file_exists(local_image_path)
+		print ("Is local image available: ", is_image_available_at_local_storage) #for debug purposes only
 		 #= _r
 	#return is_image_available_at_local_storage
 	'Fixes account token 0 bytes bug'
@@ -659,8 +646,6 @@ func _restore_wallet_data(info: Dictionary):
 
 
 
-#;; include this under account checks
-#func check_is_image_avalable_()-> bool:
 
 'Performs a Bunch of HTTP requests'
 func _http_request_completed(result, response_code, headers, body): #works with https connection
@@ -677,7 +662,7 @@ func _http_request_completed(result, response_code, headers, body): #works with 
 		good_internet = false
 		Networking.stop_check()
 	
-	if is_image_available_at_local_storage== false: 
+	if not is_image_available_at_local_storage: 
 		"Should Parse the NFT's meta-data to get the image ink"
 		#if body.empty() != true:
 		print ('request successful')
@@ -688,6 +673,7 @@ func _http_request_completed(result, response_code, headers, body): #works with 
 			#disabling for now
 		set_image_(Networking.download_image_(body, "user://wallet/img0")) #works
 			
+	else: return
 	Networking.cancel_request()
 
 func set_image_(texture):
@@ -702,17 +688,7 @@ func set_image_(texture):
 		
 		print ("Is stored locally: ",is_image_available_at_local_storage)
 
-func load_local_image_texture():
-	"Doesn't load Image with proper aspect ratio"
-	#improve this code base
-	var texture = ImageTexture.new()
-	var image = Image.new()
-	image.load(local_image_path)
-	texture.create_from_image(image)
 
-	NFT.set_texture(texture) #cannot load directly from local storage without permissions
-		#print (NFT.texture) for debug purposes only
-	NFT.set_expand(true)
 
 
 func check_wallet_info(): #works. Pass a variable check
@@ -730,21 +706,21 @@ func check_wallet_info(): #works. Pass a variable check
 	wallet_check += 1
 
 func _on_withraw(): #withdraws Algos from wallet data into my test algorand wallet
-	var status
-	if Globals.algos != 0: #cannot withdraw with zero balance
-		Algorand.create_algod_node() #from an escrow account
+	#var status
+	#if Globals.algos != 0: #cannot withdraw with zero balance
+	#	Algorand.create_algod_node() #from an escrow account
 		
-		status = status && yield(Algorand._send_transaction_to_receiver_addr(Escrow_mnemoic ,"rigid steak better media circle nothing range tray firm fatigue pool damage welcome supply police spoon soul topic grant offer chimney total bronze able human", Globals.algos), "completed") #works
+	#	status = status && yield(Algorand._send_transaction_to_receiver_addr(Escrow_mnemoic ,"rigid steak better media circle nothing range tray firm fatigue pool damage welcome supply police spoon soul topic grant offer chimney total bronze able human", Globals.algos), "completed") #works
 		#status = status && yield(_send_asset_transfers_to_receivers_address(funder_address , funder_mnemonic , receivers_address , receivers_mnemonic), "completed") #works
-		print (status)
-	if Globals.algos == 0:
+	#	print (status)
+	#if Globals.algos == 0:
 		
-		print ("Cannot withdraw from ",Globals.algos, " balance")
+	#	print ("Cannot withdraw from ",Globals.algos, " balance")
 		
-	if status:
-		print('withdrawal Successful')
-		show_account_info(false) #updates account info
-
+	#if status:
+	#	print('withdrawal Successful')
+	#	show_account_info(false) #updates account info
+	pass
 
 func _on_reset():
 	#should deleta all account details

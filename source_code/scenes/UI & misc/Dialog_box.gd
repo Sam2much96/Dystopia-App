@@ -10,6 +10,7 @@
 # Bugs:
 #(1) Broken Alignment with long texts
 #(2) Broken Alignment on Mobiles with Horizontal UI
+# (3) Doesn't work sometimes
 # *************************************************
 
 extends TextureRect

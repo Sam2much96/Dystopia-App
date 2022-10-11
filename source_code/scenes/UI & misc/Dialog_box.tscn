@@ -203,11 +203,12 @@ tracks/1/keys = {
 }
 
 [node name="Dialog_box" type="TextureRect"]
+modulate = Color( 1, 1, 1, 0 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -293.0
-margin_bottom = -119.0
+margin_top = -173.0
+margin_bottom = 1.0
 texture = ExtResource( 3 )
 expand = true
 stretch_mode = 6
@@ -225,7 +226,7 @@ custom_fonts/font = SubResource( 1 )
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In semper molestie erat, id aliquam nulla iaculis a. Suspendisse consectetur vehicula consequat. Integer mollis libero sed sem convallis, vitae rutrum metus dapibus. Phasellus purus quam, euismod id diam ut, semper sagittis ipsum. Aenean vel mollis lectus, quis placerat eros. Donec elementum vestibulum augue dignissim vehicula. Mauris ultricies lacus id odio aliquet, eu iaculis urna sodales. "
 autowrap = true
 clip_text = true
-percent_visible = 0.0773196
+percent_visible = 0.0
 __meta__ = {
 "_edit_use_anchors_": false
 }

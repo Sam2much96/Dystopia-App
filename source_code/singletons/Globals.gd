@@ -115,6 +115,9 @@ var bullet_fx : PackedScene
 'Temporary variants'
 var temp
 
+"Wallet Algo"
+var NFT: TextureRect
+
 func _ready():
 	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	

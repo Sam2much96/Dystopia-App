@@ -13,9 +13,14 @@
 #
 # To DO:
 #(1) connect this script with  the dialogue singleton for translation and wordbubble fx co-ordination
+#(2) Update Logic to be used by Texture React nodes NFT
+# (3) Add more parameters to the drag() function to be reusable in other scripts
+# (4) Copy NFT storage codes to save downloaded comic chapters locally. It'll optimize file sizes
+# (5) Implement State Machine
 # *************************************************
 # Bugs:
 # (1) it has a wierd updatable bug that's visible in the debug panel
+# (2) Center Page is buggy
 #
 # *************************************************
 
@@ -25,7 +30,9 @@ extends Control
 
 class_name Comics
 
-export (bool) var enabled 
+#export (bool) var enabled 
+export (String, 'no', 'yes') var enabled
+
 signal comics_showing
 signal loaded_comics 
 signal freed_comics
@@ -36,6 +43,9 @@ export(float,1.0,1.5) var MAX_DIAGONAL_SLOPE =1.3
 
 export (PackedScene) var current_comics 
 
+"Scene Paths to every Comic node"
+# host on ipfs and use local user directory to store comic files
+# Size optimization
 var comics = {
 	 1: 'res://scenes/Comics/chapter 1/chapter 1.tscn',
 	2:'res://scenes/Comics/chapter 2/chapter 2.tscn',
@@ -111,6 +121,7 @@ func _ready():
 """
 LOAD COMICS INTO THE SCENE TREE AS SPRITESHEETS
 """
+#implement Texture react node functionality 
 
 func load_comics(): 
 	if current_comics != null && current_comics.can_instance() == true:
@@ -140,12 +151,13 @@ func load_comics():
 			shape.set_extents((Vector2(130,130))) #new code
 			collision_shape.set_shape (shape) #new code
 	
-	
+			#Kinematic Body 2D
 			Kinematic_2d.add_child(collision_shape) #set the collision shape
 			#connect signals
 			Kinematic_2d.connect("mouse_exited",self,'_on_Kinematic_2D_mouse_exited') 
 			Kinematic_2d.connect('mouse_entered',self,'_on_Kinematic_2D_mouse_entered')
 
+			#Loaded Comic Signal
 			emit_signal("loaded_comics")
 			print ('loading comics') #for debug purposes 
 
@@ -155,6 +167,7 @@ func load_comics():
 			#position pages
 			_x.position =Kinematic_2d.position
  
+	# Error Catcher 1
 	if current_comics == null and current_comics.can_instance() == false  :
 		push_error('unable to instance comics scene')
 		pass
@@ -185,14 +198,20 @@ func _input(event):
 
 #Toggles comics visibility on/off
 #It disappears if not enabled 
-	if  enabled == false and event.is_action_pressed("comics") :
-		enabled = true 
-	elif enabled == true and event.is_action_pressed("comics") :
-		enabled = false
+	"Enables and Disables Comics Node (when Comics button is pressed)"
+	if not enabled && event.is_action_pressed("comics") : 
+		enabled = true
+	else: enabled = !enabled
+	
+#	if  enabled == false and event.is_action_pressed("comics") : #SImplifying this code bloc
+#		enabled = true 
+#	elif enabled == true and event.is_action_pressed("comics") :
+#		enabled = false
 
-#Controller for Joypad
+	"Controller for Joypad"
 	if event is InputEventJoypadButton && self.visible == true:
 		if event.is_action_pressed("ui_select"): _zoom()
+
 
 	if event is InputEventJoypadMotion and self.visible == true:
 		var axis = event.get_axis_value()
@@ -205,13 +224,13 @@ func _input(event):
 			prev_panel()
 		pass
 
-
+	"Stops From Processing Mouse Inputs"
 	if event is InputEventMouse:
+		#return
 		pass
-
 	if event in InputEventMouseMotion:
+		#return
 		pass
-	 
 
 
 	# Handle Touch
@@ -252,18 +271,27 @@ func _process(_delta):
 		loaded_comics = true
 	#print(position,target)
 	if current_comics == null or current_frame == null  : #error catcher 
-		emit_signal("freed_comics")
+		#emit_signal("freed_comics") disabling signals for now
 		loaded_comics = false
-	if loaded_comics == true:
-		emit_signal("loaded_comics")
 	
-	if enabled == true: #toggles visibility
-		show()
+	
+	if loaded_comics == true:
+		#emit_signal("loaded_comics")
+		pass
+	
+	"VISIBILITY"
+	# add counter
+	if enabled == true: #toggles visibility 
+		#show() #Disabling for debugging
 		
+		#print ("Enabled")
+		
+		pass
 
 	if enabled == false:
-		hide()
-
+		#hide() #Disabling for debugging
+		#print ("DIsabled")
+		pass
 	memory=get_tree().get_nodes_in_group("comics") #an array of all comics in the scene tree
 
 	if memory.empty() != true :
@@ -304,7 +332,7 @@ func _process(_delta):
 """
 DRAG FUNCTION
 """
-func drag():  
+func drag()-> void: 
 	#add more parameters
  # Input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases 
 		
@@ -328,7 +356,8 @@ func drag():
 				Kinematic_2d.set_position(target)
 
 """
-IT AUTOMATICALLY ZOOMS IN AND OUT
+ZOOM
+
 """
 
 func _zoom()-> bool:
@@ -347,7 +376,8 @@ func _zoom()-> bool:
 			zoom = false
 	return zoom 
 
-func center_page(): #sets comic page to center of screen
+'sets comic page to center of screen'
+func center_page(): #
 	if loaded_comics == true:
 		if zoom == false: 
 			if Kinematic_2d.position or origin != null:

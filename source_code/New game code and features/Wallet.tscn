@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://New game code and features/Wallet.gd" type="Script" id=1]
 [ext_resource path="res://addons/algodot/Algod.gd" type="Script" id=2]
 [ext_resource path="res://fonts/wallet.tres" type="Theme" id=3]
+[ext_resource path="res://New game code and features/NFT.gd" type="Script" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "MOBILE UI"
@@ -41,6 +42,11 @@ color = Color( 0.278431, 0.278431, 0.278431, 1 )
 [node name="TextureRect" type="TextureRect" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
+script = ExtResource( 5 )
+
+[node name="Control" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
 
 [node name="mnemonic_ui" type="LineEdit" parent="."]
 margin_left = 9.15687
@@ -72,7 +78,6 @@ margin_bottom = 21.9018
 text = "Mnemonic: "
 
 [node name="transaction_ui" type="LineEdit" parent="."]
-visible = false
 margin_left = 9.15687
 margin_top = 0.561343
 margin_right = 531.156
@@ -109,7 +114,6 @@ margin_bottom = 151.0
 text = "Transaction"
 
 [node name="wallet_ui" type="VBoxContainer" parent="."]
-visible = false
 margin_left = 5.1404
 margin_top = 0.670656
 margin_right = 340.14
@@ -140,7 +144,7 @@ text = "wallet algos: "
 [node name="HBoxContainer" type="GridContainer" parent="wallet_ui"]
 margin_top = 395.0
 margin_right = 522.0
-margin_bottom = 811.0
+margin_bottom = 916.0
 
 [node name="withdraw" type="Button" parent="wallet_ui/HBoxContainer"]
 margin_right = 522.0
@@ -155,17 +159,24 @@ margin_bottom = 206.0
 theme = ExtResource( 3 )
 text = "Refresh"
 
-[node name="Copy address" type="Button" parent="wallet_ui/HBoxContainer"]
+[node name="show_mnemonic" type="Button" parent="wallet_ui/HBoxContainer"]
 margin_top = 210.0
 margin_right = 522.0
 margin_bottom = 311.0
 theme = ExtResource( 3 )
-text = "Copy Address"
+text = "show mnemonic"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="wallet_ui/HBoxContainer"]
+[node name="Copy address" type="Button" parent="wallet_ui/HBoxContainer"]
 margin_top = 315.0
 margin_right = 522.0
 margin_bottom = 416.0
+theme = ExtResource( 3 )
+text = "Copy Address"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="wallet_ui/HBoxContainer"]
+margin_top = 420.0
+margin_right = 522.0
+margin_bottom = 521.0
 
 [node name="testnet-dispenser" type="Button" parent="wallet_ui/HBoxContainer/HBoxContainer"]
 margin_right = 207.0

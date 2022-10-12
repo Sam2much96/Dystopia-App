@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://New game code and features/Wallet.gd" type="Script" id=1]
 [ext_resource path="res://addons/algodot/Algod.gd" type="Script" id=2]
 [ext_resource path="res://fonts/wallet.tres" type="Theme" id=3]
+[ext_resource path="res://New game code and features/Drag_extension.gd" type="Script" id=4]
 [ext_resource path="res://New game code and features/NFT.gd" type="Script" id=5]
 
 [sub_resource type="Animation" id=1]
@@ -38,15 +39,6 @@ margin_right = 40.0
 margin_bottom = 40.0
 rect_scale = Vector2( 1.66221, 1.44276 )
 color = Color( 0.278431, 0.278431, 0.278431, 1 )
-
-[node name="TextureRect" type="TextureRect" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
-script = ExtResource( 5 )
-
-[node name="Control" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
 
 [node name="mnemonic_ui" type="LineEdit" parent="."]
 margin_left = 9.15687
@@ -201,6 +193,26 @@ text = "main menu"
 [node name="Algodot" type="Node" parent="."]
 script = ExtResource( 2 )
 
+[node name="Control" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_pivot_offset = Vector2( 8.86526, 4.48991 )
+mouse_filter = 2
+script = ExtResource( 4 )
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="Control"]
+
+[node name="TextureRect" type="TextureRect" parent="Control/KinematicBody2D"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_pivot_offset = Vector2( 18.0789, 17.8748 )
+script = ExtResource( 5 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Control/KinematicBody2D"]
+position = Vector2( 10.2808, 7.63516 )
+scale = Vector2( 1, 1 )
+polygon = PoolVector2Array( -8.90822, -7.09424, -8.13716, 48.8282, 55.6038, 49.4472, 55.3467, -6.68153 )
+
 [node name="state_controller" type="OptionButton" parent="."]
 margin_left = 4.92053
 margin_top = 22.0719
@@ -223,3 +235,4 @@ anims/RESET = SubResource( 2 )
 [connection signal="pressed" from="wallet_ui/HBoxContainer/Copy address" to="." method="_on_Copy_address_pressed"]
 [connection signal="pressed" from="wallet_ui/HBoxContainer/HBoxContainer/testnet-dispenser" to="." method="_on_testnetdispenser_pressed"]
 [connection signal="pressed" from="wallet_ui/HBoxContainer/HBoxContainer/Main menu" to="." method="_on_Main_menu_pressed"]
+[connection signal="gui_input" from="Control/KinematicBody2D/TextureRect" to="Control" method="_on_TextureRect_gui_input"]

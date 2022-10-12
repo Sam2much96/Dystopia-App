@@ -116,7 +116,7 @@ var bullet_fx : PackedScene
 var temp
 
 "Wallet Algo"
-var NFT: TextureRect
+var NFT: TextureRect #should ideally be an array for multiple NFT's
 
 func _ready():
 	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes

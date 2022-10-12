@@ -16,12 +16,14 @@
 #(2) Update Logic to be used by Texture React nodes NFT
 # (3) Add more parameters to the drag() function to be reusable in other scripts
 # (4) Copy NFT storage codes to save downloaded comic chapters locally. It'll optimize file sizes
-# (5) Implement State Machine
+# (5) Implement State Machine (on It)
+# (6) Implement NFT drag and Drop
+# (7) Implement Page state and Pages state
 # *************************************************
 # Bugs:
 # (1) it has a wierd updatable bug that's visible in the debug panel
 # (2) Center Page is buggy
-#
+# (3) Drag and Drop across small distances is buggy
 # *************************************************
 
 
@@ -30,8 +32,6 @@ extends Control
 
 class_name Comics
 
-#export (bool) var enabled 
-export (String, 'no', 'yes') var enabled
 
 signal comics_showing
 signal loaded_comics 
@@ -86,29 +86,27 @@ onready var _comics_root = self
 
 onready var _debug_= get_tree().get_root().get_node("/root/Debug")
 
+"Bug FIx from <200 absolute Distances"
 
-func _enter_tree():
-	
-	
-	pass
+var target_memory_x: Array = [] #stores vector 2 of previous targets
+var target_memory_y: Array = [] #stores vector 2 of previous targets
 
-func _init():
-	pass
+
+var enabled : bool 
+#export (String, 'no', 'yes') var _enabled
+
 
 func _ready():
 	#wordbubble() #for debug purposes only
-
 	
 	if current_comics !=null:
 		load_comics()
-		Globals.comics = self #updates itself to the globals singleton
-		#bookmark('load')
-		#print ('Globals Comics Node', Globals.comics)
+		#Globals.comics = self #updates itself to the globals singleton
 
 
 
 	enabled = false
-	target = Vector2() 
+	#target = Vector2() duplicate code 
 	 #for swipe detection
 	_e.one_shot = true
 	_e.wait_time = 0.5
@@ -185,6 +183,7 @@ func load_comics():
 	center_page()
 
 
+
 func _input(event): 
 	"""
 	#Comic panel changer
@@ -199,14 +198,14 @@ func _input(event):
 #Toggles comics visibility on/off
 #It disappears if not enabled 
 	"Enables and Disables Comics Node (when Comics button is pressed)"
-	if not enabled && event.is_action_pressed("comics") : 
-		enabled = true
-	else: enabled = !enabled
+	#if not enabled && event.is_action_pressed("comics") : 
+	#	enabled = true
+	#else: enabled = !enabled
 	
-#	if  enabled == false and event.is_action_pressed("comics") : #SImplifying this code bloc
-#		enabled = true 
-#	elif enabled == true and event.is_action_pressed("comics") :
-#		enabled = false
+	if  enabled == false and event.is_action_pressed("comics") : #SImplifying this code bloc
+		enabled = true 
+	elif enabled == true and event.is_action_pressed("comics") :
+		enabled = false
 
 	"Controller for Joypad"
 	if event is InputEventJoypadButton && self.visible == true:
@@ -243,16 +242,16 @@ func _input(event):
 			if event.get_index() == int(2) and event is InputEventScreenPinch : #zoom if screentouch is 2 fingers & uses input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases
 				
 				_zoom() #you can use get_index to get the number of fingers
-		if event.pressed:
-			_start_detection(event.position)
-		elif not _e.is_stopped():
-			_end_detection(event.position)
+		
+		"Handles Swipe Detection" #buggy 
+		_handle_swipe_detection(event)
 
-	# Handles ScreenDragging
+	"Handles Screen Dragging"
 	if event is InputEventScreenDrag && current_comics != null :
 		#if event is InputEventMultiScreenDrag: breaks
 		target = event.get_position()
-		drag()
+		return drag(target, Kinematic_2d.position, Kinematic_2d)
+		
 
 # Handles releasing 
 	#pass
@@ -264,9 +263,17 @@ func _input(event):
 		_zoom() #disabled for debugging, enable when done debugging
 		return
 
+
+
 func _process(_delta):
- 
-	
+	"Limits memory usage for Drag and Drop bug fixer"
+	if target_memory_x.size() > 30:
+		target_memory_x.clear() 
+	if target_memory_y.size() > 30:
+		target_memory_y.clear() 
+
+
+	# ReWrite to Use State machine
 	if current_comics != null:
 		loaded_comics = true
 	#print(position,target)
@@ -282,14 +289,14 @@ func _process(_delta):
 	"VISIBILITY"
 	# add counter
 	if enabled == true: #toggles visibility 
-		#show() #Disabling for debugging
+		show() #Disabling for debugging
 		
 		#print ("Enabled")
 		
 		pass
 
 	if enabled == false:
-		#hide() #Disabling for debugging
+		hide() #Disabling for debugging
 		#print ("DIsabled")
 		pass
 	memory=get_tree().get_nodes_in_group("comics") #an array of all comics in the scene tree
@@ -332,31 +339,83 @@ func _process(_delta):
 """
 DRAG FUNCTION
 """
-func drag()-> void: 
+#body must be a kinematic body 2d
+func drag(_target : Vector2, _position : Vector2, _body : KinematicBody2D)-> void: #pass this method some parmeters
 	#add more parameters
  # Input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases 
 		
-	if loaded_comics == true:
-		target = target  
-		position = Kinematic_2d.position 
-		center = restaVectores(target, position)
-		Kinematic_2d.set_position(target)
-		can_drag = true 
+	#if loaded_comics == true:
+	#target #= target  
+	#_position = Kinematic_2d.position 
+	center = restaVectores(_target, _position)
+	_body.set_position(_target)
+	can_drag = true 
 		
-		" THE TOUCH INPUT CONTROLLER"
+	" Drag n Drop Logic"
 		
 		
-		
-		if abs(position.distance_to(target)) > 200: #if its far...
-		##use suma vectores function for vector maths
-			Kinematic_2d.move_and_slide(center) #move and slide to center
+	"If Distance to input target is greater than 200"
+	if abs(_position.distance_to(_target)) > 200: #if its far...
+	##use suma vectores function for vector maths
+		_body.move_and_slide(center) #move and slide to center
+		print ('moving to center') #for debug purposes only
 
-		if abs(position.distance_to(target)) < 200 : 
-				#Kinematic_2d.move_and_slide(target) 
-				Kinematic_2d.set_position(target)
+
+	"Buggy if Distance is less than 200"
+	if abs(_position.distance_to(_target)) < 200 : #if its close
+			#_body.move_and_slide(target)
+			#how to fix
+			
+			#I can calculate the difference between the last 2 drags to fix this bug
+			#drag bug is caused by sudden disparity between the target vectors
+			# if the previous target position is different by a large amount, discard it and wait for next target input
+		var t : int = _target.x
+		var u : int = _target.y
+		target_memory_x.append(t) #works
+		target_memory_y.append(u) #works
+		
+		# Rejects buggy input targets
+		if abs(target_memory_x[target_memory_x.size() - 2] - t) > 3:
+			print ('Error x axis') #for debug purposes only
+			#print ('x axis size debug: ' ,target_memory_x.size()) #for debug purposes only
+			
+			#print ('X : ',target_memory_x) #for debug purposes only
+			
+			target_memory_x.erase(t)
+			#target_memory_x.remove(target_memory_x[-1]) #deletes error #introduces bug
+			if target_memory_x.size() == 1:
+				_body.move_and_slide(Vector2(target_memory_x[0], target_memory_y.back()))
+			
+			if target_memory_x.size() > 1:
+				_body.move_and_slide(Vector2(target_memory_x[target_memory_x.size() - 2], target_memory_y.back()))
+			
+			return
+		if abs(target_memory_y[target_memory_y.size() - 2] - t) > 3:
+			print ('Error y axis')
+			#print ('y axis size debug: ' ,target_memory_y.size()) 
+			
+			
+			#potential target fix
+			#print ("Y : ",target_memory_y) #for debug purposes only
+			
+			
+			target_memory_y.erase(u)
+			
+			if target_memory_y.size() == 1:
+				_body.move_and_slide(Vector2(target_memory_x.back(), target_memory_y[0]))
+			
+			if target_memory_y.size() > 1:
+				_body.move_and_slide(Vector2(target_memory_x.back(), target_memory_y[target_memory_y.size() - 1]))
+			return 
+
+		if not abs(target_memory_y[target_memory_y.size() - 2] - t) && abs(target_memory_x[target_memory_x.size() - 2] - t) > 3 :
+			#_body.set_position(_target)
+			_body.move_and_slide(_target)
+
+			
 
 """
-ZOOM
+				 ZOOM
 
 """
 
@@ -422,7 +481,7 @@ func prev_chap():
 
 
 """
-DRAG AND DROP 
+	   DRAG AND DROP logic
 """
 #it requires you set mouse filter to ignore on all control nodes 
 #so the area 2d can get mouse input data
@@ -438,8 +497,16 @@ func sumaVectores(v1, v2): #vector sum
 
 
 """
-swipe detection
+		  SWIPE DETECTION
 """
+
+func _handle_swipe_detection(event)-> void:
+	"Handles Swipe Detection" #buggy
+	if event.pressed:
+		_start_detection(event.position)
+	elif not _e.is_stopped():
+		_end_detection(event.position)
+
 func _start_detection(_position): #for swipe detection
 	if enabled == true:
 		swipe_start_position = _position
@@ -471,29 +538,10 @@ func _on_Timer_timeout():
 		print ('on timer timeout: ',swipe_start_position) #for debug purposes delete later
 
 
-func _exit_tree(): #clear unused variables when exiting scene
-	bookmark('save') 
-	pass
 
-
-func bookmark(what): #Buggy function
-	print ( what ,' Comic Book mark...' )
-	if what == 'save' :
-	#	Globals.comics_chapter = current_chapter 
-	#	Globals.comics_page  = current_frame
-	#	Globals.save_game()
-		pass
-	if what == 'load' :
-	#	Globals.load_game()
-	#	current_chapter = Globals.comics_chapter
-	#	current_frame = Globals.comics_page
-		pass
-	else:
-		#push_warning('Not a bookmark function, the only fuctions avalable are <save> and <load>')
-		pass
 
 # Itnuses a camera 2d to simulate guided view. Should not be used when running the game
-func guided_view(): #Unwriten code
+func guided_view()-> void: #Unwriten code
 	#It's supposed tobe a controlled zoom
 	pass
 

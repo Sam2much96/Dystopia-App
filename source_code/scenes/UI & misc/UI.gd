@@ -57,6 +57,9 @@ func _input(_event):
 	if Input.is_action_just_pressed('attack'):
 		if TouchInterface._state_controller != 2: #2 is attack state  #uses old state_machine?
 			TouchInterface.attack()
+			
+			#bug happens whenever player is killed
+			#Implement timer with deltaTime and pass a boolean variable to fix this bug
 			yield(get_tree().create_timer(3.0), "timeout") #Bad Code Implementation. Use a timer node instead
 			TouchInterface.reset()
 	

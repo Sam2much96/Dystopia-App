@@ -50,7 +50,8 @@ func spawn(): #organize this code to switch btw random spawn and single spawn
 		item_scene = _spawn.pop_back()
 	
 	var item = item_scene.instance() 
-	owner.get_parent().add_child(item)
+	
+	owner.get_parent().call_deferred("add_child", item)
 	item.global_position = global_position
 	item.item_type = item_type
 	item.amount = amount

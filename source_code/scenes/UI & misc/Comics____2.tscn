@@ -95,9 +95,6 @@ rect_scale = Vector2( 0.300019, 0.300019 )
 rect_clip_content = false
 theme = SubResource( 3 )
 scroll_vertical_enabled = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Comics/ScrollContainer"]
 margin_right = 8814.0

@@ -358,7 +358,7 @@ func drag(_target : Vector2, _position : Vector2, _body : KinematicBody2D)-> voi
 	if abs(_position.distance_to(_target)) > 200: #if its far...
 	##use suma vectores function for vector maths
 		_body.move_and_slide(center) #move and slide to center
-		print ('moving to center') #for debug purposes only
+		#print ('moving to center') #for debug purposes only
 
 
 	"Buggy if Distance is less than 200"
@@ -376,7 +376,7 @@ func drag(_target : Vector2, _position : Vector2, _body : KinematicBody2D)-> voi
 		
 		# Rejects buggy input targets
 		if abs(target_memory_x[target_memory_x.size() - 2] - t) > 3:
-			print ('Error x axis') #for debug purposes only
+			#print ('Error x axis') #for debug purposes only
 			#print ('x axis size debug: ' ,target_memory_x.size()) #for debug purposes only
 			
 			#print ('X : ',target_memory_x) #for debug purposes only
@@ -391,7 +391,7 @@ func drag(_target : Vector2, _position : Vector2, _body : KinematicBody2D)-> voi
 			
 			return
 		if abs(target_memory_y[target_memory_y.size() - 2] - t) > 3:
-			print ('Error y axis')
+			#print ('Error y axis')
 			#print ('y axis size debug: ' ,target_memory_y.size()) 
 			
 			

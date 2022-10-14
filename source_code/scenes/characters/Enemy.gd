@@ -97,28 +97,29 @@ func _process(_delta):
 
 	"Enemy Behaviour Logic"
 	# Provides Randomized enemy behaviour
-	if raycast.is_enabled() == true:
-		if raycast.is_colliding() && player != null:
-			calculate_center() #calculates distance to plaer
-			move_and_slide(center) # moves to plater
-			state = STATE_WALKING
-			enemy_distance_to_player = abs(position.distance_to(player.position )) # Calculates the enemy distance to playrer
-			
-			#print (enemy_distance_to_player) # For debug purposes only
-			if enemy_distance_to_player < 80: #uses enemy distance to auto attack
-				state = STATE_ATTACK
-				#return state 
-			if enemy_distance_to_player > 80:
-				#shoot() #Disabling for now
-				if enemy_type == "Hard":
-					state = STATE_ROLL
-					#return state
-				if enemy_type == "Easy":
-					state = STATE_WALKING
-					#return state
-				if enemy_type == "Intermediate":
-					state = STATE_WALKING
-				else: return
+	if not hitpoints == 0:
+		if raycast.is_enabled() == true:
+			if raycast.is_colliding() && player != null:
+				calculate_center() #calculates distance to plaer
+				move_and_slide(center) # moves to plater
+				state = STATE_WALKING
+				enemy_distance_to_player = abs(position.distance_to(player.position )) # Calculates the enemy distance to playrer
+				
+				#print (enemy_distance_to_player) # For debug purposes only
+				if enemy_distance_to_player < 80: #uses enemy distance to auto attack
+					state = STATE_ATTACK
+					#return state 
+				if enemy_distance_to_player > 80:
+					#shoot() #Disabling for now
+					if enemy_type == "Hard":
+						state = STATE_ROLL
+						#return state
+					if enemy_type == "Easy":
+						state = STATE_WALKING
+						#return state
+					if enemy_type == "Intermediate":
+						state = STATE_WALKING
+					else: return
 	if raycast.is_enabled() == false && player != null:
 		#use state changer timer to turn off processing
 		print ('Debug Enenmy Behaviour Check')
@@ -275,7 +276,7 @@ func despawn()->  void:
 	
 	#Prevents memory leaks
 	Globals.queue_free_children(self)
-	get_parent().remove_child(self)
+	#get_parent().remove_child(self) #buggy
 
 
 

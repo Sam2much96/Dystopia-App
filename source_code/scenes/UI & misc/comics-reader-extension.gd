@@ -1,6 +1,7 @@
 extends HBoxContainer
 
 #A Menu for Holding and Displaying Comic book chapters
+#convert to ads spot emulayting webtoons
 
 onready var loaded_comics 
 

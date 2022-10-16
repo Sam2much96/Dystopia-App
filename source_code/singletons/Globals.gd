@@ -117,6 +117,7 @@ var temp
 
 "Wallet Algo"
 var NFT: TextureRect #should ideally be an array for multiple NFT's
+#var wallet #wallet global variabe
 
 func _ready():
 	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes

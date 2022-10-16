@@ -1,12 +1,13 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Controls.gd" type="Script" id=1]
 [ext_resource path="res://resources/misc/controls.png" type="Texture" id=2]
-[ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=3]
+[ext_resource path="res://fonts/ingame_menu.tres" type="Theme" id=3]
 [ext_resource path="res://scenes/Comics/chapter 4/Cover 2.webp" type="Texture" id=4]
 [ext_resource path="res://App's white paper v1.1.6.webp" type="Texture" id=5]
 [ext_resource path="res://scenes/UI & misc/generic_joystick_ui_selector.gd" type="Script" id=6]
 [ext_resource path="res://scenes/UI & misc/controls_illustration.gd" type="Script" id=7]
+[ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=8]
 [ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=14]
 
 [node name="Controls" type="Control"]
@@ -42,20 +43,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 332.652
-margin_top = 28.5153
-margin_right = 542.652
-margin_bottom = 395.515
-rect_scale = Vector2( 1.44567, 1.44567 )
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+margin_left = 232.0
+margin_top = 39.1996
+margin_right = 805.0
+margin_bottom = 526.2
+theme = ExtResource( 3 )
+scroll_horizontal_enabled = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+margin_right = 543.0
+margin_bottom = 734.0
 script = ExtResource( 6 )
 
-[node name="back" type="Button" parent="VBoxContainer"]
-margin_right = 210.0
-margin_bottom = 49.0
+[node name="back" type="Button" parent="ScrollContainer/VBoxContainer"]
+margin_right = 543.0
+margin_bottom = 119.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0.364706, 0.364706, 0.364706, 1 )
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 8 )
 action_mode = 0
 text = "Back"
 flat = true
@@ -64,13 +70,13 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="music" type="Button" parent="VBoxContainer"]
-margin_top = 53.0
-margin_right = 210.0
-margin_bottom = 102.0
+[node name="music" type="Button" parent="ScrollContainer/VBoxContainer"]
+margin_top = 123.0
+margin_right = 543.0
+margin_bottom = 242.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0.364706, 0.364706, 0.364706, 1 )
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 8 )
 toggle_mode = true
 text = "music on/off"
 flat = true
@@ -79,13 +85,13 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="Debug" type="Button" parent="VBoxContainer"]
-margin_top = 106.0
-margin_right = 210.0
-margin_bottom = 155.0
+[node name="Debug" type="Button" parent="ScrollContainer/VBoxContainer"]
+margin_top = 246.0
+margin_right = 543.0
+margin_bottom = 365.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0.364706, 0.364706, 0.364706, 1 )
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 8 )
 toggle_mode = true
 shortcut_in_tooltip = false
 text = "Debug "
@@ -95,13 +101,13 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="Shuffle" type="Button" parent="VBoxContainer"]
-margin_top = 159.0
-margin_right = 210.0
-margin_bottom = 208.0
+[node name="Shuffle" type="Button" parent="ScrollContainer/VBoxContainer"]
+margin_top = 369.0
+margin_right = 543.0
+margin_bottom = 488.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0.364706, 0.364706, 0.364706, 1 )
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 8 )
 toggle_mode = true
 shortcut_in_tooltip = false
 text = "Shuffle Music "
@@ -111,37 +117,28 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="Networking" type="Button" parent="VBoxContainer"]
-self_modulate = Color( 0, 0, 0, 1 )
-margin_top = 212.0
-margin_right = 210.0
-margin_bottom = 261.0
-custom_fonts/font = ExtResource( 3 )
-toggle_mode = true
-shortcut_in_tooltip = false
-text = "Networking"
-flat = true
-
-[node name="Help" type="Button" parent="VBoxContainer"]
-margin_top = 265.0
-margin_right = 210.0
-margin_bottom = 314.0
+[node name="Help" type="Button" parent="ScrollContainer/VBoxContainer"]
+margin_top = 492.0
+margin_right = 543.0
+margin_bottom = 611.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 8 )
 text = "Hold to Show Help"
 flat = true
 
-[node name="Direction_controls" type="Button" parent="VBoxContainer"]
-margin_top = 318.0
-margin_right = 210.0
-margin_bottom = 367.0
+[node name="Direction_controls" type="Button" parent="ScrollContainer/VBoxContainer"]
+margin_top = 615.0
+margin_right = 543.0
+margin_bottom = 734.0
+custom_colors/font_color_focus = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 8 )
 toggle_mode = true
 text = "Direction/controls"
 flat = true
 
-[node name="Nav docs" type="Button" parent="VBoxContainer"]
+[node name="Nav docs" type="Button" parent="ScrollContainer/VBoxContainer"]
 visible = false
 margin_top = 371.0
 margin_right = 195.0
@@ -177,10 +174,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="pressed" from="VBoxContainer/back" to="." method="_on_Button_pressed"]
-[connection signal="toggled" from="VBoxContainer/music" to="." method="_on_music_toggled"]
-[connection signal="toggled" from="VBoxContainer/Debug" to="." method="_on_Debug_toggled"]
-[connection signal="pressed" from="VBoxContainer/Shuffle" to="." method="_on_Shuffle_pressed"]
-[connection signal="toggled" from="VBoxContainer/Networking" to="." method="_on_Networking_toggled"]
-[connection signal="pressed" from="VBoxContainer/Help" to="." method="_on_Help_pressed"]
-[connection signal="toggled" from="VBoxContainer/Direction_controls" to="." method="_on_Direction_controls_toggled"]
+[connection signal="pressed" from="ScrollContainer/VBoxContainer/back" to="." method="_on_Button_pressed"]
+[connection signal="toggled" from="ScrollContainer/VBoxContainer/music" to="." method="_on_music_toggled"]
+[connection signal="toggled" from="ScrollContainer/VBoxContainer/Debug" to="." method="_on_Debug_toggled"]
+[connection signal="pressed" from="ScrollContainer/VBoxContainer/Shuffle" to="." method="_on_Shuffle_pressed"]
+[connection signal="pressed" from="ScrollContainer/VBoxContainer/Help" to="." method="_on_Help_pressed"]
+[connection signal="toggled" from="ScrollContainer/VBoxContainer/Direction_controls" to="." method="_on_Direction_controls_toggled"]

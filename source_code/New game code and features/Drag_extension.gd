@@ -9,6 +9,9 @@ extends Comics
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	#print (Globals.wallet)
+	
 	enabled = true
 	comics_placeholder = self
 	loaded_comics = true
@@ -56,6 +59,7 @@ func _handle_input_(event): #Works but buggy
 
 
 func _on_TextureRect_gui_input(event):
+	
 	_handle_input_(event)
 	pass
 

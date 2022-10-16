@@ -164,6 +164,9 @@ signal completed
 
 func _ready():
 	
+	
+	
+	
 	#*****Txn UI options************#
 	txn_ui_options.add_item('Transactions') 
 	txn_ui_options.add_item('Assets') 
@@ -195,6 +198,10 @@ func _ready():
 
 	"General Wallet Checks"
 	run_wallet_checks() #should be used sparingly?
+
+	#generating smart contract mnemonic
+	#generate_address('purity inner pilot suggest cave funny hip joke bean radar cheese moon sad depth book laundry pave lift robust length task fringe they abandon kitten')
+	
 
 func _process(_delta):
 	# UI state Processing (works-ish)
@@ -311,6 +318,8 @@ func _process(_delta):
 				push_error('account info file does not exist')
 				state_controller.select(3) #rewrite as a method
 				#state = IMPORT_ACCOUNT  #rewrite as a method
+				
+				#programmatically delete NFT
 			
 
 
@@ -323,22 +332,22 @@ func _process(_delta):
 			mnemonic_ui.show()
 			
 			#hide mnemonic characters
-			mnemonic_ui.set_secret(true) 
+			#mnemonic_ui.set_secret(true) 
 			
 			
-			var status : bool
+			#var status : bool
 			
 			#rewrite this as a method
-			Algorand.create_algod_node("TESTNET")
+			#Algorand.create_algod_node("TESTNET")
 			
-			status= yield(Algorand.algod.health(), "completed")
+			#status= yield(Algorand.algod.health(), "completed")
 			
-			print ("Status Debug: ", status) #debugs connection health
+			#print ("Status Debug: ", status) #debugs connection health
 			
-			if status: #Only shows this button if Algod node has good health
-				address_ui_options.show()
+			#if status: #Only shows this button if Algod node has good health
+			#	address_ui_options.show()
 			
-			if status && imported_mnemonic:
+			if  imported_mnemonic:
 				#address=(Algorand.algod.get_address(mnemonic))
 				#var address : String
 				
@@ -347,17 +356,23 @@ func _process(_delta):
 				
 				mnemonic = mnemonic_ui.text
 				#address = Algorand.algod.get_address(mnemonic) #doesnt work well
-				address = address_ui_options.text 
-				#print ("address debug: ", address)
+				
+				
+				#*******Generates Address************#
+				address = generate_address(mnemonic) #works
+					
+
 
 
 				'savins imported account info'
 				
 				#FIxes null parameters errors
-				account_info = {'address': address, 'amount': 0, 'mnemonic': mnemonic, 'asset_index': '','asset_name': '','asset_unit_name': '', 'asset_url': '' }
+				#account_info = {'address': address, 'amount': 0, 'mnemonic': mnemonic, 'asset_index': 0,'asset_name': '','asset_unit_name': '', 'asset_url': '',  "created-assets": [{}],}
+				
+				account_info = {"address":address, "amount":0, "mnemonic": mnemonic , "created-assets": [{"index": 0, "params":{"clawback":'', "creator":"4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ", "decimals":0, "default-frozen": '', "freeze": '', "manager":"", "name":"Punk_001", "reserve":"", "total":1, "unit-name": 'XYZ', "url":""}}]}
 				
 				"saves more account info"
-				save_account_info(account_info,1)
+				save_account_info(account_info,0)
 				
 				
 				# check account and saves automatically
@@ -408,7 +423,10 @@ func _process(_delta):
 			
 		# implement regex for parsing collectibles ipfs url 
 		#duplacte of check account state
-		COLLECTIBLES: #works but buggy now
+		#works but buggy now. Uses a globals variable fix
+		#should delete collectible image once token is absent.
+		#collectibles state breaks import mnenoic
+		COLLECTIBLES: 
 			"Checks if the Image is avalable Locally and either downloads or loads it"
 			if wallet_check == 0:
 				if not FileCheck3.file_exists(local_image_path): #works
@@ -566,9 +584,10 @@ func debug_signal_connections()->void:
 	print("Networking Connected: ",Networking.is_connected("request_completed", self, "_http_request_completed"))
 
 
-func generate_address()-> void:
-	address =Algorand.algod.get_address(mnemonic)
-	print ('address; ', address)
+func generate_address(_mnemonic:String)-> String: #works
+	var _address =Algorand.algod.get_address(_mnemonic)
+	print ('address; ', _address)
+	return _address
 	
 
 
@@ -588,9 +607,10 @@ func save_account_info( info : Dictionary, number: int):
 	# encode mnemonic
 	save_dict.mnemonic = convert_string_to_binary(mnemonic)  #saves mnemonic as string error
 		
-		
-	save_dict.asset_index =info["created-assets"][number]["index"]
-	save_dict.asset_name = info["created-assets"][number]["params"]["name"]
+	# Temporarily disabling
+	
+	save_dict.asset_index =info["created-assets"][number]["index"] 
+	save_dict.asset_name = info["created-assets"][number]["params"]["name"] 
 	save_dict.asset_unit_name = info["created-assets"][number]["params"]['unit-name']
 	save_dict.asset_url = info["created-assets"][number]['params']['url'] #asset Uro and asset uri are different. Separate them
 	

@@ -1,38 +1,9 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://fonts/Comic_Andy.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/UI & misc/ingame_menu.gd" type="Script" id=2]
 [ext_resource path="res://scenes/UI & misc/generic_joystick_ui_selector.gd" type="Script" id=3]
-
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 1, 1, 1, 1 )
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color( 0, 0, 0, 1 )
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id=2]
-content_margin_left = 15.0
-content_margin_right = 15.0
-content_margin_top = 8.0
-content_margin_bottom = 8.0
-bg_color = Color( 0.6, 0.6, 0.6, 0 )
-
-[sub_resource type="Theme" id=3]
-VScrollBar/icons/decrement = null
-VScrollBar/icons/decrement_highlight = null
-VScrollBar/icons/increment = null
-VScrollBar/icons/increment_highlight = null
-VScrollBar/styles/grabber = SubResource( 1 )
-VScrollBar/styles/grabber_highlight = null
-VScrollBar/styles/grabber_pressed = null
-VScrollBar/styles/scroll = SubResource( 2 )
-VScrollBar/styles/scroll_focus = null
+[ext_resource path="res://fonts/ingame_menu.tres" type="Theme" id=4]
 
 [sub_resource type="DynamicFont" id=4]
 size = 90
@@ -67,7 +38,7 @@ __meta__ = {
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
 margin_right = 343.0
 margin_bottom = 667.0
-theme = SubResource( 3 )
+theme = ExtResource( 4 )
 scroll_horizontal_enabled = false
 
 [node name="HSeparator" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]

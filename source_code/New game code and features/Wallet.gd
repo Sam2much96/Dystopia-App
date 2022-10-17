@@ -369,7 +369,7 @@ func _process(_delta):
 				#FIxes null parameters errors
 				#account_info = {'address': address, 'amount': 0, 'mnemonic': mnemonic, 'asset_index': 0,'asset_name': '','asset_unit_name': '', 'asset_url': '',  "created-assets": [{}],}
 				
-				account_info = {"address":address, "amount":0, "mnemonic": mnemonic , "created-assets": [{"index": 0, "params":{"clawback":'', "creator":"4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ", "decimals":0, "default-frozen": '', "freeze": '', "manager":"", "name":"Punk_001", "reserve":"", "total":1, "unit-name": 'XYZ', "url":""}}]}
+				account_info = {"address":address, "amount":0, "mnemonic": mnemonic , "created-assets": [{"index": 0, "params":{"clawback":'', "creator":"", "decimals":0, "default-frozen": '', "freeze": '', "manager":"", "name":"Punk_001", "reserve":"", "total":1, "unit-name": 'XYZ', "url":""}}]}
 				
 				"saves more account info"
 				save_account_info(account_info,0)
@@ -488,6 +488,7 @@ func _process(_delta):
 		SMARTCONTRACTS: # doesnt work #opts into smart contracts with wallet
 			#hide other ui states
 			#use animation player to alter UI
+			#opt into counter smart contract deployed to host address
 			transaction_ui.show()
 			mnemonic_ui.hide()
 			wallet_ui.hide()
@@ -495,9 +496,31 @@ func _process(_delta):
 			txn_amount.hide()
 			nft_asset_id.hide()
 			txn_ui_options.hide()
-			if transaction_valid:
-				print (" Opt into Smartcontract")
+			if transaction_valid: #buggy
+				Algorand.generate_suggested_transaction_parameters()
+				print (" Opt into Smartcontract---placeholder method")
+				
+				#tailor made for the counter smart contract demo #buggy
+				#counter transaction id
+				#HMNGTWFPJ6RA4TD6K76WNMPXZ6BELMNQG7C5T7KT7MMU3YRS47NQ
+				
+				#opt in
+				Algorand.opt_in_smart_contract('4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ', 116639568)
+				
+				# Signs the Raw transaction
+				Algorand.raw_sign_transactions(Algorand.optin_tx, mnemonic)
+		
+				yield(Algorand.algod.send_transaction(Algorand.stx), "completed") # sends raw signed transaction to the network
+				
+				#construct app call
+				var app_txns=Algorand.algod.construct_app_call(Algorand.params,transaction_ui.text ,116639568,"str:inc") #contruct an app call to the smart contract
 			
+				# send signed transaction
+				yield(Algorand.algod.send_transactions(app_txns), "completed") 
+			
+			
+				#change state to check success of app call
+				state_controller.select(1) #check account state
 			pass
 		
 		IDLE:

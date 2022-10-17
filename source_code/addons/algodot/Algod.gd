@@ -354,10 +354,14 @@ func opt_in_asset_transaction( from_address: String, _asset_index):
 		)
 	return optin_tx
 
-func opt_in_smart_contract(from_address: String):
-	print ("opt in")
-	
-
+func opt_in_smart_contract(from_address: String, _app_index): #duplicate of opt in asset transaction
+	print("opt in")
+	optin_tx = algod.construct_asset_opt_in(
+		params,
+		from_address,
+		_app_index
+		)
+	return optin_tx
 
 func transferAssets(_funder_mnemonic, _receiver_address,_asset_id):
 	generate_suggested_transaction_parameters()
@@ -377,4 +381,6 @@ func transferAssets(_funder_mnemonic, _receiver_address,_asset_id):
 	
 	#wait for transaction to finish sending
 	wait= yield(algod.wait_for_transaction(txid), "completed") 
+
+
 

@@ -54,7 +54,5 @@ func reset(): #reset music instructions upon deletion
 
 "
 
-[node name="music_track" type="Node2D" groups=[
-"music_node",
-]]
+[node name="music_track" type="Node2D" groups=["music_node"]]
 script = SubResource( 1 )

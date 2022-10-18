@@ -1,5 +1,22 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# NFT
+# NFT image Objects Within the Scene Tree
+# Features:
+#
+#
+# Bugs
+# (1) It interrupts other UI options 
+# *************************************************
+
+
 extends Comics
 
+
+var activated : bool = false
+var counter : int = 0
 
 " Drag and Drop for NFT's"
 #extends comic node
@@ -8,17 +25,23 @@ extends Comics
 # needs improvement
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _process(_delta):
 	
-	#print (Globals.wallet)
+	"Auto Activates with Global wallet state"
+	#can only activate NFT drag and drop once
+	if Globals.wallet_state == 5:
+		activated = true
+	else: activated = false
 	
-	enabled = true
-	comics_placeholder = self
-	loaded_comics = true
-	Kinematic_2d = $KinematicBody2D
-	#position = Kinematic_2d.position
-	
-	pass
+	#Can only be activated once
+	if activated && counter == 0:
+		enabled = true
+		comics_placeholder = self
+		loaded_comics = true
+		Kinematic_2d = $KinematicBody2D
+		#position = Kinematic_2d.position
+		counter += 1
+		return counter
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

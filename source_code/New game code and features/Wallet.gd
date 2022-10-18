@@ -32,7 +32,7 @@
 # (1) Implement as State Machine (done)
 # (2) Update transaction logic (done)
 # (3) Test Smart Contracts 
-		#for minting NFT's
+		#Test counter smart contract
 # (4) Implement Proper wallet security (needs encryption and decryption algorithm) (step 1 done)
 # (5) Copy and Paste Wallet Address (done)
 # (6) Use time timeout to transition btw states (depreciated)
@@ -46,8 +46,12 @@
 		#alter UI scale for mobiles (done)
 		#use animation player to alter UI (depreciated. Functions work faster)
 # (14) Implement SHow mnemonic button
-# (15) Implement Comic book interface for interractible NFT
-# (16) Implement better NFT UI 
+# (15) Implement Comic book interface for interractible NFT (done)
+# (16) Implement better NFT UI (buggy)
+# (17) Delete local NFT's if token is sent
+		#logic
+		#if asset_url ='' && local_image_texture exists
+		#delete local image texture
 
 # Testing
 #(1) Image Downloder (works)
@@ -82,8 +86,12 @@ onready var txn_ui_options = $transaction_ui/txn_ui_options
 onready var address_ui_options = $mnemonic_ui/address_ui_options
 
 onready var nft_asset_id = $transaction_ui/nft
-onready var txn_amount = $transaction_ui/amount 
+onready var txn_amount = $transaction_ui/transaction_amount
+onready var txn_addr = $transaction_ui/transaction_address
 onready var txn_ui_options_button = $transaction_ui/txn_ui_options
+onready var txn_assets_valid_button = $transaction_ui/enter_asset
+onready var txn_txn_valid_button = $transaction_ui/enter_transaction
+
 
 onready var NFT =  Globals.NFT#get_tree().get_nodes_in_group('NFT')#$Control/TextureRect
 onready var state_controller = $state_controller
@@ -108,6 +116,10 @@ var Player_account_temp: Array =[]
 var amount : int
 var address : String
 var mnemonic : String
+
+var recievers_addr : String = '' #for transactions
+var _amount : int = 0#for transactions
+var _asset_id :int = 0
 
 var encoded_mnemonic : PoolByteArray
 var encrypted_mnemonic 
@@ -146,13 +158,14 @@ export var state = IDLE
 
 var wallet_check : int = 0
 var wallet_check_counter : int = 0
-#'On/off Switch'
-#export (bool) var enabled
+var params
+var txn_check : int = 0 #stops transaction spamming
 #************Helper Booleans ****************************#
 var algod_node_exists: bool 
 var algod_node_health_is_good: bool
 var imported_mnemonic : bool = false
 var transaction_valid: bool =false
+var asset_id_valid : bool = false
 
 var loaded_wallet: bool= false #fixes looping loading bug
 var good_internet : bool #debugs user's internet
@@ -160,7 +173,12 @@ var good_internet : bool #debugs user's internet
 var passed_all_connectivity_checks : bool = false #debugs all connectivity checks
 var is_image_available_at_local_storage : bool  = FileCheck4.file_exists(local_image_path)
 #*************Signals************************************#
-signal completed
+signal completed #placehoder signal
+signal transaction
+
+#**********************************#
+#onready var timer = $Timer #depreciated
+
 
 func _ready():
 	
@@ -172,6 +190,9 @@ func _ready():
 	txn_ui_options.add_item('Assets') 
 	
 	#**********State Controller Options***********#
+	#add error checker so its not duplicated
+	#if _ready() is called multiple times
+	#sssss
 	state_controller.add_item("Show Account")
 	state_controller.add_item("Check Account")
 	state_controller.add_item("New Account")
@@ -201,9 +222,15 @@ func _ready():
 
 	#generating smart contract mnemonic
 	#generate_address('purity inner pilot suggest cave funny hip joke bean radar cheese moon sad depth book laundry pave lift robust length task fringe they abandon kitten')
-	
+
+
+
 
 func _process(_delta):
+	#makes the state a global variable
+	Globals.wallet_state = state
+	
+	
 	# UI state Processing (works-ish)
 	if state_controller.get_selected() == 0:
 		state = SHOW_ACCOUNT #only loads wallet once
@@ -334,19 +361,7 @@ func _process(_delta):
 			#hide mnemonic characters
 			#mnemonic_ui.set_secret(true) 
 			
-			
-			#var status : bool
-			
-			#rewrite this as a method
-			#Algorand.create_algod_node("TESTNET")
-			
-			#status= yield(Algorand.algod.health(), "completed")
-			
-			#print ("Status Debug: ", status) #debugs connection health
-			
-			#if status: #Only shows this button if Algod node has good health
-			#	address_ui_options.show()
-			
+
 			if  imported_mnemonic:
 				#address=(Algorand.algod.get_address(mnemonic))
 				#var address : String
@@ -355,8 +370,7 @@ func _process(_delta):
 				'Cannot convert argument error'
 				
 				mnemonic = mnemonic_ui.text
-				#address = Algorand.algod.get_address(mnemonic) #doesnt work well
-				
+
 				
 				#*******Generates Address************#
 				address = generate_address(mnemonic) #works
@@ -382,50 +396,79 @@ func _process(_delta):
 				
 				# show account
 				state_controller.select(0)
-				#state = SHOW_ACCOUNT
-				
-			#if address == null && mnemonic != null:
-			#	state = GENERATE_ADDRESS
-				
+
 			pass
-		TRANSACTIONS:
+		#Saves transactions to be processed in the ready function
+		# Saves the Transaction parameters and runs the txn() function
+		#as a subprocess of the _ready() function
+		#check https://github.com/lucasvanmol/algodot/issues/20 for more clarifications
+		TRANSACTIONS: 
 			#hide other ui states
 			#use animation player to alter UI
 			transaction_ui.show()
 			mnemonic_ui.hide()
 			wallet_ui.hide()
 			
-			txn_amount.hide()
-			nft_asset_id.hide()
+			#txn_amount.hide()
+			#nft_asset_id.hide()
 			
 			" Swtiches Between Assets and Normal Transactions UI"
 			if txn_ui_options.get_selected() == 0:
 				txn_amount.show()
 				nft_asset_id.hide()
-				if transaction_valid && txn_amount.text != "": #user selected normal transactions
-
-					Algorand.create_algod_node("TESTNET")
-					var recievers_addr = transaction_ui.text
-					var _amount = txn_amount.text
-					Algorand._send_asset_transfers_to_receivers_address(mnemonic,recievers_addr, _amount)
 				
-			if txn_ui_options.get_selected() == 1:
-				txn_amount.hide()
-				nft_asset_id.show()
-				if transaction_valid : # user selected asset transaction
-					Algorand.create_algod_node("TESTNET")
-					var _asset_id =nft_asset_id.text
-					var recievers_addr = transaction_ui.text
+				txn_assets_valid_button.hide()
+
+				
+				
+				if transaction_valid : #user selected normal transactions
 					
-					Algorand.transferAssets(mnemonic, recievers_addr,_asset_id)
-			
+					#saves transaction details
+					#make them into a global variable so changing scenes doesn't reset it
+					recievers_addr = txn_addr.text
+					_amount = int(txn_amount.text)
+					
+					# cannot process any txn less than 10_000 microAlgos
+					if _amount  < 100_000:
+						push_error('Cannot send balance less tha 100_000 MicroAlgos')
+					if _amount > 100_000 && txn_check == 0:
+						
+						#txn_check += 1
+						
+						#should save the transaction files to be done
+						
+						#goes to the title screen to reset ready function
+						state = SHOW_ACCOUNT 
+						state_controller.select(0) 
+
+						#calls the transaction function which is a child of _ready()
+						_ready()
+						
+						txn_check += 1
+						return txn_check
+
+			if txn_ui_options.get_selected() == 1:
+				#txn_amount.hide()
+				#uses two different buttons for assets and algo transactions
+				txn_assets_valid_button.show()
+				txn_txn_valid_button.hide()
+				nft_asset_id.show()
+				if asset_id_valid : # user selected asset transaction
+					#eee
+					_asset_id = int(nft_asset_id.text)
+					recievers_addr = txn_addr.text
+					
+					#change wallet state
+					state = SHOW_ACCOUNT 
+					state_controller.select(0) 
+
+					
+					#calls the transaction function which is a subprocess of _ready() function
+					_ready()
+					
 			pass
 			
-		# implement regex for parsing collectibles ipfs url 
-		#duplacte of check account state
-		#works but buggy now. Uses a globals variable fix
-		#should delete collectible image once token is absent.
-		#collectibles state breaks import mnenoic
+	
 		COLLECTIBLES: 
 			"Checks if the Image is avalable Locally and either downloads or loads it"
 			if wallet_check == 0:
@@ -448,9 +491,7 @@ func _process(_delta):
 						print ("Status debug: ", status,' ',wallet_check_counter)
 						yield(check_wallet_info(),"completed") #saves account info with assets details
 						
-						#asset id save #bug, wipes out revious information
-						#save_account_info(account_info,0) #saves account with asset infro 
-						
+
 						# show account
 						state_controller.select(0)
 					if asset_url && asset_name != '':
@@ -485,10 +526,12 @@ func _process(_delta):
 				 #duplicate of above for bug catching
 					#load_local_image_texture()
 				else: return
-		SMARTCONTRACTS: # doesnt work #opts into smart contracts with wallet
+		#opts into smart contracts with wallet
+		SMARTCONTRACTS: # doesnt work 
 			#hide other ui states
 			#use animation player to alter UI
 			#opt into counter smart contract deployed to host address
+			#try running in ready function
 			transaction_ui.show()
 			mnemonic_ui.hide()
 			wallet_ui.hide()
@@ -497,30 +540,42 @@ func _process(_delta):
 			nft_asset_id.hide()
 			txn_ui_options.hide()
 			if transaction_valid: #buggy
-				Algorand.generate_suggested_transaction_parameters()
-				print (" Opt into Smartcontract---placeholder method")
+				var params = yield(Algorand.algod.suggested_transaction_params(), "completed") #works
+				print (" Opt into Smartcontract---Debugging")
+				
+				
+				#print ('params debug: ', params) #for debug purposes only
 				
 				#tailor made for the counter smart contract demo #buggy
 				#counter transaction id
 				#HMNGTWFPJ6RA4TD6K76WNMPXZ6BELMNQG7C5T7KT7MMU3YRS47NQ
 				
-				#opt in
-				Algorand.opt_in_smart_contract('4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ', 116639568)
+				if params != null && wallet_check == 0:
 				
-				# Signs the Raw transaction
-				Algorand.raw_sign_transactions(Algorand.optin_tx, mnemonic)
+				#Bug 1
+					var optin_tx = Algorand.algod.construct_app_call(params, '4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ', 116639568,['4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ'],Array(["str:inc"]),  PoolIntArray([0]),PoolIntArray([0]),[0],[0],[3,3],[0,1])
+					
+
+					print ("opt in transcation: ",optin_tx) #returns null #shouldnt be null
+				
+					
+
+					# Signs the Raw transaction
+					var stx = Algorand.raw_sign_transactions(optin_tx, mnemonic)
 		
-				yield(Algorand.algod.send_transaction(Algorand.stx), "completed") # sends raw signed transaction to the network
+					print ("Raw Signed Transaction: ",stx) #shouldn't be null
+
+					wallet_check += 1
+					
+					#send transaction
+					yield(Algorand.algod.send_transaction(stx), "completed") # sends raw signed transaction to the network
 				
-				#construct app call
-				var app_txns=Algorand.algod.construct_app_call(Algorand.params,transaction_ui.text ,116639568,"str:inc") #contruct an app call to the smart contract
-			
-				# send signed transaction
-				yield(Algorand.algod.send_transactions(app_txns), "completed") 
-			
-			
-				#change state to check success of app call
-				state_controller.select(1) #check account state
+				
+					#make transcation invalid tops stack overflow
+					transaction_valid = !transaction_valid 
+				
+					#change state to check success of app call
+					state_controller.select(0) #check account state 1,  show account state 0
 			pass
 		
 		IDLE:
@@ -547,13 +602,17 @@ func run_wallet_checks()-> bool: # works #run networking internet checks test be
 	
 	print ("Status debug:" , status, wallet_check_counter,  "good internet:", good_internet)
 	
-	
+	#calculates suggested parameters for all transactions
+	params = yield(Algorand.algod.suggested_transaction_params(), "completed") #works
 	
 	
 	if status:
 		print ("Node Health is Ok")
 	if good_internet:
 		print ('Internet connection is Ok')
+	if params != null:
+		print ('Suggested Transaction Parameters calculated')
+	
 	
 	
 	if status and good_internet: #prevents app breaking bug
@@ -561,6 +620,7 @@ func run_wallet_checks()-> bool: # works #run networking internet checks test be
 		pass
 
 	"Checks if image file is available"
+	#should delete is assert url is empty string
 	if local_image_path != '':
 		#"Checks if image file is available"
 		is_image_available_at_local_storage = FileCheck4.file_exists(local_image_path)
@@ -576,6 +636,11 @@ func run_wallet_checks()-> bool: # works #run networking internet checks test be
 
 
 	print ("----wallet check done------")
+	
+	# Transaction function
+	call_deferred('txn')
+	
+	call_deferred('smart_contract')
 	return 0;
 
 #loads from saved account info 
@@ -600,7 +665,8 @@ func show_account_info(load_from_local_wallet: bool):
 		wallet_algos.text = account_info['amount']
 
 func connect_signals(): #connects all required signals in the parent node
-	return Networking.connect("request_completed", self, "_http_request_completed")
+	if not Networking.is_connected("request_completed", self, "_http_request_completed"):
+		return Networking.connect("request_completed", self, "_http_request_completed")
 
 func debug_signal_connections()->void:
 	#debuggers
@@ -880,4 +946,41 @@ func _on_enter_transaction_pressed():
 	transaction_valid = true
 
 
+'Processes Algo and Asset Transactions'
+func txn(): #runs presaved transactions once wallet is ready
+	
+	
+	if recievers_addr != '' && _amount >= 100_000:
+		print ('Transaction Debug: ',recievers_addr, '/','amount: ',_amount, '/', 'txn check', txn_check)
+		
+		yield(Algorand._send_txn_to_receiver_addr(params,mnemonic,recievers_addr, _amount), "completed")
 
+		#reset transaction details
+		recievers_addr = ''
+		_amount = 0
+		
+		transaction_valid = false
+	
+	if _asset_id != 0 && asset_id_valid :
+		print (' Asset Txn Debug: ',recievers_addr, '/','asset id: ',_asset_id, '/', 'txn check', txn_check)
+		
+		#can be used to send both NFT's and Tokens
+		yield(Algorand.transferAssets(params,mnemonic, recievers_addr,_asset_id, _amount), "completed")
+		
+		#reset transaction details
+		recievers_addr = ''
+		_asset_id = 0
+		asset_id_valid = false
+
+'Processes Smart COntract transactions'
+func smart_contract():
+	pass
+
+
+#func _on_Timer_timeout():
+#	call_deferred('txn')
+#	pass
+
+
+func _on_enter_asset_pressed():
+	asset_id_valid = true

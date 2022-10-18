@@ -101,6 +101,12 @@ var mnemonic
 var player_name
 var algos : int #currency system, connect to $xmr protocol
 
+#var recievers_addr: String #receivers address
+#var _amount : int #transaction amount
+
+
+
+
 'Screen Size Resolution'
 var screenSize : Vector2
 enum { SCREEN_HORIZONTAL, SCREEN_VERTICAL} 
@@ -117,7 +123,7 @@ var temp
 
 "Wallet Algo"
 var NFT: TextureRect #should ideally be an array for multiple NFT's
-#var wallet #wallet global variabe
+var wallet_state  #wallet state global variabe
 
 func _ready():
 	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes

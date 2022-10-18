@@ -10,6 +10,10 @@
 # (2) Can transfer assets between accounts
 # (3) Can check account information
 
+#Bugs:
+# (1) Calling multiple yield functions sequentially breaks on testnet
+# (2) Smart contract calls are buggy on testnet
+
 # Requires
 # (1) An algorand sandbox node for testing and proper debugging
 
@@ -18,7 +22,7 @@
 # (2) Implement function parameters (done)
 # (3) Write proper documentation (done)
 # (4) Implement signals
-# (5) Implement Testnet/ Localhost switch
+# (5) Implement Testnet/ Localhost switch (done)
 #
 # *************************************************
 
@@ -173,12 +177,13 @@ func _send_transaction_to_receiver_addr( _funder_mnemonic : String, _receivers_a
 	#var _receivers_address=algod.get_address(_receivers_mnemonic)
 	
 	#get suggested parameters
+	
 	params = yield(algod.suggested_transaction_params(), "completed")
 	
-	#get initial address amount
+	#get initial address amount #depreciated. Use check account state instead
 	var _account_info: Dictionary=(yield(algod._check_account_information(_funder_address,_funder_mnemonic, ""), "completed"))
 	
-	var initial_amount: int = _account_info["amount"]
+	var initial_amount: int = _account_info["amount"] #depreciated. Use check account state instead
 	#create and sign transaction
 	tx = algod.construct_payment(params, _funder_address, _receivers_address, _amount)
 	
@@ -195,11 +200,48 @@ func _send_transaction_to_receiver_addr( _funder_mnemonic : String, _receivers_a
 	# getting the account infromation
 	var info = yield(algod.account_information(_receivers_address), "completed")
 	
-	assert(info.amount == initial_amount + _amount)
+	assert(info.amount == initial_amount + _amount) #depreciated. Use check account state instead
 	#verifying the receiver's account's algo holdings
 	print (info.amount, (initial_amount+_amount))
 	return info.amount == initial_amount + _amount
 
+
+" Sends transaction btw two accounts Version 2 for Testnet"
+func _send_txn_to_receiver_addr( params,_funder_mnemonic : String, _receivers_address: String  , _amount: int): #works #should be fed the receiver and sender's accounts as parameters
+	
+	
+	print(" -- _sending_transaction")
+	
+	
+	var _funder_address=algod.get_address(_funder_mnemonic)
+	
+	print("sending tx from  ", _funder_address, ' to ', _receivers_address)
+	
+	#create and sign transaction
+	tx = algod.construct_payment(params, _funder_address, _receivers_address, _amount)
+	
+	#print ("Transaction Debug: ", tx) #for debug purposes only
+	
+	#sending the signed transaction
+	stx = algod.sign_transaction(tx, _funder_mnemonic)
+	
+	#debug signed transaction
+	#print ('Signed Txn Debug: ',stx) #for debug purposes only
+	
+	#returns the signed transactions
+	txid = yield(algod.send_transaction(stx), "completed")
+	
+	#yield(get_tree().create_timer(20), "timeout")
+	
+	
+	print ('tx id debug: ',txid)
+	
+	
+	
+	print("waiting for confirmation")
+	wait=yield(algod.wait_for_transaction(txid), "completed")
+	
+	print ('wait: ',wait)
 
 " Make Sure the Funder's Address has sufficient Algos or the Code will Break"
 #need logic fix
@@ -235,7 +277,7 @@ func _send_asset_transfers_to_receivers_address( _funder_mnemonic : String, _rec
 	asset_index = int(tx_info.get("asset-index")) 
 
 	#Opts in to the Asset transaction 
-	opt_in_asset_transaction(_funder_address, asset_index)
+	opt_in_asset_transaction(params,_funder_address, asset_index)
 	
 	
 	# Signs the Raw transaction
@@ -255,7 +297,7 @@ func _send_asset_transfers_to_receivers_address( _funder_mnemonic : String, _rec
 	)
 
 # constructs asset transfer from funder address to receiver address of 1 Aseet
-	construct_asset_transfer(_receivers_address, _funder_address, 1, asset_index)
+	construct_asset_transfer(params,_receivers_address, _funder_address, 1, asset_index)
 
 
 	# Sends grouped transactions
@@ -328,7 +370,7 @@ func create_assets(asset_name : String, to_address : String, Total_supply: int, 
 	return tx
 
 
-func construct_asset_transfer( from_address : String, to_address : String, amount_ : int, _asset_index ):
+func construct_asset_transfer( params,from_address : String, to_address : String, amount_ : int, _asset_index ):
 	transferred_assets = true
 	asset_tx = algod.construct_asset_xfer( # rewrite this as a separate function
 		params,
@@ -345,7 +387,7 @@ func generate_suggested_transaction_parameters():
 	params = yield(algod.suggested_transaction_params(), "completed") 
 	return params
 
-func opt_in_asset_transaction( from_address: String, _asset_index):
+func opt_in_asset_transaction( params ,from_address: String, _asset_index):
 	print("opt in")
 	optin_tx = algod.construct_asset_opt_in(
 		params,
@@ -354,22 +396,24 @@ func opt_in_asset_transaction( from_address: String, _asset_index):
 		)
 	return optin_tx
 
-func opt_in_smart_contract(from_address: String, _app_index): #duplicate of opt in asset transaction
+#doesnt work in _process()
+func opt_in_smart_contract(params, from_address: String): #duplicate of opt in asset transaction
 	print("opt in")
-	optin_tx = algod.construct_asset_opt_in(
+	optin_tx = algod.construct_app_call(
 		params,
-		from_address,
-		_app_index
+		from_address
 		)
 	return optin_tx
 
-func transferAssets(_funder_mnemonic, _receiver_address,_asset_id):
-	generate_suggested_transaction_parameters()
+#duplicate of send_assets() function
+"Version 2 of Asset sending method working on Testnet"
+func transferAssets(params,_funder_mnemonic, _receiver_address,_asset_id, _amount: int):
+	#generate_suggested_transaction_parameters()
 	
 	var _funder_address=algod.get_address(_funder_mnemonic)
 	
 	# Construct Aset tx
-	construct_asset_transfer(_funder_address, _receiver_address, 100, _asset_id)
+	construct_asset_transfer(params,_funder_address, _receiver_address, _amount, _asset_id)
 	
 	# Raw Sign Asset tx
 	stx = algod.sign_transaction(asset_tx, _funder_mnemonic)

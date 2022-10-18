@@ -1,7 +1,23 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Comics Extension script
+# 
+# Features:
+#(1) shows and hides comic page buttons
+#(2) Connects to signal from Comics node
+
+# To Do:
+#(1) Implement grid panels for mobile screens
+# (2) Implement better connects to Comics node, not Signals
+# *************************************************
+
+
 extends HBoxContainer
 
 #A Menu for Holding and Displaying Comic book chapters
-#convert to ads spot emulayting webtoons
+#convert to ads spot emulating webtoons
 
 onready var loaded_comics 
 
@@ -19,14 +35,15 @@ func _input(event):
 
 
 
-#Shows Comics Chapters Buttons
+"Hides Comics Chapters Buttons"
 func _on_Comics_loaded_comics():
 	loaded_comics = true
 	for child in get_children(): # works
 		child.hide()
 
 
-#Hides Comics Chapter Buttons 
+'Shows Comics Chapter Buttons'
+#connected from COomics signal 
 func _on_Comics_freed_comics():
 	loaded_comics = false
 	for child in get_children(): 
@@ -62,15 +79,3 @@ func display_locked_text(): #Dis the dialogue noxplays a generic text through
 
 
 
-#func _on_chap_4_pressed():
-#	display_locked_text()
-
-
-#func _on_chap_5_pressed():
-#	display_locked_text()
-
-#func _on_chap_6_pressed():
-#	display_locked_text()
-
-#func _on_chap_7_pressed():
-#	display_locked_text()

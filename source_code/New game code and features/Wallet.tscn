@@ -67,6 +67,7 @@ margin_right = 531.156
 margin_bottom = 24.5614
 rect_scale = Vector2( 0.1, 0.1 )
 text = "     123456"
+clear_button_enabled = true
 
 [node name="enter_mnemonic" type="Button" parent="mnemonic_ui"]
 margin_left = 8.60156

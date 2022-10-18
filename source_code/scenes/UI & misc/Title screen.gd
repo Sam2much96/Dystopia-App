@@ -9,22 +9,20 @@ The purpose of this code is to beautify the UI programmatically
 #doesn't work on low process pc
 
 
+#changes Title Screen Art using Global Screen Orientation
+onready var art1 = $TextureRect
+onready var art2 = $TextureRect2
 
-var progress : int
-onready var a = Globals.a 
-onready var b = Globals.b
-onready var Diag = $Dialog_box
 
-"Plays UI Loading animations from Globals Variable"
-
-var show_loading_anim: bool = Globals.loading_resource # this is a loading resource variable from the globals script
-
-func process():
-	if show_loading_anim == true:
-		progress = ((a/b) *100) # progress calculator
-		Diag.show_dialog(str(" Loading Gaame :" + str(progress) + "%"),'')
-	if show_loading_anim == false:
-		Diag.hide_dialogue()
-		set_process(false)
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	if Globals.screenOrientation == 0:
+		art1.show()
+		art2.hide()
+	elif Globals.screenOrientation == 1:
+		art1.hide()
+		art2.show()
+	pass
+# Called every fra
 
 

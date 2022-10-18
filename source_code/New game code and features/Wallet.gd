@@ -91,6 +91,7 @@ onready var txn_addr = $transaction_ui/transaction_address
 onready var txn_ui_options_button = $transaction_ui/txn_ui_options
 onready var txn_assets_valid_button = $transaction_ui/enter_asset
 onready var txn_txn_valid_button = $transaction_ui/enter_transaction
+onready var transaction_hint= $transaction_ui/Label
 
 
 onready var NFT =  Globals.NFT#get_tree().get_nodes_in_group('NFT')#$Control/TextureRect
@@ -402,15 +403,15 @@ func _process(_delta):
 		# Saves the Transaction parameters and runs the txn() function
 		#as a subprocess of the _ready() function
 		#check https://github.com/lucasvanmol/algodot/issues/20 for more clarifications
-		TRANSACTIONS: 
+		TRANSACTIONS: #works
 			#hide other ui states
 			#use animation player to alter UI
 			transaction_ui.show()
 			mnemonic_ui.hide()
 			wallet_ui.hide()
 			
-			#txn_amount.hide()
-			#nft_asset_id.hide()
+			txn_ui_options_button.show()
+			transaction_hint.show()
 			
 			" Swtiches Between Assets and Normal Transactions UI"
 			if txn_ui_options.get_selected() == 0:
@@ -536,13 +537,15 @@ func _process(_delta):
 			mnemonic_ui.hide()
 			wallet_ui.hide()
 			
+			transaction_hint.hide()
 			txn_amount.hide()
+			txn_assets_valid_button.hide()
 			nft_asset_id.hide()
 			txn_ui_options.hide()
 			if transaction_valid: #buggy
-				var params = yield(Algorand.algod.suggested_transaction_params(), "completed") #works
+				#var params = yield(Algorand.algod.suggested_transaction_params(), "completed") #works
 				print (" Opt into Smartcontract---Debugging")
-				
+				_ready()
 				
 				#print ('params debug: ', params) #for debug purposes only
 				
@@ -550,32 +553,32 @@ func _process(_delta):
 				#counter transaction id
 				#HMNGTWFPJ6RA4TD6K76WNMPXZ6BELMNQG7C5T7KT7MMU3YRS47NQ
 				
-				if params != null && wallet_check == 0:
+				#if params != null && wallet_check == 0:
 				
 				#Bug 1
-					var optin_tx = Algorand.algod.construct_app_call(params, '4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ', 116639568,['4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ'],Array(["str:inc"]),  PoolIntArray([0]),PoolIntArray([0]),[0],[0],[3,3],[0,1])
+				#	var optin_tx = Algorand.algod.construct_app_call(params, '4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ', 116639568,['4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ'],Array(["str:inc"]),  PoolIntArray([0]),PoolIntArray([0]),[0],[0],[3,3],[0,1])
 					
 
-					print ("opt in transcation: ",optin_tx) #returns null #shouldnt be null
+				#	print ("opt in transcation: ",optin_tx) #returns null #shouldnt be null
 				
 					
 
 					# Signs the Raw transaction
-					var stx = Algorand.raw_sign_transactions(optin_tx, mnemonic)
+				#	var stx = Algorand.raw_sign_transactions(optin_tx, mnemonic)
 		
-					print ("Raw Signed Transaction: ",stx) #shouldn't be null
+				#	print ("Raw Signed Transaction: ",stx) #shouldn't be null
 
-					wallet_check += 1
+				#	wallet_check += 1
 					
 					#send transaction
-					yield(Algorand.algod.send_transaction(stx), "completed") # sends raw signed transaction to the network
+				#	yield(Algorand.algod.send_transaction(stx), "completed") # sends raw signed transaction to the network
 				
 				
 					#make transcation invalid tops stack overflow
-					transaction_valid = !transaction_valid 
+				#	transaction_valid = !transaction_valid 
 				
 					#change state to check success of app call
-					state_controller.select(0) #check account state 1,  show account state 0
+				state_controller.select(0) #check account state 1,  show account state 0
 			pass
 		
 		IDLE:
@@ -973,14 +976,36 @@ func txn(): #runs presaved transactions once wallet is ready
 		asset_id_valid = false
 
 'Processes Smart COntract transactions'
-func smart_contract():
-	pass
+func smart_contract(): #doesnt work
+	#invalid tx construction
+	#might need to compile teal code to use this method
+	#reference https://developer.algorand.org/docs/get-details/dapps/smart-contracts/apps/
+	#var optin_tx = Algorand.algod.construct_app_call(params, '4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ', 116639568,['4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ'],["inc"],  PoolIntArray([0]),PoolIntArray([0]),[0],[0],[0,0],[0,1])
+	#i can use compile teal to compile argument calls to the Smart contract
+	#and pass them through poolbyte arrays and arrays
+	if transaction_valid:
+		var optin_tx = Algorand.algod.construct_app_call(params, '4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ', 116639568,['4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ'],["inc"])
+	
 
+		print ("opt in transcation: ",optin_tx) #returns null #shouldnt be null
+	
+	# Signs the Raw transaction
+	#var stx = Algorand.raw_sign_transactions(optin_tx, mnemonic)
+	
+	#print ("Raw Signed Transaction: ",stx) #shouldn't be null
 
-#func _on_Timer_timeout():
-#	call_deferred('txn')
-#	pass
+	#var txid = yield(Algorand.algod.send_transaction(stx), "completed") # sends raw signed transaction to the network
 
+	#txid = yield(algod.send_transaction(stx), "completed") 
+	
+	#print (txid)
+	
+	#wait for transaction to finish sending
+	#var wait= yield(Algorand.algod.wait_for_transaction(txid), "completed") 
+	
+	#print ('wait: ', wait)
+	transaction_valid = false
+	return transaction_valid
 
 func _on_enter_asset_pressed():
 	asset_id_valid = true

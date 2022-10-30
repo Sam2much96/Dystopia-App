@@ -63,6 +63,7 @@ position = Vector2( 10.2808, 7.63516 )
 polygon = PoolVector2Array( -8.90822, -7.09424, -8.79504, 30.0023, 23.0644, 30.2209, 22.5198, -7.1642 )
 
 [node name="mnemonic_ui" type="LineEdit" parent="."]
+visible = false
 margin_left = 9.15687
 margin_top = 0.561343
 margin_right = 531.156
@@ -118,24 +119,24 @@ clear_button_enabled = true
 
 [node name="nft" type="LineEdit" parent="transaction_ui"]
 margin_left = -7.0
-margin_top = 84.0
+margin_top = 174.797
 margin_right = 143.0
-margin_bottom = 108.0
+margin_bottom = 200.797
 text = "Asset-ID"
 clear_button_enabled = true
 
 [node name="enter_transaction" type="Button" parent="transaction_ui"]
-margin_left = 202.454
-margin_top = 52.8271
-margin_right = 247.454
-margin_bottom = 72.8271
+margin_left = 155.548
+margin_top = 47.6682
+margin_right = 200.548
+margin_bottom = 67.6682
 text = "Enter"
 
 [node name="enter_asset" type="Button" parent="transaction_ui"]
-margin_left = 202.454
-margin_top = 91.4339
-margin_right = 247.454
-margin_bottom = 111.434
+margin_left = 155.548
+margin_top = 178.103
+margin_right = 200.548
+margin_bottom = 198.103
 text = "Enter"
 
 [node name="txn_ui_options" type="OptionButton" parent="transaction_ui"]
@@ -154,6 +155,7 @@ text = "You Can Only send 1 NFT, But you can
 send multiple Tokens"
 
 [node name="wallet_ui" type="VBoxContainer" parent="."]
+visible = false
 margin_left = 5.1404
 margin_top = 0.670656
 margin_right = 340.14
@@ -257,10 +259,10 @@ text = "main menu"
 script = ExtResource( 2 )
 
 [node name="state_controller" type="OptionButton" parent="."]
-margin_left = 4.92053
-margin_top = 22.0719
-margin_right = 132.921
-margin_bottom = 42.0719
+margin_left = 4.1191
+margin_top = 21.7042
+margin_right = 132.12
+margin_bottom = 41.7042
 rect_scale = Vector2( 0.1, 0.1 )
 text = "State Controller"
 

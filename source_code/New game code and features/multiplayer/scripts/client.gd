@@ -68,7 +68,7 @@ func _ready():
 	
 	print("Server IP       : " + Networking.cfg_server_ip)
 	print("Player Name     : " + Networking.cfg_player_name)
-	print("Spaceship Color : " + Networking.cfg_color)
+	print("Team Color : " + Networking.cfg_color)
 	
 	print("Connecting to server ...")
 	

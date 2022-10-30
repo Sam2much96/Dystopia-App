@@ -355,14 +355,16 @@ static func free_children(node: Node) -> void:
 		node.free()
 
 'Delete Files'
-func delete_local_file(path_to_file: String) -> void:
-	var dir = Directory.new()
+func delete_local_file(dir: Directory, path_to_file: String) -> void:
+	
 	if dir.file_exists(path_to_file):
 		dir.remove(path_to_file)
 		#dir.queue_free()
 	else:
 		push_error('File To Delete Doesnt Exist')
 		return
+
+
 
 'Upscale UI'
 func upscale_wallet_ui(node: Control,size: String)-> void:

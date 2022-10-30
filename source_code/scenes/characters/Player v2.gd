@@ -15,6 +15,8 @@
 # (5) Implement RPC calls as methods (implemented as child of Client Node)
 # (6) Implement tokenized player asset
 # (7) Play animation remotely (works)
+# (8) Player Camera Hierarchy bug
+#		2 or more spawned players have their own cameras which misaligns the scene tree
 # *************************************************
 
 extends KinematicBody2D
@@ -46,7 +48,8 @@ enum { STATE_BLOCKED, STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE
 
 export var state = STATE_IDLE
 
-onready var player_camera = $camera #the player's camera
+#************ Scene Tree Objects *************#
+onready var camera = $camera #the player's camera
 onready var impact_fx = $Impact
 
 onready var animation = $anims
@@ -67,7 +70,11 @@ func _enter_tree():
 
 
 func _ready():
-
+	
+	#detect if networking connection
+	camera._set_current(true) 
+	
+	
 	
 	peer_id = get_tree().get_network_unique_id()
 
@@ -88,6 +95,10 @@ func _physics_process(_delta):
 
 
 	## PROCESS STATES
+	#only process states if connected to a newworking id and only change your peer id's parameters
+	
+	
+	
 	match state:
 		STATE_BLOCKED:
 			new_anim = "idle_" + facing

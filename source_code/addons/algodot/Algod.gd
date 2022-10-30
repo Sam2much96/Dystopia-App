@@ -406,25 +406,39 @@ func opt_in_smart_contract(params, from_address: String): #duplicate of opt in a
 	return optin_tx
 
 #duplicate of send_assets() function
-"Version 2 of Asset sending method working on Testnet"
-func transferAssets(params,_funder_mnemonic, _receiver_address,_asset_id, _amount: int):
-	#generate_suggested_transaction_parameters()
-	
+"Version 2 of Asset sending method working on Testnet" #breaks on NFT transfer
+func transferAssets(params,_funder_mnemonic: String ,  _receiver_address : String,_asset_id, _amount: int):
+
 	var _funder_address=algod.get_address(_funder_mnemonic)
 	
 	# Construct Aset tx
 	construct_asset_transfer(params,_funder_address, _receiver_address, _amount, _asset_id)
 	
-	# Raw Sign Asset tx
-	stx = algod.sign_transaction(asset_tx, _funder_mnemonic)
 	
+	opt_in_asset_transaction( params ,_receiver_address, _asset_id)
+	
+	
+		# Sends grouped transactions
+	create_grouped_transaction(optin_tx, asset_tx)
+
+	# Hacky code. Remove Later
+	# How to get receiver mnemonic?
+	var _receiver_mnemonic ='purity inner pilot suggest cave funny hip joke bean radar cheese moon sad depth book laundry pave lift robust length task fringe they abandon kitten'
+	
+	# Both accounts sign transaction 
+	
+	#transaction has been unneccessarily duplicated
+	#one of the transactions is a duplicate, check algoexplorer
+	txns[0] = algod.sign_transaction(txns[0], _receiver_mnemonic)
+	txns[1] = algod.sign_transaction(txns[1], _funder_mnemonic)
+#----------------------------------------------
+
 	#Generating transaction Id from signed transaction
-	txid = yield(algod.send_transaction(stx), "completed") 
+	txid = yield(algod.send_transactions(txns), "completed") 
 	
 	print (txid)
 	
 	#wait for transaction to finish sending
-	wait= yield(algod.wait_for_transaction(txid), "completed") 
-
+	#wait= yield(algod.wait_for_transaction(txid), "completed") 
 
 

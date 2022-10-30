@@ -35,7 +35,7 @@
 # (1) Implement as State Machine (done)
 # (2) Update transaction logic (done)
 # (3) Test Smart Contracts 
-		#Test counter smart contract (buggy)
+		#Test counter smart contract (unimplemented)
 # (4) Implement Proper wallet security (needs encryption and decryption algorithm) (step 1 done)
 # (5) Copy and Paste Wallet Address (done)
 # (6) Use time timeout to transition btw states (depreciated)
@@ -51,11 +51,9 @@
 # (14) Implement SHow mnemonic button
 # (15) Implement Comic book interface for interractible NFT (done)
 # (16) Implement better NFT UI (buggy)
-# (17) Delete local NFT's if token is sent
-		#logic
-		#if asset_url ='' && local_image_texture exists
-		#delete local image texture
+# (17) Delete local NFT's if token is sent (done)(it uses asset amount variable)
 # (18) Show Asset ID on NFT
+#		#Extent a label from NFT script and assign asset-id to it, also make it a child of NFT texture reat
 
 # Testing
 #(1) Image Downloder (works)
@@ -70,7 +68,7 @@ extends Control
 
 
 var image_url
-var json= File.new()
+#var json= File.new()
 var account_info: Dictionary = {1:[]}
 
 onready var Algorand = $Algodot
@@ -126,13 +124,16 @@ var recievers_addr : String = '' #for transactions
 var _amount : int = 0#for transactions
 var _asset_id :int = 0
 
+
 var encoded_mnemonic : PoolByteArray
 var encrypted_mnemonic 
 
 var _wallet_algos: int
-var asset_name : String
-var asset_url : String
-var asset_unit_name : String
+var asset_name : String = ''
+var asset_url : String = ''
+var asset_unit_name : String = ''
+var asset_amount: int = 0
+
 
 #************NFT variables**************#
 var _name : String
@@ -199,9 +200,7 @@ func _ready():
 		txn_ui_options.add_item('Assets') 
 		
 		#**********State Controller Options***********#
-		#add error checker so its not duplicated
-		#if _ready() is called multiple times
-		#sssss
+
 		state_controller.add_item("Show Account")
 		state_controller.add_item("Check Account")
 		state_controller.add_item("New Account")
@@ -391,7 +390,7 @@ func _process(_delta):
 				#FIxes null parameters errors
 				#account_info = {'address': address, 'amount': 0, 'mnemonic': mnemonic, 'asset_index': 0,'asset_name': '','asset_unit_name': '', 'asset_url': '',  "created-assets": [{}],}
 				
-				account_info = {"address":address, "amount":0, "mnemonic": mnemonic , "created-assets": [{"index": 0, "params":{"clawback":'', "creator":"", "decimals":0, "default-frozen": '', "freeze": '', "manager":"", "name":"Punk_001", "reserve":"", "total":1, "unit-name": 'XYZ', "url":""}}]}
+				account_info = {"address":address, "amount":0, "mnemonic": mnemonic }
 				
 				"saves more account info"
 				save_account_info(account_info,0)
@@ -472,6 +471,7 @@ func _process(_delta):
 					#eee
 					_asset_id = int(nft_asset_id.text)
 					recievers_addr = txn_addr.text
+					_amount = int(txn_amount.text)
 					
 					#change wallet state
 					#state = SHOW_ACCOUNT 
@@ -509,7 +509,7 @@ func _process(_delta):
 
 						# show account
 						state_controller.select(0)
-					if asset_url && asset_name != '':
+					if asset_url != '' && asset_name != '' && asset_amount > 0:
 
 						
 						'theres a problem with the network connection'
@@ -694,13 +694,14 @@ func save_account_info( info : Dictionary, number: int):
 	# encode mnemonic
 	save_dict.mnemonic = convert_string_to_binary(mnemonic)  #saves mnemonic as string error
 		
-	# Temporarily disabling
-	if info.has("assets"):
+	# Error Catcher
+	
+	if info.has("assets") && info['assets'][0].get('amount') > 0:
 		save_dict.asset_index =info["created-assets"][number]["index"] 
 		save_dict.asset_name = info["created-assets"][number]["params"]["name"] 
 		save_dict.asset_unit_name = info["created-assets"][number]["params"]['unit-name']
 		save_dict.asset_url = info["created-assets"][number]['params']['url'] #asset Uro and asset uri are different. Separate them
-	
+		save_dict.asset_amount = info['assets'][0].get('amount')
 	save_game.store_line(to_json(save_dict))
 	save_game.close()
 	
@@ -743,10 +744,11 @@ func _restore_wallet_data(info: Dictionary):
 	#***********Assets Information*****************#
 	#might break if wallet has no assets. 
 	#Write proper fix for this function and save asset function which duplicates code
-	if info.has('asset_name'):
+	if info.has('asset_amount'):
 		asset_name = str (info.asset_name) 
 		asset_url = str(info.asset_url) #asset url and asset meta data are different
 		asset_unit_name = str(info.asset_unit_name)
+		asset_amount = int (info.asset_amount)
 	
 	print ('wallet data restored from local database')
 	
@@ -802,7 +804,17 @@ func set_image_(texture):
 func check_wallet_info(): #works. Pass a variable check
 	if address != null && mnemonic != null:
 		account_info = yield(Algorand.algod.account_information(address), "completed")
-		save_account_info(account_info, 0) #testing
+		
+		save_account_info(account_info, 0) #works
+		
+		#works
+		#print ('nft delete debug: ',account_info['assets'][0].get('amount')) #for debug purposes only
+		#check if wallet has assets and if not, delete local nft
+		if account_info['assets'][0].get('amount') == 0 && FileCheck1.file_exists(local_image_path): #doesnt work
+			#deletes nft image
+			Globals.delete_local_file(FileDirectory,local_image_path)
+			state_controller.remove_item(8)
+		
 	else : 
 		push_error('Either address or mnemonic cannot be null')
 		print ("check info Address debug: ",address)
@@ -915,7 +927,15 @@ func _on_refresh_pressed(): #disabling refresh button
 #Deletes Local Account Info
 func reset()-> void:
 	print ("deleting account token")
-	Globals.delete_local_file(token_path)
+	
+	#deletes account token file
+	Globals.delete_local_file(FileDirectory,token_path)
+	
+	#deletes nft image
+	Globals.delete_local_file(FileDirectory,local_image_path)
+	#Globals.delete_local_file(FileDirectory,'user://wallet') #doesnt work
+	
+	#deletes folder
 
 
 'Copies Wallet Addresss to Clipboard'
@@ -949,10 +969,11 @@ func txn(): #runs presaved transactions once wallet is ready
 		
 		transaction_valid = false
 	
-	if _asset_id != 0 && asset_id_valid :
-		print (' Asset Txn Debug: ',recievers_addr, '/','asset id: ',_asset_id, '/', 'txn check', txn_check)
+	if _asset_id != 0 && asset_id_valid && _amount != 0 :
+		print (' Asset Txn Debug: ',recievers_addr, '/','asset id: ',_asset_id, '/', 'txn check', txn_check, ' /amount', _amount)
 		
 		#can be used to send both NFT's and Tokens
+		
 		yield(Algorand.transferAssets(params,mnemonic, recievers_addr,_asset_id, _amount), "completed")
 		
 		#reset transaction details

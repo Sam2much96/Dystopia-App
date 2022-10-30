@@ -359,7 +359,25 @@ func delete_local_file(path_to_file: String) -> void:
 	var dir = Directory.new()
 	if dir.file_exists(path_to_file):
 		dir.remove(path_to_file)
-		dir.queue_free()
+		#dir.queue_free()
 	else:
 		push_error('File To Delete Doesnt Exist')
 		return
+
+'Upscale UI'
+func upscale_wallet_ui(node: Control,size: String)-> void:
+	#no one size fits all problem
+	
+	
+	
+	if size == "small": 
+		var newScale = Vector2(0.08, 0.08); node.set_scale(newScale) 
+	if size == "medium": 
+		var newScale2 = Vector2(0.25,0.25); node.set_scale(newScale2)
+	if size == "big": 
+		var newScale3 = Vector2(1.5,1.5); node.set_scale(newScale3)
+	if size == "XL": 
+		var newScale4 = Vector2(3.5,3.5); node.set_scale(newScale4)
+	else: pass
+	
+	

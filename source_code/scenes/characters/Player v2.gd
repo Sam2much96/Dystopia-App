@@ -12,8 +12,9 @@
 # (2) Implement Remote Proceedure calls Networking
 # (3) Im not sure how to implement sstate machine calls to the client/server
 # (4) Too much Detection going on
-# (5) Implement RPC calls as methods
+# (5) Implement RPC calls as methods (implemented as child of Client Node)
 # (6) Implement tokenized player asset
+# (7) Play animation remotely (works)
 # *************************************************
 
 extends KinematicBody2D
@@ -48,6 +49,11 @@ export var state = STATE_IDLE
 onready var player_camera = $camera #the player's camera
 onready var impact_fx = $Impact
 
+onready var animation = $anims
+
+var peer_id
+
+
 
 func _enter_tree():
 	Globals.update_curr_scene()
@@ -62,7 +68,8 @@ func _enter_tree():
 
 func _ready():
 
-
+	
+	peer_id = get_tree().get_network_unique_id()
 
 	" Connects to the Dialogue System"
 	if not (
@@ -93,8 +100,16 @@ func _physics_process(_delta):
 					Input.is_action_pressed("move_up")
 				):
 					state = STATE_WALKING
+					
+					#rpc calls to server
+					#Client.rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
+					
 			if Input.is_action_just_pressed("attack"):
 				state = STATE_ATTACK
+				
+				#rpc calls to server
+				#rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
+				
 			if Input.is_action_just_pressed("roll"):
 				state = STATE_ROLL
 				roll_direction = Vector2(
@@ -104,10 +119,12 @@ func _physics_process(_delta):
 				_update_facing()
 			new_anim = "idle_" + facing
 			#get_material().
+			
 			pass
 		STATE_WALKING:
 			if Input.is_action_just_pressed("attack"):
 				state = STATE_ATTACK
+				
 			if Input.is_action_just_pressed("roll"):
 				state = STATE_ROLL
 			
@@ -137,9 +154,16 @@ func _physics_process(_delta):
 				new_anim = "walk_" + facing
 			else:
 				goto_idle()
-			pass
+			
+			#rpc calls to server
+			#Client.rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
+			
 		STATE_ATTACK:
 			new_anim = "slash_" + facing
+			
+			
+			#rpc calls to server
+			#Client.rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
 			pass
 		STATE_ROLL:
 			if roll_direction == Vector2.ZERO:
@@ -152,17 +176,28 @@ func _physics_process(_delta):
 				#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
 				linear_vel = target_speed
 				new_anim = "roll"
+				
+				#rpc calls to server
+				#Client.rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
+				
 				if Input.is_action_just_pressed("attack"): #punch and slide
 					state = STATE_ATTACK
 		STATE_DIE:
 			new_anim = "die"
+			
+			#rpc calls to server
+			#Client.rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
+			
 		STATE_HURT:
 			new_anim = "hurt"
+			
+			#rpc calls to server
+			#Client.rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
 	
-	## UPDATE ANIMATION
+	'UPDATE ANIMATION'
 	if new_anim != anim:
 		anim = new_anim
-		$anims.play(anim)
+		animation.play(anim)
 	pass
 
 
@@ -214,5 +249,5 @@ func despawn():  #this code breaks
 		Globals.change_scene_to(Globals._q)
 	else: get_tree().reload_current_scene()
 
-func _on_hurtbox_area_entered()-> void:
+func _on_hurtbox_area_entered():
 	pass

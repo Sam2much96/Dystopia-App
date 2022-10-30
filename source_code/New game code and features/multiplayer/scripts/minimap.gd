@@ -8,7 +8,7 @@
 # on a 128x128 minimap (bottom-right)
 #
 # Bug:
-# (1) Doesn't work
+# (1) Doesn't work. Currently Disabled for debugging
 
 # *************************************************
 extends TextureRect

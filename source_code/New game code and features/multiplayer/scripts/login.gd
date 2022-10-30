@@ -12,9 +12,12 @@
 # *************************************************
 extends CanvasLayer
 
-onready var input_color = $ui/grid/input_color #what are these used for?
-onready var input_player =$ui/grid/text_player
-onready var input_hostname = $ui/grid/text_hostname
+"UI inputs buttons"
+onready var input_color = $ui/ScrollContainer/grid/input_color 
+onready var input_player =$ui/ScrollContainer/grid/text_player
+onready var input_hostname = $ui/ScrollContainer/grid/text_hostname
+
+onready var animation = $AnimationPlayer
 
 func _ready():
 	# Adding four spaceship colors
@@ -25,14 +28,19 @@ func _ready():
 	
 	# Set default hostname
 	input_hostname.text = Networking.DEFAULT_HOSTNAME
-	pass
+	
+	#scale up UI with global script
+	if Globals.os == "Android" && Globals.screenOrientation == 1: 
+		#Globals.upscale_wallet_ui($ui,'XL')
+		animation.play("HORIZONTAL_SCREEN")
+	else: animation.play("VERTICAL_SCREEN")
 
 # Callback function for "Start!" button
 func _on_button_login_pressed(): #others join
 	
 	# Store information about spaceship color and player name #modify #spaceship colour to player colour
 	#Networking.cfg_color = input_color.text
-	Networking.cfg_player_name = input_player.text + Globals.address
+	Networking.cfg_player_name = input_player.text + str(Globals.address)
 	
 	# Lookup hostname and store resolved IP
 	Networking.cfg_server_ip = IP.resolve_hostname(input_hostname.text)

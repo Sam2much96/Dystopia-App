@@ -12,6 +12,8 @@
 # (3) Unimplement Networking Singleton i.e. script should run it's own networking node
 # (4) Users should be able to copy wallet details
 # (5) Test transaction state for Tokens and Algos
+# (6) Compile Teal FOr SMartContract Testing
+# (7) 
 #Logic
 # It uses the Networking singleton and Algorand library
 # to get an asset's url and download the image from
@@ -27,12 +29,13 @@
 #Bugs:
 
 #(1) UI is not intuitive 
+#(2) NFT drag and Drop is buggy
 
 # To-DO:
 # (1) Implement as State Machine (done)
 # (2) Update transaction logic (done)
 # (3) Test Smart Contracts 
-		#Test counter smart contract
+		#Test counter smart contract (buggy)
 # (4) Implement Proper wallet security (needs encryption and decryption algorithm) (step 1 done)
 # (5) Copy and Paste Wallet Address (done)
 # (6) Use time timeout to transition btw states (depreciated)
@@ -52,6 +55,7 @@
 		#logic
 		#if asset_url ='' && local_image_texture exists
 		#delete local image texture
+# (18) Show Asset ID on NFT
 
 # Testing
 #(1) Image Downloder (works)
@@ -102,8 +106,8 @@ onready var anim = $AnimationPlayer
 
 
 #************** Algo Variables *************************
-var Escrow_account: String #="L5ESENBL23J2GJGM64Y767IXWGBCKXMGS2OGZ3MC5BBGWJAKJJAUK7BJK4"  #should ideally be a smart contract
-var Escrow_mnemoic: String
+var Escrow_account: String   #should ideally be a smart contract
+var Escrow_mnemonic: String = "purity inner pilot suggest cave funny hip joke bean radar cheese moon sad depth book laundry pave lift robust length task fringe they abandon kitten"
 #Not needed, can be gotten from mnemonic alone
 
 var Player_account: String  #="2NFCY7HBAFJ5YP7TXUOFHHMGAZ7AHEXPS5F3NENXSC3WXRVATBR4Y23AUM"
@@ -171,6 +175,8 @@ var asset_id_valid : bool = false
 var loaded_wallet: bool= false #fixes looping loading bug
 var good_internet : bool #debugs user's internet
 
+var withdraw : bool
+
 var passed_all_connectivity_checks : bool = false #debugs all connectivity checks
 var is_image_available_at_local_storage : bool  = FileCheck4.file_exists(local_image_path)
 #*************Signals************************************#
@@ -187,27 +193,29 @@ func _ready():
 	
 	
 	#*****Txn UI options************#
-	txn_ui_options.add_item('Transactions') 
-	txn_ui_options.add_item('Assets') 
-	
-	#**********State Controller Options***********#
-	#add error checker so its not duplicated
-	#if _ready() is called multiple times
-	#sssss
-	state_controller.add_item("Show Account")
-	state_controller.add_item("Check Account")
-	state_controller.add_item("New Account")
-	state_controller.add_item("Import Account")
-	state_controller.add_item("Transactions")
-	state_controller.add_item("SmartContacts") #should be a sub of Transactions
-	state_controller.add_item('NFT')
+	#check if methods exist
+	if (txn_ui_options_button.get_item_count() == 0):
+		txn_ui_options.add_item('Transactions') 
+		txn_ui_options.add_item('Assets') 
+		
+		#**********State Controller Options***********#
+		#add error checker so its not duplicated
+		#if _ready() is called multiple times
+		#sssss
+		state_controller.add_item("Show Account")
+		state_controller.add_item("Check Account")
+		state_controller.add_item("New Account")
+		state_controller.add_item("Import Account")
+		state_controller.add_item("Transactions")
+		state_controller.add_item("SmartContacts") #should be a sub of Transactions
+		state_controller.add_item('NFT')
 	
 	
 	
 	"Mobile UI"
 	print ('Screen orientation debug; ',Globals.screenOrientation)
 	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
-		#anim.play("MOBILE UI")
+		#anim.play("MOBILE UI") #depreciated
 		
 		upscale_wallet_ui()
 
@@ -260,17 +268,11 @@ func _process(_delta):
 	
 	match state:
 		NEW_ACCOUNT: #loads wallet details if account already exists
-			
-			run_wallet_checks()
-			if not algod_node_exists:
-				#Make sure an algod node is running or connet to mainnet or testnet
-				Algorand.create_algod_node('TESTNET')
-				Algorand._test_algod_connection()
-				algod_node_exists= true
-		
+
 			
 			'Generates New Account'
-			if not FileDirectory.file_exists(token_path) : # if account info doesn't exist
+			#Only generates new account if previous wallet data has been deleted
+			if not FileDirectory.file_exists(token_path) && wallet_check == 0 : # if account info doesn't exist
 				
 				"Creates Wallet Directory if it doesn't exist"
 				create_wallet_directory()
@@ -295,9 +297,14 @@ func _process(_delta):
 				"saves more account info"
 				save_account_info(dict,1)
 				
-				state = SHOW_ACCOUNT
-				#wallet_check += 1
+				wallet_check += 1
+				
+				return wallet_check
 			if FileDirectory.file_exists(token_path) :
+				
+				
+				
+				
 				state = SHOW_ACCOUNT
 				return
 	
@@ -340,7 +347,7 @@ func _process(_delta):
 					#state = GENERATE_ADDRESS
 				
 			'Handles if account info is deleted'
-			if not FileCheck1.file_exists("user://wallet/account_info.token"):
+			if not FileCheck1.file_exists(token_path):
 				#Revert to Import account state
 				
 				push_error('account info file does not exist')
@@ -431,7 +438,14 @@ func _process(_delta):
 					
 					# cannot process any txn less than 10_000 microAlgos
 					if _amount  < 100_000:
+						
+						#should ideally be sent to the UI
 						push_error('Cannot send balance less tha 100_000 MicroAlgos')
+						
+						
+						'Error Catcher 1'
+						# return to show account
+						state_controller.select(0)
 					if _amount > 100_000 && txn_check == 0:
 						
 						#txn_check += 1
@@ -439,7 +453,7 @@ func _process(_delta):
 						#should save the transaction files to be done
 						
 						#goes to the title screen to reset ready function
-						state = SHOW_ACCOUNT 
+						#state = SHOW_ACCOUNT 
 						state_controller.select(0) 
 
 						#calls the transaction function which is a child of _ready()
@@ -460,7 +474,7 @@ func _process(_delta):
 					recievers_addr = txn_addr.text
 					
 					#change wallet state
-					state = SHOW_ACCOUNT 
+					#state = SHOW_ACCOUNT 
 					state_controller.select(0) 
 
 					
@@ -512,7 +526,7 @@ func _process(_delta):
 						 
 						#makes a https request to download image from local server
 						
-						Networking. _connect_to_ipfs_gateway(image_url)  
+						Networking. _connect_to_ipfs_gateway(image_url, Networking)  
 						
 						wallet_check += 1
 					#***************************************************************
@@ -520,7 +534,14 @@ func _process(_delta):
 					#print ('adfbsdjfbasdfjsdfs') #works
 					#load_local_image_texture()
 					wallet_check += 1
-					NFT.load_local_image_texture(local_image_path) #loop error
+					
+					#calls NFT from a class #depreciated
+					#NFT.load_local_image_texture(local_image_path) #loop error 
+					
+					
+					#calls NFT from comics node
+					#NFT is a call to the SceneTree's Texture react
+					Comics.load_local_image_texture_from_global(Globals.NFT, local_image_path)
 					
 					#change states
 					state_controller.select(0)
@@ -543,40 +564,12 @@ func _process(_delta):
 			nft_asset_id.hide()
 			txn_ui_options.hide()
 			if transaction_valid: #buggy
-				#var params = yield(Algorand.algod.suggested_transaction_params(), "completed") #works
+				#Would Require Compiling to Teal
 				print (" Opt into Smartcontract---Debugging")
+				
+				#runs a smart contract deferred function in the ready function
 				_ready()
-				
-				#print ('params debug: ', params) #for debug purposes only
-				
-				#tailor made for the counter smart contract demo #buggy
-				#counter transaction id
-				#HMNGTWFPJ6RA4TD6K76WNMPXZ6BELMNQG7C5T7KT7MMU3YRS47NQ
-				
-				#if params != null && wallet_check == 0:
-				
-				#Bug 1
-				#	var optin_tx = Algorand.algod.construct_app_call(params, '4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ', 116639568,['4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ'],Array(["str:inc"]),  PoolIntArray([0]),PoolIntArray([0]),[0],[0],[3,3],[0,1])
-					
 
-				#	print ("opt in transcation: ",optin_tx) #returns null #shouldnt be null
-				
-					
-
-					# Signs the Raw transaction
-				#	var stx = Algorand.raw_sign_transactions(optin_tx, mnemonic)
-		
-				#	print ("Raw Signed Transaction: ",stx) #shouldn't be null
-
-				#	wallet_check += 1
-					
-					#send transaction
-				#	yield(Algorand.algod.send_transaction(stx), "completed") # sends raw signed transaction to the network
-				
-				
-					#make transcation invalid tops stack overflow
-				#	transaction_valid = !transaction_valid 
-				
 					#change state to check success of app call
 				state_controller.select(0) #check account state 1,  show account state 0
 			pass
@@ -596,7 +589,7 @@ func run_wallet_checks()-> bool: # works #run networking internet checks test be
 		Algorand.create_algod_node('TESTNET')
 	
 	if !good_internet:
-		Networking._check_if_device_is_online()
+		Networking._check_if_device_is_online(Networking)
 	
 	wallet_check_counter+= 1
 	#var status
@@ -640,8 +633,10 @@ func run_wallet_checks()-> bool: # works #run networking internet checks test be
 
 	print ("----wallet check done------")
 	
-	# Transaction function
+	#***********Transaction and Smart Contract functions**************#
 	call_deferred('txn')
+	
+	call_deferred('withdraw')
 	
 	call_deferred('smart_contract')
 	return 0;
@@ -700,11 +695,11 @@ func save_account_info( info : Dictionary, number: int):
 	save_dict.mnemonic = convert_string_to_binary(mnemonic)  #saves mnemonic as string error
 		
 	# Temporarily disabling
-	
-	save_dict.asset_index =info["created-assets"][number]["index"] 
-	save_dict.asset_name = info["created-assets"][number]["params"]["name"] 
-	save_dict.asset_unit_name = info["created-assets"][number]["params"]['unit-name']
-	save_dict.asset_url = info["created-assets"][number]['params']['url'] #asset Uro and asset uri are different. Separate them
+	if info.has("assets"):
+		save_dict.asset_index =info["created-assets"][number]["index"] 
+		save_dict.asset_name = info["created-assets"][number]["params"]["name"] 
+		save_dict.asset_unit_name = info["created-assets"][number]["params"]['unit-name']
+		save_dict.asset_url = info["created-assets"][number]['params']['url'] #asset Uro and asset uri are different. Separate them
 	
 	save_game.store_line(to_json(save_dict))
 	save_game.close()
@@ -748,9 +743,10 @@ func _restore_wallet_data(info: Dictionary):
 	#***********Assets Information*****************#
 	#might break if wallet has no assets. 
 	#Write proper fix for this function and save asset function which duplicates code
-	asset_name = str (info.asset_name) 
-	asset_url = str(info.asset_url) #asset url and asset meta data are different
-	asset_unit_name = str(info.asset_unit_name)
+	if info.has('asset_name'):
+		asset_name = str (info.asset_name) 
+		asset_url = str(info.asset_url) #asset url and asset meta data are different
+		asset_unit_name = str(info.asset_unit_name)
 	
 	print ('wallet data restored from local database')
 	
@@ -783,7 +779,7 @@ func _http_request_completed(result, response_code, headers, body): #works with 
 		print (" request successful")
 			
 			#disabling for now
-		set_image_(Networking.download_image_(body, "user://wallet/img0")) #works
+		set_image_(Networking.download_image_(body, "user://wallet/img0", Networking)) #works
 			
 	else: return
 	Networking.cancel_request()
@@ -817,22 +813,13 @@ func check_wallet_info(): #works. Pass a variable check
 	#increases a wallet check timer
 	wallet_check += 1
 
-func _on_withraw(): #withdraws Algos from wallet data into my test algorand wallet
+#withdraws Algos from wallet data into my test algorand wallet
+func _on_withraw(): 
 	#var status
-	#if Globals.algos != 0: #cannot withdraw with zero balance
-	#	Algorand.create_algod_node() #from an escrow account
-		
-	#	status = status && yield(Algorand._send_transaction_to_receiver_addr(Escrow_mnemoic ,"rigid steak better media circle nothing range tray firm fatigue pool damage welcome supply police spoon soul topic grant offer chimney total bronze able human", Globals.algos), "completed") #works
-		#status = status && yield(_send_asset_transfers_to_receivers_address(funder_address , funder_mnemonic , receivers_address , receivers_mnemonic), "completed") #works
-	#	print (status)
-	#if Globals.algos == 0:
-		
-	#	print ("Cannot withdraw from ",Globals.algos, " balance")
-		
-	#if status:
-	#	print('withdrawal Successful')
-	#	show_account_info(false) #updates account info
-	pass
+	if Globals.algos > 100_000: #cannot withdraw with zero balance
+		withdraw = true
+		_ready()
+		pass
 
 func _on_reset():
 	#should deleta all account details
@@ -913,9 +900,6 @@ func _on_Main_menu_pressed():
 	return Globals._go_to_title()
 
 
-func _on_testnetdispenser_pressed():
-	return OS.shell_open('https://testnet.algoexplorer.io/dispenser')
-
 
 #Updates Local Account Info
 func _on_refresh_pressed(): #disabling refresh button
@@ -930,6 +914,7 @@ func _on_refresh_pressed(): #disabling refresh button
 
 #Deletes Local Account Info
 func reset()-> void:
+	print ("deleting account token")
 	Globals.delete_local_file(token_path)
 
 
@@ -975,6 +960,15 @@ func txn(): #runs presaved transactions once wallet is ready
 		_asset_id = 0
 		asset_id_valid = false
 
+
+func withdraw(): #placeholder method
+	if withdraw && Globals.algos > 100_000:
+		
+		
+		yield(Algorand._send_txn_to_receiver_addr(params,Escrow_mnemonic,address, Globals.algos), "completed")
+		withdraw = false
+		Globals.algos = 0
+
 'Processes Smart COntract transactions'
 func smart_contract(): #doesnt work
 	#invalid tx construction
@@ -1009,3 +1003,13 @@ func smart_contract(): #doesnt work
 
 func _on_enter_asset_pressed():
 	asset_id_valid = true
+
+
+"Deletes presaved account"
+func _on_reset_pressed():
+	reset()
+
+
+func _on_Testnet_Dispenser_pressed():
+	return OS.shell_open('https://testnet.algoexplorer.io/dispenser')
+

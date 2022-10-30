@@ -9,7 +9,8 @@
 # (3) It's a class and stores variables to the UI, Globals singleton, PlayersSave Files, and the Debug SIngleton
 # To Do:
 #(1) Update Documentation
-# (2) Implement Networking Calls
+# (2) Implement Networking Calls (done in v2)
+# (3) State blocked is unimplemented
 # *************************************************
 
 extends KinematicBody2D

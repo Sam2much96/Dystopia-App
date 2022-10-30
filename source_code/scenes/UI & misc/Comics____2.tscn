@@ -180,12 +180,10 @@ enabled_focus_mode = 0
 
 [node name="Hint" type="Popup" parent="."]
 visible = true
+margin_top = -354.897
 margin_right = 40.0
-margin_bottom = 40.0
+margin_bottom = -314.897
 script = SubResource( 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ColorRect" type="ColorRect" parent="Hint"]
 margin_left = 100.0
@@ -205,6 +203,30 @@ text = "Double Tap to Zoom in, Swipe left and right to change pages"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Hint2" type="Popup" parent="."]
+visible = true
+margin_left = 53.9391
+margin_top = 586.04
+margin_right = 93.9391
+margin_bottom = 626.04
+script = SubResource( 5 )
+
+[node name="ColorRect" type="ColorRect" parent="Hint2"]
+margin_left = 100.0
+margin_top = 584.0
+margin_right = 1102.0
+margin_bottom = 679.0
+
+[node name="Label" type="Label" parent="Hint2"]
+margin_left = 196.657
+margin_top = 617.029
+margin_right = 1490.66
+margin_bottom = 666.029
+rect_scale = Vector2( 0.63048, 0.63048 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 17 )
+text = "ADvertising placeholder ADvertising placeholder"
 
 [connection signal="freed_comics" from="Comics" to="Comics/ScrollContainer/HBoxContainer" method="_on_Comics_freed_comics"]
 [connection signal="loaded_comics" from="Comics" to="Comics/ScrollContainer/HBoxContainer" method="_on_Comics_loaded_comics"]

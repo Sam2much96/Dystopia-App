@@ -144,15 +144,16 @@ func start_check(): #Starts time check using Check timer
 
 # Check http unsecured Url connection
 # fix multiple check bug
-func _check_connection(url): 
+static func _check_connection(url, request_node: HTTPRequest): 
 	#Ignore Warning
-	if not running_request :
-		var error = .request(url,PoolStringArray(),false,0,"") 
-		connection_debug = str (' making request  ')  + str (' Request Error: ',error)
-		print (' Networking Request Error: ',error) #for debug purposes only
-		running_request = true
-	elif running_request:
-		return
+	#Request Node must be in the SceneTree
+	print  ("Is Request Noode inside scene tree:", request_node.is_inside_tree())
+	var error = request_node.request(url,PoolStringArray(),false,0,"") 
+	#connection_debug = str (' making request  ')  + str (' Request Error: ',error)
+	print (' Networking Request Error: ',error) #for debug purposes only
+	#running_request = true
+	#elif running_request:
+	#	return
 
 func _check_connection_secured(url): # Check http secured Url connection
 	#Ignore Warning
@@ -161,35 +162,36 @@ func _check_connection_secured(url): # Check http secured Url connection
 	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
 	print (' Networking Request Error: ',error) #for debug purposes only
 
-func _connect_to_ipfs_gateway(url): # Check http secured Url connection
+static func _connect_to_ipfs_gateway(url : String, request_node: HTTPRequest): # Check http secured Url connection
 	#Ignore Warning
-	if not running_request :
+	#if not running_request :
 		url = _parse(url) 
 		#url =url.http_escape()
 
 		# uses ipfs web 2 gateway
 		url = "https://ipfs.io/ipfs/" + url
 		var t=StreamPeerSSL.new()
-		var error = .request(url,PoolStringArray(),false,HTTPClient.METHOD_GET) 
-		connection_debug = str (' making request  ')  + str (' Request Error: ',error)
+		var error = request_node.request(url,PoolStringArray(),false,HTTPClient.METHOD_GET) 
+		 
 		print (' Networking Request Error: ',error) #for debug purposes only
-	elif running_request:
+	#elif running_request:
 		return
 
-
 'Removes IPFS Domain from Asset url'
-func _parse(_url : String)-> String: #works
+'Removes IPFS Domain from Asset url'
+static func _parse(_url : String)-> String: #works
 	_url=_url.replace('ipfs://', '')
 	#print (_url) # for debug purposes only
 	return _url
 
 'Internet COnnectivity Check'
-func _check_if_device_is_online():
+'Internet COnnectivity Check'
+static func _check_if_device_is_online(node: HTTPRequest):
 	
 	#index = index + 1
 	#dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
-	url = 'https://mfts.io'
-	_check_connection( url)#url('https://play.google.com/store/apps/details?id=dystopia.app')
+	#var q =HTTPRequest.new()
+	_check_connection('https://mfts.io', node)#url('https://play.google.com/store/apps/details?id=dystopia.app')
 	
 
 
@@ -301,7 +303,7 @@ func download_json_(body: PoolByteArray, Save_path: String) -> File:
 download a given image from a given http request
 returns a PNG texture file, saves image file
 """
-func download_image_(body: PoolByteArray, Save_path: String) -> ImageTexture:
+static func download_image_(body: PoolByteArray, Save_path: String, node : HTTPRequest) -> ImageTexture:
 	var image = Image.new()
 	var texture = ImageTexture.new()
 	
@@ -317,11 +319,11 @@ func download_image_(body: PoolByteArray, Save_path: String) -> ImageTexture:
 			
 			
 			
-			while not get_downloaded_bytes() > get_body_size() && local_tex.eof_reached() == false: #causes a large file bug, generates a 3gb file
-				print ("Loading Image--------", ( get_body_size()/1000), " kb") # for debug purposes 
+			while not node.get_downloaded_bytes() > node.get_body_size() && local_tex.eof_reached() == false: #causes a large file bug, generates a 3gb file
+				print ("Loading Image--------", ( node.get_body_size()/1000), " kb") # for debug purposes 
 				local_tex.store_buffer(body) #stores image locally
 				#if local_tex.eof_reached() == true: #causes a significant lag
-				if get_downloaded_bytes() == get_body_size(): #causes a significant lag
+				if node.get_downloaded_bytes() == node.get_body_size(): #causes a significant lag
 					local_tex.close()
 					break
 			print ("Image Download Successful")

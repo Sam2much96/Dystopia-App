@@ -74,15 +74,14 @@ func _handle_input_(event): #Works but buggy
 		
 		
 		target = event.get_position()
-		#print ("Drag and Drop Debug: ",target.x, "/",target.y, "can drag", can_drag, ' position: ', Kinematic_2d.position) #for debug purposes only
-		#print ("Drag and Drop Debug 2: ", Kinematic_2d.position,' Distance debug: ', Kinematic_2d.position.distance_to(target)) #for debug purposes only
-		
+
 		return drag(Vector2(round(target.x), round(target.y)), Kinematic_2d.position, Kinematic_2d)
 		pass
 
 
 func _on_TextureRect_gui_input(event):
 	
+	can_drag = true
 	_handle_input_(event)
 	pass
 

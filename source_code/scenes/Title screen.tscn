@@ -56,11 +56,11 @@ texture = ExtResource( 8 )
 
 [node name="TextureRect2" type="TextureRect" parent="."]
 show_behind_parent = true
-margin_left = 14.0
-margin_top = 18.0
-margin_right = 427.0
-margin_bottom = 646.0
-rect_scale = Vector2( 2, 2 )
+margin_left = 47.6357
+margin_top = 583.082
+margin_right = 460.636
+margin_bottom = 1211.08
+rect_scale = Vector2( 2.2, 2.2 )
 texture = ExtResource( 7 )
 
 [node name="Menu " parent="." instance=ExtResource( 3 )]

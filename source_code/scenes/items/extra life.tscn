@@ -152,9 +152,7 @@ tracks/3/keys = {
 "values": [ true ]
 }
 
-[node name="extra life" type="Area2D" groups=[
-"items",
-]]
+[node name="extra life" type="Area2D" groups=["items"]]
 script = ExtResource( 1 )
 
 [node name="sprite" type="Sprite" parent="."]

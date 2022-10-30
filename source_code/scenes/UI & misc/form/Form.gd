@@ -81,8 +81,8 @@ func _check_if_device_is_online():
 	if os == 'Android' or 'iOS' or 'X11': #disable x11 for release build
 		index = index + 1
 		dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
-		Networking.url = 'https://mfts.io'
-		Networking._check_connection( Networking.url)#url('https://play.google.com/store/apps/details?id=dystopia.app')
+		#Networking.url = 
+		Networking._check_connection( 'https://mfts.io', Networking)#url('https://play.google.com/store/apps/details?id=dystopia.app')
 
 
 func _http_request_completed(result, response_code, headers, body):

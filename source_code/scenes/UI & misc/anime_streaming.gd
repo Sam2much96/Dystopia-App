@@ -50,25 +50,8 @@ func _on_Button_pressed():
 
 
 func _download_video(): #(depreciated)
-	#use URL: https://youtu.be/ETtpGXDwe08 to test video streaming.
-#Original youtube amv url: https://youtu.be/sh0ygItcpBg
-	#video_file = File.new()
 
-	######The Streaming Site passed as a global string variable#########
-	if Globals.os != str ('Android'): #Webm doesn't play on Godot v3.2.3 Videoplayer yet
-		Networking.url = 'https://drive.google.com/file/d/1qktuAkGZSDoBl1KWXCUBOkgb8L5dsv6i/view?usp=sharing' #for debuging video streaming
-		#Networking.url = 'https://animationvideosondemand.s3.af-south-1.amazonaws.com/AMV_3.webm'
-		
-		Networking._check_connection( Networking.url)
-	if Globals.os == str ('Android'):
-		Networking.url ='https://drive.google.com/file/d/1I2ocf8lLH7zyycNLk7Yvb37MibiTOlS2/view?usp=sharing' #OGV TEST
-		#Networking.url ='https://animationvideosondemand.s3.af-south-1.amazonaws.com/AMV_5.ogv' #OGV
-		
-		Networking._check_connection( Networking.url)
-	
-	# Wrong Download size bug
-	#Networking.url = 'https://drive.google.com/file/d/1qktuAkGZSDoBl1KWXCUBOkgb8L5dsv6i/view?usp=sharing'
-	
+	pass
 
 
 func _on_watch_anime_pressed():

@@ -2,8 +2,8 @@
 # godot3-Dystopia-game by INhumanity_arts
 # Released under MIT License
 # *************************************************
-# Comics 4.1.1
-# This is a plugin containing the comics bool page logic
+#
+# This is a pluggin containing the comics logic
 # A comic book module for Godot game engine.
 # I implemented A touch input manager here
 # *************************************************
@@ -17,13 +17,13 @@
 # (3) Add more parameters to the drag() function to be reusable in other scripts
 # (4) Copy NFT storage codes to save downloaded comic chapters locally. It'll optimize file sizes
 # (5) Implement State Machine (on It)
-# (6) Implement Extendible (NFT) drag and Drop (buggy)
+# (6) Implement NFT drag and Drop
 # (7) Implement Page state and Pages state
 # *************************************************
 # Bugs:
 # (1) it has a wierd updatable bug that's visible in the debug panel
 # (2) Center Page is buggy
-# (3) Drag and Drop across small distances is buggy
+#
 # *************************************************
 
 
@@ -43,10 +43,8 @@ export(float,1.0,1.5) var MAX_DIAGONAL_SLOPE =1.3
 
 export (PackedScene) var current_comics 
 
-"Prealoaded Comics"
+"Scene Paths to every Comic node"
 # host on ipfs and use local user directory to store comic files
-# run file checks to verify image downloadds and load
-#programmatically
 # Size optimization
 var comics = {
 	 1: 'res://scenes/Comics/chapter 1/chapter 1.tscn',
@@ -67,7 +65,7 @@ export (int) var current_chapter
 
 onready var next_scene = null
 
-var can_drag : bool = false
+var can_drag = false
 onready var zoom = false
 onready var comics_placeholder 
 
@@ -80,7 +78,7 @@ onready var center
 onready var target =Vector2(0,0) 
 onready var origin = get_viewport_rect().size/2#set origin point to the center of the viewport
 
-onready var loaded_comics : bool = false
+onready var loaded_comics = false
 
 onready var _input_device
 onready var _e = Timer.new()
@@ -88,22 +86,34 @@ onready var _comics_root = self
 
 onready var _debug_= get_tree().get_root().get_node("/root/Debug")
 
-"Bug FIx from <200 absolute Distances"
+"Implementing State Machine"
+# For NFT drag and drop functionality
 
-var target_memory_x: Array = [] #stores vector 2 of previous targets
-var target_memory_y: Array = [] #stores vector 2 of previous targets
+enum {ENABLED, DISABLED, SINGLE_PAGE_STATE, MULTIPLE_PAGES_STATE}
+
+var state = ENABLED
 
 
 var enabled : bool 
-#export (String, 'no', 'yes') var _enabled
+export (String, 'no', 'yes') var _enabled
 
+func _enter_tree():
+	
+	
+	pass
+
+func _init():
+	pass
 
 func _ready():
 	#wordbubble() #for debug purposes only
+
 	
 	if current_comics !=null:
 		load_comics()
-		#Globals.comics = self #updates itself to the globals singleton
+		Globals.comics = self #updates itself to the globals singleton
+		#bookmark('load')
+		#print ('Globals Comics Node', Globals.comics)
 
 
 
@@ -128,8 +138,6 @@ func load_comics():
 		for _p in get_tree().get_nodes_in_group('Cmx_Root'):
 			enabled = true
 			zoom = false
-
-			can_drag = true
 
 			current_frame =  int(0)
 			Kinematic_2d = KinematicBody2D.new()
@@ -186,7 +194,7 @@ func load_comics():
 	emit_signal("comics_showing")
 	center_page()
 
-
+"Gives The Drag functiom A target to drag"
 
 func _input(event): 
 	"""
@@ -202,14 +210,14 @@ func _input(event):
 #Toggles comics visibility on/off
 #It disappears if not enabled 
 	"Enables and Disables Comics Node (when Comics button is pressed)"
-	#if not enabled && event.is_action_pressed("comics") : 
-	#	enabled = true
-	#else: enabled = !enabled
+	if not enabled && event.is_action_pressed("comics") : 
+		enabled = true
+	else: enabled = !enabled
 	
-	if  enabled == false and event.is_action_pressed("comics") : #SImplifying this code bloc
-		enabled = true 
-	elif enabled == true and event.is_action_pressed("comics") :
-		enabled = false
+#	if  enabled == false and event.is_action_pressed("comics") : #SImplifying this code bloc
+#		enabled = true 
+#	elif enabled == true and event.is_action_pressed("comics") :
+#		enabled = false
 
 	"Controller for Joypad"
 	if event is InputEventJoypadButton && self.visible == true:
@@ -246,16 +254,16 @@ func _input(event):
 			if event.get_index() == int(2) and event is InputEventScreenPinch : #zoom if screentouch is 2 fingers & uses input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases
 				
 				_zoom() #you can use get_index to get the number of fingers
-		
-		"Handles Swipe Detection" #buggy 
-		_handle_swipe_detection(event)
+		if event.pressed:
+			_start_detection(event.position)
+		elif not _e.is_stopped():
+			_end_detection(event.position)
 
-	"Handles Screen Dragging"
+	# Handles ScreenDragging
 	if event is InputEventScreenDrag && current_comics != null :
 		#if event is InputEventMultiScreenDrag: breaks
 		target = event.get_position()
-		return drag(target, Kinematic_2d.position, Kinematic_2d)
-		
+		drag()
 
 # Handles releasing 
 	#pass
@@ -267,17 +275,8 @@ func _input(event):
 		_zoom() #disabled for debugging, enable when done debugging
 		return
 
-
-
 func _process(_delta):
-	"Limits memory usage for Drag and Drop bug fixer"
-	#optimize code
-	if target_memory_x.size() > 30:
-		target_memory_x.clear() 
-	if target_memory_y.size() > 30:
-		target_memory_y.clear() 
-
-
+ 
 	# ReWrite to Use State machine
 	if current_comics != null:
 		loaded_comics = true
@@ -294,14 +293,14 @@ func _process(_delta):
 	"VISIBILITY"
 	# add counter
 	if enabled == true: #toggles visibility 
-		show() #Disabling for debugging
+		#show() #Disabling for debugging
 		
 		#print ("Enabled")
 		
 		pass
 
 	if enabled == false:
-		hide() #Disabling for debugging
+		#hide() #Disabling for debugging
 		#print ("DIsabled")
 		pass
 	memory=get_tree().get_nodes_in_group("comics") #an array of all comics in the scene tree
@@ -338,123 +337,37 @@ func _process(_delta):
 		if _debug_ != null && _debug_.enabled == true:
 			#var Debug  = Engine.get_singleton('Debug')
 			_debug_.Comics_debug = str(
-				'Curr frme:', current_frame , 'Cmx: ',current_comics, 'Enbled',enabled,'can drag: ',#can_drag,
+				'Curr frme:', current_frame , 'Cmx: ',current_comics, 'Enbled',enabled,'can drag: ',can_drag,
 				 ' Zoom: ',zoom, 'LC: ',loaded_comics
 				)
 """
 DRAG FUNCTION
 """
-#body must be a kinematic body 2d
-func drag(_target : Vector2, _position : Vector2, _body : KinematicBody2D)-> void: #pass this method some parmeters
+func drag()-> void: #pass this method some parmeters
 	#add more parameters
  # Input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases 
- 
-	if can_drag:
-		center = restaVectores(_target, _position)
-		_body.set_position(_target)
-		#can_drag = true 
-			
-		" Drag n Drop Logic"
-			
-			
-		"If Distance to input target is greater than 200"
-		#for large size drags
-		if abs(_position.distance_to(_target)) > 200: #if its far...
+		
+	if loaded_comics == true:
+		target #= target  
+		position = Kinematic_2d.position 
+		center = restaVectores(target, position)
+		Kinematic_2d.set_position(target)
+		can_drag = true 
+		
+		" THE TOUCH INPUT CONTROLLER"
+		
+		
+		
+		if abs(position.distance_to(target)) > 200: #if its far...
 		##use suma vectores function for vector maths
-			_body.move_and_slide(center) #move and slide to center
-			#print ('moving to center') #for debug purposes only
+			Kinematic_2d.move_and_slide(center) #move and slide to center
 
+		if abs(position.distance_to(target)) < 200 : 
+				#Kinematic_2d.move_and_slide(target) 
+				Kinematic_2d.set_position(target)
 
-#******************************Bug Begins**********************#
-
-		"If Distance is less than 200"
-		#for small size drags
-		#Buggy 
-		if abs(_position.distance_to(_target)) < 200 : #if its close
-				#_body.move_and_slide(target)
-				#how to fix
-				
-			"""
-			I can calculate the difference between the last 2 drags to fix this bug
-			drag bug is caused by sudden disparity between the target vectors
-			if the previous target position is different by a large amount, discard it and wait for next target input
-			"""
-				
-			var x : int = _target.x
-			var y : int = _target.y
-			target_memory_x.append(x) #works
-			target_memory_y.append(y) #works
-			
-			# Rejects buggy input targets
-			# Save both x & y inputs in similar array to properly debug
-			if abs(target_memory_x[target_memory_x.size() - 2] - x) > 3: #if more than 3 buggy inputs have been saved
-				print ('Error x axis') #for debug purposes only
-				print ('x axis size debug: ' ,target_memory_x.size()) #for debug purposes only
-				#print (target_memory_x) #temporarily disabling for debug purposes
-				
-				
-				
-				
-				
-				#deletes bad input
-				target_memory_x.erase(x) #temporarily disabling for debugging
-				
-				
-				
-				
-				#target_memory_x.remove(target_memory_x[-1]) #deletes error #introduces bug
-				if target_memory_x.size() == 1:
-					_body.move_and_slide(Vector2(target_memory_x[0], target_memory_y.back()))
-				
-				#Erases Faulty Horizontal Input
-				if target_memory_x.size() > 1:
-					var adjusted_target = Vector2(target_memory_x[target_memory_x.size() - 2], target_memory_y.back())
-					_body.move_and_slide(adjusted_target)
-				
-				return
-			if abs(target_memory_y[target_memory_y.size() - 2] - x) > 3:
-				print ('Error y axis')
-				print ('y axis size debug: ' ,target_memory_y.size()) 
-				#print (target_memory_y) #temporarily disabling for debug purposes
-				
-				#rejects drag method
-				#can_drag = false #doenst work
-				#potential target fix
-				#print ("Y : ",target_memory_y) #for debug purposes only
-				
-				
-				
-				
-				
-				#deletes bad input
-				target_memory_y.erase(y) #temporarily disabling for debugging
-				
-				
-				
-				
-				
-				if target_memory_y.size() == 1: #error catcher
-					
-					#moves to a predicted presaved axis
-					_body.move_and_slide(Vector2(target_memory_x.back(), target_memory_y[0]))
-				
-				elif target_memory_y.size() > 1:
-					
-					var adjusted_target = Vector2(target_memory_x.back(), target_memory_y[target_memory_y.size() - 1])
-					
-					#moves to a predicted presaved axis
-					_body.move_and_slide(adjusted_target)
-				return 
-
-			#code base is too long to debug. Simplify
-			if not abs(target_memory_y[target_memory_y.size() - 2] - x) && abs(target_memory_x[target_memory_x.size() - 2] - x) > 3 :
-				#_body.set_position(_target)
-				print ('sdsjgksdkgjsdfj')
-				_body.move_and_slide(_target)
-
-#******************************Bug Ends**********************#
 """
-				 ZOOM
+ZOOM
 
 """
 
@@ -520,7 +433,7 @@ func prev_chap():
 
 
 """
-	   DRAG AND DROP logic
+DRAG AND DROP 
 """
 #it requires you set mouse filter to ignore on all control nodes 
 #so the area 2d can get mouse input data
@@ -536,16 +449,8 @@ func sumaVectores(v1, v2): #vector sum
 
 
 """
-		  SWIPE DETECTION
+swipe detection
 """
-
-func _handle_swipe_detection(event)-> void:
-	"Handles Swipe Detection" #buggy
-	if event.pressed:
-		_start_detection(event.position)
-	elif not _e.is_stopped():
-		_end_detection(event.position)
-
 func _start_detection(_position): #for swipe detection
 	if enabled == true:
 		swipe_start_position = _position
@@ -599,19 +504,6 @@ func _on_Rotate_pressed():#Page Rotation #Rewrite this function as a module
 			Kinematic_2d.set_rotation_degrees(0)
 			comics_placeholder.set_position ( center)
 
-
-
-
-static func load_local_image_texture_from_global(node : TextureRect, _local_image_path: String)-> void:
-	#print ("NFT debug: ", NFT) #for debug purposes only
-	var texture = ImageTexture.new()
-	var image = Image.new()
-	image.load(_local_image_path)
-	texture.create_from_image(image)
-	node.show()
-	node.set_texture(texture) #cannot load directly from local storage without permissions
-		#print (NFT.texture) for debug purposes only
-	node.set_expand(true)
 
 
 """

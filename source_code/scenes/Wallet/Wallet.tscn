@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://New game code and features/Wallet.gd" type="Script" id=1]
+[ext_resource path="res://scenes/Wallet/Wallet.gd" type="Script" id=1]
 [ext_resource path="res://addons/algodot/Algod.gd" type="Script" id=2]
 [ext_resource path="res://fonts/wallet.tres" type="Theme" id=3]
 [ext_resource path="res://New game code and features/Drag_extension.gd" type="Script" id=4]
 [ext_resource path="res://New game code and features/NFT.gd" type="Script" id=5]
+[ext_resource path="res://App's white paper v1.1.6.webp" type="Texture" id=6]
 
 [sub_resource type="Animation" id=1]
 resource_name = "MOBILE UI"
@@ -41,7 +42,6 @@ rect_scale = Vector2( 1.66221, 1.44276 )
 color = Color( 0.278431, 0.278431, 0.278431, 1 )
 
 [node name="Control" type="Control" parent="."]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 rect_pivot_offset = Vector2( 8.86526, 4.48991 )
@@ -54,11 +54,13 @@ script = ExtResource( 4 )
 margin_right = 40.0
 margin_bottom = 40.0
 rect_pivot_offset = Vector2( 18.0789, 17.8748 )
+texture = ExtResource( 6 )
+expand = true
 script = ExtResource( 5 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Control/KinematicBody2D"]
 position = Vector2( 10.2808, 7.63516 )
-polygon = PoolVector2Array( -8.90822, -7.09424, -8.13716, 48.8282, 55.6038, 49.4472, 55.3467, -6.68153 )
+polygon = PoolVector2Array( -8.90822, -7.09424, -8.79504, 30.0023, 23.0644, 30.2209, 22.5198, -7.1642 )
 
 [node name="mnemonic_ui" type="LineEdit" parent="."]
 margin_left = 9.15687
@@ -159,7 +161,7 @@ margin_bottom = 601.671
 rect_scale = Vector2( 0.02, 0.02 )
 
 [node name="address" type="Label" parent="wallet_ui"]
-margin_right = 522.0
+margin_right = 531.0
 margin_bottom = 193.0
 theme = ExtResource( 3 )
 text = "Address: 
@@ -167,71 +169,86 @@ text = "Address:
 
 [node name="ingame_algos" type="Label" parent="wallet_ui"]
 margin_top = 197.0
-margin_right = 522.0
+margin_right = 531.0
 margin_bottom = 292.0
 theme = ExtResource( 3 )
 text = "Ingame Algos:"
 
 [node name="wallet_algos" type="Label" parent="wallet_ui"]
 margin_top = 296.0
-margin_right = 522.0
+margin_right = 531.0
 margin_bottom = 391.0
 theme = ExtResource( 3 )
 text = "wallet algos: "
 
 [node name="HBoxContainer" type="GridContainer" parent="wallet_ui"]
 margin_top = 395.0
-margin_right = 522.0
+margin_right = 531.0
 margin_bottom = 916.0
 
 [node name="withdraw" type="Button" parent="wallet_ui/HBoxContainer"]
-margin_right = 522.0
+visible = false
+margin_right = 531.0
 margin_bottom = 101.0
 theme = ExtResource( 3 )
 text = "withdraw"
 
 [node name="refresh" type="Button" parent="wallet_ui/HBoxContainer"]
-margin_top = 105.0
-margin_right = 522.0
-margin_bottom = 206.0
+margin_right = 531.0
+margin_bottom = 101.0
 theme = ExtResource( 3 )
 text = "Refresh"
 
 [node name="show_mnemonic" type="Button" parent="wallet_ui/HBoxContainer"]
+visible = false
 margin_top = 210.0
-margin_right = 522.0
+margin_right = 531.0
 margin_bottom = 311.0
 theme = ExtResource( 3 )
 text = "show mnemonic"
 
+[node name="reset" type="Button" parent="wallet_ui/HBoxContainer"]
+margin_top = 105.0
+margin_right = 531.0
+margin_bottom = 206.0
+theme = ExtResource( 3 )
+text = "reset"
+
+[node name="Testnet Dispenser" type="Button" parent="wallet_ui/HBoxContainer"]
+margin_top = 210.0
+margin_right = 531.0
+margin_bottom = 311.0
+theme = ExtResource( 3 )
+text = "Testnet Dispenser"
+
 [node name="Copy address" type="Button" parent="wallet_ui/HBoxContainer"]
 margin_top = 315.0
-margin_right = 522.0
+margin_right = 531.0
 margin_bottom = 416.0
 theme = ExtResource( 3 )
 text = "Copy Address"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="wallet_ui/HBoxContainer"]
 margin_top = 420.0
-margin_right = 522.0
+margin_right = 531.0
 margin_bottom = 521.0
 
 [node name="testnet-dispenser" type="Button" parent="wallet_ui/HBoxContainer/HBoxContainer"]
-margin_right = 207.0
+margin_right = 216.0
 margin_bottom = 101.0
 theme = ExtResource( 3 )
-text = "Dispense"
+text = "withdraw"
 
 [node name="Label" type="Label" parent="wallet_ui/HBoxContainer/HBoxContainer"]
-margin_left = 211.0
+margin_left = 220.0
 margin_top = 43.0
-margin_right = 283.0
+margin_right = 292.0
 margin_bottom = 57.0
 text = "                  "
 
 [node name="Main menu" type="Button" parent="wallet_ui/HBoxContainer/HBoxContainer"]
-margin_left = 287.0
-margin_right = 522.0
+margin_left = 296.0
+margin_right = 531.0
 margin_bottom = 101.0
 theme = ExtResource( 3 )
 text = "main menu"
@@ -263,6 +280,8 @@ one_shot = true
 [connection signal="pressed" from="transaction_ui/enter_asset" to="." method="_on_enter_asset_pressed"]
 [connection signal="pressed" from="wallet_ui/HBoxContainer/withdraw" to="." method="_on_withdraw_pressed"]
 [connection signal="pressed" from="wallet_ui/HBoxContainer/refresh" to="." method="_on_refresh_pressed"]
+[connection signal="pressed" from="wallet_ui/HBoxContainer/reset" to="." method="_on_reset_pressed"]
+[connection signal="pressed" from="wallet_ui/HBoxContainer/Testnet Dispenser" to="." method="_on_Testnet_Dispenser_pressed"]
 [connection signal="pressed" from="wallet_ui/HBoxContainer/Copy address" to="." method="_on_Copy_address_pressed"]
 [connection signal="pressed" from="wallet_ui/HBoxContainer/HBoxContainer/testnet-dispenser" to="." method="_on_testnetdispenser_pressed"]
 [connection signal="pressed" from="wallet_ui/HBoxContainer/HBoxContainer/Main menu" to="." method="_on_Main_menu_pressed"]

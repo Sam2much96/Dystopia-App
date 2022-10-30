@@ -227,7 +227,7 @@ func _on_Anime_pressed():
 
 func _on_wallet_pressed():
 	Music.play_track(Music.ui_sfx[0])
-	return get_tree().change_scene_to((load('res://New game code and features/Wallet.tscn')))
+	return get_tree().change_scene_to((load('res://scenes/Wallet/Wallet.tscn')))
 
 
 func _on_Testing_Scene_pressed(): # turn off in release build

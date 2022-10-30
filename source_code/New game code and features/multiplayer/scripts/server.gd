@@ -38,7 +38,7 @@ onready var node_enemies  = Node.new()#$Enemies
 
 #.pop_front()
 
-var preload_player = preload("res://scenes/characters/Aarin.tscn") #spawn different players
+var preload_player = preload("res://scenes/characters/Aarin_networking.tscn") #spawn different players
 var preload_enemy = preload("res://scenes/characters/Enemy.tscn") # spawn different enemies
 
 var server_debug
@@ -236,29 +236,44 @@ remote func register_player(id, info): #rewrite this
 		rpc_id(peer_id, "player_joined", id, player_info[id])
 
 
-#Handles player movement from  received input from Clients via rpc calls
-remote func player_input(id, key, pressed, client_position, client_state, linear_velocity): # #it receives player input through rpc
-	print("Remote: player_input(" + str(id)+","+key+","+str(pressed)+")") 
+# Handles player input from player script
+remote func player_input_v2(peer_id ,state,facing,position, linear_vel):
+	
+	'Updates Server Player Info From Client player'
+	player_info[peer_id].node.state = state
+	player_info[peer_id].node.facing = facing
+	player_info[peer_id].node.position = position
+	player_info[peer_id].node.linear_vel = linear_vel
+	
+	
+	pass
 
-	if key == "left": #sets player info from remote input
-		player_info[id].node.facing = 'left'#sets player node to face left
+#Handles player movement from  received input from Clients via rpc calls
+
+#remote functions can be called remotely via rpc calls
+remote func player_input(id, key, pressed, client_position, client_state, linear_velocity, facing, animation): # #it receives player input through rpc
+	#Remote Player Input Debugger
+	#print("Remote: player_input(" + str(id)+","+key+","+str(pressed)+")") 
+
+	#if key == "left": #sets player info from remote input
+	#	player_info[id].node.facing = 'left'#sets player node to face left
 	if pressed == true: #update player position in this code block
 		
+		#debugs info
+		#player_input_debug(id, client_position, client_state, linear_velocity)
 		
-		#player_info[id].position = client_position
-		#player_info[id].state = client_state
-		
-		#Run this code in physics process (does this work?)
-		_process(_update_player_position_and_states(id,client_position, client_state,linear_velocity)) #updates player's motion and states
+		#Run this code in physics process (does this work? kinda does)
+		_process(_update_player_position_and_states(id,client_position, client_state,linear_velocity, facing, animation)) #updates player's motion and states
 		
 		
 		#print ('Remote player Input is Pressed: ', pressed, 'Player Position: ',  player_info[id].node.position ) #for debug purposes only
-		player_input_debug(id, client_position, client_state, linear_velocity)
+		
 		
 	if  pressed == false: #it changes state but not position
+		#player_info[id].node.animation.play('idle')
 		
 		pass
-	#	print ('Remote player Input is Pressed: ', pressed, ' /Player Position: ',  player_info[id].node.position) #for debug purposes only
+
 	elif key == "right":
 		player_info[id].node.facing = 'right'#rotation = 1 if pressed else 0
 	
@@ -273,16 +288,27 @@ remote func player_input(id, key, pressed, client_position, client_state, linear
 	
 	
 
-func _update_player_position_and_states(id,position ,state, linear_vel): #updates players states from the handle input function
+
+'#updates players states from the handle input function sent from clients'
+#implement animation player
+func _update_player_position_and_states(id,position ,state, linear_vel, facing, animation): 
+	#works
 	player_info[id].node.position = position #updates the player node's position to the client position
 	player_info[id].node.state = state #updates player state to the client's state
+
+	#doesnt work
 	player_info[id].node.linear_vel = linear_vel #updates player state to the client's state
 	
-	player_info[id].node.move_and_slide(linear_vel) #This line of code breaks
+	#probably works
+	player_info[id].node.move_and_slide(linear_vel) #This line of code works
 
+	player_info[id].node.facing = facing
+
+	player_info[id].node.animation.play(str(animation)) #plays client current animation
 	pass
 
 #server debug 1
+#Depreciated
 func player_input_debug(id, client_position, client_state, linear_velocity)-> void:
 	#Debugs player position and State
 	print ('Player  ID/////////',id)

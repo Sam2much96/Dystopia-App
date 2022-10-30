@@ -54,5 +54,8 @@ func spawn(): #organize this code to switch btw random spawn and single spawn
 	owner.get_parent().call_deferred("add_child", item)
 	item.global_position = global_position
 	item.item_type = item_type
-	item.amount = amount
-	pass
+	
+	'Exempts Coin from Amount changes'
+	if not item.name == 'coins':
+		item.amount = amount
+	return 0

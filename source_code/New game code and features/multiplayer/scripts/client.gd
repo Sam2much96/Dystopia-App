@@ -9,15 +9,20 @@
 # To Do:
 # (1) Send Player inputs via remote functions
 # (2) Duplicate Input Functions btw Client and Server (Using ROll back netcode as a reference)
-# (3)  
+# (3)  Remove player input from this client script and implement it in Player v2 script
 # *************************************************
 extends Node
+
+class_name Client
+
 var client_debug 
 
 var my_info = { name = "Player" }
-var preload_player = preload("res://scenes/characters/Aarin.tscn")
+var preload_player = preload("res://scenes/characters/Aarin_networking.tscn")
+var node_player
 
 var player_id #my code
+var client_animation : String
 export (int) var ______update_id
 var hitpoints= 3#var preload_projectile = preload("res://New game code and features/multiplayer/scenes/projectile.tscn") #tweak
 var preload_damage  #= preload("res://New game code and features/multiplayer/scenes/effects/damage.tscn") #tweak
@@ -35,6 +40,8 @@ onready var node_enemies=Node.new()  #= #= $camera/projectiles #rewrote progecti
 #onready var camera = Camera2D.new()#$Camera2D#get_tree().get_root()
 onready var progress_health = load('res://scenes/UI & misc/Healthbar.tscn')
 
+#*******Player Items*************#
+var facing
 
 #*******Chat Item*************#
 onready var chat = $UI/item_chat
@@ -116,16 +123,39 @@ func _process(_delta):
 		player_info[peer_id].position = pos #updates the player's dicitonary with current player position 
 		
 		linear_vel = player_info[peer_id].node.linear_vel
+		
+		facing = player_info[peer_id].node.facing
+		client_animation = player_info[peer_id].node.anim
+		
 		pass
 	
 
+
+	"Handle Input v 1"
 	# Handle input (keyboard)
+	#sends player input to server
 	handle_input() #Handle's Player's Input and sends it to the Servers
 	
 	
-	
 
-func handle_input():
+"Handle Input v 2" #moved to player script
+remote func handle_player_input_and_state():
+	pass
+
+
+#reads the player node parameters
+#works
+#depreciated
+func read_player_parameters()-> void:
+	if node_player != null:
+		print('Player state: ',node_player.state)
+		print('Player animation: ',node_player.anim , client_animation)
+
+
+'Makes calls to the Server to Process player input sent via rpc calls '
+#it duplicates the player statemachine code and sends the player's parameters to the server
+#via PU function
+func handle_input(): #DUplicate player state machine input here
 	
 	# If not connected, don't handle input.
 	if not my_peer.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
@@ -137,13 +167,25 @@ func handle_input():
 		
 	# Send input events over network to the server
 	var id = get_tree().get_network_unique_id()
+	
+	if (
+		Input.is_action_pressed("move_down") or
+		Input.is_action_pressed("move_left") or
+		Input.is_action_pressed("move_right") or
+		Input.is_action_pressed("move_up")
+		):
+			state = 2 #works--ish
+			rpc_id(1,"player_input",id,"left",true, pos, state, linear_vel, facing, client_animation)
+			
+			#read_player_parameters() works
+	
 	# Move left
 	if Input.is_action_just_pressed("move_left"): #sends player input to the server
 		
 		# calls a remote player input method in the client via rpc
 		rpc_id(1,"player_input",id,"left",true, pos, state, linear_vel) #sends position and state data directly to servers 
 		
-		#1 is peer ID
+		
 		
 		client_debug()
 	if Input.is_action_just_released("move_left"):
@@ -219,7 +261,9 @@ remote func player_joined(id, info): #tweak code###########################
 	player_info[id] = info
 	add_chat("Player joined: " + player_info[id].name)
 	
-	var node_player = preload_player.instance()
+	
+	#node player is the instanced player node
+	node_player = preload_player.instance()
 
 
 	
@@ -327,4 +371,4 @@ func display_damage(body):#rewrite this to instance blood fx
 #	pass
 
 func client_debug()-> void:
-	print ('/Client Player info : Linear velocity: ',linear_vel, "// Peer ID: ", get_tree().get_network_unique_id()) #for debug purposes only
+	print ('/Client Player info : Linear velocity: ',linear_vel, "// Peer ID: ", get_tree().get_network_unique_id(), ' State: ',state) #for debug purposes only

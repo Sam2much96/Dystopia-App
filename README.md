@@ -1,37 +1,41 @@
 <<<<<<< HEAD
 # Dystopia-App-Stable v1.1.9 Alpha c
 
-Documentation by INhumanity_arts 
+## Synopsis
+
+
+
+## Documentation by INhumanity_arts 
 
 ![Screenshot](https://github.com/Sam2much96/Dystopia-App/blob/master/source_code/resources/illustrations/cover%201.png)
 
 
-#FEATURES
-#(1) Auto Music shuffle:
+## FEATURES
+**(1) Auto Music shuffle:**
 	This shuffles a selected music playlist (dictionary). It is in the Music singleton and uses the shuffle( function)
 
-#(2)Globals.comicbook[1]:
+**(2)Globals.comicbook[1]:**
    This is a shortcut for calling the comicbook scenes. use the change_scene_to(load(...INSERT ...)) to call it. 
   check for other callable functions and variables in the globals singleton 
-#(3)Debug
+**(3)Debug**
 	It calls debug funtions like Debug.start_debug(), Debug.stop_debug(), and passes its variables to the viewport
 
-#(4) Fonts, Music and Videos
+**(4) Fonts, Music and Videos**
 	I added a couple of new Dynamic Fonts and Music funtions that can be called from the Music track node. A cinematic scene
 	was added to handle all video playing functions. (Note: video player works best with .ogv video format)
 
 
-#(5) Ingame Menu:
+**(5) Ingame Menu:**
 	This is a reusable ingame menu i added to give access to all major scenes in the App
 
 
-#(6) Custom input maps:
+**(6) Custom input maps:**
 	Added a couple of custom input maps to enable and disable the comics and game menu scenes 
 
-#(7) Enemy kill count:
+**(7) Enemy kill count:**
 	This is a global variable that can be an indicator of player's progress
 
-#(8) Twitter 
+**(8) Twitter** 
 
 (9) Player and Enemy Effects
 

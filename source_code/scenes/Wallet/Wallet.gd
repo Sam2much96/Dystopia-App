@@ -159,7 +159,7 @@ export (String) var local_image_path ="user://wallet/img0.png" #Loads the image 
 
 "State Machine"
 
-enum {NEW_ACCOUNT,CHECK_ACCOUNT, SHOW_ACCOUNT, IMPORT_ACCOUNT, TRANSACTIONS ,COLLECTIBLES, SMARTCONTRACTS, IDLE}
+enum {NEW_ACCOUNT,CHECK_ACCOUNT, SHOW_ACCOUNT, IMPORT_ACCOUNT, TRANSACTIONS ,COLLECTIBLES, SMARTCONTRACTS ,IDLE}
 export var state = IDLE
 
 var wallet_check : int = 0
@@ -178,8 +178,11 @@ var good_internet : bool #debugs user's internet
 
 var withdraw : bool
 
+var optin_asset : bool #for optin into asset transations
+
 var passed_all_connectivity_checks : bool = false #debugs all connectivity checks
 var is_image_available_at_local_storage : bool  = FileCheck4.file_exists(local_image_path)
+
 #*************Signals************************************#
 signal completed #placehoder signal
 signal transaction
@@ -198,9 +201,10 @@ func _ready():
 	if (txn_ui_options_button.get_item_count() == 0):
 		txn_ui_options.add_item('Transactions') 
 		txn_ui_options.add_item('Assets') 
+		txn_ui_options.add_item('Optin')
 		
-		#**********State Controller Options***********#
-
+	#**********State Controller Options***********#
+	if (state_controller.get_item_count() == 0):
 		state_controller.add_item("Show Account")
 		state_controller.add_item("Check Account")
 		state_controller.add_item("New Account")
@@ -419,7 +423,7 @@ func _process(_delta):
 			txn_ui_options_button.show()
 			transaction_hint.show()
 			
-			" Swtiches Between Assets and Normal Transactions UI"
+			" Algo Transfers"
 			if txn_ui_options.get_selected() == 0:
 				txn_amount.show()
 				nft_asset_id.hide()
@@ -461,6 +465,7 @@ func _process(_delta):
 						txn_check += 1
 						return txn_check
 
+			"Asset Tranfers"
 			if txn_ui_options.get_selected() == 1:
 				#txn_amount.hide()
 				#uses two different buttons for assets and algo transactions
@@ -481,11 +486,32 @@ func _process(_delta):
 					#calls the transaction function which is a subprocess of _ready() function
 					_ready()
 					
-			pass
+			"Opt in Asset Transfer"
+			if txn_ui_options.get_selected() == 2:
+				txn_assets_valid_button.show()
+				txn_txn_valid_button.hide()
+				txn_addr.hide()
+				txn_amount.hide()
+				nft_asset_id.show()
+				
+				if asset_id_valid:
+					_asset_id = int (nft_asset_id.text)
+				
+					state_controller.select(0)
+					
+					#prepares the address to optin asset transaction
+					optin_asset = true
+					
+					#calls the optin transaction which is a subprocess of the _ready() function
+					_ready()
+				
+				pass
 			
 	
 		COLLECTIBLES: 
 			"Checks if the Image is avalable Locally and either downloads or loads it"
+			#should be able to optin to asset receipt txns
+			#should be able to display asset ID on NFT textures
 			if wallet_check == 0:
 				if not FileCheck3.file_exists(local_image_path): #works
 					
@@ -548,6 +574,7 @@ func _process(_delta):
 				 #duplicate of above for bug catching
 					#load_local_image_texture()
 				else: return
+		
 		#opts into smart contracts with wallet
 		SMARTCONTRACTS: # doesnt work 
 			#hide other ui states
@@ -636,6 +663,8 @@ func run_wallet_checks()-> bool: # works #run networking internet checks test be
 	#***********Transaction and Smart Contract functions**************#
 	call_deferred('txn')
 	
+	call_deferred('optin')
+	
 	call_deferred('withdraw')
 	
 	call_deferred('smart_contract')
@@ -694,14 +723,20 @@ func save_account_info( info : Dictionary, number: int):
 	# encode mnemonic
 	save_dict.mnemonic = convert_string_to_binary(mnemonic)  #saves mnemonic as string error
 		
-	# Error Catcher
+	# Error Catchers
 	
-	if info.has("assets") && info['assets'][0].get('amount') > 0:
-		save_dict.asset_index =info["created-assets"][number]["index"] 
+	# saves if address has assets
+	if info.has("assets") :
+		save_dict.asset_index =  info['assets'][0].get('asset-id')  #info["created-assets"][number]["index"] 
+		save_dict.asset_amount = info['assets'][0].get('amount')
+	# saves if address has created assets
+	if info.has("created-assets"):
 		save_dict.asset_name = info["created-assets"][number]["params"]["name"] 
 		save_dict.asset_unit_name = info["created-assets"][number]["params"]['unit-name']
 		save_dict.asset_url = info["created-assets"][number]['params']['url'] #asset Uro and asset uri are different. Separate them
-		save_dict.asset_amount = info['assets'][0].get('amount')
+
+
+
 	save_game.store_line(to_json(save_dict))
 	save_game.close()
 	
@@ -745,10 +780,13 @@ func _restore_wallet_data(info: Dictionary):
 	#might break if wallet has no assets. 
 	#Write proper fix for this function and save asset function which duplicates code
 	if info.has('asset_amount'):
+		asset_amount = int (info.asset_amount)
+		_asset_id = int (info.asset_index)
+	if info.has('asset_name'):
 		asset_name = str (info.asset_name) 
 		asset_url = str(info.asset_url) #asset url and asset meta data are different
 		asset_unit_name = str(info.asset_unit_name)
-		asset_amount = int (info.asset_amount)
+	
 	
 	print ('wallet data restored from local database')
 	
@@ -805,12 +843,17 @@ func check_wallet_info(): #works. Pass a variable check
 	if address != null && mnemonic != null:
 		account_info = yield(Algorand.algod.account_information(address), "completed")
 		
+		#print ('nft delete debug: ',account_info['assets'])
+		print ('nft delete debug 2: ',account_info.get('assets')) 
+		
+		#OS.set_clipboard(str(account_info)) 
+		#temporarily disabling
 		save_account_info(account_info, 0) #works
 		
 		#works
 		#print ('nft delete debug: ',account_info['assets'][0].get('amount')) #for debug purposes only
 		#check if wallet has assets and if not, delete local nft
-		if account_info['assets'][0].get('amount') == 0 && FileCheck1.file_exists(local_image_path): #doesnt work
+		if asset_amount == 0 && FileCheck1.file_exists(local_image_path): #doesnt work
 			#deletes nft image
 			Globals.delete_local_file(FileDirectory,local_image_path)
 			state_controller.remove_item(8)
@@ -963,6 +1006,8 @@ func txn(): #runs presaved transactions once wallet is ready
 		
 		yield(Algorand._send_txn_to_receiver_addr(params,mnemonic,recievers_addr, _amount), "completed")
 
+		OS.alert('Transaction successful', str(Algorand.txid))
+
 		#reset transaction details
 		recievers_addr = ''
 		_amount = 0
@@ -976,10 +1021,30 @@ func txn(): #runs presaved transactions once wallet is ready
 		
 		yield(Algorand.transferAssets(params,mnemonic, recievers_addr,_asset_id, _amount), "completed")
 		
+		#to receive an asset, the receiving wallet would have to opt into the asset transaction
+		OS.alert('Transaction successful', str( _asset_id))
+		
 		#reset transaction details
 		recievers_addr = ''
 		_asset_id = 0
 		asset_id_valid = false
+
+"Opts into Asset ID for valid transactions"
+func optin():
+#include checks to see if wallet has previously opted into asset-id
+	if optin_asset:
+		Algorand.opt_in_asset_transaction( params ,address, _asset_id)
+		var stx = Algorand.algod.sign_transaction(Algorand.optin_tx)
+		#Generating transaction Id from signed transaction
+		var txid = yield(Algorand.algod.send_transactions(stx), "completed") 
+		
+		print (txid)
+		
+		#reset optin asset boolean
+		optin_asset = false
+		
+		OS.alert('successfully opted into asset', str(_asset_id))
+
 
 
 func withdraw(): #placeholder method
@@ -998,27 +1063,13 @@ func smart_contract(): #doesnt work
 	#var optin_tx = Algorand.algod.construct_app_call(params, '4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ', 116639568,['4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ'],["inc"],  PoolIntArray([0]),PoolIntArray([0]),[0],[0],[0,0],[0,1])
 	#i can use compile teal to compile argument calls to the Smart contract
 	#and pass them through poolbyte arrays and arrays
+	#duplicate optin state machine to implement smartcontract calls
 	if transaction_valid:
 		var optin_tx = Algorand.algod.construct_app_call(params, '4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ', 116639568,['4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ'],["inc"])
 	
 
 		print ("opt in transcation: ",optin_tx) #returns null #shouldnt be null
-	
-	# Signs the Raw transaction
-	#var stx = Algorand.raw_sign_transactions(optin_tx, mnemonic)
-	
-	#print ("Raw Signed Transaction: ",stx) #shouldn't be null
 
-	#var txid = yield(Algorand.algod.send_transaction(stx), "completed") # sends raw signed transaction to the network
-
-	#txid = yield(algod.send_transaction(stx), "completed") 
-	
-	#print (txid)
-	
-	#wait for transaction to finish sending
-	#var wait= yield(Algorand.algod.wait_for_transaction(txid), "completed") 
-	
-	#print ('wait: ', wait)
 	transaction_valid = false
 	return transaction_valid
 

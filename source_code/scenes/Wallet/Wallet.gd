@@ -133,7 +133,7 @@ var asset_name : String = ''
 var asset_url : String = ''
 var asset_unit_name : String = ''
 var asset_amount: int = 0
-
+var asset_sender_address: String = ''
 
 #************NFT variables**************#
 var _name : String
@@ -496,7 +496,7 @@ func _process(_delta):
 				
 				if asset_id_valid:
 					_asset_id = int (nft_asset_id.text)
-				
+					#asset_sender_address = txn_addr.text
 					state_controller.select(0)
 					
 					#prepares the address to optin asset transaction
@@ -1006,7 +1006,7 @@ func txn(): #runs presaved transactions once wallet is ready
 		
 		yield(Algorand._send_txn_to_receiver_addr(params,mnemonic,recievers_addr, _amount), "completed")
 
-		OS.alert('Transaction successful', str(Algorand.txid))
+		OS.alert('Transaction Done', str(Algorand.txid))
 
 		#reset transaction details
 		recievers_addr = ''
@@ -1022,7 +1022,7 @@ func txn(): #runs presaved transactions once wallet is ready
 		yield(Algorand.transferAssets(params,mnemonic, recievers_addr,_asset_id, _amount), "completed")
 		
 		#to receive an asset, the receiving wallet would have to opt into the asset transaction
-		OS.alert('Transaction successful', str( _asset_id))
+		OS.alert('Transaction Done', str( _asset_id))
 		
 		#reset transaction details
 		recievers_addr = ''
@@ -1030,16 +1030,29 @@ func txn(): #runs presaved transactions once wallet is ready
 		asset_id_valid = false
 
 "Opts into Asset ID for valid transactions"
-func optin():
+func optin(): #doesnt work
 #include checks to see if wallet has previously opted into asset-id
-	if optin_asset:
-		Algorand.opt_in_asset_transaction( params ,address, _asset_id)
-		var stx = Algorand.algod.sign_transaction(Algorand.optin_tx)
-		#Generating transaction Id from signed transaction
-		var txid = yield(Algorand.algod.send_transactions(stx), "completed") 
+	if optin_asset :
+		print ('optin- transaction debug:', _asset_id)
 		
+		# Construct Aset tx
+		#Algorand.construct_asset_transfer(params,address, address, 0, _asset_id)
+		
+		Algorand.opt_in_asset_transaction( params ,address, _asset_id)
+		
+		# Sends grouped transactions
+		#Algorand.create_grouped_transaction(Algorand.optin_tx, Algorand.asset_tx)
+		
+		var stx = Algorand.algod.sign_transaction(Algorand.optin_tx, mnemonic)
+
+		#Generating transaction Id from signed transaction
+		var txid = yield(Algorand.algod.send_transaction(stx), "completed") 
+	
 		print (txid)
 		
+
+		#----------------------------------------------
+
 		#reset optin asset boolean
 		optin_asset = false
 		

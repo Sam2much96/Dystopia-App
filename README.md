@@ -62,7 +62,8 @@ Its a web 3.0 multimedia app with Top down RPG action game, Comics and Animated 
 	-Transaction capabilities for assets and Tokens (Testnet)
 (19) Implementing Leaderboard and Achievements on Android Devices (depreciated)
 (20) Networking.download_image_(image url, image save path): Downloads a png image from a url and saves it at a given path 
--Features to Fix
+## -Features to Fix
+	
 	-Enemy Animation 
 	-Fix up Game's spawnpoints (look at the Exit code in the Temple interior scene)
 	-Fix up game's animation	
@@ -80,7 +81,8 @@ Its a web 3.0 multimedia app with Top down RPG action game, Comics and Animated 
 	
 	-Better Scene loading management system via global functions
 	- Translation (Spanish, French, Yoruba)
--Features to Add
+## -Features to Add
+	
 	-Game Vibrations
 	-Comic book dialogue system
 	-Enemy AI (using G.O.A.P)
@@ -120,15 +122,15 @@ Its a web 3.0 multimedia app with Top down RPG action game, Comics and Animated 
 		-Interstitial Ads at the end of comic book page
 		-Video ads inbetwen the pilot 
 		-Banner Ads over video footage
--Bugs to fix
+## -Bugs to fix
 	-Player scent mechanics
 	-Debug double instance
 	-Form entering breaks
 	-GodotAppodeal 
--3rd Party Integrations
+## -3rd Party Integrations
 	-Admob publishing ID replacements
 	-Ad integrations
--Builds to Add
+## -Builds to Add
 	-IOS builds
 	-HTML5 build for the comic placeholder
 	-

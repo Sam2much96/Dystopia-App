@@ -99,6 +99,8 @@ onready var transaction_hint= $transaction_ui/Label
 onready var NFT =  Globals.NFT#get_tree().get_nodes_in_group('NFT')#$Control/TextureRect
 onready var state_controller = $state_controller
 onready var anim = $AnimationPlayer
+
+var download_image : bool=false
 #*****************************************************
 
 
@@ -230,12 +232,10 @@ func _ready():
 	print ("NFT debug: ", NFT)
 
 	"General Wallet Checks"
-	run_wallet_checks() #should be used sparingly?
+	run_wallet_checks() 
 
-	#generating smart contract mnemonic
-	#generate_address('purity inner pilot suggest cave funny hip joke bean radar cheese moon sad depth book laundry pave lift robust length task fringe they abandon kitten')
-
-
+	"Downloads Stff programmatically"
+	download_object_from_IPFS()
 
 
 func _process(_delta):
@@ -535,7 +535,7 @@ func _process(_delta):
 
 						# show account
 						state_controller.select(0)
-					if asset_url != '' && asset_name != '' && asset_amount > 0:
+					if asset_url != '' && asset_name != '' && asset_amount > 0: #works
 
 						
 						'theres a problem with the network connection'
@@ -547,14 +547,26 @@ func _process(_delta):
 						#thats why image url is different fromasset-url
 						image_url=asset_url 
 						
-						print ('nft host site',image_url) #image_url should not be null
+						#debug nft url
+						print ('nft host site',image_url, ' Running Request: ', Networking.running_request) #image_url should not be null
+						
 						Networking.url=image_url #disabling for now
 						 
 						#makes a https request to download image from local server
 						
-						Networking. _connect_to_ipfs_gateway(image_url, Networking)  
+						#download_image = true
+						#if passed_all_connectivity_checks:
+						#	download_object_from_IPFS()
+						
+						
+						if not Networking.running_request:
+							Networking. _connect_to_ipfs_gateway(image_url, Networking)
+						#Networking.running_request = true  
 						
 						wallet_check += 1
+						
+						#show account
+						#state_controller.select(0)
 					#***************************************************************
 				if FileCheck3.file_exists(local_image_path) or is_image_available_at_local_storage:
 					#print ('adfbsdjfbasdfjsdfs') #works
@@ -657,8 +669,14 @@ func run_wallet_checks()-> bool: # works #run networking internet checks test be
 			FileCheck1.close()
 			FileDirectory.remove(token_path ) #use Globals delete function instead
 
-
+	
+	
+	
 	print ("----wallet check done------")
+	
+	
+	#Algorand.createAssets("Algo Waifu 001", "Waif_001",1, mnemonic, address, params) #delete later, for Demo purposes only
+
 	
 	#***********Transaction and Smart Contract functions**************#
 	call_deferred('txn')
@@ -668,6 +686,8 @@ func run_wallet_checks()-> bool: # works #run networking internet checks test be
 	call_deferred('withdraw')
 	
 	call_deferred('smart_contract')
+	
+	
 	return 0;
 
 #loads from saved account info 
@@ -698,6 +718,12 @@ func connect_signals(): #connects all required signals in the parent node
 func debug_signal_connections()->void:
 	#debuggers
 	print("Networking Connected: ",Networking.is_connected("request_completed", self, "_http_request_completed"))
+
+
+func download_object_from_IPFS():
+	if download_image:
+		Networking. _connect_to_ipfs_gateway(image_url, Networking)
+
 
 
 func generate_address(_mnemonic:String)-> String: #works
@@ -801,6 +827,9 @@ func _http_request_completed(result, response_code, headers, body): #works with 
 	print (" headers: ", headers)#*************for debug purposes only
 	print (" response code: ", response_code) #for debug purposes only
 	
+	#helper boolean & Error catcher
+	Networking.running_request = false
+	
 	if not body.empty():
 		good_internet = true
 	
@@ -818,7 +847,7 @@ func _http_request_completed(result, response_code, headers, body): #works with 
 		"Downloads the NFT image"
 		print (" request successful")
 			
-			#disabling for now
+		#add parameters for this method 
 		set_image_(Networking.download_image_(body, "user://wallet/img0", Networking)) #works
 			
 	else: return
@@ -841,13 +870,21 @@ func set_image_(texture):
 
 func check_wallet_info(): #works. Pass a variable check
 	if address != null && mnemonic != null:
+		#works
+		#account_info = yield(Algorand.algod.account_information(address), "completed")
+		
+		
 		account_info = yield(Algorand.algod.account_information(address), "completed")
 		
-		#print ('nft delete debug: ',account_info['assets'])
-		print ('nft delete debug 2: ',account_info.get('assets')) 
+		#var asset_info = yield(Algorand.algod.transaction_information("OPLQKSFX6IRX33Q7KYZE5G2MXIEZP32DDVENSIUHPZNQ3KDZJYRQ"), "completed")
 		
-		#OS.set_clipboard(str(account_info)) 
-		#temporarily disabling
+		
+		#print ('nft delete debug: ',account_info['assets'])
+		#print ('nft delete debug 2: ',account_info.get('assets')) 
+		#print ('nft delete debug 3: ',asset_info) 
+		
+		
+		
 		save_account_info(account_info, 0) #works
 		
 		#works
@@ -921,6 +958,7 @@ func convert_binary_to_string(binary : PoolByteArray)-> String:
 
 "UI Buttons"
 #increases all UI parents scale for horizontal screens
+# use global method instead
 func upscale_wallet_ui()-> void:
 	var newScale = Vector2(0.08, 0.08)
 	var newScale2 = Vector2(0.25,0.25)

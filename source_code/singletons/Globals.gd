@@ -367,7 +367,7 @@ func delete_local_file(dir: Directory, path_to_file: String) -> void:
 
 
 'Upscale UI'
-func upscale_wallet_ui(node: Control,size: String)-> void:
+func upscale__ui(node: Control,size: String)-> void:
 	#no one size fits all problem
 	
 	

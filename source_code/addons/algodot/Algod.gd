@@ -426,4 +426,47 @@ func transferAssets(params,_funder_mnemonic: String ,  _receiver_address : Strin
 	#wait for transaction to finish sending
 	#wait= yield(algod.wait_for_transaction(txid), "completed") 
 
+#Buggy
+func createAssets(_asset_name: String, _unit_name: String, _amount: int,_receivers_mnemonic: String, _receivers_address: String,_params):
 
+	
+	
+	tx = algod.construct_asset_create( #breaks
+		_params,
+		_receivers_address, # Creator #SDK uses default sandbox wallet and ignores this creator (fixed)
+		_asset_name,	# Asset name
+		0,			# Decimals #i.e how many decimals from the total supply
+		false,		# Default frozen?
+		_amount,		# Total supply # This is 1000.00
+		_unit_name,		# Unit name eg GTC, TC, GC
+		PoolByteArray(['']),#metadata hash
+		"ipfs://QmNoThogc1D7XCzQrjePPxChyGmuohX6LXqDTCLJwTUUfR" #url
+	)
+	return tx
+
+	#generates Raw signed transaction
+	
+	stx = algod.sign_transaction(tx, _receivers_mnemonic)
+	
+
+	#Generating transaction Id from signed transaction
+	txid = yield(algod.send_transaction(stx), "completed") 
+	
+
+	#wait for transaction to finish sending
+	wait= yield(algod.wait_for_transaction(txid), "completed") 
+	
+	
+	
+	var tx_info = yield(algod.transaction_information(txid), "completed") 
+	
+
+	asset_index = int(tx_info.get("asset-index"))
+	print (" Asset-ID: ",asset_index)
+
+
+
+func AssetParams(_asset_index: int, Params):
+	params
+	
+	pass

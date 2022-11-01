@@ -372,3 +372,8 @@ func display_damage(body):#rewrite this to instance blood fx
 
 func client_debug()-> void:
 	print ('/Client Player info : Linear velocity: ',linear_vel, "// Peer ID: ", get_tree().get_network_unique_id(), ' State: ',state) #for debug purposes only
+
+"CHATS"
+func _on_Chat_Button_pressed():
+	var _text = $UI/LineEdit.text
+	add_chat(_text)

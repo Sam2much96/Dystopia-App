@@ -3,7 +3,10 @@
 
 ## Synopsis
 
+Changing the World? Sigh. A very lofty dream. It is a feat few men ever really achieve, it's an idea that infects men to hope, fight, kill and to die. It was for this dream we hoped, fought , killed, starved, bled and died for in a hellish war that lasted 5 years. After fighting for so long, in the end you lose sight of what you're really fighting for; and when you lose someone you love, all those lofty dreams you fought so valiantly for suddenly lose meaning. After all, what's the point of changing the world, when you have no one left to share it with. 
 
+## What It Does
+Its a web 3.0 multimedia app with Top down RPG action game, Comics and Animated Short films, built on Decentralized storage and telling the story of 3 protagonists. It's available for mobile and PC platforms.
 
 ## Documentation by INhumanity_arts 
 
@@ -59,7 +62,8 @@
 	-Transaction capabilities for assets and Tokens (Testnet)
 (19) Implementing Leaderboard and Achievements on Android Devices (depreciated)
 (20) Networking.download_image_(image url, image save path): Downloads a png image from a url and saves it at a given path 
--Features to Fix
+## -Features to Fix
+	
 	-Enemy Animation 
 	-Fix up Game's spawnpoints (look at the Exit code in the Temple interior scene)
 	-Fix up game's animation	
@@ -77,7 +81,8 @@
 	
 	-Better Scene loading management system via global functions
 	- Translation (Spanish, French, Yoruba)
--Features to Add
+## -Features to Add
+	
 	-Game Vibrations
 	-Comic book dialogue system
 	-Enemy AI (using G.O.A.P)
@@ -117,15 +122,15 @@
 		-Interstitial Ads at the end of comic book page
 		-Video ads inbetwen the pilot 
 		-Banner Ads over video footage
--Bugs to fix
+## -Bugs to fix
 	-Player scent mechanics
 	-Debug double instance
 	-Form entering breaks
 	-GodotAppodeal 
--3rd Party Integrations
+## -3rd Party Integrations
 	-Admob publishing ID replacements
 	-Ad integrations
--Builds to Add
+## -Builds to Add
 	-IOS builds
 	-HTML5 build for the comic placeholder
 	-

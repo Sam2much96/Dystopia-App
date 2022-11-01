@@ -64,14 +64,11 @@ Its a web 3.0 multimedia app with Top down RPG action game, Comics and Animated 
 (20) Networking.download_image_(image url, image save path): Downloads a png image from a url and saves it at a given path 
 ## -Features to Fix
 	
-	-Enemy Animation 
-	-Fix up Game's spawnpoints (look at the Exit code in the Temple interior scene)
-	-Fix up game's animation	
+	-Fix up Game's spawnpoints (look at the Exit code in the Temple interior scene)	
 	-changing pages centers new page 
 	-Multitouch settings in control
 	-Better Combat System
 	-Comic placeholder code
-	-Joystick code
 	-Horizontal Swipe gestures for the Comic placeholder code
 	-Auto rotate gestures for the Comic placeholder code
 	-Guided view ( Controlled zoom )
@@ -89,8 +86,6 @@ Its a web 3.0 multimedia app with Top down RPG action game, Comics and Animated 
 	-Hints system
 	-Expanded Dialogue System (Word bubble system)
 	-update control art with new button maps
-	-Ingame Tokens	(On the Monero & Solana Blockchain)
-	-Add multiplayer Network and DLC network code/singleton
 	-Shop & Merch Store
 	-Guided view system
 	-Mana meter (Ogun meter)
@@ -98,17 +93,14 @@ Its a web 3.0 multimedia app with Top down RPG action game, Comics and Animated 
 	-New Environment(Create forest environment)
 	-Create Dungeon	
 	-Spritesheet animation upgrade
-	-UI art upgrade
 	-Model player & enemy characters (Rig with mixamo)
 	-Translate feature using .json files
-	-Attack sfx
 	-Multiple Languages (localization and dubbing to French and Spanish).
 	-Procedurally generated sand dunes
 	-Update Game instructionals visuals
 	-Throw mechanics for enemy types
 	-Inventory system
 	-Colour changing joystick
-	-Save Email
 	-Create Dungeons
 	-Sandbox mechanics
 	-Polygon 2d to deconstruct comic panels

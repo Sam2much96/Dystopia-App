@@ -14,6 +14,9 @@ Its a web 3.0 multimedia app with Top down RPG action game, Comics and Animated 
 
 ![Screenshot](https://github.com/Sam2much96/Dystopia-App/blob/master/source_code/resources/illustrations/cover%201.png)
 
+**Trailer Video**
+
+[![Trailer video](https://img.youtube.com/vi/_ECBwS4xxlc/hqdefault.jpg)](https://youtu.be/_ECBwS4xxlc)
 
 ## FEATURES
 **(1) Auto Music shuffle:**

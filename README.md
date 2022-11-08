@@ -8,10 +8,15 @@ Changing the World? Sigh. A very lofty dream. It is a feat few men ever really a
 ## What It Does
 Its a web 3.0 multimedia app with Top down RPG action game, Comics and Animated Short films, built on Decentralized storage and telling the story of 3 protagonists. It's available for mobile and PC platforms.
 
+
+
 ## Documentation by INhumanity_arts 
 
 ![Screenshot](https://github.com/Sam2much96/Dystopia-App/blob/master/source_code/resources/illustrations/cover%201.png)
 
+**Trailer Video**
+
+[![Trailer video](https://img.youtube.com/vi/_ECBwS4xxlc/hqdefault.jpg)](https://youtu.be/_ECBwS4xxlc)
 
 ## FEATURES
 **(1) Auto Music shuffle:**
@@ -46,32 +51,29 @@ Its a web 3.0 multimedia app with Top down RPG action game, Comics and Animated 
 	Added multitouch gestures for android
 	-swipe to change panel
 	-Double tap to zoom
-(11) Stream Animated Shorts:
+**(11) Stream Animated Shorts:**
 	  Stream Dystopia Anime from the app & Youtube
 
-(12) Interractive Environment
+**(12) Interractive Environment**
 
-(13)FFmpeg Decoder Libraries from 'https://github.com/kidrigger/godot-videodecoder ' are used in the Anime streaming section. I rendered the video in 720p, the game's resolution.
+**(13)FFmpeg Decoder Libraries** from 'https://github.com/kidrigger/godot-videodecoder ' are used in the Anime streaming section. I rendered the video in 720p, the game's resolution.
 
 (14) Adaptable Ads: (depreciated)
 
 (16) Touch input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases to fix the comics section ux problem
-#(17) Web 3.0 functionalities
+**(17) Web 3.0 functionalities**
 	-Ingame Algorand Wallet (testnet)
 	-NFT image parser
 	-Transaction capabilities for assets and Tokens (Testnet)
-(19) Implementing Leaderboard and Achievements on Android Devices (depreciated)
-(20) Networking.download_image_(image url, image save path): Downloads a png image from a url and saves it at a given path 
+
+**(18) Download Images, Documents and Videos:** Networking.download_image_(image url, image save path): Downloads a png image from a url and saves it at a given path 
 ## -Features to Fix
 	
-	-Enemy Animation 
-	-Fix up Game's spawnpoints (look at the Exit code in the Temple interior scene)
-	-Fix up game's animation	
+	-Fix up Game's spawnpoints (look at the Exit code in the Temple interior scene)	
 	-changing pages centers new page 
 	-Multitouch settings in control
 	-Better Combat System
 	-Comic placeholder code
-	-Joystick code
 	-Horizontal Swipe gestures for the Comic placeholder code
 	-Auto rotate gestures for the Comic placeholder code
 	-Guided view ( Controlled zoom )
@@ -89,8 +91,6 @@ Its a web 3.0 multimedia app with Top down RPG action game, Comics and Animated 
 	-Hints system
 	-Expanded Dialogue System (Word bubble system)
 	-update control art with new button maps
-	-Ingame Tokens	(On the Monero & Solana Blockchain)
-	-Add multiplayer Network and DLC network code/singleton
 	-Shop & Merch Store
 	-Guided view system
 	-Mana meter (Ogun meter)
@@ -98,17 +98,14 @@ Its a web 3.0 multimedia app with Top down RPG action game, Comics and Animated 
 	-New Environment(Create forest environment)
 	-Create Dungeon	
 	-Spritesheet animation upgrade
-	-UI art upgrade
 	-Model player & enemy characters (Rig with mixamo)
 	-Translate feature using .json files
-	-Attack sfx
 	-Multiple Languages (localization and dubbing to French and Spanish).
 	-Procedurally generated sand dunes
 	-Update Game instructionals visuals
 	-Throw mechanics for enemy types
 	-Inventory system
 	-Colour changing joystick
-	-Save Email
 	-Create Dungeons
 	-Sandbox mechanics
 	-Polygon 2d to deconstruct comic panels
@@ -122,15 +119,8 @@ Its a web 3.0 multimedia app with Top down RPG action game, Comics and Animated 
 		-Interstitial Ads at the end of comic book page
 		-Video ads inbetwen the pilot 
 		-Banner Ads over video footage
-## -Bugs to fix
-	-Player scent mechanics
-	-Debug double instance
-	-Form entering breaks
-	-GodotAppodeal 
+
 ## -3rd Party Integrations
 	-Admob publishing ID replacements
 	-Ad integrations
-## -Builds to Add
-	-IOS builds
-	-HTML5 build for the comic placeholder
-	-
+

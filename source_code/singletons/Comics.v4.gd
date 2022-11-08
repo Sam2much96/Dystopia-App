@@ -388,8 +388,9 @@ func drag(_target : Vector2, _position : Vector2, _body : KinematicBody2D)-> voi
 			# Rejects buggy input targets
 			# Save both x & y inputs in similar array to properly debug
 			if abs(target_memory_x[target_memory_x.size() - 2] - x) > 3: #if more than 3 buggy inputs have been saved
-				print ('Error x axis') #for debug purposes only
-				print ('x axis size debug: ' ,target_memory_x.size()) #for debug purposes only
+				#print ('Error x axis') #for debug purposes only
+				#print ('x axis size debug: ' ,target_memory_x.size()) #for debug purposes only
+				
 				#print (target_memory_x) #temporarily disabling for debug purposes
 				
 				
@@ -413,14 +414,11 @@ func drag(_target : Vector2, _position : Vector2, _body : KinematicBody2D)-> voi
 				
 				return
 			if abs(target_memory_y[target_memory_y.size() - 2] - x) > 3:
-				print ('Error y axis')
-				print ('y axis size debug: ' ,target_memory_y.size()) 
+				#print ('Error y axis')
+				#print ('y axis size debug: ' ,target_memory_y.size()) 
+				
 				#print (target_memory_y) #temporarily disabling for debug purposes
 				
-				#rejects drag method
-				#can_drag = false #doenst work
-				#potential target fix
-				#print ("Y : ",target_memory_y) #for debug purposes only
 				
 				
 				

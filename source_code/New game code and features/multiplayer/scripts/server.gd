@@ -15,6 +15,7 @@
 
 # (6) Send Player inputs via remote functions
 # (7) Duplicate Input Functions btw Client and Server (Using ROll back netcode as a reference)
+# (8) Does not work on open internet
 # *************************************************
 extends Node
 
@@ -160,16 +161,29 @@ func _physics_process(delta):
 	while delta_update >= delta_interval:
 		delta_update -= delta_interval
 		broadcast_world_positions()
-	
+
+#uses rpc to update player info
 func broadcast_world_positions(): #calls the player update function on all clients
+	#buggy
 	
 	for peer_id in player_info:
 		for peer_id_2 in player_info:
-			rpc_unreliable_id(peer_id, "pu", peer_id_2, update_id, player_info[peer_id_2].position, player_info[peer_id_2].hitpoints, player_info[peer_id_2].state)
+			rpc_unreliable_id(peer_id, "pu", peer_id_2, update_id, player_info[peer_id_2].node.position, player_info[peer_id_2].node.hitpoints, player_info[peer_id_2].node.state, player_info[peer_id_2].node.facing)
 			
 	update_id += 1
 	
+
+"Broadcasts chat text to server and to all clients"
+remote func broadcast_chat(text: String):
 	
+	#should send the text to all client chats
+	for peer_id in player_info:
+		print ("server chat:",text) #for debug purposes only
+		
+		rpc_id(peer_id,"chat_added", peer_id, player_info[peer_id], text)
+	pass
+
+
 func player_connected(id):
 	print("Callback: server_player_connected: " + str(id))
 	OS.set_window_title("Connected as " + str('server'))
@@ -193,6 +207,9 @@ func get_spawn_position(): #Random Spawning Code
 	pos.x = rand_range(-950,950)
 	pos.y = rand_range(-950,950)
 	return pos
+
+
+
 
 
 # Register a new player
@@ -251,7 +268,7 @@ remote func player_input_v2(peer_id ,state,facing,position, linear_vel):
 #Handles player movement from  received input from Clients via rpc calls
 
 #remote functions can be called remotely via rpc calls
-remote func player_input(id, key, pressed, client_position, client_state, linear_velocity, facing, animation): # #it receives player input through rpc
+remote func player_input(id, pressed, client_position, client_state, linear_velocity, facing, animation): # #it receives player input through rpc
 	#Remote Player Input Debugger
 	#print("Remote: player_input(" + str(id)+","+key+","+str(pressed)+")") 
 
@@ -274,16 +291,7 @@ remote func player_input(id, key, pressed, client_position, client_state, linear
 		
 		pass
 
-	elif key == "right":
-		player_info[id].node.facing = 'right'#rotation = 1 if pressed else 0
-	
-	elif key == "up":
-		player_info[id].node.facing = 'up'#.velocity = -1 if pressed else 0
-	
-	elif key == "down":
-		player_info[id].node.facing ='down'#velocity = 1 if pressed else 0
 
-	
 	
 	
 	

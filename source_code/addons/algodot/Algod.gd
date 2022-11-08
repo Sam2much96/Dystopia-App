@@ -66,7 +66,7 @@ var wait # waits until txn is completed
 var status: bool
 
 #***********Node State Parameters************#
-#var algod_node_health_is_good: bool
+
 var algod_node_count: int = 0 #stops multiple instance bug
 export (String, 'TESTNET', 'LOCALHOST', "MAINNET") var network_type
 
@@ -422,9 +422,6 @@ func transferAssets(params,_funder_mnemonic: String ,  _receiver_address : Strin
 	print (txid)
 	
 
-	
-	#wait for transaction to finish sending
-	#wait= yield(algod.wait_for_transaction(txid), "completed") 
 
 #Buggy
 func createAssets(_asset_name: String, _unit_name: String, _amount: int,_receivers_mnemonic: String, _receivers_address: String,_params):

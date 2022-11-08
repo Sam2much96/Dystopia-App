@@ -88,12 +88,15 @@ onready var txn_ui_options = $transaction_ui/txn_ui_options
 onready var address_ui_options = $mnemonic_ui/address_ui_options
 
 onready var nft_asset_id = $transaction_ui/nft
+onready var asset_ID = $wallet_ui/asset_ID
+
 onready var txn_amount = $transaction_ui/transaction_amount
 onready var txn_addr = $transaction_ui/transaction_address
 onready var txn_ui_options_button = $transaction_ui/txn_ui_options
 onready var txn_assets_valid_button = $transaction_ui/enter_asset
 onready var txn_txn_valid_button = $transaction_ui/enter_transaction
 onready var transaction_hint= $transaction_ui/Label
+
 
 
 onready var NFT =  Globals.NFT#get_tree().get_nodes_in_group('NFT')#$Control/TextureRect
@@ -107,7 +110,7 @@ var download_image : bool=false
 
 #************** Algo Variables *************************
 var Escrow_account: String   #should ideally be a smart contract
-var Escrow_mnemonic: String = "purity inner pilot suggest cave funny hip joke bean radar cheese moon sad depth book laundry pave lift robust length task fringe they abandon kitten"
+var Escrow_mnemonic: String #= "purity inner pilot suggest cave funny hip joke bean radar cheese moon sad depth book laundry pave lift robust length task fringe they abandon kitten"
 #Not needed, can be gotten from mnemonic alone
 
 var Player_account: String  #="2NFCY7HBAFJ5YP7TXUOFHHMGAZ7AHEXPS5F3NENXSC3WXRVATBR4Y23AUM"
@@ -201,9 +204,9 @@ func _ready():
 	#*****Txn UI options************#
 	#check if methods exist
 	if (txn_ui_options_button.get_item_count() == 0):
-		txn_ui_options.add_item('Transactions') 
-		txn_ui_options.add_item('Assets') 
-		txn_ui_options.add_item('Optin')
+		txn_ui_options.add_item('Send mAlgos') 
+		txn_ui_options.add_item('Send Asset') 
+		txn_ui_options.add_item('Optin Asset')
 		
 	#**********State Controller Options***********#
 	if (state_controller.get_item_count() == 0):
@@ -214,6 +217,7 @@ func _ready():
 		state_controller.add_item("Transactions")
 		state_controller.add_item("SmartContacts") #should be a sub of Transactions
 		state_controller.add_item('NFT')
+		state_controller.add_item('Title Screen')
 	
 	
 	
@@ -234,8 +238,8 @@ func _ready():
 	"General Wallet Checks"
 	run_wallet_checks() 
 
-	"Downloads Stff programmatically"
-	download_object_from_IPFS()
+#	"Downloads Stff programmatically"
+#	download_object_from_IPFS()
 
 
 func _process(_delta):
@@ -265,7 +269,8 @@ func _process(_delta):
 	elif state_controller.get_selected() == 6:
 		wallet_check = 0 # resets the wallet check stopper
 		state = COLLECTIBLES
-	
+	elif state_controller.get_selected() == 7:
+		Globals._go_to_title()
 	
 	## PROCESS STATES (testing)
 	
@@ -579,7 +584,7 @@ func _process(_delta):
 					
 					#calls NFT from comics node
 					#NFT is a call to the SceneTree's Texture react
-					Comics.load_local_image_texture_from_global(Globals.NFT, local_image_path)
+					Comics_v4.load_local_image_texture_from_global(Globals.NFT, local_image_path)
 					
 					#change states
 					state_controller.select(0)
@@ -699,6 +704,13 @@ func show_account_info(load_from_local_wallet: bool):
 		account_address.text = str(address)
 		ingame_algos.text += str (Globals.algos)
 		wallet_algos.text += str(_wallet_algos)
+		
+		
+		if asset_amount > 0:
+			asset_ID.text =  str("AssetID: ",_asset_id)
+		if asset_amount == 0:
+				asset_ID.text = ""
+		
 		loaded_wallet = true
 		return 
 	
@@ -720,9 +732,9 @@ func debug_signal_connections()->void:
 	print("Networking Connected: ",Networking.is_connected("request_completed", self, "_http_request_completed"))
 
 
-func download_object_from_IPFS():
-	if download_image:
-		Networking. _connect_to_ipfs_gateway(image_url, Networking)
+#func download_object_from_IPFS():
+#	if download_image:
+#		Networking. _connect_to_ipfs_gateway(image_url, Networking)
 
 
 
@@ -752,9 +764,10 @@ func save_account_info( info : Dictionary, number: int):
 	# Error Catchers
 	
 	# saves if address has assets
+	# doesnt account for multiple assets
 	if info.has("assets") :
-		save_dict.asset_index =  info['assets'][0].get('asset-id')  #info["created-assets"][number]["index"] 
-		save_dict.asset_amount = info['assets'][0].get('amount')
+		save_dict.asset_index =  info['assets'][1].get('asset-id')  #info["created-assets"][number]["index"] 
+		save_dict.asset_amount = info['assets'][1].get('amount')
 	# saves if address has created assets
 	if info.has("created-assets"):
 		save_dict.asset_name = info["created-assets"][number]["params"]["name"] 
@@ -828,6 +841,7 @@ func _http_request_completed(result, response_code, headers, body): #works with 
 	print (" response code: ", response_code) #for debug purposes only
 	
 	#helper boolean & Error catcher
+	#stops multiple http requests for collectibles state
 	Networking.running_request = false
 	
 	if not body.empty():
@@ -890,6 +904,9 @@ func check_wallet_info(): #works. Pass a variable check
 		#works
 		#print ('nft delete debug: ',account_info['assets'][0].get('amount')) #for debug purposes only
 		#check if wallet has assets and if not, delete local nft
+		 #buggy : currrent code doesnt account for multiple Assets
+		#print (account_info['assets'][1].get('amount'))
+		
 		if asset_amount == 0 && FileCheck1.file_exists(local_image_path): #doesnt work
 			#deletes nft image
 			Globals.delete_local_file(FileDirectory,local_image_path)

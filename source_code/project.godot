@@ -47,7 +47,7 @@ _global_script_classes=[ {
 "base": "Control",
 "class": "Comics",
 "language": "GDScript",
-"path": "res://scenes/UI & misc/Comics.v4.gd"
+"path": "res://singletons/Comics.v4.gd"
 }, {
 "base": "TextureRect",
 "class": "DialogBox",
@@ -191,6 +191,7 @@ Inventory="*res://singletons/Inventory.gd"
 Globals="*res://singletons/Globals.gd"
 Music="*res://singletons/Music.tscn"
 Networking="*res://singletons/Networking.tscn"
+Comics_v4="*res://singletons/Comics.v4.gd"
 InputManager="*res://singletons/InputManager.gd"
 DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
 AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"

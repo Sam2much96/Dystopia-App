@@ -66,24 +66,26 @@ step = 1.0
 value = 100.0
 percent_visible = false
 
-[node name="ColorRect" type="ColorRect" parent="UI"]
-margin_left = 9.0
-margin_top = 470.0
-margin_right = 498.0
-margin_bottom = 595.0
-color = Color( 0, 0, 0, 1 )
+[node name="Position2D" type="Position2D" parent="UI"]
+position = Vector2( 35.9591, 329.628 )
 
 [node name="item_chat" type="ItemList" parent="UI"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 9.0
-margin_top = -130.0
-margin_right = 478.0
-margin_bottom = -10.0
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 1.0
+margin_top = -60.0
+margin_right = 469.0
+margin_bottom = 60.0
 custom_styles/bg_focus = SubResource( 3 )
 custom_styles/bg = SubResource( 4 )
 allow_rmb_select = true
 max_text_lines = 8
+
+[node name="ColorRect" type="ColorRect" parent="UI/item_chat"]
+show_behind_parent = true
+margin_right = 489.0
+margin_bottom = 125.0
+color = Color( 0, 0, 0, 0.788235 )
 
 [node name="Chat_Button" type="Button" parent="UI"]
 margin_left = 332.0

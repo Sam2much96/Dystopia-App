@@ -186,6 +186,13 @@ margin_bottom = 391.0
 theme = ExtResource( 3 )
 text = "wallet algos: "
 
+[node name="asset_ID" type="Label" parent="wallet_ui"]
+margin_top = 296.0
+margin_right = 531.0
+margin_bottom = 391.0
+theme = ExtResource( 3 )
+text = "Asset ID: "
+
 [node name="HBoxContainer" type="GridContainer" parent="wallet_ui"]
 margin_top = 395.0
 margin_right = 531.0

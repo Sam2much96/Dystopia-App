@@ -21,6 +21,8 @@ var my_info = { name = "Player" }
 var preload_player = preload("res://scenes/characters/Aarin_networking.tscn")
 var node_player
 
+var chat_text: String
+
 var player_id #my code
 var client_animation : String
 export (int) var ______update_id
@@ -96,7 +98,14 @@ func _ready():
 	# Add a message to the chat box
 	add_chat("Welcome to this network test!")
 	add_chat("Connecting to server ....")
-	
+
+
+	"Upscale UI on mobile"
+	if Globals.screenOrientation == 1: #Mobile screen orientation
+		Globals.upscale__ui(chat, "XL")
+		chat.set_position($UI/Position2D.position)
+		pass
+
 func _process(_delta):
 	
 	# To mitigate latency issues we use interpolation. The idea is simple, we receive
@@ -125,7 +134,10 @@ func _process(_delta):
 		linear_vel = player_info[peer_id].node.linear_vel
 		
 		facing = player_info[peer_id].node.facing
+		
 		client_animation = player_info[peer_id].node.anim
+		
+		
 		
 		pass
 	
@@ -175,53 +187,53 @@ func handle_input(): #DUplicate player state machine input here
 		Input.is_action_pressed("move_up")
 		):
 			state = 2 #works--ish
-			rpc_id(1,"player_input",id,"left",true, pos, state, linear_vel, facing, client_animation)
+			rpc_id(1,"player_input",id,true, pos, state, linear_vel, facing, client_animation)
 			
 			#read_player_parameters() works
 	
 	# Move left
-	if Input.is_action_just_pressed("move_left"): #sends player input to the server
+	#if Input.is_action_just_pressed("move_left"): #sends player input to the server
 		
 		# calls a remote player input method in the client via rpc
-		rpc_id(1,"player_input",id,"left",true, pos, state, linear_vel) #sends position and state data directly to servers 
+		#rpc_id(1,"player_input",id,"left",true, pos, state, linear_vel) #sends position and state data directly to servers 
 		
 		
 		
-		client_debug()
-	if Input.is_action_just_released("move_left"):
+		#client_debug()
+	#if Input.is_action_just_released("move_left"):
 		#rpc triggers a remote function that changes Client player's Linear Velocity
-		rpc_id(1,"player_input",id,"left",false,pos,state, linear_vel) 
+	#	rpc_id(1,"player_input",id,"left",false,pos,state, linear_vel) 
 		
 	# Move right presssed
-	if Input.is_action_just_pressed("move_right"):
-		rpc_id(1,"player_input",id,"right",true,pos,state, linear_vel)
+	#if Input.is_action_just_pressed("move_right"):
+	#	rpc_id(1,"player_input",id,"right",true,pos,state, linear_vel)
 	
 	# Move right released
-	if Input.is_action_just_released("move_right"):
-		rpc_id(1,"player_input",id,"right",false,pos,state, linear_vel)
+	#if Input.is_action_just_released("move_right"):
+	#	rpc_id(1,"player_input",id,"right",false,pos,state, linear_vel)
 		
 	# Handle moving forward
-	if Input.is_action_just_pressed("move_up"):
-		rpc_id(1,"player_input",id,"up",true,pos,state, linear_vel) #sends player input on the network with the player input funtion
-	if Input.is_action_just_released("move_up"):
-		rpc_id(1,"player_input",id,"up",false,pos,state, linear_vel)
+	#if Input.is_action_just_pressed("move_up"):
+	#	rpc_id(1,"player_input",id,"up",true,pos,state, linear_vel) #sends player input on the network with the player input funtion
+	#if Input.is_action_just_released("move_up"):
+	#	rpc_id(1,"player_input",id,"up",false,pos,state, linear_vel)
 		
 	# Handle moving backward
-	if Input.is_action_just_pressed("move_down"):
-		rpc_id(1,"player_input",id,"down",true,pos,state, linear_vel)
-	if Input.is_action_just_released("move_down"):
-		rpc_id(1,"player_input",id,"down",false,pos,state, linear_vel)
+	#if Input.is_action_just_pressed("move_down"):
+	#	rpc_id(1,"player_input",id,"down",true,pos,state, linear_vel)
+	#if Input.is_action_just_released("move_down"):
+	#	rpc_id(1,"player_input",id,"down",false,pos,state, linear_vel)
 		
 	# Handle player attacking
-	if Input.is_action_just_pressed("attack"): #sends these input to the server's logic
-		rpc_id(1,"player_input",id,"attack",true) #doesn't work
-	if Input.is_action_just_released("attack"):
-		rpc_id(1,"player_input",id,"attack",false)
+	#if Input.is_action_just_pressed("attack"): #sends these input to the server's logic
+	#	rpc_id(1,"player_input",id,"attack",true) #doesn't work
+	#if Input.is_action_just_released("attack"):
+	#	rpc_id(1,"player_input",id,"attack",false)
 	#Handles player rolling #my code
-	if Input.is_action_just_pressed("roll"):
-		rpc_id(1,"player_input",id,"roll",true)#doesn't work
-	if Input.is_action_just_released("roll"):
-		rpc_id(1,"player_input",id,"roll",false) #doesn't work
+	#if Input.is_action_just_pressed("roll"):
+	#	rpc_id(1,"player_input",id,"roll",true)#doesn't work
+	#if Input.is_action_just_released("roll"):
+	#	rpc_id(1,"player_input",id,"roll",false) #doesn't work
 
 
 
@@ -323,7 +335,10 @@ remote func player_health(id, hitpoint): #where is this funtion called?
 # Player update function can only be called from server
 # This function is named "pu" to lower the network bandwidth usage, sending something
 # like "player_update" will use an extra 220 bytes / second for each connected player. 
-remote func pu(id, update_id, pos, hitpoints, state): #try and use killcounts
+
+
+
+remote func pu(id, update_id, pos, hitpoints, state, _facing): #try and use killcounts
 	
 	# Unreliable packets can be sent in wrong order, we only work with the latest
 	# data available.
@@ -334,7 +349,10 @@ remote func pu(id, update_id, pos, hitpoints, state): #try and use killcounts
 		return
 		
 	last_update = update_id
-	player_info[id].updates[OS.get_ticks_msec()] = { position = pos, hitpoints = hitpoints, killcount = killcount, state = state } #update these variables to the server
+	
+	'Updates the Client Details'
+	
+	player_info[id].updates[OS.get_ticks_msec()] = { position = pos, hitpoints = hitpoints,  state = state, facing = _facing } #update these variables to the server
 	while len(player_info[id].updates) > 10:
 		player_info[id].updates.erase(player_info[id].updates.keys()[0]) #when length of player update is more than 10, erase some update data
 	
@@ -353,13 +371,22 @@ remote func attack(id, position, facing): #update code to be an attack #inhumani
 
 "Adds Messages to ingame Chat"
 func add_chat(text): #used the ui grid  
-	chat.add_item(text)
+	#chat.add_item(text)
 	if chat.get_item_count() == 7:
 		chat.remove_item(0)
 
 	for i in range(0,chat.get_item_count()):
 		chat.set_item_selectable(i,false)
 
+# add chat via remote call
+	rpc_id(1, "broadcast_chat", text) #works. DIsabled for testing
+
+"Adds chat item to all clients from server"
+remote func chat_added(id, info, text):
+	#print (my_peer, '/', id)
+	#if not id == my_peer: #breaks client
+	#player_info[id] = info #breaks client
+	chat.add_item( text)
 
 func display_damage(body):#rewrite this to instance blood fx
 

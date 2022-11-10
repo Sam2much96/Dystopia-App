@@ -15,7 +15,8 @@
 
 # (6) Send Player inputs via remote functions
 # (7) Duplicate Input Functions btw Client and Server (Using ROll back netcode as a reference)
-# (8) Does not work on open internet
+# (8) Does not work on open internet 
+#		- Implement web socket client, server and webRTC
 # *************************************************
 extends Node
 

@@ -3,35 +3,51 @@
 # Released under MIT License
 # *************************************************
 # Comics Extension script
-# 
+#
+#A Menu for Holding and Displaying Comic book chapters 
+#
 # Features:
 #(1) shows and hides comic page buttons
 #(2) Connects to signal from Comics node
 
 # To Do:
-#(1) Implement grid panels for mobile screens
+#(1) Implement grid panels for mobile screens (done)
 # (2) Implement better connects to Comics node, not Signals
+# (3) Convert to ads spot emulating webtoons landing page
 # *************************************************
 
 
-extends HBoxContainer
+extends GridContainer
 
-#A Menu for Holding and Displaying Comic book chapters
-#convert to ads spot emulating webtoons
+onready var Grid_Container = self
+onready var Scroll_Container = Grid_Container.get_parent()
+
 
 onready var loaded_comics 
 
 func _ready():
 	get_node("chap_1").grab_focus()
-	pass
+	
+	# Changes UI Orientation Based on Globals screen Orientation
+	if Globals.screenOrientation == 1: #mobile UI 
+		Grid_Container.set_columns(2)
+		Scroll_Container.set_enable_h_scroll(false)
+		Scroll_Container.set_enable_v_scroll(true)
+	elif Globals.screenOrientation == 0: #PC UI
+		Grid_Container.set_columns(7)
+		Scroll_Container.set_enable_h_scroll(true)
+		Scroll_Container.set_enable_v_scroll(false)
 
 
-func _input(event):
-	'JoyStick Controls'
+#	pass
+
+# Depreciated
+#func _input(event):
+#	'JoyStick Controls'
 	#Cancel event 
-	if event is InputEventJoypadButton :
-		if event.is_action_pressed("ui_cancel"):
-			Globals._go_to_title()
+#	if event is InputEventJoypadButton :
+#		if event.is_action_pressed("ui_cancel"):
+#			Globals._go_to_title()
 
 
 
@@ -49,7 +65,7 @@ func _on_Comics_freed_comics():
 	for child in get_children(): 
 		child.show()
 
-#Button controls back
+"Button controls back"
 func _on_Back_button_pressed():
 	if loaded_comics == false or Globals.comics != null: #&& Globals.comics.enabled == false :
 		Globals._go_to_title()
@@ -59,23 +75,23 @@ func _on_Back_button_pressed():
 		#$"/root/Dialogs".dialog_box.hide()
 		pass
 
-
-func _exit_tree()-> void: #resets everything to default
-	if Globals.screenSize != Vector2(0,0):
-		OS.set_window_size(Globals.screenSize) #uses a default screensize
-	#OS.set_screen_orientation (0)
-	pass
+# Depreciated
+#func _exit_tree()-> void: #resets everything to default
+#	if Globals.screenSize != Vector2(0,0):
+#		OS.set_window_size(Globals.screenSize) #uses a default screensize
+#	#OS.set_screen_orientation (0)
+#	pass
 
 
 
 
 
 #Button controls chap_6
-
-func display_locked_text(): #Dis the dialogue noxplays a generic text through
-	Dialogs.show_dialog('Extra Chapters locked ', 'Admin')
-	yield(get_tree().create_timer(1), "timeout")
-	Dialogs.hide_dialogue()
+# Depreciated
+#func display_locked_text(): #Dis the dialogue noxplays a generic text through
+#	Dialogs.show_dialog('Extra Chapters locked ', 'Admin')
+#	yield(get_tree().create_timer(1), "timeout")
+#	Dialogs.hide_dialogue()
 
 
 

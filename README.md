@@ -8,6 +8,8 @@ Changing the World? Sigh. A very lofty dream. It is a feat few men ever really a
 ## What It Does
 Its a web 3.0 multimedia app with Top down RPG action game, Comics and Animated Short films, built on Decentralized storage and telling the story of 3 protagonists. It's available for mobile and PC platforms.
 
+## Game Design Document
+https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-921TA/edit?usp=sharing
 
 
 ## Documentation by INhumanity_arts 

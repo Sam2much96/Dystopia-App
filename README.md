@@ -69,6 +69,7 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 	-Transaction capabilities for assets and Tokens (Testnet)
 
 **(18) Download Images, Documents and Videos:** Networking.download_image_(image url, image save path): Downloads a png image from a url and saves it at a given path 
+**(19) Implements WebRTC :** WebRTC (web real time communication) for Multiplayer gameplay
 ## -Features to Fix
 	
 	-Fix up Game's spawnpoints (look at the Exit code in the Temple interior scene)	

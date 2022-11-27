@@ -9,7 +9,7 @@
 # Bugs:
 # (1) It implements roll back netcode (depreciated)
 # (2) Player Control affects both client and server player: use rpc_id to control player movement
-# (3) Client player's movement is choppy, doesn't show animations
+# (3) Client player's movement is choppy, doesn't show animations (fixed)
 # (4) Implement remote pfunctions for server player inputs (remote functions are used via nodes rpc calls)
 # (5) Implement a separate player for the server
 
@@ -17,6 +17,7 @@
 # (7) Duplicate Input Functions btw Client and Server (Using ROll back netcode as a reference)
 # (8) Does not work on open internet 
 #		- Implement web socket client, server and webRTC
+# (9) Include Matchmaking system
 # *************************************************
 extends Node
 
@@ -47,7 +48,8 @@ var server_debug
 
 var update_id = 0
 
-
+onready var server = get_node("/root/world/Server")
+	
 func _ready():
 	
 	OS.set_window_title('Server') #renames the  app Window
@@ -57,6 +59,19 @@ func _ready():
 	self.add_child(node_players)
 	self.add_child(node_enemies)
 
+	
+	
+	
+	
+	
+	
+	"WebRTC implementation"
+	server.listen(Networking.SERVER_PORT) #port
+	
+	
+	
+	
+	
 	
 	print (' Who is more Authoritative? the client or the server? ') #question?
 	
@@ -69,28 +84,56 @@ func _ready():
 	print("Server port: " + str(Networking.SERVER_PORT))
 	
 	print("Max players: " + str(Networking.MAX_PLAYERS))
-	var peer = NetworkedMultiplayerENet.new()
+	
+	# used for LAN Gaming
+
+	#var peer = server.server
+	#var peer = server.rtc_mp
+	
+	#var peer = 
+	
+	# used for onlie gaming
+	#var peer = WebSocketServer.new()
+	
+	print ("websocket server: ", server.server) #websocket server
 	
 	
-	print ('IP: ' + str (Networking.cfg_server_ip))
+	#print(server.server.get_peer_address(server.peers.keys()[0]))
+	
+	# Debugs local server addresses. Does the job of a STUN server
+	print ('IP: ' + str (Networking.cfg_server_ip) + ":" + str(Networking.SERVER_PORT))
 	print ('LOCAL IP ADDRESSES: ',IP.get_local_addresses())
 	print ('IP ADDRESSES: ',IP.get_local_interfaces())
 	
 	
-	print("Listening on port: " + str(Networking.SERVER_PORT))
-	if peer.create_server(Networking.SERVER_PORT, Networking.MAX_PLAYERS) != OK: #this code breaks in the server
-		print("Unable to create server")
-		return
-		
-	if get_tree().set_network_peer(peer) != OK: #unable to set network peer on the server
-		print("Unable to set network peer!")
+	#print("Listening on port: " + str(Networking.SERVER_PORT)) # should be called on the webrtc code?
+
+	#if peer.create_server(Networking.SERVER_PORT, Networking.MAX_PLAYERS) != OK: #used for lan, disabling for online multiplayer
+	#	print("Unable to create server")
+	#	return
 	
+
+	print (server.server.get_bind_ip())
+	
+	#print (peer.get_bind_ip())
+	
+	#peer.listen(Networking.SERVER_PORT, PoolStringArray(), true)
+	
+	
+	
+
 	# Connect the signals
 	if get_tree().connect("network_peer_connected", self, "player_connected") != OK:
 		print("Unable to connect signal (network_peer_connected) !")
 		
 	if get_tree().connect("network_peer_disconnected", self, "player_disconnected") != OK:
 		print("Unable to connect signal (network_peer_disconnected) !")
+
+
+	#Connect signals from the server node
+	server.server.connect("client_connected",self, "player_connected")
+	#check if signal is connected
+	print ("my custom signal connected: ",server.server.is_connected("client_connected",self, "player_connected"))
 
 
 func _input(_event):
@@ -184,7 +227,7 @@ remote func broadcast_chat(text: String):
 		rpc_id(peer_id,"chat_added", peer_id, player_info[peer_id], text)
 	pass
 
-
+#depreciated
 func player_connected(id):
 	print("Callback: server_player_connected: " + str(id))
 	OS.set_window_title("Connected as " + str('server'))
@@ -213,7 +256,7 @@ func get_spawn_position(): #Random Spawning Code
 
 
 
-# Register a new player
+# Register a new player from client
 remote func register_player(id, info): #rewrite this
 	print("Remote: register_player(" + str(id) +","+str(info)+")")
 
@@ -330,4 +373,6 @@ func player_input_debug(id, client_position, client_state, linear_velocity)-> vo
 
 func server_debug()-> void:
 	print ("Server ID:", get_tree().get_network_unique_id())
+
+
 

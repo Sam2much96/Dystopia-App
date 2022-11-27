@@ -11,7 +11,8 @@
 # (2) Duplicate Input Functions btw Client and Server (Using ROll back netcode as a reference)
 # (3)  Remove player input from this client script and implement it in Player v2 script
 # (4) Doesn't work on the open Internet
-#		- Implement web socket client, server and webRTC
+#		- Implement web socket client, server and webRTC ( done)
+#		-cant create a networking peer
 # *************************************************
 extends Node
 
@@ -50,8 +51,12 @@ var facing
 #*******Chat Item*************#
 onready var chat = $UI/item_chat
 
+onready var client = $Client
 
 onready var state #im trying to send player state using rpc call and update it on the server using a remote funtion
+
+#var PEER_ID
+var ch1 #data channel
 func _ready():
 	OS.set_window_title('Client') 
 	#sdgagdfasdfasdf
@@ -66,41 +71,77 @@ func _ready():
 	print (' Who is more Authoritative? the client or the server? ') #question?
 	
 	
-	#lists all local ip addresses on Device
+	#lists all local ip addresses on Device # not needed, repurpose to a debug method
 	print ('LOCAL IP ADDRESSES: ',IP.get_local_addresses())
 	print ('IP ADDRESSES: ',IP.get_local_interfaces())
 	
 	print("Server IP       : " + Networking.cfg_server_ip)
+	print("Port            : " , Networking.SERVER_PORT)
 	print("Player Name     : " + Networking.cfg_player_name)
 	print("Team Color : " + Networking.cfg_color)
 	
 	print("Connecting to server ...")
 	
-	var peer = NetworkedMultiplayerENet.new()
-	
-	# Create a client using specified server ip
-	peer.create_client(Networking.cfg_server_ip, Networking.SERVER_PORT)
-	
-	# Associate the current network peer to the tree
-	get_tree().set_network_peer(peer)
-	
-	# Keep the current peer somewhere to differenciate between you and other players
-	my_peer = peer
-	
-	# Connect signals
-	if get_tree().connect("connected_to_server", self, "client_connected_ok") != OK:
-		print("Unable to connect signal (connected_to_server) !")
-		
-	if get_tree().connect("connection_failed", self, "client_connected_fail") != OK:
-		print("Unable to connect signal (connection_failed) !")
-		
-	if get_tree().connect("server_disconnected", self, "server_disconnected") != OK:
-		print("Unable to connect signal (server_disconnected) !")
-	
-	# Add a message to the chat box
-	add_chat("Welcome to this network test!")
-	add_chat("Connecting to server ....")
 
+	
+
+	
+
+	client.start( Networking.cfg_server_ip + ":" + str(Networking.SERVER_PORT), "") # Networking.cfg_server_ip is buggy
+	#client.start("ws://" + "ws://localhost" + ":" + str(Networking.SERVER_PORT), "")
+	
+	
+	
+	
+	#var peer = NetworkedMultiplayerENet.new()
+	var peer : WebRTCMultiplayer = client.rtc_mp #ive supplied the right connection type
+	
+	
+	
+	#client.client is websocket client 
+	if client.rtc_mp.CONNECTION_CONNECTED:
+		#var peer_id = peer.get_unique_id()
+
+	#"Peer must be connecting or connected"
+	
+	#peer.add_peer(client.peer, client.peer_id)
+		print (client.peer.get_connection_state() )
+		print ("WebRTC Peer connection: ",client.peer )
+		print ("Websocket client: ",client.client) #websocket client
+		print ("Websocket peer: ",client.client.get_peer(1)) #websocket peer
+		print ("Is connected to host: ",client.client.get_peer(1).is_connected_to_host() ) #websocket peer
+		#print (client.client.get_peer(1).get_connected_host()  ) #websocket peer
+		#print (client.client.get_peer(1).get_connected_port()  ) #websocket peer
+	# Associate the current network peer to the tree
+		if peer.initialize(1) != OK: push_error('cannot create peer')
+		
+		get_tree().set_network_peer(peer)
+	
+		print ("has network peer: ",get_tree().has_network_peer())
+	
+		# Keep the current peer somewhere to differenciate between you and other players
+		my_peer = peer
+		
+		# Connect signals
+		if get_tree().connect("connected_to_server", self, "client_connected_ok") != OK:
+			print("Unable to connect signal (connected_to_server) !")
+			
+		if get_tree().connect("connection_failed", self, "client_connected_fail") != OK:
+			print("Unable to connect signal (connection_failed) !")
+			
+		if get_tree().connect("server_disconnected", self, "server_disconnected") != OK:
+			print("Unable to connect signal (server_disconnected) !")
+		
+		
+		
+		
+
+		
+		# Add a message to the chat box
+		add_chat("Welcome to this network test!")
+		add_chat("Connecting to server ....")
+
+		
 
 	"Upscale UI on mobile"
 	if Globals.screenOrientation == 1: #Mobile screen orientation
@@ -108,7 +149,20 @@ func _ready():
 		chat.set_position($UI/Position2D.position)
 		pass
 
+
+
+
 func _process(_delta):
+	#client_debug()
+	#print (client.peer.get_connection_state() )
+	#****************** Debugs Data channel********************************************************************#
+	var test = false
+	if ch1 != null && test == true:
+		if ch1.get_ready_state() == ch1.STATE_OPEN and ch1.get_available_packet_count() > 0:
+			print("P1 received: ", ch1.get_packet().get_string_from_utf8())
+	#print (ch1.get_ready_state())
+	
+	#**************************************************************************************#
 	
 	# To mitigate latency issues we use interpolation. The idea is simple, we receive
 	# position updates every TICK_DURATION (50 ms, 20 per seconds). We interpolate between
@@ -121,7 +175,10 @@ func _process(_delta):
 
 
 	#Handles Client Side Player Position Calculation
-	var peer_id = get_tree().get_network_unique_id()
+	#var peer_id = get_tree().get_network_unique_id()
+	var peer_id = client.rtc_mp.get_unique_id() #works
+	#print ('peer id debug : ', peer_id)
+	
 	if player_info.has(peer_id): #if player if has my peer id, position.x is player_info[peer_id] position
 		pos.x = player_info[peer_id].node.position.x 
 		pos.y = player_info[peer_id].node.position.y #updates vvarible with player's position
@@ -148,7 +205,9 @@ func _process(_delta):
 	"Handle Input v 1"
 	# Handle input (keyboard)
 	#sends player input to server
-	handle_input() #Handle's Player's Input and sends it to the Servers
+	
+	#disabling for debugging
+	#handle_input() #Handle's Player's Input and sends it to the Servers
 	
 	
 
@@ -193,50 +252,6 @@ func handle_input(): #DUplicate player state machine input here
 			
 			#read_player_parameters() works
 	
-	# Move left
-	#if Input.is_action_just_pressed("move_left"): #sends player input to the server
-		
-		# calls a remote player input method in the client via rpc
-		#rpc_id(1,"player_input",id,"left",true, pos, state, linear_vel) #sends position and state data directly to servers 
-		
-		
-		
-		#client_debug()
-	#if Input.is_action_just_released("move_left"):
-		#rpc triggers a remote function that changes Client player's Linear Velocity
-	#	rpc_id(1,"player_input",id,"left",false,pos,state, linear_vel) 
-		
-	# Move right presssed
-	#if Input.is_action_just_pressed("move_right"):
-	#	rpc_id(1,"player_input",id,"right",true,pos,state, linear_vel)
-	
-	# Move right released
-	#if Input.is_action_just_released("move_right"):
-	#	rpc_id(1,"player_input",id,"right",false,pos,state, linear_vel)
-		
-	# Handle moving forward
-	#if Input.is_action_just_pressed("move_up"):
-	#	rpc_id(1,"player_input",id,"up",true,pos,state, linear_vel) #sends player input on the network with the player input funtion
-	#if Input.is_action_just_released("move_up"):
-	#	rpc_id(1,"player_input",id,"up",false,pos,state, linear_vel)
-		
-	# Handle moving backward
-	#if Input.is_action_just_pressed("move_down"):
-	#	rpc_id(1,"player_input",id,"down",true,pos,state, linear_vel)
-	#if Input.is_action_just_released("move_down"):
-	#	rpc_id(1,"player_input",id,"down",false,pos,state, linear_vel)
-		
-	# Handle player attacking
-	#if Input.is_action_just_pressed("attack"): #sends these input to the server's logic
-	#	rpc_id(1,"player_input",id,"attack",true) #doesn't work
-	#if Input.is_action_just_released("attack"):
-	#	rpc_id(1,"player_input",id,"attack",false)
-	#Handles player rolling #my code
-	#if Input.is_action_just_pressed("roll"):
-	#	rpc_id(1,"player_input",id,"roll",true)#doesn't work
-	#if Input.is_action_just_released("roll"):
-	#	rpc_id(1,"player_input",id,"roll",false) #doesn't work
-
 
 
 
@@ -381,7 +396,11 @@ func add_chat(text): #used the ui grid
 		chat.set_item_selectable(i,false)
 
 # add chat via remote call
-	rpc_id(1, "broadcast_chat", text) #works. DIsabled for testing
+#sends data to server
+
+	#Can only send poolbyte arrays
+	client.client.get_peer(1).put_packet(text.to_utf8()) #works-ish. DIsabled for testing
+	#my_peer.put_packet(("dgsgsdfgdfgdf" ).to_utf8())
 
 "Adds chat item to all clients from server"
 remote func chat_added(id, info, text):
@@ -400,7 +419,8 @@ func display_damage(body):#rewrite this to instance blood fx
 #	pass
 
 func client_debug()-> void:
-	print ('/Client Player info : Linear velocity: ',linear_vel, "// Peer ID: ", get_tree().get_network_unique_id(), ' State: ',state) #for debug purposes only
+	print ('/Client Player info : Linear velocity: ',linear_vel, "// Peer ID: ", client.rtc_mp.get_peers(), ' State: ',state) #for debug purposes only
+	print (client.rtc_mp)
 
 "CHATS"
 func _on_Chat_Button_pressed():

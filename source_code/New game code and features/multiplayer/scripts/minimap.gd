@@ -31,7 +31,7 @@ func _process(delta):
 # Draw the players on the minimap
 func _draw():
 
-	var peer_id = get_tree().get_network_unique_id()
+	var peer_id =  get_tree().get_network_unique_id()
 	var pos = Vector2(0,0)
 	if node_root.player_info.has(peer_id):
 		pos.x += node_root.player_info[peer_id].position.x

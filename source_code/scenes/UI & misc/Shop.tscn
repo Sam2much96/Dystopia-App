@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/cinematics/pilot_ep_1.tscn" type="PackedScene" id=1]
 [ext_resource path="res://fonts/stats.tres" type="DynamicFont" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://scenes/UI & misc/anime_streaming.gd" type="Script" id=5]
 [ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/UI & misc/Youtube_Thumbnail.gd" type="Script" id=7]
 
 [node name="Shop" type="Control"]
 anchor_right = 1.0
@@ -19,9 +20,6 @@ margin_right = 824.0
 margin_bottom = 838.0
 rect_scale = Vector2( 0.357228, 0.357228 )
 texture = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="watch anime" type="Button" parent="."]
 margin_left = 368.0
@@ -56,6 +54,11 @@ custom_fonts/font = ExtResource( 2 )
 text = "Watch Afro Anime"
 
 [node name="Dialog_box" parent="." instance=ExtResource( 6 )]
+
+[node name="YoutubeThumbnail" type="TextureRect" parent="."]
+margin_right = 427.0
+margin_bottom = 427.0
+script = ExtResource( 7 )
 
 [connection signal="pressed" from="watch anime" to="." method="_on_watch_anime_pressed"]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

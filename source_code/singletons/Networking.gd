@@ -41,7 +41,8 @@ var check_timer
 var debug = ''
 
 # Default hostname used by the login form
-const DEFAULT_HOSTNAME = "127.0.0.1"
+#const DEFAULT_HOSTNAME = "127.0.0.1"
+const DEFAULT_HOSTNAME = "ws://localhost"
 
 
 var player_info = {} # should store Crypto info
@@ -71,7 +72,7 @@ onready var WORLD_SIZE = 40000.0
 onready var _reference_to_self =get_node('/root/Networking') #formerly _y
 
 
-const SERVER_PORT = 5225
+const SERVER_PORT = 9080
 const MAX_PLAYERS = 5
 
 const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
@@ -339,3 +340,6 @@ static func download_image_(body: PoolByteArray, Save_path: String, node : HTTPR
 
 func _on_Timer2_timeout():
 	print ('check timer stopped')
+
+
+	pass

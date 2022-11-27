@@ -174,7 +174,7 @@ margin_right = 142.0
 margin_bottom = 112.0
 rect_min_size = Vector2( 128, 0 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "192.168.10.111"
+text = "ws://localhost:9080"
 
 [node name="label_spacer" type="Label" parent="ui/ScrollContainer/grid"]
 margin_top = 116.0

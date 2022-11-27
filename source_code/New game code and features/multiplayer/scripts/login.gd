@@ -43,7 +43,11 @@ func _on_button_login_pressed(): #others join
 	Networking.cfg_player_name = input_player.text + str(Globals.address)
 	
 	# Lookup hostname and store resolved IP
-	Networking.cfg_server_ip = IP.resolve_hostname(input_hostname.text)
+	#Networking.cfg_server_ip = IP.resolve_hostname(input_hostname.text) (depreciated)
+	Networking.cfg_server_ip = input_hostname.text
+	
+	print ("Networking IP :", Networking.cfg_server_ip)
+	
 	
 	# Change to client scene
 	if get_tree().change_scene("res://New game code and features/multiplayer/scenes/client.tscn") != OK:

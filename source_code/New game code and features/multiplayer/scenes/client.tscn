@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://New game code and features/multiplayer/scripts/client.gd" type="Script" id=1]
 [ext_resource path="res://scenes/levels/Testing Scene 2.tscn" type="PackedScene" id=2]
+[ext_resource path="res://New game code and features/multiplayer/scripts/multiplayer_client.gd" type="Script" id=3]
 [ext_resource path="res://New game code and features/multiplayer/images/minimap/background.png" type="Texture" id=4]
-[ext_resource path="res://New game code and features/multiplayer/scripts/minimap.gd" type="Script" id=5]
+[ext_resource path="res://New game code and features/multiplayer/scripts/client_ui.gd" type="Script" id=6]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://fonts/DigitalStripBB_Reg.ttf"
@@ -40,7 +41,6 @@ margin_right = -14.0
 margin_bottom = -10.0
 rect_min_size = Vector2( 128, 128 )
 texture = ExtResource( 4 )
-script = ExtResource( 5 )
 
 [node name="label_position" type="Label" parent="UI/minimap"]
 margin_left = 1.5874
@@ -100,5 +100,13 @@ margin_top = 385.464
 margin_right = 322.512
 margin_bottom = 467.464
 text = "CHATS"
+
+[node name="Client" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[node name="Control" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 6 )
 
 [connection signal="pressed" from="UI/Chat_Button" to="." method="_on_Chat_Button_pressed"]

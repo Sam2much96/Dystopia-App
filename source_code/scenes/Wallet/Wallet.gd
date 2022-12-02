@@ -1133,7 +1133,9 @@ func smart_contract(): #doesnt work
 	#and pass them through poolbyte arrays and arrays
 	#duplicate optin state machine to implement smartcontract calls
 	if transaction_valid:
-		var optin_tx = Algorand.algod.construct_app_call(params, '4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ', 116639568,['4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ'],["inc"])
+		#var optin_tx = Algorand.algod.construct_app_call(params, '4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ', 116639568,['4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ'], Array(["inc"])  ) #app arguments is causing it to bug out // thread '<unnamed>' panicked at 'called `Option::unwrap()` on a `None` value', algodot/src/algod/mod.rs:296:28
+		var optin_tx = Algorand.algod.construct_app_call(params, '4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ', 116639568  ) #app arguments is causing it to bug out // thread '<unnamed>' panicked at 'called `Option::unwrap()` on a `None` value', algodot/src/algod/mod.rs:296:28
+
 	
 
 		print ("opt in transcation: ",optin_tx) #returns null #shouldnt be null

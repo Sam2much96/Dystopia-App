@@ -792,8 +792,8 @@ func add_chat(text): #used the ui grid
 
 # add chat via remote call
 #sends data to server
-	#data channel not open
-	#open_data_channel_to(peer,1, text.to_utf8())
+	#data channel not open #to fix
+	open_data_channel_to(peer,1, text.to_utf8())
 
 	"Sends Data to a peer"
 	#Can only send poolbyte arrays

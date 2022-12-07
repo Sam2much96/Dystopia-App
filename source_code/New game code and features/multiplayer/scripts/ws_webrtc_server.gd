@@ -1,7 +1,69 @@
 extends Node
 
 
+# *************************************************
+# godot3-dystopia by Inhumanity_arts
+# Released under MIT License
+# *************************************************
+# SERVER-SIDE CODE
+#
+# All the server  logics in one file!
+# It also contains the world's logics *inhumanity
+# Bugs:
+# (1) It implements roll back netcode (depreciated)
+# (2) Player Control affects both client and server player: use rpc_id to control player movement
+# (3) Client player's movement is choppy, doesn't show animations (fixed)
+# (4) Implement remote pfunctions for server player inputs (remote functions are used via nodes rpc calls)
+# (5) Implement a separate player for the server
+
+# (6) Send Player inputs via remote functions
+# (7) Duplicate Input Functions btw Client and Server (Using ROll back netcode as a reference)
+# (8) Does not work on open internet 
+#		- Implement web socket client, server and webRTC
+# (9) Include Matchmaking system
+# *************************************************
+
 class_name Server
+
+#my code
+var player = {}
+
+export (int) var state
+var debug
+#onready var Networking = GDScript.new()
+#try and instance the outside scene and add a player
+
+# Player info, associate ID to data
+var player_info = {}
+
+var delta_update = 0
+var delta_interval = float(Networking.TICK_DURATION) * 0.001
+#onready var server_camera = Camera2D.new()
+onready var node_players = Node.new()#$Player
+onready var node_projectiles #= $camera/projectiles #not needed
+onready var node_enemies  = Node.new()#$Enemies
+
+#.pop_front()
+
+var preload_player = preload("res://scenes/characters/Aarin_networking.tscn") #spawn different players
+var preload_enemy = preload("res://scenes/characters/Enemy.tscn") # spawn different enemies
+
+var server_debug
+
+var update_id = 0
+
+#onready var _server = Server #get_node("/root/world/Server")
+
+#creating a server class
+#onready var t : Server = Server.new()
+
+	
+#line 234
+
+var multiplayerAPI_peer = NetworkedMultiplayerENet.new()
+
+
+
 
 const TIMEOUT = 1000 # Unresponsive clients times out after 1 sec
 const SEAL_TIME = 10000 # A sealed room will be closed after this time
@@ -82,7 +144,10 @@ class Lobby extends Reference:
 func _init():
 	"connect server signals"
 	
+	#when data is received
 	server.connect("data_received", self, "_on_data")
+	
+	#when a peer connects and Disconnects
 	server.connect("client_connected", self, "_peer_connected")
 	server.connect("client_disconnected", self, "_peer_disconnected")
 
@@ -237,11 +302,16 @@ func _join_lobby(peer, lobby) -> bool:
 	print("Peer %d joined lobby: '%s'" % [peer.id, lobby])
 	return true
 
-#when data is received from client
+"when data is received from client"
 func _on_data(id): #works-ish
 	print ("data received")
 	if not _parse_msg(id):
 		print("Parse message failed from peer %d" % id)
+		
+		#determine what data it is
+		#send positional data
+		
+		
 		
 		#disabling for testing
 		#print ('Disconnecting peer from server')
@@ -307,62 +377,7 @@ func _parse_msg(id) -> bool:
 	return true
 
 
-# *************************************************
-# godot3-dystopia by Inhumanity_arts
-# Released under MIT License
-# *************************************************
-# SERVER-SIDE CODE
-#
-# All the server  logics in one file!
-# It also contains the world's logics *inhumanity
-# Bugs:
-# (1) It implements roll back netcode (depreciated)
-# (2) Player Control affects both client and server player: use rpc_id to control player movement
-# (3) Client player's movement is choppy, doesn't show animations (fixed)
-# (4) Implement remote pfunctions for server player inputs (remote functions are used via nodes rpc calls)
-# (5) Implement a separate player for the server
 
-# (6) Send Player inputs via remote functions
-# (7) Duplicate Input Functions btw Client and Server (Using ROll back netcode as a reference)
-# (8) Does not work on open internet 
-#		- Implement web socket client, server and webRTC
-# (9) Include Matchmaking system
-# *************************************************
-
-
-#my code
-var player = {}
-
-export (int) var state
-var debug
-#onready var Networking = GDScript.new()
-#try and instance the outside scene and add a player
-
-# Player info, associate ID to data
-var player_info = {}
-
-var delta_update = 0
-var delta_interval = float(Networking.TICK_DURATION) * 0.001
-#onready var server_camera = Camera2D.new()
-onready var node_players = Node.new()#$Player
-onready var node_projectiles #= $camera/projectiles #not needed
-onready var node_enemies  = Node.new()#$Enemies
-
-#.pop_front()
-
-var preload_player = preload("res://scenes/characters/Aarin_networking.tscn") #spawn different players
-var preload_enemy = preload("res://scenes/characters/Enemy.tscn") # spawn different enemies
-
-var server_debug
-
-var update_id = 0
-
-#onready var _server = Server #get_node("/root/world/Server")
-
-#creating a server class
-#onready var t : Server = Server.new()
-
-	
 func _ready():
 	
 	OS.set_window_title('Server') #renames the  app Window
@@ -437,11 +452,17 @@ func _ready():
 
 	# Connect the signals
 	# Debug the signals
-	if get_tree().connect("network_peer_connected", self, "player_connected") != OK:
-		print("Unable to connect signal (network_peer_connected) !")
-		
-	if get_tree().connect("network_peer_disconnected", self, "player_disconnected") != OK:
-		print("Unable to connect signal (network_peer_disconnected) !")
+	#if get_tree().connect("network_peer_connected", self, "player_connected") != OK:
+	if not is_connected("network_peer_connected", self, "player_connected"):
+		#print("Unable to connect signal (network_peer_connected) !")
+		get_tree().connect("network_peer_connected", self, "player_connected")
+	
+	if not is_connected("network_peer_disconnected", self, "player_disconnected"):
+		get_tree().connect("network_peer_disconnected", self, "player_disconnected") 
+	
+	
+#	if get_tree().connect("network_peer_disconnected", self, "player_disconnected") != OK:
+#		print("Unable to connect signal (network_peer_disconnected) !")
 
 
 	#Connect signals from the server node
@@ -655,4 +676,21 @@ func server_debug()-> void:
 	print ("Server ID:", get_tree().get_network_unique_id())
 
 
+func create_multiplayer_server(port : int, MAX_PLAYERS: int)-> void:
+	#get your client and server ports
+	#var port: int
+	#var MAX_PLAYERS: int
+	
+	if multiplayerAPI_peer.create_server(port, MAX_PLAYERS) != OK:
+		print("Unable to create multiplayer server")
+		return
 
+		if get_tree().set_network_peer(multiplayerAPI_peer) != OK:
+			print("Unable to set network peer!")
+	
+	# Connect the signals
+	if get_tree().connect("network_peer_connected", self, "player_connected") != OK:
+		print("Unable to connect signal (network_peer_connected) !")
+		
+	if get_tree().connect("network_peer_disconnected", self, "player_disconnected") != OK:
+		print("Unable to connect signal (network_peer_disconnected) !")

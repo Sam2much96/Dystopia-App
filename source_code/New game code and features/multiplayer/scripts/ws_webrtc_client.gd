@@ -45,8 +45,48 @@ signal answer_received(id, answer)
 signal candidate_received(id, mid, index, sdp)
 signal lobby_sealed()
 
+var client_debug 
+
+var my_info = { name = "Player" }
+var preload_player = preload("res://scenes/characters/Aarin_networking.tscn")
+var node_player
+
+var chat_text: String
+
+#var player_id #my code
+var client_animation : String
+export (int) var ______update_id
+var hitpoints= 3#var preload_projectile = preload("res://New game code and features/multiplayer/scenes/projectile.tscn") #tweak
+var preload_damage  #= preload("res://New game code and features/multiplayer/scenes/effects/damage.tscn") #tweak
+var preload_explosion #= preload("res://New game code and features/multiplayer/scenes/effects/explosion.tscn") #tweak
+var pos = Vector2(0,0)
+var killcount = 0
+var linear_vel
+# Player info, associate ID to data
+var player_info = {}
+#var projectiles = []
+var my_peer = null
+var last_update = -1 #probably used for updating the network
+onready var node_players = Node.new()#$players #p2p player nodes
+onready var node_enemies=Node.new()  #= #= $camera/projectiles #rewrote progectile nodes to enemy nodes
+#onready var camera = Camera2D.new()#$Camera2D#get_tree().get_root()
+onready var progress_health = load('res://scenes/UI & misc/Healthbar.tscn')
+
+#*******Player Items*************#
+var facing
+
+#*******Chat Item*************#
+onready var chat = $UI/item_chat
+
+#onready var client = $Client
+
+onready var state #im trying to send player state using rpc call and update it on the server using a remote funtion
+
+#var PEER_ID
+var ch1 #data channel
 
 
+var multiplayerAPI_peer = NetworkedMultiplayerENet.new()
 
 func _init():
 	#connect WebRTC signalling signals
@@ -327,13 +367,23 @@ func disconnected():
 		#stop() # Unexpected disconnect
 		pass
 
+
+"Whenever a Peer Joins"
 func peer_connected(id):
 	print("Peer connected %d" % id)
 	_create_peer(id)
 
 
+	#player_joined(id, '') #doesnt work
+
+
+
+"Whenever a Peer Leaves"
 func peer_disconnected(id):
 	if rtc_mp.has_peer(id): rtc_mp.remove_peer(id)
+
+	player_leaving(id)
+
 
 
 func offer_received(id, offer):
@@ -487,6 +537,7 @@ func _disconnected():
 
 func _lobby_joined(lobby):
 	_log("Joined lobby %s" % lobby)
+	
 
 
 func _lobby_sealed():
@@ -542,45 +593,6 @@ func _stop():
 
 
 
-var client_debug 
-
-var my_info = { name = "Player" }
-var preload_player = preload("res://scenes/characters/Aarin_networking.tscn")
-var node_player
-
-var chat_text: String
-
-#var player_id #my code
-var client_animation : String
-export (int) var ______update_id
-var hitpoints= 3#var preload_projectile = preload("res://New game code and features/multiplayer/scenes/projectile.tscn") #tweak
-var preload_damage  #= preload("res://New game code and features/multiplayer/scenes/effects/damage.tscn") #tweak
-var preload_explosion #= preload("res://New game code and features/multiplayer/scenes/effects/explosion.tscn") #tweak
-var pos = Vector2(0,0)
-var killcount = 0
-var linear_vel
-# Player info, associate ID to data
-var player_info = {}
-#var projectiles = []
-var my_peer = null
-var last_update = -1 #probably used for updating the network
-onready var node_players = Node.new()#$players #p2p player nodes
-onready var node_enemies=Node.new()  #= #= $camera/projectiles #rewrote progectile nodes to enemy nodes
-#onready var camera = Camera2D.new()#$Camera2D#get_tree().get_root()
-onready var progress_health = load('res://scenes/UI & misc/Healthbar.tscn')
-
-#*******Player Items*************#
-var facing
-
-#*******Chat Item*************#
-onready var chat = $UI/item_chat
-
-#onready var client = $Client
-
-onready var state #im trying to send player state using rpc call and update it on the server using a remote funtion
-
-#var PEER_ID
-var ch1 #data channel
 
 
 func UpscaleMobileUI()-> void:
@@ -701,6 +713,10 @@ remote func player_joined(id, info): #tweak code###########################
 		
 	node_players.add_child(node_player)
 	
+	
+	
+
+
 
 remote func player_respawned(id, info):
 	print("Callback: player_respawned (" + str(id)+"," + str(info) + ")")
@@ -832,3 +848,16 @@ func _on_peers_pressed():
 
 func _on_ping_pressed():
 	ping()
+
+
+
+func create_multiplayer_client(ip : String, port)-> void:
+	
+	#var ip : String
+	#var port : int
+	
+	multiplayerAPI_peer.create_client(ip, port)
+	
+	# Associate the current network peer to the tree
+	get_tree().set_network_peer(multiplayerAPI_peer)
+

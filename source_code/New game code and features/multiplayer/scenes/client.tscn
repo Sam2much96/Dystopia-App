@@ -1,10 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://New game code and features/multiplayer/scripts/client.gd" type="Script" id=1]
+[ext_resource path="res://New game code and features/multiplayer/scripts/ws_webrtc_client.gd" type="Script" id=1]
 [ext_resource path="res://scenes/levels/Testing Scene 2.tscn" type="PackedScene" id=2]
-[ext_resource path="res://New game code and features/multiplayer/scripts/multiplayer_client.gd" type="Script" id=3]
 [ext_resource path="res://New game code and features/multiplayer/images/minimap/background.png" type="Texture" id=4]
-[ext_resource path="res://New game code and features/multiplayer/scripts/client_ui.gd" type="Script" id=6]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://fonts/DigitalStripBB_Reg.ttf"
@@ -93,6 +91,29 @@ margin_top = 386.0
 margin_right = 414.0
 margin_bottom = 460.0
 text = "Enter Chat"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ping" type="Button" parent="UI"]
+margin_left = 29.2773
+margin_top = 488.589
+margin_right = 111.277
+margin_bottom = 562.589
+text = "ping"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="peers" type="Button" parent="UI"]
+margin_left = 149.525
+margin_top = 488.589
+margin_right = 231.525
+margin_bottom = 562.589
+text = "peers"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="LineEdit" type="LineEdit" parent="UI"]
 margin_left = 17.5118
@@ -102,11 +123,11 @@ margin_bottom = 467.464
 text = "CHATS"
 
 [node name="Client" type="Node" parent="."]
-script = ExtResource( 3 )
 
 [node name="Control" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
-script = ExtResource( 6 )
 
 [connection signal="pressed" from="UI/Chat_Button" to="." method="_on_Chat_Button_pressed"]
+[connection signal="pressed" from="UI/ping" to="." method="_on_ping_pressed"]
+[connection signal="pressed" from="UI/peers" to="." method="_on_peers_pressed"]

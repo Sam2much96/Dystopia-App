@@ -183,7 +183,12 @@ func _process(delta):
 	if status == WebSocketClient.CONNECTION_DISCONNECTED:
 		#push_error('disconected')
 		return
-	else: push_error('Check Client Script here')
+	
+	#connection successful
+	if status == 2:
+		web_client.poll()
+	
+	else: print ("WebClient Connection Status: ", status)
 	
 
 
@@ -787,12 +792,12 @@ func add_chat(text): #used the ui grid
 
 # add chat via remote call
 #sends data to server
-
-	open_data_channel_to(peer,1, text.to_utf8())
+	#data channel not open
+	#open_data_channel_to(peer,1, text.to_utf8())
 
 	"Sends Data to a peer"
 	#Can only send poolbyte arrays
-	#web_client.get_peer(1).put_packet(text.to_utf8()) #works-ish. 
+	web_client.get_peer(1).put_packet(text.to_utf8()) #works-ish. 
 	#my_peer.put_packet(("dgsgsdfgdfgdf" ).to_utf8())
 
 "Adds chat item to all clients from server"

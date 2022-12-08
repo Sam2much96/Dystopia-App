@@ -122,12 +122,6 @@ margin_right = 322.512
 margin_bottom = 467.464
 text = "CHATS"
 
-[node name="Client" type="Node" parent="."]
-
-[node name="Control" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
-
 [connection signal="pressed" from="UI/Chat_Button" to="." method="_on_Chat_Button_pressed"]
 [connection signal="pressed" from="UI/ping" to="." method="_on_ping_pressed"]
 [connection signal="pressed" from="UI/peers" to="." method="_on_peers_pressed"]

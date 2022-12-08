@@ -12,7 +12,9 @@
 # (3)  Remove player input from this client script and implement it in Player v2 script
 # (4) Doesn't work on the open Internet
 #		- Implement web socket client, server and webRTC ( done)
-#		-cant create a networking peer
+#		-cant create a networking peer (1/2 done)
+# (5) WebClient Connection Status: 1 repeats why?
+
 # *************************************************
 
 
@@ -24,7 +26,11 @@ extends Node
 class_name Client
 
 
-var status : int
+var status : int #............................# For debugging the webclient's connection status 
+var status2 : int
+
+
+
 var player_id : Array = []
 
 export var autojoin = true
@@ -157,7 +163,7 @@ func _connected(protocol = ""):
 	if autojoin:
 		join_lobby(lobby)
 
-
+#parses all data packets put into the network
 func _parse_msg():
 	var pkt_str: String = web_client.get_peer(1).get_packet().get_string_from_utf8()
 
@@ -234,6 +240,7 @@ func _send_msg(type, id, data) -> int:
 
 func _process(delta):
 	
+	# Logic controller for webclient connection status
 	status = web_client.get_connection_status()
 	if status == WebSocketClient.CONNECTION_CONNECTING:
 		web_client.poll()
@@ -245,12 +252,77 @@ func _process(delta):
 	
 	#connection successful
 	if status == 2:
+		#print ("webclient connected")
 		web_client.poll()
+	if status == 1:
+		print ("webclient connecting")
+	if status == 0:
+		print ("webclient disconnected")
+	#else: print ("WebClient Connection Status: ", status)
 	
-	else: print ("WebClient Connection Status: ", status)
 	
+	status2 = peer.get_connection_state()
+	
+	# Logic controller for webMultiplayer connection status
+	
+	if status2 == 0:
+		print ("""
+		● STATE_NEW = 0
+		The connection is new, data channels and an offer can be created in this state.
+
+		""")
+
+		pass
+	if status2 == 1:
+		
+#		print ("""
+#		● STATE_CONNECTING = 1
+#		The peer is connecting, ICE is in progress, none of the transports has failed.
+
+#		""")
+		
+		pass
+	if status2 == 2:
+		
+#		print ("""
+#		● STATE_CONNECTED = 2
+#		The peer is connected, all ICE transports are connected..
+
+#		""")
+		
+		pass
+	if status2 == 3:
+		print ("""
+		● STATE_DISCONNECTED = 3
+		At least one ICE transport is disconnected.
+
+		""")
+
+		
+		
+		pass
+	if status2 == 4:
+		print ("""
+		● STATE_FAILED = 4
+		One or more of the ICE transports failed.
+
+		""")
 
 
+		pass
+	if status2 == 5:
+		print ("""
+		● STATE_CLOSED = 5
+		The peer connection is closed (after calling close() for example).
+
+		""")
+
+
+		pass
+	
+
+	
+	
 	#client_debug()
 	#print (client.peer.get_connection_state() )
 	
@@ -337,8 +409,19 @@ func _create_peer(id):
 	})
 	peer.connect("session_description_created", self, "_offer_created", [id])
 	peer.connect("ice_candidate_created", self, "_new_ice_candidate", [id])
-	rtc_mp.add_peer(peer, id)
 
+	#saving these variables
+	player_id.append(id)
+	
+	#peer is a webrtc connection
+	#rtc_mp is the multiplayer architecture
+	
+	
+	
+	rtc_mp.add_peer(peer, id)
+	
+	
+	
 	if id > rtc_mp.get_unique_id():
 		peer.create_offer()
 	
@@ -416,18 +499,20 @@ func candidate_received(id, mid, index, sdp):
 		rtc_mp.get_peer(id).connection.add_ice_candidate(mid, index, sdp)
 
 # implemented from chatGPT
-#doesnt work
+#Works-ish
 func open_data_channel_to(channel: WebRTCPeerConnection, peer_id: int, data: PoolByteArray):
-	var u= WebRTCDataChannel.new()
-	var p1 = WebRTCPeerConnection.new()
-	var ch1 = p1.create_data_channel("chat", {"id": 1, "negotiated": true})
+	if status2 == 0:
+	#var u= WebRTCDataChannel.new()
+	#var p1 = WebRTCPeerConnection.new()
+		var ch1 = channel.create_data_channel("chat", {"id": 1, "negotiated": true})
 
-	p1.create_data_channel("chat", {"id": 1, "negotiated": true})
+		channel.create_data_channel("chat", {"id": 1, "negotiated": true})
 
-	p1.create_offer()
-	
+		channel.create_offer()
+		
 
-	ch1.put_packet(data)
+		ch1.put_packet(data)
+	if not status2 == 0 : return 0;
 
 
 
@@ -530,10 +615,19 @@ func _ready():
 
 		"create a multiplayer peer here"
 
+
+		#create_multiplayer_client()
+		
+
+
 		#get_tree().set_network_peer(peer)
-		get_tree().set_network_peer(peer)
+		get_tree().set_network_peer(peer) #it's setting a webRTC connection as a peer. Which it shouldn't?
 	
+		#multiplayer network debug
 		print ("has network peer: ",get_tree().has_network_peer())
+		print ("is network server: ",get_tree().is_network_server())
+		
+		#print ("is network server: ",get_tree().set_multiplayer(rtc_mp))
 	
 		# Keep the current peer somewhere to differenciate between you and other players
 		my_peer = peer

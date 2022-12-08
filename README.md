@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-# Dystopia-App-Stable v1.1.9 Alpha D
+# Dystopia-App-Stable v2.0.0 
 
 A web 3.0 Multimedia, Game-Applet.
 
@@ -97,7 +96,7 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 	-Hints system
 	-Expanded Dialogue System (Word bubble system)
 	-update control art with new button maps
-	-Shop & Merch Store
+	
 	-Guided view system
 	-Mana meter (Ogun meter)
 	-NPC_2 Quests

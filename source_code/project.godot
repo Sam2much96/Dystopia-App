@@ -201,8 +201,8 @@ Music="*res://singletons/Music.tscn"
 Networking="*res://singletons/Networking.tscn"
 Comics_v4="*res://singletons/Comics.v4.gd"
 InputManager="*res://singletons/InputManager.gd"
-DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
 AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
+DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
 
 [debug]
 

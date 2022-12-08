@@ -72,7 +72,7 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 
 **(18) Download Images, Documents and Videos:** Networking.download_image_(image url, image save path): Downloads a png image from a url and saves it at a given path 
 
-**(19) Implements WebRTC :** WebRTC (web real time communication) for Multiplayer gameplay from https://github.com/godotengine/webrtc-native
+**(19) WebRTC :** WebRTC (web real time communication) for Multiplayer gameplay from https://github.com/godotengine/webrtc-native
 ## -Features to Fix
 	
 	-Fix up Game's spawnpoints (look at the Exit code in the Temple interior scene)	
@@ -116,10 +116,7 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 	-Sandbox mechanics
 	-Polygon 2d to deconstruct comic panels
 	-Host game server with
-		-Apache
-		-SSL
-		-Net tools
-		-Port Forwarding
+		-Javascript (webrtc server peer implementation
 	-Reprogrammable joystick
 	-Ads
 		-Interstitial Ads at the end of comic book page

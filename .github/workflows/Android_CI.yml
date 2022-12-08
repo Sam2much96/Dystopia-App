@@ -1,7 +1,7 @@
 name: Android CI
 
 env:
-  GODOT_VERSION: 3.4.4
+  GODOT_VERSION: 3.5.1
   EXPORT_NAME: source_code
 
 

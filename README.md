@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Dystopia-App-Stable v1.1.9 Alpha D
 
 A web 3.0 Multimedia, Game-Applet.

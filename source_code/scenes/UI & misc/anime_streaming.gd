@@ -45,7 +45,7 @@ var pilot_ep_scene = load ('res://scenes/cinematics/pilot_ep_1.tscn')
 #var NFT
 
 func _on_Button_pressed():
-	return get_tree().change_scene_to((Globals.title_screen))
+	return Globals._go_to_title()
 
 
 
@@ -219,3 +219,20 @@ func open_merch_link(): #triggers a merch link link download
 	var merch_link = 'https://inhumanity-merch.creator-spring.com/listing/dystopia-merch'
 	print ('opening merch link at ',merch_link )
 	return OS.shell_open(merch_link)
+
+
+func _on_watch_anime2_pressed():
+	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
+	#videoplayer._play_pilot_a() #depreciated in v1.1.9 for size problems
+	$Label.hide()
+	return OS.shell_open("https://youtu.be/uzDzAuJVHcI")
+	
+	
+
+func _on_watch_merch_pressed():
+	open_merch_link()
+
+
+func _on_watch_anime3_pressed():
+	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
+	return OS.shell_open("https://youtu.be/EAL8Mu2-f7Q")

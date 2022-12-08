@@ -12,8 +12,8 @@
 # (3)  Remove player input from this client script and implement it in Player v2 script
 # (4) Doesn't work on the open Internet
 #		- Implement web socket client, server and webRTC ( done)
-#		-cant create a networking peer (1/2 done)
-# (5) WebClient Connection Status: 1 repeats why?
+#		-cant create a networking peer (done, use WebRtcPeerConnection)
+# (5) Implement NetworkingMultiplayer
 
 # *************************************************
 
@@ -135,6 +135,20 @@ func connecting_signals()->void:
 	web_client.connect("connection_closed", self, "_closed")
 	web_client.connect("connection_error", self, "_closed")
 	web_client.connect("server_close_request", self, "_close_request")
+
+
+	connect("lobby_joined", self, "_lobby_joined")
+	connect("lobby_sealed", self, "_lobby_sealed")
+	connect("connected", self, "_connected")
+	connect("disconnected", self, "_disconnected")
+	
+	#Connect signals from WebRTCMultiplayer node
+	
+	rtc_mp.connect("peer_connected", self, "_mp_peer_connected")
+	rtc_mp.connect("peer_disconnected", self, "_mp_peer_disconnected")
+	rtc_mp.connect("server_disconnected", self, "_mp_server_disconnect")
+	rtc_mp.connect("connection_succeeded", self, "_mp_connected")
+
 
 
 func connect_to_url(url):
@@ -522,17 +536,9 @@ func open_data_channel_to(channel: WebRTCPeerConnection, peer_id: int, data: Poo
 
 func _ready():
 	#print ('Client Main Logic: ',Client)#bug line remove
-	connect("lobby_joined", self, "_lobby_joined")
-	connect("lobby_sealed", self, "_lobby_sealed")
-	connect("connected", self, "_connected")
-	connect("disconnected", self, "_disconnected")
 	
-	#Connect signals from WebRTCMultiplayer node
 	
-	rtc_mp.connect("peer_connected", self, "_mp_peer_connected")
-	rtc_mp.connect("peer_disconnected", self, "_mp_peer_disconnected")
-	rtc_mp.connect("server_disconnected", self, "_mp_server_disconnect")
-	rtc_mp.connect("connection_succeeded", self, "_mp_connected")
+	
 
 
 	UpscaleMobileUI()

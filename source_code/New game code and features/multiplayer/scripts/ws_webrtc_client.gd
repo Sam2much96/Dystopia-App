@@ -88,7 +88,24 @@ var ch1 #data channel
 
 var multiplayerAPI_peer = NetworkedMultiplayerENet.new()
 
+#peer connection
+var peer: WebRTCPeerConnection = WebRTCPeerConnection.new()
+
+#multiplayer
+#open a data channel to send data using peer ID's
+var rtc_mp: WebRTCMultiplayer = WebRTCMultiplayer.new()
+
+var sealed = false
+
+#call the signals
+
 func _init():
+	connecting_signals()
+
+
+
+
+func connecting_signals()->void:
 	#connect WebRTC signalling signals
 	connect("connected", self, "connected")
 	connect("disconnected", self, "disconnected")
@@ -209,6 +226,8 @@ func send_answer(id, answer) -> int:
 	return _send_msg("A", id, answer)
 
 
+
+#sends data to thr peer
 func _send_msg(type, id, data) -> int:
 	return web_client.get_peer(1).put_packet(("%s: %d\n%s" % [type, id, data]).to_utf8())
 
@@ -289,16 +308,6 @@ func _process(delta):
 		_log(rtc_mp.get_packet().get_string_from_utf8())
 
 
-#peer connection
-var peer: WebRTCPeerConnection = WebRTCPeerConnection.new()
-
-#multiplayer
-#open a data channel to send data using peer ID's
-var rtc_mp: WebRTCMultiplayer = WebRTCMultiplayer.new()
-
-var sealed = false
-
-#call the signals
 
 func start(url, lobby = ""):
 	#stop()
@@ -314,6 +323,8 @@ func stop():
 	print ("stopping connection")
 
 #called everytime a peer is connected from signals
+#save the webrtc connection from this method
+#peer is multiplayer api
 func _create_peer(id):
 	print ("creating peer id")
 	
@@ -376,6 +387,8 @@ func peer_connected(id):
 
 	#player_joined(id, '') #doesnt work
 
+	create_multiplayer_client(str(web_client.get_connected_host()),web_client.get_connected_port())
+	 #IP
 
 
 "Whenever a Peer Leaves"
@@ -403,6 +416,7 @@ func candidate_received(id, mid, index, sdp):
 		rtc_mp.get_peer(id).connection.add_ice_candidate(mid, index, sdp)
 
 # implemented from chatGPT
+#doesnt work
 func open_data_channel_to(channel: WebRTCPeerConnection, peer_id: int, data: PoolByteArray):
 	var u= WebRTCDataChannel.new()
 	var p1 = WebRTCPeerConnection.new()
@@ -463,13 +477,11 @@ func _ready():
 	print("Connecting to server ...")
 	
 
-	
-
-	
 
 	_start() # Networking.cfg_server_ip is buggy
 	#client.start("ws://" + "ws://localhost" + ":" + str(Networking.SERVER_PORT), "")
 	
+	#from here, it connects through a bunch of signals
 	
 	
 	
@@ -477,8 +489,10 @@ func _ready():
 	var peer : WebRTCMultiplayer = rtc_mp #ive supplied the right connection type
 	
 	
+	print ("Web RTC Multiplayer connected: ",rtc_mp.CONNECTION_CONNECTED) #2
+	print ("Web RTC Multiplayer disconnected: ",rtc_mp.CONNECTION_DISCONNECTED) #2
 	
-	#client.client is websocket client 
+	 
 	if rtc_mp.CONNECTION_CONNECTED:
 		#var peer_id = peer.get_unique_id()
 
@@ -490,17 +504,32 @@ func _ready():
 		add_chat("Connecting to server ....")
 	#"Peer must be connecting or connected"
 	
+	
+	
+	
+	
 	#peer.add_peer(client.peer, client.peer_id)
 		#print (peer.get_connection_state() ) # Invalid call. Nonexistent function 'get_connection_state' in base 'WebRTCMultiplayer'.
 		print ("WebRTC Peer connection: ",peer )
+		print ("MultiplayerENet connection: ",multiplayerAPI_peer )
 		print ("Websocket client: ",web_client) #websocket client
 		print ("Websocket peer: ",web_client.get_peer(1)) #websocket peer
-		print ("Is connected to host: ", web_client.get_peer(1).is_connected_to_host() ) #websocket peer
-		#print (client.client.get_peer(1).get_connected_host()  ) #websocket peer
-		#print (client.client.get_peer(1).get_connected_port()  ) #websocket peer
-	# Associate the current network peer to the tree
-		if peer.initialize(1) != OK: push_error('cannot create peer')
+		print ("Is connected to host 1: ", web_client.get_peer(1).is_connected_to_host() ) #websocket peer
 		
+		
+		
+		
+		# Debug Peer connection state
+	if web_client.CONNECTION_CONNECTED:
+		print ("Web Client Connected: ", web_client.CONNECTION_CONNECTED)
+	
+		#initialize resets the Network connection to a New State
+		#disabling for testing
+
+
+
+		"create a multiplayer peer here"
+
 		#get_tree().set_network_peer(peer)
 		get_tree().set_network_peer(peer)
 	
@@ -518,15 +547,19 @@ func _ready():
 			
 		if get_tree().connect("server_disconnected", self, "server_disconnected") != OK:
 			print("Unable to connect signal (server_disconnected) !")
+
+
+	if web_client.CONNECTION_DISCONNECTED:
+		#print ("Is connected to host 2: ", peer.initialize(1) ) #websocket peer
 		
+		#print (client.client.get_peer(1).get_connected_host()  ) #websocket peer
+		#print (client.client.get_peer(1).get_connected_port()  ) #websocket peer
+	
+	# Associate the current network peer to the tree
+		#if peer.initialize(1) != OK: push_error('cannot create peer')
 		
+		print ("Web Client disConnected: ", web_client.CONNECTION_DISCONNECTED)
 		
-
-
-
-
-
-
 func __connected(id):
 	_log("Signaling server connected with ID: %d" % id)
 
@@ -592,9 +625,6 @@ func _stop():
 
 
 
-
-
-
 func UpscaleMobileUI()-> void:
 	"Upscale UI on mobile"
 	if Globals.screenOrientation == 1: #Mobile screen orientation
@@ -602,11 +632,6 @@ func UpscaleMobileUI()-> void:
 		chat.set_position($UI/Position2D.position)
 		pass
 
-
-
-
-#func ___process(_delta):
-#	pass
 
 
 	"Handle Input v 1"
@@ -852,9 +877,6 @@ func _on_ping_pressed():
 
 
 func create_multiplayer_client(ip : String, port)-> void:
-	
-	#var ip : String
-	#var port : int
 	
 	multiplayerAPI_peer.create_client(ip, port)
 	

@@ -144,12 +144,44 @@ class Lobby extends Reference:
 func _init():
 	"connect server signals"
 	
+	connect_signals()
+
+
+func connect_signals()->void:
 	#when data is received
 	server.connect("data_received", self, "_on_data")
 	
 	#when a peer connects and Disconnects
 	server.connect("client_connected", self, "_peer_connected")
 	server.connect("client_disconnected", self, "_peer_disconnected")
+
+	#duplicate?
+	#Connect signals from the server node
+	server.connect("client_connected",self, "player_connected")
+
+	# Connect the signals
+	# Debug the signals
+	#if get_tree().connect("network_peer_connected", self, "player_connected") != OK:
+
+
+	#buggy connections
+#	if not is_connected("network_peer_connected", self, "player_connected"):
+
+#		get_tree().connect("network_peer_connected", self, "player_connected")
+	
+#	if not is_connected("network_peer_disconnected", self, "player_disconnected"):
+#		get_tree().connect("network_peer_disconnected", self, "player_disconnected") 
+	
+	
+#	if get_tree().connect("network_peer_disconnected", self, "player_disconnected") != OK:
+#		print("Unable to connect signal (network_peer_disconnected) !")
+
+	#check if signal is connected
+	print ("my custom signal connected: ", server.is_connected("client_connected",self, "player_connected"))
+
+
+	#ls;lm;lsm
+
 
 
 func _process(delta):
@@ -238,38 +270,45 @@ func _peer_connected(id, protocol = ""): #works
 	print ("peer port: ",server.get_peer_port(id))
 	
 	#************************************************************************************#
-	
+	#peers is a dictionary
 	print ("Websocket peer: ",server.get_peer(id))
 	
 	
 	#create multiplayer peer here
 	
-	var peer : WebRTCMultiplayer = WebRTCMultiplayer.new()
+	
+	
+	
+	var rtc_mp : WebRTCMultiplayer = WebRTCMultiplayer.new()
 	#peer connection
-	#var peer: WebRTCPeerConnection = WebRTCPeerConnection.new()
+	var peer_connection: WebRTCPeerConnection = WebRTCPeerConnection.new() #rjkehrj
 	#debug multiplayer API
 	
 	
-	if peer.CONNECTION_CONNECTED:
+	if rtc_mp.CONNECTION_CONNECTED:
 	
 		#print("Server peer connection state : ",peer.get_connection_state())
 		
 		#rtc_mp.add_peer(peer, id)
 		
 		#Debug rtc_mp connection state and open data channel
-		peer.initialize(id)
+		rtc_mp.initialize(id)
 
-		print("set network peer: ",get_tree().set_network_peer(peer)) #testing websocket client multipplayer
+		print("set network peer: ",get_tree().set_network_peer(rtc_mp)) #testing websocket client multipplayer
 
 		print ('has network peer : ',get_tree().has_network_peer())
 		#rtc_mp must be connecting or connected
-		if get_tree().set_network_peer(peer) != OK: #unable to set network peer on the server
+		if get_tree().set_network_peer(rtc_mp) != OK: #unable to set network peer on the server
 			print("Unable to set network peer!")
 
 	
 	#if get_tree().set_network_peer(peer) != OK: #unable to set network peer on the server
 	#	print("Unable to set network peer!")
 #*******************************************************************************************#
+
+#disabled for debugging
+#	create_multiplayer_server(5000, Networking.MAX_PLAYERS)
+
 
 
 func _peer_disconnected(id, was_clean = false):
@@ -448,28 +487,9 @@ func _ready():
 	#peer.listen(Networking.SERVER_PORT, PoolStringArray(), true)
 	
 	
-	
-
-	# Connect the signals
-	# Debug the signals
-	#if get_tree().connect("network_peer_connected", self, "player_connected") != OK:
-	if not is_connected("network_peer_connected", self, "player_connected"):
-		#print("Unable to connect signal (network_peer_connected) !")
-		get_tree().connect("network_peer_connected", self, "player_connected")
-	
-	if not is_connected("network_peer_disconnected", self, "player_disconnected"):
-		get_tree().connect("network_peer_disconnected", self, "player_disconnected") 
-	
-	
-#	if get_tree().connect("network_peer_disconnected", self, "player_disconnected") != OK:
-#		print("Unable to connect signal (network_peer_disconnected) !")
 
 
-	#Connect signals from the server node
-	server.connect("client_connected",self, "player_connected")
-	#check if signal is connected
-	print ("my custom signal connected: ", server.is_connected("client_connected",self, "player_connected"))
-
+	print ("MultiplayerENet connection: ",multiplayerAPI_peer )
 
 func _input(_event):
 	if Input.is_action_just_pressed("move_left"):
@@ -676,6 +696,8 @@ func server_debug()-> void:
 	print ("Server ID:", get_tree().get_network_unique_id())
 
 
+
+#doesnt work yet
 func create_multiplayer_server(port : int, MAX_PLAYERS: int)-> void:
 	#get your client and server ports
 	#var port: int

@@ -1,6 +1,8 @@
 <<<<<<< HEAD
 # Dystopia-App-Stable v1.1.9 Alpha D
 
+A web 3.0 Multimedia, Game-Applet.
+
 ## Synopsis
 
 Changing the World? Sigh. A very lofty dream. It is a feat few men ever really achieve, it's an idea that infects men to hope, fight, kill and to die. It was for this dream we hoped, fought , killed, starved, bled and died for in a hellish war that lasted 5 years. After fighting for so long, in the end you lose sight of what you're really fighting for; and when you lose someone you love, all those lofty dreams you fought so valiantly for suddenly lose meaning. After all, what's the point of changing the world, when you have no one left to share it with. 
@@ -70,7 +72,7 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 
 **(18) Download Images, Documents and Videos:** Networking.download_image_(image url, image save path): Downloads a png image from a url and saves it at a given path 
 
-**(19) Implements WebRTC :** WebRTC (web real time communication) for Multiplayer gameplay from https://github.com/godotengine/webrtc-native
+**(19) WebRTC :** WebRTC (web real time communication) for Multiplayer gameplay from https://github.com/godotengine/webrtc-native
 ## -Features to Fix
 	
 	-Fix up Game's spawnpoints (look at the Exit code in the Temple interior scene)	
@@ -114,10 +116,7 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 	-Sandbox mechanics
 	-Polygon 2d to deconstruct comic panels
 	-Host game server with
-		-Apache
-		-SSL
-		-Net tools
-		-Port Forwarding
+		-Javascript (webrtc server peer implementation
 	-Reprogrammable joystick
 	-Ads
 		-Interstitial Ads at the end of comic book page

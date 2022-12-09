@@ -236,3 +236,8 @@ func _on_watch_merch_pressed():
 func _on_watch_anime3_pressed():
 	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
 	return OS.shell_open("https://youtu.be/EAL8Mu2-f7Q")
+
+
+func _on_watch_guidebook_pressed():
+	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
+	return OS.shell_open("https://github.com/Sam2much96/Dystopia-App/wiki")

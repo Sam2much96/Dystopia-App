@@ -98,7 +98,7 @@ margin_bottom = 364.882
 custom_colors/font_color = Color( 0.882353, 0.882353, 0.882353, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "Dystopia App
-V1.1.9b
+V2.0.0
 "
 align = 1
 

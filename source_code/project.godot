@@ -319,7 +319,8 @@ pointing/emulate_touch_from_mouse=true
 
 [locale]
 
-locale_filter=[ 0, [ "es_ES" ] ]
+locale_filter=[ 0, [ "en_US", "es_ES" ] ]
+translations=PoolStringArray( "res://Translation/translation_testing1.csv", "res://Translation/translation_testing1.en_US.translation", "res://Translation/translation_testing1.es_ES.translation" )
 
 [rendering]
 

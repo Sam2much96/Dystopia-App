@@ -51,17 +51,22 @@ func _ready():
 
 
 	"Disables the Play button Until Internet Access is Verified "
-	#if os == 'Android' or 'iOS': #Android OS specific functions are buggy on linux devices
+
 	hide_play_button() 
-	#if not os == 'Android' or 'iOS':
-		#show_play_button()
+
 
 	_check_if_device_is_online()
+
+	translate()
 
 func check_for_player_id(): #loads the player id details if it exists and skips this login.
 	#Globals.load_game()
 	#Email and player name are optional and should only be used to send bug reports
 	pass
+
+
+
+
 
 func _input(_event):
 
@@ -127,4 +132,8 @@ func hide_play_button():
 TRANSLATES THE ENTIRE APP TO ONE OF THE PRESELECTED lANGUAGUES INDICATED
 """
 func translate():
-	pass
+
+	print ("Testing Translation En: ",Dialogs.translate_to("char3", "en")) 
+	print ("Testing Translation Es: ", Dialogs.translate_to("char3", "es"))
+
+

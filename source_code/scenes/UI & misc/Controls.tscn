@@ -4,7 +4,7 @@
 [ext_resource path="res://resources/misc/controls.png" type="Texture" id=2]
 [ext_resource path="res://fonts/ingame_menu.tres" type="Theme" id=3]
 [ext_resource path="res://scenes/Comics/chapter 4/Cover 2.webp" type="Texture" id=4]
-[ext_resource path="res://App's white paper v1.1.6.webp" type="Texture" id=5]
+[ext_resource path="res://App's white paper v2.0.0.webp" type="Texture" id=5]
 [ext_resource path="res://scenes/UI & misc/generic_joystick_ui_selector.gd" type="Script" id=6]
 [ext_resource path="res://scenes/UI & misc/controls_illustration.gd" type="Script" id=7]
 [ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=8]
@@ -19,12 +19,12 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="TextureRect" parent="."]
-margin_left = 295.909
-margin_top = 33.6124
-margin_right = 1227.91
-margin_bottom = 1313.61
-rect_rotation = 0.411034
-rect_scale = Vector2( 0.77536, 0.533332 )
+margin_left = 74.065
+margin_top = -5.66075
+margin_right = 3098.06
+margin_bottom = 3230.34
+rect_rotation = -1.54681
+rect_scale = Vector2( 0.277108, 0.190609 )
 texture = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false

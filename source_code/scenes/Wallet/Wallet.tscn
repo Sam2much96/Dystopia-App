@@ -5,7 +5,7 @@
 [ext_resource path="res://fonts/wallet.tres" type="Theme" id=3]
 [ext_resource path="res://New game code and features/Drag_extension.gd" type="Script" id=4]
 [ext_resource path="res://New game code and features/NFT.gd" type="Script" id=5]
-[ext_resource path="res://App's white paper v1.1.6.webp" type="Texture" id=6]
+[ext_resource path="res://App's white paper v2.0.0.webp" type="Texture" id=6]
 
 [sub_resource type="Animation" id=1]
 resource_name = "MOBILE UI"

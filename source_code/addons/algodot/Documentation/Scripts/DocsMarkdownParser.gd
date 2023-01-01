@@ -2,7 +2,7 @@
 
 extends Node
 
-var regex: RegEx
+var regex: RegEx = RegEx.new()
 
 var heading1_font = "res://addons/algodot/Documentation/Theme/DocumentationH1.tres"
 var heading2_font = "res://addons/algodot/Documentation/Theme/DocumentationH2.tres"
@@ -52,7 +52,7 @@ func parse(content : String):
 	lists = []
 	underlined = []
 
-	regex=regex.new()
+	#regex=regex.new()
 
 	## Find all occurences of bold text
 	regex.compile('\\*\\*(?<boldtext>.*)\\*\\*')

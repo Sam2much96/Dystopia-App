@@ -638,7 +638,7 @@ func run_wallet_checks()-> bool: # works #run networking internet checks test be
 	wallet_check_counter+= 1
 	#var status
 	var status : bool
-	status= yield(Algorand.algod.health(), "completed")
+	status= yield(Algorand.algod.health(), "completed")		
 	
 	print ("Status debug:" , status, wallet_check_counter,  "good internet:", good_internet)
 	
@@ -1133,13 +1133,38 @@ func smart_contract(): #doesnt work
 	#and pass them through poolbyte arrays and arrays
 	#duplicate optin state machine to implement smartcontract calls
 	if transaction_valid:
-		#var optin_tx = Algorand.algod.construct_app_call(params, '4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ', 116639568,['4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ'], Array(["inc"])  ) #app arguments is causing it to bug out // thread '<unnamed>' panicked at 'called `Option::unwrap()` on a `None` value', algodot/src/algod/mod.rs:296:28
-		var optin_tx = Algorand.algod.construct_app_call(params, '4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ', 116639568 , [], [105, 110, 99]  ) #app arguments is causing it to bug out // thread '<unnamed>' panicked at 'called `Option::unwrap()` on a `None` value', algodot/src/algod/mod.rs:296:28
-
+		
+		#should return a Transaction not just a dictionary
+		var optin_tx = Algorand.algod.construct_app_call(params, '4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ', 116639568 , "inc" ) #app arguments is causing it to bug out // thread '<unnamed>' panicked at 'called `Option::unwrap()` on a `None` value', algodot/src/algod/mod.rs:296:28
+		
 	
 
-		print ("opt in transcation: ",optin_tx) #returns null #shouldnt be null
+		print ("opt in transcation: ",optin_tx)  
+		
+		#var signed_txn = optin_tx sdfdfsf
 
+		# Raw Sign Asset tx
+		#var stx = Algorand.algod.sign_transaction(optin_tx, mnemonic) #cannot sign transaction
+		var stx = Algorand.algod.sign_transaction(optin_tx, mnemonic) #cannot sign transaction
+	
+	
+		#needs a method to convert app arg to ByteArray using map
+		print ("signed smartcontract txn: ", stx)
+	#Generating transaction Id from signed transaction
+		var txid = Algorand.algod.send_transaction(stx) #returns a reference, should return a String
+		#sending the signed transaction
+		
+	#debug signed transaction
+	#print ('Signed Txn Debug: ',stx) #for debug purposes only
+	
+	#returns the signed transactions
+		#var txid = yield(Algorand.algod.send_transaction(stx), "completed")
+	
+	#yield(get_tree().create_timer(20), "timeout")
+	
+	
+		print ('tx id debug: ',txid)
+		#print (txid)
 	transaction_valid = false
 	return transaction_valid
 
@@ -1154,4 +1179,5 @@ func _on_reset_pressed():
 
 func _on_Testnet_Dispenser_pressed():
 	return OS.shell_open('https://testnet.algoexplorer.io/dispenser')
+
 

@@ -227,7 +227,7 @@ func _send_txn_to_receiver_addr( params,_funder_mnemonic : String, _receivers_ad
 	#create and sign transaction
 	tx = algod.construct_payment(params, _funder_address, _receivers_address, _amount)
 	
-	#print ("Transaction Debug: ", tx) #for debug purposes only
+	print ("Txn Debug: ", tx) #for debug purposes only
 	
 	#sending the signed transaction
 	stx = algod.sign_transaction(tx, _funder_mnemonic)
@@ -474,3 +474,6 @@ func AssetParams(_asset_index: int, Params):
 	params
 	
 	pass
+
+func x():
+	algod.transaction_information()

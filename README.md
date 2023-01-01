@@ -17,6 +17,10 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 
 ![Screenshot](https://github.com/Sam2much96/Dystopia-App/blob/master/source_code/resources/illustrations/cover%201.png)
 
+## White Board
+
+![Screenshot](https://github.com/Sam2much96/Dystopia-App/blob/master/source_code/App's%20white%20paper%20v2.0.0.jpg)
+
 **Trailer Video**
 
 [![Trailer video](https://img.youtube.com/vi/_ECBwS4xxlc/hqdefault.jpg)](https://youtu.be/_ECBwS4xxlc)

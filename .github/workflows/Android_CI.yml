@@ -59,6 +59,9 @@ jobs:
           apt-get install default-jdk -y
           apt-get install android-sdk -y
           
+          #Error Catcher 1
+          git config --global --add safe.directory /__w/Dystopia-App/Dystopia-App
+          
         
       - name: Compile for android    
         uses: actions/checkout@v2.3.2

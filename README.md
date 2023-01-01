@@ -19,7 +19,7 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 
 ## White Board
 
-![Screenshot](https://github.com/Sam2much96/Dystopia-App/blob/master/source_code/App's%20white%20paper%20v2.0.0.jpg)
+![Screenshot](https://github.com/Sam2much96/Dystopia-App/blob/master/source_code/App's%20white%20paper%20v2.0.0.webp)
 
 **Trailer Video**
 

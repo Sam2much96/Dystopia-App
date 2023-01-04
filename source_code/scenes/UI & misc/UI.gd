@@ -24,6 +24,8 @@ extends CanvasLayer
 onready var menu = $"Menu "
 onready var TouchInterface= $TouchInterface
 onready var _Comics = $Comics
+onready var _Stats = $Stats
+
 
 func _ready():
 	
@@ -37,7 +39,12 @@ func _on_dialog_ended():
 
 
 func _input(_event):
-	" UI logic" # rewrite to use new state machine instead
+	" UI logic" # 
+	
+	
+
+
+	" UI Animation"
 	# Controls the Touch interface state machine from the player's input 
 	if Input.is_action_just_pressed("comics"):
 		if _Comics.enabled == true:
@@ -46,7 +53,7 @@ func _input(_event):
 		elif _Comics.enabled == false or _Comics.loaded_comics == false:
 			TouchInterface.reset()
 	if Input.is_action_just_pressed("pause"):
-		if $Stats.enabled == true :
+		if _Stats.enabled == true :
 			TouchInterface.status() #calls a display function int the touch interface scene
 			
 	if Input.is_action_just_pressed('menu'):
@@ -86,6 +93,12 @@ func _on_status_hidden():
 func on_comics_showing():
 	TouchInterface.comics()
 
+
+
+#doesn't work
+#should hide all UI items once menu is showing
+#s
+#connect TouchInterface to Menu Visibility
 func on_menu_showing(): # connects from the ingame menu signal
 	if menu.menu_state == 0: #uses the menu state in it's logic where 0 is showing and 1 is hidden
 		TouchInterface.menu()
@@ -94,16 +107,31 @@ func on_menu_hidden(): # connects from the ingame menu signal
 		TouchInterface.reset() #buggy function
 		print ("menu hidden --fix menu hidden bug")
 
-func connect_signals():
-	# Use for loop
+func connect_signals()-> bool:
+	# 
 	# Connects from singleton?
-	return Dialogs.connect("dialog_started", self, "_on_dialog_started")
-	return Dialogs.connect("dialog_ended", self, "_on_dialog_ended")
+	if not Dialogs.is_connected("dialog_started", self, "_on_dialog_started"):
+		Dialogs.connect("dialog_started", self, "_on_dialog_started")
+		
+	if not Dialogs.is_connected("dialog_ended", self, "_on_dialog_ended"):
+		Dialogs.connect("dialog_ended", self, "_on_dialog_ended")
 	
-	return $Stats.connect("not_enabled",self, '_on_status_hidden')
-	return $Stats.connect('enabled',self,'_on_status_showing')
-	return _Comics.connect( 'freed_comics', self, '_on_comics_freed'  )
-
+	if not _Stats.is_connected("not_enabled",self, '_on_status_hidden'):
+		_Stats.connect("not_enabled",self, '_on_status_hidden')
+	
+	if not _Stats.connect('enabled',self,'_on_status_showing'):
+		_Stats.connect('enabled',self,'_on_status_showing')
+	
+	if not _Comics.connect( 'freed_comics', self, '_on_comics_freed'  ):
+		 _Comics.connect( 'freed_comics', self, '_on_comics_freed'  )
+	
+	if not menu.is_connected("menu_showing", TouchInterface, "menu"): #works
+		menu.connect("menu_showing", TouchInterface, "menu")
+	
+	if not menu.is_connected("menu_hidden", TouchInterface, 'reset'):
+		menu.connect("menu_hidden", TouchInterface, "reset")
+	return true
+	
 	#uses state machines instead #broken signals bug
-	return menu.connect("menu_hidden",self,'on_menu_hidden')
-	return menu.connect("menu_showing",self,'on_menu_showing')
+	#return menu.connect("menu_hidden",self,'on_menu_hidden')
+	#return menu.connect("menu_showing",self,'on_menu_showing')

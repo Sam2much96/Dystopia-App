@@ -75,7 +75,7 @@ var current_level
 
 
 var Music_on_settings
-export (String, 'analogue', 'direction') var direction_control : String  #toggles btw analogue and d-pad
+export (String, 'analogue', 'direction') var direction_control = ''  #toggles btw analogue and d-pad
 
 var uncompressed # Varible holds uncompressed zip files
 
@@ -282,6 +282,7 @@ func _restore_data(save_dict):
 	player_hitpoints = save_dict.player_hitpoints
 	prev_scene =save_dict.prev_scene 
 	prev_scene_spawnpoint = save_dict.prev_scene_spawnpoint 
+	
 	direction_control = save_dict.direction_control
 	
 	######################################################
@@ -313,6 +314,13 @@ func _ram_convert(bytes) :
 	if bytes >= int(1):
 		var _mb = String(round(float(bytes) / 1_048_576))
 		return _mb
+
+
+
+
+
+
+
 
 func change_scene_to(scene): #Loads scenes faster?
 	if scene is PackedScene: 

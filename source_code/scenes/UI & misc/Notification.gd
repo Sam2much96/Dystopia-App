@@ -49,8 +49,17 @@ func _ready():
 
 func _input(event):
 	if event.is_pressed() == true:
-		yield(get_tree().create_timer(0.5), "timeout") # Creates an Engine error, use a timer node instead
+		
+		#asdsgsfgsfgs
+		# Requires a Global Timer Node to fix
+		#fix up start() amd stop() check methods in Networking to proceed
+		#bug breaks direcrionc control setup
+		Networking.start_check()
+		
+	if Networking.stop_check() == true:
+		#yield(get_tree().create_timer(0.5), "timeout") # Creates an Engine error, use a timer node instead
 		hide() 
+		#else : return
 
 
 

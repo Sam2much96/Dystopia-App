@@ -84,7 +84,7 @@ func _on_dialog_ended():
  # Uses the translate feature from the Form at res://scenes/UI & misc/form/form.tscn
  # It parses from translations .csv and returns a string
  # Edit the translation sources .ods file to expand translations
-func translate_to(language, locale: String)-> String:
+func translate_to(_language, locale: String)-> String:
 	if language != null:
 		TranslationServer.set_locale(locale)
 		return (TranslationServer.translate(language))

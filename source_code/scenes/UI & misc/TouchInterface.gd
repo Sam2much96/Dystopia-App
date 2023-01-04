@@ -21,6 +21,7 @@
 # (3) Hidetouch interface / Touch interface reset bug (workaround) CLicking other buttons on the touch UI resets this bug on touch UI
 #(4) Edit Documentation to be neater (Online documetation)
 # (5) Joystick Colors?
+# (6) Fix Brken Ingame Controller changer (fixed 1/2)
 # *************************************************
 
 
@@ -45,7 +46,7 @@ onready var D_pad = $"D-pad"
 onready var Anim = $AnimationPlayer
 
 
-signal menu
+#signal menu
 signal interract
 signal attack
 signal stats
@@ -59,18 +60,23 @@ export var _state_controller = RESET
 
 
 export (String, 'analogue', 'direction') var _control
+
+onready var action_buttons : Array = [menu ,stats,_interract,roll, slash,comics]
+onready var direction_buttons : Array = [D_pad, joystick]
+
 func _ready():
-#Changes D-pad Controls from control once the Touch Interface is ready
-	if Globals.direction_control != '':
-		_control = Globals.direction_control  
+ 
 	#touch_interface_debug() disabling for now
 
 #toggles touch interface visibility depending on the os and screen orientation (Pc or Mobiles)
 	if Globals.os != 'Android' && Globals.screenOrientation == 0: 
+		
 		_Hide_touch_interface = true
 		self.hide()
+		
 		print('Hiding touch interface', Globals.os)
-
+		
+		#disabled for debugging purposer. Reactivate later
 #########Auto sets the controller button
 
 	reset()
@@ -83,7 +89,7 @@ func reset():  #resets node visibility statuses
 	_state_controller = RESET
 	return _state_controller 
 
-#Enimerate each of the following states
+#Enumerate each of the following states
 
 func status():  #used by ui scene when status is clicked
 	_state_controller = STATS
@@ -112,17 +118,40 @@ func touch_interface_debug(): #Debug singleton is broken
 	if _Hide_touch_interface == false:
 		print ('Touch Interface Debug: ', " COntrol: ",Globals.direction_control, "Global Control", Globals.direction_control )
 
+
+	#update Globals Direction Control variable to Local Variable
+	# Should Fix  Broken Joystick/ Direction Changer
+	#Changes D-pad Controls from control once the Touch Interface is ready
+	#placeholder method
+func set_controller(_control):
+	if Globals.direction_control.empty():
+		print("COntroller Type: :",Globals.direction_control)
+		_control == Globals.direction_control
+		#return
+	
+
+
+
+
+
 func _process(_delta):
 	if _Debug == true:
 		touch_interface_debug() # For Debug Purposes only
 	
-	'Changes the button Layout depending on the screen orientation for Mobile UI'
+	
+	
+	
+	
+	
+	
+	
+	#'Changes the button Layout depending on the screen orientation for Mobile UI'
 	#implement joystick and D-pad variations
 	if Globals.screenOrientation == 1 && _control == 'direction': #works
 		Anim.play("SCREEN_VERTICAL_1");
 	if Globals.screenOrientation == 1 && _control == 'analogue': #works
 		Anim.play("SCREEN_VERTICAL_2");
-	#If screen Is Horizontal, it would be PC UI, making this code obsolete
+	##If screen Is Horizontal, it would be PC UI, making this code obsolete
 	elif Globals.screenOrientation == 0:
 		Anim.play("SCREEN_HORIZONTAL");
 	else: pass;
@@ -137,32 +166,22 @@ func _process(_delta):
 		MENU:
 			
 			if _Hide_touch_interface == false: #include analogue controls
-				stats.hide()
+				
+				hide_buttons()
+				
 				menu.show()
-				D_pad.hide()
-
-				joystick.hide()
-				_interract.hide()
-				comics.hide()
-				slash.hide()
-				roll.hide()
-
-				emit_signal("menu")
+				
 			pass
 		INTERRACT:
 			#The interract state should only show when it's close to an interactible object 
 			if _Hide_touch_interface == false:
 
-				emit_signal('interract')
-				stats.hide()
+				
+				hide_buttons()
+				
 				menu.show()
-				D_pad.hide()
-
-				joystick.hide()
 				_interract.show()
-				comics.hide()
-				slash.hide()
-				roll.hide()
+
 				return
 				
 			pass
@@ -171,10 +190,13 @@ func _process(_delta):
 			if _Hide_touch_interface == false:
 
 				emit_signal('attack')
-				stats.hide()
+				
+				hide_buttons()
+				
+				#stats.hide()
 				menu.show()
-				_interract.hide()
-				comics.hide()
+				#_interract.hide()
+				#comics.hide()
 				slash.show()
 				roll.show()
 				if _control == 'analogue':
@@ -191,30 +213,17 @@ func _process(_delta):
 			#state = 'status'
 			emit_signal('status')
 			if _Hide_touch_interface == false :
-				stats.show()
-				menu.hide()
-				D_pad.hide()
-
-				joystick.hide()
-				_interract.hide()
-				comics.hide()
-				slash.hide()
-				roll.hide()
+				hide_buttons()
 				
+				stats.show()
+
 		
 			pass
 		COMICS:
 			if _Hide_touch_interface== false: 
-				stats.hide()
-				menu.hide()
-				D_pad.hide()
+				hide_buttons()
 
-				joystick.hide()
-				_interract.hide()
 				comics.show()
-				slash.hide()
-				roll.hide()
-
 				emit_signal('comics')
 			
 		
@@ -222,35 +231,52 @@ func _process(_delta):
 		RESET: #$ Too many ifs conditions #simplify state?
 			if _Hide_touch_interface == false :
 
-				emit_signal('reset')
-				#for child in get_children():
-				#	child.show()
+				
 				"shows all the UI options"
-				stats.show()
-				menu.show()
-				_interract.show()
-				comics.show()
-				slash.show()
-				roll.show()
-				return
+
+				show_action_buttons()
+				
+				#return
 				#touch_interface_debug() # For Debug Purposes only
 				"SHows the directional based on a global variable?"
-				if _control == 'analogue':
+				if not Globals.direction_control.empty():
+					_control = Globals.direction_control
+				
+				if Globals.direction_control == 'analogue':
 					joystick.show()
 					D_pad.hide()
 
 					return
 					#touch_interface_debug() # For Debug Purposes only
-				elif _control == 'direction':
+				elif Globals.direction_control == 'direction':
 					joystick.hide()
 					D_pad.show()
-
-					
-					#touch_interface_debug() # For Debug Purposes only
-					return
+				
+				elif Globals.direction_control.empty() && _control == "analogue":
+					joystick.show()
+					D_pad.hide()
+				elif Globals.direction_control.empty() && _control == "direction":
+					joystick.hide()
+					D_pad.show()
 				else:
+				
 					return
+			else:
+				return
 			
 		
 			pass
 	pass
+
+
+
+
+func hide_buttons()-> void:
+	for i in action_buttons:
+		i.hide()
+	for h in direction_buttons:
+		h.hide()
+
+func show_action_buttons()-> void:
+	for j in action_buttons:
+		j.show()

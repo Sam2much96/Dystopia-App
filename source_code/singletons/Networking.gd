@@ -78,7 +78,7 @@ const MAX_PLAYERS = 5
 const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
 
 
-onready var timer = $Timer2
+onready var timer :Timer  = $Timer2
 
 
 #var youtube_dl = preload ('res://New game code and features/youtube streamer/Youtube-DL.gd') #what if youtube goes down lool
@@ -122,8 +122,8 @@ func _process(_delta):
 
  
 # Creates a Networking timer
-func _init_timer() : #rewrite to use actual timer
-	#write code to check if node has been instanced
+func _init_timer() : 
+	#Uses a Timer Node in the Scene
 	self.set_process(true)
 	enabled = true 
 	check_timer = timer
@@ -131,14 +131,21 @@ func _init_timer() : #rewrite to use actual timer
 	
 
 "Stops a check using Check timer Node"
-func stop_check(): #Stops timer check
+func stop_check()-> bool: #Stops timer check
 	connection_debug = ' stop check ' # Debug Variable
 	if not check_timer.is_stopped():
+		
+		
 		check_timer.stop()
 		self.cancel_request()
+		
+		#Stopping Check Timer
+		print ('Stopping Check Timer')
+		return false
+	else: return true
 
-"Starts a check using Check timer Node"
-func start_check(): #Starts time check using Check timer
+"Starts a check using Timer Node for 3 Seconds"
+func start_check(): 
 	connection_debug = str('start check') # Debug Variable
 	print ("start check")
 	check_timer.start()
@@ -340,6 +347,6 @@ static func download_image_(body: PoolByteArray, Save_path: String, node : HTTPR
 
 func _on_Timer2_timeout():
 	print ('check timer stopped')
-
+	stop_check()
 
 	pass

@@ -84,7 +84,7 @@ func _verify_Online_downloaded_video():
 	print ('Video File Exists: ', file_exists)
 	if not file_exists && downloading_video != true:
 		print ('Video File Doesn.t exist,downloading' )#;_check_download_size(int(Networking.get_body_size()), Networking.get_downloaded_bytes())
-		Networking.request(Networking.url)
+		return Networking.request(Networking.url)
 		#play_loading_cinematic() #Plays the Loading cinematic while the video file downloads
 		downloading_video = true
 		Networking.connect("request_completed", self, "_http_request_completed")
@@ -139,7 +139,7 @@ func _check_download_size(loaded,total): #Kinda works. Sort this code out first
 """
 parses the poopbyte array as a video stream
 """
-func _http_request_completed(result, response_code, headers, body): # dOWNLOADS A VIDEO FROM A SERVER
+func _http_request_completed(result, response_code, _headers, body): # dOWNLOADS A VIDEO FROM A SERVER
 	if body.empty() != true: #Executes once a Connection is established 
 
 		dir.open ("user://")

@@ -44,6 +44,9 @@ focus_neighbour_right = NodePath("credits")
 focus_neighbour_bottom = NodePath("new_game")
 focus_mode = 2
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TextureRect" type="TextureRect" parent="."]
 show_behind_parent = true

@@ -465,7 +465,7 @@ tracks/8/keys = {
 [node name="TouchInterface" type="Node2D"]
 modulate = Color( 1, 1, 1, 0.698039 )
 script = ExtResource( 4 )
-_control = "analogue"
+_control = "direction"
 
 [node name="stats" type="TouchScreenButton" parent="."]
 pause_mode = 2

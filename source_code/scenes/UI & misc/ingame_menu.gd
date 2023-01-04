@@ -133,16 +133,16 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 
 
 
-func _on_Menu_button_toggled(button_pressed): # Broken Function #rewriting with State_Machine
-	if button_pressed :
-		print (' Showing Game Menu ') # For Debug purposes only
-		game_menu.show()
-		# new animation
-		emit_signal('menu_showing')
-	else: 
-		print (' Hiding Game Menu') # For Debug purposes only
-		game_menu.hide() 
-		emit_signal('menu_hidden')
+#func _on_Menu_button_toggled(button_pressed): # Broken Function #rewriting with State_Machine
+#	if button_pressed :
+#		print (' Showing Game Menu ') # For Debug purposes only
+#		game_menu.show()
+#		# new animation
+#		emit_signal('menu_showing')
+#	else: 
+#		print (' Hiding Game Menu') # For Debug purposes only
+#		game_menu.hide() 
+#		emit_signal('menu_hidden')
 
 
 #Handles Displaying the menu

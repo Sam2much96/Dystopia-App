@@ -19,6 +19,7 @@
 # (5) Implement State Machine (on It)
 # (6) Implement Extendible (NFT) drag and Drop (buggy)
 # (7) Implement Page state and Pages state
+# (8) Expand on this mechanics
 # *************************************************
 # Bugs:
 # (1) it has a wierd updatable bug that's visible in the debug panel
@@ -57,6 +58,10 @@ var comics = {
 	6:"res://scenes/Comics/chapter 6/chapter 6.tscn",
 	7:"res://scenes/Comics/chapter 7/chapter 7.tscn",
 	8: 'res://scenes/Comics/Outside/outside.tscn'}
+
+
+#should ideally download from the Internet
+
 
 var swipe_start_position = Vector2()
 
@@ -264,8 +269,8 @@ func _input(event):
 
 	if event is InputEventMouseButton && event.doubleclick && loaded_comics == true:
 		
-		_zoom() #disabled for debugging, enable when done debugging
-		return
+		return _zoom() #disabled for debugging, enable when done debugging
+		
 
 
 
@@ -627,7 +632,7 @@ func _on_chap_3_pressed(): #Simplify this function
 
 
 func _on_Zoom_pressed(): #temporary zoom funtion for android #connect code  with code
-	_zoom()
+	return _zoom()
 
 """
 load chapter function 

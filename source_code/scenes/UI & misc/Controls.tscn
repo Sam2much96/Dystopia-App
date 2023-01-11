@@ -140,9 +140,16 @@ flat = true
 
 [node name="Nav docs" type="Button" parent="ScrollContainer/VBoxContainer"]
 visible = false
-margin_top = 371.0
-margin_right = 195.0
-margin_bottom = 391.0
+margin_top = 738.0
+margin_right = 543.0
+margin_bottom = 758.0
+
+[node name="TextureButton" type="TextureButton" parent="ScrollContainer/VBoxContainer"]
+visible = false
+margin_top = 762.0
+margin_right = 543.0
+margin_bottom = 762.0
+toggle_mode = true
 
 [node name="Help popup" type="Popup" parent="."]
 margin_right = 1285.0

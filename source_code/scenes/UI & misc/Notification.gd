@@ -24,7 +24,7 @@ var label
 
 func _ready():
 	# Node not found Error catcher
-	if $CenterContainer/Label != null:
+	if get_node_or_null("CenterContainer/Label") != null:
 		label = $CenterContainer/Label
 	else:
 		label == null

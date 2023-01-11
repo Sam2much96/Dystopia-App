@@ -99,7 +99,7 @@ func _verify_Online_downloaded_video():
 		#stop_playing_laoding_cinematic()
 		downloading_video = false
 		var err
-		var video_file = File.new()
+		var video_file : File = File.new()
 		var video_file_path = "user://video.ogv"
 		video_file.open(video_file_path, File.READ_WRITE)
 		err = (video_file.open(video_file_path, File.READ))
@@ -152,7 +152,7 @@ func _http_request_completed(result, response_code, _headers, body): # dOWNLOADS
 			var _absolute_path = dir.get_current_dir ( )
 			
 			print ('Directory //', _absolute_path)
-			var err
+			var err : int
 			store_video_files(body)
 			print ('Video file is open: ',video_file.is_open(), '/error :', err) #Debugs if file can open
 			if video_file.is_open() && err == 0: #error catcher 2

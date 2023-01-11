@@ -5,7 +5,7 @@
 # Generic notification bar
 # Features:
 # To Do:
-#(1) Debug and Fix bugs
+#(1) Debug and Fix bugs (DONE)
 # *************************************************
 
 
@@ -22,6 +22,8 @@ export(String) var Display_text = ""
 
 var label  
 
+enum { STATE_POPUP, STATE_HIDE,}
+export var state = STATE_POPUP
 func _ready():
 	# Node not found Error catcher
 	if get_node_or_null("CenterContainer/Label") != null:
@@ -30,42 +32,49 @@ func _ready():
 		label == null
 
 
-# Hides the Notification on these levels. Improve code later
-	if  str(Globals.curr_scene) != 'Outside':
-		if  str(Globals.curr_scene) !=  'HouseInside': #Dont show hints when im playing the game
-			#set_exclusive(true)
-			#self.call_deferred('popup')
-			self.call_deferred('move_child', self.get_child(0), 0)
-			self.call_deferred('popup_centered')
-			#popup_centered()
-			#print (Globals.curr_scene)
-	if str (Globals.curr_scene) == 'Outside':# or 'HouseInside':
-		hide() 
-	if  str(Globals.curr_scene) ==  'HouseInside' :
-		hide()
+# Hides the Notification on these levels. 
+# Updating notification scene
+	# Behavioural tree. 
+	if  Globals.curr_scene != 'Outside':
+		if  Globals.curr_scene !=  'HouseInside': #Dont show hints when im playing the game
+			
+			state = STATE_POPUP
+	if Globals.curr_scene == 'Outside':# or 'HouseInside':
+		
+		#
+		state = STATE_HIDE 
+	if  Globals.curr_scene ==  'HouseInside' :
+		#
+		state = STATE_HIDE
 
-	if label != null &&  label.is_inside_tree() == true :
-		label.set_text (Display_text)
 
 func _input(event):
+	"Triggers A Disappearing sequence"
 	if event.is_pressed() == true:
-		
-		#asdsgsfgsfgs
-		# Requires a Global Timer Node to fix
-		#fix up start() amd stop() check methods in Networking to proceed
-		#bug breaks direcrionc control setup
 		Networking.start_check()
-		
 	if Networking.stop_check() == true:
 		#yield(get_tree().create_timer(0.5), "timeout") # Creates an Engine error, use a timer node instead
-		hide() 
-		#else : return
-
+		# 
+		state = STATE_HIDE
+		
+		#free from memory
+		call_deferred('queue_free')
 
 
 func _exit_tree():
 	self.queue_free()
 
 
-#func _process(_delta): #add other functionalities to the notificatio bar
-#	self.popup() if condition == true else pass
+func _process(_delta): #add other functionalities to the notificatioN bar
+	
+	match state:
+		STATE_POPUP:
+			self.call_deferred('move_child', self.get_child(0), 0)
+			self.call_deferred('popup_centered')
+			if label != null &&  label.is_inside_tree() == true :
+				label.set_text (Display_text)
+
+		STATE_HIDE:
+			
+			self.hide()
+			#pass

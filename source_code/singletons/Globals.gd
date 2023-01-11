@@ -52,14 +52,14 @@ var game_loop
 var prev_scene
 var prev_scene_spawnpoint
 var next_scene = null
-onready var curr_scene #= get_tree().get_current_scene().get_name()
-onready var os = str(OS.get_name())
+onready var curr_scene : String = ""
+onready var os: String = OS.get_name()
 onready var kill_count : int = 0 #update to load from savefile
-var player  = []
+var player : Array = []
 #var _p # Player placeholder
 var player_hitpoints : int
 var enemy = null
-var enemy_debug
+var enemy_debug : String 
 var initial_level : String = "res://scenes/levels/Outside.tscn"  # loading outside environment bug fixed
 #var _Debug = null
 var _player_state # gets state data from the player state machine
@@ -96,9 +96,9 @@ onready var scene_loader= ResourceLoader
 onready var progress : float
 
 "Crypto Variables" 
-var address
-var mnemonic
-var player_name
+var address : String
+var mnemonic : String
+var player_name : String
 var algos : int #currency system, connect to $xmr protocol
 
 #var recievers_addr: String #receivers address
@@ -136,8 +136,9 @@ func _ready():
 	print ("Screen orientation is: ", screenOrientation)
 
 	player.append( get_tree().get_nodes_in_group('player') )#gets all player nodes in the scene
-	if player.empty() == true: #error catcher 1             #it shows deleted object once player is despawns. Fix pls
-		player = null
+	 #it shows deleted object once player is despawns.
+	if player.empty() == true: #error catcher 1            
+		player.clear()
 	
 	
 	

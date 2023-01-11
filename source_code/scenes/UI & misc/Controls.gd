@@ -55,7 +55,9 @@ func _on_Debug_toggled(button_pressed):
 			$TextureRect.hide()
 
 'Changes Button Sizes for mobile UI'
-#Not Effective. Doesn't work
+#Not Effective.
+# Improve code 
+# Doesn't work
 func upscale_ui():
 	var newScale = Vector2(3,3)
 	$ScrollContainer/VBoxContainer.set_scale(newScale)

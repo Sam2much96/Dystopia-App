@@ -27,7 +27,7 @@ var downloading_video = false
 
 # Feature is broken
 #var vid_file_mob = Globals.pilot_ep
-var dicL1 = {}
+var dicL1 : Dictionary = {}
 
 onready var dir = Directory.new()
 

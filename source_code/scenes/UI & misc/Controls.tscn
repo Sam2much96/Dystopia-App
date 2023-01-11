@@ -26,9 +26,6 @@ margin_bottom = 3230.34
 rect_rotation = -1.54681
 rect_scale = Vector2( 0.277108, 0.190609 )
 texture = ExtResource( 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="TextureRect2" type="TextureRect" parent="."]
 modulate = Color( 1, 1, 1, 0.376471 )

@@ -318,11 +318,6 @@ func _ram_convert(bytes) :
 
 
 
-
-
-
-
-
 func change_scene_to(scene): #Loads scenes faster?
 	if scene is PackedScene: 
 		if scene != null: return get_tree().change_scene_to(scene)  

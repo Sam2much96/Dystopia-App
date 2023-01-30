@@ -158,9 +158,6 @@ margin_bottom = 95.3137
 custom_fonts/font = SubResource( 4 )
 text = "back"
 flat = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Dialog_box" parent="." instance=ExtResource( 10 )]
 

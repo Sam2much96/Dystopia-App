@@ -51,7 +51,7 @@ func _ready():
 func _input(event):
 	"Triggers A Disappearing sequence"
 	if event.is_pressed() == true:
-		Networking.start_check()
+		Networking.start_check(4)
 	if Networking.stop_check() == true:
 		#yield(get_tree().create_timer(0.5), "timeout") # Creates an Engine error, use a timer node instead
 		# 

@@ -387,3 +387,22 @@ func upscale__ui(node ,size: String)-> void:
 	else: pass
 	
 	
+
+
+
+
+"Calculate the Average of an Array"
+# assuming that it's an array of numbers
+func calc_average(list: Array):
+	if list.pop_front() != null:
+		var numerator :int 
+		var average : int 
+		var denominator : int = list.size() + 1
+		if numerator != null and denominator > 2:
+			for i in list:
+				numerator = numerator + i
+			
+			#if numerator && denominator != 0:
+			average = numerator/denominator
+			return average
+	else : return

@@ -83,9 +83,20 @@ onready var timer :Timer  = $Timer2
 
 #var youtube_dl = preload ('res://New game code and features/youtube streamer/Youtube-DL.gd') #what if youtube goes down lool
 
+
 #**********Helper Booleans***********#
 var running_request : bool = false
+var Timeout : bool = false
 
+
+#*********IPFS Gateway***************#
+# from https://ipfs.github.io/public-gateway-checker/
+# 1 ,2 , 3 work
+var gateway : Array = ['gateway.ipfs.io', "dweb.link", "ipfs.io","ipfs.runfission.com", "jorropo.net", "via0.com", "cloudflare-ipfs.com", "hardbin.com"]
+var random : int
+var selected_gateway : String
+
+var good_internet : bool
 
 func _ready():
 	_init_timer()
@@ -119,7 +130,6 @@ func _process(_delta):
 				return connect("error_connection_failed",self,'_on_failure')
 				return connect("error_ssl_handshake",self, '_on_fail_ssl_handshake')
 
-
  
 # Creates a Networking timer
 func _init_timer() : 
@@ -127,8 +137,15 @@ func _init_timer() :
 	self.set_process(true)
 	enabled = true 
 	check_timer = timer
-	print ('Check_timer :' , check_timer) #code breaks here and gives cant resolve hostname errors
+	check_timer.wait_time = 5
 	
+	# connect timer timeout signal
+	if not timer.is_connected("timeout",self, "_on_Timer2_timeout"):
+		timer.connect("timeout",self, "_on_Timer2_timeout")
+	
+	print ('Check_timer :' , check_timer, " Is connected: ", timer.is_connected("timeout",self, "_on_Timer2_timeout")) #code breaks here and gives cant resolve hostname errors
+	
+
 
 "Stops a check using Check timer Node"
 func stop_check()-> bool: #Stops timer check
@@ -144,10 +161,16 @@ func stop_check()-> bool: #Stops timer check
 		return false
 	else: return true
 
+
 "Starts a check using Timer Node for 3 Seconds"
-func start_check(): 
+func start_check(time: int): 
 	connection_debug = str('start check') # Debug Variable
-	print ("start check")
+	#print ("start check")
+	if time != null:
+		check_timer.start(time) 
+	
+	# Reset Timeout parameter
+	#
 	check_timer.start()
 
 # Check http unsecured Url connection
@@ -170,37 +193,52 @@ func _check_connection_secured(url): # Check http secured Url connection
 	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
 	print (' Networking Request Error: ',error) #for debug purposes only
 
-static func _connect_to_ipfs_gateway(url : String, request_node: HTTPRequest): # Check http secured Url connection
-	#Ignore Warning
-	#if not running_request :
-		url = _parse(url) 
-		#url =url.http_escape()
 
-		# uses ipfs web 2 gateway
-		url = "https://ipfs.io/ipfs/" + url
+func genrate_random_gateway():
+	randomize()
+	random = int(rand_range(-1,gateway.size())) #selects a random track number
+	selected_gateway = gateway[random]
+
+# List of valid IPFS web 2.0 Gateways
+# An array may be a better fit
+#https://ipfs.github.io/public-gateway-checker/
+static func _connect_to_ipfs_gateway(parse : bool, url : String, selected_gateway: String ,request_node: HTTPRequest): # Check http secured Url connection
+	#Ignore Warning
+	
+		# parse Url
+		if parse:
+			url = _parse(url) 
+		
+
+		# uses ipfs web 2 gateway Array
+		
+		
+		url = "https://" + selected_gateway + "/ipfs/" + url
+		
+		#print ("NFT Url: ",url) #for debug purposes only
+		
 		var t=StreamPeerSSL.new()
+	
 		var error = request_node.request(url,PoolStringArray(),false,HTTPClient.METHOD_GET) 
 		 
 		print (' Networking Request Error: ',error) #for debug purposes only
-	#elif running_request:
+		print ("Final Url: ", url)
 		return
 
-'Removes IPFS Domain from Asset url'
+
+
 'Removes IPFS Domain from Asset url'
 static func _parse(_url : String)-> String: #works
 	_url=_url.replace('ipfs://', '')
 	#print (_url) # for debug purposes only
 	return _url
 
-'Internet COnnectivity Check'
+
 'Internet COnnectivity Check'
 static func _check_if_device_is_online(node: HTTPRequest):
 	
-	#index = index + 1
-	#dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
-	#var q =HTTPRequest.new()
-	_check_connection('https://mfts.io', node)#url('https://play.google.com/store/apps/details?id=dystopia.app')
-	
+	_check_connection('https://mfts.io', node)
+
 
 
 func on_request_result(result, response_code, headers, body): # I need to pass variables to this code bloc
@@ -344,9 +382,9 @@ static func download_image_(body: PoolByteArray, Save_path: String, node : HTTPR
 	return texture
 
 
-
 func _on_Timer2_timeout():
 	print ('check timer stopped')
+	Timeout = true
 	stop_check()
 
 	pass

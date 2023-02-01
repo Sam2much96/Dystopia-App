@@ -1,3 +1,5 @@
+![Screenshot](https://github.com/Sam2much96/Dystopia-App/blob/master/source_code/icon.png)
+
 # Dystopia-App-Stable v2.0.0 
 
 A web 3.0 Multimedia, Game-Applet.

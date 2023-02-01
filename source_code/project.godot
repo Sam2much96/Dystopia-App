@@ -239,6 +239,7 @@ Comics_v5="*res://singletons/Comics.v5.1.gd"
 AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
 DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
 InputManager="*res://addons/GDTIM-Demo-v2_1_2/InputManager.gd"
+GlobalAnimation="*res://singletons/GlobalAnimationPlayer.tscn"
 
 [debug]
 
@@ -357,6 +358,7 @@ reset={
 [input_devices]
 
 pointing/emulate_touch_from_mouse=true
+pointing/emulate_mouse_from_touch=false
 
 [locale]
 

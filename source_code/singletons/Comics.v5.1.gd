@@ -172,6 +172,9 @@ onready var q3 = HTTPRequest.new() # Downloads Comic Scenes
 func _ready():
 	#wordbubble() #for debug purposes only
 	
+	# Add Swipe Detection Timer to Scene Tree
+	self.add_child(_e)
+	
 	#create HTTP Request Nodes
 	self.add_child(q) # checks internet connection, makes it a Global boolean
 	self.add_child(q2) # Downloads imgs
@@ -449,16 +452,20 @@ func _input(event):
 
 
 	"Handles Multitouch Gesture"
-	#https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/wiki
-	
-	# Rotate Gesture
-	if event is InputEventScreenTwist
+	#Documentation: https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/wiki
+	# Use Global Animation Player to play Swipe Gesture Actions
+	# Export Animation Resource File from AlgoWallet App
+	# Load Animation As resource file
+	if event is InputEventScreenTwist:
+		print ("Input: Screen Twist / Action: Rotate")
 	
 	# Zoom in/out Gesture
-	if event is InputEventScreenPinch
+	if event is InputEventScreenPinch :
+		print ("Input: Screen Pinch / Action: Zoom In/Out")
 	
 	# Zoom in/out gesture
-	if event is InputEventMultiScreenTap
+	if event is InputEventMultiScreenTap :
+		print ("Input: Screen Tap / Action: Zoom in/OUt")
 
 
 
@@ -466,9 +473,30 @@ func _input(event):
 	"""
 	CONTROLS THE TOUCH INPPUT FOR THE COMICS NODE
 	"""
+	
+	"Swipe Direction Debug"
+	# Should Ideally be in COmics script. Requires rewrite for better structure
+	# The current implementation is a fast hack
+	if event is InputEventScreenDrag : #kinda works, for NFT Drag & Drop
+		#Networking.start_check(4) #should take a timer as a parameter
+		#if Networking.Timeout == false:
+		
+		
+		Networking.start_check(4)
+		
+		# should save event positions to an array and 
+		# run calculations using the first and last array positions
+		# Swipe position detector implemented it as state controller changer
+		_start_detection(event.position)
+		
+		
+		_end_detection(event.position)
+	
+	
 	if event is InputEventScreenTouch :
+		target =  event.get_position()
 		if event is  InputEventMultiScreenDrag == true : # Works
-			target =  event.get_position()
+			#target =  event.get_position()
 			if event.get_index() == int(2) and event is InputEventScreenPinch : #zoom if screentouch is 2 fingers & uses input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases
 				
 				_zoom() #you can use get_index to get the number of fingers
@@ -793,35 +821,25 @@ func _end_detection(__position):
 	if round(direction.x) == -1:
 		print('left swipe') #for debug purposes
 		next_panel()
+		GlobalAnimation.play("SWIPE_LEFT")
+		#Anumation Player
+		
 	if round(direction.x) == 1:
 		print('right swipe') #for debug purposes
 		prev_panel()
+		GlobalAnimation.play("SWIPE_RIGHT")
 	
 	"Up and Down"
 	
 	if -sign(direction.y) < -swipe_parameters:
 		print('down swipe') #for debug purposes
 		#next_panel() 
+		GlobalAnimation.play("SWIPE_DOWN")
 		
 	if -sign(direction.y)  > swipe_parameters:
 		print('up swipe') #for debug purposes
 		#prev_panel()
-		
-	
-	
-	#print ('end detection: ','direction: ',direction ,'position',__position, 'swipe position: ',swipe_start_position) #for debug purposes only
-	#if abs (direction.x) + abs(direction.y) >= MAX_DIAGONAL_SLOPE:
-	#	return
-	#if abs (direction.x) > abs(direction.y):
-	#	emit_signal('swiped',Vector2(-sign(direction.x), 0.0))
-	#	print ('Direction on X: ', direction.x) #horizontal swipe debug purposs
-	#	if round(direction.x) == -1:
-	#		print('left swipe') #for debug purposes
-	#		next_panel()
-	#	if round(direction.x) == 1:
-	#		print('right swipe') #for debug purposes
-	#		prev_panel()
-	#	emit_signal('swiped', Vector2(0.0,-sign(direction.y))) #vertical swipe
+		GlobalAnimation.play("SWIPE_UP")
 	
 	
 	# Saves swipe direction details to memory

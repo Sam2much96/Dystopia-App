@@ -11,6 +11,7 @@
 #(1) Loads, Zooms and Drags Comic Pages
 #(2) Uses New multitouch gestures by implementing a touch input manager
 #(3) Decentralized Storage IPFS module
+
 #
 # To DO:
 #(1) connect this script with  the dialogue singleton for translation and wordbubble fx co-ordination
@@ -445,6 +446,20 @@ func _input(event):
 	if event in InputEventMouseMotion:
 		#return
 		pass
+
+
+	"Handles Multitouch Gesture"
+	#https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/wiki
+	
+	# Rotate Gesture
+	if event is InputEventScreenTwist
+	
+	# Zoom in/out Gesture
+	if event is InputEventScreenPinch
+	
+	# Zoom in/out gesture
+	if event is InputEventMultiScreenTap
+
 
 
 	# Handle Touch

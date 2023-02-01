@@ -819,27 +819,27 @@ func _end_detection(__position):
 	"Left and Right "
 		
 	if round(direction.x) == -1:
-		print('left swipe') #for debug purposes
+		print('left swipe 1') #for debug purposes
 		next_panel()
-		GlobalAnimation.play("SWIPE_LEFT")
+		GlobalAnimation.get_child(0).play("SWIPE_LEFT")
 		#Anumation Player
 		
 	if round(direction.x) == 1:
-		print('right swipe') #for debug purposes
+		print('right swipe 1') #for debug purposes
 		prev_panel()
-		GlobalAnimation.play("SWIPE_RIGHT")
+		GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
 	
 	"Up and Down"
 	
 	if -sign(direction.y) < -swipe_parameters:
-		print('down swipe') #for debug purposes
+		print('down swipe 1') #for debug purposes
 		#next_panel() 
-		GlobalAnimation.play("SWIPE_DOWN")
+		GlobalAnimation.get_child(0).play("SWIPE_DOWN")
 		
 	if -sign(direction.y)  > swipe_parameters:
-		print('up swipe') #for debug purposes
+		print('up swipe 1') #for debug purposes
 		#prev_panel()
-		GlobalAnimation.play("SWIPE_UP")
+		GlobalAnimation.get_child(0).play("SWIPE_UP")
 	
 	
 	# Saves swipe direction details to memory
@@ -907,12 +907,16 @@ func _end_detection(__position):
 			#print (1111)
 			print ('Direction on X: ', direction.x, "/", direction.y) #horizontal swipe debug purposs
 		if -sign(direction.x) < -swipe_parameters:
-			print('left swipe') #for debug purposes
+			print('left swipe 2') #for debug purposes
 			next_panel() 
+			
+			GlobalAnimation.get_child(0).play("SWIPE_LEFT")
+			
 		if -sign(direction.x) > swipe_parameters:
-			print('right swipe') #for debug purposes
+			print('right swipe 2') #for debug purposes
 			prev_panel()
 			
+			GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
 			
 		if abs (direction.y) > abs(direction.x):
 			emit_signal('swiped',Vector2(-sign(direction.y), 0.0))
@@ -934,12 +938,15 @@ func _end_detection(__position):
 			"Up and Down"
 		
 		if -sign(direction.y) < -swipe_parameters:
-			print('down swipe') #for debug purposes
+			print('down swipe 2') #for debug purposes
 			#next_panel() 
+			GlobalAnimation.get_child(0).play("SWIPE_DOWN")
 		
 		if -sign(direction.y)  > swipe_parameters:
-			print('up swipe') #for debug purposes
+			print('up swipe 2') #for debug purposes
 			#prev_panel()
+			GlobalAnimation.get_child(0).play("SWIPE_UP")
+		
 		
 		emit_signal('swiped', Vector2(0.0,-sign(direction.y))) #vertical swipe
 			#	print ('poot poot poot') 

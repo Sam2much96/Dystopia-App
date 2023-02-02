@@ -800,6 +800,14 @@ func _handle_swipe_detection(event)-> void:
 	elif not _e.is_stopped():
 		_end_detection(event.position)
 
+" Swipe Direction Detection"
+#Buggy swipe direction
+# Use an Array to store the first position and all end positions
+# Difference between both extremes is the swipe position
+func clear_memory()-> void:
+	swipe_target_memory_x.clear()
+	swipe_target_memory_y.clear()
+
 func _start_detection(_position): #for swipe detection
 	if enabled == true:
 		#swipe_start_position = _position
@@ -812,40 +820,50 @@ func _start_detection(_position): #for swipe detection
 		_e.start()
 		print ('start swipe detection :') #for debug purposes delete later
 
-
+"Only Two Swipe Directions Are Currently Implemented"
 func _end_detection(__position):
-	#_e.stop()
+#_e.stop()
 	direction = (__position - swipe_start_position).normalized()
 	"Left and Right "
 		
-	if round(direction.x) == -1:
+	if round(direction.x) == -1: # Doesnt work
 		print('left swipe 1') #for debug purposes
-		next_panel()
-		GlobalAnimation.get_child(0).play("SWIPE_LEFT")
-		#Anumation Player
+		#next_panel()
 		
-	if round(direction.x) == 1:
+		
+		
+		# Play Animation
+		return GlobalAnimation.get_child(0).play("SWIPE_LEFT")
+		
+		
+	if round(direction.x) == 1: # works
 		print('right swipe 1') #for debug purposes
-		prev_panel()
-		GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
+		#prev_panel()
+		
+		
+		# Play Animation
+		return GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
+		
 	
 	"Up and Down"
 	
-	if -sign(direction.y) < -swipe_parameters:
-		print('down swipe 1') #for debug purposes
-		#next_panel() 
-		GlobalAnimation.get_child(0).play("SWIPE_DOWN")
+	if -sign(direction.y) < -swipe_parameters: # works
+		print('down swipe 1 = wrong calibration error ') #for debug purposes
+		#next_panel()  # Lef
 		
-	if -sign(direction.y)  > swipe_parameters:
+		# Play Animation
+		return GlobalAnimation.get_child(0).play("SWIPE_LEFT")
+		
+	if -sign(direction.y)  > swipe_parameters: # Doesnt work
 		print('up swipe 1') #for debug purposes
 		#prev_panel()
-		GlobalAnimation.get_child(0).play("SWIPE_UP")
+		
+		
+		# Play Animation
+		return GlobalAnimation.get_child(0).play("SWIPE_UP")
 	
 	
 	# Saves swipe direction details to memory
-	
-	#***********************Bug Fix*****************************#
-	# For Devices with a Max Slope < 1
 	# It'll improve start position - end position calculation
 	if not swipe_target_memory_x.has(__position.x) && __position.x != null: 
 		swipe_target_memory_x.append(__position.x)
@@ -853,7 +871,7 @@ func _end_detection(__position):
 		swipe_target_memory_y.append(__position.y)
 	_e.stop()
 	
-	#Kinda works
+	#Works
 	if swipe_target_memory_x.size() && swipe_target_memory_y.size() >= 3 && swipe_target_memory_x.pop_back() != null:
 		x1 = swipe_target_memory_x.pop_front()
 		x2  = swipe_target_memory_x.pop_back()
@@ -906,55 +924,54 @@ func _end_detection(__position):
 			
 			#print (1111)
 			print ('Direction on X: ', direction.x, "/", direction.y) #horizontal swipe debug purposs
-		if -sign(direction.x) < -swipe_parameters:
-			print('left swipe 2') #for debug purposes
+		if -sign(direction.x) < swipe_parameters:
+			print('left swipe') #for debug purposes
 			next_panel() 
 			
-			GlobalAnimation.get_child(0).play("SWIPE_LEFT")
 			
+			# Play Animation
+			return GlobalAnimation.get_child(0).play("SWIPE_LEFT")
+		
 		if -sign(direction.x) > swipe_parameters:
-			print('right swipe 2') #for debug purposes
+			print('right swipe') #for debug purposes
 			prev_panel()
 			
-			GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
+			
+			
+			# Play Animation
+			return GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
+		
 			
 		if abs (direction.y) > abs(direction.x):
 			emit_signal('swiped',Vector2(-sign(direction.y), 0.0))
 			print ('Direction on Y: ', direction.x) #horizontal swipe debug purposs
 			#print (2222)
-		
-		
-		#"Left and Right"
-		
-		#if round(direction.x) == -1:
-		#	print('left swipe') #for debug purposes
-		#	next_panel()
-		#if round(direction.x) == 1:
-		#	print('right swipe') #for debug purposes
-		#	prev_panel()
-		
-		
-		
-			"Up and Down"
+			
+		"Up & Down"
 		
 		if -sign(direction.y) < -swipe_parameters:
-			print('down swipe 2') #for debug purposes
-			#next_panel() 
-			GlobalAnimation.get_child(0).play("SWIPE_DOWN")
-		
-		if -sign(direction.y)  > swipe_parameters:
 			print('up swipe 2') #for debug purposes
-			#prev_panel()
-			GlobalAnimation.get_child(0).play("SWIPE_UP")
+			next_panel() 
+			
+			# Play Animation
+			return GlobalAnimation.get_child(0).play("SWIPE_UP")
 		
-		
+			
+		if -sign(direction.y)  > swipe_parameters:
+			print('down swipe 2') #for debug purposes
+			prev_panel()
+			
+			# Play Animation
+			return GlobalAnimation.get_child(0).play("SWIPE_DOWN")
+			
 		emit_signal('swiped', Vector2(0.0,-sign(direction.y))) #vertical swipe
 			#	print ('poot poot poot') 
-	# temporarily disabling
-	#if swipe_target_memory_x.size() && swipe_target_memory_y.size() > 40:
-	#	clear_memory()
+	
+	if swipe_target_memory_x.size() && swipe_target_memory_y.size() > 50:
+		clear_memory()
 
 	else: return
+
 
 
 

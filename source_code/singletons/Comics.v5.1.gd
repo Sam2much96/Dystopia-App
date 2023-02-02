@@ -739,6 +739,9 @@ func center_page(): #
 
 func next_panel():
 	if loaded_comics == true :
+		
+		#Adds up number too rapidly
+		
 		current_frame = current_frame + 1
 		emit_signal("panel_change") 
 		center_page()

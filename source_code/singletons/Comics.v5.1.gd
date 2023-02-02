@@ -838,21 +838,23 @@ func _end_detection(__position):
 		
 	if round(direction.x) == 1: # works
 		print('right swipe 1') #for debug purposes
-		#prev_panel()
+		
 		
 		
 		# Play Animation
-		return GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
+		GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
+		return next_panel()
 		
 	
 	"Up and Down"
 	
 	if -sign(direction.y) < -swipe_parameters: # works
 		print('down swipe 1 = wrong calibration error ') #for debug purposes
-		#next_panel()  # Lef
+		
 		
 		# Play Animation
-		return GlobalAnimation.get_child(0).play("SWIPE_LEFT")
+		GlobalAnimation.get_child(0).play("SWIPE_LEFT")
+		return prev_panel()  
 		
 	if -sign(direction.y)  > swipe_parameters: # Doesnt work
 		print('up swipe 1') #for debug purposes
@@ -926,7 +928,7 @@ func _end_detection(__position):
 			print ('Direction on X: ', direction.x, "/", direction.y) #horizontal swipe debug purposs
 		if -sign(direction.x) < swipe_parameters:
 			print('left swipe') #for debug purposes
-			next_panel() 
+			#next_panel() 
 			
 			
 			# Play Animation
@@ -934,7 +936,7 @@ func _end_detection(__position):
 		
 		if -sign(direction.x) > swipe_parameters:
 			print('right swipe') #for debug purposes
-			prev_panel()
+			#prev_panel()
 			
 			
 			
@@ -951,7 +953,7 @@ func _end_detection(__position):
 		
 		if -sign(direction.y) < -swipe_parameters:
 			print('up swipe 2') #for debug purposes
-			next_panel() 
+			#next_panel() 
 			
 			# Play Animation
 			return GlobalAnimation.get_child(0).play("SWIPE_UP")
@@ -959,7 +961,7 @@ func _end_detection(__position):
 			
 		if -sign(direction.y)  > swipe_parameters:
 			print('down swipe 2') #for debug purposes
-			prev_panel()
+			#prev_panel()
 			
 			# Play Animation
 			return GlobalAnimation.get_child(0).play("SWIPE_DOWN")

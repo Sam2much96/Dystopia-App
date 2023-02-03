@@ -743,6 +743,7 @@ func next_panel():
 		#Adds up number too rapidly
 		# Solutions
 		# (1) Change the Current Frame Data Structure to Array, for comparisons
+		# (2) Implement It as a Method in The animation Player
 		current_frame = current_frame + 1
 		emit_signal("panel_change") 
 		center_page()
@@ -837,7 +838,8 @@ func _end_detection(__position):
 		
 		
 		# Play Animation
-		return GlobalAnimation.get_child(0).play("SWIPE_LEFT")
+		GlobalAnimation.get_child(0).play("SWIPE_LEFT")
+		return GlobalAnimation.get_child(0).queue("RESET")
 		
 		
 	if round(direction.x) == 1: # works
@@ -847,7 +849,8 @@ func _end_detection(__position):
 		
 		# Play Animation
 		GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
-		return next_panel()
+		#return next_panel()
+		return GlobalAnimation.get_child(0).queue("RESET")
 		
 	
 	"Up and Down"
@@ -858,7 +861,8 @@ func _end_detection(__position):
 		
 		# Play Animation
 		GlobalAnimation.get_child(0).play("SWIPE_LEFT")
-		return prev_panel()  
+		#return prev_panel()  
+		return GlobalAnimation.get_child(0).queue("RESET")  
 		
 	if -sign(direction.y)  > swipe_parameters: # Doesnt work
 		print('up swipe 1') #for debug purposes

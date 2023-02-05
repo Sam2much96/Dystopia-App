@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/g#1.wav-eb70f9ed54a3bf7dd363fe665c23730b.sample"
+
+[deps]
+
+source_file="res://sounds/nokai_3310_soundpack_2023/nokia3310-kontaktcomposer+samples_@virtually-conducted/nokia_3310_composer_for_kontakt_samples/g#1.wav"
+dest_files=[ "res://.import/g#1.wav-eb70f9ed54a3bf7dd363fe665c23730b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

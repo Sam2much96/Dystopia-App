@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/blip7.wav-15d2797429cdb8cd10de9aa81af3d450.sample"
+
+[deps]
+
+source_file="res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip7.wav"
+dest_files=[ "res://.import/blip7.wav-15d2797429cdb8cd10de9aa81af3d450.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

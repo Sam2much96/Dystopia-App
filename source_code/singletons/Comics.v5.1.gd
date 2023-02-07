@@ -501,10 +501,18 @@ func _input(event):
 				
 				_zoom() #you can use get_index to get the number of fingers
 		
+		
+		
+		
 		"Handles Swipe Detection" 
 		#Requires Debugging
-		print ("Debugging Swipe Detection Handler")#For Debug purposes only 
-		_handle_swipe_detection(event)
+		# Disabling for debugging
+		
+		
+		
+		
+		#print ("Debugging Swipe Detection Handler")#For Debug purposes only 
+		#_handle_swipe_detection(event)
 
 	"Handles Screen Dragging"
 	if event is InputEventScreenDrag && current_comics != null :
@@ -846,6 +854,7 @@ func _end_detection(__position):
 		print('right swipe 1') #for debug purposes
 		
 		
+		prev_panel()
 		
 		# Play Animation
 		GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
@@ -858,7 +867,7 @@ func _end_detection(__position):
 	if -sign(direction.y) < -swipe_parameters: # works
 		print('down swipe 1 = wrong calibration error ') #for debug purposes
 		
-		
+		next_panel()
 		# Play Animation
 		GlobalAnimation.get_child(0).play("SWIPE_LEFT")
 		#return prev_panel()  

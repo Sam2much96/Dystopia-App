@@ -93,11 +93,11 @@ action = "menu"
 
 [node name="Notification" type="Popup" parent="."]
 visible = true
-margin_left = 138.038
-margin_top = -1.98296
-margin_right = 546.036
-margin_bottom = 329.018
-rect_scale = Vector2( 1.07361, 1.07361 )
+margin_left = 393.67
+margin_top = 55.198
+margin_right = 801.668
+margin_bottom = 386.199
+rect_scale = Vector2( 0.988701, 0.988701 )
 script = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="Notification"]

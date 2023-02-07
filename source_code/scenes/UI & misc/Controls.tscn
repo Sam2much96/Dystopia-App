@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Controls.gd" type="Script" id=1]
 [ext_resource path="res://resources/misc/controls.png" type="Texture" id=2]
@@ -9,6 +9,8 @@
 [ext_resource path="res://scenes/UI & misc/controls_illustration.gd" type="Script" id=7]
 [ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=8]
 [ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=14]
+
+[sub_resource type="Theme" id=1]
 
 [node name="Controls" type="Control"]
 anchor_right = 1.0
@@ -28,7 +30,6 @@ rect_scale = Vector2( 0.277108, 0.190609 )
 texture = ExtResource( 5 )
 
 [node name="TextureRect2" type="TextureRect" parent="."]
-modulate = Color( 1, 1, 1, 0.376471 )
 margin_left = 236.512
 margin_top = -59.7258
 margin_right = 1516.51
@@ -177,6 +178,13 @@ script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="CheckButton" type="CheckButton" parent="."]
+margin_left = 670.09
+margin_top = 96.1085
+margin_right = 746.09
+margin_bottom = 136.108
+theme = SubResource( 1 )
 
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/back" to="." method="_on_Button_pressed"]
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/music" to="." method="_on_music_toggled"]

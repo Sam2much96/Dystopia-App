@@ -10,24 +10,9 @@
 [ext_resource path="res://resources/illustrations/Game_Cover Art WEBP.webp" type="Texture" id=8]
 [ext_resource path="res://fonts/Roboto-BlackItalic.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://fonts/Roboto-Black.ttf" type="DynamicFontData" id=10]
+[ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=11]
 
 [sub_resource type="ShaderMaterial" id=7]
-
-[sub_resource type="GDScript" id=1]
-script/source = "extends Popup
-\"\"\"
-NOTIFICATION GENERIC BAR
-\"\"\"
-
-
-func _ready():
-
-	self.call_deferred('popup')
-#	self.popup_centered()
-
-func _exit_tree():
-	self.queue_free()
-"
 
 [sub_resource type="DynamicFont" id=2]
 size = 38
@@ -98,7 +83,7 @@ margin_top = 55.198
 margin_right = 801.668
 margin_bottom = 386.199
 rect_scale = Vector2( 0.988701, 0.988701 )
-script = SubResource( 1 )
+script = ExtResource( 11 )
 
 [node name="Sprite" type="Sprite" parent="Notification"]
 position = Vector2( 369.169, 260.594 )

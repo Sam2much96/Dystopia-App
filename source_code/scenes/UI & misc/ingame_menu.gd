@@ -13,6 +13,7 @@
 #(2) Broken functions
 #(3) Spagetti code
 #(4) change_scenes_via_global_scripts() breaks scene continuity
+# (5) Should implemente Touch Input without emulation
 # *************************************************
 
 extends Control
@@ -55,6 +56,8 @@ func _ready():
 	else:
 		continue_game.disabled = true
 
+
+
 func _process(_delta):
 	#_hide_some_menu_options() #turning this off temporarily to debug the debug singleton
 	"Visibility State Machine"
@@ -72,6 +75,7 @@ func _input(event): #Toggles menu visibility on/off
 	if event.is_action_pressed("menu") == true :# 
 		if menu_state == HIDDEN:
 			menu_state = SHOWING
+			set_focus_mode(Control.FOCUS_CLICK)
 			Music.play_track(Music.ui_sfx[0])
 			#print ("Menu State: ",menu_state) #For debug purposes only
 			return menu_state
@@ -151,7 +155,8 @@ func _menu_showing(): #Broken funtions #rewrite with state machine
 	
 	show()
 
-	set_focus_mode(2)
+	#set_focus_mode(2)
+	
 	emit_signal("menu_showing")
 	return
 

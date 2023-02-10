@@ -63,7 +63,7 @@ func _on_button_start_server_pressed(): #someone starts the server #inhumanity
 
 
 func _on_Twitter_Button_pressed():
-	OS.shell_open('https://twitter.com/dystopiaO')
+	return OS.shell_open('https://twitter.com/dystopiaO')
 
 
 func _on_Back_Button_pressed():

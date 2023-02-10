@@ -492,7 +492,7 @@ func _input(event):
 		#_handle_swipe_detection(event)
 
 	"Handles Screen Dragging"
-	if event is InputEventScreenDrag && current_comics != null :
+	if event is InputEventScreenDrag && current_comics != null && loaded_comics:
 		#if event is InputEventMultiScreenDrag: breaks
 		target = event.get_position()
 		return drag(target, Kinematic_2d.position, Kinematic_2d)
@@ -911,7 +911,7 @@ func _end_detection(__position):
 		print('right swipe 1') #for debug purposes
 		
 		
-		prev_panel()
+		#prev_panel()
 		
 		# Play Animation
 		GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
@@ -924,7 +924,7 @@ func _end_detection(__position):
 	if -sign(direction.y) < -swipe_parameters: # works
 		print('down swipe 1 = wrong calibration error ') #for debug purposes
 		
-		next_panel()
+		#next_panel()
 		# Play Animation
 		GlobalAnimation.get_child(0).play("SWIPE_LEFT")
 		#return prev_panel()  

@@ -93,14 +93,15 @@ mouse_filter = 2
 color = Color( 1, 1, 1, 0.498039 )
 
 [node name="Buttons" type="Node2D" parent="."]
-visible = false
 modulate = Color( 1, 1, 1, 0.741176 )
-light_mask = 2
+light_mask = 3
+z_index = 1
+z_as_relative = false
 
 [node name="Backwards" type="TouchScreenButton" parent="Buttons"]
 modulate = Color( 1, 1, 1, 0.647059 )
 self_modulate = Color( 0, 0, 0, 1 )
-position = Vector2( 342.879, 736.554 )
+position = Vector2( 339.103, 615.738 )
 rotation = -3.11961
 normal = ExtResource( 2 )
 action = "ui_focus_prev"
@@ -108,12 +109,13 @@ action = "ui_focus_prev"
 [node name="Forward" type="TouchScreenButton" parent="Buttons"]
 modulate = Color( 1, 1, 1, 0.647059 )
 self_modulate = Color( 0, 0, 0, 1 )
-position = Vector2( 974.664, 434.948 )
+position = Vector2( 680.175, 299.03 )
 normal = ExtResource( 2 )
 action = "ui_focus_next"
 
 [node name="Zoom" type="TouchScreenButton" parent="Buttons"]
-position = Vector2( 610.68, 529.983 )
+visible = false
+position = Vector2( 470.987, 412.943 )
 scale = Vector2( 1.11574, 1.12516 )
 normal = ExtResource( 3 )
 

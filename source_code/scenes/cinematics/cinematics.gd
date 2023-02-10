@@ -29,13 +29,15 @@ export (bool) var cinematic_on = true
 #it only works with ogv files
 export(String, FILE, "*.ogv") var vid_stream = ""
    
-enum  {SINGLE_PLAY,LOOP, NO_PLAY}
+#enum  {SINGLE_PLAY,LOOP, NO_PLAY} # statemachine not yet implemented
 
-export var state = SINGLE_PLAY
+#export var state = SINGLE_PLAY
 #Ref<ResourceInteractiveLoader> ResourceLoader::load_interactive(String p_path)#experimental code to load resource
 onready var animation = $"animation player"
 onready var videoplayer = get_node('Node2D/VideoPlayer') #video player node
 onready var os 
+onready var node = get_node("Node2D") #popup node for centering cinematics
+
 var cinematic = {
 	0:'res://resources/title animation/title..ogv',
 	1:'', #convert video to ogv
@@ -51,6 +53,13 @@ CINEMATICS
 func _ready(): #create a video player function
 	#use current scene to trigger cinematic
 	Globals.update_curr_scene()
+	
+	#Should centralize video player position
+	#Doesnt work
+	
+	#node.call_deferred('move_child', node.get_child(0), 0)
+	#node.call_deferred('popup_centered')
+	
 	
 	print('Cinematic Debug: /current scene/',  Globals.curr_scene) #for debug purposes
 	'Plays only when the Scene is the cinematics scene'

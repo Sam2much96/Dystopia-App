@@ -879,6 +879,9 @@ func clear_memory()-> void:
 	swipe_target_memory_y.clear()
 
 func _start_detection(_position): #for swipe detection
+	#use current scene to trigger cinematic
+	Globals.update_curr_scene()
+	
 	if enabled == true:
 		#swipe_start_position = _position
 		if not swipe_target_memory_x.has(_position.x): 
@@ -913,10 +916,12 @@ func _end_detection(__position):
 		
 		#prev_panel()
 		
-		# Play Animation
-		GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
-		#return next_panel()
-		return GlobalAnimation.get_child(0).queue("RESET")
+		if Globals.curr_scene == "Comics____2":
+			
+			# Play Animation
+			GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
+			#return next_panel()
+			return GlobalAnimation.get_child(0).queue("RESET")
 		
 	
 	"Up and Down"
@@ -925,11 +930,14 @@ func _end_detection(__position):
 		print('down swipe 1 = wrong calibration error ') #for debug purposes
 		
 		#next_panel()
-		# Play Animation
-		GlobalAnimation.get_child(0).play("SWIPE_LEFT")
-		#return prev_panel()  
-		return GlobalAnimation.get_child(0).queue("RESET")  
 		
+		if Globals.curr_scene == "Comics____2":
+			
+			# Play Animation
+			GlobalAnimation.get_child(0).play("SWIPE_LEFT")
+			#return prev_panel()  
+			return GlobalAnimation.get_child(0).queue("RESET")  
+			
 	if -sign(direction.y)  > swipe_parameters: # Doesnt work
 		print('up swipe 1') #for debug purposes
 		#prev_panel()
@@ -1004,9 +1012,9 @@ func _end_detection(__position):
 			print('left swipe') #for debug purposes
 			#next_panel() 
 			
-			
-			# Play Animation
-			return GlobalAnimation.get_child(0).play("SWIPE_LEFT")
+			if Globals.curr_scene == "Comics____2":
+				# Play Animation
+				return GlobalAnimation.get_child(0).play("SWIPE_LEFT")
 		
 		if -sign(direction.x) > swipe_parameters:
 			print('right swipe') #for debug purposes
@@ -1025,6 +1033,7 @@ func _end_detection(__position):
 			
 		"Up & Down"
 		
+		# Works
 		if -sign(direction.y) < -swipe_parameters:
 			print('up swipe 2') #for debug purposes
 			#next_panel() 

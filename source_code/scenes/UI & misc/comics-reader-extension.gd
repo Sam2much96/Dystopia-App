@@ -28,26 +28,24 @@ onready var loaded_comics
 func _ready():
 	get_node("chap_1").grab_focus()
 	
+	#**********Buggy*****************#
+	
 	# Changes UI Orientation Based on Globals screen Orientation
-	if Globals.screenOrientation == 1: #mobile UI 
+	if Globals.screenOrientation == 0: #mobile UI 
 		Grid_Container.set_columns(2)
 		Scroll_Container.set_enable_h_scroll(false)
 		Scroll_Container.set_enable_v_scroll(true)
-	elif Globals.screenOrientation == 0: #PC UI
+		
+		
+		
+		
+		
+	elif Globals.screenOrientation == 1: #PC UI
 		Grid_Container.set_columns(7)
 		Scroll_Container.set_enable_h_scroll(true)
 		Scroll_Container.set_enable_v_scroll(false)
 
 
-#	pass
-
-# Depreciated
-#func _input(event):
-#	'JoyStick Controls'
-	#Cancel event 
-#	if event is InputEventJoypadButton :
-#		if event.is_action_pressed("ui_cancel"):
-#			Globals._go_to_title()
 
 
 

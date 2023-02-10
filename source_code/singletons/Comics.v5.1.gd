@@ -29,6 +29,7 @@
 # (1) it has a wierd updatable bug that's visible in the debug panel
 # (2) Center Page is buggy
 # (3) Drag and Drop across small distances is buggy (fixed)
+# (4) Set frame state is buggy when combine with swipe gestures
 # *************************************************
 
 
@@ -169,64 +170,23 @@ onready var q = HTTPRequest.new() # checks internet connection, makes it a Globa
 onready var q2 = HTTPRequest.new() # Downloads imgs
 onready var q3 = HTTPRequest.new() # Downloads Comic Scenes
 
+
+"Rewriting As a Fininte State Machine"
+
+enum {START_SWIPE, END_SWIPE, DOWNLOAD_IMAGE, NEXT_PANEL, PREV_PANEL, DRAG, LOAD, ZOOM ,SET_FRAME,IDLE } 
+
+var _state = IDLE
+
 func _ready():
 	#wordbubble() #for debug purposes only
 	
-	# Add Swipe Detection Timer to Scene Tree
-	self.add_child(_e)
-	
-	#create HTTP Request Nodes
-	self.add_child(q) # checks internet connection, makes it a Global boolean
-	self.add_child(q2) # Downloads imgs
-	self.add_child(q3) # Downloads Comic Scenes
+
 	
 	
 	#connect signals
 	connect_signals()
 	
-	" Runs Directory and File Checks for Comic Nodes & Images"
 	
-	# Check if comics folder exists locally
-	if not FileDirectory.dir_exists(comic_dir):
-		"Creates Comics Directory if it doesn't exist"
-		create_comics_directory(comic_dir)
-	
-	# Creates Comic Chapter Paths
-	if not FileDirectory.dir_exists(comics_local_path[1]):
-		create_comics_directory(comics_local_path[1])
-		pass
-	
-	if !Networking.good_internet && !Networking.Timeout:
-		Networking._check_if_device_is_online(q)
-		Networking.start_check(4)
-	
-	# If local Comics Doesnt exist
-	if not FileCheck1.file_exists(comics_["Chap1 Panel"])  && Networking.good_internet:
-		#GKHGHGHKGK
-		# download Comics from IPFS using Networking Gateway
-		"IPFS Downloads"
-		
-		# Downloads Comic scenes and Imgs from IPFS
-		#Networking.url = comics_[0]
-		
-		#comics_IPFS
-		Networking. _connect_to_ipfs_gateway(false,comics_IPFS[1], Networking.gateway[2], q2) # Downloads Spritesheet  
-		Networking. _connect_to_ipfs_gateway(false,comics_IPFS[3], Networking.gateway[2], q3)  # Downloads Scene
-		return
-	# Check if image is available for chapter 1
-	if FileCheck1.file_exists(comics_["Chap1 Panel"]) :
-		# load the Comic if it's available
-		print ("Comic is Available Locally. Loading....Placeholder")
-		pass
-	
-	# If not, download spritesheet from IPFS
-	
-	
-	# check if CHapter 1 scene exists
-	
-	# Check if chapter 1 Comics and Scene are available
-	
-	# load chapter 1 scene from local memory if all are true
 	
 	if current_comics !=null:
 		load_comics()
@@ -240,7 +200,17 @@ func _ready():
 	_e.one_shot = true
 	_e.wait_time = 0.5
 	_e.name = str ('swipe detection timer')
+	# Add Swipe Detection Timer to Scene Tree
 	_comics_root.call_deferred('add_child',_e)
+	
+	
+	
+	#create HTTP Request Nodes
+	_comics_root.call_deferred('add_child',q) # checks internet connection, makes it a Global boolean
+	_comics_root.call_deferred('add_child',q2) # Downloads imgs
+	_comics_root.call_deferred('add_child',q3) # Downloads Comic Scenes
+
+	
 	for _c in get_children():
 		if _c is Timer:
 			return _c.connect('Timeout',_e,'_on_Timer_timeout') #connect timer to node with code
@@ -249,8 +219,11 @@ func _ready():
 LOAD COMICS INTO THE SCENE TREE AS SPRITESHEETS
 """
 #implement Texture react node functionality 
-
+#dkdkdkdkdk
 func load_comics(): 
+	
+	
+	
 	if current_comics != null && current_comics.can_instance() == true:
 		for _p in get_tree().get_nodes_in_group('Cmx_Root'):
 			enabled = true
@@ -316,6 +289,10 @@ func load_comics():
 	comics_placeholder.show()
 	emit_signal("comics_showing")
 	center_page()
+
+
+
+
 
 
 'Performs a Bunch of HTTP requests'
@@ -543,6 +520,7 @@ func _process(_delta):
 
 
 	# ReWrite to Use State machine
+	# AUtimatically sets the Loaded comic boolean?
 	if current_comics != null:
 		loaded_comics = true
 	#print(position,target)
@@ -579,23 +557,9 @@ func _process(_delta):
 		get_tree().queue_delete(memory.front()) 
 		loaded_comics = false 
 
-#current frame controler
 
-	if enabled != false && Kinematic_2d != null:
-		
-		if comics_placeholder != null:
-			for _i in Kinematic_2d.get_children():
-				if _i is AnimatedSprite:
-					_i.set_frame(int(current_frame))  
-					#working
-					_i.update() #canvas layer not updating changes
-					if  current_frame > _i.get_frame() : 
-						comics_placeholder.queue_free() 
-						comics_placeholder = null
-						enabled = false 
-						loaded_comics = false #working buggy
-						current_frame = null # working buggy
-						emit_signal("freed_comics")
+	_state = SET_FRAME # for debug purposes , disable later
+
 
 	"""Updates the Comic Debug to a global debug singleton"""
 	if enabled:
@@ -605,6 +569,99 @@ func _process(_delta):
 				'Curr frme:', current_frame , 'Cmx: ',current_comics, 'Enbled',enabled,'can drag: ',#can_drag,
 				 ' Zoom: ',zoom, 'LC: ',loaded_comics
 				)
+#enum {START_SWIPE, END_SWIPE, DOWNLOAD_IMAGE, NEXT_PANEL, PREV_PANEL, DRAG, LOAD_COMICS, IDLE } 
+	match _state:
+		IDLE:
+			pass
+		START_SWIPE:
+			pass
+		END_SWIPE:
+			pass
+		DOWNLOAD_IMAGE:
+			
+			" Downloads Comics "
+			#Runs Directory and File Checks for Comic Nodes & Images
+			
+			# Check if comics folder exists locally
+			if not FileDirectory.dir_exists(comic_dir):
+				"Creates Comics Directory if it doesn't exist"
+				create_comics_directory(comic_dir)
+			
+			# Creates Comic Chapter Paths
+			if not FileDirectory.dir_exists(comics_local_path[1]):
+				create_comics_directory(comics_local_path[1])
+				pass
+			
+			if !Networking.good_internet && !Networking.Timeout:
+				Networking._check_if_device_is_online(q)
+				Networking.start_check(4)
+			
+			# If local Comics Doesnt exist
+			if not FileCheck1.file_exists(comics_["Chap1 Panel"])  && Networking.good_internet:
+				#GKHGHGHKGK
+				# download Comics from IPFS using Networking Gateway
+				"IPFS Downloads"
+				
+				# Downloads Comic scenes and Imgs from IPFS
+				#Networking.url = comics_[0]
+				
+				#comics_IPFS
+				Networking. _connect_to_ipfs_gateway(false,comics_IPFS[1], Networking.gateway[2], q2) # Downloads Spritesheet  
+				Networking. _connect_to_ipfs_gateway(false,comics_IPFS[3], Networking.gateway[2], q3)  # Downloads Scene
+				return
+			# Check if image is available for chapter 1
+			if FileCheck1.file_exists(comics_["Chap1 Panel"]) :
+				# load the Comic if it's available
+				print ("Comic is Available Locally. Loading....Placeholder")
+				pass
+			
+			# If not, download spritesheet from IPFS
+			
+			
+			# check if CHapter 1 scene exists
+			
+			# Check if chapter 1 Comics and Scene are available
+			
+			# load chapter 1 scene from local memory if all are true
+			
+		NEXT_PANEL:
+			pass
+		PREV_PANEL:
+			pass
+		DRAG:
+			pass
+		LOAD:
+			
+			
+			return load_comics()
+			
+			#pass
+		SET_FRAME:
+			#current frame controler
+			
+			# Buggy when used with swipe functions in it's current state
+			
+			#why so many if's?
+			if enabled != false && Kinematic_2d != null:
+				
+				if comics_placeholder != null:
+					for _i in Kinematic_2d.get_children():
+						if _i is AnimatedSprite:
+							_i.set_frame(int(current_frame))  
+							#working
+							_i.update() #canvas layer not updating changes
+							if  current_frame > _i.get_frame() : 
+								comics_placeholder.queue_free() 
+								comics_placeholder = null
+								enabled = false 
+								loaded_comics = false #working buggy
+								current_frame = null # working buggy
+								emit_signal("freed_comics")
+			pass
+
+
+
+
 """
 DRAG FUNCTION
 """
@@ -1042,12 +1099,15 @@ button connections
 """
 
 func _on_chap_1_pressed(): #Simplify this function
+	print ("loading chapter 1")
 	load_chapter(1)
 
 func _on_chap_2_pressed(): #Simplify this function
+	print ("loading chapter 2")
 	load_chapter(2)
 
 func _on_chap_3_pressed(): #Simplify this function
+	print ("loading chapter 3")
 	load_chapter(3)
 
 
@@ -1063,23 +1123,27 @@ func load_chapter(number):#generic load chapter function
 		print ('loading Chapter :', number)
 		current_comics = load(comics[number])
 		current_chapter = number #Update the current chapter loaded
-		load_comics()
+		return load_comics()
 
 
 
 func _on_chap_4_pressed():
+	print ("loading chapter 4")
 	load_chapter(4)
 
 
 func _on_chap_5_pressed():
+	print ("loading chapter 5")
 	load_chapter(5)
 
 
 func _on_chap_6_pressed():
+	print ("loading chapter 6")
 	load_chapter(6)
 
 
 func _on_chap_7_pressed():
+	print ("loading chapter 7")
 	load_chapter(7)
 
 

@@ -62,8 +62,8 @@ rect_pivot_offset = Vector2( 643.969, 373.494 )
 [node name="ScrollContainer" type="ScrollContainer" parent="Comics"]
 margin_left = 261.0
 margin_top = 13.0
-margin_right = 2033.0
-margin_bottom = 1784.0
+margin_right = 2751.0
+margin_bottom = 1884.0
 rect_scale = Vector2( 0.3, 0.3 )
 rect_clip_content = false
 theme = ExtResource( 16 )

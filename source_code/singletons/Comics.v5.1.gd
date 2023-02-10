@@ -209,7 +209,7 @@ func _ready():
 	_comics_root.call_deferred('add_child',q) # checks internet connection, makes it a Global boolean
 	_comics_root.call_deferred('add_child',q2) # Downloads imgs
 	_comics_root.call_deferred('add_child',q3) # Downloads Comic Scenes
-
+	
 	
 	for _c in get_children():
 		if _c is Timer:
@@ -1167,4 +1167,5 @@ func connect_signals(): #connects all required signals in the parent node
 	if not q3.is_connected("request_completed", self, "_http_request_completed_Scenes"):
 		return q3.connect("request_completed", self, "_http_request_completed_Scenes")
 
-#
+	
+	

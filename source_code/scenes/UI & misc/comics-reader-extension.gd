@@ -25,27 +25,37 @@ onready var Scroll_Container = Grid_Container.get_parent()
 
 onready var loaded_comics 
 
+# Size Vectors For Stretching THe scroll Container
+# Bug Fix for Broken Comics UI on Mobile Screen Orientations
+
+var size_A : Vector2 = Vector2(1772,1871)
+var size_B : Vector2 = Vector2(2490, 6289)
+
 func _ready():
 	get_node("chap_1").grab_focus()
 	
 	#**********Buggy*****************#
 	
 	# Changes UI Orientation Based on Globals screen Orientation
-	if Globals.screenOrientation == 0: #mobile UI 
+	if Globals.screenOrientation == 1: #mobile UI 
 		Grid_Container.set_columns(2)
 		Scroll_Container.set_enable_h_scroll(false)
 		Scroll_Container.set_enable_v_scroll(true)
 		
 		
+		return Scroll_Container.set_size(size_B)
 		
 		
 		
-	elif Globals.screenOrientation == 1: #PC UI
+	elif Globals.screenOrientation == 0: #PC UI
 		Grid_Container.set_columns(7)
 		Scroll_Container.set_enable_h_scroll(true)
 		Scroll_Container.set_enable_v_scroll(false)
+		#get_node("chap_3").grab_focus()
 
-
+		
+		return Scroll_Container.set_size(size_A)
+		
 
 
 

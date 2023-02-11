@@ -412,7 +412,7 @@ func calc_average(list: Array):
 
 
 "Compression and Uncompression Algorithm"
-
+# Documentation: https://git.sr.ht/~jelle/gdunzip
 func uncompress(FILE: String) -> PoolByteArray:
 	# Instance the gdunzip script
 	var gdunzip = load('res://addons/gdunzip/gdunzip.gd').new()

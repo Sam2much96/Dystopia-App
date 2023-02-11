@@ -125,6 +125,9 @@ var temp
 var NFT: TextureRect #should ideally be an array for multiple NFT's
 var wallet_state  #wallet state global variabe
 
+
+"Zip Compression and Decompression Script"
+#var gdunzip = load ("res://addons/gdunzip/gdunzip.gd").new()
 func _ready():
 	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	
@@ -406,3 +409,52 @@ func calc_average(list: Array):
 			average = numerator/denominator
 			return average
 	else : return
+
+
+"Compression and Uncompression Algorithm"
+
+func uncompress(FILE: String) -> PoolByteArray:
+	# Instance the gdunzip script
+	var gdunzip = load('res://addons/gdunzip/gdunzip.gd').new()
+	
+	#print ("1: ",gdunzip)
+	
+	# Load a zip file
+	var loaded = gdunzip.load(FILE)
+
+
+	#print ("1", loaded)
+	# Uncompress a file, getting a PoolByteArray in return 
+	# (or false if it failed uncompressing) 
+	if loaded:
+		#print ("1 :",gdunzip.uncompress(FILE))
+		#print ("Zip File data : ",gdunzip.files)
+		print ("Zip File Data : ",gdunzip.files.keys())
+		
+		#var uncompressed = gdunzip.uncompress(gdunzip.files['file_name'])
+		print ("File: ",gdunzip.files.keys().front())#.get_string_from_utf8())
+		
+		#var t=File.new()
+		
+		#t.open(gdunzip.get_compressed(gdunzip.files.keys().front()), File.READ)
+		#var content = t.get_as_text()
+		#t.close()
+		#print(content)
+
+		# Returns an Uncompressed PoolByteArray
+		print(gdunzip.get_compressed(gdunzip.files.keys().front()).get_string_from_utf8())
+		#print(gdunzip.get_compressed(gdunzip.files.keys().front()).get_string_from_ascii())
+		
+		for f in gdunzip.files.values():
+			print('File name: ' + f['file_name'])
+
+			# "compression_method" will be either -1 for uncompressed data, or
+			# File.COMPRESSION_DEFLATE for deflate streams
+			print('Compression method: ' + str(f['compression_method']))
+
+			print('Compressed size: ' + str(f['compressed_size']))
+
+			print('Uncompressed size: ' + str(f['uncompressed_size']))
+
+	#returns uncompresed poolbyte array
+	return (gdunzip.get_compressed(gdunzip.files.keys().front()))

@@ -25,4 +25,6 @@ func _ready():
 	pass
 # Called every fra
 
+	# Testing  Unzip
+	Globals.uncompress('res://test.zip')
 

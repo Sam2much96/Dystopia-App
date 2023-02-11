@@ -71,9 +71,10 @@
 # (2) Write a debug code for it
 # (3) Update to use Editor script to run
 
-tool
-extends EditorPlugin
+#tool
+#extends EditorPlugin
 
+extends Node
 
 # The path of the currently loaded zip file
 var path

@@ -641,7 +641,7 @@ func _process(_delta):
 							#Networking.genrate_random_gateway()
 							
 							# implement vaid gateways ass array link
-							Networking. _connect_to_ipfs_gateway(Networking.url, Networking.gateway[0], q2)  
+							Networking. _connect_to_ipfs_gateway(false,Networking.url, Networking.gateway[0], q2)  
 							#run this download in the __ready function
 							_ready()
 							return wallet_check

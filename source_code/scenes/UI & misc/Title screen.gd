@@ -26,8 +26,8 @@ func _ready():
 # Called every fra
 
 	# Testing  Unzip
-	var t=Globals.uncompress('res://test.zip')
-	
-	#Workd
-	print(t.get_string_from_utf8())
+	# Works
+#	var t=Globals.uncompress('res://test.zip')
+	#Works
+#	print(t.get_string_from_utf8())
 

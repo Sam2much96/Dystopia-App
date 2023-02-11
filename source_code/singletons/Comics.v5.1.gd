@@ -1091,7 +1091,8 @@ func _on_Rotate_pressed():#Page Rotation #Rewrite this function as a module
 
 
 
-static func load_local_image_texture_from_global(node : TextureRect, _local_image_path: String)-> void:
+
+static func load_local_image_texture_from_global(node : TextureRect, _local_image_path: String, expand: bool, stretch_mode: int)-> void:
 	#print ("NFT debug: ", NFT) #for debug purposes only
 	var texture = ImageTexture.new()
 	var image = Image.new()
@@ -1100,7 +1101,8 @@ static func load_local_image_texture_from_global(node : TextureRect, _local_imag
 	node.show()
 	node.set_texture(texture) #cannot load directly from local storage without permissions
 		#print (NFT.texture) for debug purposes only
-	node.set_expand(true)
+	node.set_expand(expand)
+	node.set_stretch_mode(stretch_mode) 
 
 
 """

@@ -240,6 +240,7 @@ AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
 DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
 InputManager="*res://addons/GDTIM-Demo-v2_1_2/InputManager.gd"
 GlobalAnimation="*res://singletons/GlobalAnimationPlayer.tscn"
+Wallet="*res://scenes/Wallet/Wallet.gd"
 
 [debug]
 

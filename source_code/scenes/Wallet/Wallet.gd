@@ -7,15 +7,11 @@
 # Parses an image from an NFT url, ising a Networking singleton
 # NFT "Non FUungible Token
 # To Do:
-#(1) Fix Hacky Spagetti Code (Done)
-#(2) Implement NFT subcode. (Done)
-# (3) Unimplement Networking Singleton i.e. script should run it's own networking node (Done)
-# (4) Users should be able to copy wallet details (Done)
-# (5) Test transaction state for Tokens and Algos (Done)
-# (6) Compile Teal FOr SMartContract Testing (Depreciated)
+# (1) Implement Request Page as Asset Optin UI
+# (2) Finish implementing Gallery UI + thumbnails
 # (7) Test UX
 		#- fix check account UX
-		#- fix collectibles state 
+		#- fix collectibles state (done 2/3) 
 #Logic
 # It uses the Networking singleton and Algorand library
 # to get an asset's url and download the image from
@@ -27,33 +23,43 @@
 # (2) Uses state machine -a Accounts State & -Collectible state & Other states
 # (3) Implements Binary > Utf-8 encryption
 # (4) Networking Test for Algorand node health, Good internet connection and local img storage
+# (5) Drag and Drop Mechanics using custom comics script
+# (6) Swipe Gestures using custom comics script
+# (7) Animation Player, To fix State Controller button Positioning When changing states
 # *************************************************
 #Bugs:
 
+#(1) UI is not intuitive (fixed)
+#(2) NFT drag and Drop is buggy 
 # (3)  Wallet Node's Process disrupts UI input ( fixed with state_controller and wallet _input() methods)
-
+# (4) Wallet's Animation UI has Stuck animation transition bug. Use Animation Tree to Activate and Deactivate UI animations
 
 # To-DO:
-
-# (4) Implement Proper wallet security (needs encryption and decryption algorithm) (step 1 done)
-
+# 
 # (10) IMplement Tokenized characters (player_v2)
 # (11) Implement cryptographic encryption and decryption
-# (12) Implement show mnemonic button
-
+# (12) Implement show mnemonic button and UI
+		#alter UI scale for mobiles (done)
 		#use animation player to alter UI (depreciated. Functions work faster)
-# (14) Implement SHow mnemonic button
 
-# (16) Implement better NFT UI (buggy)
+# (15) Implement Comic book interface for interractible NFT (done)
+# (16) Implement better NFT UI 
 # (17) Delete local NFT's if token is sent
 		#logic
 		#if asset_url ='' && local_image_texture exists
 		#delete local image texture
 # (18) Show Asset ID on NFT
+		#- Implement Asset UI
 # (19) Transfer assets back to Creator Wallet
 # (20) Implement Gallery UI for wallet
-# (21) Use Global FileCheckers
+		#-Collectibles UI logic
 
+
+# Testing
+#(1) Image Downloder (works)
+# (2) Create NFT (work with python script)
+# (3) Parse NFT (works)
+# (4) New UI
 # *************************************************
 
 
@@ -90,7 +96,8 @@ var mnemonic : String
 
 var recievers_addr : String = '' #for transactions
 var _amount : int = 0#for transactions
-var _asset_id :int = 0
+
+var _asset_id :int = 0 # used for asset transactions
 var smart_contract_addr : String = ""
 var _app_id : int = 0
 var _app_args : String = ""
@@ -132,7 +139,7 @@ var local_image_file : String = "user://wallet/img0.png.png"
 
 "State Machine"
 
-enum {NEW_ACCOUNT,CHECK_ACCOUNT, SHOW_ACCOUNT, IMPORT_ACCOUNT, TRANSACTIONS ,COLLECTIBLES, SMARTCONTRACTS, IDLE, PASSWORD}
+enum {NEW_ACCOUNT,CHECK_ACCOUNT, SHOW_ACCOUNT, IMPORT_ACCOUNT, TRANSACTIONS ,COLLECTIBLES, SMARTCONTRACTS, IDLE, PASSWORD, SHOW_MNEMONIC}
 export var state = IDLE
 
 var wallet_check : int = 0
@@ -145,6 +152,13 @@ var algod_node_health_is_good: bool
 var imported_mnemonic : bool = false
 var transaction_valid: bool =false
 var asset_id_valid : bool = false
+var asset_optin : bool = false
+var asset_txn : bool = false
+
+
+var Asset_UI_showing : bool = false
+
+
 var password_valid : bool = false
 var loaded_wallet: bool= false #fixes looping loading bug
 var good_internet : bool #debugs user's internet
@@ -162,13 +176,14 @@ onready var q2 = HTTPRequest.new()
 
 
 
-onready var Algorand : Algodot = get_node("Algodot")
-onready var state_controller : OptionButton = get_node("state_controller")
-onready var dashboard_UI : Control = get_node("wallet_ui")
+var Algorand : Algodot
+var state_controller : OptionButton
+var dashboard_UI : Control
 var passward_UI : Control
-onready var account_address : Label = get_node("wallet_ui/address")
+var Asset_UI : Control
+var account_address : Label
 var smart_contract_UI : Control
-onready var wallet_algos : Label = get_node("CanvasLayer/Dashboard_UI/YSort/Label")
+var wallet_algos : Label
 var ingame_algos : Label
 var password_Entered_Button : Button
 var transaction_ui : Control
@@ -188,6 +203,15 @@ var make_Payment_Button : Button
 var UI_Elements : Array
 var passward_UI_Buttons : Array
 var canvas_layer : CanvasLayer
+var _Create_Acct_button : Button
+var CreatAccountSuccessful_UI : Control
+var CreatAccountSuccessful_Mnemonic_Label : Label
+
+var asset_txn_valid_button : Button
+var asset_optin_txn_valid_button : Button
+var asset_optin_txn_reject_button : Button
+var CreatAccountSuccessful_Copy_Mnemonic_button : Button
+var CreatAccountSuccessful_Proceed_home_button : Button
 
 var txn_addr : LineEdit
 var txn_amount : LineEdit
@@ -195,9 +219,11 @@ var nft_asset_id : LineEdit
 
 #*****Collectible UI*******#
 var NFT : TextureRect
-onready var kinematic2d : KinematicBody2D  = get_node("CanvasLayer/Collectibles_UI/KinematicBody2D") # for NFT dragNdrop
+var pfp : TextureRect
+var kinematic2d : KinematicBody2D  # for NFT dragNdrop
 var NFT_index_label : Label #Displays Asset Index
-
+var Asset_UI_index : Label
+var Asset_UI_amount : Label
 
 #*****PasswordUI******#
 var password_LineEdit : LineEdit
@@ -219,82 +245,31 @@ var delete_last_button : Button
 var processing : bool
 
 
-#**********All UI elements**************
-onready var canvasLayer = get_parent().get_node("CanvasLayer")
-#onready var Algorand = 
-#onready var dashboard_UI = get_parent().
-onready var transaction_UI = get_parent().get_node("CanvasLayer/Transaction_UI")
-onready var account_addr = get_parent().get_node("CanvasLayer/Dashboard_UI/YSort/Label2") 
+#*****Animation Player******#
+var _Animation : AnimationPlayer 
+var _Animation_UI : AnimationPlayer
+var _Animation_Tree : AnimationTree
 
-onready var _ingame_algos = get_parent().get_node("CanvasLayer/Dashboard_UI/YSort2/HBoxContainer/VBoxContainer2/Label2")
 
-#onready var wallet_algos = get_parent()
-
-onready var mnemonic_UI = get_parent().get_node("CanvasLayer/Mnemonic_UI")
-onready var Collectibles_UI = get_parent().get_node("CanvasLayer/Collectibles_UI")
-onready var mnemonic_UI_LineEdit = get_parent().get_node("CanvasLayer/Mnemonic_UI/LineEdit")
-
-onready var submit_txn_button = get_parent().get_node("CanvasLayer/Transaction_UI/Button")
-
-onready var submit_mnemonic_button = get_parent().get_node("CanvasLayer/Mnemonic_UI/Button")
-onready var image_texture_holder = get_parent().get_node("CanvasLayer/Collectibles_UI/KinematicBody2D/TextureRect")
-#onready var kinematic2d = get_parent().
-onready var asset_index_label = get_parent().get_node("CanvasLayer/Collectibles_UI/KinematicBody2D/Label")
-onready var Password_UI = get_parent().get_node("CanvasLayer/Password_UI")
-onready var App_Call_UI = get_parent().get_node("CanvasLayer/SmartContract_UI")
-onready var transaction_UI_address_lineEdit = get_parent().get_node("CanvasLayer/Transaction_UI/LineEdit")
-
-onready var transaction_UI_amount_lineEdit = get_parent().get_node("CanvasLayer/Transaction_UI/LineEdit2")
-onready var FundingSuccessUI = get_parent().get_node("CanvasLayer/FundingSuccess")
-onready var Funding_Success_Close_Button = get_parent().get_node("CanvasLayer/FundingSuccess/Button")
-onready var fund_account_Button = get_parent().get_node("CanvasLayer/Dashboard_UI/Button")
-onready var make_payment_state_controller_button = get_parent().get_node("CanvasLayer/Dashboard_UI/Button2")
-onready var smartcontract_UI_Address = get_parent().get_node("CanvasLayer/SmartContract_UI/LineEdit")
-onready var smartcontract_UI_AppID = get_parent().get_node("CanvasLayer/SmartContract_UI/LineEdit2")
-onready var smartcontract_UI_AppArgs = get_parent().get_node("CanvasLayer/SmartContract_UI/LineEdit3")
-onready var smartcontract_UI_Button = get_parent().get_node("CanvasLayer/SmartContract_UI/Button")
-onready var transaction_UI_asset_id_LineEdit = get_parent().get_node("CanvasLayer/Transaction_UI/LineEdit3")
-onready var enter_wallet_PassWord_Button = get_parent().get_node("CanvasLayer/Password_UI/Button")
-onready var password_Enter_LineEdit = get_parent().get_node("CanvasLayer/Password_UI/LineEdit")
-
-onready var button_0  = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button10")
-onready var button_1 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button")
-onready var button_2 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button2")
-onready var button_3 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button3")
-onready var button_4 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button4")
-onready var button_5 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button5")
-onready var button_6 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button6")
-onready var button_7 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button7")
-onready var button_8 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button8")
-onready var button_9 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button9")
-onready var button_11 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button11")
-onready var button_12 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button12")
-
+# Placeholder Dictionary for creating New Accts
+var dict : Dictionary = {'address': address, 'amount': 0, 'mnemonic': mnemonic }
 
 "Checks the Nodes connection Between Singleton & UI"
 func check_Nodes() -> bool:
 	 
-
-	#*****************Wallet UI ************************************
-	# Undergoing upgrades
-	#var withdraw_button = $wallet_ui/HBoxContainer/withdraw #connect to smartcontract
 	
-	var refresh_button= $wallet_ui/HBoxContainer/refresh
-
-
-
-	#var NFT : TextureRect #=  get_tree().get_nodes_in_group('NFT')#$Control/TextureRect
-	#var state_controller : OptionButton #= get_node_or_null("root/Node/state_controller")
-	#var anim : AnimationPlayer = $AnimationPlayer
-
-	#UI_Elements = [Algorand, dashboard_UI, account_address, ingame_algos, wallet_algos, withdraw_button, refresh_button, wallet_ui, mnemonic_ui, transaction_ui, funding_success_ui, txn_ui_options, txn_ui_options_button, address_ui_options, nft_asset_id, txn_amount, txn_addr, txn_assets_valid_button, passward_UI, txn_txn_valid_button, state_controller, anim ]
+	#*****************Wallet UI ************************************
+	
 	UI_Elements = [
 		state_controller, Algorand, dashboard_UI, wallet_algos, ingame_algos, mnemonic_ui,
 		mnemonic_ui_lineEdit, txn_txn_valid_button, imported_mnemonic_button, passward_UI, 
 		txn_addr, txn_amount, funding_success_ui, funding_success_close_button, smart_contract_UI, 
 		smartcontract_ui_address_lineEdit, smartcontract_ui_appID_lineEdit, smartcontract_ui_args_lineEdit,
 		smartcontract_UI_button, nft_asset_id, fund_Acct_Button, make_Payment_Button, password_Entered_Button,
-		password_LineEdit, collectibles_UI, NFT, kinematic2d, NFT_index_label
+		password_LineEdit, collectibles_UI, NFT, kinematic2d, NFT_index_label, _Animation, _Animation_UI, _Animation_Tree ,_Create_Acct_button,
+		CreatAccountSuccessful_UI, CreatAccountSuccessful_Mnemonic_Label, CreatAccountSuccessful_Copy_Mnemonic_button,
+		CreatAccountSuccessful_Proceed_home_button, Asset_UI, asset_txn_valid_button, asset_optin_txn_valid_button,
+		asset_optin_txn_reject_button, pfp, Asset_UI_index, Asset_UI_amount 
 	]
 	
 	passward_UI_Buttons = [_1,_2, _3, _4, _5, _6, _7, _8, _9, _0, zero,delete_last_button]
@@ -307,16 +282,7 @@ func check_Nodes() -> bool:
 			p = i.is_inside_tree() 
 		else: p = false
 	return p
-
-
-
-func _ready():
-	self.add_child(q) #add networking node to the scene tree
-	self.add_child(q2) #add networking node to the scene tree
-	
-	
-	
-	
+func __ready():
 		#*****Txn UI options************#
 	if bool(check_Nodes()) == true:
 	
@@ -327,21 +293,23 @@ func _ready():
 			
 			self.state_controller.add_item("Show Account")
 			self.state_controller.add_item("Check Account")
-			self.state_controller.add_item("New Account")
+			#self.state_controller.add_item("New Account") # remove from state controller control. Has been mapped to UI button
 			self.state_controller.add_item("Import Account")
 			self.state_controller.add_item("Transactions")
 			self.state_controller.add_item("SmartContacts") #should be a sub of Transactions
 			self.state_controller.add_item('Collectibles')
 			self.state_controller.add_item('Login')
+			self.state_controller.add_item('Show Mnemonic')
+			self.state_controller.add_item('Back')
 		print ("HTTP REQUEST NODE: ",typeof(q))
 		
-
-
-#*********Shows Password UI **************#
-# Disabling for Dystopia App
+		
+		
+	" Shows Login UI"
+	
 	#if user first boots app
-#	if OS.get_ticks_msec() < 10_000: 
-#		self.state_controller.select(7) #show password login
+	if OS.get_ticks_msec() < 10_000: 
+		self.state_controller.select(6) #show password login
 
 
 	"Mobile UI"
@@ -373,56 +341,91 @@ func _ready():
 
 		#*******UI***********#
 
-
+func _ready():
+	self.add_child(q) #add networking node to the scene tree
+	self.add_child(q2) #add networking node to the scene tree
+	
+	#works
+	#print(Globals.calc_average([1,2,3,4,5,6,7,8,9,10])) # For debug purposes only 
+	
+	pass
 
 func _process(_delta):
 	
-	# UI state Processing (works-ish)
-	if self.state_controller.get_selected() == 0:
-		state = SHOW_ACCOUNT #only loads wallet once
-		
-	elif self.state_controller.get_selected() == 1:
-		#wallet_check = 0 # resets the wallet check stopper
-		state = CHECK_ACCOUNT
-	elif self.state_controller.get_selected() == 2:
-		wallet_check = 0 # resets the wallet check stopper
-		state = NEW_ACCOUNT
-	elif self.state_controller.get_selected() == 3:
-		wallet_check = 0 # resets the wallet check stopper
-		state = IMPORT_ACCOUNT
-	elif self.state_controller.get_selected() == 4:
-		wallet_check = 0 # resets the wallet check stopper
-		state = TRANSACTIONS
-	elif self.state_controller.get_selected() == 5:
-		wallet_check = 0 # resets the wallet check stopper
-		state = SMARTCONTRACTS
-	elif self.state_controller.get_selected() == 6:
-		wallet_check = 0 # resets the wallet check stopper
-		state = COLLECTIBLES
-	elif self.state_controller.get_selected() == 7:
-		wallet_check = 0
-		state = PASSWORD
+	
+	if Globals.curr_scene == "Wallet_scene":
+		# UI state Processing (works-ish)
+		# Remove New Account State. It has a new UI mapping
+		"Constantly Running Process Introduces a stuck state Bug"
+		if self.state_controller.visible :
+			if self.state_controller.get_selected() == 0:
+				state = SHOW_ACCOUNT #only loads wallet once
+				
+			elif self.state_controller.get_selected() == 1:
+				#wallet_check = 0 # resets the wallet check stopper
+				state = CHECK_ACCOUNT
+		#	elif self.state_controller.get_selected() == 2:
+		#		wallet_check = 0 # resets the wallet check stopper
+		#		state = NEW_ACCOUNT
+			elif self.state_controller.get_selected() == 2:
+				wallet_check = 0 # resets the wallet check stopper
+				state = IMPORT_ACCOUNT
+			elif self.state_controller.get_selected() == 3:
+				wallet_check = 0 # resets the wallet check stopper
+				state = TRANSACTIONS
+			elif self.state_controller.get_selected() == 4:
+				wallet_check = 0 # resets the wallet check stopper
+				state = SMARTCONTRACTS
+				
+				
+				
+			elif self.state_controller.get_selected() == 5:
+				wallet_check = 0 # resets the wallet check stopper
+				state = COLLECTIBLES
+			elif self.state_controller.get_selected() == 6:
+				wallet_check = 0
+				state = PASSWORD
+			elif self.state_controller.get_selected() == 7:
+				wallet_check = 0
+				state = SHOW_MNEMONIC
+			elif self.state_controller.get_selected() == 8:
+				wallet_check = 0
+				Globals.curr_scene = "Menu"
+				return Globals._go_to_title()
+	
 	
 	"Constantly Running Process Introduces a Text UI Bug"
 	
 	match state:
 		NEW_ACCOUNT: #loads wallet details if account already exists
 			
-			run_wallet_checks()
-			if not algod_node_exists:
-				#Make sure an algod node is running or connet to mainnet or testnet
-				self.Algorand.create_algod_node('TESTNET')
-				self.Algorand._test_algod_connection()
-				algod_node_exists= true
-		
+			# Reset UI animation for State controller 
+			_Animation_UI.play("RESET_UI")
+			
+			
+			
+			# Buggy
+			# Bug Details: It bugs up when saving New Account Details Generated 
+			# Suggested Solutions: Debug Save Account Parameters for New Accounts
+			# Work Around: SHow Mnemonic State
+
 			
 			'Generates New Account'
-			if not FileDirectory.file_exists(token_dir) : # if account info doesn't exist
+			# if account info directory doesn't exist
+			# Error Catcher 1
+			if not FileDirectory.dir_exists(token_dir): 
+				print ("File directory" + token_dir + " doesn't exist") # for debug purposes only
+				
 				
 				"Creates Wallet Directory if it doesn't exist"
-				create_wallet_directory()
 				
-
+				
+				create_wallet_directory()
+			if not FileCheck1.file_exists(token_write_path):
+				save_account_info(dict , 0)
+			
+			# Error Catcher 3
+			if FileCheck1.file_exists(token_write_path):
 				'Generate new Account'
 				self.Algorand.generate_new_account = true
 				Player_account_details=self.Algorand.create_new_account(Player_account_temp)
@@ -432,21 +435,32 @@ func _process(_delta):
 				
 				address= Player_account_details[0]
 				mnemonic= Player_account_details[1]
-				
-				#save_new_account_info(Player_account_details)
+					
+					#save_new_account_info(Player_account_details)
 				'Attempts saving new account info'
-				#breaks
-				var dict = {'address': address, 'amount': 0, 'mnemonic': mnemonic, 'asset_index': '','asset_name': '','asset_unit_name': '', 'asset_url': '' }
+					
+				var _dict = {'address': address, 'amount': 0, 'mnemonic': mnemonic, 'asset_index': '','asset_name': '','asset_unit_name': '', 'asset_url': '' }
+				
+				print (_dict)
 				
 				"saves more account info"
-				save_account_info(dict,1)
-				
-				state = SHOW_ACCOUNT
+				print (" Save account Info: ",save_account_info(_dict,0))
+					
+					#dsfsf
+				# Exit Process Loop Show Mnemonic
+				self.state_controller.select(7)
+					
+				return self.set_process(false)
+				#state = SHOW_ACCOUNT
 				#wallet_check += 1
-			if FileDirectory.file_exists(token_dir) :
-				state = SHOW_ACCOUNT
-				return
+				#if FileDirectory.file_exists(token_dir) :
+					#state = SHOW_ACCOUNT
+					
+					# Exit Process Loop
+				#	return self.state_controller.select(0)
 				
+				# Exit Process Loop to SHow Menm
+				#return self.state_controller.select(0)
 		CHECK_ACCOUNT:  #Works 
 			
 			if wallet_check == 0:
@@ -468,7 +482,12 @@ func _process(_delta):
 		# Entering any other derivative states without 
 		# entering show account previously would present new bugs
 		SHOW_ACCOUNT: 
+			# Reset UI animation for State controller 
+			_Animation_UI.play("RESET_UI")
+			
+			
 			"it's always load account details when ready"
+			
 			if FileCheck1.file_exists(token_write_path)  :
 				#use animation player to alter UI
 				
@@ -489,8 +508,7 @@ func _process(_delta):
 				#Revert to Import account state
 				
 				push_error('account info file does not exist, Import Wallet or generate New One')
-				self.state_controller.select(3) #rewrite as a method
-				#programmatically delete NFT
+				self.state_controller.select(2) 
 			
 			return
 		IMPORT_ACCOUNT: #works 
@@ -498,7 +516,11 @@ func _process(_delta):
 			hideUI()
 			
 			
+			# Reset UI animation for State controller 
+			_Animation_UI.play("RESET_UI")
+			
 			self.mnemonic_ui.show()
+			self.set_process(false)
 			
 			if  imported_mnemonic:
 				
@@ -515,25 +537,32 @@ func _process(_delta):
 				#FIxes null parameters errors
 				account_info = {"address":address, "amount":0, "mnemonic": mnemonic , "created-assets": [{"index": 0, "params":{"clawback":'', "creator":"", "decimals":0, "default-frozen": '', "freeze": '', "manager":"", "name":"Punk_001", "reserve":"", "total":1, "unit-name": 'XYZ', "url":""}}]}
 				
-				"saves more account info"
-				if save_account_info(account_info,0):
-					check_wallet_info()
-					
-					# show account
-					self.state_controller.select(0)
+				#"saves more account info"
+				# Saves acct info & Debugs it to Output
+				print ("Saved Acct Info: ",save_account_info(account_info,0)) 
+				check_wallet_info()
 
-			return #self.set_process(false)
+
+
+				#state = SHOW_MNEMONIC
+
+				#return self.set_process(false)
+				return self.state_controller.select(7)
 		#Saves transactions to be processed in the ready function
 		# Saves the Transaction parameters and runs the txn() function
-		#as a subprocess of the _ready() function
+		# as a subprocess of the _ready() function
 		#check https://github.com/lucasvanmol/algodot/issues/20 for more clarifications
-		TRANSACTIONS: #works
+		TRANSACTIONS: #Debugging
 			#hide other ui states
 			#use animation player to alter UI
 			hideUI()
 			self.transaction_ui.show()
 			self.transaction_ui.focus_mode = 2
 
+			# Reset UI animation for State controller 
+			_Animation_UI.play("RESET_UI")
+
+			
 			#transaction_hint.show()
 			
 			" Swtiches Between Assets and Normal Transactions UI"
@@ -549,8 +578,9 @@ func _process(_delta):
 				if _amount  < 100_000:
 						
 						#should ideally be sent to the UI
-						# Use OS alert
-					push_error('Cannot send balance less tha 100_000 MicroAlgos')
+					# Use OS alert
+					OS.alert("Cannot send balance less than 100_000 MicroAlgos","Alert")
+					push_error('Cannot send balance less than 100_000 MicroAlgos')
 					
 					
 					'Error Catcher 1'
@@ -567,28 +597,60 @@ func _process(_delta):
 					self.state_controller.select(0) 
 
 						#calls the transaction function which is a child of _ready()
-					_ready()
+					__ready()
 						
 					txn_check += 1
 					return txn_check
 				#uses two different buttons for assets and algo transactions
-				if asset_id_valid : # user selected asset transaction
+				
+				# Remap asset_id_valid to Asset UI
+				# Asset Optin Txn
+				
+				#Parameters : 
+				# Asset optin Txn take 0 Amount as a Parameter with asset ID
+				# The wallet address is same as users address & UI linedit is empty
+				if asset_optin:
+					
+					hideUI()
+					self.Asset_UI.show()
+					self.asset_UI_amountLabel. text = amount
+					self.asset_UI_ID_Label.text = asset_index
+				
+					recievers_addr = address
+				
+					asset_id_valid = true
+				# Sends Asset Transactions
+				
+				#Parameters : 
+				# Asset Transaction take 1 or more as an amount parameter
+				# THe wallet address is different from the users address
+				if asset_txn && _amount >= 1: # user selected asset transaction
 					#eee
 					_asset_id = int(self.nft_asset_id.text)
 					recievers_addr = self.txn_addr.text
 					
+					
+					asset_id_valid = true
+					
+					#Asset_UI.show()
+					
 					#change wallet state
 					#state = SHOW_ACCOUNT 
-					self.state_controller.select(0) 
-
 					
+					#self.state_controller.select(0) 
+
+				if asset_id_valid:
 					#calls the transaction function which is a subprocess of _ready() function
-					_ready()
+					__ready()
+					
 					
 			pass
 			
 	
-		COLLECTIBLES: 
+		COLLECTIBLES:
+			# Reset UI animation for State controller 
+			_Animation_UI.play("RESET_UI")
+			
 			"Checks if the Image is avalable Locally and either downloads or loads it"
 			if wallet_check == 0:
 				hideUI() 
@@ -643,7 +705,7 @@ func _process(_delta):
 							# implement vaid gateways ass array link
 							Networking. _connect_to_ipfs_gateway(false,Networking.url, Networking.gateway[0], q2)  
 							#run this download in the __ready function
-							_ready()
+							__ready()
 							return wallet_check
 						#<asfa<sfa
 						
@@ -653,11 +715,33 @@ func _process(_delta):
 					wallet_check += 1
 					
 					#connect to wallet NFT logic
-					NFT_index_label.text = "ID: "+ str(asset_index) + "/" + str(asset_name)
-					# Disabling Collectibes UI thumbnails
-					return Comics_v5.load_local_image_texture_from_global(self.NFT, local_image_file)
 					
-				else: return
+					#NFT PFP
+					NFT_index_label.text = "ID: "+ str(asset_index) + "/" + str(asset_name)
+					Asset_UI_index.text = str(asset_index)
+					Asset_UI_amount.text = "100,000"
+					
+					
+					
+					Comics_v5.load_local_image_texture_from_global(self.pfp, local_image_file, true, 7)
+					
+					# Disabling Collectibes UI thumbnails
+					return Comics_v5.load_local_image_texture_from_global(self.NFT, local_image_file, true,1)
+					
+				"NFT PFP"
+				#if is_image_available_at_local_storage:
+					# set image texture
+				
+					
+				#if Asset_UI.is_visible_in_tree():
+					# Set Asset ID variables
+				
+				#pass
+					
+				#if Comics_v5.is_swiping == true:
+				#	collectibles_UI.hide()
+				#	Asset_UI.show()
+				#else: return
 		#opts into smart contracts with wallet
 		SMARTCONTRACTS: # doesnt work 
 			#hide other ui states
@@ -666,18 +750,26 @@ func _process(_delta):
 			#try running in ready function
 			hideUI()
 			smart_contract_UI.show()
-			#dfsdfhfdh
 			
+			#Play Animation
+			if state_controller.get_selected_id() == 4 :# && wallet_check == 0:
+				#_Animation_UI.play("SWIPE_UP_UI")
+				_Animation_UI.play("REST_UP")
+				#wallet_check += 1
+				
+			
+				
+			
+			#return _Animation_UI.queue("REST_UP")
 			#get parameters from smart contract UI
 
-			if transaction_valid: #buggy
-				#Would Require Compiling to Teal
-				print (" Opt into Smartcontract---Debugging")
+			if transaction_valid: 
 				smart_contract_addr = smartcontract_ui_address_lineEdit.text 
 				_app_id = int(smartcontract_ui_appID_lineEdit.text)
 				_app_args = smartcontract_ui_args_lineEdit.text
+				
 				#runs a smart contract deferred function in the ready function
-				_ready()
+				__ready()
 				
 				
 				self.state_controller.select(0) #check account state 1,  show account state 0
@@ -687,18 +779,42 @@ func _process(_delta):
 			set_process(false)
 			pass
 		PASSWORD:
-			#should be the wallet pssword UI
-			#first UI once user logs in
-			#hide UI
+			#Shows Password UI once app is booted first
+			
+						# Reset UI animation for State controller 
+			_Animation_UI.play("PASSWORD")
+			
+			
 			hideUI()
 			
 			passward_UI.show()
+			
+			self.set_process(false)
 			
 			if password_valid: 
 			
 			# Revert to dashboard state
 				self.state_controller.select(0)
 			pass
+		SHOW_MNEMONIC:
+			if mnemonic != "":
+				hideUI()
+				
+			# Rest Up UI animation for State controller 
+				_Animation_UI.play("SHOW_MNEMONIC")
+				
+				# Show CreatAccountSuccessful UI
+				CreatAccountSuccessful_UI.show()
+				
+				# Display Mnemonic in UI label
+				CreatAccountSuccessful_Mnemonic_Label.text = "Mnemmonic : "+ mnemonic
+				self.set_process(false)
+			elif mnemonic == "":
+				# Revert to Import Mnemonic state
+				self.state_controller.select(2) 
+				return OS.alert("Mnemonic invalid", "Error")
+
+
 func check_internet():
 	if !good_internet:
 		Networking._check_if_device_is_online(q)
@@ -707,6 +823,7 @@ func check_internet():
 
 func run_wallet_checks()-> bool: # works 
 	#Make sure an algod node is running or connet to mainnet or testnet
+	# should be run in process method to avoid looping bug
 	if self.Algorand.algod == null:
 		self.Algorand.create_algod_node('TESTNET')
 	
@@ -802,7 +919,6 @@ func connect_signals(): #connects all required signals in the parent node
 	#	Comics_v5.connect("next_panel", self, "next_UI")
 
 
-
 func debug_signal_connections()->void:
 	#debuggers
 	print("Networking Connected: ",q.is_connected("request_completed", self, "_http_request_completed"))
@@ -832,33 +948,29 @@ func save_account_info( info : Dictionary, number: int)-> bool:
 		# encode mnemonic
 		save_dict.mnemonic = convert_string_to_binary(mnemonic)  #saves mnemonic as string error
 		
-		#Buggy
-		# Bug arises from accounts that have no created-assets
-		# Is required to debug NFT collectibles
-		# Error Catchers
-	
-	# saves if address has assets
-	# doesnt account for multiple assets
+		# saves if address has assets
+		# doesnt account for multiple assets, only saves the first Asset
 		if info.has("assets") :
-			save_dict.asset_index =  info['assets'][1].get('asset-id')  #info["created-assets"][number]["index"] 
-			save_dict.asset_amount = info['assets'][1].get('amount')
+			save_dict.asset_index =  info['assets'][number].get('asset-id')  #info["created-assets"][number]["index"] 
+			save_dict.asset_amount = info['assets'][number].get('amount')
+			
+			# saves if address has created assets
+		if info.has("created-assets"):
+			save_dict.asset_name = info["created-assets"][number]["params"]["name"] 
+			save_dict.asset_unit_name = info["created-assets"][number]["params"]['unit-name']
+			save_dict.asset_url = info["created-assets"][number]['params']['url'] #asset Uro and asset uri are different. Separate them
+			
+		else: pass
 		
-		# saves if address has created assets
-	if info.has("created-assets"):
-		save_dict.asset_name = info["created-assets"][number]["params"]["name"] 
-		save_dict.asset_unit_name = info["created-assets"][number]["params"]['unit-name']
-		save_dict.asset_url = info["created-assets"][number]['params']['url'] #asset Uro and asset uri are different. Separate them
-		
-		#save_dict.asset_index =info["created-assets"][number]["index"] 
-		#save_dict.asset_name = info["created-assets"][number]["params"]["name"] 
-		#save_dict.asset_unit_name = info["created-assets"][number]["params"]['unit-name']
-		#save_dict.asset_url = info["created-assets"][number]['params']['url'] #asset Uro and asset uri are different. Separate them
 		
 		FileCheck1.store_line(to_json(save_dict))
 		FileCheck1.close()
 		
-		print ("saved account info")
+		print ("saved account info 1")
 		return true
+	
+			#print ("saved account info")
+			#return true
 	if not FileDirectory.open(token_dir) == OK: 
 		push_error("Error: " + str(FileDirectory.open(token_dir)))
 		return false
@@ -990,6 +1102,7 @@ func check_wallet_info(): #works. Pass a variable check
 	emit_signal('completed')
 	#increases a wallet check timer
 	wallet_check += 1
+	return wallet_check
 
 
 func _on_reset():
@@ -1005,7 +1118,7 @@ func _on_reset():
 		var error=FileDirectory.remove(_i)
 		if error==OK:
 			print ('Deleting Wallet Details')
-	return _ready()
+	return __ready()
 
 
 func check_local_wallet_directory()-> bool:
@@ -1013,8 +1126,9 @@ func check_local_wallet_directory()-> bool:
 
 func create_wallet_directory()-> void:
 # Creates a Wallet folder.
-	if not FileDirectory. dir_exists("user://wallet"):
-		FileDirectory.make_dir("user://wallet")
+	print (" Creating Wallet Directory")
+	if not FileDirectory. dir_exists(token_dir):
+		FileDirectory.make_dir(token_dir)
 	else: return 
 
 
@@ -1057,7 +1171,7 @@ func _on_refresh_pressed(): #disabling refresh button
 
 #Deletes Local Account Info
 func reset()-> void:
-	Globals.delete_local_file(FileDirectory,token_write_path)
+	Globals.delete_local_file(token_write_path)
 
 
 'Copies Wallet Addresss to Clipboard'
@@ -1067,100 +1181,150 @@ func _on_Copy_address_pressed():
 
 
 
+'Copies Wallet Addresss to Clipboard'
+func _on_Copy_mnemonic_pressed():
+	print ("copied wallet mnemonic to clipboard")
+	OS.set_clipboard(mnemonic) 
+
+
+
 
 "Parses Input frm UI buttons"
 func _input(event):
 	
-	
-	
-	
-	"Swipe Direction Debug"
-	if event is InputEventScreenDrag : #kinda works, for NFT Drag & Drop
-		#Networking.start_check(4) #should take a timer as a parameter
-		#if Networking.Timeout == false:
+	if Globals.curr_scene == "Wallet_scene":
+		"Collectibles multitouch"
+		# (1) Rewrite Zoom to take parameters like drag()
+		# (2) Map Pinch , Twist and Tap iput actions in Comics script
+		# (3) Upgrade Comics v 5.1 to implement proper gestures and global Swipe Dir indicator
+		# (4) Depreciate Wallet Animation for Comics Animation Structure
+
 		
-		
-		Networking.start_check(4)
-		
-		# should save event positions to an array and 
-		# run calculations using the first and last array positions
-		# fix swipe position detector and implement it as state controller changer
-		Comics_v5._start_detection(event.position)
-		
-		#if Networking.Timeout == true :
-		Comics_v5._end_detection(event.position)
-			#Networking.Timeout = false
-		
-		"NFT drag and drop"
-		#works
-		if self.NFT.visible:
-			#print ("NFT visible: ",self.NFT.visible)
+		"Swipe Direction Debug"
+		# Should Ideally be in COmics script. Requires rewrite for better structure
+		# The current implementation is a fast hack
+		if event is InputEventScreenDrag : #kinda works, for NFT Drag & Drop
+			#Networking.start_check(4) #should take a timer as a parameter
+			#if Networking.Timeout == false:
 			
-			Comics_v5.can_drag = self.NFT.visible
 			
-			# Activates Zoom
-			Comics_v5.loaded_comics = self.NFT.visible
-			Comics_v5.comics_placeholder = self.NFT
-			Comics_v5.drag(event.position, event.position, kinematic2d)
-			return
-	# Turns on and Off Wallet Processing with Single screen touches
-	# 
-	# Uses a Timer of 4 seconds to turn processing off
-	
-	if event is InputEventSingleScreenTouch:
-		Networking.start_check(4) #should take a timer as a parameter
+			Networking.start_check(4)
+			
+			
+			"Swipe Detection"
+			
+			#Comics_v5.enabled = true
+			Comics_v5._start_detection(event.position)
+			
+			
+			# End Detection once Networking check has timedout
+			
+			#sdfhsdfhsdhsdg
+			# Swipe Detection SHould SHow A new Aset UI with NFT PFP
+			Comics_v5._end_detection(event.position)
+			
+			
+			"NFT drag and drop"
+			#works
+			if self.NFT.visible:
+				#print ("NFT visible: ",self.NFT.visible)
+				
+				Comics_v5.can_drag = self.NFT.visible
+				
+				# Activates Zoom
+				Comics_v5.loaded_comics = self.NFT.visible
+				Comics_v5.comics_placeholder = self.NFT
+				Comics_v5.drag(event.position, event.position, kinematic2d)
+			
+		# Turns on and Off Wallet Processing with Single screen touches
+		# 
+		# Uses a Timer of 4 seconds to turn processing off
+		
+		if event is InputEventSingleScreenTouch:
+			Networking.start_check(4) #should take a timer as a parameter
+			
+			
+			#Turns processing off for 20 secs
+			if Networking.Timeout == false :
+				
+				print ('Stoping Wallet Processing')
+				self.set_process(false)
+				processing = false
+				return processing
+			
+			if Networking.Timeout == true :
+				
+				print ('Wallet Processing')
+				
+				self.set_process(true)
+				processing = true
+				return processing
 		
 		
-		#Turns processing off for 20 secs
-		if Networking.Timeout == false :
-			
-			print ('Stoping Wallet Processing')
-			self.set_process(false)
-			processing = false
-			return processing
+		"BUTTON PRESSES"
 		
-		if Networking.Timeout == true :
+		#fadhdsfhsdhs
+		if asset_txn_valid_button.pressed:
+			asset_txn = true
+		if asset_optin_txn_valid_button.pressed:
+			asset_optin = true
+		if asset_optin_txn_reject_button.pressed:
+			print ("asset optin cancelled")
+			return self.state_controller.select(3) # Return to Transaction UI
+		if _Create_Acct_button.pressed:
 			
-			print ('Wallet Processing')
+			# Fixes Stuck State Bug
+			# Check state controller process()
+			self.state_controller.select(-1)
+			state = NEW_ACCOUNT
 			
+			
+			#self.state_controller.select(2) #Create Account 
+			print ("Create Acct button pressed", state)
+			return state
+		if txn_txn_valid_button.pressed:
+			transaction_valid = true #works
+			print ("Txn button pressed: ",transaction_valid) #for debug purposes only
+
+		if smartcontract_UI_button.pressed: 
+			transaction_valid = true
+			print ("SmartContract button pressed: ",transaction_valid) #for debug purposes only
+		if password_Entered_Button.pressed:
+			password_valid = true
+			print ("Password Placeholder entered", password_valid)
 			self.set_process(true)
-			processing = true
-			return processing
-	
-	# Connect with Signals
-	#if txn_txn_valid_button.pressed:
-	#	transaction_valid = true #works
-	#	print ("Txn button pressed: ",transaction_valid) #for debug purposes only
 
-	#Connect with Signals
-	#if smartcontract_UI_button.pressed: 
-	#	transaction_valid = true
-	#	print ("SmartContract button pressed: ",transaction_valid) #for debug purposes only
-	
-	#Connect with Signals
-#	if password_Entered_Button.pressed:
-#		password_valid = true
-#		print ("Password Placeholder entered", password_valid)
+
+		if CreatAccountSuccessful_Copy_Mnemonic_button.pressed:
+			return _on_Copy_mnemonic_pressed()
+		if CreatAccountSuccessful_Proceed_home_button.pressed:
+			return self.state_controller.select(0) # Show Account
 		
-#	if fund_Acct_Button.pressed:
-#		_on_testnetdispenser_pressed()
-#	if make_Payment_Button.pressed:
-#		self.state_controller.select(4)
-#	if imported_mnemonic_button.pressed:
-#		imported_mnemonic = true
-#	if funding_success_close_button.pressed :
-#		reset_transaction_parameters()# fixes double spend buy
-#		state_controller.select(0) #show account dashboard
+		
+		
+		
+		if fund_Acct_Button.pressed:
+			_on_testnetdispenser_pressed()
+		if make_Payment_Button.pressed:
+			self.state_controller.select(3)
+		if imported_mnemonic_button.pressed:
+			imported_mnemonic = true
+		if funding_success_close_button.pressed :
+			reset_transaction_parameters()# fixes double spend bug
+			state_controller.select(0) #show account dashboard
 
-		#************PassWord UI**********#
-#	if state == PASSWORD:
-#		for i in passward_UI_Buttons:
-#			if i.pressed:
-#				password_LineEdit.text += i.text
-#			#else: break
+
+			#************PassWord UI**********#
+		if state == PASSWORD:
+			for i in passward_UI_Buttons:
+				if i.pressed:
+					password_LineEdit.text += i.text
+				#else: break
+
 
 'Processes Algo and Asset Transactions'
 func txn(): #runs presaved transactions once wallet is ready
+	"MicroAlgo Transactions"
 	if recievers_addr != '' && _amount >= 100_000:
 		print ('Transaction Debug: ',recievers_addr, '/','amount: ',_amount, '/', 'txn check', txn_check)
 		
@@ -1170,25 +1334,57 @@ func txn(): #runs presaved transactions once wallet is ready
 		recievers_addr = ''
 		_amount = 0
 		
-		transaction_valid = false
-		
+		reset_transaction_parameters()
 		hideUI()
 		self.funding_success_ui.show()
 	
-	if _asset_id != 0 && asset_id_valid :
-		print (' Asset Txn Debug: ',recievers_addr, '/','asset id: ',_asset_id, '/', 'txn check', txn_check)
+	"Asset Transactions"
+	# Sends Asset Transactions
+	
+	#Parameters : 
+	# Asset Transaction take 1 or more as an amount parameter
+	# THe wallet address is different from the users address
+	
+	if _asset_id != 0 && asset_id_valid  && _amount > 0:
 		
-		#can be used to send both NFT's and Tokens
-		yield(self.Algorand.transferAssets(params,mnemonic, recievers_addr,_asset_id, _amount), "completed")
+		# Parameters
+		if recievers_addr != address:
+			print (' Asset Txn Debug: ',recievers_addr, '/','asset id: ',_asset_id, '/', 'txn check', txn_check)
 		
-		#reset transaction details
-		recievers_addr = ''
-		_asset_id = 0
-		asset_id_valid = false
+			#can be used to send both NFT's and Tokens
+			yield(self.Algorand.transferAssets(params,mnemonic, recievers_addr,_asset_id, _amount), "completed")
+			
+			#reset transaction details
+			reset_transaction_parameters()
+			hideUI()
+			self.funding_success_ui.show()
+		
+	"Asset Optin Transactions"
+	# Asset Optin Txn
+	
+	#Parameters : 
+	# Asset optin Txn take 0 Amount as a Parameter with asset ID
+	# The wallet address is same as users address & UI linedit is empty
+	
+	if _asset_id != 0 && asset_id_valid && _amount == 0:
+		
+		
+		# Parameters
+		if recievers_addr == address:
+			
+			print (' Asset Txn Debug: ',recievers_addr, '/','asset id: ',_asset_id, '/', 'txn check', txn_check)
+			
+			#can be used to send both NFT's and Tokens
+			yield(self.Algorand.transferAssets(params,mnemonic, recievers_addr,_asset_id, _amount), "completed")
+			
+			#reset transaction details
+			reset_transaction_parameters()
+			hideUI()
+			self.funding_success_ui.show()
+	
 
-		hideUI()
-		self.funding_success_ui.show()
-	
+
+
 
 'Processes Smart Contract NoOp transactions'
 func smart_contract(): 
@@ -1208,7 +1404,8 @@ func smart_contract():
 		
 		hideUI()
 		self.funding_success_ui.show()
-	
+		
+		self._Animation_UI.play("SUCCESS")
 	
 	transaction_valid = false
 	_app_id = 0
@@ -1239,20 +1436,27 @@ func reset_transaction_parameters():
 	asset_id_valid = false
 	smart_contract_addr = ''
 	recievers_addr = ""
+	asset_optin = false
+	asset_txn = false
+	#smdslfksf
 
-
-"NFT controller Logic"
-# drag and Drop
-# comics node implemented
+"Collectibles UI Logic"
+# drag and Drop (done)
+# comics node implemented (done)
 # link with collectibles state
-func _NFT():
+# Gallery View
+# Multigesture Swipes for Collectibles Zoom in
+# Implement Asset ID UI for Transactions
+# Implement Asset Optin UX
+#sdfksdlfnskdfnglk
+#func _NFT():
 	# create and hide buttons depending on the amount of Assets counted
 	# Set gallery UI testure button to Asset NFT texture downloaded
+	
 	# load NFT script as child of Collectubles UI texture react
 	
 	# load, show and hide NFT's on Button clicks
 	# Implement Drag and Drop mechanics
-	#fdgsdfgnfldgndlfgn
-	pass
+#	pass
 
 

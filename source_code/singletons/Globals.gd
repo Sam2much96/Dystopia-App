@@ -302,6 +302,7 @@ func _go_to_title():
 	Music.play_track(Music.ui_sfx[1])
 	
 	'changes scene to title_screen'
+	
 	return get_tree().change_scene_to(title_screen)
 
 func _go_to_cinematics():
@@ -362,15 +363,14 @@ static func free_children(node: Node) -> void:
 		node.free()
 
 'Delete Files'
-func delete_local_file(dir: Directory, path_to_file: String) -> void:
-	
+func delete_local_file(path_to_file: String) -> void:
+	var dir = Directory.new()
 	if dir.file_exists(path_to_file):
 		dir.remove(path_to_file)
-		#dir.queue_free()
+		dir.queue_free()
 	else:
 		push_error('File To Delete Doesnt Exist')
 		return
-
 
 
 'Upscale UI'

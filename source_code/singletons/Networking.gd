@@ -386,7 +386,7 @@ static func download_image_(body: PoolByteArray, Save_path: String, node : HTTPR
 # works
 static func download_file_(node : HTTPRequest,body: PoolByteArray, Save_path: String, file_type: String) -> File:
 	var file = File.new()
-	var cunt = []
+	#var cunt = []
 	if body != null:
 		
 		print ("Loading ",file_type, "--------", ( node.get_body_size()), " bytes")# wprks # for debug purposes 
@@ -420,6 +420,51 @@ static func download_file_(node : HTTPRequest,body: PoolByteArray, Save_path: St
 		push_error("Problem fetching json download")
 	return file
 
+
+
+'Saves A File and Stores it Locally'
+#consider running 2 operations here. A read operation and a write operation
+# works
+static func save_file_(body: PoolByteArray, Save_path: String, file_size: int) -> File:
+	var file = File.new()
+	
+	var Dir = Directory.new()
+	
+	if body != null : # && !Dir.file_exists(Save_path):
+		
+		#print ("Loading ",file_type, "--------", ( node.get_body_size()), " bytes")# wprks # for debug purposes 
+		#print("Downloaded bytes-------",node.get_downloaded_bytes())
+		# Should be .zip or .json for different file types
+		# SHould ideally contain a check for verifying the contents of the file type string
+		#file.open_compressed((Save_path + file_type), File.WRITE, File.COMPRESSION_GZIP )
+		
+		
+		file.open((Save_path ), File.WRITE )
+		
+		#while not node.get_downloaded_bytes() > node.get_body_size() && file.eof_reached() == false:
+		print ("storing file to ", Save_path)
+		
+		while not file.get_len() > file_size:
+			file.store_buffer(body)
+			
+			if file.get_len() == file_size:
+				file.close()
+				break 
+		
+		if file.eof_reached(): file.close()
+		
+		# it's sending the data across the network, but its not decoding it properly                                           
+		#var data = node.get_downloaded_bytes()
+		#print ("data: ",data)
+		#if data == 0 :
+		#	print("Download failed. Problem with the Server side Networking connection")
+		#elif data != 0:
+		#	print ('json download successful: ',data, '/bytes') #works
+		##print ("cunt debug: ",cunt) #for debug purposes only
+		#return file
+	if body == null:
+		push_error("Problem fetching file to save")
+	return file
 
 
 func _on_Timer2_timeout():

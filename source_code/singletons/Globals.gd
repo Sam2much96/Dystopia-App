@@ -424,7 +424,9 @@ func check_files(path_to_dir: String, path_to_file : String)-> bool:
 
 "Compression and Uncompression Algorithm"
 # Documentation: https://git.sr.ht/~jelle/gdunzip
-func uncompress(FILE: String) -> PoolByteArray:
+# Returns a pool byte array
+# Has a problem with saving Text files
+func uncompress(FILE: String) : #-> PoolByteArray:
 	# Instance the gdunzip script
 	var gdunzip = load('res://addons/gdunzip/gdunzip.gd').new()
 	
@@ -436,8 +438,9 @@ func uncompress(FILE: String) -> PoolByteArray:
 		
 		print ("Zip File Data : ",gdunzip.files)
 		
+		print ("Files: ",gdunzip.files.keys().size())
 		
-		print ("File: ",gdunzip.files.keys().front())
+		print ("First File: ",gdunzip.files.keys().front())
 		
 
 		
@@ -446,8 +449,19 @@ func uncompress(FILE: String) -> PoolByteArray:
 		# If string files contains excess characters, it would return an invalid utf-8 string
 		# Only parses Zip files and decompresses the First Value 
 		
+		
+		
 		for f in gdunzip.files.values():
 			print('File name: ' + f['file_name'])
+
+			
+
+			#Uncompresses files locally
+			
+			#for t in gdunzip.files.keys():
+			#print ("Type of " + f['file_name'] + " ",typeof(gdunzip.get_compressed(t))) # for debug purposes only
+			Networking.save_file_(gdunzip.get_compressed(f['file_name']), "res://"+f['file_name'], int(f['uncompressed_size'] ))
+
 
 			# "compression_method" will be either -1 for uncompressed data, or
 			# File.COMPRESSION_DEFLATE for deflate streams
@@ -457,5 +471,15 @@ func uncompress(FILE: String) -> PoolByteArray:
 
 			print('Uncompressed size: ' + str(f['uncompressed_size']))
 
+#	"Handles single Zip files"
+#	if gdunzip.files.keys().size() == 1:
 	#returns uncompresed poolbyte array of the first data in the Zip file
-	return (gdunzip.get_compressed(gdunzip.files.keys().front()))
+#		return (gdunzip.get_compressed(gdunzip.files.keys().front()))
+
+
+#	"Handles multiple Zip files"
+#	if gdunzip.files.keys().size() > 1:
+#		for p in gdunzip.files.keys():
+			
+#			# Should read the file name and parse the file extension from it for local storage
+#			return gdunzip.get_compressed(p)

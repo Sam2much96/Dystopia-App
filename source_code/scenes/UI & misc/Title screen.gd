@@ -33,18 +33,18 @@ func _ready():
 	#Works
 #	print(t.get_string_from_utf8())
 
-
+	"Downloads a Zip file from Github and unzips it locally"
+	# Works
+	# Written for Musics singleton optimization		
 	# Texting Server File Downloads
+	if Globals.check_files("res://", "res://music.zip") == false:
+		# Use Code load API for downloading Zip files
+		# Works
+		Networking.url = "https://codeload.github.com/Sam2much96/online-hosting/legacy.zip/8ffef2ef01f945cc3c3d3922c9aadfaf073387e7"
+		Networking._check_connection(Networking.url, u)
 	
-	
-	# Use Code load API for downloading Zip files
-	Networking.url = "https://codeload.github.com/Sam2much96/online-hosting/legacy.zip/8ffef2ef01f945cc3c3d3922c9aadfaf073387e7"
-	Networking._check_connection(Networking.url, u)
-	
-#func _http_request_completed(result, response_code, headers, body): #works with https connection
-
-	
-	
+	if Globals.check_files("res://", "res://music.zip") == true:
+		Globals.uncompress("res://music.zip")
 
 
 func _on_u_request_completed(result, response_code, headers, body):

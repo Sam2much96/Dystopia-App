@@ -121,8 +121,8 @@ margin_left = 16.0
 margin_top = 4.0
 margin_right = 55.0
 margin_bottom = 18.0
-custom_styles/normal = SubResource( 1 )
 custom_colors/font_color = Color( 0.0745098, 0.423529, 0.843137, 1 )
+custom_styles/normal = SubResource( 1 )
 text = "owner"
 
 [node name="slash" type="Label" parent="Repository/RepoInfos/RepoInfosContainer/repo_infos"]
@@ -130,8 +130,8 @@ margin_left = 55.0
 margin_top = 4.0
 margin_right = 64.0
 margin_bottom = 18.0
-custom_styles/normal = SubResource( 2 )
 custom_colors/font_color = Color( 0.0745098, 0.423529, 0.843137, 1 )
+custom_styles/normal = SubResource( 2 )
 text = "/"
 align = 1
 
@@ -174,8 +174,8 @@ __meta__ = {
 margin_left = 100.0
 margin_right = 115.0
 margin_bottom = 22.0
-custom_styles/separator = SubResource( 3 )
 custom_constants/separation = 15
+custom_styles/separator = SubResource( 3 )
 
 [node name="star_values" type="HBoxContainer" parent="Repository/RepoInfos/RepoInfosContainer/repo_infos"]
 margin_left = 885.0
@@ -240,8 +240,8 @@ custom_colors/font_color = Color( 0.0156863, 0.894118, 0.0705882, 1 )
 margin_top = 42.0
 margin_right = 1007.0
 margin_bottom = 47.0
-custom_styles/separator = SubResource( 4 )
 custom_constants/separation = 5
+custom_styles/separator = SubResource( 4 )
 
 [node name="RepositoryInfo" type="HSplitContainer" parent="Repository"]
 margin_top = 47.0
@@ -354,6 +354,8 @@ margin_right = 797.0
 margin_bottom = 515.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_constants/draw_guides = 1
+custom_constants/draw_relationship_lines = 1
 custom_icons/arrow = ExtResource( 4 )
 custom_icons/arrow_collapsed = ExtResource( 5 )
 custom_styles/custom_button_pressed = SubResource( 6 )
@@ -369,8 +371,6 @@ custom_styles/cursor_unfocused = SubResource( 14 )
 custom_styles/selected = SubResource( 15 )
 custom_styles/bg = ExtResource( 8 )
 custom_styles/title_button_pressed = SubResource( 16 )
-custom_constants/draw_guides = 1
-custom_constants/draw_relationship_lines = 1
 hide_root = true
 select_mode = 2
 
@@ -383,8 +383,8 @@ rect_min_size = Vector2( 200, 0 )
 [node name="HSeparator2" type="HSeparator" parent="Repository/RepositoryInfo/RepositoryDetails"]
 margin_right = 200.0
 margin_bottom = 10.0
-custom_styles/separator = SubResource( 17 )
 custom_constants/separation = 10
+custom_styles/separator = SubResource( 17 )
 
 [node name="About" type="VBoxContainer" parent="Repository/RepositoryInfo/RepositoryDetails"]
 margin_top = 14.0
@@ -790,6 +790,7 @@ margin_left = -185.5
 margin_top = -110.0
 margin_right = 185.5
 margin_bottom = 110.0
+rect_min_size = Vector2( 150, 52.5 )
 window_title = "File Extraction (overwriting files)"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -839,6 +840,7 @@ margin_left = -226.0
 margin_top = -133.5
 margin_right = 225.0
 margin_bottom = 133.5
+rect_min_size = Vector2( 150, 52.5 )
 window_title = "Stup Git LFS"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -967,6 +969,7 @@ selected = 0
 __meta__ = {
 "_edit_lock_": true
 }
+
 [connection signal="item_selected" from="Repository/RepositoryInfo/RepositoryContent/BranchInfo/branch/branch2" to="." method="_on_branch2_item_selected"]
 [connection signal="item_activated" from="Repository/RepositoryInfo/RepositoryContent/contents" to="." method="_on_contents_item_activated"]
 [connection signal="item_selected" from="Repository/RepositoryInfo/RepositoryContent/contents" to="." method="_on_contents_item_selected"]

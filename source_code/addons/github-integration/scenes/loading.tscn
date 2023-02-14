@@ -27,7 +27,7 @@ void vertex() {
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
-shader_param/speed = 0
+shader_param/speed = 5
 
 [node name="loading" type="ColorRect"]
 anchor_right = 1.0
@@ -93,4 +93,5 @@ grow_vertical = 2
 size_flags_horizontal = 4
 text = "message"
 align = 1
+
 [connection signal="visibility_changed" from="." to="." method="_on_loading_visibility_changed"]

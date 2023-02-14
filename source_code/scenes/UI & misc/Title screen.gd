@@ -37,12 +37,8 @@ func _ready():
 	# Texting Server File Downloads
 	
 	
-	# Connect Signals
-	#if not u.is_connected("request_completed", self, "_http_request_completed"):
-	#	return u.connect("request_completed", self, "_http_request_completed")
-	
-	#Networking.url = "https://github.com/Sam2much96/online-hosting/blob/main/music.zip"
-	Networking.url = "https://github.com/Sam2much96/online-hosting/blob/main/310-world-map-loop.zip"
+	# Use Code load API for downloading Zip files
+	Networking.url = "https://codeload.github.com/Sam2much96/online-hosting/legacy.zip/8ffef2ef01f945cc3c3d3922c9aadfaf073387e7"
 	Networking._check_connection(Networking.url, u)
 	
 #func _http_request_completed(result, response_code, headers, body): #works with https connection
@@ -59,6 +55,7 @@ func _on_u_request_completed(result, response_code, headers, body):
 	if not body.empty():
 		#Buggy. Downloads a corrupt file
 		Networking.download_file_(u, body, "res://music",".zip")
+		#RestHandler.request_pull_branch(zip_filepath, typeball_url, current_repo._repository.diskUsage)
 	
 	if body.empty(): #returns an empty body
 		push_error("Result Unsuccessful")

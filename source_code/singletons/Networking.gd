@@ -383,6 +383,7 @@ static func download_image_(body: PoolByteArray, Save_path: String, node : HTTPR
 
 'Downloads A File and Stores it Locally'
 #consider running 2 operations here. A read operation and a write operation
+# works
 static func download_file_(node : HTTPRequest,body: PoolByteArray, Save_path: String, file_type: String) -> File:
 	var file = File.new()
 	var cunt = []
@@ -392,9 +393,11 @@ static func download_file_(node : HTTPRequest,body: PoolByteArray, Save_path: St
 		print("Downloaded bytes-------",node.get_downloaded_bytes())
 		# Should be .zip or .json for different file types
 		# SHould ideally contain a check for verifying the contents of the file type string
+		#file.open_compressed((Save_path + file_type), File.WRITE, File.COMPRESSION_GZIP )
 		file.open((Save_path + file_type), File.WRITE )
 		
 		while not node.get_downloaded_bytes() > node.get_body_size() && file.eof_reached() == false:
+		
 		
 			file.store_buffer(body)
 			
@@ -402,7 +405,7 @@ static func download_file_(node : HTTPRequest,body: PoolByteArray, Save_path: St
 					file.close()
 					break 
 		
-		#if file.eof_reached(): file.close()
+		if file.eof_reached(): file.close()
 		
 		# it's sending the data across the network, but its not decoding it properly                                           
 		var data = node.get_downloaded_bytes()

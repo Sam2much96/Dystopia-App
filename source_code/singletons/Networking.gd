@@ -381,6 +381,39 @@ static func download_image_(body: PoolByteArray, Save_path: String, node : HTTPR
 		push_error("Problem fetching image download")
 	return texture
 
+'Downloads A File and Stores it Locally'
+#consider running 2 operations here. A read operation and a write operation
+static func download_file_(node : HTTPRequest,body: PoolByteArray, Save_path: String, file_type: String) -> File:
+	var file = File.new()
+	var cunt = []
+	if body != null:
+		
+		print ("Loading ",file_type, "--------", ( node.get_body_size()), " bytes")# wprks # for debug purposes 
+		
+		# Should be .zip or .json for different file types
+		# SHould ideally contain a check for verifying the contents of the file type string
+		file.open((Save_path + file_type), File.WRITE )
+		
+		while not node.get_downloaded_bytes() > node.get_body_size() && file.eof_reached() == false:
+			file.store_buffer(body)
+			
+			if node.get_downloaded_bytes() == node.get_body_size(): #causes a significant lag
+					file.close()
+					break 
+		# it's sending the data across the network, but its not decoding it properly                                           
+		var data = node.get_downloaded_bytes()
+		print ("data: ",data)
+		if data == 0 :
+			print("Download failed. Problem with the Server side Networking connection")
+		elif data != 0:
+			print ('json download successful: ',data, '/bytes') #works
+		#print ("cunt debug: ",cunt) #for debug purposes only
+		return file
+	if body == null:
+		push_error("Problem fetching json download")
+	return file
+
+
 
 func _on_Timer2_timeout():
 	print ('check timer stopped')

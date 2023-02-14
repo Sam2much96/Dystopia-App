@@ -413,8 +413,8 @@ func calc_average(list: Array):
 	else : return
 
 "File Checker"
-# Generic file checking method for DIrectory path and file name/type
-
+# Global file checking method for DIrectory path and file name/type
+# Copied from Wallet's Implementation
 func check_files(path_to_dir: String, path_to_file : String)-> bool:
 	if FileDirectory.dir_exists(path_to_dir):
 		print ("File Exists: ",FileCheck1.file_exists(path_to_file)) # For debug purposes only

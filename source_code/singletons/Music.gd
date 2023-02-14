@@ -127,6 +127,7 @@ func _ready():
 	# Texting Server File Downloads
 	
 	# Checks for music files in playlist one in Local Storage
+	
 	for y in playlist_one.values():
 		if Globals.check_files("res://music", y) == false:
 		# Use Code load API for downloading Zip files

@@ -11,12 +11,16 @@
 # (2) Plays SFX
 # (3) Plays single music file
 # (4) Uses 4 Music channels
+# (5) Downloads music files from Server
 # To do:
 # (1) Use state machine to descibe different states for this signleton
 # (2) Turn on/ off debugging reduce draining performance
 # (3) Separate Off sfx and off music
 # (4) Document code
 # (5) Organize code into states
+# (6) Implement Global file checker and Directory Checker
+
+
 # *************************************************
 # Bugs:
 # (1) Music debug function breaks

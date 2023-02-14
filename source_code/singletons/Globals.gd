@@ -126,8 +126,10 @@ var NFT: TextureRect #should ideally be an array for multiple NFT's
 var wallet_state  #wallet state global variabe
 
 
-"Zip Compression and Decompression Script"
-#var gdunzip = load ("res://addons/gdunzip/gdunzip.gd").new()
+" File Checkers"
+var FileCheck1=File.new() # checks wallet mnemonic
+var FileDirectory=Directory.new() #deletes all theon reset
+
 func _ready():
 	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	
@@ -409,6 +411,15 @@ func calc_average(list: Array):
 			average = numerator/denominator
 			return average
 	else : return
+
+"File Checker"
+# Generic file checking method for DIrectory path and file name/type
+
+func check_files(path_to_dir: String, path_to_file : String)-> bool:
+	if FileDirectory.dir_exists(path_to_dir):
+		print ("File Exists: ",FileCheck1.file_exists(path_to_file)) # For debug purposes only
+		return FileCheck1.file_exists(path_to_file)
+	else: return false
 
 
 "Compression and Uncompression Algorithm"

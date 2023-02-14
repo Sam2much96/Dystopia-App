@@ -389,17 +389,21 @@ static func download_file_(node : HTTPRequest,body: PoolByteArray, Save_path: St
 	if body != null:
 		
 		print ("Loading ",file_type, "--------", ( node.get_body_size()), " bytes")# wprks # for debug purposes 
-		
+		print("Downloaded bytes-------",node.get_downloaded_bytes())
 		# Should be .zip or .json for different file types
 		# SHould ideally contain a check for verifying the contents of the file type string
 		file.open((Save_path + file_type), File.WRITE )
 		
 		while not node.get_downloaded_bytes() > node.get_body_size() && file.eof_reached() == false:
+		
 			file.store_buffer(body)
 			
 			if node.get_downloaded_bytes() == node.get_body_size(): #causes a significant lag
 					file.close()
 					break 
+		
+		#if file.eof_reached(): file.close()
+		
 		# it's sending the data across the network, but its not decoding it properly                                           
 		var data = node.get_downloaded_bytes()
 		print ("data: ",data)

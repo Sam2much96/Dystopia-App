@@ -417,7 +417,7 @@ func calc_average(list: Array):
 # Copied from Wallet's Implementation
 func check_files(path_to_dir: String, path_to_file : String)-> bool:
 	if FileDirectory.dir_exists(path_to_dir):
-		print ("File Exists: ",FileCheck1.file_exists(path_to_file)) # For debug purposes only
+		#print ("File Exists: ",FileCheck1.file_exists(path_to_file)) # For debug purposes only
 		return FileCheck1.file_exists(path_to_file)
 	else: return false
 

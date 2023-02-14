@@ -134,7 +134,3 @@ rect_scale = Vector2( 1.03307, 1.03307 )
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 6
-
-[node name="u" type="HTTPRequest" parent="."]
-
-[connection signal="request_completed" from="u" to="." method="_on_u_request_completed"]

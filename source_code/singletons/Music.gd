@@ -17,7 +17,7 @@
 # (2) Turn on/ off debugging reduce draining performance
 # (3) Separate Off sfx and off music
 # (4) Document code
-# (5) Organize code into states
+# (5) Organize code into states {Finite State Machine}
 # (6) Implement Global file checker and Directory Checker
 
 
@@ -38,6 +38,8 @@ export (int) var volume # volume controller code is not yet written
 
 export(String, FILE, "*.ogg") var music_track = ""
 
+# should me moved to github repository
+# file checker should loop through playlist
 var playlist_one = {
 	0:'res://music/310-world-map-loop.ogg', 
 	1:'res://music/chike san afro 1.ogg',
@@ -113,7 +115,33 @@ onready var current_track
 onready var music_bus_2 = AudioServer.get_bus_index($B.bus)
 onready var music_bus = AudioServer.get_bus_index($A.bus)
 
+#  Server File Downloads
+onready var request_node = $HTTPRequest
+
 func _ready():
+	#Check if files are available locally
+	
+	"Downloads a Zip file from Github and unzips it locally"
+	# Works
+	# Written for Musics singleton optimization		
+	# Texting Server File Downloads
+	
+	# Checks for music files in playlist one in Local Storage
+	for y in playlist_one.values():
+		if Globals.check_files("res://music", y) == false:
+		# Use Code load API for downloading Zip files
+		# Works
+		# Url was gotten from Github integration API
+			Networking.url = "https://codeload.github.com/Sam2much96/online-hosting/legacy.zip/8ffef2ef01f945cc3c3d3922c9aadfaf073387e7"
+			Networking._check_connection(Networking.url, request_node)
+
+		if Globals.check_files("res://music", y) == true:
+			print ("File Check for music file: ", y," exists")
+		
+		#Globals.uncompress("res://music.zip")
+
+
+	
 	#load on/off music settings
 	
 	
@@ -268,7 +296,29 @@ func sound(what): #Turns on/ off and saves it via a global script
 		music_on = true
 		sfx_on = true
 
+
+
+
+
 func _exit_tree(): 
 	#turn_off()
 	sound('off')
 
+
+"Downloads Music files from Github"
+
+
+func _on_HTTPRequest_request_completed(result, response_code, headers, body):
+	print (" request done 1: ", result) #********for debug purposes only
+	print (" headers 1: ", headers)#*************for debug purposes only
+	print (" response code 1: ", response_code) #for debug purposes only
+	
+	if not body.empty():
+		#Buggy. Downloads a corrupt file
+		return Networking.download_file_(request_node, body, "res://music",".zip")
+		#RestHandler.request_pull_branch(zip_filepath, typeball_url, current_repo._repository.diskUsage)
+	
+	if body.empty(): #returns an empty body
+		push_error("Result Unsuccessful")
+		#good_internet = false
+		#Networking.stop_check()

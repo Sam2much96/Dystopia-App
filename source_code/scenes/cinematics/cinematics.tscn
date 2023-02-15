@@ -17,8 +17,6 @@ rect_scale = Vector2( 0.65, 0.65 )
 [node name="VideoPlayer" type="VideoPlayer" parent="Node2D"]
 expand = false
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node2D"]
-
 [node name="skip" type="TextureButton" parent="."]
 visible = false
 modulate = Color( 0.584314, 0.152941, 0.152941, 1 )

@@ -24,7 +24,7 @@ class_name cinematic
 
 #save resource to a .tres file
 #update code to use as videoplayer's base node to play all videos in the scene
-export (bool) var one_shot 
+#export (bool) var one_shot 
 export (bool) var cinematic_on = true
 #it only works with ogv files
 export(String, FILE, "*.ogv") var vid_stream = ""
@@ -37,6 +37,7 @@ onready var animation = $"animation player"
 onready var videoplayer = get_node('Node2D/VideoPlayer') #video player node
 onready var os 
 onready var node = get_node("Node2D") #popup node for centering cinematics
+
 
 var cinematic = {
 	0:'res://resources/title animation/title..ogv',
@@ -53,12 +54,6 @@ CINEMATICS
 func _ready(): #create a video player function
 	#use current scene to trigger cinematic
 	Globals.update_curr_scene()
-	
-	#Should centralize video player position
-	#Doesnt work
-	
-	#node.call_deferred('move_child', node.get_child(0), 0)
-	#node.call_deferred('popup_centered')
 	
 	
 	print('Cinematic Debug: /current scene/',  Globals.curr_scene) #for debug purposes
@@ -77,7 +72,8 @@ func _ready(): #create a video player function
 func _on_skip_pressed():
 	videoplayer.stop()
 
-	get_tree().change_scene_to(Globals.title_screen)
+	Globals._go_to_title()
+	#get_tree().change_scene_to(Globals.title_screen)
 	if Globals.curr_scene == 'Cinematics':
 			_free_memory(Globals.cinematics)
 
@@ -109,14 +105,12 @@ func _on_VideoPlayer_finished():
 	cinematic_on= false
 	
 	if Globals.curr_scene == 'Cinematics': #I use this bool to define two states
-		one_shot == true
+		
 		
 		
 		_free_memory(Globals.cinematics)
 		get_tree().change_scene_to(Globals.title_screen)
-		
-	if one_shot == true:
-		self.hide()
+
 
 func _on_Timer_timeout():
 	push_error('Cinematic scene broken')
@@ -131,12 +125,14 @@ func play_opening_cinematic():
 	#loads resource into memory 
 	vid_stream = Globals.cinematics #ResourceLoader.load_interactive(cinematic [0])
 	Video_Stream(vid_stream)
-	$Node2D/AudioStreamPlayer.play(0.0)
-	#opening_cinematic_playing = false
-	pass
+	
+	return Music.play_track(Music.wind_sfx[0])
+
+
+
 'Rewrite function to be used via Extensions'
-func _free_memory(items): # A Generic function to clear global variables once they've been used
-	items = null
+func _free_memory(_items): # A Generic function to clear global variables once they've been used
+	_items = null
 
 """
 Quickly sets a videoplayer to Play music and videos

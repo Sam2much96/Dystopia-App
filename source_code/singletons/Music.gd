@@ -41,7 +41,7 @@ export(String, FILE, "*.ogg") var music_track = ""
 
 # should me moved to github repository
 # file checker should loop through playlist
-var playlist_one = {
+var playlist_one : Dictionary = {
 	0:'res://music/310-world-map-loop.ogg', 
 	1:'res://music/chike san afro 1.ogg',
 	2:'res://music/chike san afro 2.ogg',
@@ -56,9 +56,8 @@ var playlist_one = {
 	11:'res://music/HENSONN_SAHARA.ogg',
 	12:'res://music/Moya.ogg',
 	13:'res://music/Turn up.ogg',
-	14:'res://music/wind_2.ogg'
 }
-var comic_sfx = {
+var comic_sfx : Dictionary = {
 	0: 'res://sounds/book_flip.1.ogg',
 	1:'res://sounds/book_flip.10.ogg',
 	2:'res://sounds/book_flip.2.ogg',
@@ -71,13 +70,13 @@ var comic_sfx = {
 	9:'res://sounds/book_flip.9.ogg'
 }
 
-var ui_sfx = {
+var ui_sfx : Dictionary = {
 	0:'res://sounds/Menu1A.ogg',
 	1:'res://sounds/Menu1B.ogg',
 }
 
 
-var hit_sfx = {
+var hit_sfx : Dictionary = {
 	0:'res://sounds/hit01.ogg',
 	1:'res://sounds/hit02.ogg',
 	2:'res://sounds/hit03.ogg',
@@ -89,9 +88,47 @@ var hit_sfx = {
 
 }
 
-var grass_sfx = {0:'res://sounds/Fantozzi-SandR3.ogg'}
+var grass_sfx : Dictionary  = {0:'res://sounds/Fantozzi-SandR3.ogg'}
 
-var wind_sfx = {0:'res://music/wind_2.ogg'}
+var wind_sfx : Dictionary = {0:'res://sounds/wind_2.ogg'}
+
+var nokia_soundpack : Dictionary = {
+	0: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/bad_melody.ogg",
+	1: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip1.ogg",
+	2: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip2.ogg",
+	3: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip3.ogg",
+	4: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip4.ogg",
+	5: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip5.ogg",
+	6: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip6.ogg",
+	7: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip7.ogg",
+	8: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip8.ogg",
+	9: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip9.ogg",
+	10: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip10.ogg",
+	11: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip11.ogg",
+	12: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip12.ogg",
+	13: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip13.ogg",
+	14: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip14.ogg",
+	15: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/C5.ogg",
+	16: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/crust.ogg",
+	17: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/good1.ogg",
+	18 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/good2.ogg",
+	19 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/good3.ogg",
+	20 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/hit1.ogg",
+	21 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/hit2.ogg",
+	22 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/hit3.ogg",
+	23 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/hit4.ogg",
+	24 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/hit5.ogg",
+	25 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/hit6.ogg",
+	26 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/jingle1.ogg",
+	27 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/negative1.ogg",
+	28 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/negative2.ogg",
+	29 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/odd1.ogg",
+	30 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/odd2.ogg",
+	31 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/odd3.ogg",
+	32 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/odd4.ogg",
+	33 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/ring1.ogg",
+	34 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/soundtest.ogg",
+}
 
 var _music
 onready var Music_streamer =get_node("A")  #Refrences the music player node
@@ -121,7 +158,7 @@ onready var music_bus = AudioServer.get_bus_index($A.bus)
 func _ready():
 	
 	
-	download_and_uncompress_music()
+	download_and_uncompress_music() # Needs more code
 	
 	#load on/off music settings
 	
@@ -145,7 +182,7 @@ func _process(_delta):
 	"""
 	Music Debug
 	"""
-	_music_debug()  #breaks # for debug purposes only
+	#_music_debug()  #breaks # for debug purposes only
 	
 	#Auto sets Globals Music Settings
 
@@ -291,6 +328,8 @@ func _on_Timer_timeout():
 	pass # Replace with function body.
 
 # Buggy for large Zip files
+# Needs more code to establish proper http get from github repo
+# might require admin login to github for users
 func download_and_uncompress_music() :
 
 	#Check if files are available locally

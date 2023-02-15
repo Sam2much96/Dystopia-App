@@ -253,8 +253,11 @@ func _on_hurtbox_area_entered(area):
 		blood.global_position = global_position
 		get_parent().add_child(blood)
 		
+		Music.play_track(Music.nokia_soundpack[20])
+		
 		if hitpoints <= 0:
 			state = STATE_DIE
+			Music.play_track(Music.nokia_soundpack[27])
 	pass
 
 func start_timer(time: float):

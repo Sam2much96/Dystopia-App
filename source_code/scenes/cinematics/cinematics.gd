@@ -109,8 +109,8 @@ func _on_VideoPlayer_finished():
 		
 		
 		_free_memory(Globals.cinematics)
-		get_tree().change_scene_to(Globals.title_screen)
-
+		#get_tree().change_scene_to(Globals.title_screen)
+		Globals._go_to_title()
 
 func _on_Timer_timeout():
 	push_error('Cinematic scene broken')

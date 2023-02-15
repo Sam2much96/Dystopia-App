@@ -13,7 +13,8 @@ The purpose of this code is to beautify the UI programmatically
 onready var art1 = $TextureRect
 onready var art2 = $TextureRect2
 
-
+#  Server File Downloads
+#onready 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -31,5 +32,9 @@ func _ready():
 	#var t=Globals.uncompress('res://music/music.zip')
 	#Works
 #	print(t.get_string_from_utf8())
+
+
+
+
 
 

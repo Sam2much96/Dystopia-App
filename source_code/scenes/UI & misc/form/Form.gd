@@ -20,13 +20,13 @@ This is a gate-keeper script to keep check user's internet connections, restrict
 ####
 
 
-var cinematics = preload('res://scenes/cinematics/cinematics.tscn')
-var index = 0
+var cinematics = load('res://scenes/cinematics/cinematics.tscn')
+var index : int = 0
 
 #Saves player name and emaol address to global script
-var player_name
-var email_addr
-onready var play_button = $ui/grid/play
+var player_name : String
+var email_addr : String
+onready var play_button : Button = $ui/grid/play
 onready var dialgue_box = $Dialog_box
 onready var language = $ui/grid/language
 ########Label Spacer Codes Are Used For Aesthetics#########

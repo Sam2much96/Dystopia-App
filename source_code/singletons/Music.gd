@@ -26,6 +26,7 @@
 # (1) Music debug function breaks
 # (2) Debug Function breaks
 # (3) Music Volume is unimplemented
+# (4) Music Downloads is buggy for large (20mb) files
 # *************************************************
 """
 THERE ARE TWO FUNCTIONS FOR PLAYING MUSIC TRACKS AND MUSIC PLAYLISTS
@@ -115,33 +116,12 @@ onready var current_track
 onready var music_bus_2 = AudioServer.get_bus_index($B.bus)
 onready var music_bus = AudioServer.get_bus_index($A.bus)
 
-#  Server File Downloads
-onready var request_node = $HTTPRequest
+
 
 func _ready():
-	#Check if files are available locally
 	
-	"Downloads a Zip file from Github and unzips it locally"
-	# Works
-	# Written for Musics singleton optimization		
-	# Texting Server File Downloads
 	
-	# Checks for music files in playlist one in Local Storage
-	
-	for y in playlist_one.values():
-		if Globals.check_files("res://music", y) == false:
-		# Use Code load API for downloading Zip files
-		# Works
-		# Url was gotten from Github integration API
-			Networking.url = "https://codeload.github.com/Sam2much96/online-hosting/legacy.zip/8ffef2ef01f945cc3c3d3922c9aadfaf073387e7"
-			Networking._check_connection(Networking.url, request_node)
-
-		if Globals.check_files("res://music", y) == true:
-			print ("File Check for music file: ", y," exists")
-		
-		#Globals.uncompress("res://music.zip")
-
-
+	download_and_uncompress_music()
 	
 	#load on/off music settings
 	
@@ -306,6 +286,45 @@ func _exit_tree():
 	sound('off')
 
 
+
+func _on_Timer_timeout():
+	pass # Replace with function body.
+
+# Buggy for large Zip files
+func download_and_uncompress_music() :
+
+	#Check if files are available locally
+#func _process(_delta):
+	"Downloads a Zip file from Github and unzips it locally"
+	# Works
+	# Written for Musics singleton optimization		
+	# Texting Server File Downloads
+	
+	# Checks for music files in playlist one in Local Storage
+	var request_node = $HTTPRequest
+	
+	for y in Music.playlist_one.values():
+		# checks local storage for files
+		if Globals.check_files("res://music", y) == false:
+		# Use Code load API for downloading Zip files
+		# Works
+		# Url was gotten from Github integration API
+			#Networking.url = "https://codeload.github.com/Sam2much96/online-hosting/legacy.zip/f79fd1aa94709b966dacea994a8eb5540be48bad"
+			Networking.url = "https://codeload.github.com/Sam2much96/online-hosting/legacy.zip/f79fd1aa94709b966dacea994a8eb5540be48bad"
+			return Networking._check_connection(Networking.url, request_node) # Part 1
+			
+			
+
+		if Globals.check_files("res://music", y) == true:
+			print ("File Check for music file: ", y," exists")
+	
+	# check if zip file is downloaded
+	if Globals.check_files("res://music", "res://music/online-hosting-main.zip"):
+		
+		# Unzips them
+		Globals.uncompress("res://music/online-hosting-main.zip")
+
+
 "Downloads Music files from Github"
 
 
@@ -315,6 +334,8 @@ func _on_HTTPRequest_request_completed(result, response_code, headers, body):
 	print (" response code 1: ", response_code) #for debug purposes only
 	
 	if not body.empty():
+		print (11111111111111)
+		var request_node = $HTTPRequest
 		#Buggy. Downloads a corrupt file
 		return Networking.download_file_(request_node, body, "res://music",".zip")
 		#RestHandler.request_pull_branch(zip_filepath, typeball_url, current_repo._repository.diskUsage)
@@ -323,3 +344,4 @@ func _on_HTTPRequest_request_completed(result, response_code, headers, body):
 		push_error("Result Unsuccessful")
 		#good_internet = false
 		#Networking.stop_check()
+

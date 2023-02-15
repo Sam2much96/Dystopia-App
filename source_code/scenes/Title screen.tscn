@@ -134,3 +134,12 @@ rect_scale = Vector2( 1.03307, 1.03307 )
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 6
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 20.0
+autostart = true
+
+[connection signal="ready" from="HTTPRequest" to="." method="_on_HTTPRequest_ready"]
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]

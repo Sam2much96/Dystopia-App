@@ -43,7 +43,7 @@ func _ready():
 		_debug = get_tree().get_root().get_node("/root/Debug")
 #Adds 3 new languague selection
 	language.add_item('English') 
-	#language.add_item('Francoise') 
+	language.add_item('Brazil') 
 	#language.add_item('Nigerian Pidgin')
 
 	# Connects the Networking signal
@@ -93,6 +93,9 @@ func _check_if_device_is_online():
 func _http_request_completed(result, response_code, headers, body):
 	if body.empty() != true:
 		show_play_button()
+		
+		Networking.good_internet = true #aves the internet status as a global variable
+		
 		dialgue_box.show_dialog('Device is internet connected','Admin')
 		print ('Device is internet connected', result, response_code)
 		return

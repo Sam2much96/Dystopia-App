@@ -7,6 +7,7 @@
 # To Do:
 # (1) State machine (done)
 # (2) Update ripple animation
+# (3) Move all provess functions to Global script
 #Bugs:
 # (1) It only works on the player. It should work on Player and Enemy
 # (2) The puddle FX whith is a kinematic body 2d is supposed to follow the Body collissions movement, it currently does not
@@ -28,7 +29,7 @@ var  body_pos
 var puddle_pos
 var final_pos
 
-onready var maxlength = $CollisionShape2D.shape.radius
+onready var maxlength : float = $CollisionShape2D.shape.radius
 
 func _on_pond_body_entered(body): #Low level program, would not execute
 	if body is Player: 
@@ -40,8 +41,11 @@ func _on_pond_body_entered(body): #Low level program, would not execute
 		'Include Code Here for Puddle Fx to follow player and instance multiple times'
 		#puddle_fx.duplicate(3)
 		body_pos = body.position
-		puddle_pos =  puddle_fx.get_position()
-		final_pos= Globals.restaVectores(body.position, puddle_pos)
+		#puddle_pos =  puddle_fx.get_position()
+		
+		Globals.set_process(true)
+		
+		final_pos= Globals.restaVectores(body.position, puddle_fx.get_position())
 		
 		
 		

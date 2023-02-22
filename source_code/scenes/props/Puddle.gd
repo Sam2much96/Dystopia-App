@@ -12,6 +12,8 @@
 
 extends KinematicBody2D
 
+onready var animation_player_ = $CollisionShape2D/AnimationPlayer
+
 func _enter_tree():
 	#hide()
 	pass
@@ -20,15 +22,15 @@ func _ready():
 	pass
 
 func ripple()-> void:
-	$CollisionShape2D/AnimationPlayer.play("ripple_anim ")
+	animation_player_.play("ripple_anim ")
 
 
 func splash()-> void:
 	
-	$CollisionShape2D/AnimationPlayer.play("splash_anim")
+	animation_player_.play("splash_anim")
 
 func change_position(position): #Changes the position of the effect to the player's positon
 	var a=position.x
 	var b=position.y
-	move_and_slide(Vector2(a,b))
-	return
+	
+	return move_and_slide(Vector2(a,b))

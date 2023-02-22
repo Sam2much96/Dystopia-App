@@ -123,8 +123,8 @@ func _on_Timer_timeout():
 func play_opening_cinematic():
 	#Plays the opening cinematic 
 	#loads resource into memory 
-	vid_stream = Globals.cinematics #ResourceLoader.load_interactive(cinematic [0])
-	Video_Stream(vid_stream)
+	#vid_stream = Globals.cinematics #ResourceLoader.load_interactive(cinematic [0])
+	Video_Stream(Globals.cinematics)
 	
 	return Music.play_track(Music.wind_sfx[0])
 

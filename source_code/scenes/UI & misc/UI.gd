@@ -46,6 +46,8 @@ func _input(_event):
 
 	" UI Animation"
 	# Controls the Touch interface state machine from the player's input 
+	
+	
 	if Input.is_action_just_pressed("comics"):
 		if _Comics.enabled == true:
 			if TouchInterface._state_controller != 4  and _Comics.loaded_comics == true:
@@ -65,11 +67,9 @@ func _input(_event):
 		if TouchInterface._state_controller != 2: #2 is attack state  #uses old state_machine?
 			TouchInterface.attack()
 			
-			#bug happens whenever player is killed
-			#Implement timer with deltaTime and pass a boolean variable to fix this bug
-			yield(get_tree().create_timer(3.0), "timeout") #Bad Code Implementation. Use a timer node instead
-			TouchInterface.reset()
-	
+			# Uses Networking Timer to Reset Touch Interface
+			Networking.start_check(3)
+			
 	#'Sets Interract UI'
 	# Hard connects to all interractible objects connected via the global variable
 	if Globals.near_interractible_objects == true : #&& Input.is_action_just_pressed("interact"):
@@ -130,8 +130,45 @@ func connect_signals()-> bool:
 	
 	if not menu.is_connected("menu_hidden", TouchInterface, 'reset'):
 		menu.connect("menu_hidden", TouchInterface, "reset")
-	return true
 	
-	#uses state machines instead #broken signals bug
-	#return menu.connect("menu_hidden",self,'on_menu_hidden')
-	#return menu.connect("menu_showing",self,'on_menu_showing')
+	
+	# Resets Using Networking timer
+	if not Networking.timer.is_connected("timeout", TouchInterface, "reset") :
+		Networking.timer.connect("timeout", TouchInterface, "reset")
+	return true
+
+func disconnect_signals()-> bool:
+	# 
+	# Connects from singleton?
+	if Dialogs.is_connected("dialog_started", self, "_on_dialog_started"):
+		Dialogs.disconnect("dialog_started", self, "_on_dialog_started")
+		
+	if Dialogs.is_connected("dialog_ended", self, "_on_dialog_ended"):
+		Dialogs.disconnect("dialog_ended", self, "_on_dialog_ended")
+	
+	if _Stats.is_connected("not_enabled",self, '_on_status_hidden'):
+		_Stats.disconnect("not_enabled",self, '_on_status_hidden')
+	
+	if _Stats.connect('enabled',self,'_on_status_showing'):
+		_Stats.disconnect('enabled',self,'_on_status_showing')
+	
+	if _Comics.connect( 'freed_comics', self, '_on_comics_freed'  ):
+		 _Comics.disconnect( 'freed_comics', self, '_on_comics_freed'  )
+	
+	if menu.is_connected("menu_showing", TouchInterface, "menu"): #works
+		menu.disconnect("menu_showing", TouchInterface, "menu")
+	
+	if menu.is_connected("menu_hidden", TouchInterface, 'reset'):
+		menu.disconnect("menu_hidden", TouchInterface, "reset")
+	
+	
+	# Resets Using Networking timer
+	if Networking.timer.is_connected("timeout", TouchInterface, "reset") :
+		Networking.timer.disconnect("timeout", TouchInterface, "reset")
+	return true
+
+
+
+
+func _exit_tree():
+	disconnect_signals()

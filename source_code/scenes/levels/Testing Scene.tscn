@@ -46,6 +46,7 @@ position = Vector2( -130, 461 )
 position = Vector2( -11, 617 )
 
 [node name="UI" parent="." instance=ExtResource( 2 )]
+visible = false
 
 [node name="enemy_spawner" parent="." instance=ExtResource( 13 )]
 enabled = false

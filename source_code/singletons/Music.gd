@@ -157,8 +157,8 @@ onready var music_bus = AudioServer.get_bus_index($A.bus)
 
 func _ready():
 	
-	
-	download_and_uncompress_music() # Needs more code
+	# Needs more code
+	#download_and_uncompress_music() 
 	
 	#load on/off music settings
 	

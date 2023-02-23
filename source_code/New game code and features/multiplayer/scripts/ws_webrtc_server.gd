@@ -230,7 +230,7 @@ func listen(_IP,port):
 	stop()
 	rand.seed = OS.get_unix_time()
 	server.set_bind_ip(_IP)
-	server.listen(port)
+	server.listen(port, PoolStringArray([]), false)
 	#
 	#print ("Server Bind IP 2: ",server.get_bind_ip())
 	

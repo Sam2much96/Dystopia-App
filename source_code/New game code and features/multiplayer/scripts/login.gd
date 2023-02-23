@@ -54,7 +54,7 @@ func _on_button_login_pressed(): #others join
 		push_error("Unable to load client scene!")
 
 # Callback function for "Start Server" button
-# COnnets to 0:0:0:0 by default cuz of converstions of web url string to IP
+# COnnets to 0:0:0:0:0:0:0:0  by default cuz of converstions of web url string to IP
 func _on_button_start_server_pressed(): #someone starts the server #inhumanity
 	Networking.cfg_server_ip = input_hostname.text
 	

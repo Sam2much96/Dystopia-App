@@ -76,6 +76,7 @@ rect_scale = Vector2( 7.2228, 7.2228 )
 texture = ExtResource( 28 )
 
 [node name="dune_tex 2" type="TextureRect" parent="Dune textures"]
+visible = false
 self_modulate = Color( 1, 1, 1, 0.584314 )
 margin_left = -1903.22
 margin_top = -6856.92
@@ -94,6 +95,7 @@ rect_scale = Vector2( 11.4114, 11.4114 )
 texture = ExtResource( 28 )
 
 [node name="dune_tex 4" type="TextureRect" parent="Dune textures"]
+visible = false
 self_modulate = Color( 1, 1, 1, 0.556863 )
 margin_left = 4984.78
 margin_top = -7096.92

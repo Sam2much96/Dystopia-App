@@ -383,3 +383,12 @@ func debug()-> void:
 func _exit_tree():
 	Globals.queue_free_children(self)
 	#Globals.free_children(self)
+
+
+
+func _on_VisibilityNotifier2D_screen_entered():
+	set_process(true)
+
+
+func _on_VisibilityNotifier2D_screen_exited():
+	set_process(false)

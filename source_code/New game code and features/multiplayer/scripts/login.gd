@@ -44,9 +44,9 @@ func _on_button_login_pressed(): #others join
 	
 	# Lookup hostname and store resolved IP
 	#Networking.cfg_server_ip = IP.resolve_hostname(input_hostname.text) (depreciated)
-	Networking.cfg_server_ip = input_hostname.text
+	Networking.cfg_client_ip = input_hostname.text
 	
-	print ("Networking IP :", Networking.cfg_server_ip)
+	print ("Client Networking IP :", Networking.cfg_client_ip)
 	
 	
 	# Change to client scene
@@ -54,7 +54,12 @@ func _on_button_login_pressed(): #others join
 		push_error("Unable to load client scene!")
 
 # Callback function for "Start Server" button
+# COnnets to 0:0:0:0 by default cuz of converstions of web url string to IP
 func _on_button_start_server_pressed(): #someone starts the server #inhumanity
+	Networking.cfg_server_ip = input_hostname.text
+	
+	print ("Server Networking IP :", Networking.cfg_server_ip)
+	
 	# Change to server scene
 	if get_tree().change_scene("res://New game code and features/multiplayer/scenes/server.tscn") != OK:
 		push_error("Unable to load server scene!")

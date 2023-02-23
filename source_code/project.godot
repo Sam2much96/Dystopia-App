@@ -261,7 +261,6 @@ Music="*res://singletons/Music.tscn"
 Networking="*res://singletons/Networking.tscn"
 Comics_v5="*res://singletons/Comics.v5.1.gd"
 AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
-DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
 InputManager="*res://addons/GDTIM-Demo-v2_1_2/InputManager.gd"
 GlobalAnimation="*res://singletons/GlobalAnimationPlayer.tscn"
 Wallet="*res://scenes/Wallet/Wallet.gd"
@@ -283,7 +282,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/algodot/plugin.cfg", "res://addons/github-integration/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/github-integration/plugin.cfg" )
 
 [gdnative]
 

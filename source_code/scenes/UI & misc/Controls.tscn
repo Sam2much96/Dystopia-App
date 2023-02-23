@@ -180,6 +180,7 @@ __meta__ = {
 }
 
 [node name="CheckButton" type="CheckButton" parent="."]
+visible = false
 margin_left = 670.09
 margin_top = 96.1085
 margin_right = 746.09

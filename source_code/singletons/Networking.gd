@@ -35,6 +35,7 @@ To query if there's internet access and connect to various websites
 export (bool) var enabled
 export(String) var connection_debug
 export (String) var cfg_server_ip 
+export (String) var cfg_client_ip 
 #########################  Web browser codes  ############################3
 var url : String = ''
 var check_timer 
@@ -104,6 +105,11 @@ func _ready():
 	
 	if cfg_server_ip == '':
 		cfg_server_ip = DEFAULT_HOSTNAME
+		
+	if cfg_client_ip == '':
+		cfg_client_ip = DEFAULT_HOSTNAME
+		
+	
 	print ("Networking Server Config and Player Name: ",cfg_server_ip,cfg_player_name, "/")
 	
 	

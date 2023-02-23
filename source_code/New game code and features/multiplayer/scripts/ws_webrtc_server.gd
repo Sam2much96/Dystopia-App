@@ -226,11 +226,16 @@ func _process(delta):
 
 
 
-func listen(port):
+func listen(_IP,port):
 	stop()
 	rand.seed = OS.get_unix_time()
+	server.set_bind_ip(_IP)
 	server.listen(port)
+	#
+	#print ("Server Bind IP 2: ",server.get_bind_ip())
+	
 	print ("server listening on port: ", str(port)) 
+	#print ("server listening on IP: ", str(_IP), "DIsabled, buggy") 
 
 func stop():
 	server.stop()
@@ -433,7 +438,8 @@ func _ready():
 	
 	
 	"WebRTC implementation"
-	listen(Networking.SERVER_PORT) #port
+	listen(Networking.cfg_server_ip,Networking.SERVER_PORT) #port
+	#listen(Networking.SERVER_PORT) #port
 	
 	
 	
@@ -464,6 +470,7 @@ func _ready():
 	
 	print ("websocket server: ", server) #websocket server
 	
+	print ("Websocket Bind IP: ", server.get_bind_ip() )
 	
 	#print(server.server.get_peer_address(server.peers.keys()[0]))
 	

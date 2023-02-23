@@ -711,8 +711,9 @@ func peers():
 		_log(rtc_mp.get_peer(k))
 
 
+"Backup Start Function "
 func _start():
-	start(Networking.cfg_server_ip + ":" + str(Networking.SERVER_PORT) , "")
+	start(Networking.cfg_client_ip + ":" + str(Networking.SERVER_PORT) , "")
 
 
 func _on_Seal_pressed():

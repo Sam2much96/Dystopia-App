@@ -134,9 +134,12 @@ func hide_play_button():
 """
 TRANSLATES THE ENTIRE APP TO ONE OF THE PRESELECTED lANGUAGUES INDICATED
 """
-func translate():
+#Documentation: https://www.gotut.net/localisation-godot/
 
-	print ("Testing Translation En: ",Dialogs.translate_to("char3", "en")) 
-	print ("Testing Translation Es: ", Dialogs.translate_to("char3", "es"))
+func translate()-> void:
 
+	# For Debug Purposes only
+	print ("Testing Translation En: ",Dialogs.translate_to("char3", "en_US")) 
+	print ("Testing Translation Es: ", Dialogs.translate_to("char3", "pt_BR"))
+	print ("Testing Translation Error: ", Dialogs.translate_to("char7", "en"))
 

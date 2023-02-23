@@ -924,7 +924,9 @@ remote func attack(id, position, facing): #update code to be an attack #inhumani
 	
 
 "Adds Messages to ingame Chat"
-func add_chat(text): #used the ui grid  
+func add_chat(text): #used the ui grid 
+	
+	print ("sldkgsdgkbsglb Fix Chat Sub-system") 
 	#chat.add_item(text)
 	if chat.get_item_count() == 7:
 		chat.remove_item(0)
@@ -936,6 +938,8 @@ func add_chat(text): #used the ui grid
 #sends data to server
 	#data channel not open #to fix
 	open_data_channel_to(peer,1, text.to_utf8())
+
+	
 
 	"Sends Data to a peer"
 	#Can only send poolbyte arrays

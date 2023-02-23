@@ -91,9 +91,6 @@ margin_top = 386.0
 margin_right = 414.0
 margin_bottom = 460.0
 text = "Enter Chat"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ping" type="Button" parent="UI"]
 margin_left = 29.2773

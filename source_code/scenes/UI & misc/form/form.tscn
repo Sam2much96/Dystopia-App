@@ -46,10 +46,10 @@ font_data = SubResource( 8 )
 script = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_left = 6.0
+margin_left = -218.0
 margin_right = 1272.0
-margin_bottom = 545.0
-color = Color( 0.639216, 0.0980392, 0.0980392, 1 )
+margin_bottom = 417.0
+color = Color( 0.686275, 0.686275, 0.686275, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -60,9 +60,6 @@ margin_top = 51.7433
 margin_right = 899.445
 margin_bottom = 394.743
 texture = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ui" type="Control" parent="."]
 anchor_left = 0.5

@@ -42,7 +42,7 @@ var active = false
 
 var dialog_box = null setget _set_dialog_box
 
-var language # stores the current language the user selects
+var language : String = ""# stores the current language the user selects
 
 func show_dialog(text:String, speaker:String):
 	if is_instance_valid(dialog_box): # If an instance of dialogue box hasn't been deleted from memory?

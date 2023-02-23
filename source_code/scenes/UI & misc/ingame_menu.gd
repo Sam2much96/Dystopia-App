@@ -256,7 +256,7 @@ func upscale()-> void:
 
 func manually_translate()-> void:
 	#SHould Ideally Use Hashmap tuple + for loops  for translations
-	if Dialogs.language != "":
+	if Dialogs.language != "" or null:
 		#jggugu
 		comics.set_text(Dialogs.translate_to("comics", Dialogs.language))
 		new_game.set_text(Dialogs.translate_to("new game", Dialogs.language))

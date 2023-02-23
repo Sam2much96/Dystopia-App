@@ -13,7 +13,7 @@
 # (4) Doesn't work on the open Internet
 #		- Implement web socket client, server and webRTC ( done)
 #		-cant create a networking peer (done, use WebRtcPeerConnection)
-# (5) Implement NetworkingMultiplayer
+# (5) Implement NetworkingMultiplayer (fix ERROR: Condition "connection_status == CONNECTION_DISCONNECTED")
 
 # *************************************************
 

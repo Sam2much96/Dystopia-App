@@ -4,15 +4,13 @@
 # *************************************************
 # Ingame Menu
 # 
-# To Do:
+# Features:
 #(1) Impement State Machine (done)
-# (2) Scales for mobile UI
+# (2) Scales for mobile UI (done)
+# (3) Translations
 #Bugs
 
-#(1) Emitting signals fail
-#(2) Broken functions
-#(3) Spagetti code
-#(4) change_scenes_via_global_scripts() breaks scene continuity
+#(3) Spagetti code 
 # (5) Should implemente Touch Input without emulation
 # *************************************************
 
@@ -29,17 +27,32 @@ var shop = load('res://scenes/UI & misc/Shop.tscn')
 """
 The game menu script. 
 """
-#update code to arrange well in UI and on the game title screen
-
-onready var continue_game = get_node("MarginContainer/ScrollContainer/HSeparator/continue") 
-onready var game_menu = get_node("MarginContainer")
-
-onready var _multiplayer = $MarginContainer/ScrollContainer/HSeparator/multiplayer
 
 enum { SHOWING, HIDDEN, LOADING}
 #func _enter_tree():
 	#hide()
 export (String) var menu_state
+
+
+#Buttons
+onready var comics : Button = $MarginContainer/ScrollContainer/HSeparator/comics
+onready var new_game : Button = $"MarginContainer/ScrollContainer/HSeparator/new game"
+
+onready var continue_game : Button = get_node("MarginContainer/ScrollContainer/HSeparator/continue") 
+onready var game_menu : MarginContainer = get_node("MarginContainer")
+
+onready var _multiplayer = $MarginContainer/ScrollContainer/HSeparator/multiplayer
+
+onready var anime : Button = $MarginContainer/ScrollContainer/HSeparator/Anime
+onready var practice : Button = $MarginContainer/ScrollContainer/HSeparator/Testing_Scene
+onready var City_scape : Button = $MarginContainer/ScrollContainer/HSeparator/City_scape
+onready var wallet_ : Button = $MarginContainer/ScrollContainer/HSeparator/wallet
+onready var controls : Button = $MarginContainer/ScrollContainer/HSeparator/controls
+onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit Button"
+
+
+
+
 
 func _ready():
 	"Scales for Mobile UI"
@@ -56,7 +69,8 @@ func _ready():
 	else:
 		continue_game.disabled = true
 
-
+	" Translation"
+	manually_translate()
 
 func _process(_delta):
 	#_hide_some_menu_options() #turning this off temporarily to debug the debug singleton
@@ -238,3 +252,20 @@ func upscale()-> void:
 	var newPosition = Vector2(-650,250)
 	self.set_scale(newScale)
 	self.set_position(newPosition)
+
+
+func manually_translate()-> void:
+	#SHould Ideally Use Hashmap tuple + for loops  for translations
+	if Dialogs.language != "":
+		#jggugu
+		comics.set_text(Dialogs.translate_to("comics", Dialogs.language))
+		new_game.set_text(Dialogs.translate_to("new game", Dialogs.language))
+		continue_game.set_text(Dialogs.translate_to("continue", Dialogs.language))
+		#game_menu.set_text(Dialogs.translate_to("comics", Dialogs.language))
+		_multiplayer.set_text(Dialogs.translate_to("multiplayer", Dialogs.language))
+		anime.set_text(Dialogs.translate_to("anime", Dialogs.language))
+		practice.set_text(Dialogs.translate_to("practice", Dialogs.language))
+		City_scape.set_text(Dialogs.translate_to("cityscape", Dialogs.language))
+		wallet_ .set_text(Dialogs.translate_to("wallet", Dialogs.language))
+		controls.set_text(Dialogs.translate_to("controls", Dialogs.language))
+		quit.set_text(Dialogs.translate_to("quit", Dialogs.language))

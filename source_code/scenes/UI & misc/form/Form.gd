@@ -41,9 +41,11 @@ onready var _debug =get_tree().get_root().get_node("/root/Debug")
 func _ready():
 	if _debug != null:
 		_debug = get_tree().get_root().get_node("/root/Debug")
-#Adds 3 new languague selection
+
+
+	#Adds 3 new languague selection
 	language.add_item('English') 
-	language.add_item('Brazil') 
+	language.add_item('Brazilian Portuguese') 
 	#language.add_item('Nigerian Pidgin')
 
 	# Connects the Networking signal
@@ -143,3 +145,11 @@ func translate()-> void:
 	print ("Testing Translation Es: ", Dialogs.translate_to("char3", "pt_BR"))
 	print ("Testing Translation Error: ", Dialogs.translate_to("char7", "en"))
 
+
+# Saves User's Language to Global Variable
+func _on_language_item_selected(index):
+	if index == 0:
+		Dialogs.language = "en_US"
+	if index == 1:
+		Dialogs.language = "pt_BR"
+	else : Dialogs.language = ""

@@ -15,9 +15,19 @@ Game Control settings
 #map game settings to save file
 var selector #for the menu cycle selector
 
-onready var debug__ = get_tree().get_root().get_node("/root/Debug")
+onready var back : Button = $ScrollContainer/VBoxContainer/back
+onready var music : Button = $ScrollContainer/VBoxContainer/music
+onready var debug : Button = $ScrollContainer/VBoxContainer/Debug
+onready var Shuffle : Button =$ScrollContainer/VBoxContainer/Shuffle
+onready var Change_Controller_type : Button = $ScrollContainer/VBoxContainer/Direction_controls
+
 
 func _ready():
+	if get_tree().get_root().has_node("/root/Debug") == true:
+		
+		# OK bloc
+		var debug__ = get_tree().get_root().get_node("/root/Debug")
+
 	$ScrollContainer/VBoxContainer/back.grab_focus() #Back button grabs focus
 
 	$TextureRect.hide()
@@ -26,7 +36,7 @@ func _ready():
 	if Globals.screenOrientation == 1:
 		upscale_ui()
 
-
+	manual_translate()
 
 func _on_Button_pressed():
 	return get_tree().change_scene_to(Globals.title_screen) #changes scene to main title
@@ -101,3 +111,15 @@ func _on_Direction_controls_toggled(button_pressed):
 	else:
 		Globals.direction_control = 'analogue'
 		$ScrollContainer/VBoxContainer/Direction_controls.set_text(Globals.direction_control)
+
+
+
+
+func manual_translate()-> void:
+	if Dialogs.language != "" or null:
+		
+		back .set_text(Dialogs.translate_to("back", Dialogs.language))
+		music .set_text(Dialogs.translate_to("music", Dialogs.language))
+		debug .set_text(Dialogs.translate_to("debug", Dialogs.language))
+		Shuffle.set_text(Dialogs.translate_to("shuffle", Dialogs.language))
+		Change_Controller_type.set_text(Dialogs.translate_to("change controller", Dialogs.language))

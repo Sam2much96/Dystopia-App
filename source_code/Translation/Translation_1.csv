@@ -12,3 +12,9 @@ cityscape,cityscape,urbano
 wallet,wallet,carteira
 controls,controls,controles
 quit,quit,desistir
+back,back,de volta
+music,music,música
+shuffle,shuffle,embaralhar as músicas
+help,help,ajuda
+debug,debug,debugar
+change controllerchange controller,,trocar o controle

@@ -38,10 +38,21 @@ onready var timer = $Timer
 
 var os = Globals.os
 onready var _debug =get_tree().get_root().get_node("/root/Debug")
+
+#func _init():
+#	if Dialogs.language == "":
+#		Globals.load_game()
+
+
+
 func _ready():
 	if _debug != null:
 		_debug = get_tree().get_root().get_node("/root/Debug")
 
+	if Dialogs.language != "":
+		get_tree().change_scene_to(cinematics)
+
+	
 
 	#Adds 3 new languague selection
 	language.add_item('English') 
@@ -150,6 +161,8 @@ func translate()-> void:
 func _on_language_item_selected(index):
 	if index == 0:
 		Dialogs.language = "en_US"
+		Globals.save_game()
 	if index == 1:
 		Dialogs.language = "pt_BR"
+		Globals.save_game()
 	else : Dialogs.language = ""

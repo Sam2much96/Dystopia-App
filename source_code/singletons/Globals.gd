@@ -212,7 +212,13 @@ func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_pr
 """
 Really simple save file implementation. Just saving some variables to a dictionary
 """
-func save_game(): #modify code to include current scene and player position. also enemy spawner postions and info
+
+#modify code to include current scene and player position. also enemy spawner postions and info
+# should take a parameter to save individual variables
+func save_game(): 
+	
+	print ("-------Saving Game -------")
+	
 	var save_game = File.new()
 	save_game.open("user://savegeme.save", File.WRITE)
 	var save_dict = {}
@@ -233,6 +239,7 @@ func save_game(): #modify code to include current scene and player position. als
 	save_dict.direction_control = direction_control
 	save_dict.Music_on_settings = Music_on_settings #add other variables to save
 	
+	save_dict.languague = Dialogs.language
 	#Comics Variables
 	#save_dict.comics_chapter
 	#save_dict.comics_page
@@ -245,7 +252,12 @@ func save_game(): #modify code to include current scene and player position. als
 If check_only is true it will only check for a valid save file and return true or false without
 restoring any data
 """
-func load_game(check_only=false):
+func load_game(check_only=false) -> bool:
+	
+	
+	print ("-------Loading Game -------")
+	
+	
 	var save_game = File.new()
 	
 	if not save_game.file_exists("user://savegeme.save"):
@@ -290,6 +302,8 @@ func _restore_data(save_dict):
 	prev_scene_spawnpoint = save_dict.prev_scene_spawnpoint 
 	
 	direction_control = save_dict.direction_control
+	
+	Dialogs.language = save_dict.languague
 	
 	######################################################
 	print ("Loaded gameplay")

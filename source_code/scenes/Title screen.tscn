@@ -65,10 +65,10 @@ rect_scale = Vector2( 2.2, 2.2 )
 texture = ExtResource( 7 )
 
 [node name="Menu " parent="." instance=ExtResource( 3 )]
-margin_left = 20.0
-margin_top = 102.999
-margin_right = 1202.0
-margin_bottom = 701.999
+margin_left = -158.869
+margin_top = 100.329
+margin_right = 1023.13
+margin_bottom = 699.329
 
 [node name="menu" type="TouchScreenButton" parent="."]
 material = SubResource( 7 )
@@ -98,7 +98,7 @@ margin_bottom = 223.696
 custom_colors/font_color = Color( 0.882353, 0.882353, 0.882353, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "Dystopia App
-V2.0.0
+V2.0.1
 "
 align = 1
 autowrap = true
@@ -109,7 +109,7 @@ margin_top = 445.383
 margin_right = 367.648
 margin_bottom = 488.383
 theme = SubResource( 9 )
-text = "Web 3.0 Gaming!"
+text = "Translations"
 
 [node name="Label3" type="Label" parent="Notification"]
 margin_left = 146.37

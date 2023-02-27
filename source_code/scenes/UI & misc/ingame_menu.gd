@@ -9,7 +9,7 @@
 # (2) Scales for mobile UI (done)
 # (3) Translations
 #Bugs
-
+# (2) Implements Swipe Gestures for Auto Scroll
 #(3) Spagetti code 
 # (5) Should implemente Touch Input without emulation
 # *************************************************
@@ -51,10 +51,17 @@ onready var controls : Button = $MarginContainer/ScrollContainer/HSeparator/cont
 onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit Button"
 
 
+# Auto Scroll with Swipe Gestures
+onready var scroller : ScrollContainer = $MarginContainer/ScrollContainer
 
+const scroll_constant: int = 4
 
 
 func _ready():
+	
+	" Translation"
+	manually_translate()
+	
 	"Scales for Mobile UI"
 	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
 		upscale()
@@ -69,14 +76,25 @@ func _ready():
 	else:
 		continue_game.disabled = true
 
-	" Translation"
-	manually_translate()
 
-func _process(_delta):
+
+func _process(delta):
+	'AutoScroller'
+	# Implemented but Requires Proper Swipe Gesture Callibration
+	if Comics_v5.direction_var == "Up" :
+		return scroll(false,delta)
+	elif Comics_v5.direction_var == "Down" :
+		
+		return scroll(true, delta)
+	
+	elif Comics_v5.direction_var == "Right":
+		return scroll(false, delta)
+	
 	#_hide_some_menu_options() #turning this off temporarily to debug the debug singleton
 	"Visibility State Machine"
 	match menu_state:
 		SHOWING:
+			
 			return _menu_showing()
 		HIDDEN:
 			return _menu_not_showing()
@@ -85,6 +103,20 @@ func _process(_delta):
 			print ("Emitting Signa--Loading game")
 			return emit_signal("loading_game")
 	pass
+
+
+func scroll(direction : bool ,delta)-> void:
+	# DOCS : https://godotengine.org/qa/92054/how-programmatically-scroll-horizontal-list-texturerects
+	# using a boolean because it allows for only two options in it's data structure
+	# True is up, false is down
+	# Max is 449
+	if visible && direction:
+		scroller.scroll_vertical += 20 * scroll_constant  #* delta
+	elif visible && !direction:
+		scroller.scroll_vertical -= 20 * scroll_constant  #* delta
+
+		#print (scroller.scroll_vertical )#= scroll_constant  * delta
+
 func _input(event): #Toggles menu visibility on/off
 	if event.is_action_pressed("menu") == true :# 
 		if menu_state == HIDDEN:
@@ -255,6 +287,7 @@ func upscale()-> void:
 
 
 func manually_translate()-> void:
+	print ("Selected Language: ",Dialogs.language)
 	#SHould Ideally Use Hashmap tuple + for loops  for translations
 	if Dialogs.language != "" or null:
 		#jggugu

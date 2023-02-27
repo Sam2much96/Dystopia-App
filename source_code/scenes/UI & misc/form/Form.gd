@@ -163,11 +163,16 @@ func translate()-> void:
 func _on_language_item_selected(index):
 	if index == 0:
 		Dialogs.language = "en_US"
-		Globals.save_game()
-	if index == 1:
+		#Globals.save_game()
+	elif index == 1:
 		Dialogs.language = "pt_BR"
-		Globals.save_game()
-	if index == 2:
+		#Globals.save_game()
+	elif index == 2:
 		Dialogs.language = "fr"
-		Globals.save_game()
+		#Globals.save_game()
 	else : Dialogs.language = ""
+
+
+
+func _exit_tree():
+	print ("Selected Language: ",Dialogs.language)

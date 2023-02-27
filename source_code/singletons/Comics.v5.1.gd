@@ -28,9 +28,10 @@
 # *************************************************
 # Bugs:
 # (1) it has a wierd updatable bug that's visible in the debug panel
-# (2) Center Page is buggy
+# (2) Center Page is buggy because Callibration is off Screen Center
 # (3) Drag and Drop across small distances is buggy (fixed)
 # (4) Set frame state is buggy when combine with swipe gestures
+# (5) Callibration is off for Swipe Gestures
 # *************************************************
 
 
@@ -174,7 +175,13 @@ onready var q3 = HTTPRequest.new() # Downloads Comic Scenes
 
 "Rewriting As a Fininte State Machine"
 
-enum {START_SWIPE, END_SWIPE, DOWNLOAD_IMAGE, NEXT_PANEL, PREV_PANEL, DRAG, LOAD, ZOOM ,SET_FRAME,IDLE } 
+enum {START_SWIPE, END_SWIPE, DOWNLOAD_IMAGE, NEXT_PANEL, PREV_PANEL, DRAG, LOAD, ZOOM ,SET_FRAME,IDLE ,SWIPE_UP,SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT, NOT_SWIPING, ERROR} 
+
+# Swipe Direction Enum (Struct)
+#enum { } 
+export (String, 'Up', "Down", "Left", "Right", "Idle") var direction_var ="Idle"
+
+#var dir_var = NOT_SWIPING
 
 var _state = IDLE
 
@@ -571,7 +578,36 @@ func _process(_delta):
 				 ' Zoom: ',zoom, 'LC: ',loaded_comics
 				)
 #enum {START_SWIPE, END_SWIPE, DOWNLOAD_IMAGE, NEXT_PANEL, PREV_PANEL, DRAG, LOAD_COMICS, IDLE } 
+#SWIPE_UP,SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT, NOT_SWIPING, ERROR
+# Doesnt work
 	match _state:
+		SWIPE_UP:
+			direction_var = "Up"
+			# Play Animation
+			return GlobalAnimation.get_child(0).play("SWIPE_UP")
+		SWIPE_DOWN:
+			
+			direction_var = "Down"
+			
+			pass
+		SWIPE_LEFT:
+			direction_var = "Left"
+			# Play Animation
+			GlobalAnimation.get_child(0).play("SWIPE_LEFT")
+			#return prev_panel()  
+			return GlobalAnimation.get_child(0).queue("RESET")  
+			
+			#pass
+		SWIPE_RIGHT:
+			
+			direction_var ="Right"
+			
+			# Play Animation
+			GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
+			#return next_panel()
+			return GlobalAnimation.get_child(0).queue("RESET")
+		ERROR:
+			pass
 		IDLE:
 			pass
 		START_SWIPE:
@@ -917,13 +953,16 @@ func _end_detection(__position):
 		
 		#prev_panel()
 		
-		if Globals.curr_scene == "Comics____2":
-			
+		direction_var = "Right"
 			# Play Animation
-			GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
-			#return next_panel()
-			return GlobalAnimation.get_child(0).queue("RESET")
+		return GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
 		
+		
+		
+		#not working
+		#_state = SWIPE_RIGHT
+		
+		return _state
 	
 	"Up and Down"
 	
@@ -932,12 +971,15 @@ func _end_detection(__position):
 		
 		#next_panel()
 		
-		if Globals.curr_scene == "Comics____2":
-			
+		direction_var = "Down"
 			# Play Animation
-			GlobalAnimation.get_child(0).play("SWIPE_LEFT")
-			#return prev_panel()  
-			return GlobalAnimation.get_child(0).queue("RESET")  
+		return GlobalAnimation.get_child(0).play("SWIPE_DOWN")
+		
+		#if Globals.curr_scene == "Comics____2":
+		
+		#downst work
+		#_state = SWIPE_LEFT
+			
 			
 	if -sign(direction.y)  > swipe_parameters: # Doesnt work
 		print('up swipe 1') #for debug purposes
@@ -1014,8 +1056,7 @@ func _end_detection(__position):
 			#next_panel() 
 			
 			if Globals.curr_scene == "Comics____2":
-				# Play Animation
-				return GlobalAnimation.get_child(0).play("SWIPE_LEFT")
+				_state = SWIPE_LEFT
 		
 		if -sign(direction.x) > swipe_parameters:
 			print('right swipe') #for debug purposes
@@ -1039,8 +1080,13 @@ func _end_detection(__position):
 			print('up swipe 2') #for debug purposes
 			#next_panel() 
 			
+			
+			direction_var = "Up"
 			# Play Animation
 			return GlobalAnimation.get_child(0).play("SWIPE_UP")
+			
+			#doenst work
+			#_state = SWIPE_UP
 		
 			
 		if -sign(direction.y)  > swipe_parameters:

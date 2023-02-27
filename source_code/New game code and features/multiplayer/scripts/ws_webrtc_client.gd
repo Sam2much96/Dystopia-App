@@ -138,6 +138,8 @@ func connecting_signals()->void:
 
 
 	connect("lobby_joined", self, "_lobby_joined")
+	
+	
 	connect("lobby_sealed", self, "_lobby_sealed")
 	connect("connected", self, "_connected")
 	connect("disconnected", self, "_disconnected")
@@ -149,7 +151,7 @@ func connecting_signals()->void:
 	rtc_mp.connect("server_disconnected", self, "_mp_server_disconnect")
 	rtc_mp.connect("connection_succeeded", self, "_mp_connected")
 
-
+	# Debug SIgnal connections
 
 func connect_to_url(url):
 	close()
@@ -178,6 +180,8 @@ func _connected(protocol = ""):
 		join_lobby(lobby)
 
 #parses all data packets put into the network
+# implements a Regex based state machine
+# Buggy
 func _parse_msg():
 	var pkt_str: String = web_client.get_peer(1).get_packet().get_string_from_utf8()
 
@@ -227,6 +231,8 @@ func _parse_msg():
 
 
 func join_lobby(lobby):
+	
+	print ("-------sending joined Packet to peer")
 	return web_client.get_peer(1).put_packet(("J: %s\n" % lobby).to_utf8())
 
 
@@ -247,7 +253,7 @@ func send_answer(id, answer) -> int:
 
 
 
-#sends data to thr peer
+#sends data to thr peer via webclient
 func _send_msg(type, id, data) -> int:
 	return web_client.get_peer(1).put_packet(("%s: %d\n%s" % [type, id, data]).to_utf8())
 
@@ -298,11 +304,11 @@ func _process(delta):
 		pass
 	if status2 == 2:
 		
-#		print ("""
-#		● STATE_CONNECTED = 2
-#		The peer is connected, all ICE transports are connected..
+		print ("""
+		● STATE_CONNECTED = 2
+		The peer is connected, all ICE transports are connected..
 
-#		""")
+		""")
 		
 		pass
 	if status2 == 3:
@@ -411,7 +417,7 @@ func stop():
 #called everytime a peer is connected from signals
 #save the webrtc connection from this method
 #peer is multiplayer api
-func _create_peer(id):
+func create_peer(id):
 	print ("creating peer id")
 	
 	print ("webRTC peer connection: ",peer)
@@ -448,6 +454,7 @@ func _new_ice_candidate(mid_name, index_name, sdp_name, id):
 
 
 func _offer_created(type, data, id):
+	print ("--------------offer created---------")
 	if not rtc_mp.has_peer(id):
 		return
 	print("created", type)
@@ -457,8 +464,10 @@ func _offer_created(type, data, id):
 
 
 func connected(id):
-	print("Connected %d" % id)
+	print("-----------Connected %d" % id)
 	rtc_mp.initialize(id, true)
+	
+	#debug_rtc_mp()
 
 
 func lobby_joined(lobby):
@@ -478,13 +487,17 @@ func disconnected():
 
 "Whenever a Peer Joins"
 func peer_connected(id):
-	print("Peer connected %d" % id)
-	_create_peer(id)
+	print("-----------Peer connected %d" % id)
 
+	#use rtc_MP depreciated
+	#print("Created Multiplayer Client: ",create_multiplayer_client(Networking.BACKUP_HOSTNAME, web_client.get_connected_port()))
 
+	create_peer(id)
+
+	# my code starts from here
 	#player_joined(id, '') #doesnt work
 
-	create_multiplayer_client(str(web_client.get_connected_host()),web_client.get_connected_port())
+	#print("Created Multiplayer Client: ",create_multiplayer_client(str(web_client.get_connected_host()),web_client.get_connected_port()))
 	 #IP
 
 
@@ -514,19 +527,23 @@ func candidate_received(id, mid, index, sdp):
 
 # implemented from chatGPT
 #Works-ish
-func open_data_channel_to(channel: WebRTCPeerConnection, peer_id: int, data: PoolByteArray):
-	if status2 == 0:
+
+func open_data_channel_to(channel: WebRTCPeerConnection, peer_id: int):
+	#if status2 == 0:
 	#var u= WebRTCDataChannel.new()
 	#var p1 = WebRTCPeerConnection.new()
-		var ch1 = channel.create_data_channel("chat", {"id": 1, "negotiated": true})
+	
+	
+	web_client.get_peer(1).put_packet("O: %d".to_utf8())
+	var ch1 = channel.create_data_channel("chat", {"id": 1, "negotiated": true})
 
-		channel.create_data_channel("chat", {"id": 1, "negotiated": true})
-
-		channel.create_offer()
+	channel.create_data_channel("chat", {"id": 1, "negotiated": true})
+	print ("opening channel ", channel, " to Peer", peer_id ) # For debug purposes only
+	channel.create_offer()
 		
 
-		ch1.put_packet(data)
-	if not status2 == 0 : return 0;
+		#ch1.put_packet(data)
+	#if not status2 == 0 : return 0;
 
 
 
@@ -569,22 +586,17 @@ func _ready():
 	
 
 
-	_start() # Networking.cfg_server_ip is buggy
-	#client.start("ws://" + "ws://localhost" + ":" + str(Networking.SERVER_PORT), "")
-	
-	#from here, it connects through a bunch of signals
-	
-	
-	
+	#_start() 
+	start(Networking.cfg_client_ip + ":" + str(Networking.SERVER_PORT) , "")
+
+
 	#var peer = NetworkedMultiplayerENet.new()
 	var peer : WebRTCMultiplayer = rtc_mp #ive supplied the right connection type
 	
-	
-	print ("Web RTC Multiplayer connected: ",rtc_mp.CONNECTION_CONNECTED) #2
-	print ("Web RTC Multiplayer disconnected: ",rtc_mp.CONNECTION_DISCONNECTED) #2
+
 	
 	 
-	if rtc_mp.CONNECTION_CONNECTED:
+	if web_client.CONNECTION_CONNECTED:
 		#var peer_id = peer.get_unique_id()
 
 			#FIX THIS METHOD
@@ -611,7 +623,7 @@ func _ready():
 		
 		
 		# Debug Peer connection state
-	if web_client.CONNECTION_CONNECTED:
+	#if web_client.CONNECTION_CONNECTED:
 		print ("Web Client Connected: ", web_client.CONNECTION_CONNECTED)
 	
 		#initialize resets the Network connection to a New State
@@ -623,11 +635,12 @@ func _ready():
 
 
 		#create_multiplayer_client()
+		#rtc_MP already connected depreciated
+		#print ("Cr8 Multiplayer client",create_multiplayer_client(Networking.cfg_client_ip, Networking.SERVER_PORT))
 		
 
-
 		#get_tree().set_network_peer(peer)
-		get_tree().set_network_peer(peer) #it's setting a webRTC connection as a peer. Which it shouldn't?
+		#get_tree().set_network_peer(peer) #it's setting a webRTC connection as a peer. Which it shouldn't?
 	
 		#multiplayer network debug
 		print ("has network peer: ",get_tree().has_network_peer())
@@ -670,7 +683,7 @@ func _disconnected():
 
 func _lobby_joined(lobby):
 	_log("Joined lobby %s" % lobby)
-	
+	debug_rtc_mp()
 
 
 func _lobby_sealed():
@@ -937,14 +950,24 @@ func add_chat(text): #used the ui grid
 # add chat via remote call
 #sends data to server
 	#data channel not open #to fix
-	open_data_channel_to(peer,1, text.to_utf8())
+	#peer = WebRTCPeerConnectionGDNative:2345
 
+	# doesnt work. RTC_MP connection isnt established
+	open_data_channel_to(peer,1)
+	
+	debug_rtc_mp()
+	
+	send_data_to_webclient(text.to_utf8())
 	
 
+
+func send_data_to_webclient(data: PoolByteArray):
 	"Sends Data to a peer"
-	#Can only send poolbyte arrays
-	web_client.get_peer(1).put_packet(text.to_utf8()) #works-ish. 
-	#my_peer.put_packet(("dgsgsdfgdfgdf" ).to_utf8())
+	#Send poolbyte arrays
+	# 
+#	web_client.get_peer(1).put_packet(text.to_utf8()) #works-ish. 
+	web_client.get_peer(1).put_packet(data) #works-ish. 
+
 
 "Adds chat item to all clients from server"
 remote func chat_added(id, info, text):
@@ -981,10 +1004,31 @@ func _on_ping_pressed():
 
 
 
-func create_multiplayer_client(ip : String, port)-> void:
+func create_multiplayer_client(address : String, port)-> bool:
+	#Networked Multiplayer Enet
 	
-	multiplayerAPI_peer.create_client(ip, port)
+	#Debug Connection Type
+	#print ("Multiplayer Node Type:", multiplayerAPI_peer)
+	
+	
+	#multiplayerAPI_peer.set_bind_ip(ip)
+	
+	print ("Connecting ENet to: ", address)
 	
 	# Associate the current network peer to the tree
-	get_tree().set_network_peer(multiplayerAPI_peer)
+	var err = multiplayerAPI_peer.create_client(address,port)
+	
+	if err == OK:
+		
+		get_tree().set_network_peer(multiplayerAPI_peer)
+		return true
+	else : 
+		push_error("Networking Enet Error: " + str(err))
+		return false
 
+	
+func debug_rtc_mp()-> void:
+		# write a state machine bloc to debug rtc_mp
+	
+	print ("Web RTC Multiplayer connected: ",rtc_mp.CONNECTION_CONNECTED) #2
+	print ("Web RTC Multiplayer disconnected: ",rtc_mp.CONNECTION_DISCONNECTED) #2

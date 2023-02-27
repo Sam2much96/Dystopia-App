@@ -57,6 +57,7 @@ func _ready():
 	#Adds 3 new languague selection
 	language.add_item('English') 
 	language.add_item('Brazilian Portuguese') 
+	language.add_item('French')
 	#language.add_item('Nigerian Pidgin')
 
 	# Connects the Networking signal
@@ -154,6 +155,7 @@ func translate()-> void:
 	# For Debug Purposes only
 	print ("Testing Translation En: ",Dialogs.translate_to("char3", "en_US")) 
 	print ("Testing Translation Es: ", Dialogs.translate_to("char3", "pt_BR"))
+	print ("Testing Translation Es: ", Dialogs.translate_to("char3", "fr"))
 	print ("Testing Translation Error: ", Dialogs.translate_to("char7", "en"))
 
 
@@ -164,5 +166,8 @@ func _on_language_item_selected(index):
 		Globals.save_game()
 	if index == 1:
 		Dialogs.language = "pt_BR"
+		Globals.save_game()
+	if index == 2:
+		Dialogs.language = "fr"
 		Globals.save_game()
 	else : Dialogs.language = ""

@@ -10,7 +10,8 @@
 # Features
 #(1) Loads, Zooms and Drags Comic Pages
 #(2) Uses New multitouch gestures by implementing a touch input manager
-#(3) Decentralized Storage IPFS module
+#(3) Decentralized Storage IPFS module (1/2)
+#(4) Swipe Gestures as Global Events
 
 #
 # To DO:

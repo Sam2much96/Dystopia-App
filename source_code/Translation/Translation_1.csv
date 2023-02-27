@@ -1,20 +1,20 @@
-,en_US,pt_BR
-char1,hello,olá
-char2,how are you,como vai
-char3,options,opções
-comics,comics,banda desenhada
-new game,new game,novo jogo
-continue,continue,continuar
-multiplayer,multiplayer,multijogador
-anime,anime,animação
-practice,practice,prática
-cityscape,cityscape,urbano
-wallet,wallet,carteira
-controls,controls,controles
-quit,quit,desistir
-back,back,de volta
-music,music,música
-shuffle,shuffle,embaralhar as músicas
-help,help,ajuda
-debug,debug,debugar
-change controllerchange controller,,trocar o controle
+,en_US,pt_BR,fr
+char1,hello,olá,allo
+char2,how are you,como vai,comment allez-vous
+char3,options,opções,choix
+comics,comics,banda desenhada,bandes dessinées
+new game,new game,novo jogo,nouveau jeu
+continue,continue,continuar,continuer
+multiplayer,multiplayer,multijogador,multijoueur
+anime,anime,animação,animer
+practice,practice,prática,pratique
+cityscape,cityscape,urbano,urbain
+wallet,wallet,carteira,portefeuille
+controls,controls,controles,contrôles
+quit,quit,desistir,arrêter
+back,back,de volta,dos
+music,music,música,musique
+shuffle,shuffle,embaralhar as músicas,mélanger
+help,help,ajuda,aider
+debug,debug,debugar,déboguer
+change controller,change controller,trocar o controle,changer de contrôleur

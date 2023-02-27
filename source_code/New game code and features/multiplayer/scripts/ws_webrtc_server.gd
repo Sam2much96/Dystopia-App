@@ -365,6 +365,9 @@ func _on_data(id): #works-ish
 func _parse_msg(id) -> bool:
 	var pkt_str: String = server.get_peer(id).get_packet().get_string_from_utf8()
 
+	"REGEX State Machine for Handling All Packets sent via webclient"
+	# Uses types and maps them to actions
+
 	print ("Packet from client: ",pkt_str)
 
 	var req = pkt_str.split("\n", true, 1)
@@ -409,6 +412,9 @@ func _parse_msg(id) -> bool:
 	if id == lobby.host:
 		id = NetworkedMultiplayerPeer.TARGET_PEER_SERVER
 
+
+	"Connecting with webrtc_mp"
+
 	if type.begins_with("O: "):
 		# Client is making an offer
 		server.get_peer(dest_id).put_packet(("O: %d\n%s" % [id, req[1]]).to_utf8())
@@ -442,8 +448,8 @@ func _ready():
 	#listen(Networking.SERVER_PORT) #port
 	
 	
-	
-	
+	# NEtworking ENet
+	create_multiplayer_server(Networking.SERVER_PORT,Networking.MAX_PLAYERS)
 	
 	
 	print (' Who is more Authoritative? the client or the server? ') #question?
@@ -455,6 +461,7 @@ func _ready():
 	
 	print("Starting the server ...")
 	print("Server port: " + str(Networking.SERVER_PORT))
+	
 	
 	print("Max players: " + str(Networking.MAX_PLAYERS))
 	
@@ -705,10 +712,24 @@ func server_debug()-> void:
 
 
 #doesnt work yet
+#gfgsfglkdsfglkdf
 func create_multiplayer_server(port : int, MAX_PLAYERS: int)-> void:
 	#get your client and server ports
 	#var port: int
 	#var MAX_PLAYERS: int
+	
+	
+	# Associate the current network peer to the tree
+	var err = multiplayerAPI_peer.create_server(port,MAX_PLAYERS)
+	
+	if err == OK:
+		
+		get_tree().set_network_peer(multiplayerAPI_peer)
+		#return true
+	else : 
+		push_error("Networking Enet Error: " + str(err))
+		#return false
+	
 	
 	if multiplayerAPI_peer.create_server(port, MAX_PLAYERS) != OK:
 		print("Unable to create multiplayer server")

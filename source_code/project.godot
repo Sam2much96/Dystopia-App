@@ -389,8 +389,8 @@ pointing/emulate_touch_from_mouse=true
 
 [locale]
 
-locale_filter=[ 0, [ "en_US", "pt_BR" ] ]
-translations=PoolStringArray( "res://Translation/Translation_1.en_US.translation", "res://Translation/Translation_1.pt_BR.translation" )
+locale_filter=[ 0, [ "en_US", "fr", "pt_BR" ] ]
+translations=PoolStringArray( "res://Translation/Translation_1.en_US.translation", "res://Translation/Translation_1.pt_BR.translation", "res://Translation/Translation_1.fr.translation" )
 
 [rendering]
 

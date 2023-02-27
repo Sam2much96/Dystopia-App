@@ -45,6 +45,7 @@ var debug = ''
 #const DEFAULT_HOSTNAME = "127.0.0.1"
 const DEFAULT_HOSTNAME = "ws://localhost"
 
+const BACKUP_HOSTNAME = "127.0.0.1"
 
 var player_info = {} # should store Crypto info
 

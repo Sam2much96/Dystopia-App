@@ -90,24 +90,6 @@ func _ready():
 func _process(delta):
 	
 	
-	#_delta = delta
-	#if delta == 1: # Stops Stack overflow
-	#	delta = 0
-	
-	#print (_delta) # for debug purposes only
-	
-	#'AutoScroller'
-	# Implemented but Requires Proper Swipe Gesture Callibration
-	# broken
-
-	#	if Comics_v5.direction_var == "Up" :
-	#		return scroll(false,delta)
-	#	elif Comics_v5.direction_var == "Down" :
-			
-	#		return scroll(true, delta)
-		
-	#	elif Comics_v5.direction_var == "Right":
-	#		return scroll(false, delta)
 	
 	#_hide_some_menu_options() #turning this off temporarily to debug the debug singleton
 	"Visibility State Machine"
@@ -130,6 +112,9 @@ static func scroll(direction : bool , visible : bool, _scroller : ScrollContaine
 	# True is up, false is down
 	# Max is 449
 	
+	# Requires Delta Parameter for smooth scrolling 
+	# but running this function as a static function means
+	# it scrolls choppily
 	
 	
 	if visible && direction:
@@ -163,16 +148,20 @@ func _input(event): #Toggles menu visibility on/off
 	 
 	
 	"Auto Scroller"
-	
+	# Connects to Global Comics Swipe Feature
+	#'AutoScroller'
+	# Implemented but Requires Proper Swipe Gesture Callibration
+	# 
+
 	if Comics_v5._state == Comics_v5.SWIPE_RIGHT:
 		
 		
 		# Scroll Down
-		scroll(true, true,scroller)
+		scroll(false, true,scroller)
 	elif Comics_v5._state == Comics_v5.SWIPE_DOWN:
 		
 		# Scroll Up
-		scroll(false, true,scroller)
+		scroll(true, true,scroller)
 		
 	else: pass
 

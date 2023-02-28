@@ -73,31 +73,9 @@ var comic_dir : String = "user://Comics"
 
 var CHECK_COMICS_LOCAL_STORAGE : bool = false
 
-var comics_IPFS : Dictionary = {
-	1 : "QmSpXTc7gE1Mj3HdKDGuwr87cuiiLP3homXuKbWVxoG4TX", #Chap 1 scene
-	2 : "QmWvgWit9REFghWLgofgormkr3QsKd2pXcxMtMxHdKMTZV", # Chap 1 sprite sheet
-	3 : "QmW3HJX8iADTFdNMBhuDsVqhQLajE8xwPw2XmonmL2HofA", # Icon Pixel Icon
-}
-
-
-var comics_local_path : Dictionary = {
-	1: "user://Comics/chapter 1/",
-	2: "user://Comics/chapter 2/"
-}
 
 
 
-var comics_ : Dictionary = {
-	 "Chap1 Scene": "user://Comics/chapter 1/chapter 1.tscn",
-	"Chap1 Panel": "user://Comics/Comics/chapter 1/chapter 1 Neo sud, the new south webp.webp",
-#	3:'res://scenes/Comics/chapter 3/chapter 3.tscn',
-#	4:"res://scenes/Comics/chapter 4/chapter 4.tscn",
-#	5:"res://scenes/Comics/chapter 5/chapter 5.tscn",
-#	6:"res://scenes/Comics/chapter 6/chapter 6.tscn",
-#	7:"res://scenes/Comics/chapter 7/chapter 7.tscn",
-#	8: 'res://scenes/Comics/Outside/outside.tscn'
-#	
-}
 
 
 
@@ -191,6 +169,11 @@ var _state = IDLE
 func _ready():
 	#wordbubble() #for debug purposes only
 	
+	"#********** Debug References***********#"
+	#@ null References as classes
+	Online._init()
+	Local._init()
+	#print (Online.comics_IPFS[1])
 
 	
 	
@@ -347,7 +330,7 @@ func _http_request_completed_Images(result, response_code, headers, body): #work
 	
 		
 		#check if body is image type
-	Comics_v5.set_comic_image_(Networking.download_image_(body, comics_["Chap1 Panel"],q2)) #works
+	Comics_v5.set_comic_image_(Networking.download_image_(body, Local.comics_["Chap1 Panel"],q2)) #works
 	
 	if body.empty():
 		push_error("Problem downloading Image ")
@@ -374,7 +357,7 @@ func _http_request_completed_Scenes(result, response_code, headers, body): #work
 	#Comics_v5.set_comic_image_(Networking.download_image_(body, comics_["Chap1 Panel"],q2)) #works
 	
 	
-	Comics_v5.load_local_comic(Networking.download_scene_(body, comics_["Chap1 Scene"],q3))
+	Comics_v5.load_local_comic(Networking.download_scene_(body, Local.comics_["Chap1 Scene"],q3))
 
 	
 	
@@ -480,7 +463,9 @@ func _input(event):
 		
 		#__position : Vector2, swipe_start_position : Vector2, direction_var, _state
 		#dfhdfhd
-		_end_detection(event.position)#, event.position, direction_var, _state)
+		#__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array
+		
+		_state = Swipe._end_detection(event.position, Vector2(0,0), direction_var,_state, _e, swipe_target_memory_x, swipe_target_memory_y, swipe_start_position, swipe_parameters,  x1,x2,y1,y2, MAX_DIAGONAL_SLOPE)#, event.position, direction_var, _state)
 	
 	
 	if event is InputEventScreenTouch :
@@ -589,7 +574,7 @@ func _process(_delta):
 		SWIPE_UP:
 			direction_var = "Up"
 			# Play Animation
-			return GlobalAnimation.get_child(0).play("SWIPE_UP")
+			#return GlobalAnimation.get_child(0).play("SWIPE_UP")
 		SWIPE_DOWN:
 			
 			direction_var = "Down"
@@ -598,9 +583,9 @@ func _process(_delta):
 		SWIPE_LEFT:
 			direction_var = "Left"
 			# Play Animation
-			GlobalAnimation.get_child(0).play("SWIPE_LEFT")
+			#GlobalAnimation.get_child(0).play("SWIPE_LEFT")
 			#return prev_panel()  
-			return GlobalAnimation.get_child(0).queue("RESET")  
+			#return GlobalAnimation.get_child(0).queue("RESET")  
 			
 			#pass
 		SWIPE_RIGHT:
@@ -608,9 +593,9 @@ func _process(_delta):
 			direction_var ="Right"
 			
 			# Play Animation
-			GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
+			#GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
 			#return next_panel()
-			return GlobalAnimation.get_child(0).queue("RESET")
+			#return GlobalAnimation.get_child(0).queue("RESET")
 		ERROR:
 			pass
 		IDLE:
@@ -630,8 +615,8 @@ func _process(_delta):
 				create_comics_directory(comic_dir)
 			
 			# Creates Comic Chapter Paths
-			if not FileDirectory.dir_exists(comics_local_path[1]):
-				create_comics_directory(comics_local_path[1])
+			if not FileDirectory.dir_exists(Local.comics_local_path[1]):
+				create_comics_directory(Local.comics_local_path[1])
 				pass
 			
 			if !Networking.good_internet && !Networking.Timeout:
@@ -639,7 +624,7 @@ func _process(_delta):
 				Networking.start_check(4)
 			
 			# If local Comics Doesnt exist
-			if not FileCheck1.file_exists(comics_["Chap1 Panel"])  && Networking.good_internet:
+			if not FileCheck1.file_exists(Local.comics_["Chap1 Panel"])  && Networking.good_internet:
 				#GKHGHGHKGK
 				# download Comics from IPFS using Networking Gateway
 				"IPFS Downloads"
@@ -648,11 +633,11 @@ func _process(_delta):
 				#Networking.url = comics_[0]
 				
 				#comics_IPFS
-				Networking. _connect_to_ipfs_gateway(false,comics_IPFS[1], Networking.gateway[2], q2) # Downloads Spritesheet  
-				Networking. _connect_to_ipfs_gateway(false,comics_IPFS[3], Networking.gateway[2], q3)  # Downloads Scene
+				Networking. _connect_to_ipfs_gateway(false,Online.comics_IPFS[1], Networking.gateway[2], q2) # Downloads Spritesheet  
+				Networking. _connect_to_ipfs_gateway(false,Online.comics_IPFS[3], Networking.gateway[2], q3)  # Downloads Scene
 				return
 			# Check if image is available for chapter 1
-			if FileCheck1.file_exists(comics_["Chap1 Panel"]) :
+			if FileCheck1.file_exists(Local.comics_["Chap1 Panel"]) :
 				# load the Comic if it's available
 				print ("Comic is Available Locally. Loading....Placeholder")
 				pass
@@ -904,179 +889,6 @@ func sumaVectores(v1, v2): #vector sum
 """
 		  SWIPE DETECTION
 """
-func _end_detection(__position):
-#_e.stop()
-	direction = (__position - swipe_start_position).normalized()
-	"Left and Right "
-		
-	if round(direction.x) == -1: # Doesnt work
-		print('left swipe 1') #for debug purposes
-		#next_panel()
-		
-		
-		
-		# Play Animation
-		GlobalAnimation.get_child(0).play("SWIPE_LEFT")
-		return GlobalAnimation.get_child(0).queue("RESET")
-		
-		
-	if round(direction.x) == 1: # works
-		print('right swipe 1') #for debug purposes
-		
-		
-		#prev_panel()
-		
-		direction_var = "Right"
-			# Play Animation
-		return GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
-		
-		
-		
-		#not working
-		#_state = SWIPE_RIGHT
-		
-		return _state
-	
-	"Up and Down"
-	
-	if -sign(direction.y) < -swipe_parameters: # works
-		print('down swipe 1 = wrong calibration error ') #for debug purposes
-		
-		#next_panel()
-		
-		direction_var = "Down"
-			# Play Animation
-		return GlobalAnimation.get_child(0).play("SWIPE_DOWN")
-		
-		#if Globals.curr_scene == "Comics____2":
-		
-		#downst work
-		#_state = SWIPE_LEFT
-			
-			
-	if -sign(direction.y)  > swipe_parameters: # Doesnt work
-		print('up swipe 1') #for debug purposes
-		#prev_panel()
-		
-		
-		# Play Animation
-		return GlobalAnimation.get_child(0).play("SWIPE_UP")
-	
-	
-	# Saves swipe direction details to memory
-	# It'll improve start position - end position calculation
-	if not swipe_target_memory_x.has(__position.x) && __position.x != null: 
-		swipe_target_memory_x.append(__position.x)
-	if not swipe_target_memory_y.has(__position.y) && __position.y != null:
-		swipe_target_memory_y.append(__position.y)
-	_e.stop()
-	
-	#Works
-	if swipe_target_memory_x.size() && swipe_target_memory_y.size() >= 3 && swipe_target_memory_x.pop_back() != null:
-		x1 = swipe_target_memory_x.pop_front()
-		x2  = swipe_target_memory_x.pop_back()
-		
-		y1 = swipe_target_memory_y.pop_front()
-		y2  = swipe_target_memory_y.pop_back()
-		
-		#print ("Swipe Detection Debug: ",x1,"/",x2,"/",y1,"/",y2,"/", swipe_target_memory_x.size()) #For Debug purposes only 
-		
-		#separate x & y position calculations for x and y swipes
-		#
-		"Horizontal Swipe"
-		if x1 && x2  != null && swipe_target_memory_x.size() > 2:
-			
-			#calculate averages got x and y
-			
-			var x_average: int = Globals.calc_average(swipe_target_memory_x)
-			
-			print ("X average: ",x_average)
-			print (x1, "/",x2)
-			direction.x  = (x1-x2)/x_average
-			
-			print ("direction x: ",direction.x)
-			
-			print ('end detection: ','direction: ',direction ,'position',__position, "max diag slope", MAX_DIAGONAL_SLOPE) #for debug purposes only
-			#print ("X: ",swipe_target_memory_x)#*********For Debug purposes only
-			#print ("Y: ",swipe_target_memory_x)#*********For Debug purposes only
-		
-		"Vertical Swipe"
-		if y1 && y2 != null && swipe_target_memory_y.size() > 2:
-			var y_average: int = Globals.calc_average(swipe_target_memory_y)
-			
-			#print ("Y average: ",y_average) #*********For Debug purposes only
-			#print (y1, "/",y2) #*********For Debug purposes only
-			#direction.y  = (y1-y2)/y_average #*********For Debug purposes only
-			
-			#print ("direction y: ",direction.y) #*********For Debug purposes only
-			
-			#print ('end detection: ','direction: ',direction ,'position',__position, "max diag slope", MAX_DIAGONAL_SLOPE) #for debug purposes only
-			#print ("X: ",swipe_target_memory_x)#*********For Debug purposes only
-			#print ("Y: ",swipe_target_memory_x)#*********For Debug purposes only
-		
-
-
-
-		if abs (direction.x) + abs(direction.y) >= MAX_DIAGONAL_SLOPE:
-			return
-		if abs (direction.x) > abs(direction.y):
-			emit_signal('swiped',Vector2(-sign(direction.x), 0.0))
-			
-			#print (1111)
-			print ('Direction on X: ', direction.x, "/", direction.y) #horizontal swipe debug purposs
-		if -sign(direction.x) < Swipe.swipe_parameters:
-			print('left swipe') #for debug purposes
-			#next_panel() 
-			
-			if Globals.curr_scene == "Comics____2":
-				_state = SWIPE_LEFT
-		
-		if -sign(direction.x) > Swipe.swipe_parameters:
-			print('right swipe') #for debug purposes
-			#prev_panel()
-			
-			
-			
-			# Play Animation
-			return GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
-		
-			
-		if abs (direction.y) > abs(direction.x):
-			emit_signal('swiped',Vector2(-sign(direction.y), 0.0))
-			print ('Direction on Y: ', direction.x) #horizontal swipe debug purposs
-			#print (2222)
-			
-		"Up & Down"
-		
-		# Works
-		if -sign(direction.y) < -Swipe.swipe_parameters:
-			print('up swipe 2') #for debug purposes
-			#next_panel() 
-			
-			
-			direction_var = "Up"
-			# Play Animation
-			return GlobalAnimation.get_child(0).play("SWIPE_UP")
-			
-			#doenst work
-			#_state = SWIPE_UP
-		
-			
-		if -sign(direction.y)  > swipe_parameters:
-			print('down swipe 2') #for debug purposes
-			#prev_panel()
-			
-			# Play Animation
-			return GlobalAnimation.get_child(0).play("SWIPE_DOWN")
-			
-		emit_signal('swiped', Vector2(0.0,-sign(direction.y))) #vertical swipe
-			#	print ('poot poot poot') 
-	
-	if swipe_target_memory_x.size() && swipe_target_memory_y.size() > 50:
-		Swipe.clear_memory( swipe_target_memory_x, swipe_target_memory_y)
-
-	else: return
-
 
 
 func _handle_swipe_detection(event)-> void:
@@ -1085,32 +897,63 @@ func _handle_swipe_detection(event)-> void:
 		Swipe._start_detection(event.position, true, _e, swipe_target_memory_x, swipe_target_memory_y)
 	elif not _e.is_stopped():
 		#__position : Vector2, swipe_start_position : Vector2, swipe_target_memory_x : Array, swipe_target_memory_y : Array,direction_var, _state
-		_end_detection(event.position)#,event.position,swipe_target_memory_x, swipe_target_memory_y, direction_var, _state)
+		Swipe._end_detection(event.position, Vector2(0,0),direction_var,_state, _e, swipe_target_memory_x, swipe_target_memory_y, swipe_start_position, swipe_parameters, x1,x2,y1,y2,MAX_DIAGONAL_SLOPE)#,event.position,swipe_target_memory_x, swipe_target_memory_y, direction_var, _state)
+#__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array
+
+class Online extends Reference:
+	func _init() :
+# Would Return a Null Variable
+# Is Placeholder
+
+		var comics_IPFS : Dictionary = {
+			1 : "QmSpXTc7gE1Mj3HdKDGuwr87cuiiLP3homXuKbWVxoG4TX", #Chap 1 scene
+			2 : "QmWvgWit9REFghWLgofgormkr3QsKd2pXcxMtMxHdKMTZV", # Chap 1 sprite sheet
+			3 : "QmW3HJX8iADTFdNMBhuDsVqhQLajE8xwPw2XmonmL2HofA", # Icon Pixel Icon
+		}
 
 
+		print (comics_IPFS[1])
+
+class Local extends Reference:
+# Would Return a Null Variable
+# Is Placeholder
+
+	func _init() :
+
+		var comics_local_path : Dictionary = {
+		1: "user://Comics/chapter 1/",
+		2: "user://Comics/chapter 2/"
+	}
+
+
+		var comics_ : Dictionary = {
+			 "Chap1 Scene": "user://Comics/chapter 1/chapter 1.tscn",
+			"Chap1 Panel": "user://Comics/Comics/chapter 1/chapter 1 Neo sud, the new south webp.webp",
+		#	3:'res://scenes/Comics/chapter 3/chapter 3.tscn',
+		#	4:"res://scenes/Comics/chapter 4/chapter 4.tscn",
+		#	5:"res://scenes/Comics/chapter 5/chapter 5.tscn",
+		#	6:"res://scenes/Comics/chapter 6/chapter 6.tscn",
+		#	7:"res://scenes/Comics/chapter 7/chapter 7.tscn",
+		#	8: 'res://scenes/Comics/Outside/outside.tscn'
+		#	
+		}
+
+		print (comics_local_path[1])
 
 class Swipe extends Reference:
+	
 	#**********Swipe Detection Direction Calculation Parameters************#
-	#var swipe_target_memory_x : Array = [] # for swipe direction x calculation
-	#var swipe_target_memory_y : Array = [] # for swipe direction y calculation
-	#var direction : Vector2
-	#var swipe_parameters : float = 0.1 # is 1 in Dystopia-App
-	var x1 #: float
-	var x2 #: float
-	var y1 #: float
-	var y2 #: float
-	export(float,0.5,1.5) var MAX_DIAGONAL_SLOPE  = 1.3
 
 	" Swipe Direction Detection"
 	#Buggy swipe direction
 	# Use an Array to store the first position and all end positions
 	# Difference between both extremes is the swipe position
-	func clear_memory(swipe_target_memory_x: Array, swipe_target_memory_y :Array)-> void:
+	static func clear_memory(swipe_target_memory_x: Array, swipe_target_memory_y :Array)-> void:
 		swipe_target_memory_x.clear()
 		swipe_target_memory_y.clear()
 
 
-	func _start_detection(_position, enabled: bool, _e : Timer ,swipe_target_memory_x : Array, swipe_target_memory_y : Array ): #for swipe detection
+	static func _start_detection(_position, enabled: bool, _e : Timer ,swipe_target_memory_x : Array, swipe_target_memory_y : Array ): #for swipe detection
 		#use current scene to trigger cinematic
 		Globals.update_curr_scene()
 		
@@ -1127,6 +970,184 @@ class Swipe extends Reference:
 
 	"Only Two Swipe Directions Are Currently Implemented"
 
+	static func _end_detection(__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array, swipe_start_position : Vector2, swipe_parameters: float, x1,x2,y1,y2,MAX_DIAGONAL_SLOPE):
+	#_e.stop()
+		direction = (__position - swipe_start_position).normalized()
+		"Left and Right "
+			
+		if round(direction.x) == -1: # Doesnt work
+			print('left swipe 1') #for debug purposes
+			#next_panel()
+			
+			
+			
+			# Play Animation
+			GlobalAnimation.get_child(0).play("SWIPE_LEFT")
+			return GlobalAnimation.get_child(0).queue("RESET")
+			
+			
+		if round(direction.x) == 1: # works
+			print('right swipe 1') #for debug purposes
+			
+			
+			#prev_panel()
+			
+			direction_var = "Right"
+			
+			#direction : bool ,delta , visible : bool, scroller : ScrollContainer
+			#Game_Menu.scroll(false, true, Game)
+			
+				# Play Animation
+			GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
+			
+			
+			
+			#not working
+			_state = SWIPE_RIGHT
+			
+			#return _state
+			return _state
+		
+		"Up and Down"
+		
+		if -sign(direction.y) < -swipe_parameters: # works
+			print('down swipe 1 = wrong calibration error ') #for debug purposes
+			
+			#next_panel()
+			
+			direction_var = "Down"
+			# Play Animation
+			GlobalAnimation.get_child(0).play("SWIPE_DOWN")
+			
+			#if Globals.curr_scene == "Comics____2":
+			
+			#downst work
+			_state = SWIPE_DOWN
+			
+			return _state
+		
+		if -sign(direction.y)  > swipe_parameters: # Doesnt work
+			print('up swipe 1') #for debug purposes
+			#prev_panel()
+			
+			
+			# Play Animation
+			return GlobalAnimation.get_child(0).play("SWIPE_UP")
+		
+		
+		# Saves swipe direction details to memory
+		# It'll improve start position - end position calculation
+		if not swipe_target_memory_x.has(__position.x) && __position.x != null: 
+			swipe_target_memory_x.append(__position.x)
+		if not swipe_target_memory_y.has(__position.y) && __position.y != null:
+			swipe_target_memory_y.append(__position.y)
+		_e.stop()
+		
+		#Works
+		if swipe_target_memory_x.size() && swipe_target_memory_y.size() >= 3 && swipe_target_memory_x.pop_back() != null:
+			x1 = swipe_target_memory_x.pop_front()
+			x2  = swipe_target_memory_x.pop_back()
+			
+			y1 = swipe_target_memory_y.pop_front()
+			y2  = swipe_target_memory_y.pop_back()
+			
+			#print ("Swipe Detection Debug: ",x1,"/",x2,"/",y1,"/",y2,"/", swipe_target_memory_x.size()) #For Debug purposes only 
+			
+			#separate x & y position calculations for x and y swipes
+			#
+			"Horizontal Swipe"
+			if x1 && x2  != null && swipe_target_memory_x.size() > 2:
+				
+				#calculate averages got x and y
+				
+				var x_average: int = Globals.calc_average(swipe_target_memory_x)
+				
+				print ("X average: ",x_average)
+				print (x1, "/",x2)
+				direction.x  = (x1-x2)/x_average
+				
+				print ("direction x: ",direction.x)
+				
+				print ('end detection: ','direction: ',direction ,'position',__position, "max diag slope", MAX_DIAGONAL_SLOPE) #for debug purposes only
+				#print ("X: ",swipe_target_memory_x)#*********For Debug purposes only
+				#print ("Y: ",swipe_target_memory_x)#*********For Debug purposes only
+			
+			"Vertical Swipe"
+			if y1 && y2 != null && swipe_target_memory_y.size() > 2:
+				var y_average: int = Globals.calc_average(swipe_target_memory_y)
+				
+				#print ("Y average: ",y_average) #*********For Debug purposes only
+				#print (y1, "/",y2) #*********For Debug purposes only
+				#direction.y  = (y1-y2)/y_average #*********For Debug purposes only
+				
+				#print ("direction y: ",direction.y) #*********For Debug purposes only
+				
+				#print ('end detection: ','direction: ',direction ,'position',__position, "max diag slope", MAX_DIAGONAL_SLOPE) #for debug purposes only
+				#print ("X: ",swipe_target_memory_x)#*********For Debug purposes only
+				#print ("Y: ",swipe_target_memory_x)#*********For Debug purposes only
+			
+
+
+
+			if abs (direction.x) + abs(direction.y) >= MAX_DIAGONAL_SLOPE:
+				return
+			if abs (direction.x) > abs(direction.y):
+				#emit_signal('swiped',Vector2(-sign(direction.x), 0.0))
+				
+				#print (1111)
+				print ('Direction on X: ', direction.x, "/", direction.y) #horizontal swipe debug purposs
+			if -sign(direction.x) < Swipe.swipe_parameters:
+				print('left swipe') #for debug purposes
+				#next_panel() 
+				
+				if Globals.curr_scene == "Comics____2":
+					_state = SWIPE_LEFT
+			
+			if -sign(direction.x) > Swipe.swipe_parameters:
+				print('right swipe') #for debug purposes
+				#prev_panel()
+				
+				
+				
+				# Play Animation
+				return GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
+			
+				
+			if abs (direction.y) > abs(direction.x):
+				#emit_signal('swiped',Vector2(-sign(direction.y), 0.0))
+				print ('Direction on Y: ', direction.x) #horizontal swipe debug purposs
+				#print (2222)
+				
+			"Up & Down"
+			
+			# Works
+			if -sign(direction.y) < -Swipe.swipe_parameters:
+				print('up swipe 2') #for debug purposes
+				#next_panel() 
+				
+				
+				direction_var = "Up"
+				# Play Animation
+				return GlobalAnimation.get_child(0).play("SWIPE_UP")
+				
+				#doenst work
+				#_state = SWIPE_UP
+			
+				
+			if -sign(direction.y)  > swipe_parameters:
+				print('down swipe 2') #for debug purposes
+				#prev_panel()
+				
+				# Play Animation
+				return GlobalAnimation.get_child(0).play("SWIPE_DOWN")
+				
+			#emit_signal('swiped', Vector2(0.0,-sign(direction.y))) #vertical swipe
+				#	print ('poot poot poot') 
+		
+		if swipe_target_memory_x.size() && swipe_target_memory_y.size() > 50:
+			Swipe.clear_memory( swipe_target_memory_x, swipe_target_memory_y)
+
+		else: return
 
 
 

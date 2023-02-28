@@ -16,6 +16,9 @@
 
 extends Control
 
+
+class_name Game_Menu
+
 var selector = 0
 signal menu_hidden
 signal menu_showing
@@ -52,12 +55,18 @@ onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit Bu
 
 
 # Auto Scroll with Swipe Gestures
-onready var scroller : ScrollContainer = $MarginContainer/ScrollContainer
+onready var scroller : ScrollContainer= get_node("MarginContainer/ScrollContainer")
 
 const scroll_constant: int = 4
 
 
+
+
 func _ready():
+	
+	# Get Scroller node when ready
+	#scroller = 
+	
 	
 	" Translation"
 	manually_translate()
@@ -79,16 +88,26 @@ func _ready():
 
 
 func _process(delta):
-	'AutoScroller'
-	# Implemented but Requires Proper Swipe Gesture Callibration
-	if Comics_v5.direction_var == "Up" :
-		return scroll(false,delta)
-	elif Comics_v5.direction_var == "Down" :
-		
-		return scroll(true, delta)
 	
-	elif Comics_v5.direction_var == "Right":
-		return scroll(false, delta)
+	
+	#_delta = delta
+	#if delta == 1: # Stops Stack overflow
+	#	delta = 0
+	
+	#print (_delta) # for debug purposes only
+	
+	#'AutoScroller'
+	# Implemented but Requires Proper Swipe Gesture Callibration
+	# broken
+
+	#	if Comics_v5.direction_var == "Up" :
+	#		return scroll(false,delta)
+	#	elif Comics_v5.direction_var == "Down" :
+			
+	#		return scroll(true, delta)
+		
+	#	elif Comics_v5.direction_var == "Right":
+	#		return scroll(false, delta)
 	
 	#_hide_some_menu_options() #turning this off temporarily to debug the debug singleton
 	"Visibility State Machine"
@@ -105,15 +124,18 @@ func _process(delta):
 	pass
 
 
-func scroll(direction : bool ,delta)-> void:
+static func scroll(direction : bool , visible : bool, _scroller : ScrollContainer)-> void:
 	# DOCS : https://godotengine.org/qa/92054/how-programmatically-scroll-horizontal-list-texturerects
 	# using a boolean because it allows for only two options in it's data structure
 	# True is up, false is down
 	# Max is 449
+	
+	
+	
 	if visible && direction:
-		scroller.scroll_vertical += 20 * scroll_constant  #* delta
+		_scroller.scroll_vertical += 20 * scroll_constant  #* delta
 	elif visible && !direction:
-		scroller.scroll_vertical -= 20 * scroll_constant  #* delta
+		_scroller.scroll_vertical -= 20 * scroll_constant  #* delta
 
 		#print (scroller.scroll_vertical )#= scroll_constant  * delta
 
@@ -140,6 +162,19 @@ func _input(event): #Toggles menu visibility on/off
 			Globals._go_to_title()
 	 
 	
+	"Auto Scroller"
+	
+	if Comics_v5._state == Comics_v5.SWIPE_RIGHT:
+		
+		
+		# Scroll Down
+		scroll(true, true,scroller)
+	elif Comics_v5._state == Comics_v5.SWIPE_DOWN:
+		
+		# Scroll Up
+		scroll(false, true,scroller)
+		
+	else: pass
 
 
 func _on_continue_pressed(): #breaks the Globals.current_level script

@@ -156,6 +156,14 @@ var target_memory_y: Array = [] #stores vector 2 of previous targets
 var enabled : bool 
 
 
+
+
+
+onready var q = HTTPRequest.new() # checks internet connection, makes it a Global boolean
+onready var q2 = HTTPRequest.new() # Downloads imgs
+onready var q3 = HTTPRequest.new() # Downloads Comic Scenes
+
+
 #**********Swipe Detection Direction Calculation Parameters************#
 var swipe_target_memory_x : Array = [] # for swipe direction x calculation
 var swipe_target_memory_y : Array = [] # for swipe direction y calculation
@@ -166,11 +174,6 @@ var x2 #: float
 var y1 #: float
 var y2 #: float
 export(float,0.5,1.5) var MAX_DIAGONAL_SLOPE  = 1.3
-
-
-onready var q = HTTPRequest.new() # checks internet connection, makes it a Global boolean
-onready var q2 = HTTPRequest.new() # Downloads imgs
-onready var q3 = HTTPRequest.new() # Downloads Comic Scenes
 
 
 "Rewriting As a Fininte State Machine"
@@ -472,10 +475,12 @@ func _input(event):
 		# should save event positions to an array and 
 		# run calculations using the first and last array positions
 		# Swipe position detector implemented it as state controller changer
-		_start_detection(event.position)
+		#_position, enabled: bool, _e : Timer ,swipe_target_memory_x : Array, swipe_target_memory_y : Array
+		Swipe._start_detection(event.position, true, _e, swipe_target_memory_x, swipe_target_memory_y)
 		
-		
-		_end_detection(event.position)
+		#__position : Vector2, swipe_start_position : Vector2, direction_var, _state
+		#dfhdfhd
+		_end_detection(event.position)#, event.position, direction_var, _state)
 	
 	
 	if event is InputEventScreenTouch :
@@ -899,38 +904,6 @@ func sumaVectores(v1, v2): #vector sum
 """
 		  SWIPE DETECTION
 """
-
-func _handle_swipe_detection(event)-> void:
-	"Handles Swipe Detection" #buggy
-	if event.pressed:
-		_start_detection(event.position)
-	elif not _e.is_stopped():
-		_end_detection(event.position)
-
-" Swipe Direction Detection"
-#Buggy swipe direction
-# Use an Array to store the first position and all end positions
-# Difference between both extremes is the swipe position
-func clear_memory()-> void:
-	swipe_target_memory_x.clear()
-	swipe_target_memory_y.clear()
-
-func _start_detection(_position): #for swipe detection
-	#use current scene to trigger cinematic
-	Globals.update_curr_scene()
-	
-	if enabled == true:
-		#swipe_start_position = _position
-		if not swipe_target_memory_x.has(_position.x): 
-			swipe_target_memory_x.append(_position.x)
-		if not swipe_target_memory_y.has(_position.y):
-			swipe_target_memory_y.append(_position.y)
-		
-		
-		_e.start()
-		print ('start swipe detection :') #for debug purposes delete later
-
-"Only Two Swipe Directions Are Currently Implemented"
 func _end_detection(__position):
 #_e.stop()
 	direction = (__position - swipe_start_position).normalized()
@@ -1051,14 +1024,14 @@ func _end_detection(__position):
 			
 			#print (1111)
 			print ('Direction on X: ', direction.x, "/", direction.y) #horizontal swipe debug purposs
-		if -sign(direction.x) < swipe_parameters:
+		if -sign(direction.x) < Swipe.swipe_parameters:
 			print('left swipe') #for debug purposes
 			#next_panel() 
 			
 			if Globals.curr_scene == "Comics____2":
 				_state = SWIPE_LEFT
 		
-		if -sign(direction.x) > swipe_parameters:
+		if -sign(direction.x) > Swipe.swipe_parameters:
 			print('right swipe') #for debug purposes
 			#prev_panel()
 			
@@ -1076,7 +1049,7 @@ func _end_detection(__position):
 		"Up & Down"
 		
 		# Works
-		if -sign(direction.y) < -swipe_parameters:
+		if -sign(direction.y) < -Swipe.swipe_parameters:
 			print('up swipe 2') #for debug purposes
 			#next_panel() 
 			
@@ -1100,9 +1073,59 @@ func _end_detection(__position):
 			#	print ('poot poot poot') 
 	
 	if swipe_target_memory_x.size() && swipe_target_memory_y.size() > 50:
-		clear_memory()
+		Swipe.clear_memory( swipe_target_memory_x, swipe_target_memory_y)
 
 	else: return
+
+
+
+func _handle_swipe_detection(event)-> void:
+	"Handles Swipe Detection" #buggy
+	if event.pressed:
+		Swipe._start_detection(event.position, true, _e, swipe_target_memory_x, swipe_target_memory_y)
+	elif not _e.is_stopped():
+		#__position : Vector2, swipe_start_position : Vector2, swipe_target_memory_x : Array, swipe_target_memory_y : Array,direction_var, _state
+		_end_detection(event.position)#,event.position,swipe_target_memory_x, swipe_target_memory_y, direction_var, _state)
+
+
+
+class Swipe extends Reference:
+	#**********Swipe Detection Direction Calculation Parameters************#
+	#var swipe_target_memory_x : Array = [] # for swipe direction x calculation
+	#var swipe_target_memory_y : Array = [] # for swipe direction y calculation
+	#var direction : Vector2
+	#var swipe_parameters : float = 0.1 # is 1 in Dystopia-App
+	var x1 #: float
+	var x2 #: float
+	var y1 #: float
+	var y2 #: float
+	export(float,0.5,1.5) var MAX_DIAGONAL_SLOPE  = 1.3
+
+	" Swipe Direction Detection"
+	#Buggy swipe direction
+	# Use an Array to store the first position and all end positions
+	# Difference between both extremes is the swipe position
+	func clear_memory(swipe_target_memory_x: Array, swipe_target_memory_y :Array)-> void:
+		swipe_target_memory_x.clear()
+		swipe_target_memory_y.clear()
+
+
+	func _start_detection(_position, enabled: bool, _e : Timer ,swipe_target_memory_x : Array, swipe_target_memory_y : Array ): #for swipe detection
+		#use current scene to trigger cinematic
+		Globals.update_curr_scene()
+		
+		if enabled == true:
+			#swipe_start_position = _position
+			if not swipe_target_memory_x.has(_position.x): 
+				swipe_target_memory_x.append(_position.x)
+			if not swipe_target_memory_y.has(_position.y):
+				swipe_target_memory_y.append(_position.y)
+			
+			
+			_e.start()
+			print ('start swipe detection :') #for debug purposes delete later
+
+	"Only Two Swipe Directions Are Currently Implemented"
 
 
 

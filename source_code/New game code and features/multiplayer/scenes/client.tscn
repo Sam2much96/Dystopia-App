@@ -92,6 +92,13 @@ margin_right = 414.0
 margin_bottom = 460.0
 text = "Enter Chat"
 
+[node name="do_something" type="Button" parent="UI"]
+margin_left = 340.0
+margin_top = 500.0
+margin_right = 422.0
+margin_bottom = 574.0
+text = "Do smth"
+
 [node name="ping" type="Button" parent="UI"]
 margin_left = 29.2773
 margin_top = 488.589
@@ -120,5 +127,6 @@ margin_bottom = 467.464
 text = "CHATS"
 
 [connection signal="pressed" from="UI/Chat_Button" to="." method="_on_Chat_Button_pressed"]
+[connection signal="pressed" from="UI/do_something" to="." method="_on_do_something_pressed"]
 [connection signal="pressed" from="UI/ping" to="." method="_on_ping_pressed"]
 [connection signal="pressed" from="UI/peers" to="." method="_on_peers_pressed"]

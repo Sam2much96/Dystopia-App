@@ -19,8 +19,9 @@ extends Node
 # (6) Send Player inputs via remote functions
 # (7) Duplicate Input Functions btw Client and Server (Using ROll back netcode as a reference)
 # (8) Does not work on open internet 
-#		- Implement web socket client, server and webRTC
+#		- Implement web socket client, server and webRTC *Done, Debugging)
 # (9) Include Matchmaking system
+# (10) Organizing codebase into classes for better readablility
 # *************************************************
 
 class_name Server
@@ -140,47 +141,47 @@ class Lobby extends Reference:
 		return true
 
 
+class WebServer extends Reference:
 
-func _init():
-	"connect server signals"
-	
-	connect_signals()
-
-
-func connect_signals()->void:
-	#when data is received
-	server.connect("data_received", self, "_on_data")
-	
-	#when a peer connects and Disconnects
-	server.connect("client_connected", self, "_peer_connected")
-	server.connect("client_disconnected", self, "_peer_disconnected")
-
-	#duplicate?
-	#Connect signals from the server node
-	server.connect("client_connected",self, "player_connected")
-
-	# Connect the signals
-	# Debug the signals
-	#if get_tree().connect("network_peer_connected", self, "player_connected") != OK:
+	func _init():
+		"connect server signals"
+		
+		# connect signals from another codebloc
+		
 
 
-	#buggy connections
-#	if not is_connected("network_peer_connected", self, "player_connected"):
+	func connect_signals(server : WebSocketServer )->void:
+		#when data is received
+		server.connect("data_received", self, "_on_data")
+		
+		#when a peer connects and Disconnects
+		server.connect("client_connected", self, "_peer_connected")
+		server.connect("client_disconnected", self, "_peer_disconnected")
 
-#		get_tree().connect("network_peer_connected", self, "player_connected")
-	
-#	if not is_connected("network_peer_disconnected", self, "player_disconnected"):
-#		get_tree().connect("network_peer_disconnected", self, "player_disconnected") 
-	
-	
-#	if get_tree().connect("network_peer_disconnected", self, "player_disconnected") != OK:
-#		print("Unable to connect signal (network_peer_disconnected) !")
+		#duplicate?
+		#Connect signals from the server node
+		server.connect("client_connected",self, "player_connected")
 
-	#check if signal is connected
-	print ("my custom signal connected: ", server.is_connected("client_connected",self, "player_connected"))
+		# Connect the signals
+		# Debug the signals
+		#if get_tree().connect("network_peer_connected", self, "player_connected") != OK:
 
 
-	#ls;lm;lsm
+		#buggy connections
+	#	if not is_connected("network_peer_connected", self, "player_connected"):
+
+	#		get_tree().connect("network_peer_connected", self, "player_connected")
+		
+	#	if not is_connected("network_peer_disconnected", self, "player_disconnected"):
+	#		get_tree().connect("network_peer_disconnected", self, "player_disconnected") 
+		
+		
+	#	if get_tree().connect("network_peer_disconnected", self, "player_disconnected") != OK:
+	#		print("Unable to connect signal (network_peer_disconnected) !")
+
+		#check if signal is connected
+		print ("my custom signal connected: ", server.is_connected("client_connected",self, "player_connected"))
+
 
 
 
@@ -226,16 +227,14 @@ func _process(delta):
 
 
 
-func listen(_IP,port):
+func listen(server : WebSocketServer,_IP,port):
 	stop()
 	rand.seed = OS.get_unix_time()
 	server.set_bind_ip(_IP)
 	server.listen(port, PoolStringArray([]), false)
-	#
-	#print ("Server Bind IP 2: ",server.get_bind_ip())
-	
 	print ("server listening on port: ", str(port)) 
-	#print ("server listening on IP: ", str(_IP), "DIsabled, buggy") 
+
+
 
 func stop():
 	server.stop()
@@ -416,6 +415,8 @@ func _parse_msg(id) -> bool:
 	"Connecting with webrtc_mp"
 
 	if type.begins_with("O: "):
+		
+		print ("////",id, req[1])# for debug purposes only
 		# Client is making an offer
 		server.get_peer(dest_id).put_packet(("O: %d\n%s" % [id, req[1]]).to_utf8())
 	elif type.begins_with("A: "):
@@ -438,13 +439,13 @@ func _ready():
 	self.add_child(node_enemies)
 
 	
-	
+	WebServer.connect_signals(server)
 	
 	
 	
 	
 	"WebRTC implementation"
-	listen(Networking.cfg_server_ip,Networking.SERVER_PORT) #port
+	WebServer.listen(Networking.cfg_server_ip,Networking.SERVER_PORT) #port
 	#listen(Networking.SERVER_PORT) #port
 	
 	

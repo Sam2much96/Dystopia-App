@@ -103,7 +103,9 @@ var rtc_mp: WebRTCMultiplayer = WebRTCMultiplayer.new()
 
 var sealed = false
 
-#call the signals
+
+var debug_counter : int = 0
+
 
 func _init():
 	connecting_signals()
@@ -245,6 +247,7 @@ func send_candidate(id, mid, index, sdp) -> int:
 
 
 func send_offer(id, offer) -> int:
+	print ("-------sending offer")
 	return _send_msg("O", id, offer)
 
 
@@ -284,24 +287,29 @@ func _process(delta):
 	status2 = peer.get_connection_state()
 	
 	# Logic controller for webMultiplayer connection status
+	# uses a debug conter to stop printing overflow
 	
 	if status2 == 0:
-		print ("""
-		● STATE_NEW = 0
-		The connection is new, data channels and an offer can be created in this state.
+		if debug_counter == 0:
+			print ("""
+			● STATE_NEW = 0
+			The connection is new, data channels and an offer can be created in this state.
 
-		""")
+			""")
+			debug_counter += 1
 
-		pass
+		return debug_counter 
+	
 	if status2 == 1:
-		
-#		print ("""
-#		● STATE_CONNECTING = 1
-#		The peer is connecting, ICE is in progress, none of the transports has failed.
+		if debug_counter == 0:
+			print ("""
+			● STATE_CONNECTING = 1
+			The peer is connecting, ICE is in progress, none of the transports has failed.
 
-#		""")
+			""")
+			debug_counter += 1
 		
-		pass
+		return debug_counter
 	if status2 == 2:
 		
 		print ("""
@@ -310,7 +318,7 @@ func _process(delta):
 
 		""")
 		
-		pass
+		return
 	if status2 == 3:
 		print ("""
 		● STATE_DISCONNECTED = 3
@@ -320,7 +328,7 @@ func _process(delta):
 
 		
 		
-		pass
+		return
 	if status2 == 4:
 		print ("""
 		● STATE_FAILED = 4
@@ -329,7 +337,7 @@ func _process(delta):
 		""")
 
 
-		pass
+		return
 	if status2 == 5:
 		print ("""
 		● STATE_CLOSED = 5
@@ -338,7 +346,7 @@ func _process(delta):
 		""")
 
 
-		pass
+		return
 	
 
 	
@@ -532,15 +540,24 @@ func open_data_channel_to(channel: WebRTCPeerConnection, peer_id: int):
 	#if status2 == 0:
 	#var u= WebRTCDataChannel.new()
 	#var p1 = WebRTCPeerConnection.new()
+	# Placeholder Array, delete later
+	var req : Array = ['1', '2']
 	
+	print ("------------Creating WebRTC Connection-----------")
 	
-	web_client.get_peer(1).put_packet("O: %d".to_utf8())
+	web_client.get_peer(1).put_packet(("O: %d\n%s" % [peer_id, req[1]]).to_utf8())
+
 	var ch1 = channel.create_data_channel("chat", {"id": 1, "negotiated": true})
 
 	channel.create_data_channel("chat", {"id": 1, "negotiated": true})
 	print ("opening channel ", channel, " to Peer", peer_id ) # For debug purposes only
-	channel.create_offer()
-		
+	
+	
+	var err = channel.create_offer()
+	
+	if err == OK:
+		print ("offer created")
+	else: push_error( "WebRTC connection error: " + str(err) )
 
 		#ch1.put_packet(data)
 	#if not status2 == 0 : return 0;
@@ -953,12 +970,13 @@ func add_chat(text): #used the ui grid
 	#peer = WebRTCPeerConnectionGDNative:2345
 
 	# doesnt work. RTC_MP connection isnt established
-	open_data_channel_to(peer,1)
+	#open_data_channel_to(peer,1)
 	
 	debug_rtc_mp()
 	
 	send_data_to_webclient(text.to_utf8())
 	
+
 
 
 func send_data_to_webclient(data: PoolByteArray):
@@ -1030,5 +1048,11 @@ func create_multiplayer_client(address : String, port)-> bool:
 func debug_rtc_mp()-> void:
 		# write a state machine bloc to debug rtc_mp
 	
-	print ("Web RTC Multiplayer connected: ",rtc_mp.CONNECTION_CONNECTED) #2
+	print ("Web RTC Multiplayer Peers: ",rtc_mp.get_peers()) #shows all multiplayer peers
 	print ("Web RTC Multiplayer disconnected: ",rtc_mp.CONNECTION_DISCONNECTED) #2
+
+
+func _on_do_something_pressed():
+	debug_counter = 0
+	open_data_channel_to(peer,1)
+	debug_rtc_mp()

@@ -109,7 +109,7 @@ margin_top = 445.383
 margin_right = 367.648
 margin_bottom = 488.383
 theme = SubResource( 9 )
-text = "Translations"
+text = "Translations Brazil!"
 
 [node name="Label3" type="Label" parent="Notification"]
 margin_left = 146.37

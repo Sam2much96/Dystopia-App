@@ -308,9 +308,11 @@ func _restore_data(save_dict):
 	######################################################
 	print ("Loaded gameplay")
 
-func update_curr_scene(): 
+func update_curr_scene() -> void:
 	curr_scene= get_tree().get_current_scene().get_name() 
-	
+	print ("current scene iss: ", curr_scene)
+
+
 func _go_to_title():
 	'Quits if already at title screen'
 	if get_tree().get_current_scene().get_name() == 'Menu':
@@ -484,6 +486,31 @@ func uncompress(FILE: String) : #-> PoolByteArray:
 			print('Compressed size: ' + str(f['compressed_size']))
 
 			print('Uncompressed size: ' + str(f['uncompressed_size']))
+
+
+
+
+"""
+Quickly sets a videoplayer to Play music and videos
+"""
+# Would break if passed to anything other than videosteam player
+func _Video_Stream(node : VideoPlayer, stream , _sound, viewport):
+	if stream and node != null or '':
+		print('Playing Video Stream:/',stream)
+		#node._set_size((viewport))
+		node.set_stream(stream) 
+		node.play() 
+		print ('Video player is playing: ',node.is_playing())
+		
+		# Plays the sound through the music singleton
+		#get_tree().get_root().get_node("/root/Music").play(sound)
+		return
+	else:
+		push_error('Video player uses the video player node, and music singleton')
+		push_warning(str(node) +"/" +str(stream) + "/"+ str (_sound))
+
+
+
 
 #	"Handles single Zip files"
 #	if gdunzip.files.keys().size() == 1:

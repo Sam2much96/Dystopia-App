@@ -187,7 +187,7 @@ _global_script_classes=[ {
 "base": "Control",
 "class": "cinematic",
 "language": "GDScript",
-"path": "res://scenes/cinematics/cinematics.gd"
+"path": "res://scenes/cinematics/cinematics V2.gd"
 }, {
 "base": "CPUParticles2D",
 "class": "smoke_fx",

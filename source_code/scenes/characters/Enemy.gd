@@ -104,6 +104,10 @@ class Functions extends Reference:
 
 
 class Behaviour extends Reference:
+	# Enemy AI Behaviour as A Class
+	
+	# Using Global Methods and Classes makes enemy behaviour AI to perform better
+	# And Faster, in Realtime Gameplay
 	
 	func _ready():
 		randomize()
@@ -115,7 +119,7 @@ class Behaviour extends Reference:
 			
 			enemy_direction= (body_position.direction_to(player_position))
 			
-			rotate_pointer(Vector2((enemy_direction.x), (enemy_direction.y)), pointer) # Rotates a Racast 2d to face the Enemy
+			Globals.rotate_pointer(Vector2((enemy_direction.x), (enemy_direction.y)), pointer) # Rotates a Racast 2d to face the Enemy
 			
 			var X = round(enemy_direction.x) ; var Y =round (enemy_direction.y)
 			if X == 0 and Y == 1:

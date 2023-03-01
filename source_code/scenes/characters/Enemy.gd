@@ -225,7 +225,7 @@ func _process(_delta):
 
 func _physics_process(_delta):
 	
-	# Moving All Physics calculation to the Globals Script
+	# Consider Moving All Physics calculation to the Globals Script
 	
 	match state:
 		STATE_IDLE:
@@ -322,14 +322,7 @@ func _physics_process(_delta):
 func goto_idle():
 	state = STATE_IDLE
 
-#func _on_state_changer_timeout(): # Disabled to write better enemy ai
-#	"A  RANDOM STATE CHANGER  "
-	
-#	$state_changer.wait_time = rand_range(1.0, 5.0)
-#	state = randi() %3
-	
-#	facing = ["left", "right", "up", "down"][randi()%3]
-	
+
 
 # Hurt Box collission is closest to the body's collision
 func _on_hurtbox_area_entered(area):

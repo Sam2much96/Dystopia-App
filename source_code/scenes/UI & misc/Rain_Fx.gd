@@ -21,7 +21,7 @@ export (bool) var enable
 
 export (float) var time #in secs
 
-const MINUMUM_FPS : int = 18
+const MINUMUM_FPS : int = 10
 
 
 

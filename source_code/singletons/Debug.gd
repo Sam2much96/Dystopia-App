@@ -148,6 +148,9 @@ func _process(_delta):
 	if debug_panels_cr8ted.size() >= 2:
 		debug_panel = debug_panels_cr8ted.pop_front()
 
+" Globally Accessible Framerate"
+func FPS_debug()-> float:
+	return Engine.get_frames_per_second()
 
 func _ram_debug():
 	#This code gets the current ram being used as bytes 

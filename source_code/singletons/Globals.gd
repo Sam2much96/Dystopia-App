@@ -362,6 +362,15 @@ func turn_off_processing(toggle): # to improve game speed and turn off idle proc
 			push_warning ("This function only uses on/off strings to control the globals processing functon")
 	else: return
 
+
+
+		# Updates the raycast to the Enemy"s Direction
+static func rotate_pointer(point_direction: Vector2, pointer) -> void:
+	var temp =rad2deg(atan2(point_direction.x, point_direction.y))
+	pointer.rotation_degrees = temp
+
+
+
 func restaVectores(v1, v2): #vector substraction
 	return Vector2(v1.x - v2.x, v1.y - v2.y)
 

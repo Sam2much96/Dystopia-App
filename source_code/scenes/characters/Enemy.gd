@@ -107,9 +107,9 @@ class Behaviour extends Reference:
 	
 	func _ready():
 		randomize()
-		
+	
 	# body is self
-	static func update_facing(body_position : Vector2, player_position : Vector2, player , pointer, _facing : String, enemy_direction: Vector2)-> void: # Updates the Enemy to face the Player
+	static func update_facing(body_position : Vector2, player_position : Vector2, player , pointer, _facing : String, enemy_direction: Vector2)-> String: # Updates the Enemy to face the Player
 
 		if player != null: #handles enemy facing player
 			
@@ -126,12 +126,16 @@ class Behaviour extends Reference:
 				_facing = 'left'
 			if X == 0 and Y == -1:
 				_facing = 'up'
+			
+			return _facing
+			
 			#FACING CHEATSHEET
 			#DOWN :X=0 , Y =1 [ Y> X] 
 			#RIGHT :X= 1, Y= 0 [X > Y ]
 			#LEFT: X = -1, Y = 0 [Y>X]
 			#UP: X= 0, Y= -1   [X>Y]
-
+		return _facing
+		
 		if player == null:
 			pass
 
@@ -158,12 +162,13 @@ class Behaviour extends Reference:
 						#shoot() #Disabling for now
 						if enemy_type == "Hard":
 							state = STATE_ROLL
-							#return state
+							return state
 						if enemy_type == "Easy":
 							state = STATE_WALKING
-							#return state
+							return state
 						if enemy_type == "Intermediate":
 							state = STATE_WALKING
+							return state
 						else: return
 		if raycast.is_enabled() == false && player != null:
 			#use state changer timer to turn off processing
@@ -171,10 +176,7 @@ class Behaviour extends Reference:
 
 
 	static func randomize_facing(facing : String, number_of_options : Array) :
-
-		#randomize()
 		
-		#state = randi() %3
 		facing = number_of_options[randi()% int(number_of_options.size()- 1)]
 		
 		return facing
@@ -183,13 +185,8 @@ class Behaviour extends Reference:
 # Sets the enemy to a random state btw the first 3 states and a random direction
 	static func randomize_state(state):
 		
-		#randomize()
-		
 		state = randi() %3
 		
-		#facing = ["left", "right", "up", "down"][randi()%3]
-		#facing = number_of_options[randi()% number_of_options.size()]
-		#facing = number_of_options[randi()% number_of_options.size()]
 		
 		return state 
 
@@ -211,46 +208,17 @@ func _process(_delta):
 	"FACE THE PLAYER, IF HE'S VISIBLE"
 	if player != null: 
 		#var enemy_direction = Vector2(0,0)
-		Behaviour.update_facing(self.position, player.position, player, pointer, facing, Vector2(0,0))
-
+		facing = Behaviour.update_facing(self.position, player.position, player, pointer, facing, Vector2(0,0))
 
 
 		"Enemy Behaviour Logic"
 
-		Behaviour.behaviour_logic(hitpoints, raycast, player, player.position, self.position , self, enemy_type, state, enemy_distance_to_player)
+		state = Behaviour.behaviour_logic(hitpoints, raycast, player, player.position, self.position , self, enemy_type, state, enemy_distance_to_player)
 
 
 	if hitpoints <= 0: # Dies if hitpoint is zero
 		state = STATE_DIE
 		#despawn()
-
-	# Provides Randomized enemy behaviour
-	#if not hitpoints == 0:
-	#	if raycast.is_enabled() == true:
-	#		if raycast.is_colliding() && player != null:
-	#			center = Functions.calculate_center(player, self) #calculates distance to plaer
-	#			move_and_slide(center) # moves to plater
-	#			state = STATE_WALKING
-	#			enemy_distance_to_player = abs(position.distance_to(player.position )) # Calculates the enemy distance to playrer
-	#			
-	#			#print (enemy_distance_to_player) # For debug purposes only
-	#			if enemy_distance_to_player < 80: #uses enemy distance to auto attack
-	#				state = STATE_ATTACK
-	#				#return state 
-	#			if enemy_distance_to_player > 80:
-	#				#shoot() #Disabling for now
-	#				if enemy_type == "Hard":
-	#					state = STATE_ROLL
-	#					#return state
-	#				if enemy_type == "Easy":
-	#					state = STATE_WALKING
-	#					#return state
-	#				if enemy_type == "Intermediate":
-	#					state = STATE_WALKING
-	#				else: return
-	#if raycast.is_enabled() == false && player != null:
-	#	#use state changer timer to turn off processing
-	#	print ('Debug Enenmy Behaviour Check')
 
 
 

@@ -519,6 +519,10 @@ func _Video_Stream(node : VideoPlayer, stream , _sound, viewport):
 		push_warning(str(node) +"/" +str(stream) + "/"+ str (_sound))
 
 
+# Produces Truely Randomized Results
+func randomize_enemy_type() -> String:
+	randomize()
+	return ['Easy', "Intermediate", "Hard"][randi()%3]
 
 
 #	"Handles single Zip files"

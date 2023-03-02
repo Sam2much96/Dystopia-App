@@ -65,24 +65,32 @@ func _enter_tree():
 	Globals.player_hitpoints = hitpoints
 
 
-func _ready():
-
-
+class Behaviour extends Reference:
 
 	"""
 	Autospawn Code
 	"""
-	#Globals.load_game()
-	# Move the player to the corresponding spawnpoint, if any and connect to the dialog system
-	if Globals.spawnpoint is Vector2 and Globals.spawnpoint != null: #auto spawn code
-		if Globals.curr_scene == 'Outside' :
-			if Globals.current_level != null:
-				self.position = Globals.spawnpoint
-				print ('auto spawn')
-		if Globals.curr_scene == 'HouseInside':
-			pass
 
-		#break
+	static func AutoSpawn(body):
+			# Move the player to the corresponding spawnpoint, if any and connect to the dialog system
+		if Globals.spawnpoint is Vector2 and Globals.spawnpoint != null: #auto spawn code
+			if Globals.curr_scene == 'Outside' :
+				if Globals.current_level != null:
+					body.position = Globals.spawnpoint
+					print ('auto spawn')
+			if Globals.curr_scene == 'HouseInside':
+				pass
+
+func _ready():
+
+
+
+	#Globals.load_game()
+	
+	
+	Behaviour.AutoSpawn(self)
+	
+	
 	if not (
 			Dialogs.connect("dialog_started", self, "_on_dialog_started") == OK and
 			Dialogs.connect("dialog_ended", self, "_on_dialog_ended") == OK ):

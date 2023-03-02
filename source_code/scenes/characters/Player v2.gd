@@ -17,6 +17,8 @@
 # (7) Play animation remotely (works)
 # (8) Player Camera Hierarchy bug
 #		2 or more spawned players have their own cameras which misaligns the scene tree
+
+# Depreciated, Delete Script Later
 # *************************************************
 
 extends KinematicBody2D

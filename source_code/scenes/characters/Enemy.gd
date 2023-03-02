@@ -83,7 +83,10 @@ func _ready():
 	
 	state = Behaviour.randomize_state(state)
 	facing = Behaviour.randomize_facing(facing,["left", "right", "up", "down"])
-	enemy_type= Behaviour.randomize_enemy_type(enemy_type) #disabling to debug
+	
+	
+	enemy_type = Behaviour.randomize_enemy_type(['Easy', "Intermediate", "Hard"]) #Calls A Global Function
+	#print(enemy_type) #disabling to debug
 	
 	#if player != null:
 	#var enemy_direction = Vector2(0,0)
@@ -102,6 +105,7 @@ class Functions extends Reference:
 		return center
 
 
+	
 
 class Behaviour extends Reference:
 	# Enemy AI Behaviour as A Class
@@ -143,6 +147,8 @@ class Behaviour extends Reference:
 		if player == null:
 			pass
 
+
+	
 	
 	
 	static func behaviour_logic(hitpoints: int, raycast : RayCast2D, player : Player, player_pos , _position,_enemy, enemy_type : String, state, enemy_distance_to_player):
@@ -153,7 +159,7 @@ class Behaviour extends Reference:
 			if raycast.is_enabled() == true:
 				if raycast.is_colliding() && player != null:
 					var center = Functions.calculate_center(player, _position) #calculates distance to plaer
-					_enemy.move_and_slide(center) # moves to plater
+					_enemy.move_and_slide(center) # moves to player
 					state = STATE_WALKING
 					#var enemy_distance_to_player = abs(position.distance_to(player.position )) # Calculates the enemy distance to playrer
 					enemy_distance_to_player = abs(_position.distance_to(player_pos )) # Calculates the enemy distance to playrer
@@ -194,10 +200,13 @@ class Behaviour extends Reference:
 		
 		return state 
 
-	static func randomize_enemy_type(enemy_type : String):
-		randomize()
-		enemy_type = ['Easy', "Intermediate", "Hard"][randi()%3]
-		return enemy_type
+	static func randomize_enemy_type( options : Array):
+		#randomize()
+		#enemy_type = ['Easy', "Intermediate", "Hard"][randi()%3]
+		#enemy_type = 
+		#return options [randi()% int(options.size() - 1)] # Returns Easy
+		#return ['Easy', "Intermediate", "Hard"][randi()%3] # Returns Hard
+		return Globals.randomize_enemy_type() # Returns Hard
 
 	# Updates the raycast to the Enemy"s Direction
 	static func rotate_pointer(point_direction: Vector2, pointer) -> void:

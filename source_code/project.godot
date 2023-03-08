@@ -274,6 +274,7 @@ PluginSettings="*res://addons/github-integration/scripts/PluginSettings.gd"
 IconLoaderGithub="*res://addons/github-integration/scripts/IconLoaderGithub.gd"
 UserData="*res://addons/github-integration/scripts/user_data.gd"
 RestHandler="*res://addons/github-integration/scenes/RestHandler.tscn"
+DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
 
 [debug]
 
@@ -288,7 +289,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/github-integration/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/NativeLib/plugin.cfg", "res://addons/algodot/plugin.cfg", "res://addons/github-integration/plugin.cfg" )
 
 [gdnative]
 

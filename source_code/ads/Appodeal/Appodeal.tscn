@@ -5,4 +5,3 @@
 [node name="Appodeal" type="EditorPlugin"]
 script = ExtResource( 1 )
 precached = true
-enabled = true

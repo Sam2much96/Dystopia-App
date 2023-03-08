@@ -13,7 +13,7 @@
 #(2) Appodeal is Broken
 # *************************************************
 
-tool
+#tool
 
 extends Node
 '''A Implementation Of Appodeals banner add in Godot '''
@@ -157,10 +157,10 @@ export (String, '320x50', '728x90', 'SMARTBANNER' ) var banner_size
 #class_name Appodeal 
 
 func _enter_tree(): #Restricts initialization to Android OS 
-	if str(OS.get_name()) != str('Android'):
+	if Globals.os != 'Android':
 		enabled = false
 		push_warning('Ads Can Only Be Enable on Mobile Devices, not / '+ str(OS.get_name()))
-	if str(OS.get_name()) == str('Android'):
+	if Globals.os == 'Android':
 		_init()
 		print('Initilizing Appodeal Ads on/',str(Globals.os))
 
@@ -173,14 +173,24 @@ func _init():
 	# The entire initilization is broken
 	# It doesn't detect the singleton
 	#if str(OS.get_name()) == str ("Android"): #Error catcher
-	#	if(Engine.has_singleton("GodotAppodeal")) && enabled == true:
-	#		key = "b14288f5b650ec9807ab324195ec819be92c7d4c0b1a65e8"
-	#	appodeal = Engine.get_singleton("GodotAppodeal") ###None Existent SIngleton.
-	#	appodeal.initialize( key, 2, false)
-#
-#		appodeal.showAd(4)
-		#Debug.Ads_debug += ('Showing Ads: '+str(appodeal.showAd(4)))
-	pass
+		if(Engine.has_singleton("GodotAppodeal")) && enabled == true:
+			key = "b14288f5b650ec9807ab324195ec819be92c7d4c0b1a65e8"
+		appodeal = Engine.get_singleton("GodotAppodeal") ###None Existent SIngleton.
+		appodeal.initialize( key, 2, false)
+		
+		appodeal.setTestingEnabled(false)
+		appodeal.showAd(4)
+		Debug.Ads_debug += ('Showing Ads: '+str(appodeal.showAd(4)))
+	#pass
+	
+
+
+
+func _ready():
+	if Engine.has_singleton("GodotAppodeal"):
+		appodeal = Engine.get_singleton("GodotAppodeal")
+
+		print ("Engine has Appodeal Ad Module", appodeal, Engine.has_singleton("GodotAppodeal"))
 
 func initialize(app_key: String, ad_types: int, consent: bool) -> void:
 	return
@@ -245,7 +255,7 @@ func isAutocacheEnabled(ad_type: int) -> bool:
 # Check cache
 func isPrecacheAd(ad_type: int) -> bool:
 	return (appodeal)
-
+ 
 # Cache
 func cacheAd(ad_type: int) -> void:
 	return

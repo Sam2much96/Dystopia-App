@@ -6,6 +6,7 @@
 # Features:
 # To Do:
 #(1) Debug and Fix bugs (DONE)
+# (2) Implement Banner add as child
 # *************************************************
 
 

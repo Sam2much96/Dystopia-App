@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Title screen.gd" type="Script" id=1]
 [ext_resource path="res://resources/title animation/Dystopia Logo webp.webp" type="Texture" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://fonts/Roboto-BlackItalic.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://fonts/Roboto-Black.ttf" type="DynamicFontData" id=10]
 [ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=11]
+[ext_resource path="res://ads/Appodeal/Appodeal.tscn" type="PackedScene" id=12]
 
 [sub_resource type="ShaderMaterial" id=7]
 
@@ -109,7 +110,7 @@ margin_top = 445.383
 margin_right = 367.648
 margin_bottom = 488.383
 theme = SubResource( 9 )
-text = "Translations Brazil!"
+text = "Banner Ads are Back!"
 
 [node name="Label3" type="Label" parent="Notification"]
 margin_left = 146.37
@@ -140,6 +141,10 @@ stretch_mode = 6
 [node name="Timer" type="Timer" parent="."]
 wait_time = 20.0
 autostart = true
+
+[node name="Appodeal" parent="." instance=ExtResource( 12 )]
+enabled = true
+banner_size = "320x50"
 
 [connection signal="ready" from="HTTPRequest" to="." method="_on_HTTPRequest_ready"]
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]

@@ -1214,14 +1214,17 @@ func _input(event):
 			"Swipe Detection"
 			
 			#Comics_v5.enabled = true
-			Comics_v5._start_detection(event.position)
+			#_position, enabled: bool, _e : Timer ,swipe_target_memory_x : Array, swipe_target_memory_y : Array 
+			Comics_v5.Swipe._start_detection(event.position, true, Comics_v5._e ,Comics_v5.swipe_target_memory_x, Comics_v5.swipe_target_memory_y )
 			
 			
 			# End Detection once Networking check has timedout
 			
 			#sdfhsdfhsdhsdg
 			# Swipe Detection SHould SHow A new Aset UI with NFT PFP
-			Comics_v5._end_detection(event.position)
+			#__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array, swipe_start_position : Vector2, swipe_parameters: float, x1,x2,y1,y2,MAX_DIAGONAL_SLOPE
+			#__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array, swipe_start_position : Vector2, swipe_parameters: float, x1,x2,y1,y2,MAX_DIAGONAL_SLOPE
+			Comics_v5.Swipe._end_detection(event.position, Comics_v5.direction, Comics_v5.direction_var , Comics_v5._state, Comics_v5._e ,Comics_v5.swipe_target_memory_x, Comics_v5.swipe_target_memory_y,Comics_v5.swipe_start_position, Comics_v5.swipe_parameters, Comics_v5.x1, Comics_v5.x2, Comics_v5.y1, Comics_v5.y2, Comics_v5.MAX_DIAGONAL_SLOPE)
 			
 			
 			"NFT drag and drop"
@@ -1419,10 +1422,11 @@ func _on_enter_asset_pressed(): #depreciated
 
 "UI methods for handling the new Wallet UI"
 func hideUI()-> void:
-	for i in canvas_layer.get_children():
-		i.set_mouse_filter(1)
-		i.focus_mode = 0
-		i.hide()
+	if canvas_layer.get_child_count() > 0: # Null Ptr error catcher
+		for i in canvas_layer.get_children():
+			i.set_mouse_filter(1)
+			i.focus_mode = 0
+			i.hide()
 
 func showUI()-> void:
 	for i in canvas_layer.get_children():

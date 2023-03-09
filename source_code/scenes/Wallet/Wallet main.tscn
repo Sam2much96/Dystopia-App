@@ -92,7 +92,6 @@ script = ExtResource( 2 )
 layer = -1
 
 [node name="Dashboard_UI" parent="CanvasLayer" instance=ExtResource( 7 )]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -174,8 +173,8 @@ rect_scale = Vector2( 2.84914, 2.84914 )
 visible = false
 margin_left = -578.0
 margin_top = 42.0
-margin_right = -726.0
-margin_bottom = 179.0
+margin_right = 1322.0
+margin_bottom = 1379.0
 rect_scale = Vector2( 3.6125, 3.6125 )
 
 [node name="state_controller" type="OptionButton" parent="."]

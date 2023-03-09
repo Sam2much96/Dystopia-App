@@ -21,6 +21,10 @@ onready var debug : Button = $ScrollContainer/VBoxContainer/Debug
 onready var Shuffle : Button =$ScrollContainer/VBoxContainer/Shuffle
 onready var Change_Controller_type : Button = $ScrollContainer/VBoxContainer/Direction_controls
 
+# Auto Scroll with Swipe Gestures 
+onready var scroller : ScrollContainer= get_node("ScrollContainer")
+
+onready var ControlButtons : Array =  [back, music,debug,Shuffle,Change_Controller_type]
 
 func _ready():
 	if get_tree().get_root().has_node("/root/Debug") == true:
@@ -37,6 +41,28 @@ func _ready():
 		upscale_ui()
 
 	manual_translate()
+
+
+func _input(event):
+	
+	"Auto Scroller"
+	# Connects to Global Comics Swipe Feature and Game Menu Scroller function
+	#'AutoScroller'
+	# Implemented but Requires Proper Swipe Gesture Callibration
+	# 
+
+	if Comics_v5._state == Comics_v5.SWIPE_RIGHT:
+		
+		
+		# Scroll Down
+		Game_Menu.scroll(false, true,scroller)
+	elif Comics_v5._state == Comics_v5.SWIPE_DOWN:
+		
+		# Scroll Up
+		Game_Menu.scroll(true, true,scroller)
+		
+	else: pass
+
 
 func _on_Button_pressed():
 	return get_tree().change_scene_to(Globals.title_screen) #changes scene to main title
@@ -123,3 +149,10 @@ func manual_translate()-> void:
 		debug .set_text(Dialogs.translate_to("debug", Dialogs.language))
 		Shuffle.set_text(Dialogs.translate_to("shuffle", Dialogs.language))
 		Change_Controller_type.set_text(Dialogs.translate_to("change controller", Dialogs.language))
+
+
+
+"Memory Leak Management"
+func _exit_tree():
+	for i in ControlButtons:
+		i.queue_free()

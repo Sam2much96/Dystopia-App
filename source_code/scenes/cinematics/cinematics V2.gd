@@ -69,13 +69,14 @@ func _ready(): #create a video player function
 		videoplayer  = get_node('VideoPlayer') #video player node
 		videoplayer._set_size((get_viewport_rect().size))
 		
+		
+		
 		play_opening_cinematic() #Plays this video only on cinematics node
 		#set videoplayer rect size to viewport size
 	
 	# Change Video Player Position On Android Devices
-	if Globals.os == "Android" && Globals.curr_scene == "Cinematics":
-		videoplayer.expand = false
-		videoplayer.set_position(position2d.position)
+	#if Globals.os == "Android" && Globals.curr_scene == "Cinematics":
+
 	
 	
 	if Globals.curr_scene == "Shop":
@@ -100,8 +101,12 @@ func _on_skip_pressed():
 
 
 # Try Using Global Functions
-func Video_Stream(stream): #This code works
-	
+func Video_Stream(stream, os: String): #This code works
+	#sdfsdfsdf
+	if os == "Android":
+		videoplayer.expand = false
+		videoplayer.set_position(position2d.position)
+		
 	if stream != null: 
 		#stream = stream.get_resource()
 		videoplayer.set_stream(stream) 
@@ -147,7 +152,7 @@ func play_opening_cinematic():
 	
 	#videoplayer.expand = true
 	
-	Video_Stream(Globals.cinematics)
+	Video_Stream(Globals.cinematics, Globals.os)
 	
 	return Music.play_track(Music.wind_sfx[0])
 

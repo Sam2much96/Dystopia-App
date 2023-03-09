@@ -1,0 +1,9 @@
+# ignore ALL files in ANY directory named android
+**/android
+
+# ignore ALL .cfg Export Preset files
+#*.cfg
+
+export_presets.cfg
+
+*.cfg

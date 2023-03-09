@@ -1,9 +1,0 @@
-[
-	"res://android/build/libs/debug/armeabi-v7a/libalgodot.so",
-	"res://android/build/libs/debug/arm64-v8a/libalgodot.so",
-	"res://android/build/libs/debug/armeabi-v7a/libcrypto.so.1.1",
-	"res://android/build/libs/debug/armeabi-v7a/libssl.so.1.1",
-	"res://android/build/libs/debug/arm64-v8a/libcrypto.so",
-	"res://android/build/libs/debug/arm64-v8a/libssl.so",
-	"res://android/build/libs/debug/arm64-v8a/libwebrtc_native.android.release.arm64.so"
-]

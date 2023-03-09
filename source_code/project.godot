@@ -14,7 +14,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ads/admob-lib/admob.gd"
 }, {
-"base": "",
+"base": "Node",
 "class": "Algod",
 "language": "NativeScript",
 "path": "res://addons/algodot/gdnative/algod.gdns"
@@ -29,7 +29,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ads/Appodeal/Appodeal.gd"
 }, {
-"base": "",
+"base": "Node",
 "class": "AsyncExecutorDriver",
 "language": "NativeScript",
 "path": "res://addons/algodot/gdnative/async_executor.gdns"
@@ -79,7 +79,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/props/idol.gd"
 }, {
-"base": "Reference",
+"base": "InputEventAction",
 "class": "InputEventMultiScreenDrag",
 "language": "GDScript",
 "path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventMultiScreenDrag.gd"
@@ -99,17 +99,17 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventMultiScreenTap.gd"
 }, {
-"base": "Reference",
+"base": "InputEventAction",
 "class": "InputEventScreenPinch",
 "language": "GDScript",
 "path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventScreenPinch.gd"
 }, {
-"base": "Reference",
+"base": "InputEventAction",
 "class": "InputEventScreenTwist",
 "language": "GDScript",
 "path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventScreenTwist.gd"
 }, {
-"base": "Reference",
+"base": "InputEventAction",
 "class": "InputEventSingleScreenDrag",
 "language": "GDScript",
 "path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventSingleScreenDrag.gd"
@@ -124,12 +124,12 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventSingleScreenSwipe.gd"
 }, {
-"base": "Reference",
+"base": "InputEventAction",
 "class": "InputEventSingleScreenTap",
 "language": "GDScript",
 "path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventSingleScreenTap.gd"
 }, {
-"base": "Reference",
+"base": "InputEventAction",
 "class": "InputEventSingleScreenTouch",
 "language": "GDScript",
 "path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventSingleScreenTouch.gd"
@@ -270,10 +270,6 @@ AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
 InputManager="*res://addons/GDTIM-Demo-v2_1_2/InputManager.gd"
 GlobalAnimation="*res://singletons/GlobalAnimationPlayer.tscn"
 Wallet="*res://scenes/Wallet/Wallet.gd"
-PluginSettings="*res://addons/github-integration/scripts/PluginSettings.gd"
-IconLoaderGithub="*res://addons/github-integration/scripts/IconLoaderGithub.gd"
-UserData="*res://addons/github-integration/scripts/user_data.gd"
-RestHandler="*res://addons/github-integration/scenes/RestHandler.tscn"
 DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
 
 [debug]
@@ -289,7 +285,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/NativeLib/plugin.cfg", "res://addons/algodot/plugin.cfg", "res://addons/github-integration/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/algodot/plugin.cfg" )
 
 [gdnative]
 

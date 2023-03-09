@@ -7,15 +7,19 @@
 [node name="Cinematics" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -1024.0
-margin_bottom = -600.0
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="VideoPlayer" type="VideoPlayer" parent="."]
+margin_left = 8.48529
+margin_top = 8.48523
+margin_right = 8.48529
+margin_bottom = 8.48523
 
 [node name="Node2D" type="Control" parent="."]
 rect_scale = Vector2( 0.65, 0.65 )
-
-[node name="VideoPlayer" type="VideoPlayer" parent="Node2D"]
-expand = false
 
 [node name="skip" type="TextureButton" parent="."]
 visible = false
@@ -39,6 +43,9 @@ autostart = true
 autoplay = "intro_animation"
 anims/intro_animation = ExtResource( 4 )
 
-[connection signal="finished" from="Node2D/VideoPlayer" to="." method="_on_VideoPlayer_finished"]
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( -453.101, 357.168 )
+
+[connection signal="finished" from="VideoPlayer" to="." method="_on_VideoPlayer_finished"]
 [connection signal="pressed" from="skip" to="." method="_on_skip_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

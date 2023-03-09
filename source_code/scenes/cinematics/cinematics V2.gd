@@ -37,13 +37,13 @@ export(String, FILE, "*.ogv") var vid_stream = ""
 
 #export var state = SINGLE_PLAY
 #Ref<ResourceInteractiveLoader> ResourceLoader::load_interactive(String p_path)#experimental code to load resource
-onready var animation = $"animation player"
-
+onready var animation : AnimationPlayer = $"animation player"
+onready var position2d : Position2D = $Position2D
 onready var os 
 onready var node = get_node("Node2D") #popup node for centering cinematics
 
-
-var cinematic = {
+"Cinematics DIctionary"
+var cinematic : Dictionary = {
 	0:'res://resources/title animation/title..ogv',
 	1:'', #convert video to ogv
 	}
@@ -63,15 +63,20 @@ func _ready(): #create a video player function
 	Globals.update_curr_scene()
 	
 	
-	print('Cinematic Debug: /current scene/',  Globals.curr_scene) #for debug purposes
+	#print('Cinematic Debug: /current scene/',  Globals.curr_scene) #for debug purposes
 	'Plays only when the Scene is the cinematics scene'
 	if Globals.curr_scene == 'Cinematics':
-		videoplayer  = get_node('Node2D/VideoPlayer') #video player node
-
+		videoplayer  = get_node('VideoPlayer') #video player node
+		videoplayer._set_size((get_viewport_rect().size))
 		
 		play_opening_cinematic() #Plays this video only on cinematics node
 		#set videoplayer rect size to viewport size
-		videoplayer._set_size((get_viewport_rect().size))
+	
+	# Change Video Player Position On Android Devices
+	if Globals.os == "Android" && Globals.curr_scene == "Cinematics":
+		videoplayer.expand = false
+		videoplayer.set_position(position2d.position)
+	
 	
 	if Globals.curr_scene == "Shop":
 		var animationplayer : Control = get_node("AnimationPlayer")
@@ -139,6 +144,9 @@ func play_opening_cinematic():
 	#Plays the opening cinematic 
 	#loads resource into memory 
 	#vid_stream = Globals.cinematics #ResourceLoader.load_interactive(cinematic [0])
+	
+	#videoplayer.expand = true
+	
 	Video_Stream(Globals.cinematics)
 	
 	return Music.play_track(Music.wind_sfx[0])

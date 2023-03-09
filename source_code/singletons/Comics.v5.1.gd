@@ -171,8 +171,10 @@ func _ready():
 	
 	"#********** Debug References***********#"
 	#@ null References as classes
-	Online._init()
-	Local._init()
+	
+	#Online._init()
+	#Local._init()
+	
 	#print (Online.comics_IPFS[1])
 
 	

@@ -60,7 +60,11 @@ onready var scroller : ScrollContainer= get_node("MarginContainer/ScrollContaine
 const scroll_constant: int = 4
 
 
-
+onready var MenuButtons : Array = [
+	comics, new_game, continue_game, game_menu,
+	_multiplayer, anime, practice, City_scape, 
+	wallet_, controls, quit
+]
 
 func _ready():
 	
@@ -261,6 +265,13 @@ func _on_multiplayer_pressed(): # Experimental feature
 
 func _exit_tree():
 	Music._notification(NOTIFICATION_UNPAUSED) #resets music when exiting scene tree
+	
+	# Memory Leak Management
+	#
+	# Clears all ui buttons
+	for i in MenuButtons:
+		i.queue_free()
+
 
 
 func _on_Shop_pressed():

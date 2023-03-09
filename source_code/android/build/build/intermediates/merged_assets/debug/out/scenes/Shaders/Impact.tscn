@@ -1,0 +1,21 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/Shaders/impact_effect_script.gd" type="Script" id=1]
+[ext_resource path="res://scenes/Shaders/impact.shader" type="Shader" id=2]
+[ext_resource path="res://scenes/Shaders/RadialGradient.png" type="Texture" id=3]
+[ext_resource path="res://scenes/Shaders/Waves.png" type="Texture" id=4]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 2 )
+shader_param/offsetStrength = 0.8
+shader_param/noiseTexture = ExtResource( 4 )
+
+[node name="Impact" type="Sprite"]
+material = SubResource( 1 )
+position = Vector2( 628.581, 368.169 )
+texture = ExtResource( 3 )
+script = ExtResource( 1 )
+power = 5.0
+maxSize = 5.0
+offsetDecreaseSpeed = 0.01
+maxOffsetStrength = 0.8

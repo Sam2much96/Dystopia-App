@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/blip1.ogg-603127e0e9a2e5ac2e85f55f122ebeff.oggstr"
+
+[deps]
+
+source_file="res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip1.ogg"
+dest_files=[ "res://.import/blip1.ogg-603127e0e9a2e5ac2e85f55f122ebeff.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

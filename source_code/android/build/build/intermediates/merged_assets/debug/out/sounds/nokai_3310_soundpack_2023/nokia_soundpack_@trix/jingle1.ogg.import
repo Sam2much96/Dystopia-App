@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/jingle1.ogg-d4ee291bbfb13da457acd1aa2a3e4ce1.oggstr"
+
+[deps]
+
+source_file="res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/jingle1.ogg"
+dest_files=[ "res://.import/jingle1.ogg-d4ee291bbfb13da457acd1aa2a3e4ce1.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

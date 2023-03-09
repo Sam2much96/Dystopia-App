@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://ads/Appodeal/Appodeal.gd" type="Script" id=1]
+
+[node name="Appodeal" type="EditorPlugin"]
+script = ExtResource( 1 )
+precached = true

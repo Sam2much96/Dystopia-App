@@ -170,18 +170,17 @@ APPODEAL INITIALIZATION BREAKS. none EXISTENT SINGLETON
 
 func _init():
 	# Initialization here
-	# The entire initilization is broken
-	# It doesn't detect the singleton
-	#if str(OS.get_name()) == str ("Android"): #Error catcher
+	# 
+	# 
+	# #Error catcher
 		if(Engine.has_singleton("GodotAppodeal")) && enabled == true:
 			key = "b14288f5b650ec9807ab324195ec819be92c7d4c0b1a65e8"
-		appodeal = Engine.get_singleton("GodotAppodeal") ###None Existent SIngleton.
-		appodeal.initialize( key, 2, false)
+			appodeal = Engine.get_singleton("GodotAppodeal") ###None Existent SIngleton.
+			appodeal.initialize( key, 2, false)
+			appodeal.setTestingEnabled(false)
+			appodeal.showAd(4)
+			Debug.Ads_debug += ('Showing Ads: '+str(appodeal.showAd(4)))
 		
-		appodeal.setTestingEnabled(false)
-		appodeal.showAd(4)
-		Debug.Ads_debug += ('Showing Ads: '+str(appodeal.showAd(4)))
-	#pass
 	
 
 

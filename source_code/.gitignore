@@ -1,5 +1,5 @@
 # ignore ALL files in ANY directory named android
-/android
+**/android
 
 # ignore ALL .cfg Export Preset files
 #*.cfg

@@ -330,7 +330,7 @@ func _http_request_completed_Images(result, response_code, headers, body): #work
 	
 		
 		#check if body is image type
-	Comics_v5.set_comic_image_(Networking.download_image_(body, Local.comics_["Chap1 Panel"],q2)) #works
+	#Comics_v5.set_comic_image_(Networking.download_image_(body, Local.comics_["Chap1 Panel"],q2)) #works
 	
 	if body.empty():
 		push_error("Problem downloading Image ")
@@ -357,7 +357,7 @@ func _http_request_completed_Scenes(result, response_code, headers, body): #work
 	#Comics_v5.set_comic_image_(Networking.download_image_(body, comics_["Chap1 Panel"],q2)) #works
 	
 	
-	Comics_v5.load_local_comic(Networking.download_scene_(body, Local.comics_["Chap1 Scene"],q3))
+	#Comics_v5.load_local_comic(Networking.download_scene_(body, Local.comics_["Chap1 Scene"],q3))
 
 	
 	
@@ -427,16 +427,16 @@ func _input(event):
 	# Use Global Animation Player to play Swipe Gesture Actions
 	# Export Animation Resource File from AlgoWallet App
 	# Load Animation As resource file
-	if event is InputEventScreenTwist:
-		print ("Input: Screen Twist / Action: Rotate")
+	#if event is InputEventScreenTwist:
+	#	print ("Input: Screen Twist / Action: Rotate")
 	
 	# Zoom in/out Gesture
-	if event is InputEventScreenPinch :
-		print ("Input: Screen Pinch / Action: Zoom In/Out")
+	#if event is InputEventScreenPinch :
+	#	print ("Input: Screen Pinch / Action: Zoom In/Out")
 	
 	# Zoom in/out gesture
-	if event is InputEventMultiScreenTap :
-		print ("Input: Screen Tap / Action: Zoom in/OUt")
+	#if event is InputEventMultiScreenTap :
+	#	print ("Input: Screen Tap / Action: Zoom in/OUt")
 
 
 
@@ -470,11 +470,11 @@ func _input(event):
 	
 	if event is InputEventScreenTouch :
 		target =  event.get_position()
-		if event is  InputEventMultiScreenDrag == true : # Works
+		#if event is  InputEventMultiScreenDrag == true : # Works
 			#target =  event.get_position()
-			if event.get_index() == int(2) and event is InputEventScreenPinch : #zoom if screentouch is 2 fingers & uses input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases
+		if event.get_index() == int(2): # and event is InputEventScreenPinch : #zoom if screentouch is 2 fingers & uses input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases
 				
-				_zoom() #you can use get_index to get the number of fingers
+			_zoom() #you can use get_index to get the number of fingers
 		
 		
 		

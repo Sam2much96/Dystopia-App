@@ -79,61 +79,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/props/idol.gd"
 }, {
-"base": "InputEventAction",
-"class": "InputEventMultiScreenDrag",
-"language": "GDScript",
-"path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventMultiScreenDrag.gd"
-}, {
-"base": "InputEventAction",
-"class": "InputEventMultiScreenLongPress",
-"language": "GDScript",
-"path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventMultiScreenLongPress.gd"
-}, {
-"base": "InputEventAction",
-"class": "InputEventMultiScreenSwipe",
-"language": "GDScript",
-"path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventMultiScreenSwipe.gd"
-}, {
-"base": "InputEventAction",
-"class": "InputEventMultiScreenTap",
-"language": "GDScript",
-"path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventMultiScreenTap.gd"
-}, {
-"base": "InputEventAction",
-"class": "InputEventScreenPinch",
-"language": "GDScript",
-"path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventScreenPinch.gd"
-}, {
-"base": "InputEventAction",
-"class": "InputEventScreenTwist",
-"language": "GDScript",
-"path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventScreenTwist.gd"
-}, {
-"base": "InputEventAction",
-"class": "InputEventSingleScreenDrag",
-"language": "GDScript",
-"path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventSingleScreenDrag.gd"
-}, {
-"base": "InputEventAction",
-"class": "InputEventSingleScreenLongPress",
-"language": "GDScript",
-"path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventSingleScreenLongPress.gd"
-}, {
-"base": "InputEventAction",
-"class": "InputEventSingleScreenSwipe",
-"language": "GDScript",
-"path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventSingleScreenSwipe.gd"
-}, {
-"base": "InputEventAction",
-"class": "InputEventSingleScreenTap",
-"language": "GDScript",
-"path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventSingleScreenTap.gd"
-}, {
-"base": "InputEventAction",
-"class": "InputEventSingleScreenTouch",
-"language": "GDScript",
-"path": "res://addons/GDTIM-Demo-v2_1_2/CustomInputEvents/InputEventSingleScreenTouch.gd"
-}, {
 "base": "HBoxContainer",
 "class": "InvitationItem",
 "language": "GDScript",
@@ -153,11 +98,6 @@ _global_script_classes=[ {
 "class": "Player_v2_networking",
 "language": "GDScript",
 "path": "res://scenes/characters/Player v2.gd"
-}, {
-"base": "InputEventAction",
-"class": "RawGesture",
-"language": "GDScript",
-"path": "res://addons/GDTIM-Demo-v2_1_2/RawGesture.gd"
 }, {
 "base": "EditorScript",
 "class": "ReferenceCollector",
@@ -214,22 +154,10 @@ _global_script_class_icons={
 "Game_Menu": "",
 "GistItem": "",
 "Idol": "",
-"InputEventMultiScreenDrag": "",
-"InputEventMultiScreenLongPress": "",
-"InputEventMultiScreenSwipe": "",
-"InputEventMultiScreenTap": "",
-"InputEventScreenPinch": "",
-"InputEventScreenTwist": "",
-"InputEventSingleScreenDrag": "",
-"InputEventSingleScreenLongPress": "",
-"InputEventSingleScreenSwipe": "",
-"InputEventSingleScreenTap": "",
-"InputEventSingleScreenTouch": "",
 "InvitationItem": "",
 "NFT": "",
 "Player": "",
 "Player_v2_networking": "",
-"RawGesture": "",
 "ReferenceCollector": "",
 "RepositoryItem": "",
 "Server": "",
@@ -267,7 +195,6 @@ Music="*res://singletons/Music.tscn"
 Networking="*res://singletons/Networking.tscn"
 Comics_v5="*res://singletons/Comics.v5.1.gd"
 AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
-InputManager="*res://addons/GDTIM-Demo-v2_1_2/InputManager.gd"
 GlobalAnimation="*res://singletons/GlobalAnimationPlayer.tscn"
 Wallet="*res://scenes/Wallet/Wallet.gd"
 DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"

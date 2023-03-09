@@ -377,17 +377,23 @@ func restaVectores(v1, v2): #vector substraction
 func sumaVectores(v1, v2): #vector sum
 	return Vector2(v1.x + v2.x, v1.y + v2.y)
 
+#prints all orphaned nodes in project
 func memory_leak_management():
-	return print_stray_nodes() #prints all orphaned nodes in project
+	return print_stray_nodes() 
 
 "Memory Leak/ Orphaned Nodes Management System"
-static func queue_free_children(node: Node) -> void:
-	for idx in node.get_child_count():
-		node.queue_free()
-		
-static func free_children(node: Node) -> void:
-	for idx in node.get_child_count():
-		node.free()
+class MemoryManagement extends Reference :
+	static func queue_free_children(node: Node) -> void:
+		for idx in node.get_child_count():
+			node.queue_free()
+			
+	static func free_children(node: Node) -> void:
+		for idx in node.get_child_count():
+			node.free()
+
+	static func free_object (object: Object) -> void:
+		object.free()
+
 
 'Delete Files'
 func delete_local_file(path_to_file: String) -> void:
@@ -525,15 +531,9 @@ func randomize_enemy_type() -> String:
 	return ['Easy', "Intermediate", "Hard"][randi()%3]
 
 
-#	"Handles single Zip files"
-#	if gdunzip.files.keys().size() == 1:
-	#returns uncompresed poolbyte array of the first data in the Zip file
-#		return (gdunzip.get_compressed(gdunzip.files.keys().front()))
 
-
-#	"Handles multiple Zip files"
-#	if gdunzip.files.keys().size() > 1:
-#		for p in gdunzip.files.keys():
-			
-#			# Should read the file name and parse the file extension from it for local storage
-#			return gdunzip.get_compressed(p)
+func _exit_tree():
+	
+	memory_leak_management()
+	#Globals.queue_free_children(Util)
+	#MemoryManagement.free_object(Util)

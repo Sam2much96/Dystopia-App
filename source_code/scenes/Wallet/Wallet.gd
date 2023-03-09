@@ -1240,7 +1240,7 @@ func _input(event):
 		# 
 		# Uses a Timer of 4 seconds to turn processing off
 		
-		if event is InputEventSingleScreenTouch:
+		if event is InputEventScreenTouch:#InputEventSingleScreenTouch:
 			Networking.start_check(4) #should take a timer as a parameter
 			
 			

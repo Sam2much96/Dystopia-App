@@ -147,4 +147,3 @@ enabled = true
 banner_size = "320x50"
 
 [connection signal="ready" from="HTTPRequest" to="." method="_on_HTTPRequest_ready"]
-[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]

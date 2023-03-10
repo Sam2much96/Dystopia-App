@@ -78,7 +78,7 @@ tracks/0/keys = {
 "values": [ Vector2( 2.31318, 31.5724 ), Vector2( 5.07614, 15.7346 ) ]
 }
 
-[node name="Wallet_scene" type="Control"]
+[node name="Wallet_scene" type="Control" groups=["Wallet"]]
 anchor_right = 0.474
 anchor_bottom = 0.996
 margin_right = -567.72
@@ -92,6 +92,7 @@ script = ExtResource( 2 )
 layer = -1
 
 [node name="Dashboard_UI" parent="CanvasLayer" instance=ExtResource( 7 )]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -119,7 +120,6 @@ rect_scale = Vector2( 3.17673, 3.17673 )
 mouse_filter = 1
 
 [node name="Password_UI" parent="CanvasLayer" instance=ExtResource( 9 )]
-visible = false
 margin_left = -1147.37
 margin_top = -175.194
 margin_right = -1147.37
@@ -173,8 +173,8 @@ rect_scale = Vector2( 2.84914, 2.84914 )
 visible = false
 margin_left = -578.0
 margin_top = 42.0
-margin_right = 5418.0
-margin_bottom = 3779.0
+margin_right = 6442.0
+margin_bottom = 4379.0
 rect_scale = Vector2( 3.6125, 3.6125 )
 
 [node name="state_controller" type="OptionButton" parent="."]

@@ -113,6 +113,10 @@ enum { SCREEN_HORIZONTAL, SCREEN_VERTICAL}
 
 var screenOrientation 
 
+var viewport_size : Vector2
+
+var center_of_viewport : Vector2 
+
 "In Game FX"
 var blood_fx: PackedScene = load ('res://scenes/UI & misc/Blood_Splatter_FX.tscn') #only load this once gameplay is on (optimization)
 var despawn_fx: PackedScene = load ("res://scenes/UI & misc/DespawnFX.tscn")
@@ -525,10 +529,18 @@ func _Video_Stream(node : VideoPlayer, stream , _sound, viewport):
 		push_warning(str(node) +"/" +str(stream) + "/"+ str (_sound))
 
 
+
+# Calculates the center of a Rectangle
+func calc_center_of_rectangle(rect : Vector2) -> Vector2:
+	return Vector2((rect.x/2), (rect.y/2))
+
 # Produces Truely Randomized Results
 func randomize_enemy_type() -> String:
 	randomize()
 	return ['Easy', "Intermediate", "Hard"][randi()%3]
+
+static func calculateViewportSize( t : CanvasItem ) -> Vector2 :
+	return t.get_viewport_rect().size
 
 
 

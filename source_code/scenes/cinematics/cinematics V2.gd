@@ -62,8 +62,13 @@ func _ready(): #create a video player function
 	#use current scene to trigger cinematic
 	Globals.update_curr_scene()
 	
+	# Get Viewport Size, Make it Globally accessible
+	Globals.viewport_size = Globals.calculateViewportSize(self)
+	Globals.center_of_viewport = Globals.calc_center_of_rectangle(Globals.viewport_size)
+	
 	# Prints out the Current Viewport Size
-	print ("Viewport Size: ",calculateViewportSize(self))
+	print ("Viewport Size: ", Globals.viewport_size )
+	print ("Center of Viewprt: ", Globals.center_of_viewport )
 	
 	# (-453.101, 356.937)
 	
@@ -107,10 +112,15 @@ func _on_skip_pressed():
 
 # Try Using Global Functions
 func Video_Stream(stream, os: String): #This code works
-	#sdfsdfsdf
+	#Use Position 2d node for Viewport Calibrations
 	if os == "Android":
 		videoplayer.expand = false
-		videoplayer.set_position(position2d.position)
+		#videoplayer.set_position(position2d.position)
+		#print ("A: " ,Vector2(-(Globals.center_of_viewport.x),Globals.center_of_viewport.y)) # Bottom of Viewport
+		#print ("B: ", position2d.position)
+		
+		#True Center of Screen
+		videoplayer.set_position(Vector2(-(Globals.center_of_viewport.x),300))
 		
 	if stream != null: 
 		#stream = stream.get_resource()
@@ -162,9 +172,6 @@ func play_opening_cinematic():
 	return Music.play_track(Music.wind_sfx[0])
 
 
-
-static func calculateViewportSize( t : CanvasItem ) -> Vector2 :
-	return t.get_viewport_rect().size
 
 """
 CREATES AN VideoStreamTheora  .OGV  VIDEO FILE FROM A POOLBYE ARRAY

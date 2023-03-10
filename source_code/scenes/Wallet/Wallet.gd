@@ -180,7 +180,7 @@ signal transaction
 onready var q = HTTPRequest.new()
 onready var q2 = HTTPRequest.new()
 
-
+var WalletRoot : Control 
 
 var Algorand : Algodot
 var state_controller : OptionButton
@@ -289,6 +289,12 @@ func check_Nodes() -> bool:
 		else: p = false
 	return p
 func __ready():
+	
+	"Testing UI scaler"
+	#For debugging
+	
+	#Functions.ScaleUI(UI_Elements, Vector2(5,5))
+	
 		#*****Txn UI options************#
 	if bool(check_Nodes()) == true:
 	
@@ -360,6 +366,10 @@ func _process(_delta):
 	
 	
 	if Globals.curr_scene == "Wallet_scene":
+		
+		# Get the Wallet Root Scene
+		WalletRoot = get_tree().get_nodes_in_group("Wallet").pop_front()
+		
 		# UI state Processing (works-ish)
 		# Remove New Account State. It has a new UI mapping
 		"Constantly Running Process Introduces a stuck state Bug"
@@ -959,7 +969,7 @@ func save_account_info( info : Dictionary, number: int)-> bool:
 		save_dict.amount =info["amount"]
 			
 		# encode mnemonic
-		save_dict.mnemonic = convert_string_to_binary(mnemonic)  #saves mnemonic as string error
+		save_dict.mnemonic = Encryption.convert_string_to_binary(mnemonic)  #saves mnemonic as string error
 		
 		# saves if address has assets
 		# doesnt account for multiple assets, only saves the first Asset
@@ -1014,7 +1024,7 @@ func _restore_wallet_data(info: Dictionary):
 	
 	"decode mnemonic"
 	
-	mnemonic = convert_binary_to_string(info.mnemonic)
+	mnemonic = Encryption.convert_binary_to_string(info.mnemonic)
 	_wallet_algos = info.amount 
 	
 	#***********Assets Information*****************#
@@ -1149,22 +1159,6 @@ func create_wallet_directory()-> void:
 		FileDirectory.make_dir(token_dir)
 	else: return 
 
-
-'Encryption and Decryption ALgorithms'
-# cryptographically encrypt users mnemonic
-func convert_string_to_binary(string : String)-> Array:
-	var binary : Array = []
-	for i in string:
-		binary.append(ord(i))
-	#print( 'Encoded Mnemonic: ',binary) #for debug purposes only
-	return binary
-
-
-func convert_binary_to_string(binary : PoolByteArray)-> String:
-	var string : String
-	string =binary.get_string_from_utf8()
-	#print (string)# for debug purposes only
-	return string
 
 
 func _on_Main_menu_pressed():
@@ -1482,4 +1476,40 @@ func reset_transaction_parameters():
 	# Implement Drag and Drop mechanics
 #	pass
 
+"UI Methods as a Class"
+class Functions extends Reference:
+	# Requires logic to sort calling methods for Different node types
+	# Requires Memory Pointers to Wallet Scene Nodes
+	static func ScaleUI(ui_elements : Array,size: Vector2 )-> void: # Works
+		for i in ui_elements:
+			if i is Control:
+				i.set_size(size, false)
+				
+				#for t in i.get_children():
+				#	if t is Control:
+				#		t.set_size(Vector2(10,10), false) # Returns an Array
+				
+				
+				
+			#if i is Label:
+			#	#i.set_size(size, false)
 
+
+"Encryption & Decryption Algorithms"
+class Encryption extends Reference:
+	
+	#'Encryption and Decryption ALgorithms'
+	# cryptographically encrypt users mnemonic
+	static func convert_string_to_binary(string : String)-> Array:
+		var binary : Array = []
+		for i in string:
+			binary.append(ord(i))
+		#print( 'Encoded Mnemonic: ',binary) #for debug purposes only
+		return binary
+
+
+	static func convert_binary_to_string(binary : PoolByteArray)-> String:
+		var string : String
+		string =binary.get_string_from_utf8()
+		#print (string)# for debug purposes only
+		return string

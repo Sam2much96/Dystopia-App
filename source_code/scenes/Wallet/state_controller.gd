@@ -82,7 +82,8 @@ func _ready():
 	
 	Globals.update_curr_scene()
 	
-	print ("Current Scene iss: ",Globals.curr_scene) # For Debug Purposes only
+	#print ("Current Scene is: ",Globals.curr_scene) # For Debug Purposes only
+	
 	
 	Wallet.state_controller = self
 	Wallet.Algorand = Algorand

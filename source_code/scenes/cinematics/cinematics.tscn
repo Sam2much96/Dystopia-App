@@ -44,7 +44,7 @@ autoplay = "intro_animation"
 anims/intro_animation = ExtResource( 4 )
 
 [node name="Position2D" type="Position2D" parent="."]
-position = Vector2( -453.101, 357.168 )
+position = Vector2( -512, 300 )
 
 [connection signal="finished" from="VideoPlayer" to="." method="_on_VideoPlayer_finished"]
 [connection signal="pressed" from="skip" to="." method="_on_skip_pressed"]

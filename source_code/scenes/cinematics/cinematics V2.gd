@@ -65,6 +65,7 @@ func _ready(): #create a video player function
 	# Prints out the Current Viewport Size
 	print ("Viewport Size: ",calculateViewportSize(self))
 	
+	# (-453.101, 356.937)
 	
 	
 	#print('Cinematic Debug: /current scene/',  Globals.curr_scene) #for debug purposes

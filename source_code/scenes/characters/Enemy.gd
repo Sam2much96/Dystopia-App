@@ -368,7 +368,8 @@ func despawn()->  void:
 		get_node("item_spawner").spawn()
 	
 	#Prevents memory leaks
-	Globals.queue_free_children(self)
+	self.queue_free()
+	#Globals.queue_free_children(self)
 	#get_parent().remove_child(self) #buggy
 
 
@@ -439,9 +440,9 @@ func turn_processing(toggle):
 func debug()-> void:
 	print ("State: ",state,"/ Distance to player " ,enemy_distance_to_player, "/ Enemy Type",enemy_type)
 
-func _exit_tree():
-	Globals.queue_free_children(self)
-	#Globals.free_children(self)
+#func _exit_tree():
+#	#Globals.queue_free_children(self)
+#	#Globals.free_children(self)
 
 
 

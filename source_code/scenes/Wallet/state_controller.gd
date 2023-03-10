@@ -82,7 +82,7 @@ func _ready():
 	
 	Globals.update_curr_scene()
 	
-	#print ("Current Scene: ",Globals.curr_scene) # For Debug Purposes only
+	print ("Current Scene iss: ",Globals.curr_scene) # For Debug Purposes only
 	
 	Wallet.state_controller = self
 	Wallet.Algorand = Algorand
@@ -170,13 +170,15 @@ func _ready():
 # By toggling the Wallet's Processing on/off
 # replace state controller with swipe controls
 # Works Alongside Touch Screen Inputs for a beter UX
+# Depreciated in Dystopia app v 2.0.1
+# Needs better implementation
 func _on_state_controller_toggled(button_pressed):
 	if button_pressed:
 		pass
 		Wallet.set_process(true)
-	else :
-		pass
-		Wallet.set_process(false)
+	#else :
+		#pass
+		#Wallet.set_process(false)
 	
 	
 	

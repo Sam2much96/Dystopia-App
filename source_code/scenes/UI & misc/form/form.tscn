@@ -119,31 +119,31 @@ custom_fonts/font = SubResource( 7 )
 text = "mnemonic"
 
 [node name="label_spacer3" type="Label" parent="ui/grid"]
-margin_right = 84.0
+margin_right = 104.0
 margin_bottom = 14.0
 
 [node name="label_spacer" type="Label" parent="ui/grid"]
-margin_left = 88.0
-margin_right = 88.0
+margin_left = 108.0
+margin_right = 108.0
 margin_bottom = 14.0
 
 [node name="play" type="Button" parent="ui/grid"]
 margin_top = 18.0
-margin_right = 84.0
+margin_right = 104.0
 margin_bottom = 44.0
 theme = ExtResource( 6 )
 text = "Play!"
 
 [node name="label_spacer2" type="Label" parent="ui/grid"]
-margin_left = 88.0
+margin_left = 108.0
 margin_top = 24.0
-margin_right = 88.0
+margin_right = 108.0
 margin_bottom = 38.0
 
 [node name="language" type="OptionButton" parent="ui/grid"]
 margin_top = 48.0
-margin_right = 84.0
-margin_bottom = 65.0
+margin_right = 104.0
+margin_bottom = 71.0
 theme = ExtResource( 7 )
 text = "Languague"
 

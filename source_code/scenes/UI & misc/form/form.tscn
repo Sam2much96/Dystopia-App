@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://fonts/Comic Book.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/UI & misc/form/Form.gd" type="Script" id=2]
@@ -36,13 +36,6 @@ font_path = "res://fonts/Comic Book.otf"
 [sub_resource type="DynamicFont" id=7]
 use_filter = true
 font_data = SubResource( 6 )
-
-[sub_resource type="DynamicFontData" id=8]
-font_path = "res://fonts/Comic Book.otf"
-
-[sub_resource type="DynamicFont" id=9]
-use_filter = true
-font_data = SubResource( 8 )
 
 [node name="form" type="CanvasLayer"]
 script = ExtResource( 2 )
@@ -137,21 +130,20 @@ margin_bottom = 14.0
 [node name="play" type="Button" parent="ui/grid"]
 margin_top = 18.0
 margin_right = 84.0
-margin_bottom = 40.0
+margin_bottom = 44.0
 theme = ExtResource( 6 )
-custom_fonts/font = SubResource( 9 )
 text = "Play!"
 
 [node name="label_spacer2" type="Label" parent="ui/grid"]
 margin_left = 88.0
-margin_top = 22.0
+margin_top = 24.0
 margin_right = 88.0
-margin_bottom = 36.0
+margin_bottom = 38.0
 
 [node name="language" type="OptionButton" parent="ui/grid"]
-margin_top = 44.0
+margin_top = 48.0
 margin_right = 84.0
-margin_bottom = 61.0
+margin_bottom = 65.0
 theme = ExtResource( 7 )
 text = "Languague"
 

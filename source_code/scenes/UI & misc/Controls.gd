@@ -37,7 +37,7 @@ func _ready():
 	$TextureRect.hide()
 
 
-	if Globals.screenOrientation == 1:
+	if Globals.screenOrientation == 1 && Globals.os == "Android":
 		upscale_ui()
 
 	manual_translate()
@@ -91,13 +91,13 @@ func _on_Debug_toggled(button_pressed):
 			$TextureRect.hide()
 
 'Changes Button Sizes for mobile UI'
-#Not Effective.
-# Improve code 
-# Doesn't work
-func upscale_ui():
-	var newScale = Vector2(3,3)
-	$ScrollContainer/VBoxContainer.set_scale(newScale)
+# Scales UI up for Android Mobile Devices
 
+func upscale_ui():
+	#print (cinematic.calculateViewportSize(self))
+	var newScale = Vector2(1.5,1.5)
+	scroller.set_scale(newScale)
+	scroller.margin_bottom = 850
 
 func _on_Shuffle_pressed():
 	#var _o =Music.playlist_one

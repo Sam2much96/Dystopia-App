@@ -534,6 +534,8 @@ func randomize_enemy_type() -> String:
 
 func _exit_tree():
 	
+	"Prints All Orphaned Nodes"
+	# For proper Memory Leak Management
 	memory_leak_management()
 	#Globals.queue_free_children(Util)
 	#MemoryManagement.free_object(Util)

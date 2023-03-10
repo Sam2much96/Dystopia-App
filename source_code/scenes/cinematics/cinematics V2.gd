@@ -62,6 +62,10 @@ func _ready(): #create a video player function
 	#use current scene to trigger cinematic
 	Globals.update_curr_scene()
 	
+	# Prints out the Current Viewport Size
+	print ("Viewport Size: ",calculateViewportSize(self))
+	
+	
 	
 	#print('Cinematic Debug: /current scene/',  Globals.curr_scene) #for debug purposes
 	'Plays only when the Scene is the cinematics scene'
@@ -158,6 +162,8 @@ func play_opening_cinematic():
 
 
 
+static func calculateViewportSize( t : CanvasItem ) -> Vector2 :
+	return t.get_viewport_rect().size
 
 """
 CREATES AN VideoStreamTheora  .OGV  VIDEO FILE FROM A POOLBYE ARRAY

@@ -42,10 +42,10 @@ __meta__ = {
 }
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-margin_left = 232.0
-margin_top = 39.1996
-margin_right = 805.0
-margin_bottom = 526.2
+margin_left = 122.593
+margin_top = 27.1079
+margin_right = 695.593
+margin_bottom = 516.108
 theme = ExtResource( 3 )
 scroll_horizontal_enabled = false
 

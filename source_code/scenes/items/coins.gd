@@ -44,3 +44,5 @@ func _on_Item_body_entered(body): #kinda buggy -inhumanity
 	pass
 
 
+func _exit_tree():
+	queue_free()

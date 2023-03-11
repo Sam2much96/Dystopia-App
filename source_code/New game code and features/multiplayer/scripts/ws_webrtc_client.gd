@@ -30,7 +30,7 @@ var status : int #............................# For debugging the webclient's co
 var status2 : int
 
 
-
+# Stores Player ID's
 var player_id : Array = []
 
 export var autojoin = true
@@ -100,7 +100,7 @@ var peer: WebRTCPeerConnection = WebRTCPeerConnection.new()
 #multiplayer
 #open a data channel to send data using peer ID's
 var rtc_mp: WebRTCMultiplayer = WebRTCMultiplayer.new()
-
+var rtc_Peer_connection : WebRTCPeerConnection = WebRTCPeerConnection.new() # used in creating the Multiplayer API
 var sealed = false
 
 
@@ -235,23 +235,6 @@ func seal_lobby():
 	return web_client.get_peer(1).put_packet("S: \n".to_utf8())
 
 
-func send_candidate(id, mid, index, sdp) -> int:
-	return _send_msg("C", id, "\n%s\n%d\n%s" % [mid, index, sdp])
-
-
-func send_offer(id, offer) -> int:
-	print ("-------sending offer")
-	return _send_msg("O", id, offer)
-
-
-func send_answer(id, answer) -> int:
-	return _send_msg("A", id, answer)
-
-
-
-#sends data to thr peer via webclient
-func _send_msg(type, id, data) -> int:
-	return web_client.get_peer(1).put_packet(("%s: %d\n%s" % [type, id, data]).to_utf8())
 
 
 func _process(delta):
@@ -398,7 +381,7 @@ func _process(delta):
 
 	rtc_mp.poll()
 	while rtc_mp.get_available_packet_count() > 0:
-		_log(rtc_mp.get_packet().get_string_from_utf8())
+		Functions._log(rtc_mp.get_packet().get_string_from_utf8())
 
 
 # temporarily disabling stop
@@ -406,61 +389,6 @@ func stop():
 	rtc_mp.close()
 	WebClient.close(web_client)
 	print ("stopping connection")
-
-#called everytime a peer is connected from signals
-#save the webrtc connection from this method
-#peer is multiplayer api
-func create_peer(id):
-	print ("creating peer id")
-	
-	print ("webRTC peer connection: ",peer)
-	
-	
-	
-	peer.initialize({
-		"iceServers": [ { "urls": ["stun:stun.l.google.com:19302"] } ]
-	})
-	peer.connect("session_description_created", self, "_offer_created", [id])
-	peer.connect("ice_candidate_created", self, "_new_ice_candidate", [id])
-
-	#saving these variables
-	player_id.append(id)
-	
-	#peer is a webrtc connection
-	#rtc_mp is the multiplayer architecture
-	
-	
-	
-	rtc_mp.add_peer(peer, id)
-	
-	
-	
-	if id > rtc_mp.get_unique_id():
-		peer.create_offer()
-	
-
-	return peer
-
-
-func _new_ice_candidate(mid_name, index_name, sdp_name, id):
-	send_candidate(id, mid_name, index_name, sdp_name)
-
-
-func _offer_created(type, data, id):
-	print ("--------------offer created---------")
-	if not rtc_mp.has_peer(id):
-		return
-	print("created", type)
-	rtc_mp.get_peer(id).connection.set_local_description(type, data)
-	if type == "offer": send_offer(id, data)
-	else: send_answer(id, data)
-
-
-func connected(id):
-	print("-----------Connected %d" % id)
-	rtc_mp.initialize(id, true)
-	
-	#debug_rtc_mp()
 
 
 func lobby_joined(lobby):
@@ -485,13 +413,9 @@ func peer_connected(id):
 	#use rtc_MP depreciated
 	#print("Created Multiplayer Client: ",create_multiplayer_client(Networking.BACKUP_HOSTNAME, web_client.get_connected_port()))
 
-	create_peer(id)
 
-	# my code starts from here
-	#player_joined(id, '') #doesnt work
+	WebRTC.create_peer(id, self, rtc_Peer_connection, rtc_mp, player_id)
 
-	#print("Created Multiplayer Client: ",create_multiplayer_client(str(web_client.get_connected_host()),web_client.get_connected_port()))
-	 #IP
 
 
 "Whenever a Peer Leaves"
@@ -590,7 +514,7 @@ func _ready():
 
 
 	#var peer = NetworkedMultiplayerENet.new()
-	var peer : WebRTCMultiplayer = rtc_mp #ive supplied the right connection type
+	#var peer : WebRTCMultiplayer = rtc_mp #ive supplied the right connection type
 	
 
 	
@@ -612,18 +536,18 @@ func _ready():
 	
 	#peer.add_peer(client.peer, client.peer_id)
 		#print (peer.get_connection_state() ) # Invalid call. Nonexistent function 'get_connection_state' in base 'WebRTCMultiplayer'.
-		print ("WebRTC Peer connection: ",peer )
-		print ("MultiplayerENet connection: ",multiplayerAPI_peer )
-		print ("Websocket client: ",web_client) #websocket client
-		print ("Websocket peer: ",web_client.get_peer(1)) #websocket peer
-		print ("Is connected to host 1: ", web_client.get_peer(1).is_connected_to_host() ) #websocket peer
+		Functions._log("WebRTC Peer connection: " + str (peer) )
+		Functions._log("MultiplayerENet connection: " + str (multiplayerAPI_peer) )
+		Functions._log("Websocket client: " + str (web_client)) #websocket client
+		Functions._log("Websocket peer: " + str (web_client.get_peer(1))) #websocket peer
+		Functions._log("Is connected to host 1: " + str(web_client.get_peer(1).is_connected_to_host()) ) #websocket peer
 		
 		
 		
 		
 		# Debug Peer connection state
 	#if web_client.CONNECTION_CONNECTED:
-		print ("Web Client Connected: ", web_client.CONNECTION_CONNECTED)
+		Functions._log("Web Client Connected: " + str(web_client.CONNECTION_CONNECTED))
 	
 		#initialize resets the Network connection to a New State
 		#disabling for testing
@@ -642,21 +566,25 @@ func _ready():
 		#get_tree().set_network_peer(peer) #it's setting a webRTC connection as a peer. Which it shouldn't?
 	
 		#multiplayer network debug
-		print ("has network peer: ",get_tree().has_network_peer())
-		print ("is network server: ",get_tree().is_network_server())
+		#print ("has network peer: ",get_tree().has_network_peer()) # WebSocket Peer
+		#print ("is network server: ",get_tree().is_network_server()) # For DEbug Purposes only # Is WebSocket Client
+
 		
-		#print ("is network server: ",get_tree().set_multiplayer(rtc_mp))
 	
 		# Keep the current peer somewhere to differenciate between you and other players
 		my_peer = peer
 		
 		# Connect signals
+		
+		# What are they Needed FOr???
 		if get_tree().connect("connected_to_server", self, "client_connected_ok") != OK:
 			print("Unable to connect signal (connected_to_server) !")
-			
+		
+		# What are they Needed FOr???
 		if get_tree().connect("connection_failed", self, "client_connected_fail") != OK:
 			print("Unable to connect signal (connection_failed) !")
-			
+		
+		# What are they Needed FOr???
 		if get_tree().connect("server_disconnected", self, "server_disconnected") != OK:
 			print("Unable to connect signal (server_disconnected) !")
 
@@ -673,54 +601,44 @@ func _ready():
 		print ("Web Client disConnected: ", web_client.CONNECTION_DISCONNECTED)
 		
 func __connected(id):
-	_log("Signaling server connected with ID: %d" % id)
+	Functions._log("Signaling server connected with ID: %d" % id)
 
 
 func _disconnected():
-	_log("Signaling server disconnected: %d - %s" % [code, reason])
+	Functions._log("Signaling server disconnected: %d - %s" % [code, reason])
 
 
 func _lobby_joined(lobby):
-	_log("Joined lobby %s" % lobby)
+	Functions._log("Joined lobby %s" % lobby)
 	debug_rtc_mp()
 
 
 func _lobby_sealed():
-	_log("Lobby has been sealed")
+	Functions._log("Lobby has been sealed")
 
 
 func _mp_connected():
-	_log("Multiplayer is connected (I am %d)" % rtc_mp.get_unique_id())
+	Functions._log("Multiplayer is connected (I am %d)" % rtc_mp.get_unique_id())
 
 
 func _mp_server_disconnect():
-	_log("Multiplayer is disconnected (I am %d)" % rtc_mp.get_unique_id())
+	Functions._log("Multiplayer is disconnected (I am %d)" % rtc_mp.get_unique_id())
 
 
 func _mp_peer_connected(id: int):
-	_log("Multiplayer peer %d connected" % id)
+	Functions._log("Multiplayer peer %d connected" % id)
 
 
 func _mp_peer_disconnected(id: int):
-	_log("Multiplayer peer %d disconnected" % id)
+	Functions._log("Multiplayer peer %d disconnected" % id)
 
 
-func _log(msg):
-	print(msg)
 	#$VBoxContainer/TextEdit.text += str(msg) + "\n"
 
 
 "Connect to buttons"
 func ping():
-	_log(rtc_mp.put_packet("ping".to_utf8()))
-
-
-"Connect to buttons"
-func peers():
-	var d = rtc_mp.get_peers()
-	_log(d)
-	for k in d:
-		_log(rtc_mp.get_peer(k))
+	Functions._log(rtc_mp.put_packet("ping".to_utf8()))
 
 
 #"Backup Start Function "
@@ -751,7 +669,7 @@ class WebClient extends Reference:
 		sealed = false
 		node.lobby = lobby
 		connect_to_url(web_client,url)
-		print (" client connecting to " + url)
+		Functions._log(" client connecting to " + url)
 
 	static func close(web_client : WebSocketClient):
 		web_client.disconnect_from_host()
@@ -783,16 +701,117 @@ class Functions extends Reference:
 	# add chat via remote call
 	#sends data to server
 		send_data_to_webclient(web_client,text.to_utf8()) #Doesnt work
-		
+
+	# Currently prints mesages
+	# Should Ideally print to chat UI
+	static func _log(msg ):
+		print(str(msg))
 
 class UI extends Reference:
 
-	func UpscaleMobileUI(chat : ItemList, position : Vector2)-> void:
+	static func UpscaleMobileUI(chat : ItemList, position : Vector2)-> void:
 		"Upscale UI on mobile"
 		if Globals.screenOrientation == 1: #Mobile screen orientation
 			Globals.upscale__ui(chat, "XL")
 			chat.set_position(position)
 			#pass
+
+
+class WebRTC extends Reference:
+	
+	"Connect to buttons"
+	static func peers(rtc_mp : WebRTCMultiplayer):
+		var d = rtc_mp.get_peers()
+		Functions._log(d)
+		for k in d:
+			Functions._log(rtc_mp.get_peer(k))
+
+
+	" WebRTC"
+	#called everytime a peer is connected from signals
+	#save the webrtc connection from this method
+	#peer is multiplayer api
+	static func create_peer(id, node, peer : WebRTCPeerConnection, rtc_mp : WebRTCMultiplayer, player_id : Array): # Where node is self
+		Functions._log("creating peer id")
+		
+		#print ("webRTC peer connection: ",peer)
+		
+		
+		
+		peer.initialize({
+			"iceServers": [ { "urls": ["stun:stun.l.google.com:19302"] } ]
+		})
+		peer.connect("session_description_created", node, "_offer_created", [id])
+		peer.connect("ice_candidate_created", node, "_new_ice_candidate", [id])
+
+		#saving these variables
+		player_id.append(id)
+		
+		#peer is a webrtc connection
+		#rtc_mp is the multiplayer architecture
+		
+		
+		
+		rtc_mp.add_peer(peer, id)
+		
+		
+		
+		if id > rtc_mp.get_unique_id():
+			peer.create_offer()
+		
+
+		return peer
+
+
+	static func _new_ice_candidate(web_client: WebSocketClient,mid_name, index_name, sdp_name, id):
+		send_candidate(web_client,id, mid_name, index_name, sdp_name)
+
+
+	static func send_candidate(web_client: WebSocketClient,id, mid, index, sdp) -> int:
+		return _send_msg(web_client,"C", id, "\n%s\n%d\n%s" % [mid, index, sdp])
+
+
+	
+	#sends data to thr peer via webclient
+	# Code Duplicate and Unnecessary Obsfucation?
+	static func _send_msg(web_client: WebSocketClient , type, id, data) -> int:
+		return web_client.get_peer(1).put_packet(("%s: %d\n%s" % [type, id, data]).to_utf8())
+
+	
+
+
+	
+
+
+
+	static func send_offer(web_client: WebSocketClient,id, offer) -> int:
+		print ("-------sending offer")
+		return _send_msg(web_client,"O", id, offer)
+
+
+	static func send_answer(web_client: WebSocketClient,id, answer) -> int:
+		return _send_msg(web_client,"A", id, answer)
+
+
+
+
+	static func _offer_created(rtc_mp : WebRTCMultiplayer,web_client: WebSocketClient,type, data, id):
+		print ("--------------offer created---------")
+		if not rtc_mp.has_peer(id):
+			return
+		print("created", type)
+		rtc_mp.get_peer(id).connection.set_local_description(type, data)
+		if type == "offer": send_offer(web_client,id, data)
+		else: send_answer(web_client,id, data)
+
+
+	static func connected(rtc_mp : WebRTCMultiplayer, id):
+		print("-----------Connected %d" % id)
+		rtc_mp.initialize(id, true)
+		
+		#debug_rtc_mp()
+
+
 
 
 
@@ -814,10 +833,10 @@ remote func handle_player_input_and_state():
 #reads the player node parameters
 #works
 #depreciated
-func read_player_parameters()-> void:
-	if node_player != null:
-		print('Player state: ',node_player.state)
-		print('Player animation: ',node_player.anim , client_animation)
+#func read_player_parameters()-> void:
+#	if node_player != null:
+#		print('Player state: ',node_player.state)
+#		print('Player animation: ',node_player.anim , client_animation)
 
 
 'Makes calls to the Server to Process player input sent via rpc calls '
@@ -1015,7 +1034,7 @@ func _on_Chat_Button_pressed():
 
 
 func _on_peers_pressed():
-	peers()
+	WebRTC.peers(rtc_mp)
 
 
 func _on_ping_pressed():
@@ -1054,6 +1073,8 @@ func debug_rtc_mp()-> void:
 
 
 func _on_do_something_pressed():
-	debug_counter = 0
-	open_data_channel_to(peer,1)
-	debug_rtc_mp()
+	#debug_counter = 0
+	#open_data_channel_to(peer,1)
+	#debug_rtc_mp()
+	print (" Trying to send ice offer -sammy")
+	WebRTC.send_offer(web_client,1, "offer?")

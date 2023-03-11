@@ -22,6 +22,7 @@ extends Node
 #		- Implement web socket client, server and webRTC *Done, Debugging)
 # (9) Include Matchmaking system
 # (10) Organizing codebase into classes for better readablility
+# (11) Memory Leak from Scene Tree Nodes
 # *************************************************
 
 class_name Server
@@ -182,7 +183,19 @@ class WebServer extends Reference:
 		#check if signal is connected
 		print ("my custom signal connected: ", server.is_connected("client_connected",self, "player_connected"))
 
+	
+	static func listen(server : WebSocketServer,_IP,port, peers : Dictionary, rand : RandomNumberGenerator):
+		stop(server, peers)
+		rand.seed = OS.get_unix_time()
+		server.set_bind_ip(_IP)
+		server.listen(port, PoolStringArray([]), false)
+		print ("server listening on port: ", str(port)) 
 
+
+	
+	static func stop(server : WebSocketServer, peers : Dictionary):
+		server.stop()
+		peers.clear()
 
 
 func _process(delta):
@@ -227,18 +240,7 @@ func _process(delta):
 
 
 
-func listen(server : WebSocketServer,_IP,port):
-	stop()
-	rand.seed = OS.get_unix_time()
-	server.set_bind_ip(_IP)
-	server.listen(port, PoolStringArray([]), false)
-	print ("server listening on port: ", str(port)) 
 
-
-
-func stop():
-	server.stop()
-	peers.clear()
 
 
 func poll():
@@ -445,7 +447,7 @@ func _ready():
 	
 	
 	"WebRTC implementation"
-	WebServer.listen(Networking.cfg_server_ip,Networking.SERVER_PORT) #port
+	WebServer.listen(server,Networking.cfg_server_ip,Networking.SERVER_PORT, peers, rand) #port
 	#listen(Networking.SERVER_PORT) #port
 	
 	

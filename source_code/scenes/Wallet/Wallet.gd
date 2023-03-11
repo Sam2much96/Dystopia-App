@@ -1501,7 +1501,7 @@ class Functions extends Reference:
 		if not q2.is_connected("request_completed", node, "_http_request_completed_2"):
 			return q2.connect("request_completed", node, "_http_request_completed_2")
 
-	static func connect_signals_statecontroller(t: OptionButton, node ) : #connects all required signals in the parent node
+	static func connect_signals_statecontroller(t: OptionButton, node ) : #fixes stuck input bug
 		print ("Connect StateCOntroller Signls")
 		#checks internet connectivity
 		if not t.is_connected("button_up", node, "on_processing"):

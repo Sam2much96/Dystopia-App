@@ -460,7 +460,9 @@ func _ready():
 	create_multiplayer_server(Networking.SERVER_PORT,Networking.MAX_PLAYERS)
 	
 	
-	print (' Who is more Authoritative? the client or the server? ') #question?
+	
+	print (' Server Currently Functions as Signaling Server wit REgex based State Machine ') #question? # None, it's peer to peer
+	print ("TO-DO:  Implement Multiplayer API layer")
 	
 	#adfadfadfa
 	

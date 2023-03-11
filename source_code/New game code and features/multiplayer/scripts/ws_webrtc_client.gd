@@ -572,9 +572,6 @@ func _ready():
 	self.add_child(node_enemies)
 	
 	
-	print (' Who is more Authoritative? the client or the server? ') #question?
-	
-	
 	#lists all local ip addresses on Device # not needed, repurpose to a debug method
 	print ('LOCAL IP ADDRESSES: ',IP.get_local_addresses())
 	print ('IP ADDRESSES: ',IP.get_local_interfaces())

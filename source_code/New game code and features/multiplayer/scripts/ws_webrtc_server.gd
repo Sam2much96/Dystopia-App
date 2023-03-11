@@ -9,6 +9,9 @@ extends Node
 #
 # All the server  logics in one file!
 # It also contains the world's logics *inhumanity
+# Features:
+# (1) Functions as Signaling Server
+
 # Bugs:
 # (1) It implements roll back netcode (depreciated)
 # (2) Player Control affects both client and server player: use rpc_id to control player movement
@@ -144,24 +147,26 @@ class Lobby extends Reference:
 
 class WebServer extends Reference:
 
-	func _init():
-		"connect server signals"
+	# Class References can only use Static Functions
+
+	#static func _init():
+	#	"connect server signals"
 		
 		# connect signals from another codebloc
 		
 
 
-	func connect_signals(server : WebSocketServer )->void:
+	static func connect_signals(server : WebSocketServer , node )->void:
 		#when data is received
-		server.connect("data_received", self, "_on_data")
+		server.connect("data_received", node, "_on_data")
 		
 		#when a peer connects and Disconnects
-		server.connect("client_connected", self, "_peer_connected")
-		server.connect("client_disconnected", self, "_peer_disconnected")
+		server.connect("client_connected", node, "_peer_connected")
+		server.connect("client_disconnected", node, "_peer_disconnected")
 
 		#duplicate?
 		#Connect signals from the server node
-		server.connect("client_connected",self, "player_connected")
+		server.connect("client_connected",node, "player_connected")
 
 		# Connect the signals
 		# Debug the signals
@@ -181,7 +186,7 @@ class WebServer extends Reference:
 	#		print("Unable to connect signal (network_peer_disconnected) !")
 
 		#check if signal is connected
-		print ("my custom signal connected: ", server.is_connected("client_connected",self, "player_connected"))
+		print ("my custom signal connected: ", server.is_connected("client_connected",node, "player_connected"))
 
 	
 	static func listen(server : WebSocketServer,_IP,port, peers : Dictionary, rand : RandomNumberGenerator):
@@ -441,7 +446,7 @@ func _ready():
 	self.add_child(node_enemies)
 
 	
-	WebServer.connect_signals(server)
+	WebServer.connect_signals(server, self)
 	
 	
 	

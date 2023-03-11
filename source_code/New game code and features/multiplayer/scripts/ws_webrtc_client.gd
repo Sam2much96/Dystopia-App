@@ -187,6 +187,8 @@ func _connected(protocol = ""):
 func _parse_msg():
 	var pkt_str: String = web_client.get_peer(1).get_packet().get_string_from_utf8()
 
+	print ("Packet from Server: ",pkt_str)
+
 	var req: PoolStringArray = pkt_str.split("\n", true, 1)
 	if req.size() != 2: # Invalid request size
 		return
@@ -956,7 +958,7 @@ remote func attack(id, position, facing): #update code to be an attack #inhumani
 "Adds Messages to ingame Chat"
 func add_chat(text): #used the ui grid 
 	
-	print ("sldkgsdgkbsglb Fix Chat Sub-system") 
+	#print ("sldkgsdgkbsglb Fix Chat Sub-system") 
 	#chat.add_item(text)
 	if chat.get_item_count() == 7:
 		chat.remove_item(0)
@@ -972,19 +974,20 @@ func add_chat(text): #used the ui grid
 	# doesnt work. RTC_MP connection isnt established
 	#open_data_channel_to(peer,1)
 	
-	debug_rtc_mp()
+	#debug_rtc_mp() # Connection not created
 	
-	send_data_to_webclient(text.to_utf8())
+	send_data_to_webclient(text.to_utf8()) #Doesnt work
 	
 
 
 
-func send_data_to_webclient(data: PoolByteArray):
+func send_data_to_webclient(text : PoolByteArray):
 	"Sends Data to a peer"
 	#Send poolbyte arrays
 	# 
-#	web_client.get_peer(1).put_packet(text.to_utf8()) #works-ish. 
-	web_client.get_peer(1).put_packet(data) #works-ish. 
+	
+	web_client.get_peer(1).put_packet(text) #works-ish. 
+#	web_client.get_peer(1).put_packet(data) #works-ish. 
 
 
 "Adds chat item to all clients from server"

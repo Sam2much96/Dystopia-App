@@ -82,7 +82,7 @@ onready var progress_health = load('res://scenes/UI & misc/Healthbar.tscn')
 var facing
 
 #*******Chat Item*************#
-onready var chat = $UI/item_chat
+onready var chat : ItemList = $UI/item_chat
 
 #onready var client = $Client
 
@@ -155,16 +155,6 @@ func connecting_signals()->void:
 
 	# Debug SIgnal connections
 
-func connect_to_url(url):
-	close()
-	code = 1000
-	reason = "Unknown"
-	web_client.connect_to_url(url)
-	
-
-
-func close():
-	web_client.disconnect_from_host()
 
 
 func _closed(was_clean = false):
@@ -174,6 +164,7 @@ func _closed(was_clean = false):
 func _close_request(code, reason):
 	self.code = code
 	self.reason = reason
+
 
 
 func _connected(protocol = ""):
@@ -410,18 +401,10 @@ func _process(delta):
 		_log(rtc_mp.get_packet().get_string_from_utf8())
 
 
-
-func start(url, lobby = ""):
-	#stop()
-	sealed = false
-	self.lobby = lobby
-	connect_to_url(url)
-	print (" client connecting to " + url)
-
 # temporarily disabling stop
 func stop():
 	rtc_mp.close()
-	close()
+	WebClient.close(web_client)
 	print ("stopping connection")
 
 #called everytime a peer is connected from signals
@@ -576,8 +559,8 @@ func _ready():
 	
 	
 
-
-	UpscaleMobileUI()
+	
+	UI.UpscaleMobileUI(chat, $UI/Position2D.position)
 	
 	OS.set_window_title('Client') 
 	#sdgagdfasdfasdf
@@ -606,7 +589,7 @@ func _ready():
 
 
 	#_start() 
-	start(Networking.cfg_client_ip + ":" + str(Networking.SERVER_PORT) , "")
+	WebClient.start(web_client,Networking.cfg_client_ip + ":" + str(Networking.SERVER_PORT) , "", self, sealed)
 
 
 	#var peer = NetworkedMultiplayerENet.new()
@@ -622,8 +605,8 @@ func _ready():
 		#print ('Data channel State:', client.peer.get_ready_state() )
 		
 		# Add a message to the chat box
-		add_chat("Welcome to this network test!")
-		add_chat("Connecting to server ....")
+		Functions.add_chat(web_client,chat,"Welcome to this network test!")
+		Functions.add_chat(web_client,chat,"Connecting to server ....")
 	#"Peer must be connecting or connected"
 	
 	
@@ -743,9 +726,9 @@ func peers():
 		_log(rtc_mp.get_peer(k))
 
 
-"Backup Start Function "
-func _start():
-	start(Networking.cfg_client_ip + ":" + str(Networking.SERVER_PORT) , "")
+#"Backup Start Function "
+#func _start():
+#	start(Networking.cfg_client_ip + ":" + str(Networking.SERVER_PORT) , "")
 
 
 func _on_Seal_pressed():
@@ -756,14 +739,64 @@ func _stop():
 	stop()
 
 
+class WebClient extends Reference:
+	#"All Web Client Code in one Class"
+	
+	
+	static func connect_to_url(web_client : WebSocketClient ,url : String):
+		close(web_client)
+		#code = 1000 # already described in variable creation
+		#reason = "Unknown"
+		web_client.connect_to_url(url)
+
+	static func start(web_client : WebSocketClient, url, lobby , node, sealed : bool):
+		#stop()
+		sealed = false
+		node.lobby = lobby
+		connect_to_url(web_client,url)
+		print (" client connecting to " + url)
+
+	static func close(web_client : WebSocketClient):
+		web_client.disconnect_from_host()
 
 
-func UpscaleMobileUI()-> void:
-	"Upscale UI on mobile"
-	if Globals.screenOrientation == 1: #Mobile screen orientation
-		Globals.upscale__ui(chat, "XL")
-		chat.set_position($UI/Position2D.position)
-		pass
+class Functions extends Reference:
+	
+	
+	static func send_data_to_webclient(web_client : WebSocketClient,data : PoolByteArray):
+		"Sends Data to a peer"
+		#Send poolbyte arrays
+		# 
+		
+		web_client.get_peer(1).put_packet(data) 
+
+
+	
+	"Adds Messages to ingame Chat"
+	static func add_chat(web_client : WebSocketClient, chat : ItemList, text : String)-> void: #used the ui grid 
+		
+		#print ("sldkgsdgkbsglb Fix Chat Sub-system") 
+		#chat.add_item(text)
+		if chat.get_item_count() == 7:
+			chat.remove_item(0)
+
+		for i in range(0,chat.get_item_count()):
+			chat.set_item_selectable(i,false)
+
+	# add chat via remote call
+	#sends data to server
+		send_data_to_webclient(web_client,text.to_utf8()) #Doesnt work
+		
+
+class UI extends Reference:
+
+	func UpscaleMobileUI(chat : ItemList, position : Vector2)-> void:
+		"Upscale UI on mobile"
+		if Globals.screenOrientation == 1: #Mobile screen orientation
+			Globals.upscale__ui(chat, "XL")
+			chat.set_position(position)
+			#pass
+
 
 
 
@@ -823,7 +856,7 @@ func handle_input(): #DUplicate player state machine input here
 "When Client Succcessfully Connects"
 func client_connected_ok():
 	push_error("Callback: client_connected_ok")
-	add_chat("Connected. Enjoy!")
+	Functions.add_chat(web_client,chat,"Connected. Enjoy!")
 	# Only called on clients, not server. Send my ID and info to all the other peers
 	my_info.name = Networking.cfg_player_name
 	my_info.color = Networking.cfg_color
@@ -853,7 +886,7 @@ func client_connected_fail():
 remote func player_joined(id, info): #tweak code###########################
 	print("Callback: player_joined(" + str(id)+"," + str(info) + ")")
 	player_info[id] = info
-	add_chat("Player joined: " + player_info[id].name)
+	Functions.add_chat(web_client,chat,"Player joined: " + player_info[id].name)
 	
 	
 	#node player is the instanced player node
@@ -879,7 +912,7 @@ remote func player_joined(id, info): #tweak code###########################
 remote func player_respawned(id, info):
 	print("Callback: player_respawned (" + str(id)+"," + str(info) + ")")
 	player_info[id] = info
-	add_chat("Player respawned: " + player_info[id].name)
+	Functions.add_chat(web_client,chat,"Player respawned: " + player_info[id].name)
 	
 	var node_player = preload_player.instance()
 	var color = info.color.to_lower()
@@ -899,7 +932,7 @@ remote func player_respawned(id, info):
 	
 remote func player_leaving(id): #Called when player leaves the game
 	print("Callback: player_leaving(" + str(id)+")")
-	add_chat("Player leaving: " + player_info[id].name)
+	Functions.add_chat(web_client,chat,"Player leaving: " + player_info[id].name)
 	player_info[id].node.queue_free()
 	
 	player_info.erase(id)
@@ -910,7 +943,7 @@ remote func player_health(id, hitpoint): #where is this funtion called?
 	print("Callback: player_health(" + str(id) +","+str(hitpoint)+")")  #update this code to use player state
 	if hitpoint == 0:
 		player_info[id].destroyed = true
-		add_chat(player_info[id].name +" destroyed!")
+		Functions.add_chat(web_client,chat, player_info[id].name +" destroyed!")
 		player_info[id].node.queue_free()
 		
 	var peer_id = get_tree().get_network_unique_id()
@@ -955,39 +988,7 @@ remote func attack(id, position, facing): #update code to be an attack #inhumani
 	print('attack',id,position, facing)
 	
 
-"Adds Messages to ingame Chat"
-func add_chat(text): #used the ui grid 
-	
-	#print ("sldkgsdgkbsglb Fix Chat Sub-system") 
-	#chat.add_item(text)
-	if chat.get_item_count() == 7:
-		chat.remove_item(0)
 
-	for i in range(0,chat.get_item_count()):
-		chat.set_item_selectable(i,false)
-
-# add chat via remote call
-#sends data to server
-	#data channel not open #to fix
-	#peer = WebRTCPeerConnectionGDNative:2345
-
-	# doesnt work. RTC_MP connection isnt established
-	#open_data_channel_to(peer,1)
-	
-	#debug_rtc_mp() # Connection not created
-	
-	send_data_to_webclient(text.to_utf8()) #Doesnt work
-	
-
-
-
-func send_data_to_webclient(text : PoolByteArray):
-	"Sends Data to a peer"
-	#Send poolbyte arrays
-	# 
-	
-	web_client.get_peer(1).put_packet(text) #works-ish. 
-#	web_client.get_peer(1).put_packet(data) #works-ish. 
 
 
 "Adds chat item to all clients from server"
@@ -1013,7 +1014,7 @@ func client_debug()-> void:
 "CHATS"
 func _on_Chat_Button_pressed():
 	var _text = $UI/LineEdit.text
-	add_chat(_text)
+	Functions.add_chat(web_client,chat,_text)
 
 
 func _on_peers_pressed():

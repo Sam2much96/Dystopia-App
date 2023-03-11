@@ -12,6 +12,7 @@
 # (7) Test UX
 		#- fix check account UX
 		#- fix collectibles state (done 2/3) 
+#(3) Refactor Codes
 #Logic
 # It uses the Networking singleton and Algorand library
 # to get an asset's url and download the image from
@@ -167,7 +168,7 @@ var Asset_UI_showing : bool = false
 
 var password_valid : bool = false
 var loaded_wallet: bool= false #fixes looping loading bug
-var good_internet : bool #debugs user's internet
+#var good_internet : bool #debugs user's internet Use GLobal Networking.good_internet
 
 var passed_all_connectivity_checks : bool = false #debugs all connectivity checks
 var is_image_available_at_local_storage : bool  = FileCheck4.file_exists(local_image_path)
@@ -332,8 +333,8 @@ func __ready():
 		#upscale_wallet_ui() #depreciated
 		pass
 	'Connect and Debug Networking signals'
-	connect_signals()
-	debug_signal_connections()
+	Functions.connect_signals(q,q2, self)
+	Functions.debug_signal_connections(q, self)
 
 
 
@@ -357,10 +358,9 @@ func _ready():
 	self.add_child(q) #add networking node to the scene tree
 	self.add_child(q2) #add networking node to the scene tree
 	
-	#works
-	#print(Globals.calc_average([1,2,3,4,5,6,7,8,9,10])) # For debug purposes only 
 	
 	pass
+
 
 func _process(_delta):
 	
@@ -512,7 +512,7 @@ func _process(_delta):
 				if FileCheck1.file_exists(token_write_path)  :
 					#use animation player to alter UI
 					
-					hideUI()
+					Functions.hideUI(canvas_layer)
 					
 					self.dashboard_UI.show()
 					
@@ -535,7 +535,7 @@ func _process(_delta):
 			IMPORT_ACCOUNT: #works 
 				
 				#gdsfgsfdgdfgsd
-				hideUI()
+				Functions.hideUI(canvas_layer)
 				
 				
 				# Reset UI animation for State controller 
@@ -578,7 +578,7 @@ func _process(_delta):
 			TRANSACTIONS: #Debugging
 				#hide other ui states
 				#use animation player to alter UI
-				hideUI()
+				Functions.hideUI(canvas_layer)
 				self.transaction_ui.show()
 				self.transaction_ui.focus_mode = 2
 
@@ -634,7 +634,7 @@ func _process(_delta):
 					# The wallet address is same as users address & UI linedit is empty
 					if asset_optin:
 						
-						hideUI()
+						Functions.hideUI(canvas_layer)
 						self.Asset_UI.show()
 						self.asset_UI_amountLabel. text = amount
 						self.asset_UI_ID_Label.text = asset_index
@@ -676,7 +676,7 @@ func _process(_delta):
 				
 				"Checks if the Image is avalable Locally and either downloads or loads it"
 				if wallet_check == 0:
-					hideUI() 
+					Functions.hideUI(canvas_layer) 
 					collectibles_UI.show()
 					if not FileCheck3.file_exists(local_image_file): #works
 						
@@ -771,7 +771,7 @@ func _process(_delta):
 				#use animation player to alter UI
 				#opt into counter smart contract deployed to host address
 				#try running in ready function
-				hideUI()
+				Functions.hideUI(canvas_layer)
 				smart_contract_UI.show()
 				
 				#Play Animation
@@ -808,7 +808,7 @@ func _process(_delta):
 				_Animation_UI.play("PASSWORD")
 				
 				
-				hideUI()
+				Functions.hideUI(canvas_layer)
 				
 				passward_UI.show()
 				
@@ -821,7 +821,7 @@ func _process(_delta):
 				pass
 			SHOW_MNEMONIC:
 				if mnemonic != "":
-					hideUI()
+					Functions.hideUI(canvas_layer)
 					
 				# Rest Up UI animation for State controller 
 					_Animation_UI.play("SHOW_MNEMONIC")
@@ -838,9 +838,6 @@ func _process(_delta):
 					return OS.alert("Mnemonic invalid", "Error")
 
 
-func check_internet():
-	if !good_internet:
-		Networking._check_if_device_is_online(q)
 
 # Uses Connection Health and internet health to check Account info
 
@@ -850,14 +847,14 @@ func run_wallet_checks()-> bool: # works
 	if self.Algorand.algod == null:
 		self.Algorand.create_algod_node('TESTNET')
 	
-	check_internet()
+	Functions.check_internet(Networking.good_internet,q)
 	
 	wallet_check_counter+= 1
 	#var status
 	var status : bool
 	status= yield(self.Algorand.algod.health(), "completed")
 	
-	print ("Status debug:" , status, wallet_check_counter,  "good internet:", good_internet)
+	print ("Status debug:" , status, wallet_check_counter,  "good internet:", Networking.good_internet)
 	
 	#calculates suggested parameters for all transactions
 	params = yield(self.Algorand.algod.suggested_transaction_params(), "completed") #works
@@ -865,14 +862,14 @@ func run_wallet_checks()-> bool: # works
 	
 	if status:
 		print ("Node Health is Ok")
-	if good_internet:
+	if Networking.good_internet:
 		print ('Internet connection is Ok')
 	if params != null:
 		print ('Suggested Transaction Parameters calculated')
 	
 	
 	
-	if status and good_internet: #prevents app breaking bug
+	if status and Networking.good_internet: #prevents app breaking bug
 		passed_all_connectivity_checks = true
 		pass
 
@@ -923,15 +920,6 @@ func show_account_info(load_from_local_wallet: bool):
 
 
 
-func connect_signals(): #connects all required signals in the parent node
-	print ("Connect Networking Signls please")
-	#checks internet connectivity
-	if not q.is_connected("request_completed", self, "_http_request_completed"):
-		return q.connect("request_completed", self, "_http_request_completed")
-
-	#checks Image downloader
-	if not q2.is_connected("request_completed", self, "_http_request_completed_2"):
-		return q2.connect("request_completed", self, "_http_request_completed_2")
 
 
 	# Connect Comics swipe signals
@@ -942,10 +930,6 @@ func connect_signals(): #connects all required signals in the parent node
 	#	Comics_v5.connect("next_panel", self, "next_UI")
 
 
-func debug_signal_connections()->void:
-	#debuggers
-	print("Networking Connected: ",q.is_connected("request_completed", self, "_http_request_completed"))
-	print ("please connect Networking Signals")
 
 func generate_address(_mnemonic:String)-> String: #works
 	var _address =self.Algorand.algod.get_address(_mnemonic)
@@ -1057,12 +1041,12 @@ func _http_request_completed(result, response_code, headers, body): #works with 
 	print (" response code 1: ", response_code) #for debug purposes only
 	
 	if not body.empty():
-		good_internet = true
+		Networking.good_internet = true
 	
 	
 	if body.empty(): #returns an empty body
 		push_error("Result Unsuccessful")
-		good_internet = false
+		Networking.good_internet = false
 		#Networking.stop_check()
 	
 
@@ -1109,7 +1093,7 @@ func check_wallet_info(): #works. Pass a variable check
 	# (1) Implement Classes as Reference
 	# (2) Implement Static Functions 
 	
-	if address != null && mnemonic != null && check_local_wallet_directory() && good_internet : 
+	if address != null && mnemonic != null && check_local_wallet_directory() && Networking.good_internet : 
 		#print (Algorand.algod)
 		account_info = yield(self.Algorand.algod.account_information(address), "completed")
 		save_account_info(account_info, 0) #testing  
@@ -1121,9 +1105,9 @@ func check_wallet_info(): #works. Pass a variable check
 		push_error("mnemonic cannot be null Import Mnemonic or Generate New Account")
 		print ("check info Mnemonic debug: ", mnemonic)
 	
-	if !good_internet:
+	if !Networking.good_internet:
 		push_error(" Internet Connection Is Bad")
-		check_internet()
+		Functions.check_internet(Networking.good_internet,q)
 	
 	
 	
@@ -1181,10 +1165,6 @@ func _on_refresh_pressed(): #disabling refresh button
 	
 
 
-#Deletes Local Account Info
-func reset()-> void:
-	Globals.delete_local_file(token_write_path)
-
 
 'Copies Wallet Addresss to Clipboard'
 func _on_Copy_address_pressed():
@@ -1198,7 +1178,12 @@ func _on_Copy_mnemonic_pressed():
 	print ("copied wallet mnemonic to clipboard")
 	OS.set_clipboard(mnemonic) 
 
+# State Controller Methods
+func off_processing(): 
+	return set_process(false)
 
+func on_processing(): 
+	return set_process(true)
 
 
 "Parses Input frm UI buttons"
@@ -1250,30 +1235,37 @@ func _input(event):
 				Comics_v5.loaded_comics = self.NFT.visible
 				Comics_v5.comics_placeholder = self.NFT
 				Comics_v5.drag(event.position, event.position, kinematic2d)
-			
+		
+		
+		
+		
+		#Depreciated
+		#
 		# Turns on and Off Wallet Processing with Single screen touches
 		# 
 		# Uses a Timer of 4 seconds to turn processing off
 		
-		if event is InputEventScreenTouch:#InputEventSingleScreenTouch:
-			Networking.start_check(4) #should take a timer as a parameter
+		#if event is InputEventScreenTouch:#InputEventSingleScreenTouch:
+		#	Networking.start_check(4) #should take a timer as a parameter
 			
 			
 			#Turns processing off for 20 secs
-			if Networking.Timeout == false :
+		#	if Networking.Timeout == false :
 				
-				print ('Stoping Wallet Processing')
-				self.set_process(false)
-				processing = false
-				return processing
+		#		print ('Stoping Wallet Processing')
+		#		self.set_process(false)
+		#		processing = false
+		#		return processing
 			
-			if Networking.Timeout == true :
+			
+			
+		#	if Networking.Timeout == true :
 				
-				print ('Wallet Processing')
+		#		print ('Wallet Processing')
 				
-				self.set_process(true)
-				processing = true
-				return processing
+		#		self.set_process(false)
+		#		processing = false
+		#		return processing
 		
 		
 		"BUTTON PRESSES"
@@ -1350,7 +1342,7 @@ func txn(): #runs presaved transactions once wallet is ready
 		_amount = 0
 		
 		reset_transaction_parameters()
-		hideUI()
+		Functions.hideUI(canvas_layer)
 		self.funding_success_ui.show()
 	
 	"Asset Transactions"
@@ -1371,7 +1363,7 @@ func txn(): #runs presaved transactions once wallet is ready
 			
 			#reset transaction details
 			reset_transaction_parameters()
-			hideUI()
+			Functions.hideUI(canvas_layer)
 			self.funding_success_ui.show()
 		
 	"Asset Optin Transactions"
@@ -1394,7 +1386,7 @@ func txn(): #runs presaved transactions once wallet is ready
 			
 			#reset transaction details
 			reset_transaction_parameters()
-			hideUI()
+			Functions.hideUI(canvas_layer)
 			self.funding_success_ui.show()
 	
 
@@ -1417,7 +1409,7 @@ func smart_contract():
 		txid = self.Algorand.algod.send_transaction(stx)
 		print ('Tx ID: ',txid)
 		
-		hideUI()
+		Functions.hideUI(canvas_layer)
 		self.funding_success_ui.show()
 		
 		self._Animation_UI.play("SUCCESS")
@@ -1430,21 +1422,6 @@ func smart_contract():
 func _on_enter_asset_pressed(): #depreciated
 	asset_id_valid = true
 
-
-
-"UI methods for handling the new Wallet UI"
-func hideUI()-> void:
-	#if canvas_layer.get_child_count() > 0: # Null Ptr error catcher
-	if canvas_layer != null:#canvas_layer.is_inside_tree(): # Null Ptr error catcher
-		for i in canvas_layer.get_children():
-			i.set_mouse_filter(1)
-			i.focus_mode = 0
-			i.hide()
-
-func showUI()-> void:
-	for i in canvas_layer.get_children():
-		i.focus_mode = 1
-		i.show()
 
 "Resets All Transaction Boolean & String Parameters"
 #fixes double spend bug
@@ -1495,6 +1472,61 @@ class Functions extends Reference:
 			#	#i.set_size(size, false)
 
 
+
+
+	"UI methods for handling the new Wallet UI"
+	static func hideUI(canvas_layer : CanvasLayer)-> void:
+		#if canvas_layer.get_child_count() > 0: # Null Ptr error catcher
+		#if canvas_layer != null:#canvas_layer.is_inside_tree(): # Null Ptr error catcher
+		for i in canvas_layer.get_children():
+			i.set_mouse_filter(1)
+			i.focus_mode = 0
+			i.hide()
+
+	static func showUI(canvas_layer : CanvasLayer)-> void:
+		for i in canvas_layer.get_children():
+			i.focus_mode = 1
+			i.show()
+
+
+
+	static func connect_signals(q: HTTPRequest, q2: HTTPRequest, node) : #connects all required signals in the parent node
+		print ("Connect Networking Signls please")
+		#checks internet connectivity
+		if not q.is_connected("request_completed", node, "_http_request_completed"):
+			return q.connect("request_completed", node, "_http_request_completed")
+			#return q.connect("request_completed", self, "_http_request_completed")
+
+		#checks Image downloader
+		if not q2.is_connected("request_completed", node, "_http_request_completed_2"):
+			return q2.connect("request_completed", node, "_http_request_completed_2")
+
+	static func connect_signals_statecontroller(t: OptionButton, node ) : #connects all required signals in the parent node
+		print ("Connect StateCOntroller Signls")
+		#checks internet connectivity
+		if not t.is_connected("button_up", node, "on_processing"):
+			return t.connect("button_up", node, "on_processing")
+
+		if not t.is_connected("button_down", node, "off_processing"):
+			return t.connect("button_down", node, "off_processing")
+
+
+
+	static func debug_signal_connections(q : HTTPRequest, node)->void:
+		#debuggers
+		print("Networking Connected: ",q.is_connected("request_completed", node, "_http_request_completed"))
+		print ("please connect Networking Signals")
+
+
+	#Deletes Local Account Info
+	static func reset(token_write_path : String)-> void:
+		Globals.delete_local_file(token_write_path)
+
+	
+	static func check_internet(good_internet : bool ,q : HTTPRequest):
+		if !good_internet:
+			Networking._check_if_device_is_online(q)
+
 "Encryption & Decryption Algorithms"
 class Encryption extends Reference:
 	
@@ -1513,3 +1545,6 @@ class Encryption extends Reference:
 		string =binary.get_string_from_utf8()
 		#print (string)# for debug purposes only
 		return string
+
+
+	

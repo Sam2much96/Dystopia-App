@@ -166,6 +166,8 @@ class WebServer extends Reference:
 
 		#duplicate?
 		#Connect signals from the server node
+		# Returns an Error
+		#ERROR: Error calling method from signal 'client_connected': 'Node(ws_webrtc_server.gd)::player_connected': Method expected 1 arguments, but called with 2..
 		server.connect("client_connected",node, "player_connected")
 
 		# Connect the signals
@@ -287,7 +289,7 @@ func _peer_connected(id, protocol = ""): #works
 	
 	#create multiplayer peer here
 	
-	
+	sgsagsgsg
 	
 	
 	var rtc_mp : WebRTCMultiplayer = WebRTCMultiplayer.new()

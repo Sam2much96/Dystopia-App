@@ -108,12 +108,12 @@ var debug_counter : int = 0
 
 
 func _init():
-	connecting_signals()
+	connecting_signals(false)
 
 
 
 
-func connecting_signals()->void:
+func connecting_signals(debug : bool)->void:
 	#connect WebRTC signalling signals
 	connect("connected", self, "connected")
 	connect("disconnected", self, "disconnected")
@@ -129,6 +129,15 @@ func connecting_signals()->void:
 	
 	connect("peer_connected", self, "peer_connected")
 	connect("peer_disconnected", self, "peer_disconnected")
+	
+	
+	connect("lobby_joined", self, "_lobby_joined")
+	
+	
+	connect("lobby_sealed", self, "_lobby_sealed")
+	connect("connected", self, "_connected")
+	connect("disconnected", self, "_disconnected")
+	
 
 	#Connects the Web Clients
 	
@@ -139,13 +148,6 @@ func connecting_signals()->void:
 	web_client.connect("server_close_request", self, "_close_request")
 
 
-	connect("lobby_joined", self, "_lobby_joined")
-	
-	
-	connect("lobby_sealed", self, "_lobby_sealed")
-	connect("connected", self, "_connected")
-	connect("disconnected", self, "_disconnected")
-	
 	#Connect signals from WebRTCMultiplayer node
 	
 	rtc_mp.connect("peer_connected", self, "_mp_peer_connected")
@@ -154,6 +156,46 @@ func connecting_signals()->void:
 	rtc_mp.connect("connection_succeeded", self, "_mp_connected")
 
 	# Debug SIgnal connections
+	if debug :
+		Functions._log(is_connected("connected", self, "connected"))
+		Functions._log(is_connected("disconnected", self, "disconnected"))
+
+		Functions._log("" + str (is_connected("offer_received", self, "offer_received")))
+		Functions._log("" + str (is_connected("answer_received", self, "answer_received")))
+		Functions._log("" + str (is_connected("candidate_received", self, "candidate_received")))
+
+		#connects peer joined and lobby joined signals
+		Functions._log("" + str (is_connected("lobby_joined", self, "lobby_joined")))
+		
+		#connect("lobby_sealed", self, "lobby_sealed") #disabled for debugging
+		
+		Functions._log("" + str (is_connected("peer_connected", self, "peer_connected")))
+		Functions._log("" + str (is_connected("peer_disconnected", self, "peer_disconnected")))
+		
+		
+		Functions._log("" + str (is_connected("lobby_joined", self, "_lobby_joined")))
+		
+		
+		Functions._log("" + str (is_connected("lobby_sealed", self, "_lobby_sealed")))
+		Functions._log("" + str (is_connected("connected", self, "_connected")))
+		Functions._log("" + str (is_connected("disconnected", self, "_disconnected")))
+		
+
+		#Connects the Web Clients
+		
+		Functions._log("" + str (web_client.is_connected("data_received", self, "_parse_msg")))
+		Functions._log("" + str (web_client.is_connected("connection_established", self, "_connected")))
+		Functions._log("" + str (web_client.is_connected("connection_closed", self, "_closed")))
+		Functions._log("" + str (web_client.is_connected("connection_error", self, "_closed")))
+		Functions._log("" + str (web_client.is_connected("server_close_request", self, "_close_request")))
+
+
+		#Connect signals from WebRTCMultiplayer node
+		
+		Functions._log( "" + str (rtc_mp.is_connected("peer_connected", self, "_mp_peer_connected")))
+		Functions._log("" + str (rtc_mp.is_connected("peer_disconnected", self, "_mp_peer_disconnected")))
+		Functions._log("" + str (rtc_mp.is_connected("server_disconnected", self, "_mp_server_disconnect")))
+		Functions._log("" + str ( rtc_mp.is_connected("connection_succeeded", self, "_mp_connected")))
 
 
 
@@ -675,6 +717,15 @@ class WebClient extends Reference:
 		web_client.disconnect_from_host()
 
 
+	static func  server_disconnected(node : Node ): #tweak to 'sever diconnected, change scene to login
+		push_error("Callback: server_disconnected")
+		OS.alert('You have been disconnected!', 'Connection Closed')
+		# Change to login scene
+		node.get_tree().change_scene("res://scenes/login.tscn")
+		if node.get_tree().change_scene("res://scenes/login.tscn") != OK:
+			push_error("Unable to load login scene!")
+
+
 class Functions extends Reference:
 	
 	
@@ -883,13 +934,7 @@ func client_connected_ok():
 	
 
 "When Server Disconnects"
-func  server_disconnected(): #tweak to 'sever diconnected, change scene to login
-	push_error("Callback: server_disconnected")
-	OS.alert('You have been disconnected!', 'Connection Closed')
-	# Change to login scene
-	get_tree().change_scene("res://scenes/login.tscn")
-	if get_tree().change_scene("res://scenes/login.tscn") != OK:
-		push_error("Unable to load login scene!")
+
 
 func client_connected_fail():
 	push_error("Callback: client_connected_fail")
@@ -1068,13 +1113,13 @@ func create_multiplayer_client(address : String, port)-> bool:
 func debug_rtc_mp()-> void:
 		# write a state machine bloc to debug rtc_mp
 	
-	print ("Web RTC Multiplayer Peers: ",rtc_mp.get_peers()) #shows all multiplayer peers
-	print ("Web RTC Multiplayer disconnected: ",rtc_mp.CONNECTION_DISCONNECTED) #2
+	Functions._log("Web RTC Multiplayer Peers: " + str(rtc_mp.get_peers())) #shows all multiplayer peers
+	Functions._log("Web RTC Multiplayer disconnected: " + str(rtc_mp.CONNECTION_DISCONNECTED)) #2
 
 
 func _on_do_something_pressed():
 	#debug_counter = 0
 	#open_data_channel_to(peer,1)
 	#debug_rtc_mp()
-	print (" Trying to send ice offer -sammy")
+	Functions._log(" Trying to send ice offer -sammy")
 	WebRTC.send_offer(web_client,1, "offer?")

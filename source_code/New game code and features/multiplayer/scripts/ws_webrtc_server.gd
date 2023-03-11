@@ -289,7 +289,7 @@ func _peer_connected(id, protocol = ""): #works
 	
 	#create multiplayer peer here
 	
-	sgsagsgsg
+	print (" The Connectivity Error Starts from Here - Server.gd ln 292")
 	
 	
 	var rtc_mp : WebRTCMultiplayer = WebRTCMultiplayer.new()

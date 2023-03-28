@@ -288,9 +288,10 @@ func _peer_connected(id, protocol = ""): #works
 	
 	
 	#create multiplayer peer here
-	
+	#adadfaf
 	print (" The Connectivity Error Starts from Here - Server.gd ln 292")
 	
+	# server should Do something here init?
 	
 	var rtc_mp : WebRTCMultiplayer = WebRTCMultiplayer.new()
 	#peer connection

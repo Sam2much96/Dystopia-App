@@ -23,31 +23,31 @@ extends Control
 class_name cinematic
 
 
-#save resource to a .tres file
-#update code to use as videoplayer's base node to play all videos in the scene
-#export (bool) var one_shot 
 export (bool) var cinematic_on = true
-#export (bool) var cinematic_on = false
-#it only works with ogv files
 export(String, FILE, "*.ogv") var vid_stream = ""
 
-#it only works with ogv files
-#export(String, FILE, "*.ogv") var vid_stream =""
-#enum  {SINGLE_PLAY,LOOP, NO_PLAY} # statemachine not yet implemented
+# Cread Object
+var yt_dlp = YtDlp.new()
 
-#export var state = SINGLE_PLAY
-#Ref<ResourceInteractiveLoader> ResourceLoader::load_interactive(String p_path)#experimental code to load resource
 onready var animation : AnimationPlayer = $"animation player"
 onready var position2d : Position2D = $Position2D
 onready var os 
 onready var node = get_node("Node2D") #popup node for centering cinematics
 
 "Cinematics DIctionary"
-var cinematic : Dictionary = {
+const cinematic : Dictionary = {
 	0:'res://resources/title animation/title..ogv',
 	1:'', #convert video to ogv
 	}
 
+
+"Youtube Urls as a Dictionary"
+const youtube : Dictionary = {
+	0:'https://youtube.com/shorts/YCwou4oX12I?feature=share',
+	1:'https://youtu.be/oJY1rIxC4kk',
+	2: 'https://youtu.be/uzDzAuJVHcI',
+	3: 'https://youtu.be/EAL8Mu2-f7Q'
+	}
 
 var videoplayer : VideoPlayer
 
@@ -70,11 +70,8 @@ func _ready(): #create a video player function
 	print ("Viewport Size: ", Globals.viewport_size )
 	print ("Center of Viewprt: ", Globals.center_of_viewport )
 	
-	# (-453.101, 356.937)
 	
-	
-	#print('Cinematic Debug: /current scene/',  Globals.curr_scene) #for debug purposes
-	'Plays only when the Scene is the cinematics scene'
+	'Cinematics scene'
 	if Globals.curr_scene == 'Cinematics':
 		videoplayer  = get_node('VideoPlayer') #video player node
 		videoplayer._set_size((get_viewport_rect().size))
@@ -82,17 +79,27 @@ func _ready(): #create a video player function
 		
 		
 		play_opening_cinematic() #Plays this video only on cinematics node
-		#set videoplayer rect size to viewport size
 	
-	# Change Video Player Position On Android Devices
-	#if Globals.os == "Android" && Globals.curr_scene == "Cinematics":
-
-	
-	
+	"Anime Shop Scene"
 	if Globals.curr_scene == "Shop":
-		var animationplayer : Control = get_node("AnimationPlayer")
-
+		# Get the Parent
+		var animationplayer : Control = $AnimationPlayer#get_node("AnimationPlayer")
 	
+		videoplayer = $AnimationPlayer/VideoPlayer
+	
+		print ("video player: ", videoplayer)# For Debug puroses only
+		# Connect Signals from Youtube Downloader
+		
+		# File Doesn't Exist
+		if not Globals.check_files("user://", "user://Test.webm") :
+			
+			# Download Video File
+			yt_dlp.connect("ready", self, "some_function") #Poll Downloads
+			yt_dlp.connect("download_completed", self, "some_other_function")
+		
+		# File Exists
+		if Globals.check_files("user://", "user://Test.webm") :
+			pass
 	
 	if vid_stream == null:
 		push_error('vid_stream is null')
@@ -110,20 +117,24 @@ func _on_skip_pressed():
 
 
 
-# Try Using Global Functions
+
 func Video_Stream(stream, os: String): #This code works
 	#Use Position 2d node for Viewport Calibrations
+	
 	if os == "Android":
 		videoplayer.expand = false
-		#videoplayer.set_position(position2d.position)
-		#print ("A: " ,Vector2(-(Globals.center_of_viewport.x),Globals.center_of_viewport.y)) # Bottom of Viewport
-		#print ("B: ", position2d.position)
 		
 		#True Center of Screen
 		videoplayer.set_position(Vector2(-(Globals.center_of_viewport.x),300))
+	
+	if os == "X11" or "Windows":
 		
+		#True Center of Screen
+		videoplayer.set_position(Vector2(-(Globals.center_of_viewport.x),100))
+	
+	
 	if stream != null: 
-		#stream = stream.get_resource()
+		videoplayer.visible = true
 		videoplayer.set_stream(stream) 
 		videoplayer.play() 
 		cinematic_on= true
@@ -280,24 +291,39 @@ var pilot_ep_scene = load ('res://scenes/cinematics/pilot_ep_1.tscn')
 func _on_Button_pressed():
 	return Globals._go_to_title()
 
+func some_function():
+	print ("Downloading video")
+	#Download video using url to local storage
+	yt_dlp.download(youtube[0],OS.get_user_data_dir(),"Test" )
+	
 
-
+func some_other_function():
+	
+	print("Playing Video")
+	
+	# Play Downloaded Video file
+	var stream := VideoStreamWebm.new()
+	stream.set_file("user://Test.webm")
+	Video_Stream(stream, Globals.os)
+	
 func _on_watch_anime_pressed():
-
-	#if Globals.os == str ('Android'):
+	# Download Animated Pilot Ep
+	
+	# Check for missing video files
 	
 	
+	if Globals.check_files("user://", "user://Test.webm") :
+		var stream := VideoStreamWebm.new()
+		stream.set_file("user://Test.webm")
+		Video_Stream(stream, Globals.os)
 	
-	#_Video_Stream((Globals.pilot_ep))
 	
 	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
-	#videoplayer._play_pilot_a() #depreciated in v1.1.9 for size problems
+	
 	$Label.hide()
-	return OS.shell_open("https://youtu.be/oJY1rIxC4kk")
+	#videoplayer._play_pilot_a() #depreciated in v1.1.9 for size problems
+	#return OS.shell_open("https://youtu.be/oJY1rIxC4kk")
 	
-	
-	#print ('Video Stream: ' , str(videoplayer.stream)) # For debug purposes only
-		
 
 # Rewrite this code
 func _verify_Online_downloaded_video():
@@ -659,7 +685,7 @@ func _on_watch_anime2_pressed():
 	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
 	#videoplayer._play_pilot_a() #depreciated in v1.1.9 for size problems
 	$Label.hide()
-	return OS.shell_open("https://youtu.be/uzDzAuJVHcI")
+	#return OS.shell_open("https://youtu.be/uzDzAuJVHcI")
 	
 	
 
@@ -669,7 +695,7 @@ func _on_watch_merch_pressed():
 
 func _on_watch_anime3_pressed():
 	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
-	return OS.shell_open("https://youtu.be/EAL8Mu2-f7Q")
+	#return OS.shell_open("https://youtu.be/EAL8Mu2-f7Q")
 
 
 func _on_watch_guidebook_pressed():

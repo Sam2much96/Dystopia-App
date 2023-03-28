@@ -9,6 +9,9 @@ extents = Vector2( 191.5, 310.5 )
 [node name="Control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_left = 288.0
@@ -20,7 +23,6 @@ __meta__ = {
 }
 
 [node name="GridContainer" type="GridContainer" parent="."]
-visible = false
 margin_left = 324.0
 margin_top = 29.0
 margin_right = 456.0
@@ -45,7 +47,6 @@ __meta__ = {
 }
 
 [node name="TextureButton2" type="TextureButton" parent="GridContainer"]
-visible = false
 margin_left = 68.0
 margin_right = 132.0
 margin_bottom = 64.0
@@ -60,7 +61,6 @@ __meta__ = {
 }
 
 [node name="TextureButton3" type="TextureButton" parent="GridContainer"]
-visible = false
 margin_top = 68.0
 margin_right = 64.0
 margin_bottom = 132.0

@@ -94,12 +94,10 @@ custom_fonts/font = ExtResource( 2 )
 text = "Watch Afro Anime"
 
 [node name="Dialog_box" parent="." instance=ExtResource( 6 )]
-visible = false
 
 [node name="YoutubeThumbnail" type="TextureRect" parent="."]
-visible = false
-margin_right = 427.0
-margin_bottom = 427.0
+margin_right = 288.0
+margin_bottom = 288.0
 script = ExtResource( 7 )
 
 [connection signal="pressed" from="africa icon/Button" to="." method="_on_Button_pressed"]

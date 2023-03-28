@@ -60,8 +60,8 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 	Added multitouch gestures for android
 	-swipe to change panel
 	-Double tap to zoom
-**(11) Stream Animated Shorts:**
-	  Stream Dystopia Anime from the app & Youtube
+**(11) Stream Animated Shorts and Music:**
+	  Stream Dystopia Anime from the app & Youtube, and download game music using https://github.com/Nolkaloid/godot-yt-dlp
 
 **(12) Interractive Environment**
 
@@ -85,15 +85,10 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 	-Multitouch settings in control
 	-Better Combat System
 	-Comic placeholder code
-	-Horizontal Swipe gestures for the Comic placeholder code
 	-Auto rotate gestures for the Comic placeholder code
 	-Guided view ( Controlled zoom )
 	
-	-Game Optimizations
-	-Appodeal's SDK integration
 	
-	-Better Scene loading management system via global functions
-	- Translation (Spanish, French, Yoruba)
 ## -Features to Add
 	
 	-Game Vibrations
@@ -110,18 +105,14 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 	-Create Dungeon	
 	-Spritesheet animation upgrade
 	-Model player & enemy characters (Rig with mixamo)
-	-Translate feature using .json files
-	-Multiple Languages (localization and dubbing to French and Spanish).
 	-Procedurally generated sand dunes
 	-Update Game instructionals visuals
-	-Throw mechanics for enemy types
 	-Inventory system
 	-Colour changing joystick
 	-Create Dungeons
 	-Sandbox mechanics
 	-Polygon 2d to deconstruct comic panels
-	-Host game server with
-		-Javascript (webrtc server peer implementation
+	-Host game server with esp32
 	-Reprogrammable joystick
 	-Ads
 		-Interstitial Ads at the end of comic book page
@@ -129,6 +120,6 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 		-Banner Ads over video footage
 
 ## -3rd Party Integrations
-	-Admob publishing ID replacements
-	-Ad integrations
+	-Admob 
+	-Appodeal
 

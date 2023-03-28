@@ -30,7 +30,7 @@
 # *************************************************
 #Bugs:
 
-#(1) UI is not intuitive (fixed)
+#(1) UX is not intuitive.
 #(2) NFT drag and Drop is buggy 
 # (3)  Wallet Node's Process disrupts UI input ( fixed with state_controller and wallet _input() methods)
 # (4) Wallet's Animation UI has Stuck animation transition bug. Use Animation Tree to Activate and Deactivate UI animations
@@ -38,16 +38,13 @@
 # (6) _state_controller's implementation of the process controller method is buggy
 
 # To-DO:
-# 
+# (9) Implement UI scaling for Mobile & PC screens
 # (10) IMplement Tokenized characters (player_v2)
 # (11) Implement cryptographic encryption and decryption
-# (12) Implement show mnemonic button and UI
-		#alter UI scale for mobiles (done)
+# (12) 
 		# alter UI scale for PC using global viewport size calculations
 		#use animation player to alter UI (depreciated. Functions work faster)
 
-# (15) Implement Comic book interface for interractible NFT (done)
-# (16) Implement better NFT UI 
 # (17) Delete local NFT's if token is sent
 		#logic
 		#if asset_url ='' && local_image_texture exists
@@ -59,7 +56,7 @@
 		#-Collectibles UI logic
 # (21) Separate Codebase into Reference Classes
 # (22) Implement UI adjustments for PC using Global viewport calculations
-
+#( 23) Implement NFT asset place functionalities
 
 
 # Testing
@@ -177,12 +174,13 @@ signal completed #placehoder signal
 signal transaction
 
 #**********************************#
+
+#************ All Used Nodes in Wallet Scene**********************#
 #onready var timer = $Timer #depreciated
 onready var q = HTTPRequest.new()
 onready var q2 = HTTPRequest.new()
 
 var WalletRoot : Control 
-
 var Algorand : Algodot
 var state_controller : OptionButton
 var dashboard_UI : Control
@@ -232,7 +230,7 @@ var NFT_index_label : Label #Displays Asset Index
 var Asset_UI_index : Label
 var Asset_UI_amount : Label
 
-#*****PasswordUI******#
+#*****Password UI******#
 var password_LineEdit : LineEdit
 var _1 : Button
 var _2 : Button
@@ -261,12 +259,18 @@ var _Animation_Tree : AnimationTree
 # Placeholder Dictionary for creating New Accts
 var dict : Dictionary = {'address': address, 'amount': 0, 'mnemonic': mnemonic }
 
+
+#************ All Unused Nodes in Wallet Scene**********************#
+# For easy scaling up and down programmatically
+var All_UI_elements : Array = []
+
 "Checks the Nodes connection Between Singleton & UI"
 func check_Nodes() -> bool:
 	 
 	
 	#*****************Wallet UI ************************************
 	
+	"UI elements used in Wallet UX"
 	UI_Elements = [
 		state_controller, Algorand, dashboard_UI, wallet_algos, ingame_algos, mnemonic_ui,
 		mnemonic_ui_lineEdit, txn_txn_valid_button, imported_mnemonic_button, passward_UI, 
@@ -291,8 +295,18 @@ func check_Nodes() -> bool:
 	return p
 func __ready():
 	
-	"Testing UI scaler"
-	#For debugging
+	"Mobile UI"
+	print ('Screen orientation debug; ',Globals.screenOrientation)
+	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
+		#anim.play("MOBILE UI")
+		
+		#upscale_wallet_ui() #depreciated
+		pass
+	"PC UI"
+	if Globals.screenOrientation == 0 :
+		print (" --Scaling UI for Platform " + Globals.os) # for debug purposes only
+		
+		Functions.ScaleUI(passward_UI_Buttons, Vector2(1,1))
 	
 	#Functions.ScaleUI(UI_Elements, Vector2(5,5))
 	
@@ -325,13 +339,7 @@ func __ready():
 		self.state_controller.select(6) #show password login
 
 
-	"Mobile UI"
-	print ('Screen orientation debug; ',Globals.screenOrientation)
-	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
-		#anim.play("MOBILE UI")
-		
-		#upscale_wallet_ui() #depreciated
-		pass
+	
 	'Connect and Debug Networking signals'
 	Functions.connect_signals(q,q2, self)
 	Functions.debug_signal_connections(q, self)
@@ -904,7 +912,7 @@ func show_account_info(load_from_local_wallet: bool):
 	"load from local wallet"
 	if load_from_local_wallet == true && loaded_wallet == false: 
 		self.account_address.text = str(address)
-		self.ingame_algos.text = str (Globals.algos)
+		#self.ingame_algos.text = str (Globals.algos)
 		self.wallet_algos.text = "Algo: "+ str(_wallet_algos)
 		loaded_wallet = true
 		return 
@@ -1270,63 +1278,65 @@ func _input(event):
 		
 		"BUTTON PRESSES"
 		
-		#fadhdsfhsdhs
-		if asset_txn_valid_button.pressed:
-			asset_txn = true
-		if asset_optin_txn_valid_button.pressed:
-			asset_optin = true
-		if asset_optin_txn_reject_button.pressed:
-			print ("asset optin cancelled")
-			return self.state_controller.select(3) # Return to Transaction UI
-		if _Create_Acct_button.pressed:
+		# Disabling for Debugging
+		
+#		if asset_txn_valid_button.pressed:
+#			asset_txn = true
+#		if asset_optin_txn_valid_button.pressed:
+#			asset_optin = true
+#		if asset_optin_txn_reject_button.pressed:
+#			print ("asset optin cancelled")
+#			return self.state_controller.select(3) # Return to Transaction UI
+#		if _Create_Acct_button.pressed:
 			
 			# Fixes Stuck State Bug
 			# Check state controller process()
-			self.state_controller.select(-1)
-			state = NEW_ACCOUNT
+#			self.state_controller.select(-1)
+#			state = NEW_ACCOUNT
 			
 			
 			#self.state_controller.select(2) #Create Account 
-			print ("Create Acct button pressed", state)
-			return state
-		if txn_txn_valid_button.pressed:
-			transaction_valid = true #works
-			print ("Txn button pressed: ",transaction_valid) #for debug purposes only
+#			print ("Create Acct button pressed", state)
+#			return state
+#		if txn_txn_valid_button.pressed:
+#			transaction_valid = true #works
+#			print ("Txn button pressed: ",transaction_valid) #for debug purposes only
 
-		if smartcontract_UI_button.pressed: 
-			transaction_valid = true
-			print ("SmartContract button pressed: ",transaction_valid) #for debug purposes only
-		if password_Entered_Button.pressed:
-			password_valid = true
-			print ("Password Placeholder entered", password_valid)
-			self.set_process(true)
+#		if smartcontract_UI_button.pressed: 
+#			transaction_valid = true
+#			print ("SmartContract button pressed: ",transaction_valid) #for debug purposes only
+#		if password_Entered_Button.pressed:
+#			password_valid = true
+#			print ("Password Placeholder entered", password_valid)
+#			self.set_process(true)
 
 
-		if CreatAccountSuccessful_Copy_Mnemonic_button.pressed:
-			return _on_Copy_mnemonic_pressed()
-		if CreatAccountSuccessful_Proceed_home_button.pressed:
-			return self.state_controller.select(0) # Show Account
+#		if CreatAccountSuccessful_Copy_Mnemonic_button.pressed:
+#			return _on_Copy_mnemonic_pressed()
+#		if CreatAccountSuccessful_Proceed_home_button.pressed:
+#			return self.state_controller.select(0) # Show Account
 		
 		
 		
 		
-		if fund_Acct_Button.pressed:
-			_on_testnetdispenser_pressed()
-		if make_Payment_Button.pressed:
-			self.state_controller.select(3)
-		if imported_mnemonic_button.pressed:
-			imported_mnemonic = true
-		if funding_success_close_button.pressed :
-			reset_transaction_parameters()# fixes double spend bug
-			state_controller.select(0) #show account dashboard
+#		if fund_Acct_Button.pressed:
+#			_on_testnetdispenser_pressed()
+#		if make_Payment_Button.pressed:
+#			self.state_controller.select(3)
+#		if imported_mnemonic_button.pressed:
+#			imported_mnemonic = true
+#		if funding_success_close_button.pressed :
+#			reset_transaction_parameters()# fixes double spend bug
+#			state_controller.select(0) #show account dashboard
 
 
-			#************PassWord UI**********#
-		if state == PASSWORD:
-			for i in passward_UI_Buttons:
-				if i.pressed:
-					password_LineEdit.text += i.text
-				#else: break
+#			#************PassWord UI**********#
+#		if state == PASSWORD:
+#			for i in passward_UI_Buttons:
+#				if i.pressed:
+#					password_LineEdit.text += i.text
+#				#else: break
+
 
 
 'Processes Algo and Asset Transactions'
@@ -1457,19 +1467,22 @@ func reset_transaction_parameters():
 class Functions extends Reference:
 	# Requires logic to sort calling methods for Different node types
 	# Requires Memory Pointers to Wallet Scene Nodes
+	# Should loop through all UI elements
 	static func ScaleUI(ui_elements : Array,size: Vector2 )-> void: # Works
 		for i in ui_elements:
 			if i is Control:
 				i.set_size(size, false)
 				
+				
 				#for t in i.get_children():
-				#	if t is Control:
-				#		t.set_size(Vector2(10,10), false) # Returns an Array
+				#	if not t is YSort && not t is Timer && not t is KinematicBody2D && not t is Polygon2D && not t is CanvasLayer:
+				#		#print (t)
+				#		t.set_size(size, false) # Returns an Array
 				
 				
 				
 			#if i is Label:
-			#	#i.set_size(size, false)
+			#	i.set_size(size, false)
 
 
 

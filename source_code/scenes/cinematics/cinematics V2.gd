@@ -360,7 +360,7 @@ func cinematics_get(parameters : String) :
 			
 			
 			stream.set_file(cinematic[parameters])
-			dialgue_box.show_dialog("Playing " + cinematic[parameters] , "admin" )
+			dialgue_box.show_dialog("Playing " + parameters + ".webm" , "admin" )
 			Video_Stream(stream, Globals.os)
 		elif Globals.os == i: # Mobile Platforms
 			return OS.shell_open(youtube[parameters])

@@ -12,6 +12,7 @@ extends Control
 #Features:
 #(1) It Plays an 'Opening Cinematic' which is also used as a loading progress.
 #(2) Can download and locally store video streams off the internet
+	#- Feature is implemented on PC, partially implemented on mobiles
 # Bugs:
 #(1) Breaks on Mobile devices. Debug 
 #(2) Lack of Documentation.
@@ -28,28 +29,39 @@ export(String, FILE, "*.ogv") var vid_stream = ""
 
 # Cread Object
 var yt_dlp = YtDlp.new()
-
+onready var dialgue_box = $Dialog_box
 onready var animation : AnimationPlayer = $"animation player"
 onready var position2d : Position2D = $Position2D
 onready var os 
 onready var node = get_node("Node2D") #popup node for centering cinematics
 
 "Cinematics DIctionary"
+# Modify Dictionary to Account for .ogv files
+# While .webm works well on PC, .ogv works best on Mobiles
+# Implement Global.os to togle btw .ogv and .webm
 const cinematic : Dictionary = {
 	0:'res://resources/title animation/title..ogv',
-	1:'', #convert video to ogv
+	"Test": "user://Test.webm", #convert video to ogv
+	"Ep1": "user://Ep1.webm",
+	"FightScene": "user://Fightscene.webm",
+	"Animatic" : "user://Animatic.webm"
 	}
 
 
-"Youtube Urls as a Dictionary"
+"Youtube Urls as a Dictionary Parameters"
 const youtube : Dictionary = {
-	0:'https://youtube.com/shorts/YCwou4oX12I?feature=share',
-	1:'https://youtu.be/oJY1rIxC4kk',
-	2: 'https://youtu.be/uzDzAuJVHcI',
-	3: 'https://youtu.be/EAL8Mu2-f7Q'
+	"Test":'https://youtube.com/shorts/YCwou4oX12I?feature=share', # Testing
+	"Ep1":'https://youtu.be/oJY1rIxC4kk', # Ep 1
+	"FightScene": 'https://youtu.be/uzDzAuJVHcI', # Behind the Scenes
+	"Animatic": 'https://youtu.be/EAL8Mu2-f7Q' # Animatic
 	}
 
 var videoplayer : VideoPlayer
+
+
+const Mobile_Platforms : Array = ["Android", "iOS"]
+const Pc_Platforms : Array = ["X11", "Windows", "macOS"]
+const Console_Platforms : Array = [""]
 
 """
 CINEMATICS
@@ -67,8 +79,8 @@ func _ready(): #create a video player function
 	Globals.center_of_viewport = Globals.calc_center_of_rectangle(Globals.viewport_size)
 	
 	# Prints out the Current Viewport Size
-	print ("Viewport Size: ", Globals.viewport_size )
-	print ("Center of Viewprt: ", Globals.center_of_viewport )
+	#print ("Viewport Size: ", Globals.viewport_size ) # for debug purposes only
+	#print ("Center of Viewprt: ", Globals.center_of_viewport ) # for debug purposes onlys
 	
 	
 	'Cinematics scene'
@@ -84,21 +96,27 @@ func _ready(): #create a video player function
 	if Globals.curr_scene == "Shop":
 		# Get the Parent
 		var animationplayer : Control = $AnimationPlayer#get_node("AnimationPlayer")
-	
 		videoplayer = $AnimationPlayer/VideoPlayer
-	
 		print ("video player: ", videoplayer)# For Debug puroses only
-		# Connect Signals from Youtube Downloader
 		
-		# File Doesn't Exist
-		if not Globals.check_files("user://", "user://Test.webm") :
-			
-			# Download Video File
-			yt_dlp.connect("ready", self, "some_function") #Poll Downloads
-			yt_dlp.connect("download_completed", self, "some_other_function")
+		
+		# File Doesn't Exist but user has good internet
+		if not Globals.check_files(Globals.user_data_dir, "user://Test.webm") : #&& Networking.good_internet:
+			if Globals.os == "XII" or "Windows" or "MacOs": 
+				# Connect Signals from Youtube Downloader
+				# Download Video File
+				
+				"""
+				Doc: yt-dlp works best on Pc devices supporting Native Python
+				"""
+				yt_dlp.connect("ready", self, "download_yt_video") #Poll Downloads
+				yt_dlp.connect("download_completed", self, "stream_yt_video") # Auto Play Downloads
+		
+		
+		
 		
 		# File Exists
-		if Globals.check_files("user://", "user://Test.webm") :
+		if Globals.check_files(Globals.user_data_dir, "user://Test.webm") :
 			pass
 	
 	if vid_stream == null:
@@ -107,6 +125,11 @@ func _ready(): #create a video player function
 	
 	
 	pass
+
+func _input(_event):
+	if is_instance_valid(dialgue_box): # Hides Dialgue
+		dialgue_box.hide_dialogue()
+
 func _on_skip_pressed():
 	videoplayer.stop()
 
@@ -130,7 +153,9 @@ func Video_Stream(stream, os: String): #This code works
 	if os == "X11" or "Windows":
 		
 		#True Center of Screen
-		videoplayer.set_position(Vector2(-(Globals.center_of_viewport.x),100))
+		#videoplayer.set_position(Vector2(-(Globals.center_of_viewport.x),100)) # Globals.ceter_of_viewport calculation is off
+		videoplayer.set_position($Position2D.position) 
+
 	
 	
 	if stream != null: 
@@ -291,39 +316,56 @@ var pilot_ep_scene = load ('res://scenes/cinematics/pilot_ep_1.tscn')
 func _on_Button_pressed():
 	return Globals._go_to_title()
 
-func some_function():
-	print ("Downloading video")
+func download_yt_video():
+	# It should take a parameter to download different videos 
+	# without affecting it's signals.
+	# How to pass parameters through signls
+	
+	dialgue_box.show_dialog( ("Downloading YT video: " + youtube[0]),  "admin")
+	print ("Downloading YT video: " + youtube[1])
 	#Download video using url to local storage
-	yt_dlp.download(youtube[0],OS.get_user_data_dir(),"Test" )
+	yt_dlp.download(youtube[1],OS.get_user_data_dir(),cinematic["user://Test.webm"] ) # The cinematics dictionary returns the key as the File Save name
 	
 
-func some_other_function():
+func stream_yt_video():
 	
-	print("Playing Video")
+	dialgue_box.show_dialog("Playing YT Video", "admin ")
+	print("Playing YT Video")
 	
 	# Play Downloaded Video file
 	var stream := VideoStreamWebm.new()
-	stream.set_file("user://Test.webm")
+	stream.set_file(cinematic["Test"])
 	Video_Stream(stream, Globals.os)
-	
+
 func _on_watch_anime_pressed():
-	# Download Animated Pilot Ep
+	# Get Animated Pilot Ep
 	
-	# Check for missing video files
-	
-	
-	if Globals.check_files("user://", "user://Test.webm") :
-		var stream := VideoStreamWebm.new()
-		stream.set_file("user://Test.webm")
-		Video_Stream(stream, Globals.os)
-	
+	cinematics_get("Ep1")
 	
 	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
 	
 	$Label.hide()
 	#videoplayer._play_pilot_a() #depreciated in v1.1.9 for size problems
-	#return OS.shell_open("https://youtu.be/oJY1rIxC4kk")
+	#
+
+
+func cinematics_get(parameters : String) :
 	
+	# Enables Polymorphism of Cinematics Yt Downloader & Streamer
+	
+	for i in Mobile_Platforms:
+		# PC Platforms
+		if Globals.os != i && Globals.check_files(Globals.user_data_dir, cinematic[parameters]) :
+			var stream := VideoStreamWebm.new()
+			
+			
+			stream.set_file(cinematic[parameters])
+			dialgue_box.show_dialog("Playing " + cinematic[parameters] , "admin" )
+			Video_Stream(stream, Globals.os)
+		elif Globals.os == i: # Mobile Platforms
+			return OS.shell_open(youtube[parameters])
+
+
 
 # Rewrite this code
 func _verify_Online_downloaded_video():
@@ -664,38 +706,33 @@ func play_loading_cinematic(): #A simple loading loop
 
 
 
-
-func _exit_tree():
-#	#Turns on music when exiting scene
-#	Music._notification(NOTIFICATION_APP_RESUMED) #Buggy
-	pass
-
-
 func exit(error) -> void:
 	print ('Error code: ', error)
 	get_tree().quit()
 
-func open_merch_link(): #triggers a merch link link download
+
+
+
+func _on_watch_anime2_pressed():
+	cinematics_get("FightScene")
+	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
+	#videoplayer._play_pilot_a() #depreciated in v1.1.9 for size problems
+	$Label.hide()
+	#return OS.shell_open(youtube[2])
+	
+	
+
+func _on_watch_merch_pressed():
 	var merch_link = 'https://inhumanity-merch.creator-spring.com/listing/dystopia-merch'
 	print ('opening merch link at ',merch_link )
 	return OS.shell_open(merch_link)
 
 
-func _on_watch_anime2_pressed():
-	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
-	#videoplayer._play_pilot_a() #depreciated in v1.1.9 for size problems
-	$Label.hide()
-	#return OS.shell_open("https://youtu.be/uzDzAuJVHcI")
-	
-	
-
-func _on_watch_merch_pressed():
-	open_merch_link()
-
-
 func _on_watch_anime3_pressed():
+	cinematics_get("Animatic")
+	
 	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
-	#return OS.shell_open("https://youtu.be/EAL8Mu2-f7Q")
+	#return OS.shell_open(youtube[3])
 
 
 func _on_watch_guidebook_pressed():
@@ -703,61 +740,4 @@ func _on_watch_guidebook_pressed():
 	return OS.shell_open("https://github.com/Sam2much96/Dystopia-App/wiki")
 
 
-
-
-#extends Control
-
-
-"""
-THIS CODE BLOCK DOES NOT WORK> REWRITE IT 
-"""
-# *************************************************
-# godot3-Dystopia-game by INhumanity_arts
-# Released under MIT License
-# *************************************************
-#
-# This is the cinematics script
-# information used by the ciematic scenes .
-# organize this code 
-# *************************************************
-
-
-
-
-#save resource to a .tres file
-#update code to use as videoplayer's base node to play all videos in the scene
-signal os_finished_playing
-
-
-  
-var vid_stream_2 
-#var os
-#Ref<ResourceInteractiveLoader> ResourceLoader::load_interactive(String p_path)#experimental code to load resource
-#onready var animation = $Intro_animation
-#onready var videoplayer = get_node('Node2D/VideoPlayer') #video player node
- 
-#var cinematic = {
-#	0:'res://resources/title animation/title..ogv',
-#	1:'res://scenes/cinematics/animatic.ogv', #convert video to ogv
-#	}
-
-"""
-CINEMATICS . FIX UP AND ADD YOUTUBE DOWNLOADS
-"""
-###export your video as ogv format
-#update code to reference all in game animations
-func _enter_tree():
-	pass  
-
-
-
-
-
-func _on_Cinematics_os_finished_playing():
-	Function.OS_play(vid_stream)
-	get_tree().change_scene(Globals.title_screen)
-
-#func _exit_tree():
-	#Debug.misc_debug = 
-#	pass
 

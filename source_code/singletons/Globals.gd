@@ -92,20 +92,17 @@ var a : int # Loader progress variable (a/b)
 var b : int
 var loading_resource : bool = false
 onready var scene_loader= ResourceLoader
-#onready var wait_frames : int = 10 #not used, delete later
 onready var progress : float
 
 "Crypto Variables" 
 var address : String
 var mnemonic : String
 var player_name : String
-var algos : int #currency system, connect to $xmr protocol
-
-#var recievers_addr: String #receivers address
-#var _amount : int #transaction amount
+var algos : int #MicroAlgos 
 
 
-
+"Device Variables"
+var user_data_dir : String =OS.get_user_data_dir()
 
 'Screen Size Resolution'
 var screenSize : Vector2
@@ -397,6 +394,10 @@ class MemoryManagement extends Reference :
 
 	static func free_object (object: Object) -> void:
 		object.free()
+
+	static func queue_free_array(nodes: Array) -> void:
+		for i in nodes:
+			i.queue_free()
 
 
 'Delete Files'

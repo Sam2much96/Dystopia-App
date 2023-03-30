@@ -187,11 +187,8 @@ static func _check_connection(url, request_node: HTTPRequest):
 	#Request Node must be in the SceneTree
 	print  ("Is Request Noode inside scene tree:", request_node.is_inside_tree())
 	var error = request_node.request(url,PoolStringArray(),false,0,"") 
-	#connection_debug = str (' making request  ')  + str (' Request Error: ',error)
 	print (' Networking Request Error: ',error) #for debug purposes only
-	#running_request = true
-	#elif running_request:
-	#	return
+
 
 func _check_connection_secured(url): # Check http secured Url connection
 	#Ignore Warning

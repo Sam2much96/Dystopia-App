@@ -67,25 +67,14 @@ func _ready():
 	"Disables the Play button Until Internet Access is Verified "
 
 	hide_play_button() 
-
-
 	_check_if_device_is_online()
-
 	translate()
-
-func check_for_player_id(): #loads the player id details if it exists and skips this login.
-	#Globals.load_game()
-	#Email and player name are optional and should only be used to send bug reports
-	pass
-
-
 
 
 
 func _input(_event):
-
 	dialgue_box.hide_dialogue()
-	
+
 
 
 func _on_play_pressed():

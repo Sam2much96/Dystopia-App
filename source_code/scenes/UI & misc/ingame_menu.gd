@@ -209,8 +209,6 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 
 
 
-
-
 #Handles Displaying the menu
 func _menu_showing(): #Broken funtions #rewrite with state machine
 	enabled = true 
@@ -264,13 +262,13 @@ func _on_multiplayer_pressed(): # Experimental feature
 	return get_tree().change_scene_to(load ('res://New game code and features/multiplayer/scenes/login.tscn'))
 
 func _exit_tree():
-	Music._notification(NOTIFICATION_UNPAUSED) #resets music when exiting scene tree
-	
 	# Memory Leak Management
 	#
 	# Clears all ui buttons
-	for i in MenuButtons:
-		i.queue_free()
+	Globals.MemoryManagement.queue_free_array(MenuButtons)
+	Music._notification(NOTIFICATION_UNPAUSED) #resets music when exiting scene tree
+	
+
 
 
 

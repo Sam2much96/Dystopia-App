@@ -11,6 +11,7 @@
 #  (2) Version 2 of the Debug codes have yet to be implemented
 # (6) Use return to end functions instead of Pass, pass breaks the code
 # (7) It's Now a Huge performance hog. Lmfao
+	# use is_instance_valid(debug) with set-get functions as a runtime parameter
 #(8) Implement font size increase
 # *************************************************
 

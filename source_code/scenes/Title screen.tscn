@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Title screen.gd" type="Script" id=1]
 [ext_resource path="res://resources/title animation/Dystopia Logo webp.webp" type="Texture" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://fonts/Roboto-Black.ttf" type="DynamicFontData" id=10]
 [ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=11]
 [ext_resource path="res://ads/Appodeal/Appodeal.tscn" type="PackedScene" id=12]
+[ext_resource path="res://themes/Regular.tres" type="Theme" id=13]
 
 [sub_resource type="ShaderMaterial" id=7]
 
@@ -99,7 +100,7 @@ margin_bottom = 223.696
 custom_colors/font_color = Color( 0.882353, 0.882353, 0.882353, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "Dystopia App
-V2.0.1
+V2.0.1.1
 "
 align = 1
 autowrap = true
@@ -110,7 +111,7 @@ margin_top = 445.383
 margin_right = 367.648
 margin_bottom = 488.383
 theme = SubResource( 9 )
-text = "Banner Ads are Back!"
+text = "Happy Birthday to ME!"
 
 [node name="Label3" type="Label" parent="Notification"]
 margin_left = 146.37
@@ -120,6 +121,17 @@ margin_bottom = 61.6091
 theme = SubResource( 11 )
 text = "NEW UPDATES AVAILABLE"
 align = 1
+
+[node name="Label4" type="Label" parent="Notification"]
+margin_left = 141.0
+margin_top = 454.0
+margin_right = 227.0
+margin_bottom = 499.0
+theme = ExtResource( 13 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "April 1st, 2093"
+autowrap = true
+uppercase = true
 
 [node name="logo" type="TextureRect" parent="."]
 show_behind_parent = true

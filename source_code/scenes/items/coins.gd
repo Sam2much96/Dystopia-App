@@ -36,11 +36,23 @@ func _on_Item_body_entered(body): #kinda buggy -inhumanity
 		call_deferred("disconnect", "body_entered", self, "_on_Item_body_entered")
 		#Inventory.add_item(item_type, amount)
 		Globals.algos = Globals.algos + amount #should be Algos instead
+		
+		
 		$anims.play("collected")
 		Music.play_track("res://sounds/item_collected.ogg")
 		#body.emit_signal("health_changed", body.hitpoints)
 		yield(get_tree().create_timer(0.8), "timeout")
 		$pickup.stop()
+		
+		Wallet.WITHDRAW = true
+		# Run Wallet Checks
+		#Wallet.run_wallet_checks()
+		
+		# Params
+		#var params = Wallet.Algorand.algod.suggested_transaction_params()
+		# Withdraw 0.005 Micro Algos from Escrow
+		#Wallet.escrow_withdrawal(params)
+		#return Wallet.escrow_withdrawal()
 	pass
 
 

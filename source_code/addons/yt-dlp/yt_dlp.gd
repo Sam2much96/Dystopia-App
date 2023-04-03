@@ -27,31 +27,31 @@ var _is_ready: bool = false
 
 
 func _init() -> void:
-	print("[yt-dlp] Downloading the latest yt-dlp version")
-	
-	_downloader = Downloader.new()
+		print("[yt-dlp] Downloading the latest yt-dlp version")
+		
+		_downloader = Downloader.new()
 
-	var executable_name: String = "yt-dlp.exe" if OS.get_name() == "Windows" else "yt-dlp"
-	
-	# Downloads yt-dlp if non-existant otherwise attempt to update it
-	if not File.new().file_exists("user://%s" % executable_name):
-		_downloader.download(yt_dlp_sources[OS.get_name()], "user://%s" % executable_name)
-		yield(_downloader, "download_completed")
-	else:
-		_thread.start(self, "_update_yt_dlp", [executable_name])
-		yield(self, "_update_completed")
-		# Waits for the next idle frame to join thread
-		yield(Engine.get_main_loop(), "idle_frame") 
-		_thread.wait_to_finish()
-	
-	if OS.get_name() == "Windows":
-		yield(_setup_ffmpeg(), "completed")
-	else:
-		OS.execute("chmod", PoolStringArray(["+x", OS.get_user_data_dir() + "/yt-dlp"]))
-	
-	print("[yt-dlp] Ready!")
-	_is_ready = true
-	emit_signal("ready")
+		var executable_name: String = "yt-dlp.exe" if OS.get_name() == "Windows" else "yt-dlp"
+		
+		# Downloads yt-dlp if non-existant otherwise attempt to update it
+		if not File.new().file_exists("user://%s" % executable_name) && OS.get_name() != "Android":
+			_downloader.download(yt_dlp_sources[OS.get_name()], "user://%s" % executable_name)
+			yield(_downloader, "download_completed")
+		else:
+			_thread.start(self, "_update_yt_dlp", [executable_name])
+			yield(self, "_update_completed")
+			# Waits for the next idle frame to join thread
+			yield(Engine.get_main_loop(), "idle_frame") 
+			_thread.wait_to_finish()
+		
+		if OS.get_name() == "Windows":
+			yield(_setup_ffmpeg(), "completed")
+		else:
+			OS.execute("chmod", PoolStringArray(["+x", OS.get_user_data_dir() + "/yt-dlp"]))
+		
+		print("[yt-dlp] Ready!")
+		_is_ready = true
+		emit_signal("ready")
 
 
 func download(url: String, destination: String, file_name: String, convert_to_audio: bool = false,

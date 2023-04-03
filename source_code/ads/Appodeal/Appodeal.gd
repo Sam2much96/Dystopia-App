@@ -177,7 +177,7 @@ func _init():
 			key = "b14288f5b650ec9807ab324195ec819be92c7d4c0b1a65e8"
 			appodeal = Engine.get_singleton("GodotAppodeal") ###None Existent SIngleton.
 			appodeal.initialize( key, 2, false)
-			appodeal.setTestingEnabled(false)
+			appodeal.setTestingEnabled(true)
 			appodeal.showAd(4)
 			Debug.Ads_debug += ('Showing Ads: '+str(appodeal.showAd(4)))
 		

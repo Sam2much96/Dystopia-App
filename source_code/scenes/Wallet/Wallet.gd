@@ -57,6 +57,8 @@
 # (21) Separate Codebase into Reference Classes
 # (22) Implement UI adjustments for PC using Global viewport calculations
 #( 23) Implement NFT asset place functionalities
+# (24) Methods cant be called from Other Scenes.
+# (25) Make all methods Static Functions
 
 
 # Testing
@@ -127,6 +129,9 @@ var FileCheck4=File.new() # checks wallet mnemonic
 
 var FileDirectory=Directory.new() #deletes all theon reset
 
+
+#***********Escrow*****************#
+var WITHDRAW : bool = false
 
 
 #************Wallet Save Path**********************#
@@ -289,7 +294,7 @@ func check_Nodes() -> bool:
 	#checks if any UI element is null
 	#works
 	for i in UI_Elements:
-		if i != null:
+		if i != null && is_instance_valid(i):
 			p = i.is_inside_tree() 
 		else: p = false
 	return p
@@ -306,7 +311,8 @@ func __ready():
 	if Globals.screenOrientation == 0 :
 		print (" --Scaling UI for Platform " + Globals.os) # for debug purposes only
 		
-		Functions.ScaleUI(passward_UI_Buttons, Vector2(1,1))
+		#Functions.ScaleUI(passward_UI_Buttons, Vector2(1,1))
+		pass
 	
 	#Functions.ScaleUI(UI_Elements, Vector2(5,5))
 	
@@ -367,7 +373,8 @@ func _ready():
 	self.add_child(q2) #add networking node to the scene tree
 	
 	
-	pass
+	if Algorand == null: 
+		Algorand = Algodot.new()
 
 
 func _process(_delta):
@@ -779,6 +786,7 @@ func _process(_delta):
 				#use animation player to alter UI
 				#opt into counter smart contract deployed to host address
 				#try running in ready function
+				
 				Functions.hideUI(canvas_layer)
 				smart_contract_UI.show()
 				
@@ -786,14 +794,8 @@ func _process(_delta):
 				if state_controller.get_selected_id() == 4 :# && wallet_check == 0:
 					#_Animation_UI.play("SWIPE_UP_UI")
 					_Animation_UI.play("REST_UP")
-					#wallet_check += 1
 					
 				
-					
-				
-				#return _Animation_UI.queue("REST_UP")
-				#get parameters from smart contract UI
-
 				if transaction_valid: 
 					smart_contract_addr = smartcontract_ui_address_lineEdit.text 
 					_app_id = int(smartcontract_ui_appID_lineEdit.text)
@@ -903,6 +905,12 @@ func run_wallet_checks()-> bool: # works
 	call_deferred('txn')
 	
 	call_deferred('smart_contract')
+	
+	#Experimental
+	#call_deferred("escrow_withdrawal")
+	
+	#works
+	escrow_withdrawal(params)
 	return 0;
 
 
@@ -1428,6 +1436,28 @@ func smart_contract():
 	_app_id = 0
 	smart_contract_addr = ""
 	return transaction_valid
+
+"Escrow Withdrawals through ABI method calls"
+func escrow_withdrawal(params):
+	#Experimental Method
+	#
+	# Should ideally return an tx id and confirmed round
+	
+	if WITHDRAW:
+		var app_id : int = 161737986
+		#var params = self.Algorand.algod.suggested_transaction_params()
+		#var sender_addr = "4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ"
+
+		
+		var app_arg = "withdraw"
+		
+		# 
+		Algorand.algod.construct_atc(params, address, mnemonic ,app_id, app_arg )
+		#var txid = Algorand.algod.execute(t)]
+		WITHDRAW = false
+		return WITHDRAW
+	else : pass
+
 
 func _on_enter_asset_pressed(): #depreciated
 	asset_id_valid = true

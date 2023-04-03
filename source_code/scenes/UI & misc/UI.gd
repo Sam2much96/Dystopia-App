@@ -11,11 +11,14 @@
 # Features
 # To DO
 #(1) Implement State Machine to goggle between different Screen orientations using global orientation state
+#(2) Implement Mobile Gyroscope 
+# (3) Fix UI misalignment
 #Bugs
 #(1) Ingame menu bug (fixed)
 # (2) UI connects to depreciated state machine (fixed)
 # (3) UI joystick and D pad changes (fixed)
 # (4) Status UI misalgnment
+# (5) Doesn't implement Mobile Gyroscope
 # *************************************************
 
 

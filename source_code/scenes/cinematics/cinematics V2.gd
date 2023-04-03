@@ -101,16 +101,16 @@ func _ready(): #create a video player function
 		
 		
 		# File Doesn't Exist but user has good internet
-		if not Globals.check_files(Globals.user_data_dir, "user://Test.webm") : #&& Networking.good_internet:
-			if Globals.os == "XII" or "Windows" or "MacOs": 
+		if not Globals.check_files(Globals.user_data_dir, cinematic["Test"]) && Globals.os != "Android": #&& Networking.good_internet:
+			#if Globals.os == "XII" or "Windows" or "MacOs": 
 				# Connect Signals from Youtube Downloader
 				# Download Video File
 				
-				"""
-				Doc: yt-dlp works best on Pc devices supporting Native Python
-				"""
-				yt_dlp.connect("ready", self, "download_yt_video") #Poll Downloads
-				yt_dlp.connect("download_completed", self, "stream_yt_video") # Auto Play Downloads
+			"""
+			Doc: yt-dlp works best on Pc devices supporting Native Python
+			"""
+			yt_dlp.connect("ready", self, "download_yt_video") #Poll Downloads
+			yt_dlp.connect("download_completed", self, "stream_yt_video") # Auto Play Downloads
 		
 		
 		
@@ -355,14 +355,18 @@ func cinematics_get(parameters : String) :
 	
 	for i in Mobile_Platforms:
 		# PC Platforms
-		if Globals.os != i && Globals.check_files(Globals.user_data_dir, cinematic[parameters]) :
-			var stream := VideoStreamWebm.new()
-			
-			
-			stream.set_file(cinematic[parameters])
-			dialgue_box.show_dialog("Playing " + parameters + ".webm" , "admin" )
-			Video_Stream(stream, Globals.os)
-		elif Globals.os == i: # Mobile Platforms
+		if Globals.os != i && Globals.check_files(Globals.user_data_dir, cinematic[parameters]):  
+			if Networking.good_internet:
+				var stream := VideoStreamWebm.new()
+				
+				
+				stream.set_file(cinematic[parameters])
+				dialgue_box.show_dialog("Playing " + parameters + ".webm" , "admin" )
+				Video_Stream(stream, Globals.os)
+			elif !Networking.good_internet:
+				return OS.shell_open(youtube[parameters])
+		
+		if Globals.os == i: # Mobile Platforms
 			return OS.shell_open(youtube[parameters])
 
 

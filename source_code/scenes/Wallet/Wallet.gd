@@ -1438,7 +1438,7 @@ func escrow_withdrawal(params):
 	# Should ideally return an tx id and confirmed round
 	if WITHDRAW :
 		
-		Functions.load_account_info(false, token_write_path, FileCheck3, UserData)
+		Wallet.load_account_info(false, token_write_path, FileCheck3, UserData)
 		#FileCheck2.open(token_write_path, File.READ)
 		
 		# deconstructed load wallet method
@@ -1698,7 +1698,7 @@ class Wallet extends Reference:
 		
 		print ('wallet data restored from local database')
 		
-		print ("mnemonic load debug: ",user_data.mnemonic) #for debug purposes only
-		print ("asset url debug: ",user_data.asset_url) # for debug purposes only
+		#print ("mnemonic load debug: ",user_data.mnemonic) #for debug purposes only
+		#print ("asset url debug: ",user_data.asset_url) # for debug purposes only
 		return user_data
 

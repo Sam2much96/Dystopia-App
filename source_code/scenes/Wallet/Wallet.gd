@@ -567,7 +567,7 @@ func _process(_delta):
 					status= yield(self.Algorand.algod.health(), "completed")
 					
 					print ("Status debug: ", status,' ',wallet_check_counter)
-					check_wallet_info() #checks saved wallet variables for error
+					Wallet.check_wallet_info(self.Algorand.algod, UserData, FileDirectory, token_dir, self) #checks saved wallet variables for error
 					
 					# Escape Current State to Show Account State
 					self.state_controller.select(0) 
@@ -591,7 +591,7 @@ func _process(_delta):
 					
 					self.dashboard_UI.show()
 					if !loaded_wallet:
-						Functions.load_account_info(false, token_write_path, FileCheck3, UserData)
+						Wallet.load_account_info(false, token_write_path, FileCheck3, UserData)
 					
 					
 					#print (UserData) # For Debug Purposes only
@@ -641,7 +641,7 @@ func _process(_delta):
 					#"saves more account info"
 					# Saves acct info & Debugs it to Output
 					print ("Saved Acct Info: ",save_account_info(account_info,0)) 
-					check_wallet_info()
+					Wallet.check_wallet_info(self.Algorand.algod, UserData, FileDirectory, token_dir, self)
 
 
 
@@ -746,8 +746,7 @@ func _process(_delta):
 						
 						
 				pass
-				
-		
+			
 			COLLECTIBLES:
 				# Reset UI animation for State controller 
 				_Animation_UI.play("RESET_UI")
@@ -773,7 +772,7 @@ func _process(_delta):
 							print ("Status debug: ", status,' ',wallet_check_counter)
 							
 							#duplicates check wallet state function
-							check_wallet_info()#saves account info with assets details
+							Wallet.check_wallet_info(self.Algorand.algod, UserData, FileDirectory, token_dir, self)#saves account info with assets details
 							
 
 							# show account
@@ -1028,11 +1027,11 @@ func generate_address(_mnemonic:String)-> String: #works
 #saves account information to a dictionary
 #i don't know what number does ngl. It jusst works, lol
 func save_account_info( info : Dictionary, number: int)-> bool: 
-	if not check_local_wallet_directory():
+	if not Functions.check_local_wallet_directory(FileDirectory,token_dir):
 		push_error('Wallet Directry Not Yet Created.')
 		create_wallet_directory()
 	
-	if FileDirectory.open(token_dir) == OK && check_local_wallet_directory() :
+	if FileDirectory.open(token_dir) == OK && Functions.check_local_wallet_directory(FileDirectory,token_dir) :
 		FileCheck1.open(token_write_path, File.WRITE)
 		#************Use Assets parameter ,Disabling for now*******************************#
 		save_dict.address =info["address"] # stops presaved info from deletion
@@ -1125,39 +1124,6 @@ func set_image_(texture):
 
 
 
-func check_wallet_info(): #works. Pass a variable check
-	#check if wallet token exits
-	# check if Internet is OK
-	#THen checks wallet account information
-	
-	# Has overflow bug error that corrupts wallet local data
-	# Suggested Fix: 
-	# (1) Implement Classes as Reference
-	# (2) Implement Static Functions 
-	
-	if address != null && mnemonic != null && check_local_wallet_directory() && Networking.good_internet : 
-		#print (Algorand.algod)
-		account_info = yield(self.Algorand.algod.account_information(address), "completed")
-		save_account_info(account_info, 0) #testing  
-		print ("acct info: ",account_info) #for debug purposes only 
-	if address == null:
-		print ("check info Address debug: ",address)
-		push_error('Either address  cannot be null')
-	if mnemonic == null:
-		push_error("mnemonic cannot be null Import Mnemonic or Generate New Account")
-		print ("check info Mnemonic debug: ", mnemonic)
-	
-	if !Networking.good_internet:
-		push_error(" Internet Connection Is Bad")
-		Functions.check_internet(Networking.good_internet,q)
-	
-	
-	
-	emit_signal('completed')
-	#increases a wallet check timer
-	wallet_check += 1
-	return wallet_check
-
 
 func _on_reset():
 	#should deleta all account details
@@ -1175,8 +1141,7 @@ func _on_reset():
 	return __ready()
 
 
-func check_local_wallet_directory()-> bool:
-	return FileDirectory. dir_exists("user://wallet")
+
 
 func create_wallet_directory()-> void:
 # Creates a Wallet folder.
@@ -1261,7 +1226,7 @@ func _on_smart_contract_UI_button_pressed():
 func _on_refresh_pressed(): #disabling refresh button
 	#check_account()
 	if passed_all_connectivity_checks:
-		check_wallet_info()
+		Wallet.check_wallet_info(self.Algorand.algod, UserData, FileDirectory, token_dir, self)
 	
 	pass
 	
@@ -1609,7 +1574,70 @@ class Functions extends Reference:
 			Networking._check_if_device_is_online(q)
 
 
+	static func check_local_wallet_directory( FileDirectory : Directory, path : String)-> bool:
+		return FileDirectory. dir_exists(path)
 
+
+
+
+"Encryption & Decryption Algorithms"
+class Encryption extends Reference:
+	
+	#'Encryption and Decryption ALgorithms'
+	# cryptographically encrypt users mnemonic
+	static func convert_string_to_binary(string : String)-> Array:
+		var binary : Array = []
+		for i in string:
+			binary.append(ord(i))
+		#print( 'Encoded Mnemonic: ',binary) #for debug purposes only
+		return binary
+
+
+	static func convert_binary_to_string(binary : PoolByteArray)-> String:
+		var string : String
+		string =binary.get_string_from_utf8()
+		#print (string)# for debug purposes only
+		return string
+
+
+"Wallet Functions"
+
+class Wallet extends Reference:
+	
+	static func check_wallet_info(algod_node : Algod, UserData: Dictionary, FileDirectory : Directory, token_dir : String, wallet_script : wallet) -> int: #works. Pass a variable check
+		#check if wallet token exits
+		# check if Internet is OK
+		#THen checks wallet account information
+		
+		# Has overflow bug error that corrupts wallet local data
+		# Suggested Fix: 
+		# (1) Implement Classes as Reference
+		# (2) Implement Static Functions 
+		
+		# String Comparisons are 
+		if UserData.address && UserData.mnemonic != "" && Functions.check_local_wallet_directory(FileDirectory,token_dir) && Networking.good_internet : 
+			#print (Algorand.algod)
+			wallet_script.account_info = yield(algod_node.account_information(UserData.address), "completed")
+			#account_info = self.Algorand.algod.account_information(address)
+			wallet_script.save_account_info(wallet_script.account_info, 0) #testing  
+			print ("acct info: ",wallet_script.account_info) #for debug purposes only 
+		if UserData.address == "":
+			print ("check info Address debug: ",UserData.address)
+			push_error('Either address  cannot be null')
+		if UserData.mnemonic == "":
+			push_error("mnemonic cannot be null Import Mnemonic or Generate New Account")
+			print ("check info Mnemonic debug: ", UserData.mnemonic)
+		
+		if !Networking.good_internet:
+			push_error(" Internet Connection Is Bad")
+			Functions.check_internet(Networking.good_internet,Wallet.q)
+		
+		
+		
+		wallet_script.emit_signal('completed')
+		#increases a wallet check timer
+		wallet_script.wallet_check += 1
+		return wallet_script.wallet_check
 
 	""
 
@@ -1674,26 +1702,3 @@ class Functions extends Reference:
 		print ("asset url debug: ",user_data.asset_url) # for debug purposes only
 		return user_data
 
-
-
-"Encryption & Decryption Algorithms"
-class Encryption extends Reference:
-	
-	#'Encryption and Decryption ALgorithms'
-	# cryptographically encrypt users mnemonic
-	static func convert_string_to_binary(string : String)-> Array:
-		var binary : Array = []
-		for i in string:
-			binary.append(ord(i))
-		#print( 'Encoded Mnemonic: ',binary) #for debug purposes only
-		return binary
-
-
-	static func convert_binary_to_string(binary : PoolByteArray)-> String:
-		var string : String
-		string =binary.get_string_from_utf8()
-		#print (string)# for debug purposes only
-		return string
-
-
-	

@@ -12,7 +12,7 @@ onready var dashboard_UI = get_parent().get_node("CanvasLayer/Dashboard_UI")
 onready var transaction_UI = get_parent().get_node("CanvasLayer/Transaction_UI")
 onready var account_addr = get_parent().get_node("CanvasLayer/Dashboard_UI/YSort/Label2") 
 
-onready var ingame_algos = get_parent().get_node("CanvasLayer/Dashboard_UI/YSort2/HBoxContainer/VBoxContainer2/Label2")
+onready var ingame_algos = get_parent().get_node("CanvasLayer/Dashboard_UI/YSort2/VBoxContainer/HBoxContainer/VBoxContainer2/Label2")
 
 onready var wallet_algos = get_parent().get_node("CanvasLayer/Dashboard_UI/YSort/Label")
 
@@ -20,7 +20,7 @@ onready var mnemonic_UI = get_parent().get_node("CanvasLayer/Mnemonic_UI")
 onready var Collectibles_UI = get_parent().get_node("CanvasLayer/Collectibles_UI")
 onready var mnemonic_UI_LineEdit = get_parent().get_node("CanvasLayer/Mnemonic_UI/LineEdit")
 
-onready var submit_txn_button = get_parent().get_node("CanvasLayer/Transaction_UI/Button")
+onready var submit_txn_button = get_parent().get_node("CanvasLayer/Transaction_UI/VBoxContainer/Button")
 
 onready var submit_mnemonic_button = get_parent().get_node("CanvasLayer/Mnemonic_UI/Button")
 onready var image_texture_holder = get_parent().get_node("CanvasLayer/Collectibles_UI/KinematicBody2D/TextureRect")
@@ -33,7 +33,7 @@ onready var transaction_UI_address_lineEdit = get_parent().get_node("CanvasLayer
 onready var transaction_UI_amount_lineEdit = get_parent().get_node("CanvasLayer/Transaction_UI/LineEdit2")
 onready var FundingSuccessUI = get_parent().get_node("CanvasLayer/FundingSuccess")
 onready var Funding_Success_Close_Button = get_parent().get_node("CanvasLayer/FundingSuccess/Button")
-onready var fund_account_Button = get_parent().get_node("CanvasLayer/Dashboard_UI/Button")
+onready var fund_account_Button = get_parent().get_node("CanvasLayer/Dashboard_UI/VBoxContainer/Button")
 onready var make_payment_state_controller_button = get_parent().get_node("CanvasLayer/Dashboard_UI/Button2")
 onready var smartcontract_UI_Address = get_parent().get_node("CanvasLayer/SmartContract_UI/LineEdit")
 onready var smartcontract_UI_AppID = get_parent().get_node("CanvasLayer/SmartContract_UI/LineEdit2")
@@ -42,7 +42,7 @@ onready var smartcontract_UI_Button = get_parent().get_node("CanvasLayer/SmartCo
 onready var transaction_UI_asset_id_LineEdit = get_parent().get_node("CanvasLayer/Transaction_UI/LineEdit3")
 onready var enter_wallet_PassWord_Button = get_parent().get_node("CanvasLayer/Password_UI/Button")
 onready var password_Enter_LineEdit = get_parent().get_node("CanvasLayer/Password_UI/LineEdit")
-onready var create_new_acct_button = get_parent().get_node("CanvasLayer/Mnemonic_UI/Button2")
+onready var create_new_acct_button = get_parent().get_node("CanvasLayer/Mnemonic_UI/VBoxContainer/Button2")
 
 
 onready var create_account_succcessful_UI = get_parent().get_node("CanvasLayer/CreateAccountSuccess")

@@ -300,6 +300,10 @@ func check_Nodes() -> bool:
 	return p
 func __ready():
 	
+	#load_account_info(false)
+	
+	
+	
 	"Mobile UI"
 	print ('Screen orientation debug; ',Globals.screenOrientation)
 	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
@@ -350,6 +354,50 @@ func __ready():
 	Functions.connect_signals(q,q2, self)
 	Functions.debug_signal_connections(q, self)
 
+	"Connect buttons"
+	"BUTTON PRESSES"
+		
+		# Disabling for Debugging
+		
+#		if asset_txn_valid_button.pressed:
+#			asset_txn = true
+#		if asset_optin_txn_valid_button.pressed:
+#			asset_optin = true
+#		if asset_optin_txn_reject_button.pressed:
+#			print ("asset optin cancelled")
+#			return self.state_controller.select(3) # Return to Transaction UI
+
+	
+	txn_txn_valid_button.connect("pressed", self, "_on_txn_txn_valid_button_pressed")
+
+
+#		if smartcontract_UI_button.pressed: 
+#			transaction_valid = true
+#			print ("SmartContract button pressed: ",transaction_valid) #for debug purposes only
+
+	password_Entered_Button.connect("pressed", self, "_on_password_entered_pressed")
+
+	CreatAccountSuccessful_Proceed_home_button.connect("pressed", self, "_on_cr8_Acct_Successfull_Homebutton_pressed")
+	CreatAccountSuccessful_Copy_Mnemonic_button.connect("pressed", self, "_on_cr8_Acct_Successfull_CopySK_pressed" )
+
+		
+		
+		
+	fund_Acct_Button.connect("pressed", self, "_on_fund_Acct_Button_pressed")
+	
+#		if make_Payment_Button.pressed:
+#			self.state_controller.select(3)
+	_Create_Acct_button.connect("pressed", self,"_on_create_acc_button_pressed") # Null Button Error
+	imported_mnemonic_button.connect("pressed", self, "_on_mnemonic_pressed")
+	funding_success_close_button.connect("pressed", self, "on_funding_success_close")
+
+
+
+#			#************PassWord UI**********#
+	for i in passward_UI_Buttons:
+		i.connect("pressed", self, "_on_pass_buttons_pressed")
+
+
 
 
 	print ("NFT debug: ", NFT)
@@ -376,6 +424,10 @@ func _ready():
 	if Algorand == null: 
 		Algorand = Algodot.new()
 
+
+	#load_account_info(false)
+	
+	#print("----loaded acct info------")
 
 func _process(_delta):
 	
@@ -427,6 +479,8 @@ func _process(_delta):
 				
 				return Globals._go_to_title() # Breaks wallet scene
 	
+			elif self.state_controller.get_selected() == -1:
+				state = NEW_ACCOUNT
 	
 	"Constantly Running Process Introduces a Text UI Bug"
 	
@@ -531,7 +585,7 @@ func _process(_delta):
 					
 					self.dashboard_UI.show()
 					
-					load_account_info(false)
+					#load_account_info(false)
 					
 					show_account_info(true)
 					
@@ -901,6 +955,8 @@ func run_wallet_checks()-> bool: # works
 
 	print ("----wallet check done------")
 	
+
+	
 	#***********Transaction and Smart Contract functions**************#
 	call_deferred('txn')
 	
@@ -910,7 +966,8 @@ func run_wallet_checks()-> bool: # works
 	#call_deferred("escrow_withdrawal")
 	
 	#works
-	escrow_withdrawal(params)
+	#escrow_withdrawal(params)
+	call_deferred("escrow_withdrawal", params)
 	return 0;
 
 
@@ -922,6 +979,9 @@ func show_account_info(load_from_local_wallet: bool):
 		self.account_address.text = str(address)
 		#self.ingame_algos.text = str (Globals.algos)
 		self.wallet_algos.text = "Algo: "+ str(_wallet_algos)
+		
+		
+		
 		loaded_wallet = true
 		return 
 	
@@ -1012,15 +1072,15 @@ func load_account_info(check_only=false):
 		if typeof(save_dict) != TYPE_DICTIONARY:
 			return false
 		if not check_only:
-			_restore_wallet_data(save_dict)
-	
+			return _restore_wallet_data(save_dict)
+
 
 "Loads Wallet Variables into Scene Tree Memory"
-func _restore_wallet_data(info: Dictionary):
+func _restore_wallet_data(info: Dictionary)-> void:
 	# JSON numbers are always parsed as floats. In this case we need to turn them into ints
-	address = str(info.address)
+	address = info.address
 	
-	Globals.address = info.address
+	Globals.address = address
 	
 	"decode mnemonic"
 	
@@ -1167,12 +1227,68 @@ func _on_Main_menu_pressed():
 
 func _on_testnetdispenser_pressed(): #connect to UI
 	_on_Copy_address_pressed() #copy address to clipboard
-	return OS.shell_open('https://testnet.algoexplorer.io/dispenser')
+	#return OS.shell_open('https://testnet.algoexplorer.io/dispenser')
+	return OS.shell_open('https://bank.testnet.algorand.network/')
+
+
+func _on_mnemonic_pressed():
+	if imported_mnemonic_button.pressed:
+		imported_mnemonic = true
+
+
+func on_funding_success_close():
+	if funding_success_close_button.pressed :
+		reset_transaction_parameters()# fixes double spend bug
+		state_controller.select(0) #show account dashboard
+
+func _on_pass_buttons_pressed():
+	if state == PASSWORD:
+		for i in passward_UI_Buttons:
+			if i.pressed:
+				password_LineEdit.text += i.text
+
+func _on_password_entered_pressed():
+	if password_Entered_Button.pressed:
+		password_valid = true
+		print ("Password Placeholder entered", password_valid)
+		self.set_process(true)
+
+
+func _on_create_acc_button_pressed():
+	if _Create_Acct_button.pressed:
+	
+		# Fixes Stuck State Bug
+		# Check state controller process()
+		
+		state = NEW_ACCOUNT
+		self.state_controller.select(-1)
+		#self.state_controller.select(2) #Create Account 
+		print ("Create Acct button pressed", state)
+		
+		#return state
+
+
+func _on_cr8_Acct_Successfull_Homebutton_pressed():
+	if CreatAccountSuccessful_Proceed_home_button.pressed:
+		return self.state_controller.select(0) # Show Account
+
+func _on_cr8_Acct_Successfull_CopySK_pressed():
+	if CreatAccountSuccessful_Copy_Mnemonic_button.pressed:
+		return _on_Copy_mnemonic_pressed()
+
+func _on_txn_txn_valid_button_pressed():
+	if txn_txn_valid_button.pressed:
+		transaction_valid = true #works
+		print ("Txn button pressed: ",transaction_valid) #for debug purposes only
+
+
+func _on_fund_Acct_Button_pressed():
+	if fund_Acct_Button.pressed:
+		_on_testnetdispenser_pressed()
 
 
 #Updates Local Account Info
 func _on_refresh_pressed(): #disabling refresh button
-
 	#check_account()
 	if passed_all_connectivity_checks:
 		check_wallet_info()
@@ -1442,21 +1558,27 @@ func escrow_withdrawal(params):
 	#Experimental Method
 	#
 	# Should ideally return an tx id and confirmed round
-	
 	if WITHDRAW:
-		var app_id : int = 161737986
-		#var params = self.Algorand.algod.suggested_transaction_params()
-		#var sender_addr = "4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ"
-
 		
+		FileCheck2.open(token_write_path, File.READ)
+		
+		var save_dict = parse_json(FileCheck2.get_line())
+		_restore_wallet_data(save_dict)
+		
+		var app_id : int = 161737986
+		#var new_params = self.Algorand.algod.suggested_transaction_params()
+			#var sender_addr = "4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ"
+
+			
 		var app_arg = "withdraw"
 		
-		# 
+		#
+		
 		Algorand.algod.construct_atc(params, address, mnemonic ,app_id, app_arg )
-		#var txid = Algorand.algod.execute(t)]
-		WITHDRAW = false
-		return WITHDRAW
-	else : pass
+			#var txid = Algorand.algod.execute(t)]
+		#WITHDRAW = false
+		#return WITHDRAW
+		#else : pass
 
 
 func _on_enter_asset_pressed(): #depreciated

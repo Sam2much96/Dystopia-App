@@ -370,10 +370,8 @@ func __ready():
 	
 	txn_txn_valid_button.connect("pressed", self, "_on_txn_txn_valid_button_pressed")
 
+	smartcontract_UI_button.connect("pressed", self, "_on_smart_contract_UI_button_pressed")
 
-#		if smartcontract_UI_button.pressed: 
-#			transaction_valid = true
-#			print ("SmartContract button pressed: ",transaction_valid) #for debug purposes only
 
 	password_Entered_Button.connect("pressed", self, "_on_password_entered_pressed")
 
@@ -585,7 +583,9 @@ func _process(_delta):
 					
 					self.dashboard_UI.show()
 					
-					#load_account_info(false)
+					load_account_info(false)
+					
+					
 					
 					show_account_info(true)
 					
@@ -1008,6 +1008,7 @@ func show_account_info(load_from_local_wallet: bool):
 
 
 func generate_address(_mnemonic:String)-> String: #works
+	
 	var _address =self.Algorand.algod.get_address(_mnemonic)
 	print ('address; ', _address)
 	return _address
@@ -1060,7 +1061,10 @@ func save_account_info( info : Dictionary, number: int)-> bool:
 	return false
 
 
+""
 
+# Load account info stops escrow withdrawal method from being executed
+# Converting it to Static function as refernce might fix it
 func load_account_info(check_only=false):
 	if !loaded_wallet:
 		if not FileCheck2.file_exists(token_write_path):
@@ -1286,6 +1290,10 @@ func _on_fund_Acct_Button_pressed():
 	if fund_Acct_Button.pressed:
 		_on_testnetdispenser_pressed()
 
+func _on_smart_contract_UI_button_pressed():
+	if smartcontract_UI_button.pressed: 
+		transaction_valid = true
+		print ("SmartContract button pressed: ",transaction_valid) #for debug purposes only
 
 #Updates Local Account Info
 func _on_refresh_pressed(): #disabling refresh button
@@ -1403,64 +1411,7 @@ func _input(event):
 		"BUTTON PRESSES"
 		
 		# Disabling for Debugging
-		
-#		if asset_txn_valid_button.pressed:
-#			asset_txn = true
-#		if asset_optin_txn_valid_button.pressed:
-#			asset_optin = true
-#		if asset_optin_txn_reject_button.pressed:
-#			print ("asset optin cancelled")
-#			return self.state_controller.select(3) # Return to Transaction UI
-#		if _Create_Acct_button.pressed:
-			
-			# Fixes Stuck State Bug
-			# Check state controller process()
-#			self.state_controller.select(-1)
-#			state = NEW_ACCOUNT
-			
-			
-			#self.state_controller.select(2) #Create Account 
-#			print ("Create Acct button pressed", state)
-#			return state
-#		if txn_txn_valid_button.pressed:
-#			transaction_valid = true #works
-#			print ("Txn button pressed: ",transaction_valid) #for debug purposes only
-
-#		if smartcontract_UI_button.pressed: 
-#			transaction_valid = true
-#			print ("SmartContract button pressed: ",transaction_valid) #for debug purposes only
-#		if password_Entered_Button.pressed:
-#			password_valid = true
-#			print ("Password Placeholder entered", password_valid)
-#			self.set_process(true)
-
-
-#		if CreatAccountSuccessful_Copy_Mnemonic_button.pressed:
-#			return _on_Copy_mnemonic_pressed()
-#		if CreatAccountSuccessful_Proceed_home_button.pressed:
-#			return self.state_controller.select(0) # Show Account
-		
-		
-		
-		
-#		if fund_Acct_Button.pressed:
-#			_on_testnetdispenser_pressed()
-#		if make_Payment_Button.pressed:
-#			self.state_controller.select(3)
-#		if imported_mnemonic_button.pressed:
-#			imported_mnemonic = true
-#		if funding_success_close_button.pressed :
-#			reset_transaction_parameters()# fixes double spend bug
-#			state_controller.select(0) #show account dashboard
-
-
-#			#************PassWord UI**********#
-#		if state == PASSWORD:
-#			for i in passward_UI_Buttons:
-#				if i.pressed:
-#					password_LineEdit.text += i.text
-#				#else: break
-
+		# Rewriten as signats to _ready() method
 
 
 'Processes Algo and Asset Transactions'
@@ -1560,25 +1511,27 @@ func escrow_withdrawal(params):
 	# Should ideally return an tx id and confirmed round
 	if WITHDRAW:
 		
-		FileCheck2.open(token_write_path, File.READ)
+		#FileCheck2.open(token_write_path, File.READ)
 		
-		var save_dict = parse_json(FileCheck2.get_line())
-		_restore_wallet_data(save_dict)
+		# deconstructed load wallet method
+		# implement calls to get specific data in the database
+		#var save_dict = parse_json(FileCheck2.get_line())
+		#_restore_wallet_data(save_dict)
 		
 		var app_id : int = 161737986
-		#var new_params = self.Algorand.algod.suggested_transaction_params()
-			#var sender_addr = "4KMRCP23JP4SM2L65WBLK6A3TPT723ILD27R7W755P7GAU5VCE7LJHAUEQ"
-
-			
+		
+		
 		var app_arg = "withdraw"
 		
-		#
+		
 		
 		self.Algorand.algod.construct_atc(params, address, mnemonic ,app_id, app_arg )
-			#var txid = Algorand.algod.execute(t)]
-		WITHDRAW = false
-		#return WITHDRAW
-		#else : pass
+		
+		#Implement txid from reference in Algodot
+		#var txid = Algorand.algod.execute(t)]
+		
+		reset_transaction_parameters()
+	else : pass
 
 
 func _on_enter_asset_pressed(): #depreciated
@@ -1594,7 +1547,7 @@ func reset_transaction_parameters():
 	recievers_addr = ""
 	asset_optin = false
 	asset_txn = false
-	#smdslfksf
+	WITHDRAW = false
 
 "Collectibles UI Logic"
 # drag and Drop (done)

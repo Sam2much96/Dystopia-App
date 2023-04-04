@@ -1574,9 +1574,9 @@ func escrow_withdrawal(params):
 		
 		#
 		
-		Algorand.algod.construct_atc(params, address, mnemonic ,app_id, app_arg )
+		self.Algorand.algod.construct_atc(params, address, mnemonic ,app_id, app_arg )
 			#var txid = Algorand.algod.execute(t)]
-		#WITHDRAW = false
+		WITHDRAW = false
 		#return WITHDRAW
 		#else : pass
 

@@ -120,6 +120,14 @@ var asset_unit_name : String
 var _name : String
 var _description : String
 var _image
+#************User Data as a Dictionary*************#
+# For easier programmability with Static functions
+var UserData : Dictionary = {
+	"address": address,
+	"mnemonic" : mnemonic,
+	"wallet algos" : _wallet_algos
+}
+
 #************File Checkers*************#
 var FileCheck1=File.new() #checks account info
 var FileCheck2=File.new() #checks NFT metadata .json
@@ -474,7 +482,7 @@ func _process(_delta):
 				Globals.curr_scene = "Menu"
 				state = IDLE
 				
-				
+				loaded_wallet = false
 				return Globals._go_to_title() # Breaks wallet scene
 	
 			elif self.state_controller.get_selected() == -1:
@@ -582,10 +590,11 @@ func _process(_delta):
 					Functions.hideUI(canvas_layer)
 					
 					self.dashboard_UI.show()
+					if !loaded_wallet:
+						Functions.load_account_info(false, token_write_path, FileCheck3, UserData)
 					
-					load_account_info(false)
 					
-					
+					#print (UserData) # For Debug Purposes only
 					
 					show_account_info(true)
 					
@@ -976,14 +985,14 @@ func run_wallet_checks()-> bool: # works
 func show_account_info(load_from_local_wallet: bool): 
 	"load from local wallet"
 	if load_from_local_wallet == true && loaded_wallet == false: 
-		self.account_address.text = str(address)
+		self.account_address.text = UserData.get("address")
 		#self.ingame_algos.text = str (Globals.algos)
-		self.wallet_algos.text = "Algo: "+ str(_wallet_algos)
+		self.wallet_algos.text = "Algo: "+  str(UserData._wallet_algos)
 		
 		
 		
 		loaded_wallet = true
-		return 
+		return loaded_wallet
 	
 	"load from Algorand Node"
 	if load_from_local_wallet== false:
@@ -1061,54 +1070,7 @@ func save_account_info( info : Dictionary, number: int)-> bool:
 	return false
 
 
-""
 
-# Load account info stops escrow withdrawal method from being executed
-# Converting it to Static function as refernce might fix it
-func load_account_info(check_only=false):
-	if !loaded_wallet:
-		if not FileCheck2.file_exists(token_write_path):
-			return false
-		
-		FileCheck2.open(token_write_path, File.READ)
-		
-		var save_dict = parse_json(FileCheck2.get_line())
-		if typeof(save_dict) != TYPE_DICTIONARY:
-			return false
-		if not check_only:
-			return _restore_wallet_data(save_dict)
-
-
-"Loads Wallet Variables into Scene Tree Memory"
-func _restore_wallet_data(info: Dictionary)-> void:
-	# JSON numbers are always parsed as floats. In this case we need to turn them into ints
-	address = info.address
-	
-	Globals.address = address
-	
-	"decode mnemonic"
-	
-	mnemonic = Encryption.convert_binary_to_string(info.mnemonic)
-	_wallet_algos = info.amount 
-	
-	#***********Assets Information*****************#
-	
-	#asset_name=info.asset_name
-	#asset_index=info.asset_index
-	#asset_url=info.asset_url
-	
-	if info.has('asset_index'):
-		#asset_amount = int (info.asset_amount)
-		asset_index = info.asset_index
-	if info.has('asset_name'):
-		asset_name = str (info.asset_name) 
-		asset_url = str(info.asset_url) #asset url and asset meta data are different
-		asset_unit_name = str(info.asset_unit_name)
-	
-	print ('wallet data restored from local database')
-	
-	print ("mnemonic load debug: ",mnemonic) #for debug purposes only
-	print ("asset url debug: ",asset_url) # for debug purposes only
 
 
 
@@ -1509,8 +1471,9 @@ func escrow_withdrawal(params):
 	#Experimental Method
 	#
 	# Should ideally return an tx id and confirmed round
-	if WITHDRAW:
+	if WITHDRAW :
 		
+		Functions.load_account_info(false, token_write_path, FileCheck3, UserData)
 		#FileCheck2.open(token_write_path, File.READ)
 		
 		# deconstructed load wallet method
@@ -1525,11 +1488,11 @@ func escrow_withdrawal(params):
 		
 		
 		
-		self.Algorand.algod.construct_atc(params, address, mnemonic ,app_id, app_arg )
+		var p : Reference = self.Algorand.algod.construct_atc(params, UserData.get("address"), UserData.get("mnemonic") ,app_id, app_arg )
 		
 		#Implement txid from reference in Algodot
 		#var txid = Algorand.algod.execute(t)]
-		
+		print("Tx Reference: ",p)
 		reset_transaction_parameters()
 	else : pass
 
@@ -1644,6 +1607,74 @@ class Functions extends Reference:
 	static func check_internet(good_internet : bool ,q : HTTPRequest):
 		if !good_internet:
 			Networking._check_if_device_is_online(q)
+
+
+
+
+	""
+
+	# Load account info stops escrow withdrawal method from being executed
+	# Converting it to Static function as refernce might fix it
+	static func load_account_info(check_only: bool, token_write_path : String, FileCheck : File, UserData: Dictionary) -> Dictionary:
+		
+		# Returns an empty dictionary by default
+		var t = {"": ""}
+		#if !loaded_wallet:
+		if not FileCheck.file_exists(token_write_path):
+			return t
+			
+		FileCheck.open(token_write_path, File.READ)
+		
+		var load_dict = parse_json(FileCheck.get_line())
+		if typeof(load_dict) != TYPE_DICTIONARY:
+			return t
+		if not check_only:
+			#return t
+			return _restore_wallet_data(UserData,load_dict)
+		return t
+
+
+	#address: String, mnemonic : String, _wallet_algos: int , asset_url : String, asset_index : int, asset_name : String, asset_unit_name : String
+	"Loads Wallet Variables into Scene Tree Memory"
+	# By Modifying a loaded dictionary into the scene tree
+	static func _restore_wallet_data(user_data: Dictionary, info: Dictionary ) -> Dictionary:
+		
+		# JSON numbers are always parsed as floats. In this case we need to turn them into ints
+		user_data.address = info.address
+		
+		Globals.address = info.address
+		
+		"decode mnemonic"
+		
+		user_data.mnemonic = Encryption.convert_binary_to_string(info.mnemonic)
+		user_data._wallet_algos = info.amount 
+		
+		#***********Assets Information*****************#
+		
+		#asset_name=info.asset_name
+		#asset_index=info.asset_index
+		#asset_url=info.asset_url
+		
+		if info.has('asset_index'):
+			#asset_amount = int (info.asset_amount)
+			user_data.asset_index = info.asset_index
+			
+		if info.has('asset_name'):
+			user_data.asset_name = str (info.asset_name) 
+			user_data.asset_url = str(info.asset_url) #asset url and asset meta data are different
+			user_data.asset_unit_name = str(info.asset_unit_name)
+		
+		
+		
+		
+		
+		print ('wallet data restored from local database')
+		
+		print ("mnemonic load debug: ",user_data.mnemonic) #for debug purposes only
+		print ("asset url debug: ",user_data.asset_url) # for debug purposes only
+		return user_data
+
+
 
 "Encryption & Decryption Algorithms"
 class Encryption extends Reference:

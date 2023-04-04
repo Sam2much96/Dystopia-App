@@ -322,7 +322,7 @@ func _go_to_title():
 	
 	'changes scene to title_screen'
 	
-	return get_tree().change_scene_to(title_screen)
+	return get_tree().change_scene("res://scenes/Title screen.tscn")
 
 func _go_to_cinematics():
 	return get_tree().change_scene('res://scenes/cinematics/cinematics.tscn') 

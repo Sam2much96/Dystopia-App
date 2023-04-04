@@ -48,9 +48,6 @@ position = Vector2( -130, 461 )
 [node name="coins3" parent="." instance=ExtResource( 12 )]
 position = Vector2( -11, 617 )
 
-[node name="TouchInterface2" parent="." instance=ExtResource( 14 )]
-position = Vector2( -39.1995, -156.798 )
-
 [node name="UI" parent="." instance=ExtResource( 2 )]
 visible = false
 
@@ -60,6 +57,15 @@ spawn_count = 1
 
 [node name="Player" parent="." instance=ExtResource( 7 )]
 
+[node name="TouchInterface2" parent="Player" instance=ExtResource( 14 )]
+position = Vector2( -1310.23, -2314.61 )
+scale = Vector2( 2.53233, 2.53233 )
+
 [node name="NPC" parent="." instance=ExtResource( 3 )]
 
 [node name="Menu " parent="." instance=ExtResource( 11 )]
+margin_left = -779.956
+margin_top = -1145.02
+margin_right = 402.044
+margin_bottom = -546.016
+rect_scale = Vector2( 2.48164, 2.48164 )

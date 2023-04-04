@@ -81,8 +81,10 @@ tracks/0/keys = {
 [node name="Wallet_scene" type="Control" groups=["Wallet"]]
 anchor_right = 0.474
 anchor_bottom = 0.996
-margin_right = -567.72
-margin_bottom = -680.12
+margin_left = 20.1815
+margin_top = 20.1816
+margin_right = -465.194
+margin_bottom = -577.418
 rect_scale = Vector2( 15.563, 19.384 )
 
 [node name="Algodot" type="Node" parent="."]
@@ -120,11 +122,10 @@ rect_scale = Vector2( 3.17673, 3.17673 )
 mouse_filter = 1
 
 [node name="Password_UI" parent="CanvasLayer" instance=ExtResource( 9 )]
-visible = false
-margin_left = -1147.37
-margin_top = -175.194
-margin_right = -1147.37
-margin_bottom = -514.978
+margin_left = -1073.37
+margin_top = -74.2864
+margin_right = -1073.37
+margin_bottom = -414.07
 rect_scale = Vector2( 3.41368, 3.41368 )
 mouse_filter = 1
 
@@ -174,8 +175,8 @@ rect_scale = Vector2( 2.84914, 2.84914 )
 visible = false
 margin_left = -578.0
 margin_top = 42.0
-margin_right = 14634.0
-margin_bottom = 9179.0
+margin_right = 15658.0
+margin_bottom = 9779.0
 rect_scale = Vector2( 3.6125, 3.6125 )
 
 [node name="state_controller" type="OptionButton" parent="."]

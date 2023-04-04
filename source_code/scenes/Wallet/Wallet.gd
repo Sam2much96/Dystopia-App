@@ -32,7 +32,7 @@
 
 #(1) UX is not intuitive.
 #(2) NFT drag and Drop is buggy 
-# (3)  Wallet Node's Process disrupts UI input ( fixed with state_controller and wallet _input() methods)
+
 # (4) Wallet's Animation UI has Stuck animation transition bug. Use Animation Tree to Activate and Deactivate UI animations
 # (5) _process method is buggy
 # (6) _state_controller's implementation of the process controller method is buggy
@@ -88,7 +88,7 @@ var Escrow_account: String #="L5ESENBL23J2GJGM64Y767IXWGBCKXMGS2OGZ3MC5BBGWJAKJJ
 var Escrow_mnemoic: String
 #Not needed, can be gotten from mnemonic alone
 
-var Player_account: String  #="2NFCY7HBAFJ5YP7TXUOFHHMGAZ7AHEXPS5F3NENXSC3WXRVATBR4Y23AUM"
+var Player_account: String 
 var Player_mnemonic: String 
 
 var Player_account_details: Array =[]

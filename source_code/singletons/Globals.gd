@@ -98,7 +98,8 @@ onready var progress : float
 var address : String
 var mnemonic : String
 var player_name : String
-var algos : int #MicroAlgos 
+onready var algos : int  = Wallet.Wallet.load_account_info(false, Wallet.token_write_path, Wallet.FileCheck3, Wallet.UserData).get("_wallet_algos")
+	#MicroAlgos 
 
 
 "Device Variables"

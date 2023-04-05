@@ -39,7 +39,7 @@ enabled = true
 margin_left = 20.0
 margin_top = 20.0
 margin_right = 1004.0
-margin_bottom = 580.0
+margin_bottom = 602.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -53,14 +53,14 @@ align = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 47.0
 margin_right = 984.0
-margin_bottom = 560.0
+margin_bottom = 582.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
 [node name="Quests" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 margin_right = 490.0
-margin_bottom = 513.0
+margin_bottom = 535.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -72,22 +72,31 @@ custom_fonts/font = ExtResource( 2 )
 text = "Quests"
 align = 1
 
-[node name="Details" type="Label" parent="VBoxContainer/HBoxContainer/Quests"]
+[node name="Algos" type="Label" parent="VBoxContainer/HBoxContainer/Quests"]
 margin_top = 47.0
 margin_right = 490.0
-margin_bottom = 513.0
+margin_bottom = 240.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 3 )
+text = "Coins
+"
+
+[node name="Details" type="Label" parent="VBoxContainer/HBoxContainer/Quests"]
+margin_top = 244.0
+margin_right = 490.0
+margin_bottom = 535.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
 text = "Quest 1
 Quest 2
-Quest 3
-Quest 4"
+"
 
 [node name="Inventory" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 494.0
 margin_right = 984.0
-margin_bottom = 513.0
+margin_bottom = 535.0
 size_flags_horizontal = 3
 
 [node name="Debug" type="Label" parent="VBoxContainer/HBoxContainer/Inventory"]
@@ -106,7 +115,7 @@ align = 1
 [node name="Details" type="Label" parent="VBoxContainer/HBoxContainer/Inventory"]
 margin_top = 65.0
 margin_right = 490.0
-margin_bottom = 287.0
+margin_bottom = 298.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
@@ -114,11 +123,11 @@ text = "Item 1
 "
 
 [node name="Kill_count" type="Label" parent="VBoxContainer/HBoxContainer/Inventory"]
-margin_top = 291.0
+margin_top = 302.0
 margin_right = 490.0
-margin_bottom = 513.0
+margin_bottom = 535.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
-text = "Item 1
+text = "KC
 "

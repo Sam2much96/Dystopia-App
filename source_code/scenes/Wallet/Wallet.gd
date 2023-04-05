@@ -486,7 +486,7 @@ func _process(_delta):
 			elif self.state_controller.get_selected() == -1:
 				state = NEW_ACCOUNT
 	
-	"Constantly Running Process Introduces a Text UI Bug"
+	"WALLET STATES"
 	
 	if canvas_layer != null: # null pointer Error Fixer
 		
@@ -585,6 +585,8 @@ func _process(_delta):
 					Functions.hideUI(canvas_layer)
 					
 					self.dashboard_UI.show()
+					
+					# duplicate of fast load
 					if !loaded_wallet:
 						#returns a steady steam dictionadt
 						
@@ -921,8 +923,9 @@ func _process(_delta):
 func run_wallet_checks()-> bool: # works 
 	#Make sure an algod node is running or connet to mainnet or testnet
 	# should be run in process method to avoid looping bug
-	if self.Algorand.algod == null:
-		self.Algorand.create_algod_node('TESTNET')
+	
+	#if self.Algorand.algod == null: # Error bug 1
+	self.Algorand.create_algod_node('TESTNET')
 	
 	Functions.check_internet(Networking.good_internet,q)
 	
@@ -965,6 +968,13 @@ func run_wallet_checks()-> bool: # works
 			FileCheck1.close()
 			FileDirectory.remove(token_write_path ) #use Globals delete function instead
 
+	"Load local wallet data"
+	if !loaded_wallet:
+		var t : Dictionary = Wallet.load_account_info(false, token_write_path, FileCheck3, UserData)
+		address = t.get("address")
+		mnemonic = t.get("mnemonic")
+		
+		#print ("mnemonic debug 2: ", mnemonic)
 
 	print ("----wallet check done------")
 	
@@ -979,7 +989,7 @@ func run_wallet_checks()-> bool: # works
 	#call_deferred("escrow_withdrawal")
 	
 	#works
-	#escrow_withdrawal(params)
+	#escrow_withdrawal(params) # works too
 	call_deferred("escrow_withdrawal", params)
 	return 0;
 
@@ -1004,6 +1014,7 @@ func generate_address(_mnemonic:String)-> String: #works
 	print ('address; ', _address)
 	return _address
 	
+
 
 
 

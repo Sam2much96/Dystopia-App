@@ -88,10 +88,3 @@ func remove_quest(quest_name:String) -> bool:
 	pass
 	
 
-# Attemplts to save thye quest list  and the quest state to your Google Play Profile
-func playstore_connects() -> void: # currently implemented for Android
-	if Globals.os == "Android" :
-		pass
-	else: return 
-	
-	pass

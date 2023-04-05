@@ -5,7 +5,8 @@
 # Stats
 # Updates Game Stats to the UI
 # currenty updates quests, Killcount and Algos
-
+# Features
+# (1) Parses Quest Data from Singleton
 # *************************************************
 
 extends PanelContainer
@@ -15,6 +16,8 @@ signal not_enabled
 signal enabled
 	
 func _ready():
+	
+	
 	Globals.save_game()
 	get_tree().set_auto_accept_quit(false)
 	hide()
@@ -28,7 +31,7 @@ func _input(event):
 			grab_focus()
 			_update_quest_listing()
 			_update_item_listing()
-			_update_killcount()
+			_update_wallet_stats()
 			return enabled
 			pass
 	if event.is_action_pressed("pause") && enabled == true:
@@ -42,9 +45,9 @@ func _input(event):
 
 
 
-
-func _update_killcount(): #Updates killcount and Algos
-	$VBoxContainer/HBoxContainer/Inventory/Kill_count.text = 'killcount: '+str (Globals.kill_count) + ' Algos: ' + str (Globals.algos)
+#
+func _update_wallet_stats(): #Updates killcount and Algos
+	$VBoxContainer/HBoxContainer/Quests/Algos.text = 'mAlgos: ' + str (Globals.algos)
 
 
 func _update_quest_listing():

@@ -45,14 +45,13 @@ func _on_Item_body_entered(body): #kinda buggy -inhumanity
 		$pickup.stop()
 		
 		Wallet.WITHDRAW = true
-		# Run Wallet Checks
-		#Wallet.run_wallet_checks()
+		# Run Wallet Checks & process withdrawal
 		
-		# Params
-		#var params = Wallet.Algorand.algod.suggested_transaction_params()
-		# Withdraw 0.005 Micro Algos from Escrow
-		#Wallet.escrow_withdrawal(params)
-		#return Wallet.escrow_withdrawal()
+		Wallet.run_wallet_checks()
+		
+		# Update Global Algos with 0.005 MIcroAlgos
+		#Globals.algos += 5000
+		
 	pass
 
 

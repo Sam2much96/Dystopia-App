@@ -94,7 +94,6 @@ script = ExtResource( 2 )
 layer = -1
 
 [node name="Dashboard_UI" parent="CanvasLayer" instance=ExtResource( 7 )]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -122,6 +121,7 @@ rect_scale = Vector2( 3.17673, 3.17673 )
 mouse_filter = 1
 
 [node name="Password_UI" parent="CanvasLayer" instance=ExtResource( 9 )]
+visible = false
 margin_left = -1073.37
 margin_top = -74.2864
 margin_right = -1073.37

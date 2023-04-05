@@ -84,9 +84,7 @@ var save_dict: Dictionary = {}
 
 
 #************** Algo Variables *************************
-var Escrow_account: String #="L5ESENBL23J2GJGM64Y767IXWGBCKXMGS2OGZ3MC5BBGWJAKJJAUK7BJK4"  #should ideally be a smart contract
-var Escrow_mnemoic: String
-#Not needed, can be gotten from mnemonic alone
+
 
 var Player_account: String 
 var Player_mnemonic: String 
@@ -499,13 +497,6 @@ func _process(_delta):
 				_Animation_UI.play("RESET_UI")
 				
 				
-				
-				# Buggy
-				# Bug Details: It bugs up when saving New Account Details Generated 
-				# Suggested Solutions: Debug Save Account Parameters for New Accounts
-				# Work Around: SHow Mnemonic State
-
-				
 				'Generates New Account'
 				# if account info directory doesn't exist
 				# Error Catcher 1
@@ -559,15 +550,17 @@ func _process(_delta):
 					#return self.state_controller.select(0)
 			CHECK_ACCOUNT:  #Works 
 				
-				if wallet_check == 0:
+				if wallet_check == 0: # stops overflow bug from running processes
 					#Make sure an algod node is running or connet to mainnet or testnet
 					if self.Algorand.algod == null:
 						self.Algorand.create_algod_node('TESTNET')
 					var status : bool
 					status= yield(self.Algorand.algod.health(), "completed")
 					
-					print ("Status debug: ", status,' ',wallet_check_counter)
-					Wallet.check_wallet_info(self.Algorand.algod, UserData, FileDirectory, token_dir, self) #checks saved wallet variables for error
+					#print ("Status debug: ", status,' ',wallet_check_counter) #for debug purposes only
+					
+					# wallet check info returns an integer
+					Wallet.check_wallet_info(self.Algorand.algod, UserData, account_info, FileDirectory, token_dir, self) #checks saved wallet variables for error
 					
 					# Escape Current State to Show Account State
 					self.state_controller.select(0) 
@@ -578,6 +571,8 @@ func _process(_delta):
 			# Entering any other derivative states without 
 			# entering show account previously would present new bugs
 			SHOW_ACCOUNT: 
+				
+				var t : Dictionary
 				# Reset UI animation for State controller 
 				_Animation_UI.play("RESET_UI")
 				
@@ -591,12 +586,22 @@ func _process(_delta):
 					
 					self.dashboard_UI.show()
 					if !loaded_wallet:
-						Wallet.load_account_info(false, token_write_path, FileCheck3, UserData)
+						#returns a steady steam dictionadt
+						
+						t = Wallet.load_account_info(false, token_write_path, FileCheck3, UserData)
+						
+						# fast load
+						account_address.text = t.get("address")
+						wallet_algos.text = str(t.get("_wallet_algos"))
+						 
 					
 					
 					#print (UserData) # For Debug Purposes only
+					#load_from_local_wallet: bool, loaded_wallet: bool, account_address : Label, wallet_algos : Label, UserData : Dictionary, Algorand : Algod
 					
-					show_account_info(true)
+					# slow load
+					var load_from_local_wallet : bool = true
+					Functions.show_account_info(load_from_local_wallet, loaded_wallet,account_address, wallet_algos, UserData, Algorand, self)
 					
 					#set_process(false)
 						#state = GENERATE_ADDRESS
@@ -641,7 +646,7 @@ func _process(_delta):
 					#"saves more account info"
 					# Saves acct info & Debugs it to Output
 					print ("Saved Acct Info: ",save_account_info(account_info,0)) 
-					Wallet.check_wallet_info(self.Algorand.algod, UserData, FileDirectory, token_dir, self)
+					Wallet.check_wallet_info(self.Algorand.algod, UserData, account_info, FileDirectory, token_dir, self)
 
 
 
@@ -772,7 +777,7 @@ func _process(_delta):
 							print ("Status debug: ", status,' ',wallet_check_counter)
 							
 							#duplicates check wallet state function
-							Wallet.check_wallet_info(self.Algorand.algod, UserData, FileDirectory, token_dir, self)#saves account info with assets details
+							Wallet.check_wallet_info(self.Algorand.algod, UserData, account_info, FileDirectory, token_dir, self)#saves account info with assets details
 							
 
 							# show account
@@ -979,28 +984,6 @@ func run_wallet_checks()-> bool: # works
 	return 0;
 
 
-
-#loads from saved account info 
-func show_account_info(load_from_local_wallet: bool): 
-	"load from local wallet"
-	if load_from_local_wallet == true && loaded_wallet == false: 
-		self.account_address.text = UserData.get("address")
-		#self.ingame_algos.text = str (Globals.algos)
-		self.wallet_algos.text = "Algo: "+  str(UserData._wallet_algos)
-		
-		
-		
-		loaded_wallet = true
-		return loaded_wallet
-	
-	"load from Algorand Node"
-	if load_from_local_wallet== false:
-		print ('loading account info from Algorand Blockchain')
-		#should load Account info from outside scene
-		account_info=(yield(self.Algorand._check_account_information(Player_account, Player_mnemonic, ""), "completed"))
-		self.account_address.text   = account_info['address']
-		self.ingame_algos.text = str(Globals.algos)
-		self.wallet_algos.text = account_info['amount']
 
 
 
@@ -1226,7 +1209,7 @@ func _on_smart_contract_UI_button_pressed():
 func _on_refresh_pressed(): #disabling refresh button
 	#check_account()
 	if passed_all_connectivity_checks:
-		Wallet.check_wallet_info(self.Algorand.algod, UserData, FileDirectory, token_dir, self)
+		Wallet.check_wallet_info(self.Algorand.algod, UserData, account_info,FileDirectory, token_dir, self)
 	
 	pass
 	
@@ -1438,7 +1421,7 @@ func escrow_withdrawal(params):
 	# Should ideally return an tx id and confirmed round
 	if WITHDRAW :
 		
-		Functions.load_account_info(false, token_write_path, FileCheck3, UserData)
+		Wallet.load_account_info(false, token_write_path, FileCheck3, UserData)
 		#FileCheck2.open(token_write_path, File.READ)
 		
 		# deconstructed load wallet method
@@ -1580,6 +1563,38 @@ class Functions extends Reference:
 
 
 
+	#loads from saved account info 
+	static func show_account_info(load_from_local_wallet: bool, loaded_wallet: bool, account_address : Label, wallet_algos : Label, UserData : Dictionary, Algorand : Algodot, node : wallet) -> void: 
+		# Load from Local Wallet Boolean parameters,
+		#determine which data source to display user info
+		# from
+		# Polymorphism
+
+		"load from local wallet"
+		if load_from_local_wallet == true && loaded_wallet == false: 
+			
+			account_address.text = UserData.get("address")
+			#self.ingame_algos.text = str (Globals.algos)
+			wallet_algos.text = "Algo: "+  str(UserData._wallet_algos)
+			
+			
+			
+			loaded_wallet = true
+			return loaded_wallet
+		
+		"load from Algorand Node"
+		if load_from_local_wallet== false:
+			print ('loading account info from Algorand Blockchain')
+			
+			var account_info : Dictionary = (yield(Algorand._check_account_information(UserData.address, UserData.mnemonic, ""), "completed"))
+			
+			if not account_info.empty() :
+				account_address.text   = account_info['address']
+				#ingame_algos.text = str(Globals.algos)
+				wallet_algos.text = account_info['amount']
+
+
+
 "Encryption & Decryption Algorithms"
 class Encryption extends Reference:
 	
@@ -1604,7 +1619,7 @@ class Encryption extends Reference:
 
 class Wallet extends Reference:
 	
-	static func check_wallet_info(algod_node : Algod, UserData: Dictionary, FileDirectory : Directory, token_dir : String, wallet_script : wallet) -> int: #works. Pass a variable check
+	static func check_wallet_info(algod_node : Algod, UserData: Dictionary, account_info : Dictionary,FileDirectory : Directory, token_dir : String, wallet_script : wallet) -> int: #works. Pass a variable check
 		#check if wallet token exits
 		# check if Internet is OK
 		#THen checks wallet account information
@@ -1617,10 +1632,10 @@ class Wallet extends Reference:
 		# String Comparisons are 
 		if UserData.address && UserData.mnemonic != "" && Functions.check_local_wallet_directory(FileDirectory,token_dir) && Networking.good_internet : 
 			#print (Algorand.algod)
-			wallet_script.account_info = yield(algod_node.account_information(UserData.address), "completed")
+			account_info = yield(algod_node.account_information(UserData.address), "completed")
 			#account_info = self.Algorand.algod.account_information(address)
-			wallet_script.save_account_info(wallet_script.account_info, 0) #testing  
-			print ("acct info: ",wallet_script.account_info) #for debug purposes only 
+			wallet_script.save_account_info(account_info, 0) #testing  
+			print ("acct info: ",account_info) #for debug purposes only 
 		if UserData.address == "":
 			print ("check info Address debug: ",UserData.address)
 			push_error('Either address  cannot be null')
@@ -1646,20 +1661,20 @@ class Wallet extends Reference:
 	static func load_account_info(check_only: bool, token_write_path : String, FileCheck : File, UserData: Dictionary) -> Dictionary:
 		
 		# Returns an empty dictionary by default
-		var t = {"": ""}
+		var empty = {"": ""}
 		#if !loaded_wallet:
 		if not FileCheck.file_exists(token_write_path):
-			return t
+			return empty
 			
 		FileCheck.open(token_write_path, File.READ)
 		
 		var load_dict = parse_json(FileCheck.get_line())
 		if typeof(load_dict) != TYPE_DICTIONARY:
-			return t
+			return empty
 		if not check_only:
 			#return t
 			return _restore_wallet_data(UserData,load_dict)
-		return t
+		return empty
 
 
 	#address: String, mnemonic : String, _wallet_algos: int , asset_url : String, asset_index : int, asset_name : String, asset_unit_name : String
@@ -1696,9 +1711,13 @@ class Wallet extends Reference:
 		
 		
 		
-		print ('wallet data restored from local database')
+		#print ('wallet data restored from local database') # for debug purposes only
 		
-		print ("mnemonic load debug: ",user_data.mnemonic) #for debug purposes only
-		print ("asset url debug: ",user_data.asset_url) # for debug purposes only
+		#print ("mnemonic load debug: ",user_data.mnemonic) #for debug purposes only
+		#print ("asset url debug: ",user_data.asset_url) # for debug purposes only
+		
+		#print (" User Data Debug 1: ",user_data) # for debug purposes only
+		
+		# Constantly serves back user data as a dictionary
 		return user_data
 

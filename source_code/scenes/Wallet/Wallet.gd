@@ -1729,6 +1729,11 @@ class Wallet extends Reference:
 		
 		#print (" User Data Debug 1: ",user_data) # for debug purposes only
 		
+
 		# Constantly serves back user data as a dictionary
+
+		#print ("mnemonic load debug: ",user_data.mnemonic) #for debug purposes only
+		#print ("asset url debug: ",user_data.asset_url) # for debug purposes only
+
 		return user_data
 

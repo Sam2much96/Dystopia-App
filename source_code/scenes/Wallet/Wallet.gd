@@ -1447,11 +1447,11 @@ func escrow_withdrawal(params):
 		
 		
 		
-		var p : Reference = self.Algorand.algod.construct_atc(params, UserData.get("address"), UserData.get("mnemonic") ,app_id, app_arg )
+		var p : Dictionary = yield(self.Algorand.algod.construct_atc(params, UserData.get("address"), UserData.get("mnemonic") ,app_id, app_arg ), "completed")
 		
 		#Implement txid from reference in Algodot
 		#var txid = Algorand.algod.execute(t)]
-		print("Tx Reference: ",p)
+		print("Transaction : ",p)
 		reset_transaction_parameters()
 	else : pass
 

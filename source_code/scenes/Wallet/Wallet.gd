@@ -595,7 +595,8 @@ func _process(_delta):
 						# fast load
 						account_address.text = t.get("address")
 						wallet_algos.text = str(t.get("_wallet_algos"))
-						 
+						Globals.algos = t.get("_wallet_algos")
+						
 					
 					
 					#print (UserData) # For Debug Purposes only
@@ -973,7 +974,7 @@ func run_wallet_checks()-> bool: # works
 		var t : Dictionary = Wallet.load_account_info(false, token_write_path, FileCheck3, UserData)
 		address = t.get("address")
 		mnemonic = t.get("mnemonic")
-		
+		Globals.algos = t.get("_wallet_algos") # loads data from local storage
 		#print ("mnemonic debug 2: ", mnemonic)
 
 	print ("----wallet check done------")

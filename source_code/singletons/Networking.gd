@@ -32,10 +32,10 @@ NETWORKING SINGLETON 3.0
 
 To query if there's internet access and connect to various websites
 """
-export (bool) var enabled
-export(String) var connection_debug
-export (String) var cfg_server_ip 
-export (String) var cfg_client_ip 
+var enabled : bool
+var connection_debug : String
+var cfg_server_ip : String 
+var cfg_client_ip : String 
 #########################  Web browser codes  ############################3
 var url : String = ''
 var check_timer 
@@ -68,10 +68,10 @@ signal error_connection_failed(code,message)
 signal error_ssl_handshake
 
 
-onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
+var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
-onready var WORLD_SIZE = 40000.0
-onready var _reference_to_self =get_node('/root/Networking') #formerly _y
+var WORLD_SIZE = 40000.0
+var _reference_to_self  #formerly _y
 
 
 const SERVER_PORT = 9080
@@ -80,7 +80,7 @@ const MAX_PLAYERS = 5
 const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
 
 
-onready var timer :Timer  = $Timer2
+var timer :Timer  
 
 
 #var youtube_dl = preload ('res://New game code and features/youtube streamer/Youtube-DL.gd') #what if youtube goes down lool
@@ -101,9 +101,10 @@ var selected_gateway : String
 var good_internet : bool
 
 func _ready():
+	timer = $Timer2
 	_init_timer()
 	
-	
+	_reference_to_self = get_node('/root/Networking')
 	if cfg_server_ip == '':
 		cfg_server_ip = DEFAULT_HOSTNAME
 		
@@ -131,12 +132,13 @@ func _process(_delta):
 		if child is HTTPRequest:
 #checks connection status -> Force connect HTTP request's signals
 			if child.is_connected("connection_success",self, '_on_success') != true:
-				return connect("request_completed", self,'on_request_result')
+				#return connect("request_completed", self,'on_request_result')
 		
-				return connect("connection_success",self, '_on_success')
-				return connect("error_connection_failed",self,'_on_failure')
-				return connect("error_ssl_handshake",self, '_on_fail_ssl_handshake')
+				#return connect("connection_success",self, '_on_success')
+				#return connect("error_connection_failed",self,'_on_failure')
+				#return connect("error_ssl_handshake",self, '_on_fail_ssl_handshake')
 
+				pass
  
 # Creates a Networking timer
 func _init_timer() : 
@@ -147,10 +149,11 @@ func _init_timer() :
 	check_timer.wait_time = 5
 	
 	# connect timer timeout signal
-	if not timer.is_connected("timeout",self, "_on_Timer2_timeout"):
-		timer.connect("timeout",self, "_on_Timer2_timeout")
 	
-	print ('Check_timer :' , check_timer, " Is connected: ", timer.is_connected("timeout",self, "_on_Timer2_timeout")) #code breaks here and gives cant resolve hostname errors
+	#if not timer.is_connected("timeout", "_on_Timer2_timeout"):
+	#	timer.connect("timeout",self, "_on_Timer2_timeout")
+	
+	#print ('Check_timer :' , check_timer, " Is connected: ", timer.is_connected("timeout", "_on_Timer2_timeout")) #code breaks here and gives cant resolve hostname errors
 	
 
 
@@ -186,21 +189,21 @@ static func _check_connection(url, request_node: HTTPRequest):
 	#Ignore Warning
 	#Request Node must be in the SceneTree
 	print  ("Is Request Noode inside scene tree:", request_node.is_inside_tree())
-	var error = request_node.request(url,PoolStringArray(),false,0,"") 
+	var error = request_node.request(url,PackedStringArray(),HTTPClient.METHOD_GET,"") 
 	print (' Networking Request Error: ',error) #for debug purposes only
 
 
 func _check_connection_secured(url): # Check http secured Url connection
 	#Ignore Warning
 	url =url.http_escape()
-	var error = .request(url,PoolStringArray(),false,HTTPClient.METHOD_GET) 
+	var error = self.request(url,PackedStringArray(),HTTPClient.METHOD_GET) 
 	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
 	print (' Networking Request Error: ',error) #for debug purposes only
 
 
 func genrate_random_gateway():
 	randomize()
-	random = int(rand_range(-1,gateway.size())) #selects a random track number
+	random = int(randf_range(-1,gateway.size())) #selects a random track number
 	selected_gateway = gateway[random]
 
 # List of valid IPFS web 2.0 Gateways
@@ -221,10 +224,9 @@ static func _connect_to_ipfs_gateway(parse : bool, url : String, selected_gatewa
 		
 		#print ("NFT Url: ",url) #for debug purposes only
 		
-		var t=StreamPeerSSL.new()
+		var t=StreamPeerTLS.new()
 	
-		var error = request_node.request(url,PoolStringArray(),false,HTTPClient.METHOD_GET) 
-		 
+		var error = request_node.request(url,PackedStringArray(),HTTPClient.METHOD_GET)  
 		print (' Networking Request Error: ',error) #for debug purposes only
 		print ("Final Url: ", url)
 		return
@@ -271,10 +273,10 @@ func on_request_result(result, response_code, headers, body): # I need to pass v
 			emit_signal("error_connection_failed",RESULT_CONNECTION_ERROR,'RESULT_CONNECTION_ERROR')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
 			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
-		RESULT_SSL_HANDSHAKE_ERROR:
-			emit_signal("error_ssl_handshake")
+		#RESULT_SSL_HANDSHAKE_ERROR:
+		#	emit_signal("error_ssl_handshake")
 			#_connection = (str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+		#	connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_NO_RESPONSE:
 			emit_signal("error_connection_failed",RESULT_NO_RESPONSE,'RESULT_NO_RESPONSE')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
@@ -318,24 +320,24 @@ func _on_fail_ssl_handshake():
 
 'Downloads a Json file and Stores it Locally'
 #consider running 2 operations here. A read operation and a write operation
-func download_json_(body: PoolByteArray, Save_path: String) -> File:
-	var json = File.new()
+func download_json_(body: PackedByteArray, Save_path: String) -> FileAccess:
+	var json = FileAccess
 	var cunt = []
 	if body != null:
 		
 		print ("Loading Json--------", ( get_body_size()), " bytes")# wprks # for debug purposes 
 		
 		
-		json.open((Save_path +".json"), File.WRITE )
+		json.open((Save_path +".json"), FileAccess.WRITE )
 		
 		while not json.get_len() > get_body_size() : #kinda works
 			cunt = body.get_string_from_utf8() #works with local storage
 			
-			json.store_line(str(cunt)) #works
+			#json.store_line(str(cunt)) #works
 			if json.get_len() == get_body_size(): break #works perfectly
 			
 
-		json.close()  
+		#json.close()  
 		# it's sending the data across the network, but its not decoding it properly                                           
 		var data = get_downloaded_bytes()
 		print ("data: ",data)
@@ -353,7 +355,7 @@ func download_json_(body: PoolByteArray, Save_path: String) -> File:
 download a given image from a given http request
 returns a PNG texture file, saves image file
 """
-static func download_image_(body: PoolByteArray, Save_path: String, node : HTTPRequest) -> ImageTexture:
+static func download_image_(body: PackedByteArray, Save_path: String, node : HTTPRequest) -> ImageTexture:
 	var image = Image.new()
 	var texture = ImageTexture.new()
 	
@@ -363,19 +365,19 @@ static func download_image_(body: PoolByteArray, Save_path: String, node : HTTPR
 			push_error("An error occurred while trying to display the image.")
 		elif image_error == OK:
 			"Save File locally"
-			var local_tex =File.new()
-			local_tex.open((Save_path +".png"), File.WRITE)
+			var local_tex =FileAccess
+			local_tex.open((Save_path +".png"), FileAccess.WRITE)
 			
 			
 			
 			
-			while not node.get_downloaded_bytes() > node.get_body_size() && local_tex.eof_reached() == false: #causes a large file bug, generates a 3gb file
-				print ("Loading Image--------", ( node.get_body_size()/1000), " kb") # for debug purposes 
-				local_tex.store_buffer(body) #stores image locally
+			#while not node.get_downloaded_bytes() > node.get_body_size() && local_tex.eof_reached() == false: #causes a large file bug, generates a 3gb file
+			#	print ("Loading Image--------", ( node.get_body_size()/1000), " kb") # for debug purposes 
+			#	local_tex.store_buffer(body) #stores image locally
 				#if local_tex.eof_reached() == true: #causes a significant lag
-				if node.get_downloaded_bytes() == node.get_body_size(): #causes a significant lag
-					local_tex.close()
-					break
+			#	if node.get_downloaded_bytes() == node.get_body_size(): #causes a significant lag
+					#local_tex.close()
+			#		break
 			print ("Image Download Successful")
 			texture.create_from_image(image)
 			"returns an image texture"
@@ -388,8 +390,8 @@ static func download_image_(body: PoolByteArray, Save_path: String, node : HTTPR
 'Downloads A File and Stores it Locally'
 #consider running 2 operations here. A read operation and a write operation
 # works
-static func download_file_(node : HTTPRequest,body: PoolByteArray, Save_path: String, file_type: String) -> File:
-	var file = File.new()
+static func download_file_(node : HTTPRequest,body: PackedByteArray, Save_path: String, file_type: String) -> FileAccess:
+	var file = FileAccess
 	#var cunt = []
 	if body != null:
 		
@@ -398,18 +400,18 @@ static func download_file_(node : HTTPRequest,body: PoolByteArray, Save_path: St
 		# Should be .zip or .json for different file types
 		# SHould ideally contain a check for verifying the contents of the file type string
 		#file.open_compressed((Save_path + file_type), File.WRITE, File.COMPRESSION_GZIP )
-		file.open((Save_path + file_type), File.WRITE )
+		file.open((Save_path + file_type), FileAccess.WRITE )
 		
-		while not node.get_downloaded_bytes() > node.get_body_size() && file.eof_reached() == false:
+		#while not node.get_downloaded_bytes() > node.get_body_size() && file.eof_reached() == false:
 		
 		
-			file.store_buffer(body)
+		#	file.store_buffer(body)
 			
-			if node.get_downloaded_bytes() == node.get_body_size(): #causes a significant lag
-					file.close()
-					break 
+		#	if node.get_downloaded_bytes() == node.get_body_size(): #causes a significant lag
+		#			file.close()
+		#			break 
 		
-		if file.eof_reached(): file.close()
+		#if file.eof_reached(): file.close()
 		
 		# it's sending the data across the network, but its not decoding it properly                                           
 		var data = node.get_downloaded_bytes()
@@ -429,10 +431,10 @@ static func download_file_(node : HTTPRequest,body: PoolByteArray, Save_path: St
 'Saves A File and Stores it Locally'
 #consider running 2 operations here. A read operation and a write operation
 # works
-static func save_file_(body: PoolByteArray, Save_path: String, file_size: int) -> File:
-	var file = File.new()
+static func save_file_(body: PackedByteArray, Save_path: String, file_size: int) -> FileAccess:
+	var file = FileAccess
 	
-	var Dir = Directory.new()
+	#var Dir = Directory.new()
 	
 	if body != null : # && !Dir.file_exists(Save_path):
 		
@@ -443,19 +445,19 @@ static func save_file_(body: PoolByteArray, Save_path: String, file_size: int) -
 		#file.open_compressed((Save_path + file_type), File.WRITE, File.COMPRESSION_GZIP )
 		
 		
-		file.open((Save_path ), File.WRITE )
+		file.open((Save_path ), FileAccess.WRITE )
 		
 		#while not node.get_downloaded_bytes() > node.get_body_size() && file.eof_reached() == false:
 		print ("storing file to ", Save_path)
 		
-		while not file.get_len() > file_size:
-			file.store_buffer(body)
+	#	while not file.get_len() > file_size:
+	#		file.store_buffer(body)
 			
-			if file.get_len() == file_size:
-				file.close()
-				break 
+	#		if file.get_len() == file_size:
+	#			file.close()
+	#			break 
 		
-		if file.eof_reached(): file.close()
+	#	if file.eof_reached(): file.close()
 		
 		# it's sending the data across the network, but its not decoding it properly                                           
 		#var data = node.get_downloaded_bytes()

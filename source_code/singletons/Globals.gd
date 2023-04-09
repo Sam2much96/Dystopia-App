@@ -35,14 +35,14 @@ var cinematics = preload ('res://resources/title animation/title..ogv') #I free 
 var pilot_ep 
 var VIDEO
 
-onready var form = load ('res://scenes/UI & misc/form/form.tscn')
+var form = load ('res://scenes/UI & misc/form/form.tscn')
 var title_screen = load( 'res://scenes/Title screen.tscn')
 #var shop = load('res://scenes/UI & misc/Shop.tscn')
 var controls = load ('res://scenes/UI & misc/Controls.tscn')
 
 "Comics  Book Module variables"
-onready var comics = load ('res://scenes/UI & misc/Comics.tscn')
-onready var comics___2 = load ('res://scenes/UI & misc/Comics____2.tscn')
+var comics = load ('res://scenes/UI & misc/Comics.tscn')
+var comics___2 = load ('res://scenes/UI & misc/Comics____2.tscn')
 var comics_chapter 
 var comics_page 
 
@@ -52,9 +52,9 @@ var game_loop
 var prev_scene
 var prev_scene_spawnpoint
 var next_scene = null
-onready var curr_scene : String = ""
-onready var os: String = OS.get_name()
-onready var kill_count : int = 0 #update to load from savefile
+var curr_scene : String = ""
+var os: String = OS.get_name()
+var kill_count : int = 0 #update to load from savefile
 var player : Array = []
 #var _p # Player placeholder
 var player_hitpoints : int
@@ -75,7 +75,7 @@ var current_level
 
 
 var Music_on_settings
-export (String, 'analogue', 'direction') var direction_control = ''  #toggles btw analogue and d-pad
+var direction_control = ''  # (String, 'analogue', 'direction') #toggles btw analogue and d-pad
 
 var uncompressed # Varible holds uncompressed zip files
 
@@ -91,14 +91,14 @@ var err
 var a : int # Loader progress variable (a/b) 
 var b : int
 var loading_resource : bool = false
-onready var scene_loader= ResourceLoader
-onready var progress : float
+var scene_loader= ResourceLoader
+var progress : float
 
 "Crypto Variables" 
 var address : String
 var mnemonic : String
 var player_name : String
-onready var algos : int  = Wallet.Wallet.load_account_info(false, Wallet.token_write_path, Wallet.FileCheck3, Wallet.UserData).get("_wallet_algos")
+var algos : int  = Wallet.Wallet.load_account_info(false, Wallet.token_write_path, Wallet.FileCheck3, Wallet.UserData).get("_wallet_algos")
 	#MicroAlgos 
 
 
@@ -129,8 +129,8 @@ var wallet_state  #wallet state global variabe
 
 
 " File Checkers"
-var FileCheck1=File.new() # checks wallet mnemonic
-var FileDirectory=Directory.new() #deletes all theon reset
+var FileCheck1=FileAccess # checks wallet mnemonic
+#var FileDirectory=Directory.new() #deletes all theon reset
 
 func _ready():
 	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
@@ -143,13 +143,13 @@ func _ready():
 	print ("Screen orientation is: ", screenOrientation)
 
 	player.append( get_tree().get_nodes_in_group('player') )#gets all player nodes in the scene
-	 #it shows deleted object once player is despawns.
-	if player.empty() == true: #error catcher 1            
+	#it shows deleted object once player is despawns.
+	if player.is_empty() == true: #error catcher 1            
 		player.clear()
 	
 	
 	
-	VisualServer.set_default_clear_color(ColorN("white")) #what does this do?
+	#VisualServer.set_default_clear_color(ColorN("white")) #what does this do?
 
 
 func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_processing()
@@ -167,7 +167,7 @@ func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_pr
 
 	if _r is String && _r != "" && _q == null:
 		var time_max = 50000 #sets an estimate maximum time to load scene
-		var t = OS.get_ticks_msec()
+		var t = Time.get_ticks_msec()
 		
 		#scene_loader.load_interactive(_r) 
 		
@@ -177,7 +177,7 @@ func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_pr
 		
 	
 		print (" Loader Debug Outer loop >>> Inner Loop")
-		while OS.get_ticks_msec() < (t + time_max) && _o != null: 
+		while Time.get_ticks_msec() < (t + time_max) && _o != null: 
 
 			err = _o.poll()
 			#loading_resource = true
@@ -221,8 +221,8 @@ func save_game():
 	
 	print ("-------Saving Game -------")
 	
-	var save_game = File.new()
-	save_game.open("user://savegeme.save", File.WRITE)
+	var save_game = FileAccess
+	save_game.open("user://savegeme.save", FileAccess.WRITE)
 	var save_dict = {}
 	save_dict.player = player #saves the player node 
 	#save_dict.spawnpoint = spawnpoint
@@ -246,8 +246,9 @@ func save_game():
 	#save_dict.comics_chapter
 	#save_dict.comics_page
 	
-	save_game.store_line(to_json(save_dict))
-	save_game.close()
+	#save_game.store_line(save_dict)
+	#save_game.store_line(to_json(save_dict))
+	#save_game.close()
 	print ("saved gameplay")
 
 """
@@ -260,20 +261,21 @@ func load_game(check_only=false) -> bool:
 	print ("-------Loading Game -------")
 	
 	
-	var save_game = File.new()
+	var save_game = FileAccess
 	
 	if not save_game.file_exists("user://savegeme.save"):
 		return false
 	
-	save_game.open("user://savegeme.save", File.READ)
+	save_game.open("user://savegeme.save", FileAccess.READ)
 	
-	var save_dict = parse_json(save_game.get_line())
+	#var save_dict = parse_json(save_game.get_line())
+	var save_dict
 	if typeof(save_dict) != TYPE_DICTIONARY:
 		return false
 	if not check_only:
 		_restore_data(save_dict)
 	
-	save_game.close()
+	#save_game.close()
 	return true
 
 """
@@ -332,7 +334,7 @@ func _go_to_cinematics():
 
 func resize_window(x,y): #resizes the game window
 	screenSize = Vector2(x,y);
-	return OS.set_window_size(Vector2(x,y));
+	#return OS.set_window_size(Vector2(x,y));
 
 # Convert bytes to Megabytes
 func _ram_convert(bytes) :
@@ -351,7 +353,7 @@ func change_scene_to(scene): #Loads scenes faster?
 			_r = scene # triggers an auto scene loader in the processes 
 			return _r
 
-	else: return (print (typeof(scene) ,"is not supported in this function"))
+	#else: return (print (typeof(scene) ,"is not supported in this function"))
 	#if scene is 
 	
 func turn_off_processing(toggle): # to improve game speed and turn off idle processsing
@@ -368,7 +370,7 @@ func turn_off_processing(toggle): # to improve game speed and turn off idle proc
 
 		# Updates the raycast to the Enemy"s Direction
 static func rotate_pointer(point_direction: Vector2, pointer) -> void:
-	var temp =rad2deg(atan2(point_direction.x, point_direction.y))
+	var temp =rad_to_deg(atan2(point_direction.x, point_direction.y))
 	pointer.rotation_degrees = temp
 
 
@@ -381,10 +383,11 @@ func sumaVectores(v1, v2): #vector sum
 
 #prints all orphaned nodes in project
 func memory_leak_management():
-	return print_stray_nodes() 
+	pass
+	#return print_stray_nodes() 
 
 "Memory Leak/ Orphaned Nodes Management System"
-class MemoryManagement extends Reference :
+class MemoryManagement :
 	static func queue_free_children(node: Node) -> void:
 		for idx in node.get_child_count():
 			node.queue_free()
@@ -403,14 +406,14 @@ class MemoryManagement extends Reference :
 
 'Delete Files'
 func delete_local_file(path_to_file: String) -> void:
-	var dir = Directory.new()
-	if dir.file_exists(path_to_file):
-		dir.remove(path_to_file)
-		dir.queue_free()
-	else:
-		push_error('File To Delete Doesnt Exist')
-		return
-
+#	var dir = Directory.new()
+#	if dir.file_exists(path_to_file):
+#		dir.remove(path_to_file)
+#		dir.queue_free()
+#	else:
+#		push_error('File To Delete Doesnt Exist')
+#		return
+	pass
 
 'Upscale UI'
 func upscale__ui(node ,size: String)-> void:
@@ -453,11 +456,11 @@ func calc_average(list: Array):
 # Global file checking method for DIrectory path and file name/type
 # Copied from Wallet's Implementation
 func check_files(path_to_dir: String, path_to_file : String)-> bool:
-	if FileDirectory.dir_exists(path_to_dir):
-		#print ("File Exists: ",FileCheck1.file_exists(path_to_file)) # For debug purposes only
-		return FileCheck1.file_exists(path_to_file)
-	else: return false
-
+#	if FileDirectory.dir_exists(path_to_dir):
+#		#print ("File Exists: ",FileCheck1.file_exists(path_to_file)) # For debug purposes only
+#		return FileCheck1.file_exists(path_to_file)
+#	else: return false
+	return true
 
 "Compression and Uncompression Algorithm"
 # Documentation: https://git.sr.ht/~jelle/gdunzip
@@ -515,7 +518,7 @@ func uncompress(FILE: String) : #-> PoolByteArray:
 Quickly sets a videoplayer to Play music and videos
 """
 # Would break if passed to anything other than videosteam player
-func _Video_Stream(node : VideoPlayer, stream , _sound, viewport):
+func _Video_Stream(node : VideoStreamPlayer, stream , _sound, viewport):
 	if stream and node != null or '':
 		print('Playing Video Stream:/',stream)
 		#node._set_size((viewport))

@@ -1,20 +1,21 @@
-,en_US,pt_BR,fr
-char1,hello,olá,allo
-char2,how are you,como vai,comment allez-vous
-char3,options,opções,choix
-comics,comics,banda desenhada,bandes dessinées
-new game,new game,novo jogo,nouveau jeu
-continue,continue,continuar,continuer
-multiplayer,multiplayer,multijogador,multijoueur
-anime,anime,animação,animer
-practice,practice,prática,pratique
-cityscape,cityscape,urbano,urbain
-wallet,wallet,carteira,portefeuille
-controls,controls,controles,contrôles
-quit,quit,desistir,arrêter
-back,back,de volta,dos
-music,music,música,musique
-shuffle,shuffle,embaralhar as músicas,mélanger
-help,help,ajuda,aider
-debug,debug,debugar,déboguer
-change controller,change controller,trocar o controle,changer de contrôleur
+id,en_US,pt_BR,fr,te_IN,hi_IN
+char1,hello,olá,allo,హలో,नमस्ते
+char2,how are you,como vai,comment allez-vous,ఎంచుకున్న ఐటంలు,आप कैसे हैं?
+char3,options,opções,choix,ఎంచుకున్న ఐటంలు,विकल्प
+comics,comics,banda desenhada,bandes dessinées,కామిక్స్,
+new game,new game,novo jogo,nouveau jeu,కొత్త గేమ్,
+continue,continue,continuar,continuer,కొనసాగించు,
+multiplayer,multiplayer,multijogador,multijoueur,బహుమతి ఆటగాళ్ళు,
+anime,anime,animação,animer,ఆనిమే,
+practice,practice,prática,pratique,అభ్యాసం,
+cityscape,cityscape,urbano,urbain,అర్బన్,
+wallet,wallet,carteira,portefeuille,వాలెట్,
+controls,controls,controles,contrôles,నియంత్రణలు,
+quit,quit,desistir,arrêter,విడిచివెళ్ళు,
+back,back,de volta,dos,తిరిగి,
+music,music,música,musique,సంగీతం,
+shuffle,shuffle,embaralhar as músicas,mélanger,షటల్,
+help,help,ajuda,aider,సహాయం,
+debug,debug,debugar,déboguer,డీబగ్,
+change controller,change controller,trocar o controle,changer de contrôleur,కంట్రోలర్ మార్చు,
+la,li,la,le,హలో,

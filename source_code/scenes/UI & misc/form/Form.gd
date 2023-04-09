@@ -26,26 +26,39 @@ var index : int = 0
 #Saves player name and emaol address to global script
 var player_name : String
 var email_addr : String
-onready var play_button : Button = $ui/grid/play
-onready var dialgue_box = $Dialog_box
-onready var language = $ui/grid/language
-########Label Spacer Codes Are Used For Aesthetics#########
-onready var label_spacer = $ui/grid/label_spacer
-onready var label_spacer2 = $ui/grid/label_spacer2
-onready var label_spacer3 =$ui/grid/label_spacer3
+var dialgue_box
+var _debug
+var play_button : Button
 
-onready var timer = $Timer
+var label_spacer
+var label_spacer2
+var label_spacer3
 
-var os = Globals.os
-onready var _debug =get_tree().get_root().get_node("/root/Debug")
 
-#func _init():
-#	if Dialogs.language == "":
-#		Globals.load_game()
-
+var result
+var responsecode
+var headers
+var body
+func _init():
+	translate()
 
 
 func _ready():
+	play_button = $ui/grid/play
+	dialgue_box = $Dialog_box
+	var language = $ui/grid/language
+	########Label Spacer Codes Are Used For Aesthetics#########
+	label_spacer = $ui/grid/label_spacer
+	label_spacer2 = $ui/grid/label_spacer2
+	label_spacer3 =$ui/grid/label_spacer3
+
+	var timer = $Timer
+
+	#os = Globals.os
+	_debug =get_tree().get_root().get_node("/root/Debug")
+
+	
+	
 	if _debug != null:
 		_debug = get_tree().get_root().get_node("/root/Debug")
 
@@ -61,14 +74,14 @@ func _ready():
 	#language.add_item('Nigerian Pidgin')
 
 	# Connects the Networking signal
-	Networking.connect("request_completed", self, "_http_request_completed")
+	Networking.connect("request_completed", _http_request_completed(result, responsecode, headers, body))
 
 
 	"Disables the Play button Until Internet Access is Verified "
 
 	hide_play_button() 
 	_check_if_device_is_online()
-	translate()
+
 
 
 
@@ -86,7 +99,7 @@ func _on_play_pressed():
 CHECKS IF THE DEVICE IS INTERNET CONNECTED AND GATEKEEPS ACCESS ON MOBILE DEVICES
 """
 func _check_if_device_is_online(): 
-	if os == 'Android' or 'iOS' or 'X11': #disable x11 for release build
+	if Globals.os == 'Android' or 'iOS' or 'X11': #disable x11 for release build
 		index = index + 1
 		dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
 		#Networking.url = 
@@ -138,14 +151,22 @@ func hide_play_button():
 TRANSLATES THE ENTIRE APP TO ONE OF THE PRESELECTED lANGUAGUES INDICATED
 """
 #Documentation: https://www.gotut.net/localisation-godot/
+# https://phrase.com/blog/posts/godot-game-localization/
 
 func translate()-> void:
 
 	# For Debug Purposes only
+	print ("Testing Translation te: ", Dialogs.translate_to("la", "te_IN"))
+	
+	
+	
 	print ("Testing Translation En: ",Dialogs.translate_to("char3", "en_US")) 
 	print ("Testing Translation Es: ", Dialogs.translate_to("char3", "pt_BR"))
-	print ("Testing Translation Es: ", Dialogs.translate_to("char3", "fr"))
+	print ("Testing Translation Fr: ", Dialogs.translate_to("char3", "fr"))
+	print ("Testing Translation hi: ", Dialogs.translate_to("char3", "hi_IN"))
+	#print ("Testing Translation te: ", Dialogs.translate_to("char1", "te"))
 	print ("Testing Translation Error: ", Dialogs.translate_to("char7", "en"))
+
 
 
 # Saves User's Language to Global Variable

@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/Menu1B.ogg-e8d07c13a88b5d82ec1030dc0d026304.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://c31eld6evx34h"
+path="res://.godot/imported/Menu1B.ogg-e8d07c13a88b5d82ec1030dc0d026304.oggvorbisstr"
 
 [deps]
 
 source_file="res://sounds/Menu1B.ogg"
-dest_files=[ "res://.import/Menu1B.ogg-e8d07c13a88b5d82ec1030dc0d026304.oggstr" ]
+dest_files=["res://.godot/imported/Menu1B.ogg-e8d07c13a88b5d82ec1030dc0d026304.oggvorbisstr"]
 
 [params]
 
 loop=true
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

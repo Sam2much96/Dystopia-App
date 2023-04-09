@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/blip10.ogg-d74f6a7190d865411ec0013281fc8432.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://c1oy2w2cf7t78"
+path="res://.godot/imported/blip10.ogg-d74f6a7190d865411ec0013281fc8432.oggvorbisstr"
 
 [deps]
 
 source_file="res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip10.ogg"
-dest_files=[ "res://.import/blip10.ogg-d74f6a7190d865411ec0013281fc8432.oggstr" ]
+dest_files=["res://.godot/imported/blip10.ogg-d74f6a7190d865411ec0013281fc8432.oggvorbisstr"]
 
 [params]
 
 loop=true
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

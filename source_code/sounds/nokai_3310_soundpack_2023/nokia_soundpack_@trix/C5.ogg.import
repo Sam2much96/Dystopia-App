@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/C5.ogg-7968d585d88e0d75e8bd8405460ed9a9.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://rat68m3gwx47"
+path="res://.godot/imported/C5.ogg-7968d585d88e0d75e8bd8405460ed9a9.oggvorbisstr"
 
 [deps]
 
 source_file="res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/C5.ogg"
-dest_files=[ "res://.import/C5.ogg-7968d585d88e0d75e8bd8405460ed9a9.oggstr" ]
+dest_files=["res://.godot/imported/C5.ogg-7968d585d88e0d75e8bd8405460ed9a9.oggvorbisstr"]
 
 [params]
 
 loop=true
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -40,7 +40,8 @@ signal dialog_ended
 
 var active = false
 
-var dialog_box = null setget _set_dialog_box
+#var dialog_box = null setget _set_dialog_box
+var dialog_box = null
 
 var language : String = ""# stores the current language the user selects
 
@@ -89,6 +90,8 @@ func _on_dialog_ended():
 func translate_to(_language : String, locale: String)-> String:
 	
 	TranslationServer.set_locale(locale)
+	#print (TranslationServer.get_loaded_locales() ) # for debug purposes only
+	print (TranslationServer.get_locale())
 	return (tr(_language))
-	#else: return ("sdgdsdhdh") # returns an empty string
+
 

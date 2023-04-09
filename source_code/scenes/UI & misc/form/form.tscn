@@ -1,168 +1,83 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=6 format=3 uid="uid://blqorx4k2vgst"]
 
-[ext_resource path="res://fonts/Comic Book.otf" type="DynamicFontData" id=1]
-[ext_resource path="res://scenes/UI & misc/form/Form.gd" type="Script" id=2]
-[ext_resource path="res://resources/illustrations/coins silver.png" type="Texture" id=3]
-[ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=4]
-[ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=5]
-[ext_resource path="res://themes/Buttons_white+Black.tres" type="Theme" id=6]
-[ext_resource path="res://themes/option+button_Red.tres" type="Theme" id=7]
-
-[sub_resource type="DynamicFontData" id=1]
-font_path = "res://fonts/Comic Book.otf"
-
-[sub_resource type="DynamicFont" id=2]
-size = 40
-outline_color = Color( 0, 0, 0, 1 )
-use_filter = true
-font_data = SubResource( 1 )
-
-[sub_resource type="DynamicFontData" id=3]
-font_path = "res://fonts/Comic Book.otf"
-
-[sub_resource type="DynamicFont" id=4]
-size = 20
-use_filter = true
-font_data = SubResource( 3 )
-
-[sub_resource type="DynamicFont" id=5]
-size = 30
-use_filter = true
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFontData" id=6]
-font_path = "res://fonts/Comic Book.otf"
-
-[sub_resource type="DynamicFont" id=7]
-use_filter = true
-font_data = SubResource( 6 )
+[ext_resource type="Script" path="res://scenes/UI & misc/form/Form.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://dbjyfe18axe3m" path="res://resources/illustrations/coins silver.png" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/UI & misc/Dialog_box.tscn" id="5"]
+[ext_resource type="Theme" uid="uid://ceam8avq22m4d" path="res://themes/Buttons_white+Black.tres" id="6"]
+[ext_resource type="Theme" uid="uid://da0mdusaynl0s" path="res://themes/option+button_Red.tres" id="7"]
 
 [node name="form" type="CanvasLayer"]
-script = ExtResource( 2 )
+script = ExtResource("2")
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_left = -218.0
-margin_right = 1272.0
-margin_bottom = 417.0
-color = Color( 0.686275, 0.686275, 0.686275, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+color = Color(0.686275, 0.686275, 0.686275, 1)
 
 [node name="TextureRect" type="TextureRect" parent="."]
-self_modulate = Color( 1, 1, 1, 0.564706 )
-margin_left = 486.445
-margin_top = 51.7433
-margin_right = 899.445
-margin_bottom = 394.743
-texture = ExtResource( 3 )
+self_modulate = Color(1, 1, 1, 0.564706)
+texture = ExtResource("3")
 
 [node name="ui" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -934.046
-margin_top = -488.574
-margin_right = 89.9542
-margin_bottom = 111.426
-rect_scale = Vector2( 2, 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="grid" type="GridContainer" parent="ui"]
-margin_left = 316.0
-margin_top = 149.0
-margin_right = 416.0
-margin_bottom = 219.0
-rect_scale = Vector2( 2.12613, 2.12613 )
+layout_mode = 0
 columns = 2
 
 [node name="TouchScreenButton" type="TouchScreenButton" parent="ui/grid"]
-position = Vector2( 7.62939e-06, 18 )
+position = Vector2(7.62939e-06, 18)
 
 [node name="label_player" type="Label" parent="ui/grid"]
 visible = false
-margin_right = 229.0
-margin_bottom = 52.0
-rect_min_size = Vector2( 128, 0 )
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-custom_fonts/font = SubResource( 2 )
+layout_mode = 2
 text = "Your name:"
 
 [node name="text_player" type="LineEdit" parent="ui/grid"]
 visible = false
-margin_left = 233.0
-margin_right = 363.0
-margin_bottom = 52.0
-rect_min_size = Vector2( 128, 0 )
-custom_fonts/font = SubResource( 4 )
+layout_mode = 2
 text = "wallet id"
 
 [node name="label_email" type="Label" parent="ui/grid"]
 visible = false
-margin_left = 233.0
-margin_top = 6.0
-margin_right = 387.0
-margin_bottom = 46.0
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-custom_fonts/font = SubResource( 5 )
+layout_mode = 2
 text = "mnemonic:"
 
 [node name="text_email" type="LineEdit" parent="ui/grid"]
 visible = false
-margin_right = 128.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 128, 0 )
-custom_fonts/font = SubResource( 7 )
+layout_mode = 2
 text = "mnemonic"
 
 [node name="label_spacer3" type="Label" parent="ui/grid"]
-margin_right = 104.0
-margin_bottom = 14.0
+layout_mode = 2
 
 [node name="label_spacer" type="Label" parent="ui/grid"]
-margin_left = 108.0
-margin_right = 108.0
-margin_bottom = 14.0
+layout_mode = 2
 
 [node name="play" type="Button" parent="ui/grid"]
-margin_top = 18.0
-margin_right = 104.0
-margin_bottom = 44.0
-theme = ExtResource( 6 )
+layout_mode = 2
+theme = ExtResource("6")
 text = "Play!"
 
 [node name="label_spacer2" type="Label" parent="ui/grid"]
-margin_left = 108.0
-margin_top = 24.0
-margin_right = 108.0
-margin_bottom = 38.0
+layout_mode = 2
 
 [node name="language" type="OptionButton" parent="ui/grid"]
-margin_top = 48.0
-margin_right = 104.0
-margin_bottom = 71.0
-theme = ExtResource( 7 )
-text = "Languague"
+layout_mode = 2
+theme = ExtResource("7")
 
 [node name="instructions" type="Label" parent="ui"]
 visible = false
-margin_left = 75.0638
-margin_top = 389.842
-margin_right = 336.064
-margin_bottom = 570.842
-custom_colors/font_color = Color( 0.992157, 1, 0, 1 )
-custom_fonts/font = ExtResource( 4 )
+layout_mode = 0
 text = "Use WASD keys to move, SPACEBAR to fire on PC. You will respawn upon death."
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="Dialog_box" parent="." instance=ExtResource( 5 )]
+[node name="Dialog_box" parent="." instance=ExtResource("5")]
 visible = false
+anchors_preset = 12
+expand_mode = 1
 
 [node name="Timer" type="Timer" parent="."]
 

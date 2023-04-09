@@ -14,7 +14,9 @@ extends PanelContainer
 export (bool) var enabled #= false
 signal not_enabled
 signal enabled
-	
+
+onready var Algos : Label = $VBoxContainer/HBoxContainer/Quests/Algos
+
 func _ready():
 	
 	
@@ -40,6 +42,8 @@ func _input(event):
 			visible = enabled
 			hide()
 			get_tree().paused = false
+			
+			_update_wallet_stats()
 			#print (enabled)
 			return enabled
 
@@ -47,7 +51,7 @@ func _input(event):
 
 #
 func _update_wallet_stats(): #Updates killcount and Algos
-	$VBoxContainer/HBoxContainer/Quests/Algos.text = 'mAlgos: ' + str (Globals.algos)
+	Algos.text = 'mAlgos: ' + str (Globals.algos)
 
 
 func _update_quest_listing():

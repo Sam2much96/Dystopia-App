@@ -40,7 +40,7 @@ var globals_label
 var ads_label
 var avail_thread_label
 #class_name Debug
-export (bool) var enabled = true
+var enabled : bool= true
 
 var Autosave_debug ='' 
 var Music_debug 
@@ -150,7 +150,7 @@ func _process(_delta):
 		debug_panel = debug_panels_cr8ted.pop_front()
 
 " Globally Accessible Framerate"
-func FPS_debug()-> float:
+func fps_debug()-> float:
 	return Engine.get_frames_per_second()
 
 func _ram_debug():
@@ -173,8 +173,10 @@ func start_debug_v1():  #Creates multiple instances bug
 
 
 	#creates and loads dynamic fonts
-	var dynamic_font = DynamicFont.new()
-	dynamic_font.font_data = load('res://fonts/adamwarrenpro.ttf')
+	#var dynamic_font = DynamicFont.new()
+	#dynamic_font.font_data = load('res://fonts/adamwarrenpro.ttf')
+	var dynamic_font = FontFile.new()
+	dynamic_font.load_dynamic_font('res://fonts/adamwarrenpro.ttf')
 	
 	"Changes Font Size for Mobile Ui"
 	if Globals.screenOrientation == 1:
@@ -312,10 +314,10 @@ func show_debug_2(): #works, but the label spawn point breaks
 func log_debug(): #improvve logging code run at exit tree  #Copy log files to documents
 	if ProjectSettings.get_setting('logging/file_logging/enable_file_logging'):
 		var _doc = OS.get_system_dir(2) 
-		var _dir =Directory.new()
-		var _log = File.new()
-		_log.open('user://logs/godot.log', File.READ_WRITE)
-		_log.store_string ( 'dystopia_app_log'+ str(OS.get_time(true)) +
+		#var _dir =DirAccess
+		#var _log = 
+		var _log = FileAccess.open('user://logs/godot.log', FileAccess.READ_WRITE)
+		_log.store_string ( 'dystopia_app_log'+ str(Time.get_time_dict_from_system(true)) +
 			Music_debug + Player_debug + Ram_debug + FPS_debug + Enemy_debug + Network_debug + Comics_debug +
 			Autosave_debug + misc_debug + Globals_debug + Ads_debug + avail_thread
 			) 
@@ -325,6 +327,7 @@ func log_debug(): #improvve logging code run at exit tree  #Copy log files to do
 		print ('Doc:',_doc,'  log: ', _log) #works
 		print ('logging debug, saved to  ', _doc, ', user://logs/godot.log')
 		_log.close()
+		var _dir = DirAccess.open("user://logs/godot.log")
 		_dir.copy('user://logs/godot.log',str(_doc)) #buggy ## Low Priority Program. Does not execute
 
 # Low Priority Program. Does not execute

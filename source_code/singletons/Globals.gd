@@ -98,9 +98,15 @@ var progress : float
 var address : String
 var mnemonic : String
 var player_name : String
-var algos : int  = Wallet.Wallet.load_account_info(false, Wallet.token_write_path, Wallet.FileCheck3, Wallet.UserData).get("_wallet_algos")
+var algos : int  #= Wallet.Wallet.load_account_info(false, Wallet.token_write_path, Wallet.FileCheck3, Wallet.UserData).get("_wallet_algos")
 	#MicroAlgos 
 
+
+" Platforms as Arrays"
+var platforms : Array = ['Android','iOS','X11' ]
+
+var mobiles : Array = ["Android" ,"iOS" ]
+var pc : Array = ["OSX","Server","Windows","UWP","X11"]
 
 "Device Variables"
 var user_data_dir : String =OS.get_user_data_dir()
@@ -332,9 +338,9 @@ func _go_to_cinematics():
 
 
 
-func resize_window(x,y): #resizes the game window
+func resize_window(x,y)-> void: #resizes the game window
 	screenSize = Vector2(x,y);
-	#return OS.set_window_size(Vector2(x,y));
+	DisplayServer.window_set_size(Vector2(x,y));
 
 # Convert bytes to Megabytes
 func _ram_convert(bytes) :

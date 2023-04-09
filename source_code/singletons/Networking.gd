@@ -127,8 +127,8 @@ func _process(_delta):
 	for child in _reference_to_self.get_children():
 		if child is Timer:
 			check_timer = child
-			if not child.is_connected("timeout",self, '_check_connection') :
-				child.connect("timeout",self, '_check_connection') # connects timeout signal to check connection 
+			#if not child.is_connected("timeout", _check_connection(url, self._reference_to_self)) :
+			#	child.connect("timeout",self, '_check_connection') # connects timeout signal to check connection 
 		if child is HTTPRequest:
 #checks connection status -> Force connect HTTP request's signals
 			if child.is_connected("connection_success",self, '_on_success') != true:
@@ -365,19 +365,19 @@ static func download_image_(body: PackedByteArray, Save_path: String, node : HTT
 			push_error("An error occurred while trying to display the image.")
 		elif image_error == OK:
 			"Save File locally"
-			var local_tex =FileAccess
-			local_tex.open((Save_path +".png"), FileAccess.WRITE)
+			
+			var local_tex = FileAccess.open((Save_path +".png"), FileAccess.WRITE)
 			
 			
 			
 			
-			#while not node.get_downloaded_bytes() > node.get_body_size() && local_tex.eof_reached() == false: #causes a large file bug, generates a 3gb file
-			#	print ("Loading Image--------", ( node.get_body_size()/1000), " kb") # for debug purposes 
-			#	local_tex.store_buffer(body) #stores image locally
+			while not node.get_downloaded_bytes() > node.get_body_size() && local_tex.eof_reached() == false: #causes a large file bug, generates a 3gb file
+				print ("Loading Image--------", ( node.get_body_size()/1000), " kb") # for debug purposes 
+				local_tex.store_buffer(body) #stores image locally
 				#if local_tex.eof_reached() == true: #causes a significant lag
-			#	if node.get_downloaded_bytes() == node.get_body_size(): #causes a significant lag
-					#local_tex.close()
-			#		break
+				if node.get_downloaded_bytes() == node.get_body_size(): #causes a significant lag
+					local_tex.close()
+					break
 			print ("Image Download Successful")
 			texture.create_from_image(image)
 			"returns an image texture"
@@ -391,7 +391,7 @@ static func download_image_(body: PackedByteArray, Save_path: String, node : HTT
 #consider running 2 operations here. A read operation and a write operation
 # works
 static func download_file_(node : HTTPRequest,body: PackedByteArray, Save_path: String, file_type: String) -> FileAccess:
-	var file = FileAccess
+	var file = FileAccess.open((Save_path + file_type), FileAccess.WRITE )
 	#var cunt = []
 	if body != null:
 		
@@ -400,18 +400,19 @@ static func download_file_(node : HTTPRequest,body: PackedByteArray, Save_path: 
 		# Should be .zip or .json for different file types
 		# SHould ideally contain a check for verifying the contents of the file type string
 		#file.open_compressed((Save_path + file_type), File.WRITE, File.COMPRESSION_GZIP )
-		file.open((Save_path + file_type), FileAccess.WRITE )
 		
-		#while not node.get_downloaded_bytes() > node.get_body_size() && file.eof_reached() == false:
+		#file.open((Save_path + file_type), FileAccess.WRITE )
+		
+		while not node.get_downloaded_bytes() > node.get_body_size() && file.eof_reached() == false:
 		
 		
-		#	file.store_buffer(body)
+			file.store_buffer(body)
 			
-		#	if node.get_downloaded_bytes() == node.get_body_size(): #causes a significant lag
-		#			file.close()
-		#			break 
+			if node.get_downloaded_bytes() == node.get_body_size(): #causes a significant lag
+					file.close()
+					break 
 		
-		#if file.eof_reached(): file.close()
+		if file.eof_reached(): file.close()
 		
 		# it's sending the data across the network, but its not decoding it properly                                           
 		var data = node.get_downloaded_bytes()
@@ -432,7 +433,7 @@ static func download_file_(node : HTTPRequest,body: PackedByteArray, Save_path: 
 #consider running 2 operations here. A read operation and a write operation
 # works
 static func save_file_(body: PackedByteArray, Save_path: String, file_size: int) -> FileAccess:
-	var file = FileAccess
+	var file = FileAccess.open((Save_path ), FileAccess.WRITE )
 	
 	#var Dir = Directory.new()
 	
@@ -445,19 +446,19 @@ static func save_file_(body: PackedByteArray, Save_path: String, file_size: int)
 		#file.open_compressed((Save_path + file_type), File.WRITE, File.COMPRESSION_GZIP )
 		
 		
-		file.open((Save_path ), FileAccess.WRITE )
+		#file.open((Save_path ), FileAccess.WRITE )
 		
 		#while not node.get_downloaded_bytes() > node.get_body_size() && file.eof_reached() == false:
 		print ("storing file to ", Save_path)
 		
-	#	while not file.get_len() > file_size:
-	#		file.store_buffer(body)
+		while not file.get_len() > file_size:
+			file.store_buffer(body)
 			
-	#		if file.get_len() == file_size:
-	#			file.close()
-	#			break 
+			if file.get_len() == file_size:
+				file.close()
+				break 
 		
-	#	if file.eof_reached(): file.close()
+		if file.eof_reached(): file.close()
 		
 		# it's sending the data across the network, but its not decoding it properly                                           
 		#var data = node.get_downloaded_bytes()

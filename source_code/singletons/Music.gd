@@ -33,11 +33,9 @@ THERE ARE TWO FUNCTIONS FOR PLAYING MUSIC TRACKS AND MUSIC PLAYLISTS
 """
 extends Node
 #add more controls to this script, it breaks the singleton
-export (bool) var music_on 
-export (bool) var sfx_on
-export (int) var volume # volume controller code is not yet written
-
-export(String, FILE, "*.ogg") var music_track = ""
+var music_on : bool
+var sfx_on : bool
+var volume : int# volume controller code is not yet written
 
 # should me moved to github repository
 # file checker should loop through playlist
@@ -131,10 +129,9 @@ var nokia_soundpack : Dictionary = {
 }
 
 var _music
-onready var Music_streamer =get_node("A")  #Refrences the music player node
-onready var  Music_streamer_2 =get_node("D")
-onready var sfx_streamer 
-onready var track
+
+var sfx_streamer 
+var track
 #create all your music actions here as animated nodes
 """
 I put in an automatic music shuffling script in here. Feel free to update it 
@@ -148,15 +145,24 @@ Music singleton that handles crossfading when a new song starts
 and applies a low pass filter when the game is paused. Nothing too wise
 """
 var music_debug =''
-onready var current_track
+var current_track
 
-onready var music_bus_2 = AudioServer.get_bus_index($B.bus)
-onready var music_bus = AudioServer.get_bus_index($A.bus)
-
-
+var Music_streamer
+var  Music_streamer_2
+var music_track = ""#(String, FILE, "*.ogg") 
+var music_bus
+var music_bus_2
 
 func _ready():
+	Music_streamer =get_node("A")  #Refrences the music player node
+	Music_streamer_2 =get_node("D")
+	music_bus_2 = AudioServer.get_bus_index($B.bus)
+	music_bus = AudioServer.get_bus_index($A.bus)
 	
+	
+	
+	var music_track = ""#(String, FILE, "*.ogg") 
+
 	# Needs more code
 	#download_and_uncompress_music() 
 	
@@ -252,12 +258,12 @@ func _notification(what):
 		AudioServer.set_bus_volume_db(music_bus_2,-100)
 		#turn_off()
 		print ('music off- Notificationh Predelete')
-	if what == NOTIFICATION_APP_PAUSED:
+	if what == NOTIFICATION_APPLICATION_PAUSED:
 		AudioServer.set_bus_mute(music_bus, true)
 		AudioServer.set_bus_mute(music_bus_2, true)
 		clear()
 		#pass
-	if what == NOTIFICATION_APP_RESUMED:
+	if what == NOTIFICATION_APPLICATION_RESUMED:
 		AudioServer.set_bus_mute(music_bus, false)
 		AudioServer.set_bus_mute(music_bus_2, false)
 		shuffle(playlist_one)
@@ -270,7 +276,7 @@ MUSIC SHUFFLE
 """
 func shuffle (playlist):
 	music_track = ''
-	track = int(rand_range(-1,playlist.size())) #selects a random track number
+	track = int(randf_range(-1,playlist.size())) #selects a random track number
 	music_track = playlist[track]
 	return music_track
 
@@ -289,7 +295,7 @@ func play_sfx(list): #a separate bus channel for sfx using dictionary playlist
 		$C.stream = load(music_track)
 		$C.play()
 		sfx_streamer = str ('playing sfx: ',music_track.get_file())
-		yield(get_tree().create_timer(0.8), "timeout")
+		#await (get_tree().create_timer(0.8), "timeout")
 		$C.stop()
 
 func play_track(_track): #for playing single sample tracks
@@ -300,7 +306,7 @@ func play_track(_track): #for playing single sample tracks
 			$D.set_stream ( load (_track)) #Children Scripts should not load the soundtracks
 			$D.play(0.0)
 			sfx_streamer  = str('playing sfx: ',_track.get_file())
-			yield(get_tree().create_timer(0.8), "timeout")
+			#await (get_tree().create_timer(0.8), "timeout")
 			$D.stop()
 
 func sound(what): #Turns on/ off and saves it via a global script
@@ -308,7 +314,7 @@ func sound(what): #Turns on/ off and saves it via a global script
 	if what == 'off' or 'Off' or 'OFF': #Debug
 		music_on = false
 		sfx_on = false
-		_notification(NOTIFICATION_APP_PAUSED)
+		_notification(NOTIFICATION_APPLICATION_PAUSED)
 		#print ('Turned off Music', Globals.Music_on_settings) #For Debug purposes only
 	if what == 'on' or 'On' or 'ON':
 		music_on = true

@@ -34,11 +34,13 @@ var label_spacer
 var label_spacer2
 var label_spacer3
 
-
+var os : String
 var result
 var responsecode
 var headers
 var body
+
+
 func _init():
 	translate()
 
@@ -54,7 +56,7 @@ func _ready():
 
 	var timer = $Timer
 
-	#os = Globals.os
+	os = Globals.os
 	_debug =get_tree().get_root().get_node("/root/Debug")
 
 	
@@ -74,7 +76,7 @@ func _ready():
 	#language.add_item('Nigerian Pidgin')
 
 	# Connects the Networking signal
-	Networking.connect("request_completed", _http_request_completed(result, responsecode, headers, body))
+	#Networking.connect("request_completed", _http_request_completed(result, responsecode, headers, body))
 
 
 	"Disables the Play button Until Internet Access is Verified "
@@ -99,30 +101,33 @@ func _on_play_pressed():
 CHECKS IF THE DEVICE IS INTERNET CONNECTED AND GATEKEEPS ACCESS ON MOBILE DEVICES
 """
 func _check_if_device_is_online(): 
-	if Globals.os == 'Android' or 'iOS' or 'X11': #disable x11 for release build
-		index = index + 1
-		dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
-		#Networking.url = 
-		Networking._check_connection( 'https://mfts.io', Networking)#url('https://play.google.com/store/apps/details?id=dystopia.app')
+	for i in Globals.platforms:
+		if i == Globals.os:
+		#disable x11 for release build
+			index = index + 1
+			dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
+			#Networking.url = 
+			Networking._check_connection( 'https://mfts.io', Networking)#url('https://play.google.com/store/apps/details?id=dystopia.app')
 
 
-func _http_request_completed(result, response_code, headers, body):
-	if body.empty() != true:
+func _http_request_completed(result, response_code, headers, hbody):
+	#if body.empty() != true:
 		show_play_button()
 		
 		Networking.good_internet = true #aves the internet status as a global variable
 		
-		dialgue_box.show_dialog('Device is internet connected','Admin')
+		#dialgue_box.show_dialog('Device is internet connected','Admin')
 		print ('Device is internet connected', result, response_code)
 		return
+	
 	# Loop
-	while body.empty() == true && index < 30:
-		print ('No Internet Connection', result, response_code)
-		index += 1
-		_check_if_device_is_online()
-		if _debug != null:
+	#while body.empty() == true && index < 30:
+	#	print ('No Internet Connection', result, response_code)
+	#	index += 1
+	#	_check_if_device_is_online()
+	#	if _debug != null:
 			
-			get_tree().change_scene_to( _debug.error_splash_page)
+	#		get_tree().change_scene_to( _debug.error_splash_page)
 		
 		#Resets Networking node
 		Networking.stop_check()
@@ -130,7 +135,7 @@ func _http_request_completed(result, response_code, headers, body):
 		if index == 10:
 			#dialgue_box.show_dialog('No Internet Connection','Admin') #not needed
 			get_tree().change_scene_to(_debug.error_splash_page)
-			break
+	#		break
 
 
 func show_play_button() :

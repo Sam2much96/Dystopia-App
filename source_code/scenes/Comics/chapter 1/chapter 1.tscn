@@ -61,7 +61,7 @@ animations = [{
 }]
 
 [node name="chapter_1" type="AnimatedSprite2D" groups=["comics"]]
-position = Vector2(-1.81116, 1.70413)
+position = Vector2(593, 349)
 scale = Vector2(0.6, 0.6)
 sprite_frames = SubResource("8")
 frame = 2

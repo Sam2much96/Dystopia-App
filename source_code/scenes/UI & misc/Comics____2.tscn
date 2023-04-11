@@ -29,7 +29,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Comics" parent="." instance=ExtResource("1")]
-SwipeLocked = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Comics"]
 layout_mode = 0
@@ -119,11 +118,6 @@ layout_mode = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
 focus_mode = 0
-margin_left = 39.5979
-margin_top = 265.872
-margin_right = 39.5979
-margin_bottom = 265.872
-enabled_focus_mode = 0
 
 [connection signal="freed_comics" from="Comics" to="Comics/ScrollContainer/GridContainer" method="_on_Comics_freed_comics"]
 [connection signal="loaded_comics" from="Comics" to="Comics/ScrollContainer/GridContainer" method="_on_comics_loaded_comics"]

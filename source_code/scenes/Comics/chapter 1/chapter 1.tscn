@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://bfcls4cpoqu5i"]
+[gd_scene load_steps=12 format=3 uid="uid://bfcls4cpoqu5i"]
 
 [ext_resource type="Texture2D" uid="uid://cdlj5ug270rao" path="res://scenes/Comics/chapter 1/chapter 1 Neo sud, the new south webp.webp" id="1"]
 [ext_resource type="Script" path="res://New game code and features/comic_panel_extension_script.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://bxilsw35fbniw" path="res://scenes/UI & misc/word_bubble_box.tscn" id="3_2kp12"]
 
 [sub_resource type="AtlasTexture" id="1"]
 atlas = ExtResource("1")
@@ -68,3 +69,9 @@ frame = 1
 centered = false
 offset = Vector2(-428.761, -611.626)
 script = ExtResource("2")
+
+[node name="word bubble" parent="." instance=ExtResource("3_2kp12")]
+position = Vector2(-260, -291.667)
+scale = Vector2(1.78759, 1.78759)
+frame = 0
+debug = false

@@ -4,7 +4,8 @@ The goal of this script is to store and send comic page details
 to the comic class script. 
 """
 
-# 
+# It should also synconize data with the word bubble in a way that is playable 
+
 @export var panel : Vector2
 
 # Called when the node enters the scene tree for the first time.

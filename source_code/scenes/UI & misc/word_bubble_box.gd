@@ -7,6 +7,12 @@
 #(3) Implement multilanguage functionality (done)
 #(4) Use Line2d for wordbubble and dialogue boxes
 # *************************************************
+# How to Use
+#
+# (1) use state machine to change Word Bubble type
+# (2) use show_dialog and show_dialog_2 to display text respectively
+#
+# *************************************************
 
 extends AnimatedSprite2D
 

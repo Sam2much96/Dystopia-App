@@ -40,8 +40,10 @@ signal dialog_ended
 
 var active = false
 
+# Set Get Implementation in Godot 4 Docs: https://godotengine.org/qa/137477/how-to-use-godot-4-setget
+
 #var dialog_box = null setget _set_dialog_box
-var dialog_box = null
+@onready var dialog_box : DialogBox = null : set = _set_dialog_box , get =_get_dialog_box
 
 var language : String = ""# stores the current language the user selects
 
@@ -54,37 +56,47 @@ func hide_dialogue(): #can be used to hide the dialogue box. Not best Practice
 		dialog_box.hide_dialogue() # Trigger a hide function in it.
 
 
-func _set_dialog_box(node):
-	if not node is Node: # if not node is not of type node?
+func _set_dialog_box(dialog_box : DialogBox):
+	if not dialog_box is DialogBox: # if not node is not of type node?
 		push_error("provided node doesn't extend Node") # push error
 		return 
 	
-	dialog_box = node
+	
+	#dialog_box = node
+	
+	print (dialog_box) # for debug purposes only
 	
 	if dialog_box.get_script().has_script_signal("dialog_started"):
-		dialog_box.connect("dialog_started", self, "_on_dialog_started")
+		
+		dialog_box.connect("dialog_started", _on_dialog_started)
+		#dialog_box.connect_signal_A()
 	else:
 		push_error("provided node doesn't implement dialog_started signal")
-	
+		
 	if dialog_box.get_script().has_script_signal("dialog_ended"):
-		dialog_box.connect("dialog_ended", self, "_on_dialog_ended")
+		dialog_box.connect("dialog_ended", _on_dialog_ended)
+		#dialog_box.connect_signal_B()
 	else:
 		push_error("provided node doesn't implement dialog_started signal")
-	
+		
+	#pass
+
+# currently unused get function
+func _get_dialog_box():
 	pass
 
-func _on_dialog_started():
+var _on_dialog_started = func _on_dialog_started():
 	active = true
 	emit_signal("dialog_started")
-	
-func _on_dialog_ended():
+	print ("dialog started")
+
+var _on_dialog_ended = func _on_dialog_ended():
 	active = false
 	emit_signal("dialog_ended")
-	
+	print("dialog ended")
 
- # Uses the translate feature from the Form at res://scenes/UI & misc/form/form.tscn
- # It parses from translations .csv and returns a string
- # Edit the translation sources .ods file to expand translations
+
+
 
 #Documentation: https://www.gotut.net/localisation-godot/
 func translate_to(_language : String, locale: String)-> String:

@@ -626,7 +626,7 @@ func _process(_delta):
 			#why so many if's?
 			if enabled != false && Kinematic_2d != null:
 				
-				if comics_placeholder != null:
+				if cmx_root != null:
 					#for _i in Kinematic_2d.get_children():
 					for _i in cmx_root.get_children():
 						if _i is AnimatedSprite2D:

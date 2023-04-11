@@ -77,7 +77,6 @@ layout_mode = 0
 text = "Use WASD keys to move, SPACEBAR to fire on PC. You will respawn upon death."
 
 [node name="Dialog_box" parent="." instance=ExtResource("5")]
-visible = false
 
 [node name="Timer" type="Timer" parent="."]
 

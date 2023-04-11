@@ -68,7 +68,7 @@ func _ready():
 	if Dialogs.language != "":
 		get_tree().change_scene_to_packed(cinematics)
 
-	
+	dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
 
 	#Adds 3 new languague selection
 	language.add_item('English') 

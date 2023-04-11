@@ -37,6 +37,8 @@ func _ready():
 	hide()
 	pass # Replace with function body.
 
+
+
 func show_dialog(new_text, speaker):
 	dialog_text.text = new_text
 	$nametag/label.text = speaker

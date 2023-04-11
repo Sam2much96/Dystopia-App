@@ -1,8 +1,14 @@
-[gd_scene load_steps=9 format=3 uid="uid://c1w7awamwvod6"]
+[gd_scene load_steps=12 format=3 uid="uid://c1w7awamwvod6"]
 
 [ext_resource type="Script" path="res://scenes/UI & misc/Dialog_box.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://bxks3c5xvlgh5" path="res://resources/misc/dialog_box.png" id="3"]
+[ext_resource type="FontFile" uid="uid://cfh324wecq0qy" path="res://fonts/Word_bubble_dialogue.tres" id="3_ajulb"]
 [ext_resource type="Texture2D" uid="uid://25u77yl18wrg" path="res://resources/misc/next_dialog_arrow.png" id="4"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_6fk7j"]
+font = ExtResource("3_ajulb")
+font_size = 31
+font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Animation" id="3"]
 length = 0.1
@@ -64,10 +70,10 @@ tracks/4/path = NodePath(".:rect_position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0.00472333, 0.1),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0.00472333),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, 585), Vector2(0, 427)]
+"values": [Vector2(0, 585)]
 }
 tracks/5/type = "method"
 tracks/5/imported = false
@@ -158,13 +164,14 @@ tracks/1/path = NodePath("next_dialog_arrow:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [false]
+"values": [false, true]
 }
 
 [sub_resource type="Animation" id="6"]
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -190,8 +197,24 @@ tracks/1/keys = {
 "values": [150]
 }
 
+[sub_resource type="Animation" id="Animation_eo5ak"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("next_dialog_arrow:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_udftu"]
 _data = {
+"RESET": SubResource("Animation_eo5ak"),
 "appear": SubResource("3"),
 "disappear": SubResource("4"),
 "show_text": SubResource("5"),
@@ -199,32 +222,54 @@ _data = {
 }
 
 [node name="Dialog_box" type="TextureRect"]
-modulate = Color(1, 1, 1, 0)
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -202.0
+offset_right = 662.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.648589, 0.648589)
 texture = ExtResource("3")
 expand_mode = 1
 stretch_mode = 6
 script = ExtResource("2")
 
 [node name="dialog_text" type="Label" parent="."]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.913
+anchor_bottom = 0.7
+offset_left = 106.0
+offset_right = -9.2251
+offset_bottom = 90.6
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In semper molestie erat, id aliquam nulla iaculis a. Suspendisse consectetur vehicula consequat. Integer mollis libero sed sem convallis, vitae rutrum metus dapibus. Phasellus purus quam, euismod id diam ut, semper sagittis ipsum. Aenean vel mollis lectus, quis placerat eros. Donec elementum vestibulum augue dignissim vehicula. Mauris ultricies lacus id odio aliquet, eu iaculis urna sodales. "
+label_settings = SubResource("LabelSettings_6fk7j")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 clip_text = true
+text_overrun_behavior = 3
+visible_characters = 150
+visible_ratio = 0.331858
 
 [node name="next_dialog_arrow" type="TextureRect" parent="."]
-visible = false
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -162.931
+offset_top = -112.358
+offset_right = -77.9309
+offset_bottom = -56.3576
+grow_horizontal = 0
+grow_vertical = 0
 texture = ExtResource("4")
-expand_mode = 1
 stretch_mode = 6
 
 [node name="nametag" type="TextureRect" parent="."]

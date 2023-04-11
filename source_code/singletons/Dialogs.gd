@@ -41,11 +41,14 @@ signal dialog_ended
 var active = false
 
 # Set Get Implementation in Godot 4 Docs: https://godotengine.org/qa/137477/how-to-use-godot-4-setget
+"Set Get Methods"
 
-#var dialog_box = null setget _set_dialog_box
 @onready var dialog_box : DialogBox = null : set = _set_dialog_box , get =_get_dialog_box
+@onready var word_bubble_box : WordBubbleBox = null
 
 var language : String = ""# stores the current language the user selects
+
+@export var _script_testing : String = 'res://resources/dialogues/script_testing.gd'# 'res://resources/dialogues/Dystopia chapter 1 Neo sud.gd' 
 
 func show_dialog(text:String, speaker:String):
 	if is_instance_valid(dialog_box): # If an instance of dialogue box hasn't been deleted from memory?
@@ -62,9 +65,8 @@ func _set_dialog_box(dialog_box : DialogBox):
 		return 
 	
 	
-	#dialog_box = node
 	
-	print (dialog_box) # for debug purposes only
+	#print (dialog_box) # for debug purposes only
 	
 	if dialog_box.get_script().has_script_signal("dialog_started"):
 		
@@ -88,12 +90,12 @@ func _get_dialog_box():
 var _on_dialog_started = func _on_dialog_started():
 	active = true
 	emit_signal("dialog_started")
-	print ("dialog started")
+	#print ("dialog started") # for debug purposes only
 
 var _on_dialog_ended = func _on_dialog_ended():
 	active = false
 	emit_signal("dialog_ended")
-	print("dialog ended")
+	#print("dialog ended")  # for debug purposes only
 
 
 
@@ -106,4 +108,57 @@ func translate_to(_language : String, locale: String)-> String:
 	print (TranslationServer.get_locale())
 	return (tr(_language))
 
+
+
+
+class Parser:
+	
+	"""
+	THE PURPOSE OF THIS CODE IS TO PARSE TEXT DATA FROM A JSON FILE AND DISPLAY IT IN A DIALOGUE BOX
+	"""
+	#Godot has greater finese in parsing json files
+	
+	# Determines what lines to show
+	const test_index : int = 8 
+
+
+	# Parses a JSON script and returns a line
+
+	static func parse_script(index : int, _script : String ) -> String: #Places Dialogue in wordbubbles with Dialogue singleton-aid
+		#Parse gd script
+		var _f = FileAccess
+		var line_string : String
+		if _f.file_exists(_script): #('res://resources/dialogues/script_testing.gd'):
+			print ('File Exists')
+			var t =_f.open (_script, FileAccess.READ)
+			# Resets count to start from beginning
+			#index = 1 
+			while t.get_position() < t.get_length() && not t.eof_reached():
+			#iterate through all lines until the end of file is reached
+			#var index controls which line is shown
+				line_string = str (index )  + ' ' + t.get_line()
+				line_string += " "
+				
+				#........... # for debug purposes only #...................#
+				#print (line_string) 
+				
+				#........... # Debug ends #...................#
+				
+				"Shows Dialogue Based on Line index"
+				
+				if index == 8: #index controls the line to parse
+					
+					# Depreciated for String return instead
+					#$Dialog_box.show_dialog(line, 'script parser')
+					
+					return line_string
+					
+					#Update Dialogue box to pass script to the wordbubble system
+				#Write a controller to control the index
+				#
+				#
+				index += 1 
+			t.close() #don't close yet
+			
+		return line_string
 

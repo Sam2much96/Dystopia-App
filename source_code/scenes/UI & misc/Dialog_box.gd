@@ -31,9 +31,11 @@ signal dialog_ended
 
 var lines_to_skip = 0
 
+func _enter_tree():
+	Dialogs.dialog_box = self
+
 func _ready():
 	dialog_text = $dialog_text
-	Dialogs.dialog_box = self
 	hide()
 	pass # Replace with function body.
 

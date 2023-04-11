@@ -22,7 +22,7 @@ Will show a dialog box with the name of the character and
 dialog text, two lines at a time. 
 """
 
-onready var dialog_text = $dialog_text
+var dialog_text : Label 
 
 # warning-ignore:unused_signal
 signal dialog_started
@@ -32,6 +32,7 @@ signal dialog_ended
 var lines_to_skip = 0
 
 func _ready():
+	dialog_text = $dialog_text
 	Dialogs.dialog_box = self
 	hide()
 	pass # Replace with function body.

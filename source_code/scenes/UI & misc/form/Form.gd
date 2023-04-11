@@ -20,7 +20,7 @@ This is a gate-keeper script to keep check user's internet connections, restrict
 ####
 
 
-var cinematics = load('res://scenes/cinematics/cinematics.tscn')
+var cinematics : PackedScene = load('res://scenes/cinematics/cinematics.tscn')
 var index : int = 0
 
 #Saves player name and emaol address to global script
@@ -35,10 +35,11 @@ var label_spacer2
 var label_spacer3
 
 var os : String
-var result
-var responsecode
-var headers
-var body
+
+var result : int
+var responsecode : int = 0
+var body : PackedByteArray
+var headers : PackedStringArray
 
 
 func _init():
@@ -65,15 +66,18 @@ func _ready():
 		_debug = get_tree().get_root().get_node("/root/Debug")
 
 	if Dialogs.language != "":
-		get_tree().change_scene_to(cinematics)
+		get_tree().change_scene_to_packed(cinematics)
 
 	
 
 	#Adds 3 new languague selection
 	language.add_item('English') 
-	language.add_item('Brazilian Portuguese') 
+	language.add_item('Brazilian Pt') 
 	language.add_item('French')
-	#language.add_item('Nigerian Pidgin')
+	language.add_item('Telugi')
+	language.add_item('Hindi')
+
+
 
 	# Connects the Networking signal
 	#Networking.connect("request_completed", _http_request_completed(result, responsecode, headers, body))
@@ -81,7 +85,7 @@ func _ready():
 
 	"Disables the Play button Until Internet Access is Verified "
 
-	hide_play_button() 
+	#hide_play_button() 
 	_check_if_device_is_online()
 
 
@@ -89,11 +93,12 @@ func _ready():
 
 func _input(_event):
 	dialgue_box.hide_dialogue()
+	pass 
 
 
 
 func _on_play_pressed():
-	get_tree().change_scene_to(cinematics)
+	get_tree().change_scene_to_packed(cinematics)
 
 
 
@@ -110,8 +115,8 @@ func _check_if_device_is_online():
 			Networking._check_connection( 'https://mfts.io', Networking)#url('https://play.google.com/store/apps/details?id=dystopia.app')
 
 
-func _http_request_completed(result, response_code, headers, hbody):
-	#if body.empty() != true:
+func _http_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray):
+	if body.is_empty() != true:
 		show_play_button()
 		
 		Networking.good_internet = true #aves the internet status as a global variable
@@ -121,20 +126,20 @@ func _http_request_completed(result, response_code, headers, hbody):
 		return
 	
 	# Loop
-	#while body.empty() == true && index < 30:
-	#	print ('No Internet Connection', result, response_code)
-	#	index += 1
-	#	_check_if_device_is_online()
-	#	if _debug != null:
+	while body.is_empty() == true && index < 30:
+		print ('No Internet Connection', result, response_code)
+		index += 1
+		_check_if_device_is_online()
+		if _debug != null:
 			
-	#		get_tree().change_scene_to( _debug.error_splash_page)
+			get_tree().change_scene_to_packed( _debug.error_splash_page)
 		
 		#Resets Networking node
 		Networking.stop_check()
 		# Error splash page
 		if index == 10:
 			#dialgue_box.show_dialog('No Internet Connection','Admin') #not needed
-			get_tree().change_scene_to(_debug.error_splash_page)
+			get_tree().change_scene_to_packed(_debug.error_splash_page)
 	#		break
 
 
@@ -185,6 +190,11 @@ func _on_language_item_selected(index):
 	elif index == 2:
 		Dialogs.language = "fr"
 		#Globals.save_game()
+	elif index == 3:
+		Dialogs.language = "te_IN"
+	elif index == 4:
+		Dialogs.language = "hi_IN"
+
 	else : Dialogs.language = ""
 
 

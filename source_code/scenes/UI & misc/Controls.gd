@@ -15,16 +15,16 @@ Game Control settings
 #map game settings to save file
 var selector #for the menu cycle selector
 
-onready var back : Button = $ScrollContainer/VBoxContainer/back
-onready var music : Button = $ScrollContainer/VBoxContainer/music
-onready var debug : Button = $ScrollContainer/VBoxContainer/Debug
-onready var Shuffle : Button =$ScrollContainer/VBoxContainer/Shuffle
-onready var Change_Controller_type : Button = $ScrollContainer/VBoxContainer/Direction_controls
+@onready var back : Button = $ScrollContainer/VBoxContainer/back
+@onready var music : Button = $ScrollContainer/VBoxContainer/music
+@onready var debug : Button = $ScrollContainer/VBoxContainer/Debug
+@onready var Shuffle : Button =$ScrollContainer/VBoxContainer/Shuffle
+@onready var Change_Controller_type : Button = $ScrollContainer/VBoxContainer/Direction_controls
 
 # Auto Scroll with Swipe Gestures 
-onready var scroller : ScrollContainer= get_node("ScrollContainer")
+@onready var scroller : ScrollContainer= get_node("ScrollContainer")
 
-onready var ControlButtons : Array =  [back, music,debug,Shuffle,Change_Controller_type]
+@onready var ControlButtons : Array =  [back, music,debug,Shuffle,Change_Controller_type]
 
 func _ready():
 	if get_tree().get_root().has_node("/root/Debug") == true:
@@ -123,7 +123,7 @@ func _on_music_toggled(button_pressed): #Music on and off settings
 	if button_pressed :
 		Music.sound('off')
 	else  :
-		Music._notification(NOTIFICATION_APP_RESUMED)
+		Music._notification(NOTIFICATION_APPLICATION_RESUMED)
 
 
 func _on_Help_pressed():

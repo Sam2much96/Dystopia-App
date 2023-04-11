@@ -19,16 +19,16 @@
 
 extends GridContainer
 
-onready var Grid_Container = self
-onready var Scroll_Container = Grid_Container.get_parent()
+@onready var Grid_Container = self
+@onready var Scroll_Container = Grid_Container.get_parent()
 
 
-onready var loaded_comics 
+@onready var loaded_comics 
 
 # Size Vectors For Stretching THe scroll Container
 # Bug Fix for Broken Comics UI on Mobile Screen Orientations
 
-var size_A : Vector2 = Vector2(1772,1871)
+var size_A : Vector2 = Vector2(3437,1871)
 var size_B : Vector2 = Vector2(2490, 6289)
 
 func _ready():
@@ -49,21 +49,25 @@ func _ready():
 		
 	elif Globals.screenOrientation == 0: #PC UI
 		Grid_Container.set_columns(7)
-		Scroll_Container.set_enable_h_scroll(true)
-		Scroll_Container.set_enable_v_scroll(false)
+	#	Scroll_Container.set_enable_h_scroll(true)
+		Scroll_Container.set_horizontal_scroll_mode(1) 
+
+		#Scroll_Container.set_enable_v_scroll(false)
+		Scroll_Container.set_vertical_scroll_mode(0)
 		#get_node("chap_3").grab_focus()
 
 		
-		return Scroll_Container.set_size(size_A)
+		Scroll_Container.set_size(size_A)
 		
 
 
 
 "Hides Comics Chapters Buttons"
-func _on_Comics_loaded_comics():
-	loaded_comics = true
-	for child in get_children(): # works
-		child.hide()
+#func _on_Comics_loaded_comics():
+#	loaded_comics = true
+#	print (11111111)
+#	for child in get_children(): # works
+#		child.hide()
 
 
 'Shows Comics Chapter Buttons'
@@ -103,3 +107,8 @@ func _on_Back_button_pressed():
 
 
 
+
+
+func _on_comics_loaded_comics():
+	for child in get_children(): # works
+		child.hide()

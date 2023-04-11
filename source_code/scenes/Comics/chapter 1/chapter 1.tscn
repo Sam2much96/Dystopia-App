@@ -1,56 +1,70 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=11 format=3 uid="uid://bfcls4cpoqu5i"]
 
-[ext_resource path="res://scenes/Comics/chapter 1/chapter 1 Neo sud, the new south webp.webp" type="Texture" id=1]
-[ext_resource path="res://New game code and features/comic_panel_extension_script.gd" type="Script" id=2]
+[ext_resource type="Texture2D" uid="uid://cdlj5ug270rao" path="res://scenes/Comics/chapter 1/chapter 1 Neo sud, the new south webp.webp" id="1"]
+[ext_resource type="Script" path="res://New game code and features/comic_panel_extension_script.gd" id="2"]
 
-[sub_resource type="AtlasTexture" id=1]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 0, 0, 859, 1215 )
+[sub_resource type="AtlasTexture" id="1"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 859, 1215)
 
-[sub_resource type="AtlasTexture" id=2]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 859, 0, 859, 1215 )
+[sub_resource type="AtlasTexture" id="2"]
+atlas = ExtResource("1")
+region = Rect2(859, 0, 859, 1215)
 
-[sub_resource type="AtlasTexture" id=3]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 1718, 0, 859, 1215 )
+[sub_resource type="AtlasTexture" id="3"]
+atlas = ExtResource("1")
+region = Rect2(1718, 0, 859, 1215)
 
-[sub_resource type="AtlasTexture" id=4]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 0, 1215, 859, 1215 )
+[sub_resource type="AtlasTexture" id="4"]
+atlas = ExtResource("1")
+region = Rect2(0, 1215, 859, 1215)
 
-[sub_resource type="AtlasTexture" id=5]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 859, 1215, 859, 1215 )
+[sub_resource type="AtlasTexture" id="5"]
+atlas = ExtResource("1")
+region = Rect2(859, 1215, 859, 1215)
 
-[sub_resource type="AtlasTexture" id=6]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 1718, 1215, 859, 1215 )
+[sub_resource type="AtlasTexture" id="6"]
+atlas = ExtResource("1")
+region = Rect2(1718, 1215, 859, 1215)
 
-[sub_resource type="AtlasTexture" id=7]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 0, 2430, 859, 1215 )
+[sub_resource type="AtlasTexture" id="7"]
+atlas = ExtResource("1")
+region = Rect2(0, 2430, 859, 1215)
 
-[sub_resource type="SpriteFrames" id=8]
-animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ) ],
+[sub_resource type="SpriteFrames" id="8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("1")
+}, {
+"duration": 1.0,
+"texture": SubResource("2")
+}, {
+"duration": 1.0,
+"texture": SubResource("3")
+}, {
+"duration": 1.0,
+"texture": SubResource("4")
+}, {
+"duration": 1.0,
+"texture": SubResource("5")
+}, {
+"duration": 1.0,
+"texture": SubResource("6")
+}, {
+"duration": 1.0,
+"texture": SubResource("7")
+}],
 "loop": true,
-"name": "default",
+"name": &"default",
 "speed": 5.0
-} ]
+}]
 
-[node name="chapter_1" type="AnimatedSprite" groups=["comics"]]
-position = Vector2( -1.81116, 1.70413 )
-scale = Vector2( 0.6, 0.6 )
-frames = SubResource( 8 )
+[node name="chapter_1" type="AnimatedSprite2D" groups=["comics"]]
+position = Vector2(-1.81116, 1.70413)
+scale = Vector2(0.6, 0.6)
+sprite_frames = SubResource("8")
 frame = 2
 centered = false
-offset = Vector2( -428.761, -611.626 )
-script = ExtResource( 2 )
+offset = Vector2(-428.761, -611.626)
+script = ExtResource("2")

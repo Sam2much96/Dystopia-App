@@ -5,7 +5,7 @@ to the comic class script.
 """
 
 # 
-export (Vector2) var panel
+@export var panel : Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

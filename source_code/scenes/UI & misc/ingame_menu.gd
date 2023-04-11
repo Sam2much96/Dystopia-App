@@ -23,54 +23,45 @@ var selector = 0
 signal menu_hidden
 signal menu_showing
 signal loading_game
-export (bool) var enabled 
+@export var enabled : bool = true
 
-var shop = load('res://scenes/UI & misc/Shop.tscn')
+var shop : PackedScene = load('res://scenes/UI & misc/Shop.tscn')
 
 """
 The game menu script. 
 """
 
 enum { SHOWING, HIDDEN, LOADING}
-#func _enter_tree():
-	#hide()
-export (String) var menu_state
+@export var menu_state = SHOWING
 
 
 #Buttons
-onready var comics : Button = $MarginContainer/ScrollContainer/HSeparator/comics
-onready var new_game : Button = $"MarginContainer/ScrollContainer/HSeparator/new game"
-
-onready var continue_game : Button = get_node("MarginContainer/ScrollContainer/HSeparator/continue") 
-onready var game_menu : MarginContainer = get_node("MarginContainer")
-
-onready var _multiplayer = $MarginContainer/ScrollContainer/HSeparator/multiplayer
-
-onready var anime : Button = $MarginContainer/ScrollContainer/HSeparator/Anime
-onready var practice : Button = $MarginContainer/ScrollContainer/HSeparator/Testing_Scene
-onready var City_scape : Button = $MarginContainer/ScrollContainer/HSeparator/City_scape
-onready var wallet_ : Button = $MarginContainer/ScrollContainer/HSeparator/wallet
-onready var controls : Button = $MarginContainer/ScrollContainer/HSeparator/controls
-onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit Button"
+@onready var comics : Button = $MarginContainer/ScrollContainer/HSeparator/comics
+@onready var new_game : Button =  $"MarginContainer/ScrollContainer/HSeparator/new game"
+@onready var continue_game : Button = get_node("MarginContainer/ScrollContainer/HSeparator/continue") 
+@onready var game_menu : MarginContainer = get_node("MarginContainer")
+@onready var _multiplayer : Button = $MarginContainer/ScrollContainer/HSeparator/multiplayer
+@onready var anime : Button = $MarginContainer/ScrollContainer/HSeparator/Anime
+@onready var practice : Button = $MarginContainer/ScrollContainer/HSeparator/Testing_Scene
+@onready var City_scape : Button = $MarginContainer/ScrollContainer/HSeparator/City_scape
+@onready var wallet_ : Button = $MarginContainer/ScrollContainer/HSeparator/wallet
+@onready var controls : Button = $MarginContainer/ScrollContainer/HSeparator/controls
+@onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit Button"
 
 
 # Auto Scroll with Swipe Gestures
-onready var scroller : ScrollContainer= get_node("MarginContainer/ScrollContainer")
+@onready var scroller : ScrollContainer = get_node("MarginContainer/ScrollContainer")
 
 const scroll_constant: int = 4
 
 
-onready var MenuButtons : Array = [
+@onready var MenuButtons : Array = [
 	comics, new_game, continue_game, game_menu,
 	_multiplayer, anime, practice, City_scape, 
 	wallet_, controls, quit
 ]
 
 func _ready():
-	
-	# Get Scroller node when ready
-	#scroller = 
-	
 	
 	" Translation"
 	manually_translate()
@@ -82,7 +73,7 @@ func _ready():
 	
 	'Hides the Menu once the scene tree is ready'
 	#hide()
-	menu_state =  HIDDEN
+	menu_state =  SHOWING
 	
 	if Globals.load_game(true) and continue_game != null:
 		continue_game.disabled = false 
@@ -148,8 +139,7 @@ func _input(event): #Toggles menu visibility on/off
 
 
 		if event.is_action_pressed("ui_cancel") && visible == true:
-			Globals._go_to_title()
-	 
+			Globals._go_to_title() 
 	
 	"Auto Scroller"
 	# Connects to Global Comics Swipe Feature

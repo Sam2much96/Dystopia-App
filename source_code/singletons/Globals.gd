@@ -154,8 +154,8 @@ func _ready():
 		player.clear()
 	
 	
-	
-	#VisualServer.set_default_clear_color(ColorN("white")) #what does this do?
+	# Set Global Background Color
+	#RenderingServer.set_default_clear_color(Color("white")) 
 
 
 func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_processing()
@@ -168,6 +168,7 @@ func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_pr
 
 		pass
 	else: return 1;
+
 
 	'Resource Loader FOr Large Scenes'
 
@@ -331,10 +332,10 @@ func _go_to_title():
 	
 	'changes scene to title_screen'
 	
-	return get_tree().change_scene("res://scenes/Title screen.tscn")
+	return get_tree().change_scene_to_file("res://scenes/Title screen.tscn")
 
 func _go_to_cinematics():
-	return get_tree().change_scene('res://scenes/cinematics/cinematics.tscn') 
+	return get_tree().change_scene_to_file('res://scenes/cinematics/cinematics.tscn') 
 
 
 
@@ -352,7 +353,7 @@ func _ram_convert(bytes) :
 
 func change_scene_to(scene): #Loads scenes faster?
 	if scene is PackedScene: 
-		if scene != null: return get_tree().change_scene_to(scene)  
+		if scene != null: return get_tree().change_scene_to_packed(	scene)  
 	elif scene is String: 
 		if scene != "": 
 			loading_resource = true

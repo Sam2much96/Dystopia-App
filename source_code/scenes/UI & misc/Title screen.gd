@@ -10,14 +10,17 @@ The purpose of this code is to beautify the UI programmatically
 
 
 #changes Title Screen Art using Global Screen Orientation
-onready var art1 = $TextureRect
-onready var art2 = $TextureRect2
+var art1 : TextureRect
+var art2: TextureRect
 
 #  Server File Downloads
 #onready 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	art1 = $TextureRect
+	art2 = $TextureRect2
+	
 	if Globals.screenOrientation == 0:
 		art1.show()
 		art2.hide()

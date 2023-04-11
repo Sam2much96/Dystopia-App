@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/UI & misc/form/Form.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://dbjyfe18axe3m" path="res://resources/illustrations/coins silver.png" id="3"]
-[ext_resource type="PackedScene" path="res://scenes/UI & misc/Dialog_box.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://c1w7awamwvod6" path="res://scenes/UI & misc/Dialog_box.tscn" id="5"]
 [ext_resource type="Theme" uid="uid://ceam8avq22m4d" path="res://themes/Buttons_white+Black.tres" id="6"]
 [ext_resource type="Theme" uid="uid://da0mdusaynl0s" path="res://themes/option+button_Red.tres" id="7"]
 
@@ -78,8 +78,6 @@ text = "Use WASD keys to move, SPACEBAR to fire on PC. You will respawn upon dea
 
 [node name="Dialog_box" parent="." instance=ExtResource("5")]
 visible = false
-anchors_preset = 12
-expand_mode = 1
 
 [node name="Timer" type="Timer" parent="."]
 

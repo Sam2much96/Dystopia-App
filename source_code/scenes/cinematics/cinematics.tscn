@@ -1,38 +1,34 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=3 uid="uid://bgqkn27ovq35f"]
 
-[ext_resource path="res://scenes/cinematics/cinematics V2.gd" type="Script" id=1]
-[ext_resource path="res://resources/Buttons/bck.png" type="Texture" id=3]
-[ext_resource path="res://singletons/Title animation.tres" type="Animation" id=4]
+[ext_resource type="Script" path="res://scenes/cinematics/cinematics V2.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://c6frxm3fjh5fg" path="res://resources/Buttons/bck.png" id="3"]
+[ext_resource type="Animation" path="res://singletons/Title animation.tres" id="4"]
 
-[node name="Cinematics" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": true
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ddy2f"]
+_data = {
+"intro_animation": ExtResource("4")
 }
 
-[node name="VideoPlayer" type="VideoPlayer" parent="."]
-margin_left = 8.48529
-margin_top = 8.48523
-margin_right = 8.48529
-margin_bottom = 8.48523
+[node name="Cinematics" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="VideoPlayer" type="VideoStreamPlayer" parent="."]
+layout_mode = 0
 
 [node name="Node2D" type="Control" parent="."]
-rect_scale = Vector2( 0.65, 0.65 )
+anchors_preset = 0
 
 [node name="skip" type="TextureButton" parent="."]
 visible = false
-modulate = Color( 0.584314, 0.152941, 0.152941, 1 )
-margin_left = 571.07
-margin_top = 557.632
-margin_right = 931.07
-margin_bottom = 869.632
-rect_scale = Vector2( 0.488382, 0.469212 )
-texture_normal = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+modulate = Color(0.584314, 0.152941, 0.152941, 1)
+layout_mode = 0
+texture_normal = ExtResource("3")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 20.0
@@ -41,10 +37,12 @@ autostart = true
 
 [node name="animation player" type="AnimationPlayer" parent="."]
 autoplay = "intro_animation"
-anims/intro_animation = ExtResource( 4 )
+libraries = {
+"": SubResource("AnimationLibrary_ddy2f")
+}
 
-[node name="Position2D" type="Position2D" parent="."]
-position = Vector2( -512, 300 )
+[node name="Position2D" type="Marker2D" parent="."]
+position = Vector2(-512, 300)
 
 [connection signal="finished" from="VideoPlayer" to="." method="_on_VideoPlayer_finished"]
 [connection signal="pressed" from="skip" to="." method="_on_skip_pressed"]

@@ -18,13 +18,14 @@ NOTIFICATION GENERIC BAR
 """
 #add signals
 
-export (bool)var condition 
-export(String) var Display_text = ""
+@export var condition : bool 
+@export var Display_text : String = ""
+@export var state = STATE_POPUP
 
-var label  
+var label : Label
 
 enum { STATE_POPUP, STATE_HIDE,}
-export var state = STATE_POPUP
+
 func _ready():
 	# Node not found Error catcher
 	if get_node_or_null("CenterContainer/Label") != null:

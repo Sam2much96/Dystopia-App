@@ -99,7 +99,6 @@ var _on_dialog_ended = func _on_dialog_ended():
 
 
 
-
 #Documentation: https://www.gotut.net/localisation-godot/
 func translate_to(_language : String, locale: String)-> String:
 	

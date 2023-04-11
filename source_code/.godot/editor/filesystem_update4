@@ -1,0 +1,25 @@
+res://scenes/UI & misc/Dialog_box.tscn
+res://themes/Buttons_white+Black.tres
+res://themes/option+button_Red.tres
+res://themes/Regular.tres
+res://fonts/scroll_bar_theme.tres
+res://singletons/Dialogs.gd
+res://scenes/UI & misc/form/form.tscn
+res://New game code and features/Error splash page for crashes.tscn
+res://scenes/cinematics/cinematics.tscn
+res://scenes/Title screen.tscn
+res://scenes/UI & misc/Comics.tscn
+res://scenes/UI & misc/ingame_menu.tscn
+res://scenes/UI & misc/Comics____2.tscn
+res://scenes/characters/Player.tscn
+res://ads/Appodeal/Appodeal.tscn
+res://scenes/Comics/chapter 1/chapter 1.tscn
+res://scenes/UI & misc/Dialog_box.gd
+res://scenes/UI & misc/form/Form.gd
+res://fonts/Word_bubble_dialogue.tres
+res://singletons/Comics.v5.1.gd
+res://New game code and features/word_bubble_testing_scene.tscn
+res://New game code and features/Wordbubble_dialogue_system.gd
+res://scenes/UI & misc/word_bubble_box.gd
+res://scenes/UI & misc/word_bubble_box.tscn
+res://fonts/Word_bubble_dialogue+2.tres

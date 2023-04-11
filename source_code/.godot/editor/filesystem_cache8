@@ -1,0 +1,771 @@
+2a60927148abd1d33b818b535e306557
+::res://::1681223026
+App's white paper v2.0.0.webp::CompressedTexture2D::8890419274585438539::1678318772::1681057560::1::::<><>::
+Changelog.md::TextFile::-1::1678318772::0::1::::<><>::
+Default.material::StandardMaterial3D::-1::1678318772::0::1::::<><>::
+default_bus_layout.tres::AudioBusLayout::5978682035864245801::1681223030::0::1::::<><>::
+export_presets.cfg::TextFile::-1::1680630662::0::1::::<><>::
+icon.png::CompressedTexture2D::8112901107810896355::1678318774::1681057554::1::::<><>::
+skin.material::StandardMaterial3D::-1::1678318776::0::1::::<><>::
+_config.yml::TextFile::-1::1678318772::0::1::::<><>::
+::res://addons/::1679986252
+::res://addons/algodot/::1681057554
+Algod.gd::GDScript::-1::1680585611::0::1::::<>Node<>::
+icon.png::CompressedTexture2D::8482981338317082315::1678318772::1681057554::1::::<><>::
+plugin.cfg::TextFile::-1::1678318774::0::1::::<><>::
+plugin.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+::res://addons/algodot/Documentation/::1678332181
+::res://addons/algodot/Documentation/Content/::1681057558
+Algorand.md::TextFile::-1::1678318772::0::1::::<><>::
+algorand_logo.png::CompressedTexture2D::8093337852948817890::1678318772::1681057558::1::::<><>::
+Welcome.md::TextFile::-1::1678318772::0::1::::<><>::
+::res://addons/algodot/Documentation/Content/Algorand/::1678332181
+Algodot GDscript Function.md::TextFile::-1::1678318772::0::1::::<><>::
+Algodot.md::TextFile::-1::1678318772::0::1::::<><>::
+::res://addons/algodot/Documentation/Scripts/::1678332181
+DocsCollector.gd::GDScript::-1::1678318772::0::1::::<>RefCounted<>::
+DocsHelper.gd::GDScript::-1::1678318772::0::1::::<>RefCounted<>::
+DocsMarkdownParser.gd::GDScript::-1::1678318772::0::1::::<>Node<>::
+DocsPageViewer.gd::GDScript::-1::1678318772::0::1::::<>RefCounted<>::
+DocsPageViewer.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://addons/algodot/Documentation/Theme/Roboto/Roboto-Regular.ttf<>res://addons/algodot/Documentation/Theme/Roboto/Roboto-Italic.ttf<>res://addons/algodot/Documentation/Scripts/DocsPageViewer.gd<>res://addons/algodot/Documentation/Theme/Roboto/Roboto-Bold.ttf<>res://addons/algodot/Documentation/Theme/Roboto/Roboto-Light.ttf<>res://addons/algodot/Documentation/Theme/Roboto/Roboto-BoldItalic.ttf
+DocsReferenceCollector.gd::GDScript::-1::1678318772::0::1::::<>RefCounted<>::
+DocumentationTree.gd::GDScript::-1::1678318772::0::1::::<>RefCounted<>::
+DocumentationTree.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://addons/algodot/Documentation/Scripts/DocumentationTree.gd
+DocumentationViewer.gd::GDScript::-1::1678318772::0::1::::<>RefCounted<>::
+DocumentationViewer.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://addons/algodot/Documentation/Scripts/DocsPageViewer.tscn<>res://addons/algodot/Documentation/Scripts/DocumentationTree.tscn<>res://addons/algodot/Documentation/Scripts/DocumentationViewer.gd
+::res://addons/algodot/Documentation/Theme/::1678332181
+DocumentationH1.tres::FontFile::-1::1678318772::0::1::::<><>::res://addons/algodot/Documentation/Theme/Roboto/Roboto-Bold.ttf
+DocumentationH2.tres::FontFile::-1::1678318772::0::1::::<><>::res://addons/algodot/Documentation/Theme/Roboto/Roboto-Bold.ttf
+DocumentationH3.tres::FontFile::-1::1678318772::0::1::::<><>::res://addons/algodot/Documentation/Theme/Roboto/Roboto-Bold.ttf
+DocumentationH4.tres::FontFile::-1::1678318772::0::1::::<><>::res://addons/algodot/Documentation/Theme/Roboto/Roboto-BoldItalic.ttf
+DocumentationH5.tres::FontFile::-1::1678318772::0::1::::<><>::res://addons/algodot/Documentation/Theme/Roboto/Roboto-Italic.ttf
+::res://addons/algodot/Documentation/Theme/Roboto/::1681057354
+LICENSE.txt::TextFile::-1::1678318772::0::1::::<><>::
+Roboto-Black.ttf::FontFile::8757904152934003433::1678318772::1681057354::1::::<><>::
+Roboto-BlackItalic.ttf::FontFile::1077999989631796870::1678318772::1681057354::1::::<><>::
+Roboto-Bold.ttf::FontFile::1608894615626291499::1678318772::1681057354::1::::<><>::
+Roboto-BoldItalic.ttf::FontFile::8451877591002797442::1678318772::1681057354::1::::<><>::
+Roboto-Italic.ttf::FontFile::8559267802760927373::1678318772::1681057354::1::::<><>::
+Roboto-Light.ttf::FontFile::1156534590855012673::1678318772::1681057354::1::::<><>::
+Roboto-LightItalic.ttf::FontFile::1919391652696773553::1678318772::1681057354::1::::<><>::
+Roboto-Medium.ttf::FontFile::3832341684250693000::1678318772::1681057354::1::::<><>::
+Roboto-MediumItalic.ttf::FontFile::4489554297733381061::1678318772::1681057354::1::::<><>::
+Roboto-Regular.ttf::FontFile::8873988971074932008::1678318772::1681057354::1::::<><>::
+Roboto-Thin.ttf::FontFile::2737980769793472701::1678318772::1681057354::1::::<><>::
+Roboto-ThinItalic.ttf::FontFile::2824138714469139704::1678318772::1681057354::1::::<><>::
+::res://addons/algodot/gdnative/::1678332181
+gdnative_lib.tres::GDNativeLibrary::-1::1678318772::0::1::::<><>::
+::res://addons/algodot/lib/::1680759411
+::res://addons/algodot/lib/android arm64-v8a/::1680760131
+::res://addons/algodot/lib/android armv7/::1680760163
+::res://addons/algodot/lib/linux_dependencies/::1678332184
+::res://addons/algodot/lib/windows_dependencies/::1678332184
+::res://addons/gdunzip/::1678332184
+gdunzip.gd::GDScript::-1::1678318774::0::1::::<>Node<>::
+plugin.cfg::TextFile::-1::1678318774::0::1::::<><>::
+::res://addons/github-integration/::1681057558
+github-logo.png::CompressedTexture2D::2613751864680161718::1678318774::1681057558::1::::<><>::
+plugin.cfg::TextFile::-1::1678318774::0::1::::<><>::
+::res://addons/github-integration/fonts/::1681057354
+Roboto-Black.ttf::FontFile::7656837557074528207::1678318774::1681057354::1::::<><>::
+Roboto-Regular.ttf::FontFile::1557667736324530920::1678318774::1681057354::1::::<><>::
+SEGOEUI.TTF::FontFile::3780810504846048805::1678318774::1681057354::1::::<><>::
+SEGOEUIB.TTF::FontFile::6595837666944739331::1678318774::1681057354::1::::<><>::
+::res://addons/github-integration/icons/::1681057559
+accept-w.png::CompressedTexture2D::7279292581207532379::1678318774::1681057558::1::::<><>::
+accept.png::CompressedTexture2D::8702361442454915559::1678318774::1681057558::1::::<><>::
+arrow-down.png::CompressedTexture2D::3279071680341205736::1678318774::1681057558::1::::<><>::
+arrow-left.png::CompressedTexture2D::4268146080827308333::1678318774::1681057558::1::::<><>::
+arrow-left.svg::CompressedTexture2D::2281572216263530459::1678318774::1681057558::1::::<><>::
+arrow-right.png::CompressedTexture2D::7950290594474328254::1678318774::1681057558::1::::<><>::
+bell.png::CompressedTexture2D::4208997891644308745::1678318774::1681057559::1::::<><>::
+checked-white.png::CompressedTexture2D::6437008467192414571::1678318774::1681057559::1::::<><>::
+checked.png::CompressedTexture2D::4288613434834682643::1678318774::1681057559::1::::<><>::
+deny-w.png::CompressedTexture2D::1262906036754770612::1678318774::1681057559::1::::<><>::
+deny.png::CompressedTexture2D::1127766006805061092::1678318774::1681057559::1::::<><>::
+option-arrow.png::CompressedTexture2D::2063114046570615409::1678318774::1681057559::1::::<><>::
+radioChecked.png::CompressedTexture2D::8535314712481211399::1678318774::1681057559::1::::<><>::
+radioUncheckedhecked.png::CompressedTexture2D::1947287820686162561::1678318774::1681057559::1::::<><>::
+reload.png::CompressedTexture2D::3964672255888244307::1678318774::1681057559::1::::<><>::
+search.png::CompressedTexture2D::7096811959672059610::1678318774::1681057559::1::::<><>::
+unchecked-white.png::CompressedTexture2D::8401418300828610594::1678318774::1681057559::1::::<><>::
+unchecked.png::CompressedTexture2D::3239773291985640788::1678318774::1681057559::1::::<><>::
+::res://addons/github-integration/icons.pngs/::1678332185
+::res://addons/github-integration/resources/::1681057559
+github-logo.png::CompressedTexture2D::7358798075741858180::1678318774::1681057559::1::::<><>::
+proxy.png::CompressedTexture2D::7140870234934987460::1678318774::1681057559::1::::<><>::
+search.png::CompressedTexture2D::7067953803266782586::1678318774::1681057548::1::::<><>::
+::res://addons/github-integration/resources/loading/::1681057548
+throbber.png::CompressedTexture2D::2325055461703886070::1678318774::1681057548::1::::<><>::
+::res://addons/github-integration/resources/styles/::1678332185
+Branch-black.tres::StyleBoxFlat::-1::1678318774::0::1::::<><>::
+Branch-white.tres::StyleBoxFlat::-1::1678318774::0::1::::<><>::
+ContentesBG-dark.tres::StyleBoxFlat::-1::1678318774::0::1::::<><>::
+ContentesBG-white.tres::StyleBoxFlat::-1::1678318774::0::1::::<><>::
+List-black.tres::StyleBoxFlat::-1::1678318774::0::1::::<><>::
+List-white.tres::StyleBoxFlat::-1::1678318774::0::1::::<><>::
+Repohead-black.tres::StyleBoxFlat::-1::1678318774::0::1::::<><>::
+Repohead-white.tres::StyleBoxFlat::-1::1678318774::0::1::::<><>::
+::res://addons/github-integration/resources/themes/::1678335806
+GitHubTheme-Dark.tres::Theme::-1::1678335805::0::1::::<><>::
+GitHubTheme.tres::Theme::-1::1678335806::0::1::::<><>::
+::res://addons/github-integration/resources/user/::1681057549
+circle.png::CompressedTexture2D::8221862109093652376::1678318774::1681057548::1::::<><>::
+discord.png::CompressedTexture2D::690607562028571758::1678318774::1681057549::1::::<><>::
+paypal.png::CompressedTexture2D::716466540212782966::1678318774::1681057549::1::::<><>::
+placeholder.png::CompressedTexture2D::7249081026143387987::1678318774::1681057549::1::::<><>::
+RoundAvatar.tres::ShaderMaterial::-1::1678335803::0::1::::<><>::res://addons/github-integration/resources/user/circle.png
+::res://addons/github-integration/scenes/::1678332185
+Commit.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://addons/github-integration/scripts/Commit.gd<>res://addons/github-integration/icons/arrow-left.svg<>res://addons/github-integration/resources/themes/GitHubTheme-Dark.tres
+ContributorClass.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://addons/github-integration/resources/user/circle.png<>res://addons/github-integration/scripts/ContributorClass.gd<>res://addons/github-integration/resources/user/RoundAvatar.tres
+EditGist.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://addons/file-editor/fonts/Roboto-Black.ttf
+Gist.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://addons/github-integration/scripts/Gist.gd<>res://addons/github-integration/icons/arrow-left.svg<>res://addons/github-integration/resources/themes/GitHubTheme.tres<>res://addons/github-integration/scenes/RedBtn.tscn<>res://addons/github-integration/scenes/GreenBtn.tscn
+GistItem.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://addons/github-integration/scripts/GistItem.gd
+GitHub.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://addons/github-integration/scripts/GitHub.gd<>res://addons/github-integration/resources/themes/GitHubTheme-Dark.tres<>res://addons/github-integration/scenes/loading.tscn<>res://addons/github-integration/scenes/Header.tscn<>res://addons/github-integration/scenes/Commit.tscn<>res://addons/github-integration/scenes/SingIn.tscn<>res://addons/github-integration/scenes/UserPanel.tscn<>res://addons/github-integration/scenes/Repo.tscn<>res://addons/github-integration/scenes/Gist.tscn<>res://addons/github-integration/scenes/Notifications.tscn
+GreenBtn.tscn::PackedScene::-1::1678318774::0::1::::<><>::
+Header.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://addons/github-integration/scripts/Header.gd<>res://addons/github-integration/resources/themes/GitHubTheme-Dark.tres<>res://addons/github-integration/icons/reload.png<>res://addons/github-integration/resources/user/circle.png<>res://addons/github-integration/icons/option-arrow.png<>res://addons/github-integration/icons/arrow-left.png<>res://addons/github-integration/resources/user/paypal.png<>res://addons/github-integration/resources/user/discord.png<>res://addons/github-integration/resources/user/placeholder.png<>res://addons/github-integration/resources/user/RoundAvatar.tres<>res://addons/github-integration/icons/bell.png
+InvitationItem.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://addons/github-integration/scripts/InvitationItem.gd<>res://addons/github-integration/icons/deny.png<>res://addons/github-integration/icons/accept.png<>res://addons/github-integration/resources/user/circle.png<>res://addons/github-integration/resources/user/RoundAvatar.tres
+loading.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://addons/github-integration/scripts/loading.gd<>res://addons/github-integration/resources/loading/throbber.png
+NewRepo.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://addons/github-integration/scripts/WindowDialog.gd
+NormalBtn.tscn::PackedScene::-1::1678318774::0::1::::<><>::
+Notifications.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://addons/github-integration/scripts/Notifications.gd<>res://addons/github-integration/resources/themes/GitHubTheme.tres
+RedBtn.tscn::PackedScene::-1::1678318774::0::1::::<><>::
+Repo.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://addons/github-integration/scripts/Repo.gd<>res://addons/github-integration/resources/themes/GitHubTheme-Dark.tres<>res://addons/github-integration/scenes/RedBtn.tscn<>res://addons/github-integration/icons/arrow-right.png<>res://addons/github-integration/icons/arrow-down.png<>res://addons/github-integration/icons/arrow-left.svg<>res://addons/github-integration/resources/styles/ContentesBG-white.tres<>res://addons/github-integration/resources/styles/ContentesBG-dark.tres<>res://addons/github-integration/resources/styles/Branch-black.tres<>res://addons/github-integration/resources/styles/Repohead-black.tres<>res://addons/github-integration/scenes/GreenBtn.tscn
+RepositoryItem.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://addons/github-integration/scripts/RepositoryItem.gd
+RestHandler.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://addons/github-integration/scripts/RestHandler.gd
+SingIn.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://addons/github-integration/scenes/RedBtn.tscn<>res://addons/github-integration/scenes/GreenBtn.tscn<>res://addons/github-integration/scripts/SignIn.gd<>res://addons/github-integration/github-logo.png<>res://addons/github-integration/resources/themes/GitHubTheme-Dark.tres
+UserPanel.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://addons/github-integration/scripts/NewGist.gd<>res://addons/github-integration/resources/user/placeholder.png<>res://addons/github-integration/icons/search.png<>res://addons/github-integration/scripts/UserPanel.gd<>res://addons/github-integration/resources/themes/GitHubTheme-Dark.tres<>res://addons/github-integration/scenes/NormalBtn.tscn<>res://addons/github-integration/scenes/NewRepo.tscn<>res://addons/github-integration/resources/styles/List-black.tres<>res://addons/github-integration/icons/reload.png
+::res://addons/github-integration/scripts/::1678332185
+Commit.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+ContributorClass.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+Gist.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+GistItem.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+github-integration.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+GitHub.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+Header.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+IconLoaderGithub.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+InvitationItem.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+loading.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+NewGist.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+Notifications.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+PluginSettings.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+Repo.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+Repos.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+RepositoryItem.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+RestHandler.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+SignIn.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+UserPanel.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+user_data.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+WindowDialog.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+::res://addons/NativeLib/::1678332181
+MainUI.gd::GDScript::-1::1678318772::0::1::::<>RefCounted<>::
+MainUI.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://addons/NativeLib/MainUI.gd<>res://addons/NativeLib/icons/glass.svg<>res://addons/NativeLib/icons/android.svg<>res://addons/NativeLib/icons/apple_logo.svg<>res://addons/NativeLib/icons/reload.svg<>res://addons/NativeLib/icons/download.svg<>res://addons/NativeLib/icons/universal_platform.svg<>res://addons/NativeLib/icons/osx.svg<>res://addons/NativeLib/icons/tvos.svg
+package_info.gd::GDScript::-1::1678318772::0::1::::<>RefCounted<>::
+package_info.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://addons/NativeLib/package_info.gd<>res://addons/NativeLib/icons/android.svg<>res://addons/NativeLib/icons/apple_logo.svg<>res://addons/NativeLib/icons/download.svg<>res://addons/NativeLib/icons/reload.svg<>res://addons/NativeLib/icons/trash_bin.svg<>res://addons/NativeLib/icons/universal_platform.svg<>res://addons/NativeLib/icons/www.svg<>res://addons/NativeLib/icons/heart_icon.svg<>res://addons/NativeLib/icons/osx.svg<>res://addons/NativeLib/icons/tvos.svg
+plugin.cfg::TextFile::-1::1678318772::0::1::::<><>::
+plugin.gd::GDScript::-1::1678318772::0::1::::<>RefCounted<>::
+plugin_variable.gd::GDScript::-1::1678318772::0::1::::<>RefCounted<>::
+plugin_variable.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://addons/NativeLib/plugin_variable.gd
+::res://addons/NativeLib/icons/::1681057552
+android.svg::CompressedTexture2D::1652417114889510093::1678318772::1681057551::1::::<><>::
+apple_logo.svg::CompressedTexture2D::6574876474476731961::1678318772::1681057551::1::::<><>::
+download.svg::CompressedTexture2D::5379297713988247235::1678318772::1681057551::1::::<><>::
+glass.svg::CompressedTexture2D::9032931600017454032::1678318772::1681057551::1::::<><>::
+heart_icon.svg::CompressedTexture2D::2594754061544569775::1678318772::1681057551::1::::<><>::
+Info_sign.svg::CompressedTexture2D::6603126687868787197::1678318772::1681057551::1::::<><>::
+osx.svg::CompressedTexture2D::7466506089612090810::1678318772::1681057552::1::::<><>::
+phone.svg::CompressedTexture2D::5625826019535956589::1678318772::1681057552::1::::<><>::
+reload.svg::CompressedTexture2D::220488875794575725::1678318772::1681057552::1::::<><>::
+trash_bin.svg::CompressedTexture2D::2357697927936461830::1678318772::1681057552::1::::<><>::
+tvos.svg::CompressedTexture2D::7524275264092627101::1678318772::1681057552::1::::<><>::
+universal_platform.svg::CompressedTexture2D::4634862304820409618::1678318772::1681057552::1::::<><>::
+www.svg::CompressedTexture2D::8566122411361163698::1678318772::1681057552::1::::<><>::
+::res://addons/nativelib-export/::1678332185
+nativelib_export_plugin.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+plugin.cfg::TextFile::-1::1678318774::0::1::::<><>::
+::res://addons/videodecoder/::1678332187
+::res://addons/videodecoder/osx/::1678332186
+::res://addons/videodecoder/win32/::1678332186
+::res://addons/videodecoder/win64/::1678332186
+::res://addons/videodecoder/x11/::1678332186
+::res://addons/videodecoder/x11_32/::1678332187
+::res://addons/yt-dlp/::1680155967
+downloader.gd::GDScript::-1::1656858764::0::1::::<>Reference<>::
+yt_dlp.gd::GDScript::-1::1680155967::0::1::::YtDlp<>Reference<>::
+::res://ads/::1678332187
+Ads_manager.gd::GDScript::-1::1678318774::0::1::::<>CanvasLayer<>::
+Ads_manager.tscn::PackedScene::-1::1678318774::0::1::::<><>::res://ads/Ads_manager.gd<>res://ads/admob-lib/admob.gd<>res://ads/Appodeal/Appodeal.gd<>res://ads/Yodo1-lib/yodo1mas.gd
+::res://ads/admob-lib/::1681057553
+admob.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+icon.png::CompressedTexture2D::1763989870554127595::1678318774::1681057553::1::::<><>::
+::res://ads/Appodeal/::1681215552
+Appodeal.gd::GDScript::-1::1681187592::0::1::::<>Node<>::
+Appodeal.tscn::PackedScene::4062007646347546284::1681215552::0::1::::<><>::res://ads/Appodeal/Appodeal.gd
+appodeal_logo.png::CompressedTexture2D::4073906675596476969::1678318774::1681057553::1::::<><>::
+::res://ads/Yodo1-lib/::1678332187
+yodo1mas.gd::GDScript::-1::1678318774::0::1::::Yodo1Mas<>Node<>::
+::res://fonts/::1681215131
+adamwarrenpro-bold.ttf::FontFile::8863705779471262498::1678318774::1681057353::1::::<><>::
+adamwarrenpro.ttf::FontFile::8078362824466723093::1678318774::1681057353::1::::<><>::
+Candy Demo.otf::FontFile::5642386763692782705::1678318774::1681057353::1::::<><>::
+Candy Demo.ttf::FontFile::1187804753494090181::1678318774::1681057353::1::::<><>::
+Comic Book.otf::FontFile::8794059139380164086::1678318774::1681057353::1::::<><>::
+Comic_Andy.ttf::FontFile::751093702669724155::1678318774::1681057353::1::::<><>::
+dialog.tres::FontFile::-1::1678318774::0::1::::<><>::res://fonts/Candy Demo.otf
+DigitalStripBB_BoldItal.ttf::FontFile::3485949123025496404::1678318774::1681057353::1::::<><>::
+DigitalStripBB_Reg.ttf::FontFile::8767312648634591621::1678318774::1681057353::1::::<><>::
+ingame_menu.tres::Theme::4889958765510939111::1681112788::0::1::::<><>::
+LiberationSans.ttf::FontFile::1214243393654099993::1678318774::1681057353::1::::<><>::
+Menu_dynamicfont.tres::FontFile::-1::1680144420::0::1::::<><>::res://fonts/Comic_Andy.ttf
+Phantom Fingers.otf::FontFile::2965959373920954596::1678318774::1681057353::1::::<><>::
+Phantom Fingers.ttf::FontFile::52779562088118800::1678318774::1681057353::1::::<><>::
+Roboto-Black.ttf::FontFile::2436191940254822475::1678318774::1681057353::1::::<><>::
+Roboto-BlackItalic.ttf::FontFile::9216768693188454006::1678318774::1681057353::1::::<><>::
+Roboto-Bold.ttf::FontFile::8738439291824043868::1678318774::1681057353::1::::<><>::
+Roboto-BoldItalic.ttf::FontFile::2978090031425935332::1678318774::1681057353::1::::<><>::
+Roboto-Italic.ttf::FontFile::2061662664370175654::1678318774::1681057353::1::::<><>::
+Roboto-Light.ttf::FontFile::6090200587993634514::1678318774::1681057353::1::::<><>::
+Roboto-LightItalic.ttf::FontFile::4326678268483717286::1678318774::1681057353::1::::<><>::
+Roboto-Medium.ttf::FontFile::6276665290772747452::1678318774::1681057353::1::::<><>::
+Roboto-MediumItalic.ttf::FontFile::6975254116790836143::1678318774::1681057353::1::::<><>::
+Roboto-Regular.ttf::FontFile::1645588832008261540::1678318774::1681057353::1::::<><>::
+Roboto-Thin.ttf::FontFile::7905505651446317901::1678318774::1681057353::1::::<><>::
+Roboto-ThinItalic.ttf::FontFile::6754666703799550510::1678318774::1681057353::1::::<><>::
+scroll_bar_theme.tres::Theme::325638608298630374::1681215131::0::1::::<><>::
+spiritmedium.ttf::FontFile::8089379825654540015::1678318774::1681057353::1::::<><>::
+stats.tres::FontFile::-1::1680760351::0::1::::<><>::
+wallet.tres::Theme::-1::1678318774::0::1::::<><>::res://fonts/stats.tres
+Word_bubble_dialogue.tres::FontFile::-1::1678318774::0::1::::<><>::
+::res://fonts/nokia_3310_fontpack_2023/::1681110395
+::res://fonts/nokia_3310_fontpack_2023/classic/::1678332187
+Read Me.txt::TextFile::-1::1678318774::0::1::::<><>::
+::res://fonts/nokia_3310_fontpack_2023/classic/gray_sprite_strip/::1681057566
+classic_dark.png::CompressedTexture2D::8424035729586786220::1678318774::1681057566::1::::<><>::
+classic_light.png::CompressedTexture2D::4206077798070861361::1678318774::1681057565::1::::<><>::
+::res://fonts/nokia_3310_fontpack_2023/classic/harsh_sprite_strip/::1681057566
+classic_dark.png::CompressedTexture2D::74533400765525140::1678318774::1681057566::1::::<><>::
+classic_light.png::CompressedTexture2D::130577078578154542::1678318774::1681057566::1::::<><>::
+::res://fonts/nokia_3310_fontpack_2023/classic/og_sprite_strip/::1681057566
+classic_dark.png::CompressedTexture2D::369044029276397415::1678318774::1681057566::1::::<><>::
+classic_light.png::CompressedTexture2D::6303785510670515106::1678318774::1681057566::1::::<><>::
+::res://fonts/nokia_3310_fontpack_2023/gizmo_@gizmo199/::1678332187
+Read Me.txt::TextFile::-1::1678318774::0::1::::<><>::
+::res://fonts/nokia_3310_fontpack_2023/gizmo_@gizmo199/gray_sprite_strip/::1681057567
+gizmo_dark.png::CompressedTexture2D::909171509650134298::1678318774::1681057567::1::::<><>::
+gizmo_light.png::CompressedTexture2D::3685392631021567003::1678318774::1681057567::1::::<><>::
+::res://fonts/nokia_3310_fontpack_2023/gizmo_@gizmo199/harsh_sprite_strip/::1681057568
+gizmo_dark.png::CompressedTexture2D::8673807666002559506::1678318774::1681057567::1::::<><>::
+gizmo_light.png::CompressedTexture2D::1661139755451427826::1678318774::1681057568::1::::<><>::
+::res://fonts/nokia_3310_fontpack_2023/gizmo_@gizmo199/og_sprite_strip/::1681057567
+gizmo_dark.png::CompressedTexture2D::1433987266330163585::1678318774::1681057567::1::::<><>::
+gizmo_light.png::CompressedTexture2D::3572195078851471934::1678318774::1681057567::1::::<><>::
+::res://fonts/nokia_3310_fontpack_2023/tiny_@matthewwelch/::1681057353
+license.txt::TextFile::-1::1678318774::0::1::::<><>::
+tiny.ttf::FontFile::4527744204135259253::1678318774::1681057353::1::::<><>::
+tiny.txt::TextFile::-1::1678318774::0::1::::<><>::
+::res://New game code and features/::1681215550
+Assasi_State.gd::GDScript::-1::1678318772::0::1::::<>KinematicBody2D<>::
+comic_panel_extension_script.gd::GDScript::-1::1681188155::0::1::::<>Node<>::
+crypto_testing.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://New game code and features/godot-monero.gd
+Drag_extension.gd::GDScript::-1::1678318772::0::1::::<>RefCounted<>::
+Error splash page for crashes.tscn::PackedScene::6863558218209322577::1681215550::0::1::::<><>::
+GD-teal.gd::GDScript::-1::1678318772::0::1::::<>Node<>::
+godot-monero.gd::GDScript::-1::1678318772::0::1::::<>Node<>::
+google_play_games_services.gd::GDScript::-1::1678318772::0::1::::<>Node<>::
+Hint_system.tscn::PackedScene::-1::1678318772::0::1::::<><>::
+i_am_debuging_the_debug.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://singletons/Debug.gd
+Json testing.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://New game code and features/networking_json_test.gd
+networking_json_test.gd::GDScript::-1::1678318772::0::1::::<>Node<>::
+NFT.gd::GDScript::-1::1678318772::0::1::::NFT<>TextureRect<>::
+online_leaderboard.gd::GDScript::-1::1678318772::0::1::::<>Node<>::
+script_parser.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://New game code and features/Wordbubble_dialogue_system.gd<>res://scenes/UI & misc/word_bubble_box.tscn
+web browser.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://scenes/UI & misc/web_browser.gd<>res://fonts/Word_bubble_dialogue.tres
+Wordbubble_dialogue_system.gd::GDScript::-1::1678318772::0::1::::<>Node<>::
+word_bubble_testing_scene.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://New game code and features/Wordbubble_dialogue_system.gd<>res://scenes/UI & misc/Dialog_box.tscn
+::res://New game code and features/Highscores/::1678332181
+Highscores.gd::GDScript::-1::1678318772::0::1::::<>Node<>::
+Highscores.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://New game code and features/online_leaderboard.gd
+::res://New game code and features/Highscores/highscore_PHP/::1678332181
+::res://New game code and features/multiplayer/::1678332181
+::res://New game code and features/multiplayer/images/::1681057568
+damage.png::CompressedTexture2D::6485344130606903182::1678318772::1681057568::1::::<><>::
+fireball.png::CompressedTexture2D::865894232693099021::1678318772::1681057568::1::::<><>::
+particle.png::CompressedTexture2D::3321102000074862704::1678318772::1681057568::1::::<><>::
+star.png::CompressedTexture2D::9133175296422028058::1678318772::1681057560::1::::<><>::
+::res://New game code and features/multiplayer/images/minimap/::1681057560
+background.png::CompressedTexture2D::5149889412741096549::1678318772::1681057560::1::::<><>::
+object.png::CompressedTexture2D::7800939161400157077::1678318772::1681057560::1::::<><>::
+player.png::CompressedTexture2D::6630957616836000296::1678318772::1681057560::1::::<><>::
+::res://New game code and features/multiplayer/scenes/::1679335075
+client.tscn::PackedScene::-1::1678554579::0::1::::<><>::res://New game code and features/multiplayer/scripts/ws_webrtc_client.gd<>res://scenes/levels/Testing Scene 2.tscn<>res://New game code and features/multiplayer/images/minimap/background.png
+login.tscn::PackedScene::-1::1679335075::0::1::::<><>::res://New game code and features/multiplayer/scripts/login.gd<>res://resources/illustrations/coins silver.png<>res://fonts/DigitalStripBB_BoldItal.ttf<>res://fonts/Comic_Andy.ttf
+projectile.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://New game code and features/multiplayer/scripts/projectile.gd<>res://New game code and features/multiplayer/images/fireball.png
+server.tscn::PackedScene::-1::1678554579::0::1::::<><>::res://scenes/levels/Testing Scene 2.tscn<>res://New game code and features/multiplayer/scripts/ws_webrtc_server.gd
+::res://New game code and features/multiplayer/scenes/effects/::1678332181
+damage.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://New game code and features/multiplayer/scripts/effects/damage.gd<>res://New game code and features/multiplayer/images/damage.png
+explosion.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://New game code and features/multiplayer/scripts/effects/explosion.gd<>res://New game code and features/multiplayer/images/damage.png
+::res://New game code and features/multiplayer/scripts/::1678593056
+camera.gd::GDScript::-1::1678318772::0::1::::<>Camera2D<>::
+login.gd::GDScript::-1::1678318772::0::1::::<>CanvasLayer<>::
+minimal.gd::GDScript::-1::1678318772::0::1::::<>Node<>::
+minimap.gd::GDScript::-1::1678318772::0::1::::<>TextureRect<>::
+projectile.gd::GDScript::-1::1678318772::0::1::::<>RigidBody2D<>::
+server.gd::GDScript::-1::1678318772::0::1::::<>RefCounted<>::
+ws_webrtc_client.gd::GDScript::-1::1678554720::0::1::::Client<>Node<>::
+ws_webrtc_server.gd::GDScript::-1::1678593056::0::1::::Server<>Node<>::
+::res://New game code and features/multiplayer/scripts/effects/::1678332181
+damage.gd::GDScript::-1::1678318772::0::1::::<>Node2D<>::
+explosion.gd::GDScript::-1::1678318772::0::1::::<>Node2D<>::
+starfield.gd::GDScript::-1::1678318772::0::1::::<>Control<>::
+::res://New game code and features/Multitouch debug/::1678332181
+Main.gd::GDScript::-1::1678318772::0::1::::<>Node2D<>::
+Main.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://New game code and features/Multitouch debug/Main.gd
+TouchHelper.gd::GDScript::-1::1678318772::0::1::::<>Node<>::
+::res://resources/::1681057562
+bandit_spritesheet.webp::CompressedTexture2D::2240267067119165654::1678318774::1681057562::1::::<><>::
+item.png::CompressedTexture2D::5275969306792246948::1678318774::1681057560::1::::<><>::
+NPC old woman.webp::CompressedTexture2D::4147821148276167717::1678318774::1681057560::1::::<><>::
+NPC shaman.webp::CompressedTexture2D::3296366829045689369::1678318774::1681057560::1::::<><>::
+::res://resources/Aarin/::1681057564
+spritesheet_3.webp::CompressedTexture2D::6757771583070016024::1678318774::1681057564::1::::<><>::
+::res://resources/Animation/::1678332187
+RESET.tres::Animation::-1::1678318774::0::1::::<><>::
+SWIPE_DOWN.tres::Animation::-1::1678318774::0::1::::<><>::
+SWIPE_LEFT.tres::Animation::-1::1678318774::0::1::::<><>::
+SWIPE_RIGHT.tres::Animation::-1::1678318774::0::1::::<><>::
+SWIPE_UP.tres::Animation::-1::1678318774::0::1::::<><>::
+::res://resources/Buttons/::1681057563
+Africa.webp::CompressedTexture2D::1150435442360613544::1678318774::1681057562::1::::<><>::
+bck.png::CompressedTexture2D::6960091344846586896::1678318774::1681057562::1::::<><>::
+comics.png::CompressedTexture2D::6825512445899339583::1678318774::1681057562::1::::<><>::
+menu.png::CompressedTexture2D::4139730467941460630::1678318774::1681057562::1::::<><>::
+Pop up menu.png::CompressedTexture2D::7120910378710782863::1678318774::1681057563::1::::<><>::
+turn.png::CompressedTexture2D::6484851252287725516::1678318774::1681057563::1::::<><>::
+zoom.png::CompressedTexture2D::5573358731480856111::1678318774::1681057563::1::::<><>::
+::res://resources/dialogues/::1678332188
+Dystopia chapter 1 Neo sud.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+script_testing.gd::GDScript::-1::1678318774::0::1::::<>RefCounted<>::
+::res://resources/Environment Tilesets & Tilemaps/::1681057565
+boulder7.webp::CompressedTexture2D::4599253089138687621::1678318774::1681057563::1::::<><>::
+boulder_2.webp::CompressedTexture2D::7157026274948497853::1678318774::1681057563::1::::<><>::
+broken ship webp.webp::CompressedTexture2D::2367977230241498906::1678318774::1681057563::1::::<><>::
+broken ship _2webp.webp::CompressedTexture2D::3611708691744228479::1678318774::1681057563::1::::<><>::
+broken ship_3.webp::CompressedTexture2D::8657016612294602791::1678318774::1681057564::1::::<><>::
+desert dunes 3d 2.webp::CompressedTexture2D::468453512595573570::1678318774::1681057565::1::::<><>::
+desert dunes 3d.webp::CompressedTexture2D::3916485468250190369::1678318774::1681057565::1::::<><>::
+desert dunes tex.webp::CompressedTexture2D::4830736656936747463::1678318774::1681057565::1::::<><>::
+flower_1.webp::CompressedTexture2D::1631969606276776225::1678318774::1681057565::1::::<><>::
+flower_big.webp::CompressedTexture2D::9160720629674986233::1678318774::1681057355::1::::<><>::
+grass.webp::CompressedTexture2D::523811433873480000::1678318774::1681057355::1::::<><>::
+grass_1.webp::CompressedTexture2D::3110153733845510855::1678318774::1681057355::1::::<><>::
+house.webp::CompressedTexture2D::2196746226542473257::1678318774::1681057355::1::::<><>::
+mushroom_big.webp::CompressedTexture2D::7531838416912476756::1678318774::1681057355::1::::<><>::
+mushroom_small.webp::CompressedTexture2D::1399707806958892745::1678318774::1681057355::1::::<><>::
+portal.webp::CompressedTexture2D::7554929523485399246::1678318774::1681057355::1::::<><>::
+puddle_big.webp::CompressedTexture2D::3546017568223498067::1678318774::1681057355::1::::<><>::
+puddle_small.webp::CompressedTexture2D::7640533025494186985::1678318774::1681057355::1::::<><>::
+random bloc.webp::CompressedTexture2D::4718649270726073408::1678318774::1681057355::1::::<><>::
+sign posts.webp::CompressedTexture2D::3994152149454746260::1678318774::1681057355::1::::<><>::
+stone pathways.webp::CompressedTexture2D::1932799965836633073::1678318774::1681057355::1::::<><>::
+temple exterior 3d WEBP.webp::CompressedTexture2D::5507539296525350159::1678318774::1681057356::1::::<><>::
+temple interior1.webp::CompressedTexture2D::8660973926366222363::1678318774::1681057363::1::::<><>::
+trees_1.webp::CompressedTexture2D::3348278487145435015::1678318774::1681057356::1::::<><>::
+untitled.png::CompressedTexture2D::2745510882785655437::1678318774::1681057362::1::::<><>::
+__a__webp.webp::CompressedTexture2D::6800384351900983665::1678318774::1681057363::1::::<><>::
+__b__webp.webp::CompressedTexture2D::7581179966172507480::1678318774::1681057365::1::::<><>::
+__c__webp.webp::CompressedTexture2D::2481879134669162949::1678318774::1681057367::1::::<><>::
+::res://resources/FX/::1681057372
+Blood splatter fx 2.webp::CompressedTexture2D::1812720415803770152::1678318774::1681057365::1::::<><>::
+Blood splatter fx.webp::CompressedTexture2D::8133235186045170498::1678318774::1681057366::1::::<><>::
+flame_fx_webp.webp::CompressedTexture2D::5206835027407141756::1678318774::1681057367::1::::<><>::
+pj.png::CompressedTexture2D::6284498728818918919::1678318774::1681057368::1::::<><>::
+puddle_splash.webp::CompressedTexture2D::1490925194997646008::1678318774::1681057372::1::::<><>::
+smoke_particle.png::CompressedTexture2D::6997834580205609232::1678318774::1681057368::1::::<><>::
+::res://resources/illustrations/::1681057378
+coins silver.png::CompressedTexture2D::7249496683058387116::1678318774::1681057368::1::::<><>::
+cover 1.png::CompressedTexture2D::8273635412198495922::1678318774::1681057368::1::::<><>::
+Game_Cover Art WEBP.webp::CompressedTexture2D::461165281995041131::1678318774::1681057371::1::::<><>::
+Maps Concept Art webp.webp::CompressedTexture2D::3598641595226853624::1678318774::1681057373::1::::<><>::
+Newspaper_art.webp::CompressedTexture2D::8716939678916266610::1678318774::1681057378::1::::<><>::
+::res://resources/misc/::1681057542
+algos.png::CompressedTexture2D::9167713202093038107::1678318774::1681057373::1::::<><>::
+arrow.png::CompressedTexture2D::8844665233987867161::1678318774::1681057373::1::::<><>::
+btn-interact.png::CompressedTexture2D::7624975952987621967::1678318774::1681057355::1::::<><>::
+btn-mask.png::BitMap::6227245124067791306::1678318774::1681057353::1::::<><>::
+btn-roll.png::CompressedTexture2D::6667259654697213434::1678318774::1681057355::1::::<><>::
+btn-slash.png::CompressedTexture2D::5441641711521140615::1678318774::1681057355::1::::<><>::
+btn-stats.png::CompressedTexture2D::2281709326336558660::1678318774::1681057355::1::::<><>::
+button template pressed.png::CompressedTexture2D::7672821077068627360::1678318774::1681057355::1::::<><>::
+button.png::CompressedTexture2D::3211800405807793029::1678318774::1681057354::1::::<><>::
+controls.png::CompressedTexture2D::468725653454461789::1678318776::1681057355::1::::<><>::
+Controls_illustration_pad_&_keyboard_webp.webp::CompressedTexture2D::3715109769963540820::1678318774::1681057354::1::::<><>::
+Controls_illustration_touch_controls_webp.webp::CompressedTexture2D::3001712807682757631::1678318774::1681057539::1::::<><>::
+dialog_box.png::CompressedTexture2D::4022550925471927212::1678318776::1681057539::1::::<><>::
+heart.png::CompressedTexture2D::3446708822287755440::1678318776::1681057539::1::::<><>::
+logo.png::CompressedTexture2D::5851669691710322236::1678318776::1681057540::1::::<><>::
+next_dialog_arrow.png::CompressedTexture2D::1958303314467321640::1678318776::1681057539::1::::<><>::
+Pixel Heart 32x32.png::CompressedTexture2D::2474723328726443285::1678318774::1681057539::1::::<><>::
+Pixel Heart BW 16x16.png::CompressedTexture2D::1036653048119279397::1678318774::1681057540::1::::<><>::
+Pixel Heart BW 32x32.png::CompressedTexture2D::1760483167280526118::1678318774::1681057540::1::::<><>::
+rotate_screen_webp.webp::CompressedTexture2D::8882581485809626235::1678318776::1681057540::1::::<><>::
+spritesheetword__bubble_webp.webp::CompressedTexture2D::5719184076356130429::1678318776::1681057540::1::::<><>::
+SwipeIcons.tscn::PackedScene::-1::1678318774::0::1::::<><>::
+UI hover buttons.webp::CompressedTexture2D::3359716841606598551::1678318774::1681057542::1::::<><>::
+::res://resources/pj/::1681057543
+pj.png::CompressedTexture2D::8379297123284069762::1678318776::1681057541::1::::<><>::
+smoke_particle.png::CompressedTexture2D::6396698854459301821::1678318776::1681057543::1::::<><>::
+::res://resources/props/::1681057543
+idol.webp::CompressedTexture2D::7513280041779049363::1678318776::1681057543::1::::<><>::
+table.webp::CompressedTexture2D::1485565230252847082::1678318776::1681057543::1::::<><>::
+::res://resources/title animation/::1681057544
+Dystopia Logo Drop shadow.png::CompressedTexture2D::736301714596170753::1678318776::1681057544::1::::<><>::
+Dystopia Logo webp.webp::CompressedTexture2D::554242771949648048::1678318776::1681057543::1::::<><>::
+title..ogv::VideoStreamTheora::-1::1678318776::0::1::::<><>::
+::res://scenes/::1681215550
+Title screen.tscn::PackedScene::8494822561019642045::1681215550::0::1::::<><>::res://scenes/UI & misc/Title screen.gd<>uid://cxypr2xins18k<>uid://kqw1tusif5mj<>uid://dwgsyty4l22kk<>uid://dp42ti2tyfuxm<>uid://gtnlbqve2s8j<>uid://d4kw3l4jwxlco<>uid://baydywqeo6xtr<>res://scenes/UI & misc/Notification.gd<>uid://bx4ww4mx87p1m<>uid://dlwyou4qjjj7t
+::res://scenes/characters/::1681215552
+Aarin.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/characters/Player.gd<>res://resources/Aarin/spritesheet_3.webp<>res://scenes/Shaders/BlueNoise.webp<>res://scenes/Shaders/DirectionalBlur.shader<>res://scenes/Shaders/Impact.tscn
+Aarin_networking.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/characters/Player v2.gd<>res://scenes/Shaders/DirectionalBlur.shader<>res://scenes/Shaders/BlueNoise.webp<>res://resources/Aarin/spritesheet_3.webp<>res://scenes/Shaders/Impact.tscn
+Bandits.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/items/ItemSpawner.tscn<>res://resources/bandit_spritesheet.webp<>res://scenes/items/coins.tscn<>res://scenes/items/extra life.tscn<>res://scenes/items/Item.tscn<>res://scenes/characters/Enemy.gd
+debug_character.gd::GDScript::-1::1678318776::0::1::::<>CanvasLayer<>::
+debug_character.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://fonts/Candy Demo.ttf<>res://scenes/characters/debug_character.gd
+debug_panel.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://fonts/spiritmedium.ttf
+DespawnFx.gd::GDScript::-1::1681205915::0::1::::<>CPUParticles2D<>::
+Enemy.gd::GDScript::-1::1678414857::0::1::::Enemy<>KinematicBody2D<>::
+Enemy.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/characters/Enemy.gd<>res://resources/FX/pj.png<>res://scenes/items/ItemSpawner.tscn<>res://scenes/items/Item.tscn<>res://scenes/items/coins.tscn<>res://scenes/items/extra life.tscn
+Npc CHIEFPRIEST.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/characters/Npc.gd<>res://resources/NPC shaman.webp
+Npc.gd::GDScript::-1::1680584501::0::1::::<>KinematicBody2D<>::
+Npc.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/characters/Npc.gd<>res://resources/NPC old woman.webp
+Player v2.gd::GDScript::-1::1678318776::0::1::::Player_v2_networking<>KinematicBody2D<>::
+Player.gd::GDScript::-1::1678318776::0::1::::Player<>KinematicBody2D<>::
+Player.tscn::PackedScene::794808239474749252::1681215552::0::1::::<><>::res://scenes/characters/Player.gd<>uid://cvsi1m6pt6t40
+State Machine.gd::GDScript::-1::1678318776::0::1::::StateMachine<>Node<>::
+State Machine.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/characters/State Machine.gd<>res://scenes/characters/states/motion/on_ground/idle.gd<>res://scenes/characters/states/combat/attack.gd<>res://scenes/characters/states/motion/motion.gd<>res://scenes/characters/states/motion/on_ground/roll.gd
+::res://scenes/cinematics/::1681215550
+cinematics V2.gd::GDScript::-1::1681099271::0::1::::cinematic<>Control<>::
+cinematics.tscn::PackedScene::2841215643063696513::1681215550::0::1::::<><>::res://scenes/cinematics/cinematics V2.gd<>uid://c6frxm3fjh5fg<>res://singletons/Title animation.tres
+intro_animation.tres::Animation::-1::1678318776::0::1::::<><>::
+pilot_ep_1.tscn::PackedScene::-1::1679983055::0::1::::<><>::res://ads/Ads_manager.tscn
+::res://scenes/Comics/::1678332189
+::res://scenes/Comics/chapter 1/::1681215553
+chapter 1 Neo sud, the new south webp.webp::CompressedTexture2D::5006717141353352698::1678318776::1681057551::1::::<><>::
+chapter 1.tscn::PackedScene::2742195215569757844::1681215553::0::1::::<><>::uid://cdlj5ug270rao<>res://New game code and features/comic_panel_extension_script.gd
+Cover 1.webp::CompressedTexture2D::5587480315546227207::1678318776::1681057545::1::::<><>::
+Cover 1_pressed.webp::CompressedTexture2D::245865130529341501::1678318776::1681057547::1::::<><>::
+::res://scenes/Comics/chapter 2/::1681057422
+Chapter 2 The money heist.webp::CompressedTexture2D::5324686118036761756::1678318776::1681057422::1::::<><>::
+chapter 2.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/Comics/chapter 2/Chapter 2 The money heist.webp
+cover 1.webp::CompressedTexture2D::1437595900248667199::1678318776::1681057380::1::::<><>::
+cover 2.webp::CompressedTexture2D::820309386747264625::1678318776::1681057381::1::::<><>::
+cover 2_pressed.webp::CompressedTexture2D::862069944884888854::1678318776::1681057396::1::::<><>::
+::res://scenes/Comics/chapter 3/::1681057490
+Chapter 3 cover_pressed.webp::CompressedTexture2D::7038002334842673026::1678318776::1681057410::1::::<><>::
+Chapter 3 Kpo Kpo.webp::CompressedTexture2D::8273896188517219636::1678318776::1681057488::1::::<><>::
+chapter 3.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/Comics/chapter 3/Chapter 3 Kpo Kpo.webp
+cover 2.webp::CompressedTexture2D::9154434651432749645::1678318776::1681057490::1::::<><>::
+::res://scenes/Comics/chapter 4/::1681057506
+chapter 4.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/Comics/chapter 4/chap_4_the_hunt_for_worlogog_webp_png_compressed.webp
+chap_4_the_hunt_for_worlogog_webp_png_compressed.webp::CompressedTexture2D::6359868213120696337::1678318776::1681057502::1::::<><>::
+Cover 1 pressed.webp::CompressedTexture2D::1559112737028050507::1678318776::1681057506::1::::<><>::
+Cover 1.webp::CompressedTexture2D::8176371184441938469::1678318776::1681057503::1::::<><>::
+Cover 2.webp::CompressedTexture2D::8741357938635565171::1678318776::1681057505::1::::<><>::
+::res://scenes/Comics/chapter 5/::1681057520
+chap 1 cover page.webp::CompressedTexture2D::979762654848235957::1678318776::1681057508::1::::<><>::
+chap 1 cover page_pressed.webp::CompressedTexture2D::4320733010730337514::1678318776::1681057515::1::::<><>::
+chapter 5.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/Comics/chapter 5/chapter_5_spritesheet_webp.webp
+chapter_5_spritesheet_webp.webp::CompressedTexture2D::741639318241003797::1678318776::1681057520::1::::<><>::
+::res://scenes/Comics/chapter 6/::1681057536
+chap 6 cover art 1.webp::CompressedTexture2D::4029673379057484383::1678318776::1681057519::1::::<><>::
+chap 6 cover art 1_2.webp::CompressedTexture2D::7893878813426593997::1678318776::1681057526::1::::<><>::
+chapter 6.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/Comics/chapter 6/chapter_6_spritesheet_webp.webp
+chapter_6_spritesheet_webp.webp::CompressedTexture2D::733833367846823317::1678318776::1681057536::1::::<><>::
+::res://scenes/Comics/chapter 7/::1681057536
+chapter 7.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/Comics/chapter 7/chapter_7_spritesheet_webp.webp
+chapter_7_spritesheet_webp.webp::CompressedTexture2D::4245885231603024540::1678318776::1681057533::1::::<><>::
+Cover 1.webp::CompressedTexture2D::3597402921385208669::1678318776::1681057536::1::::<><>::
+::res://scenes/Comics/Outside/::1681057538
+1.webp::CompressedTexture2D::8890637601781886408::1678318776::1681057537::1::::<><>::
+2.webp::CompressedTexture2D::8412930326573312496::1678318776::1681057537::1::::<><>::
+3.webp::CompressedTexture2D::4456992322630520794::1678318776::1681057538::1::::<><>::
+outside.tres::SpriteFrames::-1::1678318776::0::1::::<><>::res://scenes/Comics/Outside/3.webp<>res://scenes/Comics/Outside/2.webp<>res://scenes/Comics/Outside/1.webp
+outside.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/Comics/Outside/outside.tres
+::res://scenes/items/::1680672077
+Bullet.gd::GDScript::-1::1678318776::0::1::::Bullet<>Area2D<>::
+Bullet.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/items/Bullet.gd
+coins.gd::GDScript::-1::1680672077::0::1::::<>Area2D<>::
+coins.tscn::PackedScene::-1::1680672077::0::1::::<><>::res://scenes/items/coins.gd<>res://sounds/item_collected.ogg<>res://resources/misc/algos.png<>res://scenes/Shaders/outline.shader
+enemy spawner.gd::GDScript::-1::1678318776::0::1::::<>Position2D<>::
+enemy spawner.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/items/enemy spawner.gd<>res://resources/FX/flame_fx_webp.webp<>res://scenes/characters/Enemy.tscn
+extra life.gd::GDScript::-1::1678318776::0::1::::<>Area2D<>::
+extra life.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/items/extra life.gd<>res://resources/item.png<>res://sounds/Level-up-sound-effect.ogg
+Item.gd::GDScript::-1::1678318776::0::1::::<>Area2D<>::
+Item.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/item.png<>res://scenes/items/Item.gd<>res://sounds/item_collected.ogg
+ItemSpawner.gd::GDScript::-1::1678318776::0::1::::<>Position2D<>::
+ItemSpawner.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/items/ItemSpawner.gd
+::res://scenes/levels/::1680762910
+buildings.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/Environment Tilesets & Tilemaps/__a__webp.webp<>res://resources/Environment Tilesets & Tilemaps/__c__webp.webp<>res://resources/Environment Tilesets & Tilemaps/__b__webp.webp
+Cityscape Exterior.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/levels/buildings.tscn<>res://scenes/characters/Aarin.tscn<>res://scenes/items/enemy spawner.tscn<>res://scenes/UI & misc/UI.tscn
+Outside.gd::GDScript::-1::1678318776::0::1::::<>Node<>::
+Outside.tscn::PackedScene::-1::1680670675::0::1::::<><>::res://scenes/levels/Tilemap_1_overworld.tscn<>res://scenes/items/enemy spawner.tscn<>res://scenes/items/coins.tscn<>res://scenes/characters/Npc.tscn<>res://scenes/characters/Enemy.tscn<>res://scenes/characters/Aarin.tscn<>res://scenes/UI & misc/UI.tscn<>res://scenes/UI & misc/Rain_Fx.tscn<>res://scenes/levels/Outside_Level_Properties.gd
+Outside_Level_Properties.gd::GDScript::-1::1678318776::0::1::::<>Control<>::
+Temple interior.gd::GDScript::-1::1678318776::0::1::::<>Node<>::
+Temple interior.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/Environment Tilesets & Tilemaps/temple interior1.webp<>res://scenes/characters/Npc CHIEFPRIEST.tscn<>res://scenes/UI & misc/Exit.gd<>res://scenes/characters/Enemy.tscn<>res://scenes/characters/Aarin.tscn<>res://resources/FX/flame_fx_webp.webp<>res://scenes/UI & misc/UI.tscn<>res://scenes/UI & misc/Quest.tscn<>res://scenes/levels/Temple interior.gd
+Testing Scene 2.tscn::PackedScene::-1::1680600349::0::1::::<><>::res://scenes/UI & misc/Touch interface.tscn<>res://scenes/items/coins.tscn<>res://scenes/items/extra life.tscn<>res://scenes/props/Pond.tscn<>res://scenes/UI & misc/Dialog_box.tscn<>res://scenes/props/idol.tscn<>res://scenes/props/broken ship.tscn<>res://scenes/UI & misc/ingame_menu.tscn<>res://scenes/props/BoulderSmall.tscn<>res://scenes/props/Boulder Big.tscn<>res://scenes/items/enemy spawner.tscn<>res://scenes/props/signpost.tscn
+Testing Scene.tscn::PackedScene::-1::1680762910::0::1::::<><>::res://scenes/props/idol.tscn<>res://scenes/UI & misc/UI.tscn<>res://scenes/characters/Npc.tscn<>res://scenes/props/BoulderSmall.tscn<>res://scenes/props/Boulder Big.tscn<>res://scenes/props/broken ship.tscn<>res://scenes/characters/Aarin.tscn<>res://scenes/items/extra life.tscn<>res://scenes/props/Pond.tscn<>res://scenes/props/signpost.tscn<>res://scenes/UI & misc/ingame_menu.tscn<>res://scenes/items/coins.tscn<>res://scenes/items/enemy spawner.tscn<>res://scenes/UI & misc/Touch interface.tscn
+Tilemap_1_overworld.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/items/Item.tscn<>res://scenes/props/Pond.tscn<>res://resources/Environment Tilesets & Tilemaps/trees_1.webp<>res://scenes/items/extra life.tscn<>res://scenes/Shaders/Reflection.shader<>res://scenes/props/Mushroom.tscn<>res://resources/Environment Tilesets & Tilemaps/house.webp<>res://scenes/props/Temple exterior.tscn<>res://scenes/props/broken ship.tscn<>res://resources/Environment Tilesets & Tilemaps/grass.webp<>res://scenes/props/Mushroom_2.tscn<>res://scenes/props/Grass.tscn<>res://scenes/props/idol.tscn<>res://scenes/props/BoulderSmall.tscn<>res://scenes/props/Boulder Big.tscn<>res://scenes/props/Dune big.tscn<>res://scenes/props/Dune small.tscn<>res://scenes/props/flowers.tscn<>res://scenes/props/stone walkway.tscn<>res://resources/Environment Tilesets & Tilemaps/desert dunes tex.webp
+::res://scenes/props/::1678547621
+Boulder Big.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/Environment Tilesets & Tilemaps/boulder7.webp
+BoulderSmall.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/Environment Tilesets & Tilemaps/boulder_2.webp
+broken ship.gd::GDScript::-1::1678318776::0::1::::<>StaticBody2D<>::
+broken ship.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/Environment Tilesets & Tilemaps/broken ship_3.webp<>res://scenes/UI & misc/smoke_FX.tscn<>res://scenes/props/broken ship.gd
+Dune big.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/Environment Tilesets & Tilemaps/desert dunes 3d 2.webp
+Dune small.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/Environment Tilesets & Tilemaps/desert dunes 3d.webp
+flowers.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/props/Grass.gd<>res://resources/Environment Tilesets & Tilemaps/flower_1.webp<>res://sounds/Fantozzi-SandR3.ogg<>res://scenes/Shaders/Wind move.shader
+Grass.gd::GDScript::-1::1678318776::0::1::::<>Area2D<>::
+Grass.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/Environment Tilesets & Tilemaps/grass_1.webp<>res://scenes/props/Grass.gd<>res://sounds/Fantozzi-SandR3.ogg<>res://scenes/Shaders/Wind move.shader
+idol.gd::GDScript::-1::1678318776::0::1::::Idol<>Area2D<>::
+idol.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/props/idol.webp<>res://scenes/props/idol.gd
+Mushroom.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/Environment Tilesets & Tilemaps/mushroom_big.webp
+Mushroom_2.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/Environment Tilesets & Tilemaps/mushroom_small.webp
+pond.gd::GDScript::-1::1678318776::0::1::::<>Area2D<>::
+Pond.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/Environment Tilesets & Tilemaps/puddle_big.webp<>res://scenes/UI & misc/Puddle_Fx.tscn<>res://scenes/Shaders/Reflection.shader<>res://scenes/props/pond.gd
+Puddle.gd::GDScript::-1::1678547621::0::1::::<>KinematicBody2D<>::
+signpost.gd::GDScript::-1::1678318776::0::1::::<>Area2D<>::
+signpost.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/Environment Tilesets & Tilemaps/sign posts.webp<>res://scenes/props/signpost.gd
+stone walkway.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/Environment Tilesets & Tilemaps/stone pathways.webp
+Table.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/props/table.webp
+Temple exterior.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/Environment Tilesets & Tilemaps/temple exterior 3d WEBP.webp<>res://scenes/UI & misc/Exit.gd
+Trees.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/Environment Tilesets & Tilemaps/trees_1.webp
+::res://scenes/Shaders/::1681057543
+BlueNoise.webp::CompressedTexture2D::5273148158498849428::1678318776::1681057543::1::::<><>::
+Impact.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/Shaders/impact_effect_script.gd<>res://scenes/Shaders/impact.shader<>res://scenes/Shaders/RadialGradient.png<>res://scenes/Shaders/Waves.png
+impact_effect_script.gd::GDScript::-1::1678318776::0::1::::<>Node2D<>::
+RadialGradient.png::CompressedTexture2D::4104305120226596990::1678318776::1681057543::1::::<><>::
+Waves.png::CompressedTexture2D::1940446814634342254::1678318776::1681057542::1::::<><>::
+::res://scenes/UI & misc/::1681215641
+Blood_Splatter_FX.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/FX/Blood splatter fx 2.webp
+comics-reader-extension.gd::GDScript::-1::1681196648::0::1::::<>GridContainer<>::
+Comics.tscn::PackedScene::9051806200903049357::1681215550::0::1::::<><>::res://singletons/Comics.v5.1.gd<>uid://c6frxm3fjh5fg<>uid://cpmue6qqexxku
+Comics____2.tscn::PackedScene::7836357048069963859::1681215641::0::1::::<><>::uid://d1706qbqwaeob<>uid://cluu8qbb602d4<>uid://lxmm1mrvgq14<>uid://d3oqg3vefwv3b<>uid://bxoaeqmxaxg6r<>uid://doqxvyqm2017f<>uid://c4ilgs3nvh5a6<>uid://dys124efkfaxf<>uid://c1w7awamwvod6<>res://scenes/UI & misc/Like button.tscn<>uid://n7usvh7pigx6<>uid://briux22s443jd<>res://scenes/UI & misc/comics-reader-extension.gd<>uid://bn4qbsvewvle2<>uid://ev0hqw04uvpe<>uid://drdmlmv60k3f<>uid://mjufv7eio2ji<>uid://c7ji4t67a0o3k<>uid://whimg8y1ch3h
+Controls.gd::GDScript::-1::1681190884::0::1::::<>Control<>::
+Controls.tscn::PackedScene::-1::1678419705::0::1::::<><>::res://scenes/UI & misc/Controls.gd<>res://resources/misc/controls.png<>res://fonts/ingame_menu.tres<>res://scenes/Comics/chapter 4/Cover 2.webp<>res://App's white paper v2.0.0.webp<>res://scenes/UI & misc/generic_joystick_ui_selector.gd<>res://scenes/UI & misc/controls_illustration.gd<>res://fonts/Menu_dynamicfont.tres<>res://scenes/UI & misc/Notification.gd
+controls_illustration.gd::GDScript::-1::1681064129::0::1::::<>TextureRect<>::
+DespawnFX.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/FX/smoke_particle.png<>res://scenes/characters/DespawnFx.gd
+Dialog_box.gd::GDScript::-1::1681093386::0::1::::DialogBox<>TextureRect<>::
+Dialog_box.tscn::PackedScene::6645111712422055365::1681215550::0::1::::<><>::res://scenes/UI & misc/Dialog_box.gd<>uid://bxks3c5xvlgh5<>uid://25u77yl18wrg
+Exit.gd::GDScript::-1::1678318776::0::1::::Exit<>Area2D<>::
+generic_joystick_ui_selector.gd::GDScript::-1::1678318776::0::1::::<>Control<>::
+Healthbar.gd::GDScript::-1::1678318776::0::1::::<>HBoxContainer<>::
+Healthbar.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/UI & misc/Healthbar.gd
+Heart.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/misc/Pixel Heart 32x32.png
+HSlider.gd::GDScript::-1::1678318776::0::1::::<>HSlider<>::
+ingame_menu.gd::GDScript::-1::1681113732::0::1::::Game_Menu<>Control<>::
+ingame_menu.tscn::PackedScene::6437672404588811636::1681215551::0::1::::<><>::res://scenes/UI & misc/ingame_menu.gd<>res://scenes/UI & misc/generic_joystick_ui_selector.gd
+Joystick circle.gd::GDScript::-1::1678318776::0::1::::<>TouchScreenButton<>::
+Joystick circle.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/UI & misc/Joystick circle.gd
+joystick v2.gd::GDScript::-1::1678318776::0::1::::<>Control<>::
+joystick.gd::GDScript::-1::1678318776::0::1::::<>Control<>::
+Kill Count.tscn::PackedScene::-1::1678318776::0::1::::<><>::
+Like button.gd::GDScript::-1::1681200592::0::1::::<>TextureButton<>::
+Like button.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/misc/Pixel Heart 32x32.png<>res://resources/misc/heart.png<>res://scenes/UI & misc/Like button.gd
+Map.tscn::PackedScene::-1::1678318776::0::1::::<><>::
+MusicTrack.tscn::PackedScene::-1::1678318776::0::1::::<><>::
+Notification.gd::GDScript::-1::1681111051::0::1::::<>Popup<>::
+Notification.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/UI & misc/Notification.gd<>res://resources/Buttons/Pop up menu.png<>res://fonts/Comic Book.otf
+Puddle_Fx.tscn::PackedScene::-1::1678547655::0::1::::<><>::res://scenes/Shaders/Reflection.shader<>res://scenes/props/Puddle.gd<>res://resources/FX/puddle_splash.webp
+Quest.gd::GDScript::-1::1678318776::0::1::::<>Node<>::
+Quest.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/UI & misc/Quest.gd
+Rain_Fx.gd::GDScript::-1::1678318776::0::1::::<>CanvasLayer<>::
+Rain_Fx.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/UI & misc/Rain_Fx.gd
+scent scene.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/UI & misc/scent.gd
+scent.gd::GDScript::-1::1678318776::0::1::::<>Node2D<>::
+Shop.tscn::PackedScene::-1::1680149867::0::1::::<><>::res://scenes/cinematics/pilot_ep_1.tscn<>res://fonts/stats.tres<>res://scenes/cinematics/cinematics V2.gd<>res://fonts/Menu_dynamicfont.tres<>res://scenes/UI & misc/Dialog_box.tscn<>res://scenes/UI & misc/Youtube_Thumbnail.gd
+smoke_FX.gd::GDScript::-1::1678318776::0::1::::smoke_fx<>CPUParticles2D<>::
+smoke_FX.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/Shaders/Halftone.shader<>res://resources/FX/smoke_particle.png<>res://scenes/UI & misc/smoke_FX.gd
+Stats.gd::GDScript::-1::1680762842::0::1::::<>PanelContainer<>::
+stats.stylebox::StyleBoxFlat::-1::1678318776::0::1::::<><>::
+Stats.tscn::PackedScene::-1::1680762910::0::1::::<><>::res://scenes/UI & misc/Stats.gd<>res://fonts/dialog.tres<>res://fonts/stats.tres<>res://scenes/UI & misc/stats.stylebox
+StatusText.gd::GDScript::-1::1678318776::0::1::::<>Label<>::
+StatusText.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://fonts/stats.tres<>res://scenes/UI & misc/StatusText.gd
+Title screen.gd::GDScript::-1::1681099513::0::1::::<>Control<>::
+Touch interface.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/UI & misc/Joystick circle.tscn<>res://resources/Buttons/menu.png<>res://resources/misc/btn-mask.png<>res://scenes/UI & misc/TouchInterface.gd<>res://scenes/UI & misc/joystick v2.gd<>res://resources/misc/btn-interact.png<>res://resources/Buttons/comics.png<>res://resources/misc/btn-stats.png<>res://resources/misc/btn-roll.png<>res://resources/misc/arrow.png<>res://resources/misc/btn-slash.png
+TouchInterface.gd::GDScript::-1::1678318776::0::1::::<>Node2D<>::
+UI.gd::GDScript::-1::1680155046::0::1::::<>CanvasLayer<>::
+UI.tscn::PackedScene::-1::1680762910::0::1::::<><>::res://scenes/UI & misc/Dialog_box.tscn<>res://scenes/UI & misc/Stats.tscn<>res://scenes/UI & misc/StatusText.tscn<>res://scenes/UI & misc/Healthbar.tscn<>res://scenes/Comics/Outside/outside.tscn<>res://scenes/UI & misc/ingame_menu.tscn<>res://scenes/UI & misc/Comics.tscn<>res://scenes/UI & misc/Touch interface.tscn<>res://scenes/UI & misc/UI.gd
+web_browser.gd::GDScript::-1::1678318776::0::1::::<>Control<>::
+word_bubble_box.gd::GDScript::-1::1678318776::0::1::::<>AnimatedSprite<>::
+word_bubble_box.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/misc/spritesheetword__bubble_webp.webp<>res://fonts/Word_bubble_dialogue.tres<>res://scenes/UI & misc/word_bubble_box.gd<>res://New game code and features/word_bubble_testing_scene.tscn
+xml.gd::GDScript::-1::1678318776::0::1::::<>Node<>::
+xml.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/UI & misc/xml.gd
+Youtube_Thumbnail.gd::GDScript::-1::1679981188::0::1::::<>TextureRect<>::
+::res://scenes/UI & misc/form/::1681215549
+Form.gd::GDScript::-1::1681139641::0::1::::<>CanvasLayer<>::
+form.tscn::PackedScene::3192409657499177063::1681215549::0::1::::<><>::res://scenes/UI & misc/form/Form.gd<>uid://dbjyfe18axe3m<>uid://c1w7awamwvod6<>uid://ceam8avq22m4d<>uid://da0mdusaynl0s
+::res://scenes/Wallet/::1680762624
+state_controller.gd::GDScript::-1::1680589417::0::1::::<>OptionButton<>::
+Wallet main.tscn::PackedScene::-1::1680754560::0::1::::<><>::res://scenes/Wallet/state_controller.gd<>res://addons/algodot/Algod.gd<>res://Wallet Scenes/AccountsSetupPage.tscn<>res://Wallet Scenes/GalleryUI.tscn<>res://themes/option+button.tres<>res://Wallet Scenes/SwipeIcons.tscn<>res://Wallet Scenes/AccountsDashboard1.tscn<>res://Wallet Scenes/Merchant ID Validation.tscn<>res://Wallet Scenes/Merchant Pin.tscn<>res://Wallet Scenes/FundingSuccess.tscn<>res://Wallet Scenes/ChoosePaymentOption.tscn<>res://Wallet Scenes/SuccessfullStudentUpload.tscn<>res://Wallet Scenes/RequestPage.tscn<>res://scenes/Wallet/animation/RESET.tres<>res://scenes/Wallet/animation/SWIPE_DOWN.tres<>res://scenes/Wallet/animation/SWIPE_RIGHT.tres<>res://scenes/Wallet/animation/SWIPE_LEFT.tres<>res://scenes/Wallet/animation/SWIPE_UP.tres<>res://scenes/Wallet/animation/SLIDE_IN.tres<>res://scenes/Wallet/animation/SLIDE_OUT.tres<>res://scenes/Wallet/animation/RESET_UI.tres<>res://scenes/Wallet/animation/SWIPE_RIGHT_UI.tres<>res://scenes/Wallet/animation/SLIDE_OUT_UI.tres<>res://scenes/Wallet/animation/SWIPE_DOWN_UI.tres<>res://scenes/Wallet/animation/SWIPE_UP_UI.tres<>res://scenes/Wallet/animation/SWIPE_LEFT_UI.tres<>res://scenes/Wallet/animation/SLIDE_IN_UI.tres<>res://scenes/Wallet/animation/WalletSHOW_MNEMONIC.tres<>res://scenes/Wallet/animation/PASSWORD.tres<>res://scenes/Wallet/animation/SUCCESSS.tres
+Wallet.gd::GDScript::-1::1680762624::0::1::::wallet<>Control<>::
+Wallet.tscn::PackedScene::-1::1679659335::0::1::::<><>::res://scenes/Wallet/Wallet.gd<>res://addons/algodot/Algod.gd<>res://fonts/wallet.tres<>res://New game code and features/NFT.gd<>res://App's white paper v2.0.0.webp
+::res://scenes/Wallet/animation/::1678332189
+PASSWORD.tres::Animation::-1::1678318776::0::1::::<><>::
+RESET.tres::Animation::-1::1678318776::0::1::::<><>::
+RESET_UI.tres::Animation::-1::1678318776::0::1::::<><>::
+SLIDE_IN.tres::Animation::-1::1678318776::0::1::::<><>::
+SLIDE_IN_UI.tres::Animation::-1::1678318776::0::1::::<><>::
+SLIDE_OUT.tres::Animation::-1::1678318776::0::1::::<><>::
+SLIDE_OUT_UI.tres::Animation::-1::1678318776::0::1::::<><>::
+SUCCESSS.tres::Animation::-1::1678318776::0::1::::<><>::
+SWIPE_DOWN.tres::Animation::-1::1678318776::0::1::::<><>::
+SWIPE_DOWN_UI.tres::Animation::-1::1678318776::0::1::::<><>::
+SWIPE_LEFT.tres::Animation::-1::1678318776::0::1::::<><>::
+SWIPE_LEFT_UI.tres::Animation::-1::1678318776::0::1::::<><>::
+SWIPE_RIGHT.tres::Animation::-1::1678318776::0::1::::<><>::
+SWIPE_RIGHT_UI.tres::Animation::-1::1678318776::0::1::::<><>::
+SWIPE_UP.tres::Animation::-1::1678318776::0::1::::<><>::
+SWIPE_UP_UI.tres::Animation::-1::1678318776::0::1::::<><>::
+WalletSHOW_MNEMONIC.tres::Animation::-1::1678318776::0::1::::<><>::
+::res://singletons/::1681215641
+Comics.v5.1.gd::GDScript::-1::1681215641::0::1::::<>Control<>::
+Debug.gd::GDScript::-1::1681062490::0::1::::<>Node<>::
+Dialogs.gd::GDScript::-1::1681058122::0::1::::<>Node<>::
+GlobalAnimationPlayer.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/misc/SwipeIcons.tscn<>res://resources/Animation/RESET.tres<>res://resources/Animation/SWIPE_LEFT.tres<>res://resources/Animation/SWIPE_RIGHT.tres<>res://resources/Animation/SWIPE_UP.tres
+Globals.gd::GDScript::-1::1681137151::0::1::::<>Node<>::
+Inventory.gd::GDScript::-1::1678318776::0::1::::<>Node<>::
+Music.gd::GDScript::-1::1681063207::0::1::::<>Node<>::
+Music.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://singletons/Music.gd
+Networking.gd::GDScript::-1::1681064390::0::1::::<>HTTPRequest<>::
+Networking.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://singletons/Networking.gd
+Quest.gd::GDScript::-1::1680668125::0::1::::<>Node<>::
+Title animation.tres::Animation::-1::1678318776::0::1::::<><>::
+::res://sounds/::1681057306
+blood-spilling.ogg::AudioStreamOggVorbis::6764192182535419634::1678318776::1681057306::1::::<><>::
+book_flip.1.ogg::AudioStreamOggVorbis::1618130175715670910::1678318776::1681057306::1::::<><>::
+book_flip.2.ogg::AudioStreamOggVorbis::5805788281651249718::1678318776::1681057305::1::::<><>::
+book_flip.3.ogg::AudioStreamOggVorbis::2900238191214410849::1678318776::1681057305::1::::<><>::
+book_flip.4.ogg::AudioStreamOggVorbis::4724657813333782972::1678318776::1681057305::1::::<><>::
+book_flip.5.ogg::AudioStreamOggVorbis::4043385915651037005::1678318776::1681057305::1::::<><>::
+book_flip.6.ogg::AudioStreamOggVorbis::238574339123120066::1678318776::1681057305::1::::<><>::
+book_flip.7.ogg::AudioStreamOggVorbis::6122053598498563023::1678318776::1681057305::1::::<><>::
+book_flip.8.ogg::AudioStreamOggVorbis::7799997202259073041::1678318776::1681057305::1::::<><>::
+book_flip.9.ogg::AudioStreamOggVorbis::7680478806655968443::1678318776::1681057305::1::::<><>::
+book_flip.10.ogg::AudioStreamOggVorbis::805330015237971057::1678318776::1681057305::1::::<><>::
+Fantozzi-SandR3.ogg::AudioStreamOggVorbis::7269456178478414619::1678318776::1681057305::1::::<><>::
+hit01.ogg::AudioStreamOggVorbis::3627275320894001271::1678318776::1681057304::1::::<><>::
+hit02.ogg::AudioStreamOggVorbis::3390048010301960683::1678318776::1681057304::1::::<><>::
+hit03.ogg::AudioStreamOggVorbis::6411617663438475466::1678318776::1681057304::1::::<><>::
+hit04.ogg::AudioStreamOggVorbis::2784495410677056801::1678318776::1681057304::1::::<><>::
+hit05.ogg::AudioStreamOggVorbis::5097329380980542904::1678318776::1681057304::1::::<><>::
+hit06.ogg::AudioStreamOggVorbis::506920845567542027::1678318776::1681057304::1::::<><>::
+hit07.ogg::AudioStreamOggVorbis::5746183259672664437::1678318776::1681057304::1::::<><>::
+hit08.ogg::AudioStreamOggVorbis::4084902766838207602::1678318776::1681057304::1::::<><>::
+Item1A.ogg::AudioStreamOggVorbis::5659001298148240260::1678318776::1681057304::1::::<><>::
+Item1B.ogg::AudioStreamOggVorbis::1220660520523148500::1678318776::1681057304::1::::<><>::
+item_collected.ogg::AudioStreamOggVorbis::2254989591253547696::1678318776::1681057304::1::::<><>::
+Level-up-sound-effect.ogg::AudioStreamOggVorbis::8899951090772127630::1678318776::1681057304::1::::<><>::
+Menu1A.ogg::AudioStreamOggVorbis::2430722852957587091::1678318776::1681057304::1::::<><>::
+Menu1B.ogg::AudioStreamOggVorbis::6792065528230412185::1678318776::1681057304::1::::<><>::
+wind_2.ogg::AudioStreamOggVorbis::3054579451749622464::1678318776::1681057304::1::::<><>::
+::res://sounds/nokai_3310_soundpack_2023/::1678332189
+::res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/::1681057307
+bad_melody.ogg::AudioStreamOggVorbis::3988881536006089422::1678318776::1681057306::1::::<><>::
+blip1.ogg::AudioStreamOggVorbis::6966199182987849555::1678318776::1681057306::1::::<><>::
+blip2.ogg::AudioStreamOggVorbis::940281069343174783::1678318776::1681057306::1::::<><>::
+blip3.ogg::AudioStreamOggVorbis::7489202272456666444::1678318776::1681057306::1::::<><>::
+blip4.ogg::AudioStreamOggVorbis::6666985549180184196::1678318776::1681057306::1::::<><>::
+blip5.ogg::AudioStreamOggVorbis::4671783478360078518::1678318776::1681057306::1::::<><>::
+blip6.ogg::AudioStreamOggVorbis::1510444357972211423::1678318776::1681057306::1::::<><>::
+blip7.ogg::AudioStreamOggVorbis::4074685728297020133::1678318776::1681057306::1::::<><>::
+blip8.ogg::AudioStreamOggVorbis::6021516221025015884::1678318776::1681057306::1::::<><>::
+blip9.ogg::AudioStreamOggVorbis::5174726247938891750::1678318776::1681057306::1::::<><>::
+blip10.ogg::AudioStreamOggVorbis::6628159212115964029::1678318776::1681057306::1::::<><>::
+blip11.ogg::AudioStreamOggVorbis::1813383241681651492::1678318776::1681057306::1::::<><>::
+blip12.ogg::AudioStreamOggVorbis::9214451541236882327::1678318776::1681057306::1::::<><>::
+blip13.ogg::AudioStreamOggVorbis::3199215030099611373::1678318776::1681057306::1::::<><>::
+blip14.ogg::AudioStreamOggVorbis::7670483391866438014::1678318776::1681057306::1::::<><>::
+C5.ogg::AudioStreamOggVorbis::1194421077409475046::1678318776::1681057307::1::::<><>::
+crust.ogg::AudioStreamOggVorbis::970599995027457249::1678318776::1681057306::1::::<><>::
+good1.ogg::AudioStreamOggVorbis::7961148256622036654::1678318776::1681057306::1::::<><>::
+good2.ogg::AudioStreamOggVorbis::9089898995369370922::1678318776::1681057306::1::::<><>::
+good3.ogg::AudioStreamOggVorbis::466698046181596965::1678318776::1681057306::1::::<><>::
+hit1.ogg::AudioStreamOggVorbis::4042641139352838434::1678318776::1681057306::1::::<><>::
+hit2.ogg::AudioStreamOggVorbis::7841575996995275630::1678318776::1681057306::1::::<><>::
+hit3.ogg::AudioStreamOggVorbis::619255385992166298::1678318776::1681057306::1::::<><>::
+hit4.ogg::AudioStreamOggVorbis::5250284751275401699::1678318776::1681057306::1::::<><>::
+hit5.ogg::AudioStreamOggVorbis::2143944190700611872::1678318776::1681057306::1::::<><>::
+hit6.ogg::AudioStreamOggVorbis::7201412202171771916::1678318776::1681057306::1::::<><>::
+jingle1.ogg::AudioStreamOggVorbis::6859982686050324742::1678318776::1681057306::1::::<><>::
+negative1.ogg::AudioStreamOggVorbis::7787724134929127723::1678318776::1681057306::1::::<><>::
+negative2.ogg::AudioStreamOggVorbis::6459291174218749573::1678318776::1681057306::1::::<><>::
+odd1.ogg::AudioStreamOggVorbis::8997427746265616261::1678318776::1681057306::1::::<><>::
+odd2.ogg::AudioStreamOggVorbis::5161228470602967259::1678318776::1681057306::1::::<><>::
+odd3.ogg::AudioStreamOggVorbis::7442680063994780537::1678318776::1681057306::1::::<><>::
+odd4.ogg::AudioStreamOggVorbis::814000278809269694::1678318776::1681057306::1::::<><>::
+ring1.ogg::AudioStreamOggVorbis::2409771093730176822::1678318776::1681057306::1::::<><>::
+soundtest.ogg::AudioStreamOggVorbis::6897932506900688878::1678318776::1681057306::1::::<><>::
+::res://themes/::1681215131
+Bold+Large.tres::Theme::-1::1679396251::0::1::::<><>::res://Wallet fonts/Roboto-Bold.ttf
+Bold.tres::Theme::-1::1680754560::0::1::::<><>::res://Wallet fonts/Roboto-Bold.ttf
+Buttons.tres::Theme::-1::1680754560::0::1::::<><>::res://Wallet fonts/Roboto-Regular.ttf
+Buttons_black.tres::Theme::-1::1680754560::0::1::::<><>::res://Wallet fonts/Roboto-Regular.ttf
+Buttons_white+Black.tres::Theme::5054384310255407445::1681215131::0::1::::<><>::uid://cxcv5yjfqcucj
+Buttons_white.tres::Theme::-1::1680754560::0::1::::<><>::res://Wallet fonts/Roboto-Regular.ttf
+Light.tres::Theme::-1::1680754560::0::1::::<><>::res://Wallet fonts/Roboto-Light.ttf
+NumbersFont.tres::Theme::-1::1680754560::0::1::::<><>::res://Wallet fonts/Roboto-Light.ttf
+option+button.tres::Theme::-1::1680754560::0::1::::<><>::res://Wallet fonts/Roboto-Light.ttf<>res://themes/option_button_panel_flatbox.tres
+option+button_Red.tres::Theme::7211606534531788792::1681215131::0::1::::<><>::res://themes/option_button_panel_flatbox.tres<>uid://bmehupbu2iq1s
+option_button_panel_flatbox.tres::StyleBoxFlat::-1::1678401800::0::1::::<><>::
+Panel+blue+2.tres::StyleBoxFlat::-1::1679396251::0::1::::<><>::
+Panel+blue+3.tres::StyleBoxFlat::-1::1679396251::0::1::::<><>::
+Panel+blue+4.tres::StyleBoxFlat::-1::1679398118::0::1::::<><>::
+Panel+blue+5.tres::StyleBoxFlat::-1::1679398118::0::1::::<><>::
+Panel+blue.tres::Theme::-1::1680754560::0::1::::<><>::
+Panel+Grey.tres::StyleBoxFlat::-1::1679396581::0::1::::<><>::
+Panel+white.tres::StyleBoxFlat::-1::1679396251::0::1::::<><>::
+Regular.tres::Theme::7978238946633728143::1681215131::0::1::::<><>::uid://bnxh600rl12dg
+Textbar.tres::Theme::-1::1680754560::0::1::::<><>::res://Wallet fonts/LiberationSans.ttf
+::res://Translation/::1681117527
+Translation_1.csv::Translation::108875737692944167::1681056209::1681057306::1::::<><>::
+Translation_1.en_US.translation::OptimizedTranslation::662534276551116970::1681057306::0::1::::<><>::
+Translation_1.fr.translation::OptimizedTranslation::6440120452564881776::1681057306::0::1::::<><>::
+Translation_1.hi_IN.translation::OptimizedTranslation::7997383163133191295::1681057306::0::1::::<><>::
+Translation_1.pt_BR.translation::OptimizedTranslation::2172629122889388945::1681057306::0::1::::<><>::
+Translation_1.te_IN.translation::OptimizedTranslation::7594892284184043912::1681057306::0::1::::<><>::
+::res://Wallet fonts/::1681057354
+LiberationSans.ttf::FontFile::189050955886066705::1678318772::1681057354::1::::<><>::
+Roboto-Black.ttf::FontFile::4145376799642408029::1678318772::1681057354::1::::<><>::
+Roboto-BlackItalic.ttf::FontFile::7662881159818087134::1678318772::1681057354::1::::<><>::
+Roboto-Bold.ttf::FontFile::249805984072340123::1678318772::1681057354::1::::<><>::
+Roboto-BoldItalic.ttf::FontFile::8081656856248915622::1678318772::1681057354::1::::<><>::
+Roboto-Italic.ttf::FontFile::4033242324664395508::1678318772::1681057354::1::::<><>::
+Roboto-Light.ttf::FontFile::3237405843533371894::1678318772::1681057354::1::::<><>::
+Roboto-LightItalic.ttf::FontFile::3597415035217755498::1678318772::1681057354::1::::<><>::
+Roboto-Medium.ttf::FontFile::3346838070383333048::1678318772::1681057354::1::::<><>::
+Roboto-MediumItalic.ttf::FontFile::10853793940776870::1678318772::1681057354::1::::<><>::
+Roboto-Regular.ttf::FontFile::6392643431946612621::1678318772::1681057354::1::::<><>::
+Roboto-Thin.ttf::FontFile::4197415624829833139::1678318772::1681057354::1::::<><>::
+Roboto-ThinItalic.ttf::FontFile::4971749094003693430::1678318772::1681057354::1::::<><>::
+::res://Wallet Scenes/::1680594932
+AccountsDashboard1.tscn::PackedScene::-1::1680594932::0::1::::<><>::res://themes/Buttons.tres<>res://themes/Panel+white.tres<>res://themes/NumbersFont.tres<>res://themes/Bold.tres<>res://Wallet fonts/Roboto-Light.ttf<>res://themes/Panel+blue+2.tres<>res://themes/Panel+blue+3.tres<>res://themes/Panel+Grey.tres<>res://themes/Light.tres
+AccountsSetupPage.tscn::PackedScene::-1::1680594932::0::1::::<><>::res://themes/Bold.tres<>res://themes/Textbar.tres<>res://themes/Light.tres<>res://themes/Buttons_white.tres<>res://themes/Panel+white.tres
+BookmarksIcon.tscn::PackedScene::-1::1675517203::0::1::::<><>::
+ChoosePaymentOption.tscn::PackedScene::-1::1680594932::0::1::::<><>::res://themes/Panel+blue+2.tres<>res://themes/Buttons.tres<>res://themes/Bold.tres<>res://themes/Light.tres<>res://themes/Textbar.tres<>res://themes/Panel+white.tres
+ConfirmStudentPin.tscn::PackedScene::-1::1679398121::0::1::::<><>::res://themes/Bold.tres<>res://themes/Light.tres<>res://themes/Buttons_white.tres<>res://themes/Textbar.tres<>res://themes/Panel+blue+5.tres
+FundingSuccess.tscn::PackedScene::-1::1679398550::0::1::::<><>::res://themes/Bold.tres<>res://themes/Light.tres<>res://themes/Buttons_white.tres<>res://themes/Panel+blue+3.tres
+GalleryUI.tscn::PackedScene::-1::1679324704::0::1::::<><>::res://icon.png<>res://themes/Light.tres
+ListsIcon.tscn::PackedScene::-1::1675517416::0::1::::<><>::
+Merchant ID Student UI.tscn::PackedScene::-1::1679399212::0::1::::<><>::res://themes/Buttons.tres<>res://themes/Textbar.tres<>res://themes/Panel+white.tres
+Merchant ID Validation.tscn::PackedScene::-1::1680594932::0::1::::<><>::res://themes/Textbar.tres<>res://themes/Light.tres<>res://themes/Buttons_white.tres<>res://themes/Regular.tres<>res://themes/Panel+blue+5.tres
+Merchant Pin.tscn::PackedScene::-1::1679399918::0::1::::<><>::res://themes/Bold.tres<>res://themes/Light.tres<>res://themes/Buttons_white.tres<>res://themes/Textbar.tres<>res://themes/Panel+blue+5.tres
+ProfileIcon.tscn::PackedScene::-1::1675516812::0::1::::<><>::
+RegistrationComplete.tscn::PackedScene::-1::1679400190::0::1::::<><>::res://themes/NumbersFont.tres<>res://themes/Bold+Large.tres<>res://themes/Buttons_white.tres<>res://themes/Panel+blue+2.tres
+RequestPage.tscn::PackedScene::-1::1679402520::0::1::::<><>::res://themes/Bold.tres<>res://themes/Light.tres<>res://themes/Buttons_black.tres<>res://themes/Buttons.tres<>res://themes/Panel+white.tres<>res://themes/Regular.tres<>res://themes/Panel+blue.tres<>res://icon.png<>res://Wallet Scenes/ProfileIcon.tscn<>res://Wallet Scenes/BookmarksIcon.tscn<>res://Wallet Scenes/ListsIcon.tscn
+RequestPayout.tscn::PackedScene::-1::1679400248::0::1::::<><>::res://themes/Bold+Large.tres<>res://themes/Buttons.tres<>res://themes/Panel+white.tres<>res://themes/Textbar.tres
+SetStudentPin.tscn::PackedScene::-1::1679334434::0::1::::<><>::res://themes/Bold+Large.tres<>res://themes/Light.tres<>res://themes/Buttons_white.tres<>res://themes/Textbar.tres<>res://themes/Panel+blue+2.tres<>res://themes/NumbersFont.tres
+SuccessfullStudentUpload.tscn::PackedScene::-1::1679400337::0::1::::<><>::res://themes/Bold.tres<>res://themes/Light.tres<>res://themes/Buttons_white.tres<>res://themes/Buttons_black.tres<>res://themes/Panel+blue+2.tres
+SwipeIcons.tscn::PackedScene::-1::1675403461::0::1::::<><>::
+TopicsIcon.tscn::PackedScene::-1::1675516857::0::1::::<><>::
+TransactionSuccessfull.tscn::PackedScene::-1::1678318772::0::1::::<><>::
+::res://webrtc/::1678332195
+LICENSE.json::JSON::-1::1678318776::0::1::::<><>::
+webrtc.tres::GDNativeLibrary::-1::1678318778::0::1::::<><>::
+::res://webrtc/lib/::1678332193

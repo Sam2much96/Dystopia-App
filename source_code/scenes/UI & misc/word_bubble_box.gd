@@ -2,6 +2,7 @@
 # Word Bubble Dialogue System
 # Implements a Wordbubble system using line2D, Animation Player, Player's Language ,Comic book's current frame
 # It connect to both the Comics singleton and the Dialgos Singleton
+# Currently supports only 1 translation file and cannot use Translation .csv for word translations
 # To Do:
 #(1) Finish Building System (2/2)
 #(2) Make a child of Comic book node scene (done)
@@ -22,7 +23,11 @@ extends AnimatedSprite2D
 class_name  WordBubbleBox
 
 # Path to Dialogue Script
-@export var dialogue : String   
+@export var dialogue : String  
+
+# Path to Dialogue Translations
+@export var dialogue_tr : String
+ 
 @export var enable : bool
 @export var enable_multiline : bool
 
@@ -44,12 +49,12 @@ var text_boundary : Vector2 # map & alter this data with the statemachine
 #Write Different States for the word bubbles
 enum { 
 	STATE_NARRATION, STATE_ANGRY ,STATE_THOUGHTS, STATE_TALK_RIGHT, 
-	STATE_TALK_LEFT, STATE_TALK_LEFT_2, STATE_TALK_RIGHT_2, 
+	STATE_TALK_LEFT, STATE_TALK_LEFT_2, STATE_TALK_RIGHT_2, STATE_TALK_RIGHT_3,
 	STATE_TALK_LEFT_3 
 	}
 
 @export_enum("Narrration", "Angry", " Thoughts",
- "Talk Right", "Talk Right 2","Talk Left", 
+ "Talk Right", "Talk Right 2", "Talk Right 3","Talk Left", 
 "Talk Left 2","Talk Left 3" ) var state : String = "Narrration"
 
 var _state = STATE_NARRATION
@@ -80,7 +85,8 @@ signal dialog_ended
 
 
 func show_dialog(new_text : String) -> void:
-	word_bubble_label.text = new_text
+	word_bubble_label.text = new_text#new_text 
+	
 	#$nametag/label.text = speaker
 	lines_to_skip = 0
 	word_bubble_label.lines_skipped = lines_to_skip
@@ -101,6 +107,12 @@ func show_dialog_2(text1 : String, text2 : String) -> void:
 var lines_to_skip = 0
 
 
+func flip()-> void:
+	flip_h = true
+
+func unflip()-> void:
+	flip_h = false
+
 
 func _ready():
 	
@@ -110,7 +122,7 @@ func _ready():
 	#hide()
 	if debug:
 		# Debug 0 : Various types of WordBubbles
-		state = "Talk Left"
+		#state = "Talk Left"
 		
 		# Debug 1 : Show dialog + Script Parser
 		#show_dialog(Dialogs.Parser.parse_script(6,Dialogs._script_testing))
@@ -120,10 +132,26 @@ func _ready():
 
 	# Single Line
 	if enable:
-		show_dialog(Dialogs.Parser.parse_script(line_index,dialogue))
+		
+		# English Translation file
+		if Dialogs.language == "en_US":
+			show_dialog(Dialogs.Parser.parse_script(line_index,dialogue))
+		if Dialogs.language == "te_IN":
+			show_dialog(Dialogs.Parser.parse_script(line_index,dialogue_tr))
+
+
 
 	# Multi-Line
-	if enable_multiline: show_dialog_2(Dialogs.Parser.parse_script(line_index,dialogue), Dialogs.Parser.parse_script(int(line_index + 1),dialogue))
+	if enable_multiline:
+		# English Translation file 
+		if Dialogs.language == "en_US":
+			show_dialog_2(Dialogs.Parser.parse_script(line_index,dialogue), Dialogs.Parser.parse_script(int(line_index + 1),dialogue))
+		
+		# Telugi Translation file
+		if Dialogs.language == "te_IN":
+			show_dialog_2(Dialogs.Parser.parse_script(line_index,dialogue_tr), Dialogs.Parser.parse_script(int(line_index + 1),dialogue_tr))
+
+
 
 	# Match String State to state machine
 	if state == "Narration":
@@ -137,6 +165,8 @@ func _ready():
 		_state = STATE_TALK_RIGHT
 	elif state == "Talk Right 2":
 		_state = STATE_TALK_RIGHT_2
+	elif state == "Talk Right 3":
+		_state = STATE_TALK_RIGHT_3
 	elif state == "Talk Left":
 		_state = STATE_TALK_LEFT
 	elif state == " Talk Left 2":
@@ -170,9 +200,10 @@ func _process(_delta):
 	Page = Comics_v5.current_page
 	
 	# Toggles word bubble visibility on/off using Page Data
-	if Page == visible_on_page:
+	# Disabling for Debugging
+	if Page == visible_on_page && !debug:
 		show()
-	elif Page != visible_on_page:
+	elif Page != visible_on_page && !debug:
 		hide()
 	
 	
@@ -208,7 +239,11 @@ func _process(_delta):
 			set_frame(5)
 			anims.play("Talk Right 2")
 			pass
+		STATE_TALK_RIGHT_3:
+			set_frame(6)
+			anims.play("Talk Left 3 flipped")
+			pass
 		STATE_TALK_LEFT_3:
-			set_frame(3)
+			set_frame(6)
 			anims.play("Talk Left 3")
 			pass

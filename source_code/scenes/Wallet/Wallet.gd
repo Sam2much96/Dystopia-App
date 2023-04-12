@@ -774,7 +774,7 @@ func _process(_delta):
 								self.Algorand.create_algod_node('TESTNET')
 								#var status
 							var status : bool
-							status= yield(self.Algorand.algod.health(), "completed")
+							status= await(self.Algorand.algod.health())
 							
 							print ("Status debug: ", status,' ',wallet_check_counter)
 							

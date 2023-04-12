@@ -1,60 +1,74 @@
-[gd_scene load_steps=12 format=3 uid="uid://bfcls4cpoqu5i"]
+[gd_scene load_steps=14 format=3 uid="uid://bfcls4cpoqu5i"]
 
-[ext_resource type="Texture2D" uid="uid://cdlj5ug270rao" path="res://scenes/Comics/chapter 1/chapter 1 Neo sud, the new south webp.webp" id="1"]
+[ext_resource type="Texture2D" uid="uid://ccm15ti0ej6ky" path="res://scenes/Comics/chapter 1/chapter 1 Neo sud, the new south webp RAW.webp" id="1_lbg1f"]
 [ext_resource type="Script" path="res://New game code and features/comic_panel_extension_script.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://bxilsw35fbniw" path="res://scenes/UI & misc/word_bubble_box.tscn" id="3_2kp12"]
 
-[sub_resource type="AtlasTexture" id="1"]
-atlas = ExtResource("1")
+[sub_resource type="AtlasTexture" id="AtlasTexture_csbf1"]
+atlas = ExtResource("1_lbg1f")
 region = Rect2(0, 0, 859, 1215)
 
-[sub_resource type="AtlasTexture" id="2"]
-atlas = ExtResource("1")
+[sub_resource type="AtlasTexture" id="AtlasTexture_0lc30"]
+atlas = ExtResource("1_lbg1f")
 region = Rect2(859, 0, 859, 1215)
 
-[sub_resource type="AtlasTexture" id="3"]
-atlas = ExtResource("1")
+[sub_resource type="AtlasTexture" id="AtlasTexture_rkadu"]
+atlas = ExtResource("1_lbg1f")
 region = Rect2(1718, 0, 859, 1215)
 
-[sub_resource type="AtlasTexture" id="4"]
-atlas = ExtResource("1")
+[sub_resource type="AtlasTexture" id="AtlasTexture_xdwhm"]
+atlas = ExtResource("1_lbg1f")
 region = Rect2(0, 1215, 859, 1215)
 
-[sub_resource type="AtlasTexture" id="5"]
-atlas = ExtResource("1")
+[sub_resource type="AtlasTexture" id="AtlasTexture_01ege"]
+atlas = ExtResource("1_lbg1f")
 region = Rect2(859, 1215, 859, 1215)
 
-[sub_resource type="AtlasTexture" id="6"]
-atlas = ExtResource("1")
+[sub_resource type="AtlasTexture" id="AtlasTexture_wd82x"]
+atlas = ExtResource("1_lbg1f")
 region = Rect2(1718, 1215, 859, 1215)
 
-[sub_resource type="AtlasTexture" id="7"]
-atlas = ExtResource("1")
+[sub_resource type="AtlasTexture" id="AtlasTexture_tahtb"]
+atlas = ExtResource("1_lbg1f")
 region = Rect2(0, 2430, 859, 1215)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k881s"]
+atlas = ExtResource("1_lbg1f")
+region = Rect2(859, 2430, 859, 1215)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1jvwk"]
+atlas = ExtResource("1_lbg1f")
+region = Rect2(1718, 2430, 859, 1215)
 
 [sub_resource type="SpriteFrames" id="8"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("1")
+"texture": SubResource("AtlasTexture_csbf1")
 }, {
 "duration": 1.0,
-"texture": SubResource("2")
+"texture": SubResource("AtlasTexture_0lc30")
 }, {
 "duration": 1.0,
-"texture": SubResource("3")
+"texture": SubResource("AtlasTexture_rkadu")
 }, {
 "duration": 1.0,
-"texture": SubResource("4")
+"texture": SubResource("AtlasTexture_xdwhm")
 }, {
 "duration": 1.0,
-"texture": SubResource("5")
+"texture": SubResource("AtlasTexture_01ege")
 }, {
 "duration": 1.0,
-"texture": SubResource("6")
+"texture": SubResource("AtlasTexture_wd82x")
 }, {
 "duration": 1.0,
-"texture": SubResource("7")
+"texture": SubResource("AtlasTexture_tahtb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k881s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1jvwk")
 }],
 "loop": true,
 "name": &"default",
@@ -65,17 +79,69 @@ animations = [{
 position = Vector2(593, 349)
 scale = Vector2(0.6, 0.6)
 sprite_frames = SubResource("8")
-frame = 1
 centered = false
 offset = Vector2(-428.761, -611.626)
 script = ExtResource("2")
 
-[node name="word bubble" parent="." instance=ExtResource("3_2kp12")]
+[node name="word bubbles" type="Node2D" parent="."]
+
+[node name="word bubble" parent="word bubbles" instance=ExtResource("3_2kp12")]
 position = Vector2(-260, -291.667)
 scale = Vector2(1.78759, 1.78759)
-frame = 0
+frame = 3
 dialogue = "res://scenes/Comics/chapter 1/chapter 1.gd"
+dialogue_tr = "res://scenes/Comics/chapter 1/chapter 1 te_IN.gd"
+enable = true
+line_index = 15
+state = "Talk Left"
+
+[node name="word bubble2" parent="word bubbles" instance=ExtResource("3_2kp12")]
+position = Vector2(243.333, -15)
+scale = Vector2(1.78759, 1.78759)
+dialogue = "res://scenes/Comics/chapter 1/chapter 1.gd"
+dialogue_tr = "res://scenes/Comics/chapter 1/chapter 1 te_IN.gd"
 enable_multiline = true
-line_index = 2
+line_index = 16
+
+[node name="word bubble3" parent="word bubbles" instance=ExtResource("3_2kp12")]
+position = Vector2(-255, -413.333)
+scale = Vector2(1.78759, 1.78759)
+dialogue = "res://scenes/Comics/chapter 1/chapter 1.gd"
+dialogue_tr = "res://scenes/Comics/chapter 1/chapter 1 te_IN.gd"
+enable = true
+line_index = 18
 visible_on_page = 1
-state = "Talk Right 2"
+state = "Narrration"
+
+[node name="word bubble4" parent="word bubbles" instance=ExtResource("3_2kp12")]
+position = Vector2(238.333, -320)
+scale = Vector2(1.78759, 1.78759)
+flip_h = false
+dialogue = "res://scenes/Comics/chapter 1/chapter 1.gd"
+dialogue_tr = "res://scenes/Comics/chapter 1/chapter 1 te_IN.gd"
+enable = true
+line_index = 19
+visible_on_page = 1
+state = "Narrration"
+
+[node name="word bubble5" parent="word bubbles" instance=ExtResource("3_2kp12")]
+position = Vector2(-223.333, 160)
+scale = Vector2(1.78759, 1.78759)
+flip_h = false
+dialogue = "res://scenes/Comics/chapter 1/chapter 1.gd"
+dialogue_tr = "res://scenes/Comics/chapter 1/chapter 1 te_IN.gd"
+enable = true
+line_index = 20
+visible_on_page = 1
+state = "Narrration"
+
+[node name="word bubble6" parent="word bubbles" instance=ExtResource("3_2kp12")]
+position = Vector2(211.667, 381.667)
+scale = Vector2(1.78759, 1.78759)
+flip_h = false
+dialogue = "res://scenes/Comics/chapter 1/chapter 1.gd"
+dialogue_tr = "res://scenes/Comics/chapter 1/chapter 1 te_IN.gd"
+enable = true
+line_index = 21
+visible_on_page = 1
+state = "Narrration"

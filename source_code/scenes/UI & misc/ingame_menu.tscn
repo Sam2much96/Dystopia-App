@@ -1,16 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://cxypr2xins18k"]
+[gd_scene load_steps=5 format=3 uid="uid://cxypr2xins18k"]
 
 [ext_resource type="Script" path="res://scenes/UI & misc/ingame_menu.gd" id="2"]
 [ext_resource type="Script" path="res://scenes/UI & misc/generic_joystick_ui_selector.gd" id="3"]
+[ext_resource type="Theme" uid="uid://dqptso6ac7uf7" path="res://fonts/Menu_dynamicfont.tres" id="3_k7giq"]
+[ext_resource type="FontFile" uid="uid://kx3nyraejuc6" path="res://fonts/Comic_Andy.ttf" id="4_x53u3"]
 
 [node name="Menu " type="Container"]
 anchors_preset = -1
 anchor_right = 0.888
 anchor_bottom = 0.955
-offset_left = 597.0
-offset_top = 93.0
-offset_right = -425.976
-offset_bottom = -525.84
+offset_left = 476.0
+offset_top = -8.0
+offset_right = -546.976
+offset_bottom = -626.84
 script = ExtResource("2")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -24,83 +26,106 @@ vertical_scroll_mode = 0
 [node name="HSeparator" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_stretch_ratio = 16.36
+alignment = 1
 script = ExtResource("3")
 
 [node name="comics" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
+self_modulate = Color(0, 0, 0, 1)
 layout_mode = 2
 focus_next = NodePath("../music on & off")
 focus_previous = NodePath("../chap 2 ")
+theme = ExtResource("3_k7giq")
+theme_override_fonts/font = ExtResource("4_x53u3")
+theme_override_font_sizes/font_size = 60
 text = "comics"
 flat = true
 
 [node name="new game" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
+self_modulate = Color(0, 0, 0, 1)
 layout_mode = 2
 focus_next = NodePath("../music on & off")
 focus_previous = NodePath("../chap 2 ")
 mouse_filter = 1
+theme = ExtResource("3_k7giq")
 text = "new game"
 flat = true
 
 [node name="continue" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
+self_modulate = Color(0, 0, 0, 1)
 layout_mode = 2
 focus_next = NodePath("../music on & off")
 focus_previous = NodePath("../chap 2 ")
+theme = ExtResource("3_k7giq")
 text = "continue"
 flat = true
 
 [node name="multiplayer" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
+self_modulate = Color(0, 0, 0, 1)
 show_behind_parent = true
 layout_mode = 2
 focus_next = NodePath("../quit Button")
 focus_previous = NodePath("../mini game")
+theme = ExtResource("3_k7giq")
 shortcut_in_tooltip = false
 text = "Multiplayer"
 flat = true
 
 [node name="Anime" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
+self_modulate = Color(0, 0, 0, 1)
 layout_mode = 2
 focus_next = NodePath("../music on & off")
 focus_previous = NodePath("../chap 2 ")
+theme = ExtResource("3_k7giq")
 text = "Anime"
 flat = true
 
 [node name="Testing_Scene" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
+self_modulate = Color(0, 0, 0, 1)
 layout_mode = 2
 focus_next = NodePath("../music on & off")
 focus_previous = NodePath("../chap 2 ")
+theme = ExtResource("3_k7giq")
 text = "practice"
 flat = true
 
 [node name="City_scape" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
+self_modulate = Color(0, 0, 0, 1)
 layout_mode = 2
 focus_next = NodePath("../music on & off")
 focus_previous = NodePath("../chap 2 ")
+theme = ExtResource("3_k7giq")
 text = "CityScape"
 flat = true
 
 [node name="wallet" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
+self_modulate = Color(0, 0, 0, 1)
 show_behind_parent = true
 layout_mode = 2
 focus_next = NodePath("../quit Button")
 focus_previous = NodePath("../mini game")
+theme = ExtResource("3_k7giq")
 shortcut_in_tooltip = false
 text = "Wallet"
 flat = true
 
 [node name="controls" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
+self_modulate = Color(0, 0, 0, 1)
 show_behind_parent = true
 layout_mode = 2
 focus_next = NodePath("../quit Button")
 focus_previous = NodePath("../mini game")
+theme = ExtResource("3_k7giq")
 shortcut_in_tooltip = false
 text = "Controls"
 flat = true
 
 [node name="quit Button" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
+self_modulate = Color(0, 0, 0, 1)
 show_behind_parent = true
 layout_mode = 2
 focus_next = NodePath("../chap 1 ")
 focus_previous = NodePath("../music on & off")
+theme = ExtResource("3_k7giq")
 text = "quit"
 flat = true
 

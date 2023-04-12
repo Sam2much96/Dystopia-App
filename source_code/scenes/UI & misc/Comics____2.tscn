@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://djv8wj7w602wd"]
+[gd_scene load_steps=21 format=3 uid="uid://djv8wj7w602wd"]
 
 [ext_resource type="PackedScene" uid="uid://d1706qbqwaeob" path="res://scenes/UI & misc/Comics.tscn" id="1"]
 [ext_resource type="Texture2D" uid="uid://cluu8qbb602d4" path="res://scenes/Comics/chapter 1/Cover 1.webp" id="2"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://bn4qbsvewvle2" path="res://resources/misc/UI hover buttons.webp" id="15"]
 [ext_resource type="Theme" uid="uid://ev0hqw04uvpe" path="res://fonts/scroll_bar_theme.tres" id="16"]
 [ext_resource type="Texture2D" uid="uid://drdmlmv60k3f" path="res://scenes/Comics/chapter 1/Cover 1_pressed.webp" id="18"]
+[ext_resource type="Theme" uid="uid://dqptso6ac7uf7" path="res://fonts/Menu_dynamicfont.tres" id="18_3dp6o"]
 [ext_resource type="Texture2D" uid="uid://mjufv7eio2ji" path="res://scenes/Comics/chapter 2/cover 2_pressed.webp" id="19"]
 [ext_resource type="Texture2D" uid="uid://c7ji4t67a0o3k" path="res://scenes/Comics/chapter 3/Chapter 3 cover_pressed.webp" id="20"]
 [ext_resource type="Texture2D" uid="uid://whimg8y1ch3h" path="res://scenes/Comics/chapter 4/Cover 1 pressed.webp" id="21"]
@@ -90,17 +91,22 @@ layout_mode = 0
 [node name="Node2D" type="Node2D" parent="Comics"]
 
 [node name="Book" type="TouchScreenButton" parent="."]
-position = Vector2(-7, 23)
+position = Vector2(-4, 95)
+scale = Vector2(1, 0.951049)
 texture_normal = ExtResource("7")
 action = "comics"
 
 [node name="Rotate" type="TouchScreenButton" parent="."]
-position = Vector2(8.65696, 119.029)
+position = Vector2(15, 207)
 scale = Vector2(0.516441, 0.516441)
 texture_normal = ExtResource("8")
 
 [node name="Back_button" type="Button" parent="."]
-layout_mode = 0
+layout_mode = 1
+offset_right = 86.0
+offset_bottom = 76.0
+theme = ExtResource("18_3dp6o")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "back"
 flat = true
 
@@ -111,6 +117,12 @@ anchors_preset = 0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 673.0
+offset_bottom = 302.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="Like button" parent="." instance=ExtResource("11")]
 visible = false

@@ -155,7 +155,7 @@ func _ready():
 	
 	
 	# Set Global Background Color
-	#RenderingServer.set_default_clear_color(Color("white")) 
+	RenderingServer.set_default_clear_color(Color("white")) 
 
 
 func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_processing()

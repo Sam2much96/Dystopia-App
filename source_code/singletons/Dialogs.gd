@@ -123,10 +123,11 @@ class Parser:
 
 	# Parses a JSON script and returns a line
 
-	static func parse_script(index : int, _script : String ) -> String: #Places Dialogue in wordbubbles with Dialogue singleton-aid
+	static func parse_script(line_to_return : int, _script : String ) -> String: #Places Dialogue in wordbubbles with Dialogue singleton-aid
 		#Parse gd script
 		var _f = FileAccess
 		var line_string : String
+		var index : int = 0 # used for numbering each line in the parsed script
 		if _f.file_exists(_script): #('res://resources/dialogues/script_testing.gd'):
 			print ('File Exists')
 			var t =_f.open (_script, FileAccess.READ)
@@ -135,8 +136,11 @@ class Parser:
 			while t.get_position() < t.get_length() && not t.eof_reached():
 			#iterate through all lines until the end of file is reached
 			#var index controls which line is shown
-				line_string = str (index )  + ' ' + t.get_line()
+				#t.seek(index)
+				line_string = t.get_line() #str (index )  + ' ' + t.get_line() # concatonates the index and lines together
 				line_string += " "
+				
+				
 				
 				#........... # for debug purposes only #...................#
 				#print (line_string) 
@@ -145,19 +149,14 @@ class Parser:
 				
 				"Shows Dialogue Based on Line index"
 				
-				if index == 8: #index controls the line to parse
-					
-					# Depreciated for String return instead
-					#$Dialog_box.show_dialog(line, 'script parser')
-					
-					return line_string
-					
-					#Update Dialogue box to pass script to the wordbubble system
-				#Write a controller to control the index
-				#
-				#
+				
 				index += 1 
-			t.close() #don't close yet
+				
+				# line to return cannot be 0 as a result of this code implementation
+				if index == line_to_return:
+					return line_string
+					break
+			t.close() 
 			
 		return line_string
 

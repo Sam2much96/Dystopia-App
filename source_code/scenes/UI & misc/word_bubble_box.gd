@@ -1,6 +1,7 @@
 # *************************************************
 # Word Bubble Dialogue System
 # Implements a Wordbubble system using line2D, Animation Player, Player's Language ,Comic book's current frame
+# It connect to both the Comics singleton and the Dialgos Singleton
 # To Do:
 #(1) Finish Building System (2/2)
 #(2) Make a child of Comic book node scene (done)
@@ -11,7 +12,8 @@
 #
 # (1) use state machine to change Word Bubble type
 # (2) use show_dialog and show_dialog_2 to display text respectively
-#
+# (3) Use Enabe and Enable Mulitpline to Display PArsed dialogue
+# (4) Set Line Index to the exact line to Display from the dialog script
 # *************************************************
 
 extends AnimatedSprite2D
@@ -19,12 +21,26 @@ extends AnimatedSprite2D
 # Word Bubble Object
 class_name  WordBubbleBox
 
-@export var dialogue : String = ''  
+# Path to Dialogue Script
+@export var dialogue : String   
+@export var enable : bool
+@export var enable_multiline : bool
 
 # For Regression testing
 @export var debug : bool 
 
-@export var text_boundary : Vector2 # map & alter this data with the statemachine
+
+@export var line_index : int
+
+# Toggle word bubble visibility depending on Comics Page Data
+@export var visible_on_page : int 
+
+# Synchronizes Page Data with Comics Pages
+var Page : int 
+
+
+
+var text_boundary : Vector2 # map & alter this data with the statemachine
 #Write Different States for the word bubbles
 enum { 
 	STATE_NARRATION, STATE_ANGRY ,STATE_THOUGHTS, STATE_TALK_RIGHT, 
@@ -32,7 +48,11 @@ enum {
 	STATE_TALK_LEFT_3 
 	}
 
-var state = STATE_NARRATION
+@export_enum("Narrration", "Angry", " Thoughts",
+ "Talk Right", "Talk Right 2","Talk Left", 
+"Talk Left 2","Talk Left 3" ) var state : String = "Narrration"
+
+var _state = STATE_NARRATION
 
 var Position : Vector2
 var index : int 
@@ -40,7 +60,8 @@ var index : int
 @export  var wordbubbleobjectdata : Dictionary = {
 	"position": Position,
 	"state" : state,
-	"index" : index
+	"index" : index,
+	"Language" : Dialogs.language
 } # Dictionary containing all object's properties
 #Use a polygon2d to build the word bubbles
 
@@ -51,6 +72,13 @@ var index : int
 
 signal dialog_started
 signal dialog_ended
+
+
+# create list in inspector tab as state controller
+# To enable Polymorphism
+
+
+
 func show_dialog(new_text : String) -> void:
 	word_bubble_label.text = new_text
 	#$nametag/label.text = speaker
@@ -75,12 +103,14 @@ var lines_to_skip = 0
 
 
 func _ready():
+	
+	#ignore the warning
 	Dialogs.word_bubble_box = self
 	
 	#hide()
 	if debug:
 		# Debug 0 : Various types of WordBubbles
-		state = STATE_TALK_LEFT_2
+		state = "Talk Left"
 		
 		# Debug 1 : Show dialog + Script Parser
 		#show_dialog(Dialogs.Parser.parse_script(6,Dialogs._script_testing))
@@ -88,11 +118,32 @@ func _ready():
 		# Debug 2 : Show Double Dialog + Script Parser
 		show_dialog_2(Dialogs.Parser.parse_script(6,Dialogs._script_testing), Dialogs.Parser.parse_script(7,Dialogs._script_testing))
 
+	# Single Line
+	if enable:
+		show_dialog(Dialogs.Parser.parse_script(line_index,dialogue))
 
+	# Multi-Line
+	if enable_multiline: show_dialog_2(Dialogs.Parser.parse_script(line_index,dialogue), Dialogs.Parser.parse_script(int(line_index + 1),dialogue))
 
-# Depreciated
-#func sort_frames(): #Gets the frames of the spritesheet and sorts it out into the state machine
-#	self.get_frame() #Write an automatic state changer
+	# Match String State to state machine
+	if state == "Narration":
+		_state = STATE_NARRATION
+		
+	elif state == "Angry":
+		_state = STATE_ANGRY
+	elif state == "Thoughts":
+		_state = STATE_THOUGHTS
+	elif state == "Talk Right":
+		_state = STATE_TALK_RIGHT
+	elif state == "Talk Right 2":
+		_state = STATE_TALK_RIGHT_2
+	elif state == "Talk Left":
+		_state = STATE_TALK_LEFT
+	elif state == " Talk Left 2":
+		_state = STATE_TALK_LEFT_2
+	elif state == "Talk Left 3":
+		_state = STATE_TALK_LEFT_3
+
 
 func hide_dialogue(): #my code
 	$anims.play("disappear")
@@ -115,12 +166,22 @@ func _input(event):
 
 func _process(_delta):
 	
+	# Synchronizes  Page Data with Comics 
+	Page = Comics_v5.current_page
+	
+	# Toggles word bubble visibility on/off using Page Data
+	if Page == visible_on_page:
+		show()
+	elif Page != visible_on_page:
+		hide()
+	
+	
 	" State Machine "
 	# Features
 	# (1) Shrinks Label's Boundaries for Word Bubble
 	# (2) Implements RichLabelTexts with effects
 	# (3)Syncs Label Boundary data to Word Bubble current frame
-	match  state:
+	match  _state:
 		STATE_NARRATION:
 			set_frame(0)
 			anims.play("Narration")
@@ -149,5 +210,5 @@ func _process(_delta):
 			pass
 		STATE_TALK_LEFT_3:
 			set_frame(3)
-			anims.play("Talk Right 3")
+			anims.play("Talk Left 3")
 			pass

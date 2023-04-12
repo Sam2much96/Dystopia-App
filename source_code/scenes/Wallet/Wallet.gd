@@ -144,7 +144,7 @@ var WITHDRAW : bool = false
 var token_write_path : String = "user://wallet/account_info.token" #creating directory bugs out
 var token_dir : String = "user://wallet"
 
-export (String) var local_image_path ="user://wallet/img0.png" #Loads the image file path from a folder to prevent redownloads (depreciated)
+@export var local_image_path : String ="user://wallet/img0.png" #Loads the image file path from a folder to prevent redownloads (depreciated)
 var local_image_file : String = "user://wallet/img0.png.png" 
 
 
@@ -155,7 +155,7 @@ var local_image_file : String = "user://wallet/img0.png.png"
 "State Machine"
 
 enum {NEW_ACCOUNT,CHECK_ACCOUNT, SHOW_ACCOUNT, IMPORT_ACCOUNT, TRANSACTIONS ,COLLECTIBLES, SMARTCONTRACTS, IDLE, PASSWORD, SHOW_MNEMONIC}
-export var state = IDLE
+@export_enum(int) var state = IDLE
 
 var wallet_check : int = 0
 var wallet_check_counter : int = 0
@@ -188,8 +188,8 @@ signal transaction
 
 #************ All Used Nodes in Wallet Scene**********************#
 #onready var timer = $Timer #depreciated
-onready var q = HTTPRequest.new()
-onready var q2 = HTTPRequest.new()
+@onready var q = HTTPRequest.new()
+@onready var q2 = HTTPRequest.new()
 
 var WalletRoot : Control 
 var Algorand : Algodot
@@ -276,8 +276,7 @@ var dict : Dictionary = {'address': address, 'amount': 0, 'mnemonic': mnemonic }
 var All_UI_elements : Array = []
 
 "Checks the Nodes connection Between Singleton & UI"
-func check_Nodes() -> bool:
-	 
+func check_Nodes() -> bool: 
 	
 	#*****************Wallet UI ************************************
 	
@@ -555,7 +554,7 @@ func _process(_delta):
 					if self.Algorand.algod == null:
 						self.Algorand.create_algod_node('TESTNET')
 					var status : bool
-					status= yield(self.Algorand.algod.health(), "completed")
+					status= await(self.Algorand.algod.health())
 					
 					#print ("Status debug: ", status,' ',wallet_check_counter) #for debug purposes only
 					

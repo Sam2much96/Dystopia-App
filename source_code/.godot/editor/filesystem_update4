@@ -24,3 +24,5 @@ res://scenes/UI & misc/word_bubble_box.gd
 res://scenes/UI & misc/word_bubble_box.tscn
 res://fonts/Word_bubble_dialogue+2.tres
 res://New game code and features/comic_panel_extension_script.gd
+res://scenes/Comics/chapter 1/chapter 1.gd
+res://scenes/Wallet/Wallet.gd

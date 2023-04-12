@@ -91,7 +91,8 @@ var comics : Dictionary = {
 
 var swipe_start_position = Vector2()
 var memory : Array = [] #use this variable to store current frame and comics info
-var  current_frame : int   = 0
+@export var  current_frame : int   = 0 # Global Frame Variable
+@export var current_page : int  = -2# Global page variable, same as above, but differentiating for testing
 var current_chapter : int
 var next_scene : PackedScene
 

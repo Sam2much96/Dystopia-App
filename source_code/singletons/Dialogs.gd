@@ -44,6 +44,8 @@ var dialog_box = null setget _set_dialog_box
 
 var language : String = ""# stores the current language the user selects
 
+var _script_testing : String = 'res://resources/dialogues/script_testing.gd'
+
 func show_dialog(text:String, speaker:String):
 	if is_instance_valid(dialog_box): # If an instance of dialogue box hasn't been deleted from memory?
 		dialog_box.show_dialog(text, speaker)
@@ -92,3 +94,54 @@ func translate_to(_language : String, locale: String)-> String:
 	return (tr(_language))
 	#else: return ("sdgdsdhdh") # returns an empty string
 
+
+
+class Parser extends Reference :
+	
+	"""
+	THE PURPOSE OF THIS CODE IS TO PARSE TEXT DATA FROM A JSON FILE AND DISPLAY IT IN A DIALOGUE BOX
+	"""
+	#Godot has greater finese in parsing json files
+	
+	# Determines what lines to show
+	const test_index : int = 8 
+
+
+	# Parses a JSON script and returns a line
+
+	static func parse_script(line_to_return : int, _script : String ) -> String: #Places Dialogue in wordbubbles with Dialogue singleton-aid
+		#Parse gd script
+		var _f = File.new()
+		var line_string : String
+		var index : int = 0 # used for numbering each line in the parsed script
+		if _f.file_exists(_script): #('res://resources/dialogues/script_testing.gd'):
+			print ('File Exists')
+			var t =_f.open (_script, File.READ)
+			# Resets count to start from beginning
+			#index = 1 
+			while t.get_position() < t.get_length() && not t.eof_reached():
+			#iterate through all lines until the end of file is reached
+			#var index controls which line is shown
+				#t.seek(index)
+				line_string = t.get_line() #str (index )  + ' ' + t.get_line() # concatonates the index and lines together
+				line_string += " "
+				
+				
+				
+				#........... # for debug purposes only #...................#
+				#print (line_string) 
+				
+				#........... # Debug ends #...................#
+				
+				"Shows Dialogue Based on Line index"
+				
+				
+				index += 1 
+				
+				# line to return cannot be 0 as a result of this code implementation
+				if index == line_to_return:
+					return line_string
+					break
+			t.close() 
+			
+		return line_string

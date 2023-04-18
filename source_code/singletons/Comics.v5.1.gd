@@ -361,7 +361,16 @@ func _input(event):
 
 	"Stops From Processing Mouse Inputs"
 	if event is InputEventMouse:
-		#return
+		pass
+		
+
+	if event is InputEventMouseButton:
+#		
+#		if event.is_double_click():
+#			print ("zoom og")
+#			return Functions._zoom(cmx_root, true)
+			#return zoom
+		
 		pass
 	if event is InputEventMouseMotion:
 		#return
@@ -422,11 +431,17 @@ func _input(event):
 		#if event is  InputEventMultiScreenDrag == true : # Works
 			#target =  event.get_position()
 		if event.get_index() == int(2): # and event is InputEventScreenPinch : #zoom if screentouch is 2 fingers & uses input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases
-				
-			Functions._zoom(comics_placeholder, zoom) #you can use get_index to get the number of fingers
-		
-		
-		
+		#if event.is_double_tap():
+			
+			print ("zoom")
+			Functions._zoom(cmx_root, !zoom) #you can use get_index to get the number of fingers
+			
+			zoom = !zoom
+			return zoom
+		if event.is_double_tap(): # works
+			print ("zoom 2")
+			Functions._zoom_2(comics_sprite, true)
+			return zoom
 		
 		"Handles Swipe Detection" 
 		#Requires Debugging
@@ -1241,6 +1256,23 @@ class Functions:
 			zoom = false
 		return zoom 
 
+	static func _zoom_2(comics_placeholder : Node, zoom : bool)-> bool:
+		
+		#if _loaded_comics == true:
+		var scale =comics_placeholder.get_scale()
+		print (scale)
+		if scale == Vector2(1,1)  :
+			#print ('zoom in') #for debug purposes only
+			comics_placeholder.set_scale(scale * 2) 
+			zoom = true
+			return true 
+		if scale > Vector2(1,1):
+			#print ('zoom out') #for debug purposes only
+			scale = comics_placeholder.get_scale()
+			comics_placeholder.set_scale(scale / 2) 
+			zoom = false
+		return zoom 
+
 
 
 func _on_Timer_timeout():
@@ -1385,3 +1417,12 @@ func _on_Kinematic_2D_mouse_entered():
 
 func _on_Kinematic_2D_mouse_exited():
 	print(2222)
+
+
+
+
+
+func _on_zoom_pressed():
+	Functions._zoom_2(comics_sprite, !zoom)
+	zoom = !zoom
+	return zoom

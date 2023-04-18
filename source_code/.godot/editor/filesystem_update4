@@ -1,5 +1,4 @@
-res://default_bus_layout.tres
-res://scenes/UI & misc/form/form.tscn
+res://scenes/UI & misc/Comics.tscn
 res://fonts/Word_bubble_dialogue.tres
 res://fonts/dialog_text_settings.tres
 res://themes/Buttons_white+Black.tres
@@ -7,6 +6,7 @@ res://themes/option+button_Red.tres
 res://themes/Regular.tres
 res://fonts/Word_bubble_dialogue+2.tres
 res://fonts/scroll_bar_theme.tres
+res://scenes/UI & misc/form/form.tscn
 res://New game code and features/Error splash page for crashes.tscn
 res://scenes/UI & misc/Dialog_box.tscn
 res://scenes/cinematics/cinematics.tscn
@@ -14,15 +14,4 @@ res://scenes/Title screen.tscn
 res://scenes/Comics/chapter 1/chapter 1.tscn
 res://scenes/UI & misc/word_bubble_box.tscn
 res://scenes/UI & misc/Comics____2.tscn
-res://scenes/UI & misc/word_bubble_box.gd
-res://scenes/Comics/chapter 1/chapter 1.gd
-res://Translation/Translation_1.en_US.translation
-res://Translation/Translation_1.pt_BR.translation
-res://Translation/Translation_1.fr.translation
-res://Translation/Translation_1.te_IN.translation
-res://Translation/Translation_1.hi_IN.translation
-res://scenes/Comics/chapter 1/chapter 1 te_IN.gd
-res://fonts/Menu_dynamicfont.tres
 res://scenes/UI & misc/ingame_menu.tscn
-res://fonts/ingame_menu.tres
-res://singletons/Globals.gd

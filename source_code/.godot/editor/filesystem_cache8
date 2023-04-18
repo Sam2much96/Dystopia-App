@@ -1,9 +1,9 @@
 2a60927148abd1d33b818b535e306557
-::res://::1681286588
+::res://::1681308899
 App's white paper v2.0.0.webp::CompressedTexture2D::8890419274585438539::1678318772::1681057560::1::::<><>::
 Changelog.md::TextFile::-1::1678318772::0::1::::<><>::
 Default.material::StandardMaterial3D::-1::1678318772::0::1::::<><>::
-default_bus_layout.tres::AudioBusLayout::5978682035864245801::1681284357::0::1::::<><>::
+default_bus_layout.tres::AudioBusLayout::5978682035864245801::1681308910::0::1::::<><>::
 export_presets.cfg::TextFile::-1::1680630662::0::1::::<><>::
 icon.png::CompressedTexture2D::8112901107810896355::1678318774::1681057554::1::::<><>::
 skin.material::StandardMaterial3D::-1::1678318776::0::1::::<><>::
@@ -204,7 +204,7 @@ Appodeal.tscn::PackedScene::4062007646347546284::1681236486::0::1::::<><>::res:/
 appodeal_logo.png::CompressedTexture2D::4073906675596476969::1678318774::1681057553::1::::<><>::
 ::res://ads/Yodo1-lib/::1678332187
 yodo1mas.gd::GDScript::-1::1678318774::0::1::::Yodo1Mas<>Node<>::
-::res://fonts/::1681284382
+::res://fonts/::1681293847
 adamwarrenpro-bold.ttf::FontFile::8863705779471262498::1678318774::1681057353::1::::<><>::
 adamwarrenpro.ttf::FontFile::8078362824466723093::1678318774::1681057353::1::::<><>::
 Candy Demo.otf::FontFile::5642386763692782705::1678318774::1681057353::1::::<><>::
@@ -212,12 +212,12 @@ Candy Demo.ttf::FontFile::1187804753494090181::1678318774::1681057353::1::::<><>
 Comic Book.otf::FontFile::8794059139380164086::1678318774::1681057353::1::::<><>::
 Comic_Andy.ttf::FontFile::751093702669724155::1678318774::1681057353::1::::<><>::
 dialog.tres::FontFile::-1::1678318774::0::1::::<><>::res://fonts/Candy Demo.otf
-dialog_text_settings.tres::LabelSettings::7236790416379048940::1681284382::0::1::::<><>::uid://cfh324wecq0qy
+dialog_text_settings.tres::LabelSettings::7236790416379048940::1681293847::0::1::::<><>::uid://cfh324wecq0qy
 DigitalStripBB_BoldItal.ttf::FontFile::3485949123025496404::1678318774::1681057353::1::::<><>::
 DigitalStripBB_Reg.ttf::FontFile::8767312648634591621::1678318774::1681057353::1::::<><>::
-ingame_menu.tres::Theme::4889958765510939111::1681112788::0::1::::<><>::
+ingame_menu.tres::Theme::4889958765510939111::1681290047::0::1::::<><>::
 LiberationSans.ttf::FontFile::1214243393654099993::1678318774::1681057353::1::::<><>::
-Menu_dynamicfont.tres::FontFile::-1::1680144420::0::1::::<><>::res://fonts/Comic_Andy.ttf
+Menu_dynamicfont.tres::Theme::8314435765971361530::1681290185::0::1::::<><>::uid://kx3nyraejuc6
 Phantom Fingers.otf::FontFile::2965959373920954596::1678318774::1681057353::1::::<><>::
 Phantom Fingers.ttf::FontFile::52779562088118800::1678318774::1681057353::1::::<><>::
 Roboto-Black.ttf::FontFile::2436191940254822475::1678318774::1681057353::1::::<><>::
@@ -232,12 +232,12 @@ Roboto-MediumItalic.ttf::FontFile::6975254116790836143::1678318774::1681057353::
 Roboto-Regular.ttf::FontFile::1645588832008261540::1678318774::1681057353::1::::<><>::
 Roboto-Thin.ttf::FontFile::7905505651446317901::1678318774::1681057353::1::::<><>::
 Roboto-ThinItalic.ttf::FontFile::6754666703799550510::1678318774::1681057353::1::::<><>::
-scroll_bar_theme.tres::Theme::325638608298630374::1681284382::0::1::::<><>::
+scroll_bar_theme.tres::Theme::325638608298630374::1681293847::0::1::::<><>::
 spiritmedium.ttf::FontFile::8089379825654540015::1678318774::1681057353::1::::<><>::
 stats.tres::FontFile::-1::1680760351::0::1::::<><>::
 wallet.tres::Theme::-1::1678318774::0::1::::<><>::res://fonts/stats.tres
-Word_bubble_dialogue+2.tres::LabelSettings::8177342396797705621::1681284382::0::1::::<><>::uid://xpeuwowyvmtg
-Word_bubble_dialogue.tres::FontFile::5139986079435599676::1681284382::0::1::::<><>::
+Word_bubble_dialogue+2.tres::LabelSettings::8177342396797705621::1681293847::0::1::::<><>::uid://xpeuwowyvmtg
+Word_bubble_dialogue.tres::FontFile::5139986079435599676::1681293847::0::1::::<><>::
 ::res://fonts/nokia_3310_fontpack_2023/::1681110395
 ::res://fonts/nokia_3310_fontpack_2023/classic/::1678332187
 Read Me.txt::TextFile::-1::1678318774::0::1::::<><>::
@@ -265,12 +265,12 @@ gizmo_light.png::CompressedTexture2D::3572195078851471934::1678318774::168105756
 license.txt::TextFile::-1::1678318774::0::1::::<><>::
 tiny.ttf::FontFile::4527744204135259253::1678318774::1681057353::1::::<><>::
 tiny.txt::TextFile::-1::1678318774::0::1::::<><>::
-::res://New game code and features/::1681287251
+::res://New game code and features/::1681294067
 Assasi_State.gd::GDScript::-1::1678318772::0::1::::<>KinematicBody2D<>::
 comic_panel_extension_script.gd::GDScript::-1::1681276513::0::1::::<>AnimatedSprite2D<>::
 crypto_testing.tscn::PackedScene::-1::1678318772::0::1::::<><>::res://New game code and features/godot-monero.gd
 Drag_extension.gd::GDScript::-1::1678318772::0::1::::<>RefCounted<>::
-Error splash page for crashes.tscn::PackedScene::6863558218209322577::1681287251::0::1::::<><>::
+Error splash page for crashes.tscn::PackedScene::6863558218209322577::1681294067::0::1::::<><>::
 GD-teal.gd::GDScript::-1::1678318772::0::1::::<>Node<>::
 godot-monero.gd::GDScript::-1::1678318772::0::1::::<>Node<>::
 google_play_games_services.gd::GDScript::-1::1678318772::0::1::::<>Node<>::
@@ -421,8 +421,8 @@ table.webp::CompressedTexture2D::1485565230252847082::1678318776::1681057543::1:
 Dystopia Logo Drop shadow.png::CompressedTexture2D::736301714596170753::1678318776::1681057544::1::::<><>::
 Dystopia Logo webp.webp::CompressedTexture2D::554242771949648048::1678318776::1681057543::1::::<><>::
 title..ogv::VideoStreamTheora::-1::1678318776::0::1::::<><>::
-::res://scenes/::1681287251
-Title screen.tscn::PackedScene::8494822561019642045::1681287251::0::1::::<><>::res://scenes/UI & misc/Title screen.gd<>uid://cxypr2xins18k<>uid://kqw1tusif5mj<>uid://dwgsyty4l22kk<>uid://dp42ti2tyfuxm<>uid://gtnlbqve2s8j<>uid://d4kw3l4jwxlco<>uid://baydywqeo6xtr<>res://scenes/UI & misc/Notification.gd<>uid://bx4ww4mx87p1m<>uid://dlwyou4qjjj7t
+::res://scenes/::1681294067
+Title screen.tscn::PackedScene::8494822561019642045::1681294067::0::1::::<><>::res://scenes/UI & misc/Title screen.gd<>uid://cxypr2xins18k<>uid://kqw1tusif5mj<>uid://dwgsyty4l22kk<>uid://dp42ti2tyfuxm<>uid://gtnlbqve2s8j<>uid://d4kw3l4jwxlco<>uid://baydywqeo6xtr<>res://scenes/UI & misc/Notification.gd<>uid://bx4ww4mx87p1m<>uid://dlwyou4qjjj7t
 ::res://scenes/characters/::1681236486
 Aarin.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/characters/Player.gd<>res://resources/Aarin/spritesheet_3.webp<>res://scenes/Shaders/BlueNoise.webp<>res://scenes/Shaders/DirectionalBlur.shader<>res://scenes/Shaders/Impact.tscn
 Aarin_networking.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/characters/Player v2.gd<>res://scenes/Shaders/DirectionalBlur.shader<>res://scenes/Shaders/BlueNoise.webp<>res://resources/Aarin/spritesheet_3.webp<>res://scenes/Shaders/Impact.tscn
@@ -441,17 +441,18 @@ Player.gd::GDScript::-1::1678318776::0::1::::Player<>KinematicBody2D<>::
 Player.tscn::PackedScene::794808239474749252::1681236486::0::1::::<><>::res://scenes/characters/Player.gd<>uid://cvsi1m6pt6t40
 State Machine.gd::GDScript::-1::1678318776::0::1::::StateMachine<>Node<>::
 State Machine.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/characters/State Machine.gd<>res://scenes/characters/states/motion/on_ground/idle.gd<>res://scenes/characters/states/combat/attack.gd<>res://scenes/characters/states/motion/motion.gd<>res://scenes/characters/states/motion/on_ground/roll.gd
-::res://scenes/cinematics/::1681287251
+::res://scenes/cinematics/::1681294067
 cinematics V2.gd::GDScript::-1::1681099271::0::1::::cinematic<>Control<>::
-cinematics.tscn::PackedScene::2841215643063696513::1681287251::0::1::::<><>::res://scenes/cinematics/cinematics V2.gd<>uid://c6frxm3fjh5fg<>res://singletons/Title animation.tres
+cinematics.tscn::PackedScene::2841215643063696513::1681294067::0::1::::<><>::res://scenes/cinematics/cinematics V2.gd<>uid://c6frxm3fjh5fg<>res://singletons/Title animation.tres
 intro_animation.tres::Animation::-1::1678318776::0::1::::<><>::
 pilot_ep_1.tscn::PackedScene::-1::1679983055::0::1::::<><>::res://ads/Ads_manager.tscn
 ::res://scenes/Comics/::1678332189
-::res://scenes/Comics/chapter 1/::1681288464
+::res://scenes/Comics/chapter 1/::1681294068
 chapter 1 Neo sud, the new south webp RAW.webp::CompressedTexture2D::4939624814783768080::1681277545::1681277597::1::::<><>::
 chapter 1 Neo sud, the new south webp.webp::CompressedTexture2D::5006717141353352698::1678318776::1681057551::1::::<><>::
+chapter 1 te_IN.gd::GDScript::-1::1681289305::0::1::::<>RefCounted<>::
 chapter 1.gd::GDScript::-1::1681288464::0::1::::<>RefCounted<>::
-chapter 1.tscn::PackedScene::2742195215569757844::1681288463::0::1::::<><>::uid://ccm15ti0ej6ky<>res://New game code and features/comic_panel_extension_script.gd<>uid://bxilsw35fbniw
+chapter 1.tscn::PackedScene::2742195215569757844::1681294068::0::1::::<><>::uid://ccm15ti0ej6ky<>res://New game code and features/comic_panel_extension_script.gd<>uid://bxilsw35fbniw
 Cover 1.webp::CompressedTexture2D::5587480315546227207::1678318776::1681057545::1::::<><>::
 Cover 1_pressed.webp::CompressedTexture2D::245865130529341501::1678318776::1681057547::1::::<><>::
 ::res://scenes/Comics/chapter 2/::1681057422
@@ -544,17 +545,17 @@ Impact.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/Shaders/imp
 impact_effect_script.gd::GDScript::-1::1678318776::0::1::::<>Node2D<>::
 RadialGradient.png::CompressedTexture2D::4104305120226596990::1678318776::1681057543::1::::<><>::
 Waves.png::CompressedTexture2D::1940446814634342254::1678318776::1681057542::1::::<><>::
-::res://scenes/UI & misc/::1681288464
+::res://scenes/UI & misc/::1681294069
 Blood_Splatter_FX.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/FX/Blood splatter fx 2.webp
 comics-reader-extension.gd::GDScript::-1::1681196648::0::1::::<>GridContainer<>::
-Comics.tscn::PackedScene::9051806200903049357::1681236485::0::1::::<><>::res://singletons/Comics.v5.1.gd<>uid://c6frxm3fjh5fg<>uid://cpmue6qqexxku
-Comics____2.tscn::PackedScene::7836357048069963859::1681287252::0::1::::<><>::uid://d1706qbqwaeob<>uid://cluu8qbb602d4<>uid://lxmm1mrvgq14<>uid://d3oqg3vefwv3b<>uid://bxoaeqmxaxg6r<>uid://doqxvyqm2017f<>uid://c4ilgs3nvh5a6<>uid://dys124efkfaxf<>uid://c1w7awamwvod6<>res://scenes/UI & misc/Like button.tscn<>uid://n7usvh7pigx6<>uid://briux22s443jd<>res://scenes/UI & misc/comics-reader-extension.gd<>uid://bn4qbsvewvle2<>uid://ev0hqw04uvpe<>uid://drdmlmv60k3f<>uid://mjufv7eio2ji<>uid://c7ji4t67a0o3k<>uid://whimg8y1ch3h
+Comics.tscn::PackedScene::9051806200903049357::1681294069::0::1::::<><>::res://singletons/Comics.v5.1.gd<>uid://c6frxm3fjh5fg<>uid://cln1n0b8jwi4v<>uid://cpmue6qqexxku
+Comics____2.tscn::PackedScene::7836357048069963859::1681294069::0::1::::<><>::uid://d1706qbqwaeob<>uid://cluu8qbb602d4<>uid://lxmm1mrvgq14<>uid://d3oqg3vefwv3b<>uid://bxoaeqmxaxg6r<>uid://doqxvyqm2017f<>uid://c4ilgs3nvh5a6<>uid://dys124efkfaxf<>uid://c1w7awamwvod6<>res://scenes/UI & misc/Like button.tscn<>uid://n7usvh7pigx6<>uid://briux22s443jd<>res://scenes/UI & misc/comics-reader-extension.gd<>uid://bn4qbsvewvle2<>uid://ev0hqw04uvpe<>uid://drdmlmv60k3f<>uid://dqptso6ac7uf7<>uid://mjufv7eio2ji<>uid://c7ji4t67a0o3k<>uid://whimg8y1ch3h
 Controls.gd::GDScript::-1::1681190884::0::1::::<>Control<>::
 Controls.tscn::PackedScene::-1::1678419705::0::1::::<><>::res://scenes/UI & misc/Controls.gd<>res://resources/misc/controls.png<>res://fonts/ingame_menu.tres<>res://scenes/Comics/chapter 4/Cover 2.webp<>res://App's white paper v2.0.0.webp<>res://scenes/UI & misc/generic_joystick_ui_selector.gd<>res://scenes/UI & misc/controls_illustration.gd<>res://fonts/Menu_dynamicfont.tres<>res://scenes/UI & misc/Notification.gd
 controls_illustration.gd::GDScript::-1::1681064129::0::1::::<>TextureRect<>::
 DespawnFX.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/FX/smoke_particle.png<>res://scenes/characters/DespawnFx.gd
 Dialog_box.gd::GDScript::-1::1681235267::0::1::::DialogBox<>TextureRect<>::
-Dialog_box.tscn::PackedScene::6645111712422055365::1681287251::0::1::::<><>::res://scenes/UI & misc/Dialog_box.gd<>uid://bxks3c5xvlgh5<>uid://dbds47i53js73<>uid://25u77yl18wrg
+Dialog_box.tscn::PackedScene::6645111712422055365::1681294067::0::1::::<><>::res://scenes/UI & misc/Dialog_box.gd<>uid://bxks3c5xvlgh5<>uid://dbds47i53js73<>uid://25u77yl18wrg
 Exit.gd::GDScript::-1::1678318776::0::1::::Exit<>Area2D<>::
 generic_joystick_ui_selector.gd::GDScript::-1::1678318776::0::1::::<>Control<>::
 Healthbar.gd::GDScript::-1::1678318776::0::1::::<>HBoxContainer<>::
@@ -562,7 +563,7 @@ Healthbar.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/UI & mis
 Heart.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/misc/Pixel Heart 32x32.png
 HSlider.gd::GDScript::-1::1678318776::0::1::::<>HSlider<>::
 ingame_menu.gd::GDScript::-1::1681113732::0::1::::Game_Menu<>Control<>::
-ingame_menu.tscn::PackedScene::6437672404588811636::1681236485::0::1::::<><>::res://scenes/UI & misc/ingame_menu.gd<>res://scenes/UI & misc/generic_joystick_ui_selector.gd
+ingame_menu.tscn::PackedScene::6437672404588811636::1681294069::0::1::::<><>::res://scenes/UI & misc/ingame_menu.gd<>res://scenes/UI & misc/generic_joystick_ui_selector.gd<>uid://dqptso6ac7uf7<>uid://kx3nyraejuc6
 Joystick circle.gd::GDScript::-1::1678318776::0::1::::<>TouchScreenButton<>::
 Joystick circle.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/UI & misc/Joystick circle.gd
 joystick v2.gd::GDScript::-1::1678318776::0::1::::<>Control<>::
@@ -595,18 +596,18 @@ TouchInterface.gd::GDScript::-1::1678318776::0::1::::<>Node2D<>::
 UI.gd::GDScript::-1::1680155046::0::1::::<>CanvasLayer<>::
 UI.tscn::PackedScene::-1::1680762910::0::1::::<><>::res://scenes/UI & misc/Dialog_box.tscn<>res://scenes/UI & misc/Stats.tscn<>res://scenes/UI & misc/StatusText.tscn<>res://scenes/UI & misc/Healthbar.tscn<>res://scenes/Comics/Outside/outside.tscn<>res://scenes/UI & misc/ingame_menu.tscn<>res://scenes/UI & misc/Comics.tscn<>res://scenes/UI & misc/Touch interface.tscn<>res://scenes/UI & misc/UI.gd
 web_browser.gd::GDScript::-1::1678318776::0::1::::<>Control<>::
-word_bubble_box.gd::GDScript::-1::1681288464::0::1::::WordBubbleBox<>AnimatedSprite2D<>::
-word_bubble_box.tscn::PackedScene::4017980340749069170::1681287252::0::1::::<><>::uid://cnqoej3mtxfs4<>res://scenes/UI & misc/word_bubble_box.gd<>uid://dorfvtsm10lll
+word_bubble_box.gd::GDScript::-1::1681289683::0::1::::WordBubbleBox<>AnimatedSprite2D<>::
+word_bubble_box.tscn::PackedScene::4017980340749069170::1681294068::0::1::::<><>::uid://cnqoej3mtxfs4<>res://scenes/UI & misc/word_bubble_box.gd<>uid://dorfvtsm10lll
 xml.gd::GDScript::-1::1678318776::0::1::::<>Node<>::
 xml.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://scenes/UI & misc/xml.gd
 Youtube_Thumbnail.gd::GDScript::-1::1679981188::0::1::::<>TextureRect<>::
-::res://scenes/UI & misc/form/::1681287251
+::res://scenes/UI & misc/form/::1681294067
 Form.gd::GDScript::-1::1681231447::0::1::::<>CanvasLayer<>::
-form.tscn::PackedScene::3192409657499177063::1681287251::0::1::::<><>::res://scenes/UI & misc/form/Form.gd<>uid://dbjyfe18axe3m<>uid://c1w7awamwvod6<>uid://ceam8avq22m4d<>uid://da0mdusaynl0s
-::res://scenes/Wallet/::1681279815
+form.tscn::PackedScene::3192409657499177063::1681294067::0::1::::<><>::res://scenes/UI & misc/form/Form.gd<>uid://dbjyfe18axe3m<>uid://c1w7awamwvod6<>uid://ceam8avq22m4d<>uid://da0mdusaynl0s
+::res://scenes/Wallet/::1681293638
 state_controller.gd::GDScript::-1::1680589417::0::1::::<>OptionButton<>::
 Wallet main.tscn::PackedScene::-1::1680754560::0::1::::<><>::res://scenes/Wallet/state_controller.gd<>res://addons/algodot/Algod.gd<>res://Wallet Scenes/AccountsSetupPage.tscn<>res://Wallet Scenes/GalleryUI.tscn<>res://themes/option+button.tres<>res://Wallet Scenes/SwipeIcons.tscn<>res://Wallet Scenes/AccountsDashboard1.tscn<>res://Wallet Scenes/Merchant ID Validation.tscn<>res://Wallet Scenes/Merchant Pin.tscn<>res://Wallet Scenes/FundingSuccess.tscn<>res://Wallet Scenes/ChoosePaymentOption.tscn<>res://Wallet Scenes/SuccessfullStudentUpload.tscn<>res://Wallet Scenes/RequestPage.tscn<>res://scenes/Wallet/animation/RESET.tres<>res://scenes/Wallet/animation/SWIPE_DOWN.tres<>res://scenes/Wallet/animation/SWIPE_RIGHT.tres<>res://scenes/Wallet/animation/SWIPE_LEFT.tres<>res://scenes/Wallet/animation/SWIPE_UP.tres<>res://scenes/Wallet/animation/SLIDE_IN.tres<>res://scenes/Wallet/animation/SLIDE_OUT.tres<>res://scenes/Wallet/animation/RESET_UI.tres<>res://scenes/Wallet/animation/SWIPE_RIGHT_UI.tres<>res://scenes/Wallet/animation/SLIDE_OUT_UI.tres<>res://scenes/Wallet/animation/SWIPE_DOWN_UI.tres<>res://scenes/Wallet/animation/SWIPE_UP_UI.tres<>res://scenes/Wallet/animation/SWIPE_LEFT_UI.tres<>res://scenes/Wallet/animation/SLIDE_IN_UI.tres<>res://scenes/Wallet/animation/WalletSHOW_MNEMONIC.tres<>res://scenes/Wallet/animation/PASSWORD.tres<>res://scenes/Wallet/animation/SUCCESSS.tres
-Wallet.gd::GDScript::-1::1681279815::0::1::::wallet<>Control<>::
+Wallet.gd::GDScript::-1::1681293638::0::1::::wallet<>Control<>::
 Wallet.tscn::PackedScene::-1::1679659335::0::1::::<><>::res://scenes/Wallet/Wallet.gd<>res://addons/algodot/Algod.gd<>res://fonts/wallet.tres<>res://New game code and features/NFT.gd<>res://App's white paper v2.0.0.webp
 ::res://scenes/Wallet/animation/::1678332189
 PASSWORD.tres::Animation::-1::1678318776::0::1::::<><>::
@@ -626,12 +627,12 @@ SWIPE_RIGHT_UI.tres::Animation::-1::1678318776::0::1::::<><>::
 SWIPE_UP.tres::Animation::-1::1678318776::0::1::::<><>::
 SWIPE_UP_UI.tres::Animation::-1::1678318776::0::1::::<><>::
 WalletSHOW_MNEMONIC.tres::Animation::-1::1678318776::0::1::::<><>::
-::res://singletons/::1681282282
-Comics.v5.1.gd::GDScript::-1::1681275538::0::1::::<>Control<>::
+::res://singletons/::1681294042
+Comics.v5.1.gd::GDScript::-1::1681294042::0::1::::<>Control<>::
 Debug.gd::GDScript::-1::1681062490::0::1::::<>Node<>::
 Dialogs.gd::GDScript::-1::1681282282::0::1::::<>Node<>::
 GlobalAnimationPlayer.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://resources/misc/SwipeIcons.tscn<>res://resources/Animation/RESET.tres<>res://resources/Animation/SWIPE_LEFT.tres<>res://resources/Animation/SWIPE_RIGHT.tres<>res://resources/Animation/SWIPE_UP.tres
-Globals.gd::GDScript::-1::1681137151::0::1::::<>Node<>::
+Globals.gd::GDScript::-1::1681290676::0::1::::<>Node<>::
 Inventory.gd::GDScript::-1::1678318776::0::1::::<>Node<>::
 Music.gd::GDScript::-1::1681063207::0::1::::<>Node<>::
 Music.tscn::PackedScene::-1::1678318776::0::1::::<><>::res://singletons/Music.gd
@@ -704,17 +705,17 @@ odd3.ogg::AudioStreamOggVorbis::7442680063994780537::1678318776::1681057306::1::
 odd4.ogg::AudioStreamOggVorbis::814000278809269694::1678318776::1681057306::1::::<><>::
 ring1.ogg::AudioStreamOggVorbis::2409771093730176822::1678318776::1681057306::1::::<><>::
 soundtest.ogg::AudioStreamOggVorbis::6897932506900688878::1678318776::1681057306::1::::<><>::
-::res://themes/::1681284382
+::res://themes/::1681293847
 Bold+Large.tres::Theme::-1::1679396251::0::1::::<><>::res://Wallet fonts/Roboto-Bold.ttf
 Bold.tres::Theme::-1::1680754560::0::1::::<><>::res://Wallet fonts/Roboto-Bold.ttf
 Buttons.tres::Theme::-1::1680754560::0::1::::<><>::res://Wallet fonts/Roboto-Regular.ttf
 Buttons_black.tres::Theme::-1::1680754560::0::1::::<><>::res://Wallet fonts/Roboto-Regular.ttf
-Buttons_white+Black.tres::Theme::5054384310255407445::1681284382::0::1::::<><>::uid://cxcv5yjfqcucj
+Buttons_white+Black.tres::Theme::5054384310255407445::1681293847::0::1::::<><>::uid://cxcv5yjfqcucj
 Buttons_white.tres::Theme::-1::1680754560::0::1::::<><>::res://Wallet fonts/Roboto-Regular.ttf
 Light.tres::Theme::-1::1680754560::0::1::::<><>::res://Wallet fonts/Roboto-Light.ttf
 NumbersFont.tres::Theme::-1::1680754560::0::1::::<><>::res://Wallet fonts/Roboto-Light.ttf
 option+button.tres::Theme::-1::1680754560::0::1::::<><>::res://Wallet fonts/Roboto-Light.ttf<>res://themes/option_button_panel_flatbox.tres
-option+button_Red.tres::Theme::7211606534531788792::1681284382::0::1::::<><>::res://themes/option_button_panel_flatbox.tres<>uid://bmehupbu2iq1s
+option+button_Red.tres::Theme::7211606534531788792::1681293847::0::1::::<><>::res://themes/option_button_panel_flatbox.tres<>uid://bmehupbu2iq1s
 option_button_panel_flatbox.tres::StyleBoxFlat::-1::1678401800::0::1::::<><>::
 Panel+blue+2.tres::StyleBoxFlat::-1::1679396251::0::1::::<><>::
 Panel+blue+3.tres::StyleBoxFlat::-1::1679396251::0::1::::<><>::
@@ -723,9 +724,9 @@ Panel+blue+5.tres::StyleBoxFlat::-1::1679398118::0::1::::<><>::
 Panel+blue.tres::Theme::-1::1680754560::0::1::::<><>::
 Panel+Grey.tres::StyleBoxFlat::-1::1679396581::0::1::::<><>::
 Panel+white.tres::StyleBoxFlat::-1::1679396251::0::1::::<><>::
-Regular.tres::Theme::7978238946633728143::1681284382::0::1::::<><>::uid://bnxh600rl12dg
+Regular.tres::Theme::7978238946633728143::1681293847::0::1::::<><>::uid://bnxh600rl12dg
 Textbar.tres::Theme::-1::1680754560::0::1::::<><>::res://Wallet fonts/LiberationSans.ttf
-::res://Translation/::1681286694
+::res://Translation/::1681290970
 Translation_1.csv::Translation::108875737692944167::1681286692::1681286694::1::::<><>::
 Translation_1.en_US.translation::OptimizedTranslation::662534276551116970::1681286694::0::1::::<><>::
 Translation_1.fr.translation::OptimizedTranslation::6440120452564881776::1681286694::0::1::::<><>::

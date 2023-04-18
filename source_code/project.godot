@@ -50,6 +50,11 @@ window/stretch/mode="2d"
 window/stretch/aspect="expand"
 window/handheld/orientation="sensor"
 
+[editor]
+
+movie_writer/movie_file="/home/samuel/Dystopia-App/gameplay vid 1.avi"
+movie_writer/fps=24
+
 [editor_plugins]
 
 enabled=PackedStringArray()

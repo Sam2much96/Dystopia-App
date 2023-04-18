@@ -932,12 +932,12 @@ func run_wallet_checks()-> bool: # works
 	wallet_check_counter+= 1
 	#var status
 	var status : bool
-	status= yield(self.Algorand.algod.health(), "completed")
+	status= await(self.Algorand.algod.health())
 	
 	print ("Status debug:" , status, wallet_check_counter,  "good internet:", Networking.good_internet)
 	
 	#calculates suggested parameters for all transactions
-	params = yield(self.Algorand.algod.suggested_transaction_params(), "completed") #works
+	params = await(self.Algorand.algod.suggested_transaction_params()) #works
 	
 	
 	if status:
@@ -959,7 +959,6 @@ func run_wallet_checks()-> bool: # works
 		#"Checks if image file is available"
 		is_image_available_at_local_storage = FileCheck4.file_exists(local_image_file)
 		print ("Is local image available: ", is_image_available_at_local_storage) #for debug purposes only
-		 #= _r
 	#return is_image_available_at_local_storage
 	'Fixes account token 0 bytes bug'
 	if FileDirectory.file_exists(token_write_path ):
@@ -1341,7 +1340,7 @@ func txn(): #runs presaved transactions once wallet is ready
 	if recievers_addr != '' && _amount >= 100_000:
 		print ('Transaction Debug: ',recievers_addr, '/','amount: ',_amount, '/', 'txn check', txn_check)
 		
-		yield(self.Algorand._send_txn_to_receiver_addr(params,mnemonic,recievers_addr, _amount), "completed")
+		await(self.Algorand._send_txn_to_receiver_addr(params,mnemonic,recievers_addr, _amount))
 
 		#reset transaction details
 		recievers_addr = ''

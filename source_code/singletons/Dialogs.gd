@@ -42,6 +42,7 @@ var active = false
 
 var dialog_box = null setget _set_dialog_box
 
+var word_bubble_box = null  setget _set_wordbubble_box
 var language : String = ""# stores the current language the user selects
 
 var _script_testing : String = 'res://resources/dialogues/script_testing.gd'
@@ -73,6 +74,12 @@ func _set_dialog_box(node):
 		push_error("provided node doesn't implement dialog_started signal")
 	
 	pass
+
+func _set_wordbubble_box(node  : AnimatedSprite):
+	word_bubble_box = node
+	
+	# Connect signals
+
 
 func _on_dialog_started():
 	active = true
@@ -116,14 +123,14 @@ class Parser extends Reference :
 		var index : int = 0 # used for numbering each line in the parsed script
 		if _f.file_exists(_script): #('res://resources/dialogues/script_testing.gd'):
 			print ('File Exists')
-			var t =_f.open (_script, File.READ)
+			_f.open (_script, File.READ)
 			# Resets count to start from beginning
 			#index = 1 
-			while t.get_position() < t.get_length() && not t.eof_reached():
+			while _f.get_position() < _f.get_len() && not _f.eof_reached():
 			#iterate through all lines until the end of file is reached
 			#var index controls which line is shown
 				#t.seek(index)
-				line_string = t.get_line() #str (index )  + ' ' + t.get_line() # concatonates the index and lines together
+				line_string = _f.get_line() #str (index )  + ' ' + t.get_line() # concatonates the index and lines together
 				line_string += " "
 				
 				
@@ -142,6 +149,6 @@ class Parser extends Reference :
 				if index == line_to_return:
 					return line_string
 					break
-			t.close() 
+			_f.close() 
 			
 		return line_string

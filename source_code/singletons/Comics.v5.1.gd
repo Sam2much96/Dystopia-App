@@ -49,7 +49,7 @@ signal swiped(direction)
 signal swiped_canceled(start_position)
 #export(float,1.0,1.5) var MAX_DIAGONAL_SLOPE =1.3  
 
-export (PackedScene) var current_comics 
+var current_comics : PackedScene
 
 "Prealoaded Comics"
 # host on ipfs and use local user directory to store comic files
@@ -73,14 +73,8 @@ var comic_dir : String = "user://Comics"
 
 var CHECK_COMICS_LOCAL_STORAGE : bool = false
 
-
-
-
-
-
-
 var comics : Dictionary = {
-	 1: 'res://scenes/Comics/chapter 1/chapter 1.tscn',
+	1: 'res://scenes/Comics/chapter 1/chapter 1.tscn',
 	2:'res://scenes/Comics/chapter 2/chapter 2.tscn',
 	3:'res://scenes/Comics/chapter 3/chapter 3.tscn',
 	4:"res://scenes/Comics/chapter 4/chapter 4.tscn",
@@ -96,32 +90,32 @@ var comics : Dictionary = {
 
 
 var swipe_start_position = Vector2()
-
-export var memory = {} #use this variable to store current frame and comics info
-
-export (int) var  current_frame   = 0
-export (int) var current_chapter 
-
-onready var next_scene = null
+var memory : Array = [] #use this variable to store current frame and comics info
+export var  current_frame : int   = 0 # Global Frame Variable
+export var current_page : int  = -2# Global page variable, same as above, but differentiating for testing
+var current_chapter : int
+var next_scene : PackedScene
 
 var can_drag : bool = false
-onready var zoom = false
-onready var comics_placeholder 
+var zoom : bool = false
+var comics_placeholder : Control = Control.new()
 
 #onready var animation = $AnimationPlayer 
-onready var buttons
-onready var Kinematic_2d  #the kinematic 2d node for drag and drop
+var buttons
+
+var Kinematic_2d :  KinematicBody2D = KinematicBody2D.new()  #the kinematic 2d node for drag and drop
 #onready var camera2d = $Kinematic_2D/placeholder/Camera2D 
-onready var position 
-onready var center
-onready var target =Vector2(0,0) 
-onready var origin = get_viewport_rect().size/2#set origin point to the center of the viewport
+var _position : Vector2 
+var center : Vector2
+var target =Vector2(0,0) 
+var origin : Vector2 = get_viewport_rect().size/2#set origin point to the center of the viewport
 
-onready var loaded_comics : bool = false
+export var _loaded_comics : bool = false
+export var SwipeLocked : bool 
 
-onready var _input_device
-onready var _e = Timer.new()
-onready var _comics_root = self
+var _input_device
+var _e = Timer.new()
+var _comics_root = self
 
 onready var _debug_= get_tree().get_root().get_node("/root/Debug")
 
@@ -131,15 +125,15 @@ var target_memory_x: Array = [] #stores vector 2 of previous targets
 var target_memory_y: Array = [] #stores vector 2 of previous targets
 
 
-var enabled : bool 
+export var enabled : bool 
 
 
+# Web 3 Activator for Downloading Content
+export var web3 : bool 
 
-
-
-onready var q = HTTPRequest.new() # checks internet connection, makes it a Global boolean
-onready var q2 = HTTPRequest.new() # Downloads imgs
-onready var q3 = HTTPRequest.new() # Downloads Comic Scenes
+var q : HTTPRequest
+var q2 : HTTPRequest
+var q3 : HTTPRequest
 
 
 #**********Swipe Detection Direction Calculation Parameters************#
@@ -151,7 +145,8 @@ var x1 #: float
 var x2 #: float
 var y1 #: float
 var y2 #: float
-export(float,0.5,1.5) var MAX_DIAGONAL_SLOPE  = 1.3
+#export(float,0.5,1.5) var MAX_DIAGONAL_SLOPE  = 1.3
+const MAX_DIAGONAL_SLOPE : float = 1.3
 
 
 "Rewriting As a Fininte State Machine"
@@ -160,11 +155,17 @@ enum {START_SWIPE, END_SWIPE, DOWNLOAD_IMAGE, NEXT_PANEL, PREV_PANEL, DRAG, LOAD
 
 # Swipe Direction Enum (Struct)
 #enum { } 
-export (String, 'Up', "Down", "Left", "Right", "Idle") var direction_var ="Idle"
+#export (String, 'Up', "Down", "Left", "Right", "Idle") var direction_var ="Idle"
+var direction_var : String = "idle"
 
 #var dir_var = NOT_SWIPING
 
 var _state = IDLE
+
+onready var cmx_root : Control = get_tree().get_nodes_in_group("Cmx_Root").pop_front()
+
+# Can Use a Tween Node to implement Drag and Drop
+var comics_sprite : AnimatedSprite
 
 func _ready():
 	#wordbubble() #for debug purposes only
@@ -183,25 +184,36 @@ func _ready():
 	connect_signals()
 	
 	
-	
-	if current_comics !=null:
-		load_comics()
+	# for debug purposes only
+	#if current_comics !=null:
+		
+	#	print (current_comics)# for debug purposes only
+		#Functions.load_comics()
 		#Globals.comics = self #updates itself to the globals singleton
-
-
-
+	
+	
+	
 	enabled = false
 	#target = Vector2() duplicate code 
-	 #for swipe detection
+	#for swipe detection
 	_e.one_shot = true
 	_e.wait_time = 0.5
 	_e.name = str ('swipe detection timer')
+	
 	# Add Swipe Detection Timer to Scene Tree
 	_comics_root.call_deferred('add_child',_e)
 	
 	
 	
-	#create HTTP Request Nodes
+	# Create HTTP Request Nodes
+	# Only create & use these nodes it Dowloading content
+	
+	if web3: 
+		q = HTTPRequest.new() # checks internet connection, makes it a Global boolean
+		q2 = HTTPRequest.new() # Downloads imgs
+		q3 = HTTPRequest.new() # Downloads Comic Scenes
+
+
 	_comics_root.call_deferred('add_child',q) # checks internet connection, makes it a Global boolean
 	_comics_root.call_deferred('add_child',q2) # Downloads imgs
 	_comics_root.call_deferred('add_child',q3) # Downloads Comic Scenes
@@ -209,82 +221,8 @@ func _ready():
 	
 	for _c in get_children():
 		if _c is Timer:
-			return _c.connect('Timeout',_e,'_on_Timer_timeout') #connect timer to node with code
+			return _c.connect('Timeout',_e,_on_Timer_timeout()) #connect timer to node with code
 
-"""
-LOAD COMICS INTO THE SCENE TREE AS SPRITESHEETS
-"""
-#implement Texture react node functionality 
-#dkdkdkdkdk
-func load_comics(): 
-	
-	
-	
-	if current_comics != null && current_comics.can_instance() == true:
-		for _p in get_tree().get_nodes_in_group('Cmx_Root'):
-			enabled = true
-			zoom = false
-
-			can_drag = true
-
-			current_frame =  int(0)
-			Kinematic_2d = KinematicBody2D.new()
-			comics_placeholder = Control.new()
-		
-			Kinematic_2d.name= 'Kinematic_2d'
-			comics_placeholder.name = 'comics_placeholder'
-	
-			comics_placeholder.set_mouse_filter(2)
-
-			_p.call_deferred('add_child',comics_placeholder) #reparents comic placeholder node 
-
-			print ('Comic root:',_p)
-
-			
-
-			comics_placeholder.add_child(Kinematic_2d)
-	
-			var collision_shape =CollisionShape2D.new()
-			var shape = RectangleShape2D.new() #new code
-			shape.set_extents((Vector2(130,130))) #new code
-			collision_shape.set_shape (shape) #new code
-	
-			#Kinematic Body 2D
-			Kinematic_2d.add_child(collision_shape) #set the collision shape
-			#connect signals
-			Kinematic_2d.connect("mouse_exited",self,'_on_Kinematic_2D_mouse_exited') 
-			Kinematic_2d.connect('mouse_entered',self,'_on_Kinematic_2D_mouse_entered')
-
-			#Loaded Comic Signal
-			emit_signal("loaded_comics")
-			print ('loading comics') #for debug purposes 
-
-			var _x = current_comics.instance()
-			Kinematic_2d.add_child(_x) 
-			
-			#position pages
-			_x.position =Kinematic_2d.position
- 
-	# Error Catcher 1
-	if current_comics == null and current_comics.can_instance() == false  :
-		push_error('unable to instance comics scene')
-		pass
-	if memory.empty() != true && current_comics == null: #error catcher 1
-		
-		current_comics = memory[0] # load from memory
-
-	if memory.empty() == true && current_comics == null: #error catcher 2
-		push_error('current comics empty')
-		
-		print ("Loading Default comic")
-		
-		current_comics = comics[1] #default comic
-
-
-	loaded_comics = true
-	comics_placeholder.show()
-	emit_signal("comics_showing")
-	center_page()
 
 
 
@@ -354,9 +292,9 @@ func _http_request_completed_Scenes(result, response_code, headers, body): #work
 	"Downloads the NFT image"
 	print (" request successful", typeof(body))
 	
-		
-		#check if body is image type
-	#Comics_v5.set_comic_image_(Networking.download_image_(body, comics_["Chap1 Panel"],q2)) #works
+	
+	#check if body is image type
+	#set_comic_image_(Networking.download_image_(body, Local.comics_["Chap1 Panel"],q2)) #works
 	
 	
 	#Comics_v5.load_local_comic(Networking.download_scene_(body, Local.comics_["Chap1 Scene"],q3))
@@ -380,11 +318,11 @@ func _input(event):
 	if event.is_action_pressed("reset"): # for reseting Comics FIlecheckers
 		_ready()
 	
-	if event.is_action_pressed("ui_focus_next") && enabled : #button controls
+	if event.is_action_pressed("next_panel") && comics_sprite != null : # && enabled : #button controls
 		
-		next_panel()
-	if event.is_action_pressed("ui_focus_prev") && enabled:
-		prev_panel()
+		next_panel(comics_sprite)
+	if event.is_action_pressed("prev_panel") && comics_sprite != null:
+		prev_panel(comics_sprite)
 
 
 #Toggles comics visibility on/off
@@ -400,26 +338,41 @@ func _input(event):
 		enabled = false
 
 	"Controller for Joypad"
-	if event is InputEventJoypadButton && self.visible == true:
-		if event.is_action_pressed("ui_select"): _zoom()
+	
+	# Disabling zoom for debugging
+	
+	#if event is InputEventJoypadButton && self.visible == true:
+	#	if event.is_action_pressed("ui_select"): _zoom()
 
-
+	"""
+	CONSOLE CONTROLS
+	
+	"""
 	if event is InputEventJoypadMotion and self.visible == true:
 		var axis = event.get_axis_value()
 		print('JoyStick Axis Value' ,axis)
 		
 		#Changes Page Panels
 		if round(axis) == 1:
-			next_panel()
+			next_panel(comics_sprite)
 		if round(axis) == -1:
-			prev_panel()
+			prev_panel(comics_sprite)
 		pass
 
 	"Stops From Processing Mouse Inputs"
 	if event is InputEventMouse:
-		#return
 		pass
-	if event in InputEventMouseMotion:
+		
+
+	if event is InputEventMouseButton:
+#		
+#		if event.is_double_click():
+#			print ("zoom og")
+#			return Functions._zoom(cmx_root, true)
+			#return zoom
+		
+		pass
+	if event is InputEventMouseMotion:
 		#return
 		pass
 
@@ -450,7 +403,7 @@ func _input(event):
 	"Swipe Direction Debug"
 	# Should Ideally be in COmics script. Requires rewrite for better structure
 	# The current implementation is a fast hack
-	if event is InputEventScreenDrag : #kinda works, for NFT Drag & Drop
+	if event is InputEventScreenDrag && !SwipeLocked : #kinda works, for NFT Drag & Drop
 		#Networking.start_check(4) #should take a timer as a parameter
 		#if Networking.Timeout == false:
 		
@@ -467,19 +420,28 @@ func _input(event):
 		#dfhdfhd
 		#__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array
 		
+		"Detect Swipe State"
 		_state = Swipe._end_detection(event.position, Vector2(0,0), direction_var,_state, _e, swipe_target_memory_x, swipe_target_memory_y, swipe_start_position, swipe_parameters,  x1,x2,y1,y2, MAX_DIAGONAL_SLOPE)#, event.position, direction_var, _state)
 	
+	
+		print(_state) #for debug purposes only
 	
 	if event is InputEventScreenTouch :
 		target =  event.get_position()
 		#if event is  InputEventMultiScreenDrag == true : # Works
 			#target =  event.get_position()
 		if event.get_index() == int(2): # and event is InputEventScreenPinch : #zoom if screentouch is 2 fingers & uses input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases
-				
-			_zoom() #you can use get_index to get the number of fingers
-		
-		
-		
+		#if event.is_double_tap():
+			
+			print ("zoom")
+			Functions._zoom(cmx_root, !zoom) #you can use get_index to get the number of fingers
+			
+			zoom = !zoom
+			return zoom
+		if event.is_double_tap(): # works
+			print ("zoom 2")
+			Functions._zoom_2(comics_sprite, true)
+			return zoom
 		
 		"Handles Swipe Detection" 
 		#Requires Debugging
@@ -492,10 +454,15 @@ func _input(event):
 		#_handle_swipe_detection(event)
 
 	"Handles Screen Dragging"
-	if event is InputEventScreenDrag && current_comics != null && loaded_comics:
+	if event is InputEventScreenDrag  && comics_sprite != null : # && _loaded_comics:
 		#if event is InputEventMultiScreenDrag: breaks
-		target = event.get_position()
-		return drag(target, Kinematic_2d.position, Kinematic_2d)
+		#print ("fgjfngla;dngdgnsogn")
+		#print (current_comics) # for debug purposes only
+		
+		Functions.drag_v2(comics_sprite,event.get_position())
+		
+
+		#Functions.drag(target, Kinematic_2d.velocity, Kinematic_2d, center, target_memory_x, target_memory_y)
 		
 
 # Handles releasing 
@@ -503,11 +470,10 @@ func _input(event):
 # Handles double clicking
 	#pass
 
-	if event is InputEventMouseButton && event.doubleclick && loaded_comics == true:
+#	if event is InputEventMouseButton && event.doubleclick && _loaded_comics == true:
 		
-		return _zoom() #disabled for debugging, enable when done debugging
+#		return _zoom() #disabled for debugging, enable when done debugging
 		
-
 
 
 func _process(_delta):
@@ -522,14 +488,14 @@ func _process(_delta):
 	# ReWrite to Use State machine
 	# AUtimatically sets the Loaded comic boolean?
 	if current_comics != null:
-		loaded_comics = true
+		_loaded_comics = true
 	#print(position,target)
 	if current_comics == null or current_frame == null  : #error catcher 
 		#emit_signal("freed_comics") disabling signals for now
-		loaded_comics = false
+		_loaded_comics = false
 	
 	
-	if loaded_comics == true:
+	if _loaded_comics == true:
 		#emit_signal("loaded_comics")
 		pass
 	
@@ -553,9 +519,9 @@ func _process(_delta):
 	elif memory.empty() == true:
 		#current_comics = load_comics()
 		pass
-	if loaded_comics == true && memory.size() >= 2: #double instancing error fix
+	if _loaded_comics == true && memory.size() >= 2: #double instancing error fix
 		get_tree().queue_delete(memory.front()) 
-		loaded_comics = false 
+		_loaded_comics = false 
 
 
 	_state = SET_FRAME # for debug purposes , disable later
@@ -567,11 +533,13 @@ func _process(_delta):
 			#var Debug  = Engine.get_singleton('Debug')
 			_debug_.Comics_debug = str(
 				'Curr frme:', current_frame , 'Cmx: ',current_comics, 'Enbled',enabled,'can drag: ',#can_drag,
-				 ' Zoom: ',zoom, 'LC: ',loaded_comics
+				' Zoom: ',zoom 
 				)
 #enum {START_SWIPE, END_SWIPE, DOWNLOAD_IMAGE, NEXT_PANEL, PREV_PANEL, DRAG, LOAD_COMICS, IDLE } 
 #SWIPE_UP,SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT, NOT_SWIPING, ERROR
 # Doesnt work
+
+	"Unused State Machine implementation"
 	match _state:
 		SWIPE_UP:
 			direction_var = "Up"
@@ -612,20 +580,21 @@ func _process(_delta):
 			#Runs Directory and File Checks for Comic Nodes & Images
 			
 			# Check if comics folder exists locally
-			if not FileDirectory.dir_exists(comic_dir):
-				"Creates Comics Directory if it doesn't exist"
-				create_comics_directory(comic_dir)
+			#if not FileDirectory.dir_exists(comic_dir):
+			#	"Creates Comics Directory if it doesn't exist"
+			#	create_comics_directory(comic_dir)
 			
 			# Creates Comic Chapter Paths
-			if not FileDirectory.dir_exists(Local.comics_local_path[1]):
-				create_comics_directory(Local.comics_local_path[1])
-				pass
+			#if not FileDirectory.dir_exists(Local.comics_local_path[1]):
+			#	create_comics_directory(Local.comics_local_path[1])
+			#	pass
 			
 			if !Networking.good_internet && !Networking.Timeout:
 				Networking._check_if_device_is_online(q)
 				Networking.start_check(4)
 			
 			# If local Comics Doesnt exist
+			
 			if not FileCheck1.file_exists(Local.comics_["Chap1 Panel"])  && Networking.good_internet:
 				#GKHGHGHKGK
 				# download Comics from IPFS using Networking Gateway
@@ -637,7 +606,7 @@ func _process(_delta):
 				#comics_IPFS
 				Networking. _connect_to_ipfs_gateway(false,Online.comics_IPFS[1], Networking.gateway[2], q2) # Downloads Spritesheet  
 				Networking. _connect_to_ipfs_gateway(false,Online.comics_IPFS[3], Networking.gateway[2], q3)  # Downloads Scene
-				return
+			#	return
 			# Check if image is available for chapter 1
 			if FileCheck1.file_exists(Local.comics_["Chap1 Panel"]) :
 				# load the Comic if it's available
@@ -662,9 +631,9 @@ func _process(_delta):
 		LOAD:
 			
 			
-			return load_comics()
+			#return Functions.load_comics(current_chapter)
 			
-			#pass
+			pass
 		SET_FRAME:
 			#current frame controler
 			
@@ -673,203 +642,77 @@ func _process(_delta):
 			#why so many if's?
 			if enabled != false && Kinematic_2d != null:
 				
-				if comics_placeholder != null:
-					for _i in Kinematic_2d.get_children():
+				if cmx_root != null:
+					#for _i in Kinematic_2d.get_children():
+					for _i in cmx_root.get_children():
 						if _i is AnimatedSprite:
+							
+							# creaate a pointer to comic node
+							comics_sprite = _i
 							_i.set_frame(int(current_frame))  
 							#working
-							_i.update() #canvas layer not updating changes
+							#_i.update() #canvas layer not updating changes
 							if  current_frame > _i.get_frame() : 
-								comics_placeholder.queue_free() 
-								comics_placeholder = null
+								comics_sprite.queue_free() 
+								#comics_placeholder = null
 								enabled = false 
-								loaded_comics = false #working buggy
-								current_frame = null # working buggy
+								_loaded_comics = false #working buggy
+								current_frame = -2 # working buggy
 								emit_signal("freed_comics")
 			pass
 
 
 
 
-"""
-DRAG FUNCTION
-"""
-#body must be a kinematic body 2d
-func drag(_target : Vector2, _position : Vector2, _body : KinematicBody2D)-> void: #pass this method some parmeters
-	#add more parameters
- # Input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases 
- 
-	if can_drag:
-		center = restaVectores(_target, _position)
-		_body.set_position(_target)
-		#can_drag = true 
-			
-		" Drag n Drop Logic"
-			
-			
-		"If Distance to input target is greater than 200"
-		#for large size drags
-		if abs(_position.distance_to(_target)) > 200: #if its far...
-		##use suma vectores function for vector maths
-			_body.move_and_slide(center) #move and slide to center
-			#print ('moving to center') #for debug purposes only
-
-
-#******************************Bug Begins**********************#
-
-		"If Distance is less than 200"
-		#for small size drags
-		#Buggy 
-		if abs(_position.distance_to(_target)) < 200 : #if its close
-				#_body.move_and_slide(target)
-				#how to fix
-				
-			"""
-			I can calculate the difference between the last 2 drags to fix this bug
-			drag bug is caused by sudden disparity between the target vectors
-			if the previous target position is different by a large amount, discard it and wait for next target input
-			"""
-				
-			var x : int = _target.x
-			var y : int = _target.y
-			target_memory_x.append(x) #works
-			target_memory_y.append(y) #works
-			
-			# Rejects buggy input targets
-			# Save both x & y inputs in similar array to properly debug
-			if abs(target_memory_x[target_memory_x.size() - 2] - x) > 3: #if more than 3 buggy inputs have been saved
-				#print ('Error x axis') #for debug purposes only
-				#print ('x axis size debug: ' ,target_memory_x.size()) #for debug purposes only
-				
-				#print (target_memory_x) #temporarily disabling for debug purposes
-				
-				
-				
-				
-				
-				#deletes bad input
-				target_memory_x.erase(x) #temporarily disabling for debugging
-				
-				
-				
-				
-				#target_memory_x.remove(target_memory_x[-1]) #deletes error #introduces bug
-				if target_memory_x.size() == 1:
-					_body.move_and_slide(Vector2(target_memory_x[0], target_memory_y.back()))
-				
-				#Erases Faulty Horizontal Input
-				if target_memory_x.size() > 1:
-					var adjusted_target = Vector2(target_memory_x[target_memory_x.size() - 2], target_memory_y.back())
-					_body.move_and_slide(adjusted_target)
-				
-				return
-			if abs(target_memory_y[target_memory_y.size() - 2] - x) > 3:
-				#print ('Error y axis')
-				#print ('y axis size debug: ' ,target_memory_y.size()) 
-				
-				#print (target_memory_y) #temporarily disabling for debug purposes
-				
-				
-				
-				
-				
-				
-				#deletes bad input
-				target_memory_y.erase(y) #temporarily disabling for debugging
-				
-				
-				
-				
-				
-				if target_memory_y.size() == 1: #error catcher
-					
-					#moves to a predicted presaved axis
-					_body.move_and_slide(Vector2(target_memory_x.back(), target_memory_y[0]))
-				
-				elif target_memory_y.size() > 1:
-					
-					var adjusted_target = Vector2(target_memory_x.back(), target_memory_y[target_memory_y.size() - 1])
-					
-					#moves to a predicted presaved axis
-					_body.move_and_slide(adjusted_target)
-				return 
-
-			#code base is too long to debug. Simplify
-			if not abs(target_memory_y[target_memory_y.size() - 2] - x) && abs(target_memory_x[target_memory_x.size() - 2] - x) > 3 :
-				#_body.set_position(_target)
-				print ('sdsjgksdkgjsdfj')
-				_body.move_and_slide(_target)
-
-#******************************Bug Ends**********************#
-"""
-				 ZOOM
-
-"""
-
-func _zoom()-> bool:
-	
-	if loaded_comics == true:
-		var scale =comics_placeholder.get_scale()
-		if scale == Vector2(1,1)  :
-			#print ('zoom in') #for debug purposes only
-			comics_placeholder.set_scale(scale * 2) 
-			zoom = true
-			return true 
-		if scale > Vector2(1,1):
-			#print ('zoom out') #for debug purposes only
-			scale = comics_placeholder.get_scale()
-			comics_placeholder.set_scale(scale / 2) 
-			zoom = false
-	return zoom 
-
 'sets comic page to center of screen'
-func center_page(): #
-	if loaded_comics == true:
-		if zoom == false: 
-			if Kinematic_2d.position or origin != null:
-				Kinematic_2d.position = origin
-			else:
-				pass
+#func center_page(): # Can't set kinematic position directly in Godot 4.0
+#	if _loaded_comics == true: # disabling
+#		if zoom == false: 
+#			if Kinematic_2d.position or origin != null:
+#				Kinematic_2d.position = origin
+#			else:
+#				pass
 
-func next_panel():
-	if loaded_comics == true :
+func next_panel(comics_sprite : AnimatedSprite):
+	#if _loaded_comics == true :
 		
 		#Adds up number too rapidly
 		# Solutions
 		# (1) Change the Current Frame Data Structure to Array, for comparisons
 		# (2) Implement It as a Method in The animation Player
-		current_frame = current_frame + 1
-		emit_signal("panel_change") 
-		center_page()
-		return int(current_frame) 
+			# Fixed
+		#current_frame = current_frame + 1
+	
+	
+	#var initial : int = comics_sprite.get_frame()
+	
+	current_frame += 1 
+	#comics_sprite.set_frame(6)
+	#comi
+	
+	emit_signal("panel_change") 
+		#center_page()
+	#	return int(current_frame) 
 	if Music.music_on == true:
 		Music.play_sfx(Music.comic_sfx)
 
 
-func prev_panel():
-	if loaded_comics == true :
-		current_frame =abs(current_frame - 1 )
-		emit_signal("panel_change")  
-		center_page()
-		return int(current_frame) 
+func prev_panel(comics_sprite : AnimatedSprite):
+	#if _loaded_comics == true :
+	current_frame =abs(current_frame - 1 )
+	emit_signal("panel_change")  
+		#center_page()
+	return int(current_frame) 
 	if Music.music_on == true: 
 		Music.play_sfx(Music.comic_sfx)
 
 func _on_Backwards_pressed(): #Connect these signals automatically? #Produce the buttons programmatically
-	prev_panel()
+	prev_panel(comics_sprite)
 
 
 func _on_Forward_pressed():
-	next_panel()
+	next_panel(comics_sprite)
 
-
-func next_chap(): # Unused Code
-	print ('next chapter') 
-	load_chapter(current_chapter + 1)
-
-func prev_chap():
-	print ('prev chapter') 
-	load_chapter(current_chapter - 1)
 
 
 """
@@ -878,14 +721,14 @@ func prev_chap():
 #it requires you set mouse filter to ignore on all control nodes 
 #so the area 2d can get mouse input data
 
+# Moved to globals
+#func restaVectores(v1, v2): #vector substraction
+#	if _loaded_comics == true:
+#		return Vector2(v1.x - v2.x, v1.y - v2.y)
 
-func restaVectores(v1, v2): #vector substraction
-	if loaded_comics == true:
-		return Vector2(v1.x - v2.x, v1.y - v2.y)
-
-func sumaVectores(v1, v2): #vector sum
-	if loaded_comics == true:
-		return Vector2(v1.x + v2.x, v1.y + v2.y)
+#func sumaVectores(v1, v2): #vector sum
+#	if _loaded_comics == true:
+#		return Vector2(v1.x + v2.x, v1.y + v2.y)
 
 
 """
@@ -903,22 +746,33 @@ func _handle_swipe_detection(event)-> void:
 #__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array
 
 class Online extends Reference:
-	func _init() :
-# Would Return a Null Variable
-# Is Placeholder
+	
+	const comics_IPFS : Dictionary = {
+		1 : "QmSpXTc7gE1Mj3HdKDGuwr87cuiiLP3homXuKbWVxoG4TX", #Chap 1 scene
+		2 : "QmWvgWit9REFghWLgofgormkr3QsKd2pXcxMtMxHdKMTZV", # Chap 1 sprite sheet
+		3 : "QmW3HJX8iADTFdNMBhuDsVqhQLajE8xwPw2XmonmL2HofA", # Icon Pixel Icon
+	}
 
-		var comics_IPFS : Dictionary = {
-			1 : "QmSpXTc7gE1Mj3HdKDGuwr87cuiiLP3homXuKbWVxoG4TX", #Chap 1 scene
-			2 : "QmWvgWit9REFghWLgofgormkr3QsKd2pXcxMtMxHdKMTZV", # Chap 1 sprite sheet
-			3 : "QmW3HJX8iADTFdNMBhuDsVqhQLajE8xwPw2XmonmL2HofA", # Icon Pixel Icon
-		}
+	
 
-
-		print (comics_IPFS[1])
 
 class Local extends Reference:
 # Would Return a Null Variable
 # Is Placeholder
+
+
+	const comics_ : Dictionary = {
+	"Chap1 Scene": "user://Comics/chapter 1/chapter 1.tscn",
+	"Chap1 Panel": "user://Comics/Comics/chapter 1/chapter 1 Neo sud, the new south webp.webp",
+		3:'res://scenes/Comics/chapter 3/chapter 3.tscn',
+		4:"res://scenes/Comics/chapter 4/chapter 4.tscn",
+		5:"res://scenes/Comics/chapter 5/chapter 5.tscn",
+		6:"res://scenes/Comics/chapter 6/chapter 6.tscn",
+		7:"res://scenes/Comics/chapter 7/chapter 7.tscn",
+		8: 'res://scenes/Comics/Outside/outside.tscn'
+		
+	}
+
 
 	func _init() :
 
@@ -926,25 +780,19 @@ class Local extends Reference:
 		1: "user://Comics/chapter 1/",
 		2: "user://Comics/chapter 2/"
 	}
-
-
-		var comics_ : Dictionary = {
-			 "Chap1 Scene": "user://Comics/chapter 1/chapter 1.tscn",
-			"Chap1 Panel": "user://Comics/Comics/chapter 1/chapter 1 Neo sud, the new south webp.webp",
-		#	3:'res://scenes/Comics/chapter 3/chapter 3.tscn',
-		#	4:"res://scenes/Comics/chapter 4/chapter 4.tscn",
-		#	5:"res://scenes/Comics/chapter 5/chapter 5.tscn",
-		#	6:"res://scenes/Comics/chapter 6/chapter 6.tscn",
-		#	7:"res://scenes/Comics/chapter 7/chapter 7.tscn",
-		#	8: 'res://scenes/Comics/Outside/outside.tscn'
-		#	
-		}
+	
 
 		print (comics_local_path[1])
 
-class Swipe extends Reference:
+
+
+class Swipe :
 	
 	#**********Swipe Detection Direction Calculation Parameters************#
+
+	const swipe_parameters : float = 0.1
+	#static func swipe_parameters()-> void:
+	#	pass
 
 	" Swipe Direction Detection"
 	#Buggy swipe direction
@@ -982,10 +830,10 @@ class Swipe extends Reference:
 			#next_panel()
 			
 			
-			
+			# Disabling for Debugging src code in GOdot 4.0
 			# Play Animation
-			GlobalAnimation.get_child(0).play("SWIPE_LEFT")
-			return GlobalAnimation.get_child(0).queue("RESET")
+			#GlobalAnimation.get_child(0).play("SWIPE_LEFT")
+			#return GlobalAnimation.get_child(0).queue("RESET")
 			
 			
 		if round(direction.x) == 1: # works
@@ -999,8 +847,9 @@ class Swipe extends Reference:
 			#direction : bool ,delta , visible : bool, scroller : ScrollContainer
 			#Game_Menu.scroll(false, true, Game)
 			
+			# Disabling for Debugging src code in GOdot 4.0
 				# Play Animation
-			GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
+			#GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
 			
 			
 			
@@ -1018,8 +867,10 @@ class Swipe extends Reference:
 			#next_panel()
 			
 			direction_var = "Down"
+			
+			# Disabling for Debugging src code in GOdot 4.0
 			# Play Animation
-			GlobalAnimation.get_child(0).play("SWIPE_DOWN")
+			#GlobalAnimation.get_child(0).play("SWIPE_DOWN")
 			
 			#if Globals.curr_scene == "Comics____2":
 			
@@ -1032,9 +883,9 @@ class Swipe extends Reference:
 			print('up swipe 1') #for debug purposes
 			#prev_panel()
 			
-			
+			# Disabling for Debugging src code in GOdot 4.0
 			# Play Animation
-			return GlobalAnimation.get_child(0).play("SWIPE_UP")
+			#return GlobalAnimation.get_child(0).play("SWIPE_UP")
 		
 		
 		# Saves swipe direction details to memory
@@ -1110,9 +961,9 @@ class Swipe extends Reference:
 				#prev_panel()
 				
 				
-				
+				# Disabling for Debugging src code in GOdot 4.0
 				# Play Animation
-				return GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
+				#return GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
 			
 				
 			if abs (direction.y) > abs(direction.x):
@@ -1129,8 +980,10 @@ class Swipe extends Reference:
 				
 				
 				direction_var = "Up"
+				
+				# Disabling for Debugging src code in GOdot 4.0
 				# Play Animation
-				return GlobalAnimation.get_child(0).play("SWIPE_UP")
+				#return GlobalAnimation.get_child(0).play("SWIPE_UP")
 				
 				#doenst work
 				#_state = SWIPE_UP
@@ -1140,8 +993,10 @@ class Swipe extends Reference:
 				print('down swipe 2') #for debug purposes
 				#prev_panel()
 				
+				
+				# Disabling for Debugging src code in GOdot 4.0
 				# Play Animation
-				return GlobalAnimation.get_child(0).play("SWIPE_DOWN")
+				#return GlobalAnimation.get_child(0).play("SWIPE_DOWN")
 				
 			#emit_signal('swiped', Vector2(0.0,-sign(direction.y))) #vertical swipe
 				#	print ('poot poot poot') 
@@ -1150,6 +1005,269 @@ class Swipe extends Reference:
 			Swipe.clear_memory( swipe_target_memory_x, swipe_target_memory_y)
 
 		else: return
+
+
+class Functions extends Reference:
+	static func show_comics (comics_chap : Node, cmx_root : Control, comic_main  )-> Control:
+		comic_main.emit_signal("loaded_comics")
+		cmx_root.add_child(comics_chap)
+		comic_main._loaded_comics = true
+		return cmx_root
+	"""
+	LOAD COMICS INTO THE SCENE TREE AS Animated SPRITESHEETS
+	"""
+	#implement Texture react node functionality 
+	#
+	static func load_comics(current_comics : String, memory : Array ,scenetree: SceneTree, enabled : bool, can_drag : bool, zoom : bool , current_frame : int, Kinematic_2d: KinematicBody2D, comics_placeholder : Control) -> Node: 
+		#################################
+		# 
+		###########################
+		#print (current_comics) # for debugging purposes
+		
+		var err : PackedScene = load(current_comics)
+		var node : Node
+		
+		
+		if current_comics != null && err.can_instantiate() == true:
+			for _p in scenetree.get_nodes_in_group('Cmx_Root'):
+				enabled = true
+				zoom = false
+				can_drag = true
+				current_frame =  int(0)
+				
+				#Kinematic_2d =  CharacterBody2D.new()
+				#comics_placeholder = Control.new()
+				
+				Kinematic_2d.name= 'Kinematic_2d'
+				comics_placeholder.name = 'comics_placeholder'
+		
+				comics_placeholder.set_mouse_filter(2)
+
+				_p.call_deferred('add_child',comics_placeholder) #reparents comic placeholder node 
+
+				print ('Comic root:',_p)
+
+				
+				comics_placeholder.add_child(Kinematic_2d)
+				
+		
+				var collision_shape =CollisionShape2D.new()
+				var shape = RectangleShape2D.new() #new code
+				shape.set_size((Vector2(130,130))) #new code
+				collision_shape.set_shape (shape) #new code
+		
+				#Kinematic Body 2D
+				Kinematic_2d.add_child(collision_shape) #set the collision shape
+				
+				"connect signals"
+				# Dead signals
+				#Kinematic_2d.connect("mouse_exited",Comics_v5._on_Kinematic_2D_mouse_exited()) 
+				#Kinematic_2d.connect('mouse_entered',Comics_v5._on_Kinematic_2D_mouse_entered())
+
+				#Loaded Comic Signal
+				#Comics_v5.emit_signal("loaded_comics")
+				
+				# Debug Packed Scene
+				#print (err.can_instantiate())
+				
+				if err.can_instantiate(): # 
+					node = err.instantiate(0)
+					#Kinematic_2d.add_child(_x) 
+				
+					# Returns instantiated node
+					return node
+				
+				#position pages
+				#_x.position =Kinematic_2d.get_position()
+
+
+				# Error Catcher 1
+				if current_comics == "" and !err.can_instance()   :
+					push_error('unable to instance comics scene')
+					pass
+				if memory.empty() != true && current_comics == "": #error catcher 1
+					
+					current_comics = memory[0] # load from memory
+
+				if memory.empty() == true && current_comics == "": #error catcher 2
+					push_error('current comics empty')
+					
+					print ("Loading Default comic" + Comics_v5.comics[1])
+					
+					current_comics = Comics_v5.comics[1] #default comic
+
+
+				Comics_v5._loaded_comics = true
+				Comics_v5.comics_placeholder.show()
+				Comics_v5.emit_signal("comics_showing")
+				#center_page()
+
+				return node
+		return node
+
+	
+
+	"""
+	DRAG FUNCTION
+	"""
+	#body must be a kinematic body 2d
+	
+	# Drag bugs out because of positioinal data errors with character body 2D
+	
+	static func drag(_target : Vector2, _position : Vector2, _body :  KinematicBody2D, center : Vector2, target_memory_x : Array, target_memory_y: Array)-> void: #pass this method some parmeters
+		#add more parameters
+	# Input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases 
+		print ("-----------Dragging------------")
+		
+		center = Globals.restaVectores(_target, _position)
+		_body.set_position(_target)
+		
+		
+		" Drag n Drop Logic"
+		
+		
+		"If Distance to input target is greater than 200"
+		#for large size drags
+		if abs(_position.distance_to(_target)) > 200: #if its far...
+			##use suma vectores function for vector maths
+			#_body.move_and_slide(center) #move and slide to center
+			#print (111111111111111)
+			#print (_body.position, "////", center)# for debug purposes only
+			
+			
+			#_body.position = center
+				
+			#_body.position =  $Position2D.position# center
+			
+			_body.move_and_slide(center)
+			#print ('moving to center') #for debug purposes only
+
+
+	#******************************Bug Begins**********************#
+
+			"If Distance is less than 200"
+			#for small size drags
+			#Buggy 
+		if abs(_position.distance_to(_target)) < 200 : #if its close
+					#_body.move_and_slide(target)
+					#how to fix
+					
+				"""
+				I can calculate the difference between the last 2 drags to fix this bug
+				drag bug is caused by sudden disparity between the target vectors
+				if the previous target position is different by a large amount, discard it and wait for next target input
+				"""
+					
+				var x : int = _target.x
+				var y : int = _target.y
+				target_memory_x.append(x) #works
+				target_memory_y.append(y) #works
+				
+				# Rejects buggy input targets
+				# Save both x & y inputs in similar array to properly debug
+				if abs(target_memory_x[target_memory_x.size() - 2] - x) > 3: #if more than 3 buggy inputs have been saved
+					#print ('Error x axis') #for debug purposes only
+					#print ('x axis size debug: ' ,target_memory_x.size()) #for debug purposes only
+					
+					#print (target_memory_x) #temporarily disabling for debug purposes
+					
+					
+					
+					
+					
+					#deletes bad input
+					target_memory_x.erase(x) #temporarily disabling for debugging
+					
+					
+					
+					
+					#target_memory_x.remove(target_memory_x[-1]) #deletes error #introduces bug
+					if target_memory_x.size() == 1:
+						_body.move_and_slide(Vector2(target_memory_x[0], target_memory_y.back()))
+						#_body.position = Vector2(target_memory_x[0], target_memory_y.back())
+						#_body.move_and_slide()
+					
+					#Erases Faulty Horizontal Input
+					if target_memory_x.size() > 1:
+						var adjusted_target = Vector2(target_memory_x[target_memory_x.size() - 2], target_memory_y.back())
+						_body.move_and_slide(adjusted_target)
+						#_body.position = Vector2(target_memory_x[target_memory_x.size() - 2], target_memory_y.back())
+						#_body.move_and_slide()
+					
+					
+				if abs(target_memory_y[target_memory_y.size() - 2] - x) > 3:
+					#print ('Error y axis')
+					#print ('y axis size debug: ' ,target_memory_y.size()) 
+					
+					#print (target_memory_y) #temporarily disabling for debug purposes
+					
+
+					#deletes bad input
+					target_memory_y.erase(y) #temporarily disabling for debugging
+					
+					
+					
+					
+					
+					if target_memory_y.size() == 1: #error catcher
+						
+						#moves to a predicted presaved axis
+						_body.move_and_slide(Vector2(target_memory_x.back(), target_memory_y[0]))
+						#_body.position = Vector2(target_memory_x.back(), target_memory_y[0])
+						#_body.move_and_slide()
+					
+					elif target_memory_y.size() > 1:
+						
+						var adjusted_target = Vector2(target_memory_x.back(), target_memory_y[target_memory_y.size() - 1])
+						
+						#moves to a predicted presaved axis
+						_body.move_and_slide(adjusted_target)
+						#_body.move_and_slide()
+					
+
+				#code base is too long to debug. Simplify
+				if not abs(target_memory_y[target_memory_y.size() - 2] - x) && abs(target_memory_x[target_memory_x.size() - 2] - x) > 3 :
+					#_body.set_position(_target)
+					#print ('sdsjgksdkgjsdfj')
+					_body.move_and_slide(_target)
+					#_body.move_and_slide()
+
+	#******************************Bug Ends**********************#
+	static func drag_v2(comics_sprite : AnimatedSprite, target : Vector2)-> void:
+		comics_sprite.set_position(target)
+
+	static func _zoom(comics_placeholder : Control, zoom : bool)-> bool:
+		
+		#if _loaded_comics == true:
+		var scale =comics_placeholder.get_scale()
+		if scale == Vector2(1,1)  :
+			#print ('zoom in') #for debug purposes only
+			comics_placeholder.set_scale(scale * 2) 
+			zoom = true
+			return true 
+		if scale > Vector2(1,1):
+			#print ('zoom out') #for debug purposes only
+			scale = comics_placeholder.get_scale()
+			comics_placeholder.set_scale(scale / 2) 
+			zoom = false
+		return zoom 
+
+	static func _zoom_2(comics_placeholder : Node, zoom : bool)-> bool:
+		
+		#if _loaded_comics == true:
+		var scale =comics_placeholder.get_scale()
+		print (scale)
+		if scale == Vector2(1,1)  :
+			#print ('zoom in') #for debug purposes only
+			comics_placeholder.set_scale(scale * 2) 
+			zoom = true
+			return true 
+		if scale > Vector2(1,1):
+			#print ('zoom out') #for debug purposes only
+			scale = comics_placeholder.get_scale()
+			comics_placeholder.set_scale(scale / 2) 
+			zoom = false
+		return zoom 
 
 
 
@@ -1168,7 +1286,7 @@ func guided_view()-> void: #Unwriten code
 
 
 func _on_Rotate_pressed():#Page Rotation #Rewrite this function as a module
-	if loaded_comics == true:
+	if _loaded_comics == true:
 		var _r = Kinematic_2d.get_rotation_degrees()
 		var _s = self.get_scale()
 	#print(_r, _s) #for debug purposes only
@@ -1198,78 +1316,109 @@ static func load_local_image_texture_from_global(node : TextureRect, _local_imag
 	node.set_stretch_mode(stretch_mode) 
 
 
+
+
+
+
+
 """
 button connections 
 """
 
-func _on_chap_1_pressed(): #Simplify this function
+func _on_chap_1_pressed():
 	print ("loading chapter 1")
-	load_chapter(1)
+	
+	# works
+	Functions.show_comics(Functions.load_comics(comics[1], memory,get_tree(),enabled, can_drag, zoom,current_frame, Kinematic_2d, comics_placeholder), cmx_root, self)
 
 func _on_chap_2_pressed(): #Simplify this function
 	print ("loading chapter 2")
-	load_chapter(2)
+	# works
+	Functions.show_comics(Functions.load_comics(comics[2], memory,get_tree(),enabled, can_drag, zoom,current_frame, Kinematic_2d, comics_placeholder), cmx_root, self)
+
 
 func _on_chap_3_pressed(): #Simplify this function
 	print ("loading chapter 3")
-	load_chapter(3)
+	# works
+	Functions.show_comics(Functions.load_comics(comics[3], memory,get_tree(),enabled, can_drag, zoom,current_frame, Kinematic_2d, comics_placeholder), cmx_root, self)
 
 
-func _on_Zoom_pressed(): #temporary zoom funtion for android #connect code  with code
-	return _zoom()
 
-"""
-load chapter function 
-"""
 
-func load_chapter(number):#generic load chapter function
-	if number is int:
-		print ('loading Chapter :', number)
-		current_comics = load(comics[number])
-		current_chapter = number #Update the current chapter loaded
-		return load_comics()
+# Depreciated in Godot 4.0 version
+#"""
+#load chapter function 
+#"""
+#
+#func load_chapter(number: int):#generic load chapter function
+#	#if number is int:
+#	print ('loading Chapter :', number)
+#	current_comics = load(comics[number])
+#	current_chapter = number #Update the current chapter loaded
+#	return load_comics()
 
 
 
 func _on_chap_4_pressed():
 	print ("loading chapter 4")
-	load_chapter(4)
+	
+	# works
+	Functions.show_comics(Functions.load_comics(comics[4], memory,get_tree(),enabled, can_drag, zoom,current_frame, Kinematic_2d, comics_placeholder), cmx_root, self)
+
 
 
 func _on_chap_5_pressed():
 	print ("loading chapter 5")
-	load_chapter(5)
+	# works
+	Functions.show_comics(Functions.load_comics(comics[5], memory,get_tree(),enabled, can_drag, zoom,current_frame, Kinematic_2d, comics_placeholder), cmx_root, self)
+
 
 
 func _on_chap_6_pressed():
 	print ("loading chapter 6")
-	load_chapter(6)
+	# works
+	Functions.show_comics(Functions.load_comics(comics[6], memory,get_tree(),enabled, can_drag, zoom,current_frame, Kinematic_2d, comics_placeholder), cmx_root, self)
 
 
 func _on_chap_7_pressed():
 	print ("loading chapter 7")
-	load_chapter(7)
+	# works
+	Functions.show_comics(Functions.load_comics(comics[7], memory,get_tree(),enabled, can_drag, zoom,current_frame, Kinematic_2d, comics_placeholder), cmx_root, self)
 
 
-func create_comics_directory(path_to : String)-> void:
-# Creates a Wallet folder.
-	if not FileDirectory. dir_exists(path_to):
-		FileDirectory.make_dir(path_to)
-	else: return 
+#func create_comics_directory(path_to : String)-> void:
+## Creates a Comics folder.
+#	if not FileDirectory. dir_exists(path_to):
+#		FileDirectory.make_dir(path_to)
+#	else: return 
 
 func connect_signals(): #connects all required signals in the parent node
 	
 	#checks internet connectivity
-	if not q.is_connected("request_completed", self, "_http_request_completed_Internet"):
-		return q.connect("request_completed", self, "_http_request_completed_Internet")
+	#if not q.is_connected("request_completed", self, "_http_request_completed_Internet"):
+	#	return q.connect("request_completed", self, "_http_request_completed_Internet")
 
 	#checks Image downloader
-	if not q2.is_connected("request_completed", self, "_http_request_completed_Images"):
-		return q2.connect("request_completed", self, "_http_request_completed_Images")
+	#if not q2.is_connected("request_completed", self, "_http_request_completed_Images"):
+	#	return q2.connect("request_completed", self, "_http_request_completed_Images")
 
 	#checks Scene downloader
-	if not q3.is_connected("request_completed", self, "_http_request_completed_Scenes"):
-		return q3.connect("request_completed", self, "_http_request_completed_Scenes")
+	#if not q3.is_connected("request_completed", self, "_http_request_completed_Scenes"):
+	#	return q3.connect("request_completed", self, "_http_request_completed_Scenes")
 
-	
-	
+	pass
+
+func _on_Kinematic_2D_mouse_entered():
+	print(111111)
+
+func _on_Kinematic_2D_mouse_exited():
+	print(2222)
+
+
+
+
+
+func _on_zoom_pressed():
+	Functions._zoom_2(comics_sprite, !zoom)
+	zoom = !zoom
+	return zoom

@@ -1,17 +1,29 @@
-extends Node
+extends AnimatedSprite
 """
 The goal of this script is to store and send comic page details 
 to the comic class script. 
 """
+# TO DO: Implement Polymorphism for all Chapter pages
+# It should also synconize data with the word bubble in a way that is playable 
 
-# 
-export (Vector2) var panel
+export var panel : Vector2
+export var word_buble_count : int 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+const TotalPageCount : int = 7
+var CurrentPage : int
 
+export var Chapter_Data : Dictionary = {
+	"Word Bubbles": word_buble_count,
+	"All Pages" : TotalPageCount,
+	"Name" : "Neo Sud, the New South",
+	"Current Page": CurrentPage,
+}
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+# Update 
+func _process(_delta):
+	CurrentPage = get_frame()
+	
+	# Makes Current Page a Global integer
+	Comics_v5.current_page = CurrentPage#Chapter_Data["Current Page"]
+	
+	

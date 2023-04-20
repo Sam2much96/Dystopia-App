@@ -206,6 +206,7 @@ func _input(event):
 
 func _process(_delta):
 	
+	
 	# Synchronizes  Page Data with Comics 
 	Page = Comics_v5.current_page
 	

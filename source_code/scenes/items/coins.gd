@@ -12,6 +12,8 @@
 
 extends Area2D
 
+class_name coins
+
 """
 Coins
 """

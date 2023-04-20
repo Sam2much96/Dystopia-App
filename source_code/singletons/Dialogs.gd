@@ -6,7 +6,7 @@
 # I sure as fvck don't know what it does. Ama fuck around and find out!
 # To Do:
 #(1) Write a documentation
-#(2) Connect it to dialogic addon
+#(2) Connect it to ChatGPT addon for AI Generated Dialogues & Translation
 # *************************************************
 # fEATURES:
 #(1) Converts Text to speech
@@ -42,7 +42,7 @@ var active = false
 
 var dialog_box = null setget _set_dialog_box
 
-var word_bubble_box = null  setget _set_wordbubble_box
+var word_bubble_box : WordBubbleBox = null  setget _set_wordbubble_box
 var language : String = ""# stores the current language the user selects
 
 var _script_testing : String = 'res://resources/dialogues/script_testing.gd'
@@ -75,7 +75,7 @@ func _set_dialog_box(node):
 	
 	pass
 
-func _set_wordbubble_box(node  : AnimatedSprite):
+func _set_wordbubble_box(node  : WordBubbleBox):
 	word_bubble_box = node
 	
 	# Connect signals

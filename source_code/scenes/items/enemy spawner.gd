@@ -14,6 +14,8 @@
 
 extends Position2D
 
+class_name enemy_spawner
+
 
 export (bool) var enabled 
 export (PackedScene) var enemy_spawn_1

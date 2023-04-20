@@ -11,6 +11,8 @@
 
 extends Area2D
 
+class_name item
+
 export(String) var item_type = "Generic Item"
 export(int) var amount = 1
 

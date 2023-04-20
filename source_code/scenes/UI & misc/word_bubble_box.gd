@@ -55,7 +55,7 @@ enum {
 	STATE_TALK_LEFT_3 
 	}
 
-export (String, "Narrration", "Angry", " Thoughts",
+export (String, "Narration", "Angry", "Thoughts",
  "Talk Right", "Talk Right 2", "Talk Right 3","Talk Left", 
 "Talk Left 2","Talk Left 3"
 ) var state
@@ -64,7 +64,7 @@ export (String, "Narrration", "Angry", " Thoughts",
 # "Talk Right", "Talk Right 2", "Talk Right 3","Talk Left", 
 #"Talk Left 2","Talk Left 3" ) var state : String = "Narrration"
 
-var _state = STATE_NARRATION
+var _state : int  = STATE_THOUGHTS
 
 var Position : Vector2
 var index : int 
@@ -124,7 +124,37 @@ func unflip()-> void:
 	flip_h = false
 
 
+func _enter_tree():
+	#print (111111111)
+	#print (state)
+	# Match String State to state machine enum
+	if state == "Narration":
+		_state = STATE_NARRATION
+		
+	elif state == "Angry":
+		_state = STATE_ANGRY
+	elif state == "Thoughts":
+		_state = STATE_THOUGHTS
+		return _state
+	elif state == "Talk Right":
+		_state = STATE_TALK_RIGHT
+	elif state == "Talk Right 2":
+		_state = STATE_TALK_RIGHT_2
+	elif state == "Talk Right 3":
+		_state = STATE_TALK_RIGHT_3
+	elif state == "Talk Left":
+		_state = STATE_TALK_LEFT
+	elif state == " Talk Left 2":
+		_state = STATE_TALK_LEFT_2
+	elif state == "Talk Left 3":
+		_state = STATE_TALK_LEFT_3
+
+
 func _ready():
+	
+	
+	
+
 	
 	#ignore the warning
 	Dialogs.word_bubble_box = self
@@ -163,27 +193,6 @@ func _ready():
 
 
 
-	# Match String State to state machine
-	if state == "Narration":
-		_state = STATE_NARRATION
-		
-	elif state == "Angry":
-		_state = STATE_ANGRY
-	elif state == "Thoughts":
-		_state = STATE_THOUGHTS
-	elif state == "Talk Right":
-		_state = STATE_TALK_RIGHT
-	elif state == "Talk Right 2":
-		_state = STATE_TALK_RIGHT_2
-	elif state == "Talk Right 3":
-		_state = STATE_TALK_RIGHT_3
-	elif state == "Talk Left":
-		_state = STATE_TALK_LEFT
-	elif state == " Talk Left 2":
-		_state = STATE_TALK_LEFT_2
-	elif state == "Talk Left 3":
-		_state = STATE_TALK_LEFT_3
-
 
 func hide_dialogue(): #my code
 	$anims.play("disappear")
@@ -207,6 +216,10 @@ func _input(event):
 func _process(_delta):
 	
 	
+
+	
+	
+	
 	# Synchronizes  Page Data with Comics 
 	Page = Comics_v5.current_page
 	
@@ -218,11 +231,19 @@ func _process(_delta):
 		hide()
 	
 	
+	
+	
+	
+
+	
 	" State Machine "
 	# Features
 	# (1) Shrinks Label's Boundaries for Word Bubble
 	# (2) Implements RichLabelTexts with effects
 	# (3)Syncs Label Boundary data to Word Bubble current frame
+	
+	# To DO:
+	# (1) Find a more elegant way to change frames.
 	match  _state:
 		STATE_NARRATION:
 			set_frame(0)

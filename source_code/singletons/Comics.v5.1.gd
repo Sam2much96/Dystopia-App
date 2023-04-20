@@ -15,6 +15,7 @@
 
 #
 # To DO:
+# (0) Organize code for better readability
 #(1) connect this script with  the dialogue singleton for translation and wordbubble fx co-ordination
 #(2) Update Logic to be used by Texture React nodes NFT
 # (3) Add more parameters to the drag() function to be reusable in other scripts
@@ -438,10 +439,10 @@ func _input(event):
 			
 			zoom = !zoom
 			return zoom
-		if event.is_double_tap(): # works
-			print ("zoom 2")
-			Functions._zoom_2(comics_sprite, true)
-			return zoom
+		#if event.is_double_tap(): # works
+		#	print ("zoom 2")
+		#	Functions._zoom_2(comics_sprite, true)
+		#	return zoom
 		
 		"Handles Swipe Detection" 
 		#Requires Debugging
@@ -1345,20 +1346,6 @@ func _on_chap_3_pressed(): #Simplify this function
 
 
 
-# Depreciated in Godot 4.0 version
-#"""
-#load chapter function 
-#"""
-#
-#func load_chapter(number: int):#generic load chapter function
-#	#if number is int:
-#	print ('loading Chapter :', number)
-#	current_comics = load(comics[number])
-#	current_chapter = number #Update the current chapter loaded
-#	return load_comics()
-
-
-
 func _on_chap_4_pressed():
 	print ("loading chapter 4")
 	
@@ -1392,7 +1379,10 @@ func _on_chap_7_pressed():
 #		FileDirectory.make_dir(path_to)
 #	else: return 
 
-func connect_signals(): #connects all required signals in the parent node
+func connect_signals()-> bool: #connects all required signals in the parent node
+	
+	# TO DO: 
+	# (1) Implement Server Storage
 	
 	#checks internet connectivity
 	#if not q.is_connected("request_completed", self, "_http_request_completed_Internet"):
@@ -1406,7 +1396,7 @@ func connect_signals(): #connects all required signals in the parent node
 	#if not q3.is_connected("request_completed", self, "_http_request_completed_Scenes"):
 	#	return q3.connect("request_completed", self, "_http_request_completed_Scenes")
 
-	pass
+	return false
 
 func _on_Kinematic_2D_mouse_entered():
 	print(111111)

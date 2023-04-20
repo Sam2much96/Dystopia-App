@@ -144,6 +144,21 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/cinematics/cinematics V2.gd"
 }, {
+"base": "Area2D",
+"class": "coins",
+"language": "GDScript",
+"path": "res://scenes/items/coins.gd"
+}, {
+"base": "Position2D",
+"class": "enemy_spawner",
+"language": "GDScript",
+"path": "res://scenes/items/enemy spawner.gd"
+}, {
+"base": "Area2D",
+"class": "item",
+"language": "GDScript",
+"path": "res://scenes/items/Item.gd"
+}, {
 "base": "CPUParticles2D",
 "class": "smoke_fx",
 "language": "GDScript",
@@ -182,6 +197,9 @@ _global_script_class_icons={
 "Yodo1Mas": "",
 "YtDlp": "",
 "cinematic": "",
+"coins": "",
+"enemy_spawner": "",
+"item": "",
 "smoke_fx": "",
 "wallet": ""
 }
@@ -330,6 +348,14 @@ reset={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":45,"unicode":0,"echo":false,"script":null)
  ]
+}
+next_panel={
+"deadzone": 0.5,
+"events": [  ]
+}
+prev_panel={
+"deadzone": 0.5,
+"events": [  ]
 }
 
 [input_devices]

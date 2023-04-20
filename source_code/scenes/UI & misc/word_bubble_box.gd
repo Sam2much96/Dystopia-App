@@ -89,19 +89,14 @@ signal dialog_started
 signal dialog_ended
 
 
-# create list in inspector tab as state controller
-# To enable Polymorphism
-
 
 
 func show_dialog(new_text : String) -> void:
 	word_bubble_label.text = new_text#new_text 
 	
-	#$nametag/label.text = speaker
 	lines_to_skip = 0
 	word_bubble_label.lines_skipped = lines_to_skip
-	#$anims.play("appear")
-	#pass
+
 
 
 func show_dialog_2(text1 : String, text2 : String) -> void:
@@ -125,7 +120,6 @@ func unflip()-> void:
 
 
 func _enter_tree():
-	#print (111111111)
 	#print (state)
 	# Match String State to state machine enum
 	if state == "Narration":
@@ -271,11 +265,11 @@ func _process(_delta):
 			set_frame(5)
 			anims.play("Talk Right 2")
 			pass
-		STATE_TALK_RIGHT_3:
+		STATE_TALK_RIGHT_3: # rename it's member methods
 			set_frame(6)
 			anims.play("Talk Left 3 flipped")
 			pass
-		STATE_TALK_LEFT_3:
+		STATE_TALK_LEFT_3: # Unimplemented
 			set_frame(6)
 			anims.play("Talk Left 3")
 			pass

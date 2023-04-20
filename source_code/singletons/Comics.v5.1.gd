@@ -140,11 +140,6 @@ var target_memory_y: Array = [] #stores vector 2 of previous targets
 
 
 
-var q : HTTPRequest
-var q2 : HTTPRequest
-var q3 : HTTPRequest
-
-
 #**********Swipe Detection Direction Calculation Parameters************#
 var swipe_target_memory_x : Array = [] # for swipe direction x calculation
 var swipe_target_memory_y : Array = [] # for swipe direction y calculation
@@ -176,10 +171,12 @@ var direction_var : String = "idle"
 
 var _state = IDLE
 
+#var _e : Timer = Timer.new()
+
 onready var _debug_= get_tree().get_root().get_node("/root/Debug")
 onready var cmx_root : Control = get_tree().get_nodes_in_group("Cmx_Root").pop_front()
 
-
+var _e : Timer = Timer.new()
 
 func _ready():
 	
@@ -198,31 +195,20 @@ func _ready():
 	
 	enabled = false
 	#target = Vector2() duplicate code 
-	Swipe._init()
 	
-	# Add Swipe Detection Timer to Scene Tree
-	_comics_root.call_deferred('add_child',Swipe._e)
+	# add timer to tree
+	_comics_root.call_deferred('add_child',_e)
 	
+	# Make Timer Accessible to Swipe Class
+	Swipe._init_(_e)
 	
+
 	
 	# Create HTTP Request Nodes
 	# Only create & use these nodes it Dowloading content
 	
 	if web3: 
-		q = HTTPRequest.new() # checks internet connection, makes it a Global boolean
-		q2 = HTTPRequest.new() # Downloads imgs
-		q3 = HTTPRequest.new() # Downloads Comic Scenes
-
-
-	_comics_root.call_deferred('add_child',q) # checks internet connection, makes it a Global boolean
-	_comics_root.call_deferred('add_child',q2) # Downloads imgs
-	_comics_root.call_deferred('add_child',q3) # Downloads Comic Scenes
-	
-	
-
-
-
-
+		Online._init()
 
 
 
@@ -249,7 +235,7 @@ func _http_request_completed_Internet(result, response_code, headers, body): #wo
 			
 			#Retry Check 
 			if Networking.Timeout:
-				Networking._check_if_device_is_online(q)
+				Networking._check_if_device_is_online(Swipe.q)
 
 
 # Q2
@@ -412,14 +398,14 @@ func _input(event):
 		# run calculations using the first and last array positions
 		# Swipe position detector implemented it as state controller changer
 		#_position, enabled: bool, _e : Timer ,swipe_target_memory_x : Array, swipe_target_memory_y : Array
-		Swipe._start_detection(event.position, true, Swipe._e, swipe_target_memory_x, swipe_target_memory_y)
+		Swipe._start_detection(event.position, true,_e, swipe_target_memory_x, swipe_target_memory_y)
 		
 		#__position : Vector2, swipe_start_position : Vector2, direction_var, _state
 		#dfhdfhd
 		#__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array
 		
 		"Detect Swipe State"
-		_state = Swipe._end_detection(event.position, Vector2(0,0), direction_var,_state, Swipe._e, swipe_target_memory_x, swipe_target_memory_y, Swipe.swipe_start_position, swipe_parameters,  x1,x2,y1,y2, MAX_DIAGONAL_SLOPE)#, event.position, direction_var, _state)
+		_state = Swipe._end_detection(event.position, Vector2(0,0), direction_var,_state, _e, swipe_target_memory_x, swipe_target_memory_y, Swipe.swipe_start_position, swipe_parameters,  x1,x2,y1,y2, MAX_DIAGONAL_SLOPE)#, event.position, direction_var, _state)
 	
 	
 		print(_state) #for debug purposes only
@@ -588,7 +574,7 @@ func _process(_delta):
 			#	pass
 			
 			if !Networking.good_internet && !Networking.Timeout:
-				Networking._check_if_device_is_online(q)
+				Networking._check_if_device_is_online(Swipe.q)
 				Networking.start_check(4)
 			
 			# If local Comics Doesnt exist
@@ -602,8 +588,8 @@ func _process(_delta):
 				#Networking.url = comics_[0]
 				
 				#comics_IPFS
-				Networking. _connect_to_ipfs_gateway(false,Online.comics_IPFS[1], Networking.gateway[2], q2) # Downloads Spritesheet  
-				Networking. _connect_to_ipfs_gateway(false,Online.comics_IPFS[3], Networking.gateway[2], q3)  # Downloads Scene
+				Networking. _connect_to_ipfs_gateway(false,Online.comics_IPFS[1], Networking.gateway[2], Swipe.q2) # Downloads Spritesheet  
+				Networking. _connect_to_ipfs_gateway(false,Online.comics_IPFS[3], Networking.gateway[2], Swipe.q3)  # Downloads Scene
 			#	return
 			# Check if image is available for chapter 1
 			if FileCheck1.file_exists(Local.comics_["Chap1 Panel"]) :
@@ -743,7 +729,14 @@ func _handle_swipe_detection(event)-> void:
 		Swipe._end_detection(event.position, Vector2(0,0),direction_var,_state, Swipe._e, swipe_target_memory_x, swipe_target_memory_y, Swipe.swipe_start_position, swipe_parameters, x1,x2,y1,y2,MAX_DIAGONAL_SLOPE)#,event.position,swipe_target_memory_x, swipe_target_memory_y, direction_var, _state)
 #__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array
 
+
+
+
 class Online extends Reference:
+	
+	var q : HTTPRequest
+	var q2 : HTTPRequest
+	var q3 : HTTPRequest
 	
 	const comics_IPFS : Dictionary = {
 		1 : "QmSpXTc7gE1Mj3HdKDGuwr87cuiiLP3homXuKbWVxoG4TX", #Chap 1 scene
@@ -751,8 +744,15 @@ class Online extends Reference:
 		3 : "QmW3HJX8iADTFdNMBhuDsVqhQLajE8xwPw2XmonmL2HofA", # Icon Pixel Icon
 	}
 
-	
+	func _init():
+		q = HTTPRequest.new() # checks internet connection, makes it a Global boolean
+		q2 = HTTPRequest.new() # Downloads imgs
+		q3 = HTTPRequest.new() # Downloads Comic Scenes
 
+
+		Comics_v5._comics_root.call_deferred('add_child',q) # checks internet connection, makes it a Global boolean
+		Comics_v5._comics_root.call_deferred('add_child',q2) # Downloads imgs
+		Comics_v5._comics_root.call_deferred('add_child',q3) # Downloads Comic Scenes
 
 class Local extends Reference:
 
@@ -786,19 +786,26 @@ class Local extends Reference:
 class Swipe :
 	
 	#**********Swipe Detection Direction Calculation Parameters************#
-	var swipe_start_position = Vector2()
+	const swipe_start_position = Vector2()
 	const swipe_parameters : float = 0.1
 	#static func swipe_parameters()-> void:
 	#	pass
 
 	" Swipe Direction Detection"
-	var _e = Timer.new()
-	func _init():
-			#for swipe detection
-			_e.one_shot = true
-			_e.wait_time = 0.5
-			_e.name = str ('swipe detection timer')
+	#var _e = Timer.new()
+	func _init_(_e : Timer): # Not tested yet
+			self._e = _e
 			
+			
+			
+			#for swipe detection
+			self._e.one_shot = true
+			self._e.wait_time = 0.5
+			self._e.name = str ('swipe detection timer')
+			
+			
+			# Add Swipe Detection Timer to Scene Tree
+			Comics_v5._comics_root.call_deferred('add_child',_e)
 
 
 	func _on_Timer_timeout():
@@ -807,7 +814,7 @@ class Swipe :
 		print ('on timer timeout: ',swipe_start_position) #for debug purposes delete later
 
 
-	func connect_signals(_c : Timer)-> bool:
+	func connect_signals(_c : Timer, _e : Timer)-> bool:
 			return bool(_c.connect('Timeout',_e,_on_Timer_timeout())) #connect timer to node with code
 #			return true
 

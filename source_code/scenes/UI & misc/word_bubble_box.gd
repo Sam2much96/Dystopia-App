@@ -24,7 +24,9 @@ extends AnimatedSprite
 class_name  WordBubbleBox
 
 
+"Translations"
 
+#
 
 # Path to Dialogue Script
 export(String, FILE, "*.gd") var dialogue = ""
@@ -39,7 +41,7 @@ export var enable_multiline : bool
 # For Regression testing
 export var debug : bool 
 
-
+# For Script Parser
 export var line_index : int
 
 # Toggle word bubble visibility depending on Comics Page Data
@@ -63,12 +65,8 @@ export (String, "Narration", "Angry", "Thoughts",
 "Talk Left 2","Talk Left 3"
 ) var state
 
-#@export_enum("Narrration", "Angry", " Thoughts",
-# "Talk Right", "Talk Right 2", "Talk Right 3","Talk Left", 
-#"Talk Left 2","Talk Left 3" ) var state : String = "Narrration"
 
 var _state : int  = STATE_THOUGHTS
-
 var Position : Vector2
 var index : int 
 
@@ -122,6 +120,9 @@ func unflip()-> void:
 
 
 func _enter_tree():
+	
+	"State machine Part A"
+	
 	#print (state)
 	# Match String State to state machine enum
 	if state == "Narration":

@@ -551,7 +551,7 @@ dialogue = "res://resources/dialogues/script_testing.gd"
 enable = true
 enable_multiline = true
 debug = true
-state = "Thoughts"
+state = "Talk Right 3"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Narration = SubResource( 9 )

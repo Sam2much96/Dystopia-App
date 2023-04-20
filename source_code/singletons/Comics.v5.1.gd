@@ -50,6 +50,18 @@ signal swiped(direction)
 signal swiped_canceled(start_position)
 #export(float,1.0,1.5) var MAX_DIAGONAL_SLOPE =1.3  
 
+
+export var enabled : bool 
+
+# Web 3 Activator for Downloading Content
+export var web3 : bool 
+export var _loaded_comics : bool = false
+export var SwipeLocked : bool 
+export var  current_frame : int   = 0 # Global Frame Variable
+export var current_page : int  = -2# Global page variable, same as above, but differentiating for testing
+
+
+
 var current_comics : PackedScene
 
 "Prealoaded Comics"
@@ -90,10 +102,9 @@ var comics : Dictionary = {
 #should ideally download from the Internet
 
 
-var swipe_start_position = Vector2()
+
 var memory : Array = [] #use this variable to store current frame and comics info
-export var  current_frame : int   = 0 # Global Frame Variable
-export var current_page : int  = -2# Global page variable, same as above, but differentiating for testing
+
 var current_chapter : int
 var next_scene : PackedScene
 
@@ -111,14 +122,15 @@ var center : Vector2
 var target =Vector2(0,0) 
 var origin : Vector2 = get_viewport_rect().size/2#set origin point to the center of the viewport
 
-export var _loaded_comics : bool = false
-export var SwipeLocked : bool 
+# Can Use a Tween Node to implement Drag and Drop
+var comics_sprite : AnimatedSprite
+
 
 var _input_device
-var _e = Timer.new()
+
 var _comics_root = self
 
-onready var _debug_= get_tree().get_root().get_node("/root/Debug")
+
 
 "Bug FIx from <200 absolute Distances"
 
@@ -126,11 +138,7 @@ var target_memory_x: Array = [] #stores vector 2 of previous targets
 var target_memory_y: Array = [] #stores vector 2 of previous targets
 
 
-export var enabled : bool 
 
-
-# Web 3 Activator for Downloading Content
-export var web3 : bool 
 
 var q : HTTPRequest
 var q2 : HTTPRequest
@@ -150,9 +158,14 @@ var y2 #: float
 const MAX_DIAGONAL_SLOPE : float = 1.3
 
 
+
+
 "Rewriting As a Fininte State Machine"
 
-enum {START_SWIPE, END_SWIPE, DOWNLOAD_IMAGE, NEXT_PANEL, PREV_PANEL, DRAG, LOAD, ZOOM ,SET_FRAME,IDLE ,SWIPE_UP,SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT, NOT_SWIPING, ERROR} 
+enum {START_SWIPE, END_SWIPE, DOWNLOAD_IMAGE, NEXT_PANEL, 
+PREV_PANEL, DRAG, LOAD, ZOOM ,SET_FRAME,IDLE ,SWIPE_UP,
+SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT, NOT_SWIPING, ERROR
+} 
 
 # Swipe Direction Enum (Struct)
 #enum { } 
@@ -163,23 +176,12 @@ var direction_var : String = "idle"
 
 var _state = IDLE
 
+onready var _debug_= get_tree().get_root().get_node("/root/Debug")
 onready var cmx_root : Control = get_tree().get_nodes_in_group("Cmx_Root").pop_front()
 
-# Can Use a Tween Node to implement Drag and Drop
-var comics_sprite : AnimatedSprite
+
 
 func _ready():
-	#wordbubble() #for debug purposes only
-	
-	"#********** Debug References***********#"
-	#@ null References as classes
-	
-	#Online._init()
-	#Local._init()
-	
-	#print (Online.comics_IPFS[1])
-
-	
 	
 	#connect signals
 	connect_signals()
@@ -196,13 +198,10 @@ func _ready():
 	
 	enabled = false
 	#target = Vector2() duplicate code 
-	#for swipe detection
-	_e.one_shot = true
-	_e.wait_time = 0.5
-	_e.name = str ('swipe detection timer')
+	Swipe._init()
 	
 	# Add Swipe Detection Timer to Scene Tree
-	_comics_root.call_deferred('add_child',_e)
+	_comics_root.call_deferred('add_child',Swipe._e)
 	
 	
 	
@@ -220,9 +219,7 @@ func _ready():
 	_comics_root.call_deferred('add_child',q3) # Downloads Comic Scenes
 	
 	
-	for _c in get_children():
-		if _c is Timer:
-			return _c.connect('Timeout',_e,_on_Timer_timeout()) #connect timer to node with code
+
 
 
 
@@ -415,14 +412,14 @@ func _input(event):
 		# run calculations using the first and last array positions
 		# Swipe position detector implemented it as state controller changer
 		#_position, enabled: bool, _e : Timer ,swipe_target_memory_x : Array, swipe_target_memory_y : Array
-		Swipe._start_detection(event.position, true, _e, swipe_target_memory_x, swipe_target_memory_y)
+		Swipe._start_detection(event.position, true, Swipe._e, swipe_target_memory_x, swipe_target_memory_y)
 		
 		#__position : Vector2, swipe_start_position : Vector2, direction_var, _state
 		#dfhdfhd
 		#__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array
 		
 		"Detect Swipe State"
-		_state = Swipe._end_detection(event.position, Vector2(0,0), direction_var,_state, _e, swipe_target_memory_x, swipe_target_memory_y, swipe_start_position, swipe_parameters,  x1,x2,y1,y2, MAX_DIAGONAL_SLOPE)#, event.position, direction_var, _state)
+		_state = Swipe._end_detection(event.position, Vector2(0,0), direction_var,_state, Swipe._e, swipe_target_memory_x, swipe_target_memory_y, Swipe.swipe_start_position, swipe_parameters,  x1,x2,y1,y2, MAX_DIAGONAL_SLOPE)#, event.position, direction_var, _state)
 	
 	
 		print(_state) #for debug purposes only
@@ -740,10 +737,10 @@ func _on_Forward_pressed():
 func _handle_swipe_detection(event)-> void:
 	"Handles Swipe Detection" #buggy
 	if event.pressed:
-		Swipe._start_detection(event.position, true, _e, swipe_target_memory_x, swipe_target_memory_y)
-	elif not _e.is_stopped():
+		Swipe._start_detection(event.position, true, Swipe._e, swipe_target_memory_x, swipe_target_memory_y)
+	elif not Swipe._e.is_stopped():
 		#__position : Vector2, swipe_start_position : Vector2, swipe_target_memory_x : Array, swipe_target_memory_y : Array,direction_var, _state
-		Swipe._end_detection(event.position, Vector2(0,0),direction_var,_state, _e, swipe_target_memory_x, swipe_target_memory_y, swipe_start_position, swipe_parameters, x1,x2,y1,y2,MAX_DIAGONAL_SLOPE)#,event.position,swipe_target_memory_x, swipe_target_memory_y, direction_var, _state)
+		Swipe._end_detection(event.position, Vector2(0,0),direction_var,_state, Swipe._e, swipe_target_memory_x, swipe_target_memory_y, Swipe.swipe_start_position, swipe_parameters, x1,x2,y1,y2,MAX_DIAGONAL_SLOPE)#,event.position,swipe_target_memory_x, swipe_target_memory_y, direction_var, _state)
 #__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array
 
 class Online extends Reference:
@@ -758,8 +755,7 @@ class Online extends Reference:
 
 
 class Local extends Reference:
-# Would Return a Null Variable
-# Is Placeholder
+
 
 
 	const comics_ : Dictionary = {
@@ -790,12 +786,32 @@ class Local extends Reference:
 class Swipe :
 	
 	#**********Swipe Detection Direction Calculation Parameters************#
-
+	var swipe_start_position = Vector2()
 	const swipe_parameters : float = 0.1
 	#static func swipe_parameters()-> void:
 	#	pass
 
 	" Swipe Direction Detection"
+	var _e = Timer.new()
+	func _init():
+			#for swipe detection
+			_e.one_shot = true
+			_e.wait_time = 0.5
+			_e.name = str ('swipe detection timer')
+			
+
+
+	func _on_Timer_timeout():
+		#if self.visible : # Only Swipe Detect once visible
+		emit_signal('swiped_canceled', swipe_start_position)
+		print ('on timer timeout: ',swipe_start_position) #for debug purposes delete later
+
+
+	func connect_signals(_c : Timer)-> bool:
+			return bool(_c.connect('Timeout',_e,_on_Timer_timeout())) #connect timer to node with code
+#			return true
+
+	
 	#Buggy swipe direction
 	# Use an Array to store the first position and all end positions
 	# Difference between both extremes is the swipe position
@@ -1271,11 +1287,6 @@ class Functions extends Reference:
 		return zoom 
 
 
-
-func _on_Timer_timeout():
-	#if self.visible : # Only Swipe Detect once visible
-	emit_signal('swiped_canceled', swipe_start_position)
-	print ('on timer timeout: ',swipe_start_position) #for debug purposes delete later
 
 
 

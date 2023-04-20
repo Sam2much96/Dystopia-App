@@ -549,7 +549,9 @@ frame = 6
 script = ExtResource( 3 )
 dialogue = "res://resources/dialogues/script_testing.gd"
 enable = true
-state = "Narration"
+enable_multiline = true
+debug = true
+state = "Thoughts"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Narration = SubResource( 9 )

@@ -23,6 +23,9 @@ extends AnimatedSprite
 # Word Bubble Object
 class_name  WordBubbleBox
 
+
+
+
 # Path to Dialogue Script
 export(String, FILE, "*.gd") var dialogue = ""
 
@@ -85,8 +88,7 @@ onready var word_bubble_label_2 : Label = $Label2
 # Animation Player is for Syncing Label Text with Work Bubble Boundaries.
 onready var anims : AnimationPlayer = $AnimationPlayer
 
-signal dialog_started
-signal dialog_ended
+
 
 
 
@@ -154,7 +156,7 @@ func _ready():
 	Dialogs.word_bubble_box = self
 	
 	#hide()
-	if debug:
+	if debug: # Disabling for Code rebase
 		# Debug 0 : Various types of WordBubbles
 		#state = "Talk Left"
 		
@@ -162,10 +164,17 @@ func _ready():
 		#show_dialog(Dialogs.Parser.parse_script(6,Dialogs._script_testing))
 
 		# Debug 2 : Show Double Dialog + Script Parser
-		show_dialog_2(Dialogs.Parser.parse_script(6,Dialogs._script_testing), Dialogs.Parser.parse_script(7,Dialogs._script_testing))
+		#show_dialog_2(Dialogs.Parser.parse_script(6,Dialogs._script_testing), Dialogs.Parser.parse_script(7,Dialogs._script_testing))
+		
+		pass
 
 	# Single Line
 	if enable:
+		
+		# Defauly translation
+		if Dialogs.language == "":
+			
+			show_dialog(Dialogs.Parser.parse_script(line_index,dialogue))
 		
 		# English Translation file
 		if Dialogs.language == "en_US":

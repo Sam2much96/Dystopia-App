@@ -68,7 +68,7 @@ state = "Talk Left"
 [node name="word bubble2" parent="YSort" instance=ExtResource( 3 )]
 position = Vector2( 1145.21, 1137.52 )
 scale = Vector2( 4.09136, 4.09136 )
-frame = 5
 dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
 debug = false
 line_index = 34
+state = "Talk Right 2"

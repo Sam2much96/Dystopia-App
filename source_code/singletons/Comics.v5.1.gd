@@ -213,82 +213,6 @@ func _ready():
 
 
 
-'Performs a Bunch of HTTP requests'
-# Duplicate of Wallet Codes
-#(1) To Check if internet connection is good 
-# (2) To download Images from IPFS 
-# Q1
-func _http_request_completed_Internet(result, response_code, headers, body): #works with https connection
-	print (" request done 1: ", result) #********for debug purposes only
-	print (" headers 1: ", headers)#*************for debug purposes only
-	print (" response code 1: ", response_code) #for debug purposes only
-
-	if not body.empty():
-			Networking.good_internet = true
-		
-		
-	if body.empty(): #returns an empty body
-			push_error("Result Unsuccessful")
-			Networking.good_internet = false
-			#Networking.stop_check()
-			
-			
-			#Retry Check 
-			if Networking.Timeout:
-				Networking._check_if_device_is_online(Swipe.q)
-
-
-# Q2
-
-func _http_request_completed_Images(result, response_code, headers, body): #works with https connection
-	print (" request done 2: ", result) #********for debug purposes only
-	print (" headers 2: ", headers)#*************for debug purposes only
-	print (" response code 2: ", response_code) #for debug purposes only
-	
-	#if not is_image_available_at_local_storage: 
-	"Should Parse the NFT's meta-data to get the image ink"
-	print ('request successful')
-	
-	"Downloads the NFT image"
-	print (" request successful", typeof(body))
-	
-		
-		#check if body is image type
-	#Comics_v5.set_comic_image_(Networking.download_image_(body, Local.comics_["Chap1 Panel"],q2)) #works
-	
-	if body.empty():
-		push_error("Problem downloading Image ")
-
-
-
-
-# Q3
-
-func _http_request_completed_Scenes(result, response_code, headers, body): #works with https connection
-	print (" request done 3: ", result) #********for debug purposes only
-	print (" headers 3: ", headers)#*************for debug purposes only
-	print (" response code 3: ", response_code) #for debug purposes only
-	
-	#if not is_image_available_at_local_storage: 
-	"Should Parse the NFT's meta-data to get the image ink"
-	print ('request successful')
-	
-	"Downloads the NFT image"
-	print (" request successful", typeof(body))
-	
-	
-	#check if body is image type
-	#set_comic_image_(Networking.download_image_(body, Local.comics_["Chap1 Panel"],q2)) #works
-	
-	
-	#Comics_v5.load_local_comic(Networking.download_scene_(body, Local.comics_["Chap1 Scene"],q3))
-
-	
-	
-	if body.empty():
-		push_error("Problem downloading Image ")
-
-
 
 "INPUT "
 #multiplatform inputs
@@ -753,6 +677,85 @@ class Online extends Reference:
 		Comics_v5._comics_root.call_deferred('add_child',q) # checks internet connection, makes it a Global boolean
 		Comics_v5._comics_root.call_deferred('add_child',q2) # Downloads imgs
 		Comics_v5._comics_root.call_deferred('add_child',q3) # Downloads Comic Scenes
+		
+		
+	
+	'Performs a Bunch of HTTP requests'
+	# Duplicate of Wallet Codes
+	#(1) To Check if internet connection is good 
+	# (2) To download Images from IPFS 
+	# Q1
+	static func _http_request_completed_Internet(result, response_code, headers, body): #works with https connection
+		print (" request done 1: ", result) #********for debug purposes only
+		print (" headers 1: ", headers)#*************for debug purposes only
+		print (" response code 1: ", response_code) #for debug purposes only
+
+		if not body.empty():
+				Networking.good_internet = true
+			
+			
+		if body.empty(): #returns an empty body
+				push_error("Result Unsuccessful")
+				Networking.good_internet = false
+				#Networking.stop_check()
+				
+				
+				#Retry Check 
+				if Networking.Timeout:
+					Networking._check_if_device_is_online(Swipe.q)
+
+
+	# Q2
+
+	static func _http_request_completed_Images(result, response_code, headers, body): #works with https connection
+		print (" request done 2: ", result) #********for debug purposes only
+		print (" headers 2: ", headers)#*************for debug purposes only
+		print (" response code 2: ", response_code) #for debug purposes only
+		
+		#if not is_image_available_at_local_storage: 
+		"Should Parse the NFT's meta-data to get the image ink"
+		print ('request successful')
+		
+		"Downloads the NFT image"
+		print (" request successful", typeof(body))
+		
+			
+			#check if body is image type
+		#Comics_v5.set_comic_image_(Networking.download_image_(body, Local.comics_["Chap1 Panel"],q2)) #works
+		
+		if body.empty():
+			push_error("Problem downloading Image ")
+
+
+
+
+	# Q3
+
+	static func _http_request_completed_Scenes(result, response_code, headers, body): #works with https connection
+		print (" request done 3: ", result) #********for debug purposes only
+		print (" headers 3: ", headers)#*************for debug purposes only
+		print (" response code 3: ", response_code) #for debug purposes only
+		
+		#if not is_image_available_at_local_storage: 
+		"Should Parse the NFT's meta-data to get the image ink"
+		print ('request successful')
+		
+		"Downloads the NFT image"
+		print (" request successful", typeof(body))
+		
+		
+		#check if body is image type
+		#set_comic_image_(Networking.download_image_(body, Local.comics_["Chap1 Panel"],q2)) #works
+		
+		
+		#Comics_v5.load_local_comic(Networking.download_scene_(body, Local.comics_["Chap1 Scene"],q3))
+
+		
+		
+		if body.empty():
+			push_error("Problem downloading Image ")
+
+
 
 class Local extends Reference:
 
@@ -1032,6 +1035,15 @@ class Swipe :
 
 
 class Functions extends Reference:
+	
+	
+	static func _on_Kinematic_2D_mouse_entered():
+		print(111111)
+
+	static func _on_Kinematic_2D_mouse_exited():
+		print(2222)
+
+	
 	static func show_comics (comics_chap : Node, cmx_root : Control, comic_main  )-> Control:
 		comic_main.emit_signal("loaded_comics")
 		cmx_root.add_child(comics_chap)
@@ -1052,7 +1064,7 @@ class Functions extends Reference:
 		var node : Node
 		
 		
-		if current_comics != null && err.can_instantiate() == true:
+		if current_comics != null && err.can_instance() == true:
 			for _p in scenetree.get_nodes_in_group('Cmx_Root'):
 				enabled = true
 				zoom = false
@@ -1077,25 +1089,22 @@ class Functions extends Reference:
 		
 				var collision_shape =CollisionShape2D.new()
 				var shape = RectangleShape2D.new() #new code
-				shape.set_size((Vector2(130,130))) #new code
+				shape.set_extents((Vector2(130,130))) #new code
 				collision_shape.set_shape (shape) #new code
 		
 				#Kinematic Body 2D
 				Kinematic_2d.add_child(collision_shape) #set the collision shape
 				
 				"connect signals"
-				# Dead signals
-				#Kinematic_2d.connect("mouse_exited",Comics_v5._on_Kinematic_2D_mouse_exited()) 
-				#Kinematic_2d.connect('mouse_entered',Comics_v5._on_Kinematic_2D_mouse_entered())
-
+				
 				#Loaded Comic Signal
-				#Comics_v5.emit_signal("loaded_comics")
+				Comics_v5.emit_signal("loaded_comics")
 				
 				# Debug Packed Scene
 				#print (err.can_instantiate())
 				
-				if err.can_instantiate(): # 
-					node = err.instantiate(0)
+				if err.can_instance(): # 
+					node = err.instance(0)
 					#Kinematic_2d.add_child(_x) 
 				
 					# Returns instantiated node
@@ -1415,12 +1424,6 @@ func connect_signals()-> bool: #connects all required signals in the parent node
 	#	return q3.connect("request_completed", self, "_http_request_completed_Scenes")
 
 	return false
-
-func _on_Kinematic_2D_mouse_entered():
-	print(111111)
-
-func _on_Kinematic_2D_mouse_exited():
-	print(2222)
 
 
 

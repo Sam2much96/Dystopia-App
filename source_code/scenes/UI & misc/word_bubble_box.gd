@@ -188,6 +188,10 @@ func _ready():
 	# Multi-Line
 	if enable_multiline:
 		# English Translation file 
+		
+		if Dialogs.language == "": # Default
+			show_dialog_2(Dialogs.Parser.parse_script(line_index,dialogue), Dialogs.Parser.parse_script(int(line_index + 1),dialogue))
+		
 		if Dialogs.language == "en_US":
 			show_dialog_2(Dialogs.Parser.parse_script(line_index,dialogue), Dialogs.Parser.parse_script(int(line_index + 1),dialogue))
 		

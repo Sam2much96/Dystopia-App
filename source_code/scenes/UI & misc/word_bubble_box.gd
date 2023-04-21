@@ -196,6 +196,7 @@ func _ready():
 		if Dialogs.language == "": # Default
 			
 			
+			
 			#print (Dialogs.Parser.parse_script_from(line_index, int(line_index + 1),dialogue))# for debug purposes
 			
 			# shows 3 lines of text
@@ -204,7 +205,7 @@ func _ready():
 			show_dialog_2(
 				Dialogs.Parser.parse_script_from(
 					line_index, 
-					int(line_index + 1),
+						int(line_index + 1),
 					dialogue
 					), 
 				Dialogs.Parser.parse_script(int(line_index + 2),dialogue)

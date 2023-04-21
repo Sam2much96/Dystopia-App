@@ -7,9 +7,10 @@
 # To Do:
 #(1) Write a documentation
 #(2) Connect it to ChatGPT addon for AI Generated Dialogues & Translation
+#(3) Converts Text to speech (pytts)
 # *************************************************
 # fEATURES:
-#(1) Converts Text to speech
+
 # (2) shows a dialogue function, hide_a dialogue function (1/2)
 # (3) Has two signals for when dialogue starts and when it ends.
 # (4) Translates between languages using a translation .csv file
@@ -188,10 +189,11 @@ class Parser extends Reference :
 				# Counts every line in the script text
 				index += 1 
 				
-				# line to return cannot be 0 as a result of this code implementation
+				# returns the current line index and the line after concatenated together
 				if index == line_to_start:
 					#return line_string += 
-					line_passage += line_string
+					line_passage += ( line_string + _f.get_line())
+					#print ("Parser Debug ",line_passage) # for debug purposes
 				if index == line_to_end:
 					return line_passage
 					break

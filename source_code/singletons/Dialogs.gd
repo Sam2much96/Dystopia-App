@@ -123,7 +123,7 @@ class Parser extends Reference :
 		var line_string : String
 		var index : int = 0 # used for numbering each line in the parsed script
 		if _f.file_exists(_script): 
-			print ('File Exists')
+			#print ('File Exists')
 			_f.open (_script, File.READ)
 			# Resets count to start from beginning
 			#index = 1 
@@ -157,47 +157,36 @@ class Parser extends Reference :
 
 	# Parses a script from one line to another line
 	# Simplifies Dialogs 2 Implementation
-	static func parse_script_from(line_to_start : int,line_to_end : int, _script : String ) -> String: #Places Dialogue in wordbubbles with Dialogue singleton-aid
-		#Parse gd script
+	static func parse_script_from(line_to_start: int, line_to_end: int, _script: String) -> String:
+
+		# Parse gd script
 		var _f = File.new()
-		var line_string : String
-		var line_passage : String 
-		var index : int = 0 # used for numbering each line in the parsed script
+		
+		var line_string: String
+		var line_passage: String = ""
+		var index: int = 0
+		
 		if _f.file_exists(_script): 
-			print ('File Exists')
-			_f.open (_script, File.READ)
-			# Resets count to start from beginning
-			#index = 1 
+			print('File Exists')
+			_f.open(_script, File.READ)
+			
 			while _f.get_position() < _f.get_len() && not _f.eof_reached():
-			#iterate through all lines until the end of file is reached
-			#var index controls which line is shown
-
-			# unoptimized
-
-				line_string = _f.get_line() #str (index )  + ' ' + t.get_line() # concatonates the index and lines together
-				line_string += " "
+				line_string = _f.get_line()
 				
 				
 				
-				#........... # for debug purposes only #...................#
-				#print (line_string) 
+				# Check if the current line is within the specified range
+				if index >= line_to_start and index <= line_to_end:
+					line_passage += line_string
 				
-				#........... # Debug ends #...................#
-				
-				"Shows Dialogue Based on Line index"
-				
-				# Counts every line in the script text
 				index += 1 
 				
-				# returns the current line index and the line after concatenated together
-				if index == line_to_start:
-					#return line_string += 
-					line_passage += ( line_string + _f.get_line())
-					#print ("Parser Debug ",line_passage) # for debug purposes
-				if index == line_to_end:
-					return line_passage
+				# Exit the loop if we have reached the end line
+				if index > line_to_end:
 					break
 				
 			_f.close() 
-			
+		
+		#print (line_passage)# for debug purposes
 		return line_passage
+

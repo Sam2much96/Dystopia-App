@@ -44,6 +44,9 @@ export var debug : bool
 # For Script Parser
 export var line_index : int
 
+# FOr multiline Parser
+export var line_to_end : int
+
 # Toggle word bubble visibility depending on Comics Page Data
 export var visible_on_page : int 
 
@@ -197,18 +200,17 @@ func _ready():
 			
 			
 			
-			#print (Dialogs.Parser.parse_script_from(line_index, int(line_index + 1),dialogue))# for debug purposes
+			# Shows a multiline dialogue
+			# 
 			
-			# shows 3 lines of text
-			# can be modified to parse longer passages
 			# TO DO: Implement Polymorphism
 			show_dialog_2(
 				Dialogs.Parser.parse_script_from(
 					line_index, 
-						int(line_index + 1),
+						line_to_end,
 					dialogue
 					), 
-				Dialogs.Parser.parse_script(int(line_index + 2),dialogue)
+				Dialogs.Parser.parse_script((line_to_end + 1),dialogue)
 				
 				)
 		
@@ -260,10 +262,10 @@ func _process(_delta):
 	
 	# Toggles word bubble visibility on/off using Page Data
 	# Disabling for Debugging
-	if Page == visible_on_page && !debug:
-		show()
-	elif Page != visible_on_page && !debug:
-		hide()
+	#if Page == visible_on_page && !debug:
+	#	show()
+	#elif Page != visible_on_page && !debug:
+	#	hide()
 	
 	
 	

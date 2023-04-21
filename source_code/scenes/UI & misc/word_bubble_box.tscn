@@ -629,13 +629,11 @@ tracks/4/keys = {
 [node name="word bubble" type="AnimatedSprite"]
 position = Vector2( 544, 268.5 )
 frames = SubResource( 8 )
-frame = 5
+frame = 6
 script = ExtResource( 3 )
 dialogue = "res://resources/dialogues/script_testing.gd"
-enable = true
 enable_multiline = true
-debug = true
-line_index = 21
+line_index = 16
 state = "Talk Right 2"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

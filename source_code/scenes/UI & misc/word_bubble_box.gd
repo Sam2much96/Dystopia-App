@@ -163,18 +163,13 @@ func _ready():
 	#ignore the warning
 	Dialogs.word_bubble_box = self
 	
-	#hide()
-	if debug: # Disabling for Code rebase
-		# Debug 0 : Various types of WordBubbles
-		#state = "Talk Left"
-		
-		# Debug 1 : Show dialog + Script Parser
-		#show_dialog(Dialogs.Parser.parse_script(6,Dialogs._script_testing))
 
-		# Debug 2 : Show Double Dialog + Script Parser
-		#show_dialog_2(Dialogs.Parser.parse_script(6,Dialogs._script_testing), Dialogs.Parser.parse_script(7,Dialogs._script_testing))
-		
-		pass
+
+	"""
+	Multi Line & Single Line Configurations
+	"""
+	# Note: Multiline return the text after line index, Singleline returns the text on line index
+
 
 	# Single Line
 	if enable:
@@ -253,9 +248,14 @@ func _input(event):
 func _process(_delta):
 	
 	
+	# Error Catchers
+	
+	if enable && enable_multiline:
+		push_error(
+			"Cannot use single line and double line functionaliy at the same time, disable one"
+			)
+	
 
-	
-	
 	
 	# Synchronizes  Page Data with Comics 
 	Page = Comics_v5.current_page

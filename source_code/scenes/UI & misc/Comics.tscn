@@ -104,14 +104,14 @@ self_modulate = Color( 0, 0, 0, 1 )
 position = Vector2( 339.103, 615.738 )
 rotation = -3.11961
 normal = ExtResource( 2 )
-action = "ui_focus_prev"
+action = "prev_panel"
 
 [node name="Forward" type="TouchScreenButton" parent="Buttons"]
 modulate = Color( 1, 1, 1, 0.647059 )
 self_modulate = Color( 0, 0, 0, 1 )
 position = Vector2( 680.175, 299.03 )
 normal = ExtResource( 2 )
-action = "ui_focus_next"
+action = "next_panel"
 
 [node name="Zoom" type="TouchScreenButton" parent="Buttons"]
 visible = false

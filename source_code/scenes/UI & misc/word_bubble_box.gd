@@ -262,10 +262,10 @@ func _process(_delta):
 	
 	# Toggles word bubble visibility on/off using Page Data
 	# Disabling for Debugging
-	#if Page == visible_on_page && !debug:
-	#	show()
-	#elif Page != visible_on_page && !debug:
-	#	hide()
+	if Page == visible_on_page && !debug:
+		show()
+	elif Page != visible_on_page && !debug:
+		hide()
 	
 	
 	

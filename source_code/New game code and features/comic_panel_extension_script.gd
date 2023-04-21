@@ -24,6 +24,6 @@ func _process(_delta):
 	CurrentPage = get_frame()
 	
 	# Makes Current Page a Global integer
-	Comics_v5.current_page = CurrentPage#Chapter_Data["Current Page"]
+	Comics_v6.current_page = CurrentPage
 	
 	

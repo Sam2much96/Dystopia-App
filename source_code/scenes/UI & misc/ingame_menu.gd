@@ -157,12 +157,12 @@ func _input(event): #Toggles menu visibility on/off
 	# Implemented but Requires Proper Swipe Gesture Callibration
 	# 
 
-	if Comics_v5._state == Comics_v5.SWIPE_RIGHT:
+	if Comics_v6._state == Comics_v6.SWIPE_RIGHT:
 		
 		
 		# Scroll Down
 		scroll(false, true,scroller)
-	elif Comics_v5._state == Comics_v5.SWIPE_DOWN:
+	elif Comics_v6._state == Comics_v6.SWIPE_DOWN:
 		
 		# Scroll Up
 		scroll(true, true,scroller)

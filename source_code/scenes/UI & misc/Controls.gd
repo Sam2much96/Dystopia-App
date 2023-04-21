@@ -51,12 +51,12 @@ func _input(event):
 	# Implemented but Requires Proper Swipe Gesture Callibration
 	# 
 
-	if Comics_v5._state == Comics_v5.SWIPE_RIGHT:
+	if Comics_v6._state == Comics_v6.SWIPE_RIGHT:
 		
 		
 		# Scroll Down
 		Game_Menu.scroll(false, true,scroller)
-	elif Comics_v5._state == Comics_v5.SWIPE_DOWN:
+	elif Comics_v6._state == Comics_v6.SWIPE_DOWN:
 		
 		# Scroll Up
 		Game_Menu.scroll(true, true,scroller)

@@ -69,6 +69,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Exit.gd"
 }, {
+"base": "CanvasLayer",
+"class": "GameHUD",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/UI.gd"
+}, {
 "base": "Control",
 "class": "Game_Menu",
 "language": "GDScript",
@@ -187,6 +192,7 @@ _global_script_class_icons={
 "DialogBox": "",
 "Enemy": "",
 "Exit": "",
+"GameHUD": "",
 "Game_Menu": "",
 "GistItem": "",
 "Idol": "",
@@ -236,7 +242,7 @@ Inventory="*res://singletons/Inventory.gd"
 Globals="*res://singletons/Globals.gd"
 Music="*res://singletons/Music.tscn"
 Networking="*res://singletons/Networking.tscn"
-Comics_v5="*res://singletons/Comics.v5.1.gd"
+Comics_v6="*res://singletons/Comics.v6.gd"
 AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
 GlobalAnimation="*res://singletons/GlobalAnimationPlayer.tscn"
 Wallet="*res://scenes/Wallet/Wallet.gd"

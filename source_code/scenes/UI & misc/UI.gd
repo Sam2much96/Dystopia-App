@@ -24,9 +24,12 @@
 
 extends CanvasLayer
 
+class_name GameHUD
+
+
 onready var menu = $"Menu "
 onready var TouchInterface= $TouchInterface
-onready var _Comics = $Comics
+onready var _Comics = Comics_v6 #$Comics
 onready var _Stats = $Stats
 
 

@@ -830,10 +830,10 @@ func _process(_delta):
 						
 						
 						
-						Comics_v5.load_local_image_texture_from_global(self.pfp, local_image_file, true, 7)
+						Comics_v6.load_local_image_texture_from_global(self.pfp, local_image_file, true, 7)
 						
 						# Disabling Collectibes UI thumbnails
-						return Comics_v5.load_local_image_texture_from_global(self.NFT, local_image_file, true,1)
+						return Comics_v6.load_local_image_texture_from_global(self.NFT, local_image_file, true,1)
 						
 					"NFT PFP"
 					#if is_image_available_at_local_storage:
@@ -1273,7 +1273,7 @@ func _input(event):
 			
 			#Comics_v5.enabled = true
 			#_position, enabled: bool, _e : Timer ,swipe_target_memory_x : Array, swipe_target_memory_y : Array 
-			Comics_v5.Swipe._start_detection(event.position, true, Comics_v5._e ,Comics_v5.swipe_target_memory_x, Comics_v5.swipe_target_memory_y )
+			Comics_v6.Swipe._start_detection(event.position, true, Comics_v6._e ,Comics_v6.swipe_target_memory_x, Comics_v6.swipe_target_memory_y )
 			
 			
 			# End Detection once Networking check has timedout
@@ -1282,7 +1282,7 @@ func _input(event):
 			# Swipe Detection SHould SHow A new Aset UI with NFT PFP
 			#__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array, swipe_start_position : Vector2, swipe_parameters: float, x1,x2,y1,y2,MAX_DIAGONAL_SLOPE
 			#__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array, swipe_start_position : Vector2, swipe_parameters: float, x1,x2,y1,y2,MAX_DIAGONAL_SLOPE
-			Comics_v5.Swipe._end_detection(event.position, Comics_v5.direction, Comics_v5.direction_var , Comics_v5._state, Comics_v5._e ,Comics_v5.swipe_target_memory_x, Comics_v5.swipe_target_memory_y,Comics_v5.swipe_start_position, Comics_v5.swipe_parameters, Comics_v5.x1, Comics_v5.x2, Comics_v5.y1, Comics_v5.y2, Comics_v5.MAX_DIAGONAL_SLOPE)
+			Comics_v6.Swipe._end_detection(event.position, Comics_v6.direction, Comics_v6.direction_var , Comics_v6._state, Comics_v6._e ,Comics_v6.swipe_target_memory_x, Comics_v6.swipe_target_memory_y,Comics_v6.swipe_start_position, Comics_v6.swipe_parameters, Comics_v6.x1, Comics_v6.x2, Comics_v6.y1, Comics_v6.y2, Comics_v6.MAX_DIAGONAL_SLOPE)
 			
 			
 			"NFT drag and drop"
@@ -1290,12 +1290,12 @@ func _input(event):
 			if self.NFT.visible:
 				#print ("NFT visible: ",self.NFT.visible)
 				
-				Comics_v5.can_drag = self.NFT.visible
+				Comics_v6.can_drag = self.NFT.visible
 				
 				# Activates Zoom
-				Comics_v5.loaded_comics = self.NFT.visible
-				Comics_v5.comics_placeholder = self.NFT
-				Comics_v5.drag(event.position, event.position, kinematic2d)
+				Comics_v6.loaded_comics = self.NFT.visible
+				Comics_v6.comics_placeholder = self.NFT
+				Comics_v6.drag(event.position, event.position, kinematic2d)
 		
 		
 		

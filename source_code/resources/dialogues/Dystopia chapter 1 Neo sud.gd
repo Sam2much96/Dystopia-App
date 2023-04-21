@@ -31,7 +31,7 @@
 					Uncle, tell me a story, i'm bored.
 
 							  OSAS
-					Huh? will you pay me? You're not
+					Huh? will you pay me? You're not 
 					even happy that you're enjoying a
 					free ride on my backside huh?
 

@@ -58,7 +58,8 @@ script = ExtResource( 2 )
 [node name="YSort" type="YSort" parent="."]
 
 [node name="word bubble" parent="YSort" instance=ExtResource( 3 )]
-position = Vector2( 188.741, 1093.79 )
+visible = false
+position = Vector2( 112.994, 177.939 )
 scale = Vector2( 4.09136, 4.09136 )
 frame = 3
 dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
@@ -66,9 +67,19 @@ line_index = 31
 state = "Talk Left"
 
 [node name="word bubble2" parent="YSort" instance=ExtResource( 3 )]
-position = Vector2( 1145.21, 1137.52 )
+position = Vector2( 1234.73, 483.336 )
 scale = Vector2( 4.09136, 4.09136 )
 dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
 debug = false
 line_index = 34
 state = "Talk Right 2"
+
+[node name="word bubble3" parent="YSort" instance=ExtResource( 3 )]
+visible = false
+position = Vector2( 1131.44, 1282.13 )
+scale = Vector2( 4.09136, 4.09136 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+debug = false
+line_index = 38
+state = "Narration"

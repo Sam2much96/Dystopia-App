@@ -100,6 +100,7 @@ func show_dialog(new_text : String) -> void:
 
 
 func show_dialog_2(text1 : String, text2 : String) -> void:
+	
 	# Shows double word bubble text
 	# uses 2 labels synced to anim player
 	
@@ -107,6 +108,9 @@ func show_dialog_2(text1 : String, text2 : String) -> void:
 	word_bubble_label.text = text1
 	word_bubble_label_2.text = text2
 	
+	
+	
+
 
 
 var lines_to_skip = 0
@@ -172,7 +176,7 @@ func _ready():
 	# Single Line
 	if enable:
 		
-		# Defauly translation
+		# Default translation
 		if Dialogs.language == "":
 			
 			show_dialog(Dialogs.Parser.parse_script(line_index,dialogue))
@@ -190,14 +194,36 @@ func _ready():
 		# English Translation file 
 		
 		if Dialogs.language == "": # Default
-			show_dialog_2(Dialogs.Parser.parse_script(line_index,dialogue), Dialogs.Parser.parse_script(int(line_index + 1),dialogue))
+			
+			
+			#print (Dialogs.Parser.parse_script_from(line_index, int(line_index + 1),dialogue))# for debug purposes
+			
+			# shows 3 lines of text
+			# can be modified to parse longer passages
+			# TO DO: Implement Polymorphism
+			show_dialog_2(
+				Dialogs.Parser.parse_script_from(
+					line_index, 
+					int(line_index + 1),
+					dialogue
+					), 
+				Dialogs.Parser.parse_script(int(line_index + 2),dialogue)
+				
+				)
 		
 		if Dialogs.language == "en_US":
-			show_dialog_2(Dialogs.Parser.parse_script(line_index,dialogue), Dialogs.Parser.parse_script(int(line_index + 1),dialogue))
+			show_dialog_2(
+				Dialogs.Parser.parse_script(line_index,dialogue), 
+				Dialogs.Parser.parse_script(int(line_index + 1),dialogue)
+				)
 		
 		# Telugi Translation file
+		# Depreciated in Production Release
 		if Dialogs.language == "te_IN":
-			show_dialog_2(Dialogs.Parser.parse_script(line_index,dialogue_tr), Dialogs.Parser.parse_script(int(line_index + 1),dialogue_tr))
+			show_dialog_2(
+				Dialogs.Parser.parse_script(line_index,dialogue_tr), 
+				Dialogs.Parser.parse_script(int(line_index + 1),dialogue_tr)
+				)
 
 
 
@@ -254,6 +280,9 @@ func _process(_delta):
 	# (1) Find a more elegant way to change frames.
 	match  _state:
 		STATE_NARRATION:
+			
+			# Narration Box should resize to fit Label boundaries
+			
 			set_frame(0)
 			anims.play("Narration")
 			pass

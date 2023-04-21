@@ -114,14 +114,14 @@ class Parser extends Reference :
 	const test_index : int = 8 
 
 
-	# Parses a JSON script and returns a line
+	# Parses a Script file and returns a line
 
 	static func parse_script(line_to_return : int, _script : String ) -> String: #Places Dialogue in wordbubbles with Dialogue singleton-aid
 		#Parse gd script
 		var _f = File.new()
 		var line_string : String
 		var index : int = 0 # used for numbering each line in the parsed script
-		if _f.file_exists(_script): #('res://resources/dialogues/script_testing.gd'):
+		if _f.file_exists(_script): 
 			print ('File Exists')
 			_f.open (_script, File.READ)
 			# Resets count to start from beginning
@@ -152,3 +152,50 @@ class Parser extends Reference :
 			_f.close() 
 			
 		return line_string
+
+
+	# Parses a script from one line to another line
+	# Simplifies Dialogs 2 Implementation
+	static func parse_script_from(line_to_start : int,line_to_end : int, _script : String ) -> String: #Places Dialogue in wordbubbles with Dialogue singleton-aid
+		#Parse gd script
+		var _f = File.new()
+		var line_string : String
+		var line_passage : String 
+		var index : int = 0 # used for numbering each line in the parsed script
+		if _f.file_exists(_script): 
+			print ('File Exists')
+			_f.open (_script, File.READ)
+			# Resets count to start from beginning
+			#index = 1 
+			while _f.get_position() < _f.get_len() && not _f.eof_reached():
+			#iterate through all lines until the end of file is reached
+			#var index controls which line is shown
+
+			# unoptimized
+
+				line_string = _f.get_line() #str (index )  + ' ' + t.get_line() # concatonates the index and lines together
+				line_string += " "
+				
+				
+				
+				#........... # for debug purposes only #...................#
+				#print (line_string) 
+				
+				#........... # Debug ends #...................#
+				
+				"Shows Dialogue Based on Line index"
+				
+				# Counts every line in the script text
+				index += 1 
+				
+				# line to return cannot be 0 as a result of this code implementation
+				if index == line_to_start:
+					#return line_string += 
+					line_passage += line_string
+				if index == line_to_end:
+					return line_passage
+					break
+				
+			_f.close() 
+			
+		return line_passage

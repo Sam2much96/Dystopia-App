@@ -51,11 +51,13 @@ animations = [ {
 position = Vector2( 363.566, 57.1407 )
 scale = Vector2( 0.258752, 0.258752 )
 frames = SubResource( 8 )
+frame = 1
 centered = false
 offset = Vector2( -428.761, -611.626 )
 script = ExtResource( 2 )
 
 [node name="Pg 1 Wordbubbles" type="YSort" parent="."]
+visible = false
 
 [node name="word bubble" parent="Pg 1 Wordbubbles" instance=ExtResource( 3 )]
 position = Vector2( 112.994, 177.939 )
@@ -75,21 +77,52 @@ line_index = 33
 line_to_end = 35
 
 [node name="word bubble3" parent="Pg 1 Wordbubbles" instance=ExtResource( 3 )]
-position = Vector2( 1131.44, 1282.13 )
+position = Vector2( 1119.17, 1466.18 )
 scale = Vector2( 4.09136, 4.09136 )
 frame = 0
 dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
-line_index = 38
+line_index = 37
 line_to_end = 39
 state = "Narration"
 
 [node name="Pg 2 Wordbubbles" type="YSort" parent="."]
-visible = false
 
 [node name="word bubble4" parent="Pg 2 Wordbubbles" instance=ExtResource( 3 )]
-position = Vector2( 1131.44, 1282.13 )
+position = Vector2( -82.0347, -180.021 )
 scale = Vector2( 4.09136, 4.09136 )
 frame = 0
 dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
-line_index = 38
+line_index = 46
+line_to_end = 50
+visible_on_page = 1
+state = "Narration"
+
+[node name="word bubble5" parent="Pg 2 Wordbubbles" instance=ExtResource( 3 )]
+position = Vector2( 1255.21, 130.923 )
+scale = Vector2( 4.09136, 4.09136 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 50
+line_to_end = 52
+visible_on_page = 1
+state = "Narration"
+
+[node name="word bubble6" parent="Pg 2 Wordbubbles" instance=ExtResource( 3 )]
+position = Vector2( 68.8049, 1132.33 )
+scale = Vector2( 4.09136, 4.09136 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 53
+line_to_end = 58
+visible_on_page = 1
+state = "Narration"
+
+[node name="word bubble7" parent="Pg 2 Wordbubbles" instance=ExtResource( 3 )]
+position = Vector2( 1188.16, 1468.66 )
+scale = Vector2( 4.09136, 4.09136 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 57
+line_to_end = 59
+visible_on_page = 1
 state = "Narration"

@@ -177,7 +177,7 @@ class Parser extends Reference :
 				
 				# Check if the current line is within the specified range
 				if index >= line_to_start and index <= line_to_end:
-					line_passage += line_string
+					line_passage += str(line_string + " ")
 				
 				index += 1 
 				

@@ -122,7 +122,7 @@ var Kinematic_2d :  KinematicBody2D = KinematicBody2D.new()  #the kinematic 2d n
 var _position : Vector2 
 var center : Vector2
 var target =Vector2(0,0) 
-var origin : Vector2 = get_viewport_rect().size/2#set origin point to the center of the viewport
+onready var origin : Vector2 = get_viewport_rect().size/2#set origin point to the center of the viewport
 
 # Can Use a Tween Node to implement Drag and Drop
 var comics_sprite : AnimatedSprite
@@ -329,18 +329,15 @@ func _input(event):
 		# should save event positions to an array and 
 		# run calculations using the first and last array positions
 		# Swipe position detector implemented it as state controller changer
-		#_position, enabled: bool, _e : Timer ,swipe_target_memory_x : Array, swipe_target_memory_y : Array
+		#
 		Swipe._start_detection(event.position, true,_e, swipe_target_memory_x, swipe_target_memory_y)
 		
-		#__position : Vector2, swipe_start_position : Vector2, direction_var, _state
-		#dfhdfhd
-		#__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array
 		
 		"Detect Swipe State"
 		_state = Swipe._end_detection(event.position, Vector2(0,0), direction_var,_state, _e, swipe_target_memory_x, swipe_target_memory_y, Swipe.swipe_start_position, swipe_parameters,  x1,x2,y1,y2, Swipe.MAX_DIAGONAL_SLOPE)#, event.position, direction_var, _state)
 	
 	
-		print("_state Debug: ",_state) #for debug purposes only
+		#print("_state Debug: ",_state) #for debug purposes only
 	
 	if event is InputEventScreenTouch :
 		target =  event.get_position()
@@ -354,20 +351,7 @@ func _input(event):
 			
 			zoom = !zoom
 			return zoom
-		#if event.is_double_tap(): # works
-		#	print ("zoom 2")
-		#	Functions._zoom_2(comics_sprite, true)
-		#	return zoom
-		
-		"Handles Swipe Detection" 
-		#Requires Debugging
-		# Disabling for debugging
-		
-		
-		
-		
-		#print ("Debugging Swipe Detection Handler")#For Debug purposes only 
-		#_handle_swipe_detection(event)
+
 
 	"Handles Screen Dragging"
 	if event is InputEventScreenDrag  && comics_sprite != null : 
@@ -377,18 +361,10 @@ func _input(event):
 		Functions.drag_v2(comics_sprite,event.get_position())
 		
 
-		#Functions.drag(target, Kinematic_2d.velocity, Kinematic_2d, center, target_memory_x, target_memory_y)
-		
 
-# Handles releasing 
-	#pass
-# Handles double clicking
-	#pass
 
-#	if event is InputEventMouseButton && event.doubleclick && _loaded_comics == true:
-		
-#		return _zoom() #disabled for debugging, enable when done debugging
-		
+	if event is InputEventMouseButton && event.doubleclick :
+		Functions._zoom(comics_placeholder, zoom)
 
 
 func _process(_delta):
@@ -549,44 +525,19 @@ func _process(_delta):
 			#return Functions.load_comics(current_chapter)
 			
 			pass
-		SET_FRAME:
-			#current frame controler
-			
-			# Buggy when used with swipe functions in it's current state
-			
-			#why so many if's?
-			if enabled != false && Kinematic_2d != null:
-				
-				if cmx_root != null:
-					#for _i in Kinematic_2d.get_children():
-					for _i in cmx_root.get_children():
-						if _i is AnimatedSprite:
-							
-							# creaate a pointer to comic node
-							comics_sprite = _i
-							_i.set_frame(int(current_frame))  
-							#working
-							#_i.update() #canvas layer not updating changes
-							if  current_frame > _i.get_frame() : 
-								comics_sprite.queue_free() 
-								#comics_placeholder = null
-								enabled = false 
-								_loaded_comics = false #working buggy
-								current_frame = -2 # working buggy
-								emit_signal("freed_comics")
-			pass
 
 
 
+func close_comic()-> void:
+	comics_sprite.queue_free() 
+	#comics_placeholder = null
+	enabled = false 
+	_loaded_comics = false #working buggy
+	current_frame = -2 # working buggy
+	emit_signal("freed_comics")
 
 'sets comic page to center of screen'
-#func center_page(): # Can't set kinematic position directly in Godot 4.0
-#	if _loaded_comics == true: # disabling
-#		if zoom == false: 
-#			if Kinematic_2d.position or origin != null:
-#				Kinematic_2d.position = origin
-#			else:
-#				pass
+
 
 func next_panel(comics_sprite : AnimatedSprite) -> int:
 	
@@ -606,7 +557,8 @@ func next_panel(comics_sprite : AnimatedSprite) -> int:
 		#current_frame = next_frame
 		SwipeLocked = true
 		
-		
+		# Centers Comic page
+		#comics_sprite.set_position(Comics_v6.origin)
 			#center_page()
 		#	return int(current_frame) 
 	" Play SFX "
@@ -636,6 +588,8 @@ func prev_panel(comics_sprite : AnimatedSprite)-> int:
 		SwipeLocked = true
 		
 		
+		# Centers Comic page
+		comics_sprite.position = Comics_v6.origin
 			#center_page()
 		#	return int(current_frame) 
 	" Play SFX "
@@ -1172,6 +1126,8 @@ class Functions extends Reference:
 		
 				#Kinematic Body 2D
 				Kinematic_2d.add_child(collision_shape) #set the collision shape
+				
+				
 				
 				"connect signals"
 				

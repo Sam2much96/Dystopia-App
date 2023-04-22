@@ -148,6 +148,6 @@ __meta__ = {
 }
 
 [node name="Position2D" type="Position2D" parent="."]
-position = Vector2( 665.956, 42.8111 )
+position = Vector2( 504.139, 327.489 )
 
 [connection signal="pressed" from="Buttons/Zoom" to="." method="_on_Zoom_pressed"]

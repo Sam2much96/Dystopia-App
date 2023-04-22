@@ -81,25 +81,9 @@ func _on_Back_button_pressed():
 		#$"/root/Dialogs".show_dialog('Finish Comics First ', 'Admin')
 		
 		#$"/root/Dialogs".dialog_box.hide()
-		pass
+		return Comics_v6.close_comic()
+		
 
-# Depreciated
-#func _exit_tree()-> void: #resets everything to default
-#	if Globals.screenSize != Vector2(0,0):
-#		OS.set_window_size(Globals.screenSize) #uses a default screensize
-#	#OS.set_screen_orientation (0)
-#	pass
-
-
-
-
-
-#Button controls chap_6
-# Depreciated
-#func display_locked_text(): #Dis the dialogue noxplays a generic text through
-#	Dialogs.show_dialog('Extra Chapters locked ', 'Admin')
-#	yield(get_tree().create_timer(1), "timeout")
-#	Dialogs.hide_dialogue()
 
 
 

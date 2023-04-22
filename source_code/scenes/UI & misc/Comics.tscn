@@ -100,6 +100,7 @@ mouse_filter = 2
 color = Color( 1, 1, 1, 0.498039 )
 
 [node name="Buttons" type="Node2D" parent="."]
+visible = false
 modulate = Color( 1, 1, 1, 0.741176 )
 light_mask = 3
 z_index = 1

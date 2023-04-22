@@ -12,6 +12,8 @@ export var word_buble_count : int
 const TotalPageCount : int = 7
 var CurrentPage : int
 
+const PageData : Array = [0,1,2,3,4,5,6] # total page count
+
 export var Chapter_Data : Dictionary = {
 	"Word Bubbles": word_buble_count,
 	"All Pages" : TotalPageCount,
@@ -25,5 +27,4 @@ func _process(_delta):
 	
 	# Makes Current Page a Global integer
 	Comics_v6.current_page = CurrentPage
-	
-	
+	Comics_v6.comics_sprite = self

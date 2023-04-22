@@ -474,6 +474,7 @@ static func save_file_(body: PoolByteArray, Save_path: String, file_size: int) -
 func _on_Timer2_timeout():
 	print ('check timer stopped')
 	Timeout = true
+	Comics_v6.SwipeLocked = false#!Comics_v6.SwipeLocked
 	stop_check()
 
-	pass
+	#pass

@@ -225,14 +225,20 @@ func _input(event):
 	#Comic panel changer
 	"""
 	
+	
+	#print (event.is_action_pressed("next_panel") )
+	#print (SwipeLocked)
 	if event.is_action_pressed("reset"): # for reseting Comics FIlecheckers
 		_ready()
 	
-	if event.is_action_pressed("next_panel") && comics_sprite != null : # && enabled : #button controls
+	if event.is_action_pressed("next_panel") : # && enabled : #button controls
 		
-		next_panel(comics_sprite)
-	if event.is_action_pressed("prev_panel") && comics_sprite != null:
-		prev_panel(comics_sprite)
+		
+		current_frame = next_panel(comics_sprite)
+		
+		
+	if event.is_action_pressed("prev_panel") :
+		current_frame  = prev_panel(comics_sprite)
 
 
 #Toggles comics visibility on/off
@@ -582,48 +588,68 @@ func _process(_delta):
 #			else:
 #				pass
 
-func next_panel(comics_sprite : AnimatedSprite)-> int:
-	#if _loaded_comics == true :
+func next_panel(comics_sprite : AnimatedSprite) -> int:
+	
+# Works
+	if !SwipeLocked && Input.is_action_pressed("next_panel") : #&& !Timemout:
+	#if comics_sprite != null && !Timemout:
 		
-		#Adds up number too rapidly
-		# Solutions
-		# (1) Change the Current Frame Data Structure to Array, for comparisons
-		# (2) Implement It as a Method in The animation Player
-			# Fixed
-		#current_frame = current_frame + 1
-	
-	
-	#var initial : int = comics_sprite.get_frame()
-	
-	current_frame =abs(current_frame + 1 )
+		Networking.start_check(1)
+		
+		current_frame = abs(current_frame + 1 )
+		#var next_frame : int =  (current_frame + 1) 
 
-	comics_sprite.set_frame(current_frame)
-	
-	emit_signal("panel_change") 
-		#center_page()
-	#	return int(current_frame) 
+		emit_signal("panel_change")
+		comics_sprite.set_frame(current_frame)
+		
+		#print (current_frame)
+		#current_frame = next_frame
+		SwipeLocked = true
+		
+		
+			#center_page()
+		#	return int(current_frame) 
 	" Play SFX "
 	if Music.music_on == true:
 		Music.play_sfx(Music.comic_sfx)
+		
 
 	return current_frame
 
-func prev_panel(comics_sprite : AnimatedSprite):
-	#if _loaded_comics == true :
-	current_frame =abs(current_frame - 1 )
-	emit_signal("panel_change")  
-	
-	comics_sprite.set_frame(current_frame)
-	return int(current_frame) 
-	if Music.music_on == true: 
+
+
+func prev_panel(comics_sprite : AnimatedSprite)-> int:
+# Works
+	if !SwipeLocked && Input.is_action_pressed("prev_panel") : #&& !Timemout:
+	#if comics_sprite != null && !Timemout:
+		
+		Networking.start_check(1)
+		
+		current_frame = abs(current_frame - 1 )
+		#var next_frame : int =  (current_frame + 1) 
+
+		emit_signal("panel_change")
+		comics_sprite.set_frame(current_frame)
+		
+		#print (current_frame)
+		#current_frame = next_frame
+		SwipeLocked = true
+		
+		
+			#center_page()
+		#	return int(current_frame) 
+	" Play SFX "
+	if Music.music_on == true:
 		Music.play_sfx(Music.comic_sfx)
+		
+	return current_frame
 
-func _on_Backwards_pressed(): #Connect these signals automatically? #Produce the buttons programmatically
-	prev_panel(comics_sprite)
+#func _on_Backwards_pressed(): #Connect these signals automatically? #Produce the buttons programmatically
+#	prev_panel(comics_sprite)
 
 
-func _on_Forward_pressed():
-	next_panel(comics_sprite)
+#func _on_Forward_pressed():
+#	next_panel(comics_sprite)
 
 
 
@@ -910,9 +936,18 @@ class Swipe :
 			var a = InputEventAction.new()
 			a.action = "next_panel"
 			a.pressed = true
+			a.strength = 1
+			
 			Input.parse_input_event(a)
 
-			
+			#Try signal
+
+
+			#Comics_v6.next_panel(Comics_v6.comics_sprite, Networking.Timeout)
+
+			# Turn off pree
+			#a.pressed = false
+			#Input.parse_input_event(a)
 			#not working
 			#_state = SWIPE_RIGHT
 			
@@ -1479,17 +1514,21 @@ func connect_signals()-> bool: #connects all required signals in the parent node
 	# TO DO: 
 	# (1) Implement Server Storage
 	
-	#checks internet connectivity
-	#if not q.is_connected("request_completed", self, "_http_request_completed_Internet"):
-	#	return q.connect("request_completed", self, "_http_request_completed_Internet")
+	if web3:
+		#checks internet connectivity
+		if not Online.q.is_connected("request_completed", self, "_http_request_completed_Internet"):
+			return Online.q.connect("request_completed", self, "_http_request_completed_Internet")
 
-	#checks Image downloader
-	#if not q2.is_connected("request_completed", self, "_http_request_completed_Images"):
-	#	return q2.connect("request_completed", self, "_http_request_completed_Images")
+		#checks Image downloader
+		if not Online.q2.is_connected("request_completed", self, "_http_request_completed_Images"):
+			return Online.q2.connect("request_completed", self, "_http_request_completed_Images")
 
-	#checks Scene downloader
-	#if not q3.is_connected("request_completed", self, "_http_request_completed_Scenes"):
-	#	return q3.connect("request_completed", self, "_http_request_completed_Scenes")
+		#checks Scene downloader
+		if not Online.q3.is_connected("request_completed", self, "_http_request_completed_Scenes"):
+			return Online.q3.connect("request_completed", self, "_http_request_completed_Scenes")
+
+
+	# connect Timer Signals for Swipe Locker
 
 	return false
 

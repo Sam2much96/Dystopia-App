@@ -542,7 +542,7 @@ func close_comic()-> void:
 func next_panel(comics_sprite : AnimatedSprite) -> int:
 	
 # Works
-	if !SwipeLocked && Input.is_action_pressed("next_panel") : #&& !Timemout:
+	if !SwipeLocked && Input.is_action_pressed("next_panel") && comics_sprite != null: #&& !Timemout:
 	#if comics_sprite != null && !Timemout:
 		
 		Networking.start_check(1)
@@ -572,7 +572,7 @@ func next_panel(comics_sprite : AnimatedSprite) -> int:
 
 func prev_panel(comics_sprite : AnimatedSprite)-> int:
 # Works
-	if !SwipeLocked && Input.is_action_pressed("prev_panel") : #&& !Timemout:
+	if !SwipeLocked && Input.is_action_pressed("prev_panel") && comics_sprite != null: #&& !Timemout:
 	#if comics_sprite != null && !Timemout:
 		
 		Networking.start_check(1)

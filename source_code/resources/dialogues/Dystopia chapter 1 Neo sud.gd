@@ -57,8 +57,8 @@
 					over all men. One day, led by their
 					king, they separated their realm
 					from ours. Theirs became the divine
-					realm and ours became the mortal
-					realm. Each world was then
+					realm and ours became the mortal realm. 
+					Each world was then
 					separated by a great divide called
 					the void. One day, Esu the
 					Trickster God of the Pathways found

@@ -218,7 +218,7 @@ func _ready():
 
 "INPUT "
 #multiplatform inputs
-#
+# Input class has Multiple Bugs
 
 func _input(event): 
 	"""
@@ -281,15 +281,8 @@ func _input(event):
 		
 
 	if event is InputEventMouseButton:
-#		
-#		if event.is_double_click():
-#			print ("zoom og")
-#			return Functions._zoom(cmx_root, true)
-			#return zoom
-		
 		pass
 	if event is InputEventMouseMotion:
-		#return
 		pass
 
 
@@ -316,6 +309,21 @@ func _input(event):
 	CONTROLS THE TOUCH INPPUT FOR THE COMICS NODE
 	"""
 	
+	
+	
+	
+	"Handles Screen Dragging"
+	# Can only drag is Swipe Locked
+	# SwipeLocked is buggy
+	# Switched between True and False
+	if event is InputEventScreenDrag : 
+		if comics_sprite != null : 
+		#print (current_comics) # for debug purposes only
+			#can_drag = true
+			Functions.drag_v2(comics_sprite,event.get_position())
+			#Functions.drag(event.position, event.position, Kinematic_2d,center, target_memory_x, target_memory_y)
+
+
 	"Swipe Direction Debug"
 	# Should Ideally be in COmics script. Requires rewrite for better structure
 	# The current implementation is a fast hack
@@ -330,16 +338,37 @@ func _input(event):
 		# run calculations using the first and last array positions
 		# Swipe position detector implemented it as state controller changer
 		#
-		Swipe._start_detection(event.position, true,_e, swipe_target_memory_x, swipe_target_memory_y)
+		Swipe._start_detection(
+			event.position,
+			true,
+			_e, 
+			swipe_target_memory_x, 
+			swipe_target_memory_y
+			)
 		
 		
 		"Detect Swipe State"
-		_state = Swipe._end_detection(event.position, Vector2(0,0), direction_var,_state, _e, swipe_target_memory_x, swipe_target_memory_y, Swipe.swipe_start_position, swipe_parameters,  x1,x2,y1,y2, Swipe.MAX_DIAGONAL_SLOPE)#, event.position, direction_var, _state)
+		_state = Swipe._end_detection(
+			event.position, 
+			Vector2(0,0), 
+			direction_var,
+			_state, 
+			_e, 
+			swipe_target_memory_x, 
+			swipe_target_memory_y, 
+			Swipe.swipe_start_position, 
+			swipe_parameters,  
+			x1,x2,y1,y2, 
+			Swipe.MAX_DIAGONAL_SLOPE
+			)
 	
+	
+
 	
 		#print("_state Debug: ",_state) #for debug purposes only
-	
+	" Zoom 2"
 	if event is InputEventScreenTouch :
+		
 		target =  event.get_position()
 		#if event is  InputEventMultiScreenDrag == true : # Works
 			#target =  event.get_position()
@@ -353,21 +382,23 @@ func _input(event):
 			return zoom
 
 
-	"Handles Screen Dragging"
-	if event is InputEventScreenDrag  && comics_sprite != null : 
-
-		#print (current_comics) # for debug purposes only
-		
-		Functions.drag_v2(comics_sprite,event.get_position())
-		
-
-
 
 	if event is InputEventMouseButton && event.doubleclick :
 		Functions._zoom(comics_placeholder, zoom)
 
 
+
+	# Reset Swipe Details
+	#SwipeLocked = false
+	#can_drag = true
+
 func _process(_delta):
+	
+	print (str(SwipeLocked) + str(can_drag) + str(Networking.Timeout)) # SwipeLockked is Buggy
+	
+	#" Auto Swipe Locks whenever Networking Timer is used"
+			# Lock Swipe for 4 secofs
+
 	"Limits memory usage for Drag and Drop bug fixer"
 	#optimize code
 	if target_memory_x.size() > 30:
@@ -426,9 +457,6 @@ func _process(_delta):
 				'Curr frme:', current_frame , 'Cmx: ',current_comics, 'Enbled',enabled,'can drag: ',#can_drag,
 				' Zoom: ',zoom 
 				)
-#enum {START_SWIPE, END_SWIPE, DOWNLOAD_IMAGE, NEXT_PANEL, PREV_PANEL, DRAG, LOAD_COMICS, IDLE } 
-#SWIPE_UP,SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT, NOT_SWIPING, ERROR
-# Doesnt work
 
 	"Unused State Machine implementation"
 	match _state:
@@ -542,7 +570,7 @@ func close_comic()-> void:
 func next_panel(comics_sprite : AnimatedSprite) -> int:
 	
 # Works
-	if !SwipeLocked && Input.is_action_pressed("next_panel") && comics_sprite != null: #&& !Timemout:
+	if !can_drag && !SwipeLocked && Input.is_action_pressed("next_panel") && comics_sprite != null: #&& !Timemout:
 	#if comics_sprite != null && !Timemout:
 		
 		Networking.start_check(1)
@@ -572,7 +600,7 @@ func next_panel(comics_sprite : AnimatedSprite) -> int:
 
 func prev_panel(comics_sprite : AnimatedSprite)-> int:
 # Works
-	if !SwipeLocked && Input.is_action_pressed("prev_panel") && comics_sprite != null: #&& !Timemout:
+	if !can_drag && !SwipeLocked && Input.is_action_pressed("prev_panel") && comics_sprite != null: #&& !Timemout:
 	#if comics_sprite != null && !Timemout:
 		
 		Networking.start_check(1)
@@ -597,51 +625,6 @@ func prev_panel(comics_sprite : AnimatedSprite)-> int:
 		Music.play_sfx(Music.comic_sfx)
 		
 	return current_frame
-
-#func _on_Backwards_pressed(): #Connect these signals automatically? #Produce the buttons programmatically
-#	prev_panel(comics_sprite)
-
-
-#func _on_Forward_pressed():
-#	next_panel(comics_sprite)
-
-
-
-
-"""
-		  SWIPE DETECTION
-"""
-
-
-func _handle_swipe_detection(event)-> void:
-	"Handles Swipe Detection" #buggy
-	if event.pressed:
-		Swipe._start_detection(
-			event.position, 
-			true, 
-			Swipe._e, 
-			swipe_target_memory_x, 
-			swipe_target_memory_y
-			)
-	
-	elif not Swipe._e.is_stopped():
-		
-		Swipe._end_detection(
-			
-			event.position, 
-			Vector2(0,0),
-			direction_var,
-			_state, 
-			Swipe._e, 
-			swipe_target_memory_x, 
-			swipe_target_memory_y, 
-			Swipe.swipe_start_position, 
-			swipe_parameters, 
-			x1,x2,y1,y2,
-			Swipe.MAX_DIAGONAL_SLOPE
-			
-			)
-
 
 
 
@@ -887,25 +870,9 @@ class Swipe :
 			
 			# next panel
 			
-			var a = InputEventAction.new()
-			a.action = "next_panel"
-			a.pressed = true
-			a.strength = 1
-			
-			Input.parse_input_event(a)
-
-			#Try signal
+			next_panel()
 
 
-			#Comics_v6.next_panel(Comics_v6.comics_sprite, Networking.Timeout)
-
-			# Turn off pree
-			#a.pressed = false
-			#Input.parse_input_event(a)
-			#not working
-			#_state = SWIPE_RIGHT
-			
-			#return _state
 			return _state
 		
 		"Up and Down"
@@ -923,10 +890,7 @@ class Swipe :
 			
 			# next panel
 			
-			var a = InputEventAction.new()
-			a.action = "prev_panel"
-			a.pressed = true
-			Input.parse_input_event(a)
+			prev_panel()
 
 			
 			#if Globals.curr_scene == "Comics____2":
@@ -1059,26 +1023,33 @@ class Swipe :
 		else: return
 
 
+	static func next_panel():
+		var a = InputEventAction.new()
+		a.action = "next_panel"
+		a.pressed = true
+		a.strength = 1
+		
+		Input.parse_input_event(a)
+
+
+	static func prev_panel():
+		var a = InputEventAction.new()
+		a.action = "prev_panel"
+		a.pressed = true
+		a.strength = 1
+		
+		Input.parse_input_event(a)
+
+
 class Functions extends Reference:
 	
-	
-	static func _on_Kinematic_2D_mouse_entered():
-		print(111111)
-
-	static func _on_Kinematic_2D_mouse_exited():
-		print(2222)
-
 	
 	static func show_comics (comics_chap : Node, cmx_root : Control, comic_main  )-> Control:
 		comic_main.emit_signal("loaded_comics")
 		cmx_root.add_child(comics_chap)
 		comic_main._loaded_comics = true
 		return cmx_root
-	"""
-	LOAD COMICS INTO THE SCENE TREE AS Animated SPRITESHEETS
-	"""
-	#TO DO: implement Texture react node functionality 
-	#
+	
 	static func load_comics(
 		current_comics : String, 
 		memory : Array ,
@@ -1127,9 +1098,16 @@ class Functions extends Reference:
 				#Kinematic Body 2D
 				Kinematic_2d.add_child(collision_shape) #set the collision shape
 				
-				
+				var comics_main = scenetree.get_root().get_node("/root/Comics_v6")
 				
 				"connect signals"
+				# Doesnt work
+				Kinematic_2d.connect("mouse_entered", comics_main,  "mouse_entered")
+				Kinematic_2d.connect("mouse_exited",comics_main ,  "on_mouse_exited")
+				
+				# Debug connections 
+				
+				
 				
 				#Loaded Comic Signal
 				Comics_v6.emit_signal("loaded_comics")
@@ -1180,21 +1158,16 @@ class Functions extends Reference:
 				return node
 		return node
 
-	
 
-	"""
-	DRAG FUNCTION
-	"""
-	#body must be a kinematic body 2d
-	
-	# Drag bugs out because of positioinal data errors with character body 2D
-	
+	#******************************Drag 1 is Buggy , v2 works Best**********************#
 	static func drag(_target : Vector2, _position : Vector2, _body :  KinematicBody2D, center : Vector2, target_memory_x : Array, target_memory_y: Array)-> void: #pass this method some parmeters
 		#add more parameters
 	# Input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases 
 		print ("-----------Dragging------------")
 		
-		center = Globals.restaVectores(_target, _position)
+		#center = Globals.sumaVectores(_target, _position)
+		
+		#print ("Center Debug: "+ str(center)) 3 FOR DEBUG
 		_body.set_position(_target)
 		
 		
@@ -1301,13 +1274,14 @@ class Functions extends Reference:
 					
 
 				#code base is too long to debug. Simplify
-				if not abs(target_memory_y[target_memory_y.size() - 2] - x) && abs(target_memory_x[target_memory_x.size() - 2] - x) > 3 :
-					#_body.set_position(_target)
-					#print ('sdsjgksdkgjsdfj')
-					_body.move_and_slide(_target)
-					#_body.move_and_slide()
+				# Bugs out
+				# Disabling for debugging
+				#if not abs(target_memory_y[int(target_memory_y.size()) - 2] - x) && abs(target_memory_x[int(target_memory_x.size()) - 2] - x) > 3 :
+				
+				#	_body.move_and_slide(_target)
 
-	#******************************Bug Ends**********************#
+
+
 	static func drag_v2(comics_sprite : AnimatedSprite, target : Vector2)-> void:
 		comics_sprite.set_position(target)
 
@@ -1394,6 +1368,14 @@ static func load_local_image_texture_from_global(node : TextureRect, _local_imag
 """
 button connections 
 """
+	
+static func mouse_entered():
+	print(111111)
+
+static func mouse_exited():
+	print(2222)
+
+
 
 func _on_chap_1_pressed():
 	print ("loading chapter 1")

@@ -56,9 +56,9 @@ func _input(_event):
 	
 	if Input.is_action_just_pressed("comics"):
 		if _Comics.enabled == true:
-			if TouchInterface._state_controller != 4  and _Comics.loaded_comics == true:
+			if TouchInterface._state_controller != 4 : # and _Comics.loaded_comics == true:
 				TouchInterface.comics()
-		elif _Comics.enabled == false or _Comics.loaded_comics == false:
+		elif _Comics.enabled == false : #or _Comics.loaded_comics == false:
 			TouchInterface.reset()
 	if Input.is_action_just_pressed("pause"):
 		if _Stats.enabled == true :

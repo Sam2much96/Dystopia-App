@@ -6,4 +6,3 @@
 position = Vector2( -6.72717, 3.36282 )
 scale = Vector2( 0.696879, 0.696879 )
 frames = ExtResource( 1 )
-frame = 2

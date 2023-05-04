@@ -185,15 +185,41 @@ func _ready():
 	#connect signals
 	connect_signals()
 	
+	# Update current scene 
+	Globals.update_curr_scene()
 	
-	# for debug purposes only
-	#if current_comics !=null:
+	
+	
+	
+	
+	"Load ingame Comics"
+	# Works but Comics node has underlying bugs that need fixingx
+	# Not Working!
+	if Globals.curr_scene == "Outside" && _loaded_comics == false:
+		print ("-----Loading GamePlay Comics-----")
+		comics_sprite =  Functions.load_comics(
+			comics[8], 
+			memory,
+			get_tree(),
+			enabled, 
+			can_drag, 
+			zoom,
+			current_frame, 
+			Kinematic_2d, 
+			comics_placeholder
+			)
+
+		Functions.show_comics(
+			comics_sprite, 
+			cmx_root, 
+			self
+		)
 		
-	#	print (current_comics)# for debug purposes only
-		#Functions.load_comics()
-		#Globals.comics = self #updates itself to the globals singleton
+		_loaded_comics =true
+		return _loaded_comics
 	
 	
+		
 	
 	enabled = false
 	#target = Vector2() duplicate code 
@@ -394,7 +420,7 @@ func _input(event):
 
 func _process(_delta):
 	
-	print (str(SwipeLocked) + str(can_drag) + str(Networking.Timeout)) # SwipeLockked is Buggy
+	#print (str(SwipeLocked) + str(can_drag) + str(Networking.Timeout)) # SwipeLockked is Buggy # For Debug purposes only
 	
 	#" Auto Swipe Locks whenever Networking Timer is used"
 			# Lock Swipe for 4 secofs
@@ -1092,7 +1118,7 @@ class Functions extends Reference:
 		
 				var collision_shape =CollisionShape2D.new()
 				var shape = RectangleShape2D.new() #new code
-				shape.set_extents((Vector2(130,130))) #new code
+				shape.set_extents((Vector2(300,300))) #new code
 				collision_shape.set_shape (shape) #new code
 		
 				#Kinematic Body 2D
@@ -1116,15 +1142,20 @@ class Functions extends Reference:
 				
 				# Debug Packed Scene
 				#print (err.can_instantiate())
-				
+				"Load Comics Scene"
 				if err.can_instance(): # 
 					node = err.instance(0)
 					
 					# SET NODE NAME
 					node.name = Local.comic_names[1]
 					
+					#load comics extension script
+					node.set_script(Extensions)
+					
+					
+					
 					Kinematic_2d.add_child(node) 
-				
+					#collision_shape.add_child(node)
 					
 				
 					# Returns instantiated node
@@ -1283,7 +1314,8 @@ class Functions extends Reference:
 
 
 	static func drag_v2(comics_sprite : AnimatedSprite, target : Vector2)-> void:
-		comics_sprite.set_position(target)
+		if comics_sprite != null: # Error Catcher 1
+			comics_sprite.set_position(target)
 
 	static func _zoom(comics_placeholder : Control, zoom : bool)-> bool:
 		
@@ -1320,7 +1352,53 @@ class Functions extends Reference:
 
 
 
+class Extensions extends AnimatedSprite:
+	"""
+	The goal of this script is to store and send comic page details 
+	to the comic class script from the Comics Animated Sprite. 
+	"""
+	# TO DO: Implement Polymorphism for all Chapter pages
+	# It should also synconize data with the word bubble in a way that is playable 
+	# IS a port of Comics_panels_extensions script
 
+	# Features
+	# (1) Loads into comics node Programmatically
+	# (2) Syncs Comics node info to Singleton
+	export var panel : Vector2
+	export var word_buble_count : int 
+
+	var TotalPageCount : int = 0
+	var CurrentPage : int
+
+	const PageData : Array = [0,1,2,3,4,5,6] # total page count
+
+	export var Chapter_Data : Dictionary = {
+		"Word Bubbles": word_buble_count,
+		"All Pages" : TotalPageCount,
+		"Name" : "Neo Sud, the New South",
+		"Current Page": CurrentPage,
+	}
+
+		# Update 
+	func _process(_delta):
+		#CurrentPage = comics.get_frame()
+		
+		# Makes Current Page a Local integer
+		CurrentPage = self.get_frame()
+
+		#print(CurrentPage,TotalPageCount) # for Debug purposes only
+		
+		# Last Page
+		if CurrentPage == (TotalPageCount -1) : # Make Practical 
+			print ("freeing comics placeholder method")
+			self.queue_free()
+		
+
+	func _ready():
+		Comics_v6.comics_sprite = self
+		TotalPageCount = self.frames.get_frame_count('default')
+		
+		print ("Extension Script Initialized" + str(Comics_v6.comics_sprite))
 
 
 # It Uses a camera 2d to simulate guided view. Should not be used when running the game
@@ -1465,6 +1543,10 @@ func connect_signals()-> bool: #connects all required signals in the parent node
 		if not Online.q3.is_connected("request_completed", self, "_http_request_completed_Scenes"):
 			return Online.q3.connect("request_completed", self, "_http_request_completed_Scenes")
 
+
+	if not Kinematic_2d.is_connected("mouse_entered", self, "mouse_entered"):
+		Kinematic_2d.connect("mouse_entered", self, "mouse_entered")
+		Kinematic_2d.connect("mouse_exited", self, "mouse_exited")
 
 	# connect Timer Signals for Swipe Locker
 

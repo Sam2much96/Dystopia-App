@@ -68,14 +68,14 @@ func _ready():
  
 	#touch_interface_debug() disabling for now
 
-#toggles touch interface visibility depending on the os and screen orientation (Pc or Mobiles)
+	"Touch UI Visibility"
+	#toggles touch interface visibility depending on the os and screen orientation (Pc or Mobiles)
 	if Globals.os != 'Android' && Globals.screenOrientation == 0: 
-		
 		_Hide_touch_interface = true
 		self.hide()
+		print('Hiding touch interface for ', Globals.os)
 		
-		print('Hiding touch interface', Globals.os)
-		
+		pass
 		#disabled for debugging purposer. Reactivate later
 #########Auto sets the controller button
 

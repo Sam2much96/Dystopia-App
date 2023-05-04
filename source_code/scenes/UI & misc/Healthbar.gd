@@ -1,5 +1,7 @@
 extends HBoxContainer
 
+class_name Healthbar, 'res://resources/misc/Pixel Heart 32x32.png'
+
 """
 Connects to the player node and shows a health bar in the form of hearts
 """
@@ -21,8 +23,6 @@ func _ready():
 	pass # Replace with function body.
 
 
-# You should probably rewrite this.
-#no i won't
 func _on_health_changed(new_hp):
 	for child in get_children():
 		child.queue_free() #removes life

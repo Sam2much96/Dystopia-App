@@ -10,6 +10,7 @@ script/source = "extends \"res://singletons/Comics.v6.gd\"
 
 
 # Extends comic singleton to avoid cyclical resource load errors
+
 "
 
 [sub_resource type="Animation" id=1]
@@ -113,7 +114,6 @@ mouse_filter = 2
 color = Color( 1, 1, 1, 0.254902 )
 
 [node name="UI" type="Node2D" parent="."]
-visible = false
 modulate = Color( 1, 1, 1, 0.741176 )
 light_mask = 3
 z_index = 1

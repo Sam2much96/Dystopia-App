@@ -36,7 +36,7 @@ onready var _Stats = $Stats
 func _ready():
 	
 	connect_signals()
-	
+
 func _on_dialog_started():
 	TouchInterface.interract()
 

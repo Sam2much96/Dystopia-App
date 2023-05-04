@@ -312,7 +312,7 @@ func _restore_data(save_dict):
 
 func update_curr_scene() -> void:
 	curr_scene= get_tree().get_current_scene().get_name() 
-	print ("current scene iss: ", curr_scene)
+	print ("current scene is: ", curr_scene)
 
 
 func _go_to_title():

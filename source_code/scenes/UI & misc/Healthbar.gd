@@ -1,3 +1,16 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Health Bar
+# Displays Health Objects Within the Scene Tree
+# Features:
+# Shows Player Healthbar
+
+# To Do:
+#(1) Implement procedural animation for Healthbar
+# *************************************************
+
 extends HBoxContainer
 
 class_name Healthbar, 'res://resources/misc/Pixel Heart 32x32.png'

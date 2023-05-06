@@ -43,7 +43,7 @@ scroll_horizontal_enabled = false
 
 [node name="HSeparator" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
 margin_right = 313.0
-margin_bottom = 1116.0
+margin_bottom = 1004.0
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -120,6 +120,7 @@ text = "practice"
 flat = true
 
 [node name="City_scape" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
+visible = false
 margin_top = 672.0
 margin_right = 313.0
 margin_bottom = 780.0
@@ -132,9 +133,9 @@ flat = true
 
 [node name="wallet" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
 show_behind_parent = true
-margin_top = 784.0
+margin_top = 672.0
 margin_right = 313.0
-margin_bottom = 892.0
+margin_bottom = 780.0
 focus_neighbour_top = NodePath("../mini game")
 focus_neighbour_bottom = NodePath("../quit Button")
 focus_next = NodePath("../quit Button")
@@ -147,9 +148,9 @@ flat = true
 
 [node name="controls" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
 show_behind_parent = true
-margin_top = 896.0
+margin_top = 784.0
 margin_right = 313.0
-margin_bottom = 1004.0
+margin_bottom = 892.0
 focus_neighbour_top = NodePath("../mini game")
 focus_neighbour_bottom = NodePath("../quit Button")
 focus_next = NodePath("../quit Button")
@@ -162,9 +163,9 @@ flat = true
 
 [node name="quit Button" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
 show_behind_parent = true
-margin_top = 1008.0
+margin_top = 896.0
 margin_right = 313.0
-margin_bottom = 1116.0
+margin_bottom = 1004.0
 focus_neighbour_top = NodePath("../music on & off")
 focus_next = NodePath("../chap 1 ")
 focus_previous = NodePath("../music on & off")

@@ -70,7 +70,8 @@ class Behaviour extends Reference:
 	"""
 	Autospawn Code
 	"""
-
+	 # Buggy:
+	 # Produces Stuck Collision on Player Bug 
 	static func AutoSpawn(body):
 			# Move the player to the corresponding spawnpoint, if any and connect to the dialog system
 		if Globals.spawnpoint is Vector2 and Globals.spawnpoint != null: #auto spawn code
@@ -85,10 +86,9 @@ func _ready():
 
 
 
-	#Globals.load_game()
 	
-	
-	Behaviour.AutoSpawn(self)
+	# Buggy check ln 74
+	#Behaviour.AutoSpawn(self)
 	
 	
 	if not (

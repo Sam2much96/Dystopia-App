@@ -39,7 +39,6 @@
 
 extends Control
 
-#class_name Comics
 
 
 signal comics_showing
@@ -1359,7 +1358,7 @@ class Extensions extends AnimatedSprite:
 	"""
 	# TO DO: Implement Polymorphism for all Chapter pages
 	# It should also synconize data with the word bubble in a way that is playable 
-	# IS a port of Comics_panels_extensions script
+	# IS a port of Comics_panels_extensions script v1
 
 	# Features
 	# (1) Loads into comics node Programmatically
@@ -1389,7 +1388,7 @@ class Extensions extends AnimatedSprite:
 		#print(CurrentPage,TotalPageCount) # for Debug purposes only
 		
 		# Last Page
-		if CurrentPage == (TotalPageCount -1) : # Make Practical 
+		if CurrentPage == (TotalPageCount) : # Make Practical 
 			print ("freeing comics placeholder method")
 			self.queue_free()
 		

@@ -633,6 +633,7 @@ frame = 6
 script = ExtResource( 3 )
 dialogue = "res://resources/dialogues/script_testing.gd"
 enable_multiline = true
+debug = true
 line_index = 16
 state = "Talk Right 2"
 

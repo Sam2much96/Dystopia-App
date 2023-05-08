@@ -16,6 +16,10 @@
 # (2) use show_dialog and show_dialog_2 to display text respectively
 # (3) Use Enabe and Enable Mulitpline to Display PArsed dialogue
 # (4) Set Line Index to the exact line to Display from the dialog script
+#
+# Bugs:
+# (1) Uses too much vram. Crashes on mobile
+# (2) Convoluted Codebase
 # *************************************************
 
 extends AnimatedSprite
@@ -91,10 +95,11 @@ onready var anims : AnimationPlayer = $AnimationPlayer
 
 
 
+var bubble_box : WordBubbleBox 
 
 
-
-func show_dialog(new_text : String) -> void:
+func show_dialog(new_text : String, placeholdr : String) -> void:
+	print('---showing dialog 1---') # For debug purposes only
 	word_bubble_label.text = new_text#new_text 
 	
 	lines_to_skip = 0
@@ -106,7 +111,7 @@ func show_dialog_2(text1 : String, text2 : String) -> void:
 	
 	# Shows double word bubble text
 	# uses 2 labels synced to anim player
-	
+	print('---showing dialog 2---') # For debug purposes only
 	
 	word_bubble_label.text = text1
 	word_bubble_label_2.text = text2
@@ -120,10 +125,10 @@ var lines_to_skip = 0
 
 
 func flip()-> void:
-	flip_h = true
+	self.flip_h = true
 
 func unflip()-> void:
-	flip_h = false
+	self.flip_h = false
 
 
 func _enter_tree():
@@ -162,6 +167,7 @@ func _ready():
 	
 	#ignore the warning
 	Dialogs.word_bubble_box = self
+	bubble_box = self
 	
 
 
@@ -177,13 +183,13 @@ func _ready():
 		# Default translation
 		if Dialogs.language == "":
 			
-			show_dialog(Dialogs.Parser.parse_script(line_index,dialogue))
+			show_dialog(Dialogs.Parser.parse_script(line_index,dialogue), "")
 		
 		# English Translation file
 		if Dialogs.language == "en_US":
-			show_dialog(Dialogs.Parser.parse_script(line_index,dialogue))
+			show_dialog(Dialogs.Parser.parse_script(line_index,dialogue), "")
 		if Dialogs.language == "te_IN":
-			show_dialog(Dialogs.Parser.parse_script(line_index,dialogue_tr))
+			show_dialog(Dialogs.Parser.parse_script(line_index,dialogue_tr), "")
 
 
 
@@ -263,9 +269,9 @@ func _process(_delta):
 	# Toggles word bubble visibility on/off using Page Data
 	# Disabling for Debugging
 	if Page == visible_on_page && !debug:
-		show()
+		bubble_box.show()
 	elif Page != visible_on_page && !debug:
-		hide()
+		bubble_box.hide()
 	
 	
 	
@@ -286,36 +292,36 @@ func _process(_delta):
 			
 			# Narration Box should resize to fit Label boundaries
 			
-			set_frame(0)
+			bubble_box.set_frame(0)
 			anims.play("Narration")
 			pass
 		STATE_ANGRY :
 			pass
 		STATE_THOUGHTS :
-			set_frame(1)
+			bubble_box.set_frame(1)
 			anims.play("Thoughts")
 			pass 
 		STATE_TALK_RIGHT :
-			set_frame(2)
+			bubble_box.set_frame(2)
 			anims.play("Talk Right")
 			pass 
 		STATE_TALK_LEFT :
-			set_frame(3)
+			bubble_box.set_frame(3)
 			anims.play("Talk Left")
 			pass 
 		STATE_TALK_LEFT_2:
-			set_frame(4)
+			bubble_box.set_frame(4)
 			anims.play("Talk Left 2")
 			pass 
 		STATE_TALK_RIGHT_2:
-			set_frame(5)
+			bubble_box.set_frame(5)
 			anims.play("Talk Right 2")
 			pass
 		STATE_TALK_RIGHT_3: # rename it's member methods
-			set_frame(6)
+			bubble_box.set_frame(6)
 			anims.play("Talk Left 3 flipped")
 			pass
 		STATE_TALK_LEFT_3: # Unimplemented
-			set_frame(6)
+			bubble_box.set_frame(6)
 			anims.play("Talk Left 3")
 			pass

@@ -177,10 +177,20 @@ func _on_continue_pressed(): #breaks the Globals.current_level script
 	Globals.load_game()
 	if Globals.current_level != null:
 		
-		change_scenes_via_globals_script()
+		"Loads Large Scene"
 		
-		#if Globals.change_scene_to(Globals.current_level) != OK:
-		#	push_error("Error changing scenes")
+		Globals.Functions.change_scene_to(Globals.Functions.LoadLargeScene(
+		Globals.current_level, 
+		Globals.scene_resource, 
+		Globals._o, 
+		Globals.scene_loader, 
+		Globals.loading_resource, 
+		Globals.a, 
+		Globals.b, 
+		Globals.progress
+		), get_tree())
+		
+
 	else:
 		$MarginContainer/ScrollContainer/HSeparator/continue.hide()
 		push_error("Error: current_level shouldn't be empty")
@@ -190,7 +200,23 @@ func _on_continue_pressed(): #breaks the Globals.current_level script
 func _on_new_game_pressed(): #breaks the Globals.current_level script
 	if Globals.initial_level != "":
 		Globals.current_level = Globals.initial_level
-		print (" Emitting signal--loading game--")
+		print (" Emitting signal--loading game--", Globals.current_level)
+		
+		#Globals._to_load = Globals.current_level
+		"Loads Large Scene"
+		
+		Globals.Functions.change_scene_to(Globals.Functions.LoadLargeScene(
+		Globals.current_level, 
+		Globals.scene_resource, 
+		Globals._o, 
+		Globals.scene_loader, 
+		Globals.loading_resource, 
+		Globals.a, 
+		Globals.b, 
+		Globals.progress
+		), get_tree())
+		
+		
 		Music.play_track(Music.ui_sfx[0]) #plays ui sfx in a loop
 		
 
@@ -198,9 +224,6 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 		if Globals.save_game() == false:
 			push_error("Error saving game")
 		
-		'Auto Scene Changer Shorthand'
-		change_scenes_via_globals_script()
-
 	else:
 		push_error("Error: initial_level shouldn't be empty")
 		
@@ -240,10 +263,10 @@ func _menu_pause_and_play(boolean): #pass it a boolean to custom pause and play
 func _on_comics_pressed():
 	print_debug ('comics pressed')
 	Music.play_track(Music.ui_sfx[0])
-	Globals.change_scene_to(Globals.comics___2)
+	Globals.Functions.change_scene_to(Globals.comics___2, get_tree())
 func _on_controls_pressed():
 	Music.play_track(Music.ui_sfx[0])
-	Globals.change_scene_to(Globals.controls)
+	Globals.Functions.change_scene_to(Globals.controls, get_tree())
 
 
 func _on_quit_Button_pressed():
@@ -253,7 +276,7 @@ func _on_quit_Button_pressed():
 	else:
 		Music.play_track(Music.ui_sfx[1])
 		#Globals.memory_leak_management()
-		Globals.change_scene_to(Globals.title_screen)
+		Globals.Functions.change_scene_to(Globals.title_screen, get_tree())
 
 
 
@@ -270,11 +293,9 @@ func _exit_tree():
 	
 
 
-
-
 func _on_Shop_pressed():
 	Music.play_track(Music.ui_sfx[0])
-	Globals.change_scene_to(shop)
+	Globals.Functions.change_scene_to(shop, get_tree())
 
 func _hide_some_menu_options():
 	if Engine.has_singleton ('Debug'):
@@ -285,12 +306,10 @@ func _hide_some_menu_options():
 			_multiplayer.hide()
 		pass
 
-func change_scenes_via_globals_script(): #breaks the Globals.current_level script
-	'Auto Scene Changer Shorthand' 
-	if Globals._q == null:
-		Globals._r =Globals.current_level # triggers an auto scene loader.changer from globals script
-	if Globals._q != null:
-		return (Globals.change_scene_to(Globals._q))
+
+
+
+
 
 func _on_Anime_pressed():
 	Music.play_track(Music.ui_sfx[0])
@@ -304,11 +323,19 @@ func _on_wallet_pressed():
 
 func _on_Testing_Scene_pressed(): # turn off in release build
 	Globals.current_level = 'res://scenes/levels/Testing Scene.tscn' #breaks the Globals.current_level script
-	change_scenes_via_globals_script() 
+	Globals.Functions.change_scene_to(Globals.Functions.LoadLargeScene(
+		Globals.current_level, 
+		Globals.scene_resource, 
+		Globals._o, 
+		Globals.scene_loader, 
+		Globals.loading_resource, 
+		Globals.a, 
+		Globals.b, 
+		Globals.progress
+		), get_tree())
 
-func _on_City_scape_pressed(): #turn off in release build
-	Globals.current_level = "res://scenes/levels/Cityscape Exterior.tscn"
-	change_scenes_via_globals_script()
+
+
 
 func upscale()-> void:
 	# This is a quick fix. It should ideally find the center of the screen and 

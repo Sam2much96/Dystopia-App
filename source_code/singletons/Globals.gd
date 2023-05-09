@@ -71,7 +71,7 @@ var video_stream #for the video streamers
 var spawnpoint : Vector2
 var spawn_x : int 
 var spawn_y : int 
-var current_level 
+var current_level : String
 
 
 var Music_on_settings
@@ -84,9 +84,9 @@ var uncompressed # Varible holds uncompressed zip files
 var near_interractible_objects #which objects use this?
 
 'Scene Loading variables'
-var _q : PackedScene # Large Resouce Scene Placeholder
-var _r # Large Resource Placeholder Variable
-var _o #for polling resource loader
+var scene_resource : PackedScene # Large Resouce Scene Placeholder
+var _to_load : String  # Large Resource Placeholder Variable
+var _o : ResourceInteractiveLoader#for polling resource loader
 var err
 var a : int # Loader progress variable (a/b) 
 var b : int
@@ -164,53 +164,6 @@ func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_pr
 
 		pass
 	else: return 1;
-
-	'Resource Loader FOr Large Scenes'
-
-	if _r is String && _r != "" && _q == null:
-		var time_max = 50000 #sets an estimate maximum time to load scene
-		var t = OS.get_ticks_msec()
-		
-		#scene_loader.load_interactive(_r) 
-		
-		_o= (scene_loader.load_interactive(_r)) #function returns a resourceInteractiveLoader
-
-		scene_loader.load_interactive(_r) #function returns a resourceInteractiveLoader
-		
-	
-		print (" Loader Debug Outer loop >>> Inner Loop")
-		while OS.get_ticks_msec() < (t + time_max) && _o != null: 
-
-			err = _o.poll()
-			#loading_resource = true
-			
-			print ("_q: ",_q," _r: ",_r," Error: ",str(err),"Loop Debug") #Debugger
-			
-			
-			
-			if err == ERR_FILE_EOF: # Finished Loading #Works
-				loading_resource = false
-				
-				_q = (_o.get_resource()) 
-				print (_q , "Resource Loaded")
-				change_scene_to( _q) # auto changes the scene
-				#turn_off_processing("off") #introduces bugs
-				break
-				#return _q
-			elif err == OK: #works
-				a = _o.get_stage()
-				b = _o.get_stage_count() 
-				progress = (b/a) 
-				print (a, "/",b,'/',"Progress: ", progress) #progress Debug?
-			else: # Error during loading
-				push_error("Problems loading Scene.  Debug Gloabls scene loader")
-				print (str(progress) + "% " + str (_r))
-				
-				break
-	if _r is String && _q != null: # 
-		return
-
-
 
 
 """
@@ -343,19 +296,77 @@ func _ram_convert(bytes) :
 		return _mb
 
 
+class Functions extends Reference:
 
-func change_scene_to(scene): #Loads scenes faster?
-	if scene is PackedScene: 
-		if scene != null: return get_tree().change_scene_to(scene)  
-	elif scene is String: 
-		if scene != "": 
-			loading_resource = true
-			_r = scene # triggers an auto scene loader in the processes 
-			return _r
+	static func change_scene_to(scene : PackedScene, tree : SceneTree): #Loads scenes faster?
+		
+		#if scene is PackedScene: 
+			if scene != null: 
+				return tree.change_scene_to(scene)  
 
-	else: return (print (typeof(scene) ,"is not supported in this function"))
-	#if scene is 
+			else: return (print (typeof(scene) ,"is not supported in this function"))
 	
+	'Resource Loader FOr Large Scenes'
+	static func LoadLargeScene(
+		_to_load : String, 
+		scene_resource : PackedScene, 
+		_o : ResourceInteractiveLoader, 
+		scene_loader : ResourceLoader, 
+		loading_resource : bool, 
+		a: int , 
+		b : int, 
+		progress: float
+		) -> PackedScene:
+		
+		if _to_load != "" && scene_resource == null:
+			var time_max = 50000 #sets an estimate maximum time to load scene
+			var t = OS.get_ticks_msec()
+			
+			#scene_loader.load_interactive(_r) 
+			
+			_o= (scene_loader.load_interactive(_to_load)) #function returns a resourceInteractiveLoader
+
+			scene_loader.load_interactive(_to_load) #function returns a resourceInteractiveLoader
+			
+		
+			print (" Loader Debug Outer loop >>> Inner Loop")
+			while OS.get_ticks_msec() < (t + time_max) && _o != null: 
+
+				var err = _o.poll()
+				#loading_resource = true
+				
+				print ("_q: ",scene_resource," _r: ",_to_load," Error: ",str(err),"Loop Debug") #Debugger
+				
+				
+				
+				if err == ERR_FILE_EOF: # Finished Loading #Works
+					loading_resource = false
+					
+					scene_resource = (_o.get_resource()) 
+					print (scene_resource , "Resource Loaded")
+					#Functions.change_scene_to(scene_resource, get_tree()) # auto changes the scene
+					#turn_off_processing("off") #introduces bugs
+					
+					break
+					#return _q
+				elif err == OK: #works
+					a = _o.get_stage()
+					b = _o.get_stage_count() 
+					progress = (b/a) 
+					print (a, "/",b,'/',"Progress: ", progress) #progress Debug?
+				else: # Error during loading
+					push_error("Problems loading Scene.  Debug Gloabls scene loader")
+					print (str(progress) + "% " + str (_to_load))
+					
+					break
+		if scene_resource != null: # 
+			return scene_resource
+
+		return scene_resource
+
+
+
+
 func turn_off_processing(toggle): # to improve game speed and turn off idle processsing
 	if toggle is String:
 		if toggle == "on":

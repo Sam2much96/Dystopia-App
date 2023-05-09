@@ -1088,7 +1088,17 @@ class Functions extends Reference:
 		) -> AnimatedSprite: 
 
 		
-		var err : PackedScene = load(current_comics)
+		#var err : PackedScene = load(current_comics)
+		var err : PackedScene = Globals.Functions.LoadLargeScene(
+					current_comics, 
+					Globals.scene_resource, 
+					Globals._o, 
+					Globals.scene_loader, 
+					Globals.loading_resource, 
+					Globals.a, 
+					Globals.b, 
+					Globals.progress
+					)
 		var node : AnimatedSprite
 		
 		
@@ -1143,7 +1153,10 @@ class Functions extends Reference:
 				#print (err.can_instantiate())
 				"Load Comics Scene"
 				if err.can_instance(): # 
+					
 					node = err.instance(0)
+					
+					 
 					
 					# SET NODE NAME
 					node.name = Local.comic_names[1]

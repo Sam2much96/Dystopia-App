@@ -19,6 +19,8 @@
 
 extends Control
 
+class_name JoystickV2
+
 
 ##################################################
 #Improve the state changer to run without process function

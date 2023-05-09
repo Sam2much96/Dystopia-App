@@ -22,6 +22,8 @@
 
 extends StaticBody2D
 
+class_name BrokenShip
+
 
 "SMOKE FX TURNS OFF AND ON DEPENDEING ON THE PLAYER'S POSITION"
 export (int) var counter #= 0 #used to off and on the comics placeholder

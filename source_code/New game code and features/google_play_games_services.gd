@@ -10,6 +10,9 @@
 
 extends Node
 
+class_name GooglePlay
+
+
 var play_games_services
 var show_popups := true 
 

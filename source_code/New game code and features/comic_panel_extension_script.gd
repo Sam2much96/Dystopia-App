@@ -1,4 +1,7 @@
 extends AnimatedSprite
+
+class_name comicPanel
+
 """
 The goal of this script is to store and send comic page details 
 to the comic class script. 

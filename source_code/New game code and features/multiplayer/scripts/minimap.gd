@@ -9,9 +9,13 @@
 #
 # Bug:
 # (1) Doesn't work. Currently Disabled for debugging
-
+# (2) Doesnt implement polymorphism
 # *************************************************
 extends TextureRect
+
+
+class_name minimap
+
 #tweak code for multiplayer
 onready var texture_object = preload("res://New game code and features/multiplayer/images/minimap/object.png")
 onready var texture_player = preload("res://New game code and features/multiplayer/images/minimap/player.png")

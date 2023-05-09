@@ -1,5 +1,8 @@
 extends Label
 
+
+class_name StatusText
+
 """
 Connects to the inventory and quest systems and will show a message on screen
 for every change in either

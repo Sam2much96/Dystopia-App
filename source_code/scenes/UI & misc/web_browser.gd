@@ -1,5 +1,7 @@
 extends Control
 
+class_name WebBrowser
+
 export (bool) var image 
 
 export (String) var website_url #= '' 
@@ -11,7 +13,7 @@ func _ready():
 
 	Networking.url = website_url
 
-	Networking._check_connection(Networking.url)
+	Networking._check_connection(Networking.url, HTTPRequest.new())
 
 	if website_url != '':
 		#Networking._check_connection(website_url)

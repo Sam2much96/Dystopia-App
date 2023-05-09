@@ -26,9 +26,8 @@
 
 
 extends Node2D
-"""
-REWROTE THE STATEMACHINE 16/04/22 
-"""
+
+class_name TouchInterface
 
 var _Hide_touch_interface : bool
 

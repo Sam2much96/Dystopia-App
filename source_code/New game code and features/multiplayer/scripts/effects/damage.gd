@@ -9,6 +9,8 @@
 # *************************************************
 extends Node2D
 
+class_name damage
+
 var total_delta = 0
 
 func _ready():

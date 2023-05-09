@@ -17,6 +17,8 @@
 
 extends Area2D
 
+class_name Pond
+
 onready var puddle_fx = $Puddle_FX
 
 enum {STATE_ACTIVE, STATE_IDLE}

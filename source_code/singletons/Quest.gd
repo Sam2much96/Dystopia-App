@@ -12,6 +12,8 @@
 
 extends Node
 
+class_name quest
+
 """
 Minimal quest system implementation.
 

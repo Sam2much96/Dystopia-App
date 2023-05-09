@@ -9,6 +9,8 @@
 # *************************************************
 extends Camera2D
 
+class_name camera
+
 var correction_speed = 2.0
 var zoom_speed = 5.0
 var zoom_interval = 5

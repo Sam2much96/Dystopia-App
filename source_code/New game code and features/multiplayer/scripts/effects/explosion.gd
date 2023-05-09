@@ -10,6 +10,8 @@
 extends Node2D
 
 
+class_name explosion
+
 var total_delta = 0
 
 func _process(delta):

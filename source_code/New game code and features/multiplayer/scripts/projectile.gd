@@ -8,6 +8,12 @@
 # kinda useless, alter code for Ogun Gun 
 # *************************************************
 extends RigidBody2D
+
+class_name projectile
+
+# likely duplicate of Bullet class
+
+
 #reuse code for something usefull
 var total_delta = 0
 onready var node_root = get_node("/root/world")

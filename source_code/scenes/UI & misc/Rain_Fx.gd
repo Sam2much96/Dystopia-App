@@ -15,6 +15,8 @@
 
 extends CanvasLayer
 
+class_name RainFX
+
 onready var rain_particles = $Particles2D
 onready var timer = $Timer
 export (bool) var enable

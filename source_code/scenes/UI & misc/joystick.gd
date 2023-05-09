@@ -1,5 +1,6 @@
 extends Control
 
+class_name JoystickController
 
 ##################################################
 #Improve the state changer

@@ -11,6 +11,8 @@
 
 extends PanelContainer
 
+class_name Stats
+
 export (bool) var enabled #= false
 signal not_enabled
 signal enabled

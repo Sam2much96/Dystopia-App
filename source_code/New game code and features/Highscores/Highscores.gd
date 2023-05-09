@@ -11,6 +11,9 @@
 # *************************************************
 
 extends Node
+
+class_name Highscores
+
 """
 A CLIENT SIDE IMPLEMENTATION OF AN ONLINE HIGHSCORE SYSTEM
 """

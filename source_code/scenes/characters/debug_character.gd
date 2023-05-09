@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+class_name DebugCharacter
+
 #update code to update game properties in game and it can be triggered on and off 
 #in controls settings ingame
 

@@ -21,6 +21,8 @@
 extends Area2D
 #export var debug : bool
 
+class_name grass
+
 onready var nodeName : String = self.get_name() 
 
 onready var timer : Node = $Timer

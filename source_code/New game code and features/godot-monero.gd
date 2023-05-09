@@ -1,8 +1,8 @@
 
 
-extends Node #It should Extend  MONERO CLASS, BUT THERES A PARSER ERROR
+extends Monero #It should Extend  MONERO CLASS, BUT THERES A PARSER ERROR
 
-#class_name 
+#class_name moner 
 
 #var mnemonic #used to create a wallet from mnemonic seedphrase
 onready var lib_monero #= load("res://addons/monero/monero.gdns").new() #calls the library files
@@ -17,7 +17,7 @@ var restored_primary: String =''
 var balance : int = 0
 var unlocked_account_balance : int = 0
 
-var monero : Monero
+var monero #: Monero
 
 #Placeholders
 var _x

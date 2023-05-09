@@ -11,6 +11,8 @@
 
 extends CPUParticles2D
 
+class_name DeSpawnFX
+
 onready var timer : Node = $Timer
 
 func _ready():

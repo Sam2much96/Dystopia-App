@@ -19,6 +19,8 @@
 
 extends Node 
 
+class_name debug
+
 var error_splash_page = load ('res://New game code and features/Error splash page for crashes.tscn')
 
 

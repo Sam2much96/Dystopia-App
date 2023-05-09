@@ -1,4 +1,8 @@
 extends Node
+
+class_name OnlineLeaderboard
+
+
 """
 A RUDIMENTARY IMPLEMENTATION OF AN ONLINE HIGHSCORE SYSTEM
 """

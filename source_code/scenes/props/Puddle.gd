@@ -12,6 +12,8 @@
 
 extends KinematicBody2D
 
+class_name Puddle
+
 onready var animation_player_ : AnimationPlayer = $CollisionShape2D/AnimationPlayer
 
 func ripple()-> void:

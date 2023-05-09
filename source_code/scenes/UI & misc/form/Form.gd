@@ -14,6 +14,10 @@
 		# How?
 		#parse a csv file and trigger language functions / states through the dialogue singleton at res://singletons/Dialogs.gd
 extends CanvasLayer
+
+
+class_name Login
+
 """
 This is a gate-keeper script to keep check user's internet connections, restrict their access
 """

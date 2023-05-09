@@ -9,6 +9,10 @@
 # 
 
 extends Control
+
+class_name GameControls
+
+
 """
 Game Control settings
 """

@@ -9,6 +9,7 @@
 
 extends Area2D
 
+class_name SignPost
 
 """
 Displays A Dialogue Text When the Player comes near

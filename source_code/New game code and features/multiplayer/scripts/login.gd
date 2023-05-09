@@ -12,6 +12,9 @@
 # *************************************************
 extends CanvasLayer
 
+
+class_name lobby
+
 "UI inputs buttons"
 onready var input_color = $ui/ScrollContainer/grid/input_color 
 onready var input_player =$ui/ScrollContainer/grid/text_player

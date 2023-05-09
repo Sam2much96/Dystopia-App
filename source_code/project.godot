@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "CanvasLayer",
+"class": "ADsManager",
+"language": "GDScript",
+"path": "res://ads/Ads_manager.gd"
+}, {
 "base": "Node",
 "class": "AdMob",
 "language": "GDScript",
@@ -34,6 +39,11 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://addons/algodot/gdnative/async_executor.gdns"
 }, {
+"base": "StaticBody2D",
+"class": "BrokenShip",
+"language": "GDScript",
+"path": "res://scenes/props/broken ship.gd"
+}, {
 "base": "Area2D",
 "class": "Bullet",
 "language": "GDScript",
@@ -55,6 +65,21 @@ _global_script_classes=[ {
 "path": "res://addons/github-integration/scripts/ContributorClass.gd"
 }, {
 "base": "TextureRect",
+"class": "ControlIllustrations",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/controls_illustration.gd"
+}, {
+"base": "CPUParticles2D",
+"class": "DeSpawnFX",
+"language": "GDScript",
+"path": "res://scenes/characters/DespawnFx.gd"
+}, {
+"base": "CanvasLayer",
+"class": "DebugCharacter",
+"language": "GDScript",
+"path": "res://scenes/characters/debug_character.gd"
+}, {
+"base": "TextureRect",
 "class": "DialogBox",
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Dialog_box.gd"
@@ -68,6 +93,11 @@ _global_script_classes=[ {
 "class": "Exit",
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Exit.gd"
+}, {
+"base": "Control",
+"class": "GameControls",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/Controls.gd"
 }, {
 "base": "CanvasLayer",
 "class": "GameHUD",
@@ -84,25 +114,85 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/github-integration/scripts/GistItem.gd"
 }, {
+"base": "Node",
+"class": "GooglePlay",
+"language": "GDScript",
+"path": "res://New game code and features/google_play_games_services.gd"
+}, {
 "base": "HBoxContainer",
 "class": "Healthbar",
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Healthbar.gd"
+}, {
+"base": "Node",
+"class": "Highscores",
+"language": "GDScript",
+"path": "res://New game code and features/Highscores/Highscores.gd"
 }, {
 "base": "Area2D",
 "class": "Idol",
 "language": "GDScript",
 "path": "res://scenes/props/idol.gd"
 }, {
+"base": "Node2D",
+"class": "ImpactFX",
+"language": "GDScript",
+"path": "res://scenes/Shaders/impact_effect_script.gd"
+}, {
+"base": "HTTPRequest",
+"class": "Internet",
+"language": "GDScript",
+"path": "res://singletons/Networking.gd"
+}, {
 "base": "HBoxContainer",
 "class": "InvitationItem",
 "language": "GDScript",
 "path": "res://addons/github-integration/scripts/InvitationItem.gd"
 }, {
-"base": "TextureRect",
-"class": "NFT",
+"base": "Control",
+"class": "JoyStickUI",
 "language": "GDScript",
-"path": "res://New game code and features/NFT.gd"
+"path": "res://scenes/UI & misc/generic_joystick_ui_selector.gd"
+}, {
+"base": "Control",
+"class": "JoystickController",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/joystick.gd"
+}, {
+"base": "TouchScreenButton",
+"class": "JoystickV1",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/Joystick circle.gd"
+}, {
+"base": "Control",
+"class": "JoystickV2",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/joystick v2.gd"
+}, {
+"base": "TextureButton",
+"class": "LikeButton",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/Like button.gd"
+}, {
+"base": "CanvasLayer",
+"class": "Login",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/form/Form.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "NPC",
+"language": "GDScript",
+"path": "res://scenes/characters/Npc.gd"
+}, {
+"base": "Node",
+"class": "OnlineLeaderboard",
+"language": "GDScript",
+"path": "res://New game code and features/online_leaderboard.gd"
+}, {
+"base": "Node",
+"class": "Outside",
+"language": "GDScript",
+"path": "res://scenes/levels/Outside.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "Player",
@@ -114,6 +204,26 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/characters/Player v2.gd"
 }, {
+"base": "Area2D",
+"class": "Pond",
+"language": "GDScript",
+"path": "res://scenes/props/pond.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "Puddle",
+"language": "GDScript",
+"path": "res://scenes/props/Puddle.gd"
+}, {
+"base": "Node",
+"class": "QuestGiver",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/Quest.gd"
+}, {
+"base": "CanvasLayer",
+"class": "RainFX",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/Rain_Fx.gd"
+}, {
 "base": "EditorScript",
 "class": "ReferenceCollector",
 "language": "GDScript",
@@ -124,20 +234,65 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/github-integration/scripts/RepositoryItem.gd"
 }, {
+"base": "Node2D",
+"class": "Scent",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/scent.gd"
+}, {
 "base": "Node",
 "class": "Server",
 "language": "GDScript",
 "path": "res://New game code and features/multiplayer/scripts/ws_webrtc_server.gd"
+}, {
+"base": "Area2D",
+"class": "SignPost",
+"language": "GDScript",
+"path": "res://scenes/props/signpost.gd"
 }, {
 "base": "Node",
 "class": "StateMachine",
 "language": "GDScript",
 "path": "res://scenes/characters/State Machine.gd"
 }, {
+"base": "PanelContainer",
+"class": "Stats",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/Stats.gd"
+}, {
+"base": "Label",
+"class": "StatusText",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/StatusText.gd"
+}, {
+"base": "Control",
+"class": "TitleScreen",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/Title screen.gd"
+}, {
+"base": "Node2D",
+"class": "TouchInterface",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/TouchInterface.gd"
+}, {
+"base": "Control",
+"class": "WebBrowser",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/web_browser.gd"
+}, {
+"base": "Node",
+"class": "WebConnection",
+"language": "GDScript",
+"path": "res://New game code and features/multiplayer/scripts/minimal.gd"
+}, {
 "base": "AnimatedSprite",
 "class": "WordBubbleBox",
 "language": "GDScript",
 "path": "res://scenes/UI & misc/word_bubble_box.gd"
+}, {
+"base": "Area2D",
+"class": "XtraLife",
+"language": "GDScript",
+"path": "res://scenes/items/extra life.gd"
 }, {
 "base": "Node",
 "class": "Yodo1Mas",
@@ -149,6 +304,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/yt-dlp/yt_dlp.gd"
 }, {
+"base": "Camera2D",
+"class": "camera",
+"language": "GDScript",
+"path": "res://New game code and features/multiplayer/scripts/camera.gd"
+}, {
 "base": "Control",
 "class": "cinematic",
 "language": "GDScript",
@@ -159,10 +319,35 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/items/coins.gd"
 }, {
+"base": "AnimatedSprite",
+"class": "comicPanel",
+"language": "GDScript",
+"path": "res://New game code and features/comic_panel_extension_script.gd"
+}, {
+"base": "Node2D",
+"class": "damage",
+"language": "GDScript",
+"path": "res://New game code and features/multiplayer/scripts/effects/damage.gd"
+}, {
+"base": "Node",
+"class": "debug",
+"language": "GDScript",
+"path": "res://singletons/Debug.gd"
+}, {
 "base": "Position2D",
 "class": "enemy_spawner",
 "language": "GDScript",
 "path": "res://scenes/items/enemy spawner.gd"
+}, {
+"base": "Node2D",
+"class": "explosion",
+"language": "GDScript",
+"path": "res://New game code and features/multiplayer/scripts/effects/explosion.gd"
+}, {
+"base": "Area2D",
+"class": "grass",
+"language": "GDScript",
+"path": "res://scenes/props/Grass.gd"
 }, {
 "base": "Popup",
 "class": "hint",
@@ -179,10 +364,35 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/items/ItemSpawner.gd"
 }, {
+"base": "CanvasLayer",
+"class": "lobby",
+"language": "GDScript",
+"path": "res://New game code and features/multiplayer/scripts/login.gd"
+}, {
+"base": "TextureRect",
+"class": "minimap",
+"language": "GDScript",
+"path": "res://New game code and features/multiplayer/scripts/minimap.gd"
+}, {
+"base": "RigidBody2D",
+"class": "projectile",
+"language": "GDScript",
+"path": "res://New game code and features/multiplayer/scripts/projectile.gd"
+}, {
+"base": "Node",
+"class": "quest",
+"language": "GDScript",
+"path": "res://singletons/Quest.gd"
+}, {
 "base": "CPUParticles2D",
 "class": "smoke_fx",
 "language": "GDScript",
 "path": "res://scenes/UI & misc/smoke_FX.gd"
+}, {
+"base": "Control",
+"class": "starfield",
+"language": "GDScript",
+"path": "res://New game code and features/multiplayer/scripts/effects/starfield.gd"
 }, {
 "base": "Control",
 "class": "wallet",
@@ -190,41 +400,83 @@ _global_script_classes=[ {
 "path": "res://scenes/Wallet/Wallet.gd"
 } ]
 _global_script_class_icons={
+"ADsManager": "",
 "AdMob": "res://ads/admob-lib/icon.png",
 "Algod": "",
 "Algodot": "res://addons/algodot/icon.png",
 "Appodeal": "res://ads/Appodeal/appodeal_logo.png",
 "AsyncExecutorDriver": "",
+"BrokenShip": "",
 "Bullet": "",
 "ChatGPTAPI": "",
 "Client": "",
 "ContributorClass": "",
+"ControlIllustrations": "",
+"DeSpawnFX": "",
+"DebugCharacter": "",
 "DialogBox": "",
 "Enemy": "",
 "Exit": "",
+"GameControls": "",
 "GameHUD": "",
 "Game_Menu": "",
 "GistItem": "",
+"GooglePlay": "",
 "Healthbar": "res://resources/misc/Pixel Heart 32x32.png",
+"Highscores": "",
 "Idol": "",
+"ImpactFX": "",
+"Internet": "",
 "InvitationItem": "",
-"NFT": "",
+"JoyStickUI": "",
+"JoystickController": "",
+"JoystickV1": "",
+"JoystickV2": "",
+"LikeButton": "",
+"Login": "",
+"NPC": "",
+"OnlineLeaderboard": "",
+"Outside": "",
 "Player": "",
 "Player_v2_networking": "",
+"Pond": "",
+"Puddle": "",
+"QuestGiver": "",
+"RainFX": "",
 "ReferenceCollector": "",
 "RepositoryItem": "",
+"Scent": "",
 "Server": "",
+"SignPost": "",
 "StateMachine": "",
+"Stats": "",
+"StatusText": "",
+"TitleScreen": "",
+"TouchInterface": "",
+"WebBrowser": "",
+"WebConnection": "",
 "WordBubbleBox": "",
+"XtraLife": "",
 "Yodo1Mas": "",
 "YtDlp": "",
+"camera": "",
 "cinematic": "",
 "coins": "",
+"comicPanel": "",
+"damage": "",
+"debug": "",
 "enemy_spawner": "",
+"explosion": "",
+"grass": "",
 "hint": "",
 "item": "",
 "itemSpawner": "",
+"lobby": "",
+"minimap": "",
+"projectile": "",
+"quest": "",
 "smoke_fx": "",
+"starfield": "",
 "wallet": ""
 }
 

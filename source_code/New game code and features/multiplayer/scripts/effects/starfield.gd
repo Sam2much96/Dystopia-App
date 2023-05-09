@@ -12,6 +12,9 @@
 # *************************************************
 extends Control
 
+class_name starfield
+
+
 onready var texture_star = preload("res://New game code and features/multiplayer/images/star.png")
 onready var node_camera = get_tree().get_root() #get_node("/root/world/camera")
 

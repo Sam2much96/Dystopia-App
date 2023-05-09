@@ -1,5 +1,7 @@
 extends Control
 
+class_name TitleScreen
+
 """
 The purpose of this code is to beautify the UI programmatically
 """

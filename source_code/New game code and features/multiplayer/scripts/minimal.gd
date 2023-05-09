@@ -1,4 +1,7 @@
 extends Node
+
+class_name WebConnection
+
 # Main scene.
 
 # Create the two peers.

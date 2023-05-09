@@ -264,6 +264,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/StatusText.gd"
 }, {
+"base": "Node",
+"class": "TempleInterior",
+"language": "GDScript",
+"path": "res://scenes/levels/Temple interior.gd"
+}, {
 "base": "Control",
 "class": "TitleScreen",
 "language": "GDScript",
@@ -451,6 +456,7 @@ _global_script_class_icons={
 "StateMachine": "",
 "Stats": "",
 "StatusText": "",
+"TempleInterior": "",
 "TitleScreen": "",
 "TouchInterface": "",
 "WebBrowser": "",

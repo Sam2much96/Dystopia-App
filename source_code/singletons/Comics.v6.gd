@@ -51,7 +51,7 @@ signal swiped_canceled(start_position)
 
 
 export var enabled : bool 
-
+export var LastPage : bool = false 
 # Web 3 Activator for Downloading Content
 export var web3 : bool 
 export var _loaded_comics : bool = false
@@ -256,12 +256,14 @@ func _input(event):
 	if event.is_action_pressed("reset"): # for reseting Comics FIlecheckers
 		_ready()
 	
-	if event.is_action_pressed("next_panel") : # && enabled : #button controls
-		
-		
-		current_frame = next_panel(comics_sprite)
-		
-		
+	if event.is_action_pressed("next_panel") && comics_sprite != null : # && enabled : #button controls
+		" If Not on Comics Last Page"
+		if LastPage == false:
+			current_frame = next_panel(comics_sprite)
+		elif LastPage == true:
+			#comics_placeholder.queue_free()
+			pass
+	
 	if event.is_action_pressed("prev_panel") :
 		current_frame  = prev_panel(comics_sprite)
 
@@ -988,22 +990,16 @@ class Swipe :
 			if abs (direction.x) + abs(direction.y) >= MAX_DIAGONAL_SLOPE:
 				return
 			if abs (direction.x) > abs(direction.y):
-				#emit_signal('swiped',Vector2(-sign(direction.x), 0.0))
 				
-				#print (1111)
 				print ('Direction on X: ', direction.x, "/", direction.y) #horizontal swipe debug purposs
 			if -sign(direction.x) < Swipe.swipe_parameters:
 				print('left swipe') #for debug purposes
-				#next_panel() 
 				
 				if Globals.curr_scene == "Comics____2":
 					_state = SWIPE_LEFT
 			
 			if -sign(direction.x) > Swipe.swipe_parameters:
 				print('right swipe') #for debug purposes
-				#prev_panel()
-				
-				
 				
 				# Play Animation
 				return GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
@@ -1018,8 +1014,6 @@ class Swipe :
 			# Works
 			if -sign(direction.y) < -Swipe.swipe_parameters:
 				print('up swipe 2') #for debug purposes
-				#next_panel() 
-				
 				
 				direction_var = "Up"
 				
@@ -1033,8 +1027,6 @@ class Swipe :
 				
 			if -sign(direction.y)  > swipe_parameters:
 				print('down swipe 2') #for debug purposes
-				#prev_panel()
-				
 				
 				# Play Animation
 				return GlobalAnimation.get_child(0).play("SWIPE_DOWN")
@@ -1164,7 +1156,7 @@ class Functions extends Reference:
 					#load comics extension script
 					node.set_script(Extensions)
 					
-					
+					node.set_frame(Comics_v6.current_frame)
 					
 					Kinematic_2d.add_child(node) 
 					#collision_shape.add_child(node)
@@ -1380,9 +1372,11 @@ class Extensions extends AnimatedSprite:
 	export var word_buble_count : int 
 
 	var TotalPageCount : int = 0
-	var CurrentPage : int
+	var CurrentPage : int = 0
 
-	const PageData : Array = [0,1,2,3,4,5,6] # total page count
+	#const PageData : Array = [0,1,2,3,4,5,6] # total page count
+
+
 
 	export var Chapter_Data : Dictionary = {
 		"Word Bubbles": word_buble_count,
@@ -1393,24 +1387,27 @@ class Extensions extends AnimatedSprite:
 
 		# Update 
 	func _process(_delta):
+		
+		#print(Comics_v6.current_frame, "/", CurrentPage) # for debug purposes
+		
 		#CurrentPage = comics.get_frame()
 		
 		# Makes Current Page a Local integer
 		CurrentPage = self.get_frame()
 
-		#print(CurrentPage,TotalPageCount) # for Debug purposes only
+		#print(CurrentPage, "/", TotalPageCount) # for Debug purposes only
 		
 		# Last Page
-		if CurrentPage == (TotalPageCount) : # Make Practical 
-			print ("freeing comics placeholder method")
-			self.queue_free()
-		
+		if (CurrentPage + 1) == (TotalPageCount) : # Make Practical 
+			#print ("freeing comics placeholder method")
+			#self.queue_free()
+			Comics_v6.LastPage = true
 
 	func _ready():
 		Comics_v6.comics_sprite = self
 		TotalPageCount = self.frames.get_frame_count('default')
 		
-		print ("Extension Script Initialized" + str(Comics_v6.comics_sprite))
+		print_debug("Extension Script Initialized" + str(Comics_v6.comics_sprite) )
 
 
 # It Uses a camera 2d to simulate guided view. Should not be used when running the game

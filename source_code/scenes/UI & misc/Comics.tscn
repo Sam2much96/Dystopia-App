@@ -1,17 +1,8 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://resources/Buttons/bck.png" type="Texture" id=2]
 [ext_resource path="res://resources/Buttons/zoom.png" type="Texture" id=3]
 [ext_resource path="res://resources/misc/logo.png" type="Texture" id=4]
-
-[sub_resource type="GDScript" id=6]
-resource_name = "comics_extension_v2"
-script/source = "extends \"res://singletons/Comics.v6.gd\"
-
-
-# Extends comic singleton to avoid cyclical resource load errors
-
-"
 
 [sub_resource type="Animation" id=1]
 resource_name = "Prev panel"
@@ -102,7 +93,6 @@ func _ready():
 
 [node name="Comics" type="Control" groups=["Cmx_Root"]]
 mouse_filter = 1
-script = SubResource( 6 )
 
 [node name="panel" type="ColorRect" parent="."]
 visible = false

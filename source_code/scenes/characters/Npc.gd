@@ -34,17 +34,22 @@ var root : Node2D = get_parent()
 
 var __body : Player
 
+onready var npc : Area2D = $NPC
+
 func _ready():
 	randomize()
 	
 	# Adds a Kinematic Body for Move and SLide
 	#self.add_child(Kinematic_Body)
 	
-	# warning-ignore:return_value_discarded
-	connect("body_entered", self, "_on_body_entered")
-	# warning-ignore:return_value_discarded
-	connect("body_exited", self, "_on_body_exited")
-	pass # Replace with function body.
+	if not npc.is_connected("body_entered", self, "_on_NPC_body_entered"):
+		# warning-ignore:return_value_discarded
+		npc.connect("body_entered", self, "_on_NPC_body_entered")
+
+	if not npc.is_connected("body_exited", self, "_on_NPC_body_exited"):
+		# warning-ignore:return_value_discarded
+		npc.connect("body_exited", self, "_on_NPC_body_exited")
+
 
 func _process(_delta):
 	

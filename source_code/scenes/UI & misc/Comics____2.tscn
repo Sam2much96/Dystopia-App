@@ -85,7 +85,7 @@ func _ready():
 
 \"Hides Comics Chapters Buttons\"
 func _on_Comics_loaded_comics():
-	loaded_comics = true
+	#Comloaded_comics = true
 	for child in get_children(): # works
 		child.hide()
 
@@ -93,7 +93,7 @@ func _on_Comics_loaded_comics():
 'Shows Comics Chapter Buttons'
 #connected from COomics signal 
 func _on_Comics_freed_comics():
-	loaded_comics = false
+	#loaded_comics = false
 	for child in get_children(): 
 		child.show()
 
@@ -111,6 +111,41 @@ func _on_Back_button_pressed():
 
 
 
+
+
+func _on_chap_1_pressed():
+	_on_Comics_loaded_comics()
+	return Comics_v6._on_chap_1_pressed()
+
+
+func _on_chap_2_pressed():
+	_on_Comics_loaded_comics()
+	return Comics_v6._on_chap_2_pressed()
+
+
+func _on_chap_3_pressed():
+	_on_Comics_loaded_comics()
+	return Comics_v6._on_chap_3_pressed()
+
+
+func _on_chap_4_pressed():
+	_on_Comics_loaded_comics()
+	return Comics_v6._on_chap_4_pressed()
+
+
+func _on_chap_5_pressed():
+	_on_Comics_loaded_comics()
+	return Comics_v6._on_chap_5_pressed()
+
+
+func _on_chap_6_pressed():
+	_on_Comics_loaded_comics()
+	return Comics_v6._on_chap_6_pressed()
+
+
+func _on_chap_7_pressed():
+	_on_Comics_loaded_comics()
+	return Comics_v6._on_chap_7_pressed()
 "
 
 [sub_resource type="DynamicFont" id=4]
@@ -308,14 +343,12 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 17 )
 text = "ADvertising placeholder ADvertising placeholder"
 
-[connection signal="freed_comics" from="Comics" to="Comics/ScrollContainer/GridContainer" method="_on_Comics_freed_comics"]
-[connection signal="loaded_comics" from="Comics" to="Comics/ScrollContainer/GridContainer" method="_on_Comics_loaded_comics"]
-[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_1" to="Comics" method="_on_chap_1_pressed"]
-[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_2" to="Comics" method="_on_chap_2_pressed"]
-[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_3" to="Comics" method="_on_chap_3_pressed"]
-[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_4" to="Comics" method="_on_chap_4_pressed"]
-[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_5" to="Comics" method="_on_chap_5_pressed"]
-[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_6" to="Comics" method="_on_chap_6_pressed"]
-[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_7" to="Comics" method="_on_chap_7_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_1" to="Comics/ScrollContainer/GridContainer" method="_on_chap_1_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_2" to="Comics/ScrollContainer/GridContainer" method="_on_chap_2_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_3" to="Comics/ScrollContainer/GridContainer" method="_on_chap_3_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_4" to="Comics/ScrollContainer/GridContainer" method="_on_chap_4_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_5" to="Comics/ScrollContainer/GridContainer" method="_on_chap_5_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_6" to="Comics/ScrollContainer/GridContainer" method="_on_chap_6_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_7" to="Comics/ScrollContainer/GridContainer" method="_on_chap_7_pressed"]
 [connection signal="pressed" from="Rotate" to="Comics" method="_on_Rotate_pressed"]
 [connection signal="pressed" from="Back_button" to="Comics/ScrollContainer/GridContainer" method="_on_Back_button_pressed"]

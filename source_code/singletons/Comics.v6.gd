@@ -194,7 +194,7 @@ func _ready():
 	"Load ingame Comics"
 	# Works but Comics node has underlying bugs that need fixingx
 	# Not Working!
-	if Globals.curr_scene == "Outside" && _loaded_comics == false:
+	if Globals.curr_scene == "Outside" && _loaded_comics == false && comics_sprite == null:
 		print ("-----Loading GamePlay Comics-----")
 		comics_sprite =  Functions.load_comics(
 			comics[8], 

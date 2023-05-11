@@ -1063,7 +1063,7 @@ class Functions extends Reference:
 	
 	static func show_comics (comics_chap : Node, cmx_root : Control, comic_main  )-> Control:
 		comic_main.emit_signal("loaded_comics")
-		cmx_root.add_child(comics_chap)
+		comic_main.add_child(comics_chap)
 		comic_main._loaded_comics = true
 		return cmx_root
 	
@@ -1104,7 +1104,7 @@ class Functions extends Reference:
 				#Kinematic_2d =  CharacterBody2D.new()
 				#comics_placeholder = Control.new()
 				
-				Kinematic_2d.name= 'Kinematic_2d'
+				#Kinematic_2d.name= 'Kinematic_2d'
 				comics_placeholder.name = 'comics_placeholder'
 		
 				comics_placeholder.set_mouse_filter(2)

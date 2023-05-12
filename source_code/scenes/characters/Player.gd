@@ -246,8 +246,8 @@ func respawn()-> void:
 	'Updated Respawn Code'
 	#Reboots the current scene if the Player Dies
 	# Triggered with animation player
-	if Globals._q != null:
-		Globals.change_scene_to(Globals._q)
+	if Globals.scene_resource != null:
+		Globals.change_scene_to(Globals.scene_resource)
 	else: get_tree().reload_current_scene()
 
 func _on_hurtbox_area_entered(area):

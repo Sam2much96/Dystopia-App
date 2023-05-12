@@ -69,8 +69,6 @@ texture = ExtResource( 2 )
 expand = true
 stretch_mode = 6
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
-
 [node name="Timer" type="Timer" parent="."]
 wait_time = 20.0
 autostart = true
@@ -78,5 +76,3 @@ autostart = true
 [node name="Appodeal" parent="." instance=ExtResource( 12 )]
 enabled = true
 banner_size = "320x50"
-
-[connection signal="ready" from="HTTPRequest" to="." method="_on_HTTPRequest_ready"]

@@ -411,7 +411,8 @@ class MemoryManagement extends Reference :
 
 	static func queue_free_array(nodes: Array) -> void:
 		for i in nodes:
-			i.queue_free()
+			if i != null:
+				i.queue_free()
 
 
 'Delete Files'

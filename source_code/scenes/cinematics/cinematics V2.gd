@@ -351,24 +351,31 @@ func _on_watch_anime_pressed():
 
 func cinematics_get(parameters : String) :
 	
-	# Enables Polymorphism of Cinematics Yt Downloader & Streamer
+	return OS.shell_open(youtube[parameters])
 	
+	
+	# Enables Polymorphism of Cinematics Yt Downloader & Streamer
+	# Disabled for Refactoring and Debugging
+	"""
 	for i in Mobile_Platforms:
 		# PC Platforms
 		if Globals.os != i && Globals.check_files(Globals.user_data_dir, cinematic[parameters]):  
+			
 			if Networking.good_internet:
+				
+				# PC platforms
 				var stream := VideoStreamWebm.new()
-				
-				
 				stream.set_file(cinematic[parameters])
 				dialgue_box.show_dialog("Playing " + parameters + ".webm" , "admin" )
 				Video_Stream(stream, Globals.os)
+				
+				
 			elif !Networking.good_internet:
 				return OS.shell_open(youtube[parameters])
 		
 		if Globals.os == i: # Mobile Platforms
 			return OS.shell_open(youtube[parameters])
-
+	"""
 
 
 # Rewrite this code

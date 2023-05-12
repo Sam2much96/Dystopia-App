@@ -288,6 +288,7 @@ func _exit_tree():
 	# Memory Leak Management
 	#
 	# Clears all ui buttons
+	
 	Globals.MemoryManagement.queue_free_array(MenuButtons)
 	Music._notification(NOTIFICATION_UNPAUSED) #resets music when exiting scene tree
 	

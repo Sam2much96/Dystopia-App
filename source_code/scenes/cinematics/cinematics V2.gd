@@ -152,9 +152,10 @@ func Video_Stream(stream, os: String): #This code works
 	
 	if os == "X11" or "Windows":
 		
+		print (Globals.center_of_viewport)
 		#True Center of Screen
-		#videoplayer.set_position(Vector2(-(Globals.center_of_viewport.x),100)) # Globals.ceter_of_viewport calculation is off
-		videoplayer.set_position($Position2D.position) 
+		videoplayer.set_position(Vector2((Globals.center_of_viewport.x/20),100)) # Globals.ceter_of_viewport calculation is off
+		#videoplayer.set_position($Position2D.position) 
 
 	
 	

@@ -16,23 +16,23 @@
 
 #
 # To DO:
-# (0) Organize code for better readability
+# (0) Organize code for better readability (done)
 #(1) connect this script with  the dialogue singleton for translation and wordbubble fx co-ordination
 #(2) Update Logic to be used by Texture React nodes NFT
-# (3) Add more parameters to the drag() function to be reusable in other scripts
+# (3) Add more parameters to the drag() function to be reusable in other scripts (done)
 # (4) Copy NFT storage codes to save downloaded comic chapters locally. It'll optimize file sizes
 # (5) Implement State Machine (on It)
 # (6) Implement Extendible (NFT) drag and Drop (Done)
 		# Implemeny godot-rust-ipfs cat for steamlined downloads
-# (7) Implement Page state and Pages state
-# (8) Expand on this mechanics
+# (7) Implement Page state and Pages state 
+# (8) Expand on this mechanics (1/3)
 # (9) Dystopia App Swipe Gestures Using Swipe Detection
 # *************************************************
 # Bugs:
 # (1) it has a wierd updatable bug that's visible in the debug panel
 # (2) Center Page is buggy because Callibration is off Screen Center
 # (3) Drag and Drop across small distances is buggy (fixed)
-# (4) Set frame state is buggy when combine with swipe gestures
+# (4) Set frame state is buggy when combine with swipe gestures (fixed)
 # (5) Callibration is off for Swipe Gestures
 # *************************************************
 

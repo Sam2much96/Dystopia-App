@@ -298,50 +298,54 @@ enabled_focus_mode = 0
 
 [node name="Hint" type="Popup" parent="."]
 visible = true
-margin_top = -354.897
-margin_right = 40.0
-margin_bottom = -314.897
+margin_left = -85.5263
+margin_top = -299.661
+margin_right = -45.5263
+margin_bottom = -259.661
 script = SubResource( 5 )
 
 [node name="ColorRect" type="ColorRect" parent="Hint"]
 margin_left = 100.0
 margin_top = 584.0
-margin_right = 1102.0
-margin_bottom = 679.0
+margin_right = 960.0
+margin_bottom = 823.0
 
 [node name="Label" type="Label" parent="Hint"]
-margin_left = 196.657
-margin_top = 617.029
-margin_right = 1490.66
-margin_bottom = 666.029
-rect_scale = Vector2( 0.63048, 0.63048 )
+margin_left = 96.1114
+margin_top = 610.014
+margin_right = 1762.11
+margin_bottom = 796.014
+rect_scale = Vector2( 0.63, 0.63 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 17 )
-text = "Double Tap to Zoom in, Swipe left and right to change pages"
+text = "Double Tap to Zoom in, 
+Swipe Top & Bottoms Screen
+to Change pages"
 
 [node name="Hint2" type="Popup" parent="."]
 visible = true
-margin_left = 53.9391
-margin_top = 586.04
-margin_right = 93.9391
-margin_bottom = 626.04
+margin_left = -115.579
+margin_top = 1224.75
+margin_right = -75.5789
+margin_bottom = 1264.75
 script = SubResource( 5 )
 
 [node name="ColorRect" type="ColorRect" parent="Hint2"]
-margin_left = 100.0
-margin_top = 584.0
-margin_right = 1102.0
-margin_bottom = 679.0
+margin_left = 128.0
+margin_top = -25.0
+margin_right = 1023.0
+margin_bottom = 170.0
 
 [node name="Label" type="Label" parent="Hint2"]
-margin_left = 196.657
-margin_top = 617.029
-margin_right = 1490.66
-margin_bottom = 666.029
+margin_left = 178.415
+margin_top = 16.8495
+margin_right = 1524.41
+margin_bottom = 76.8495
 rect_scale = Vector2( 0.63048, 0.63048 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 17 )
-text = "ADvertising placeholder ADvertising placeholder"
+text = "Swipe TOP & BOTTOM SCREENS
+ TO CHANGE PAGES"
 
 [connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_1" to="Comics/ScrollContainer/GridContainer" method="_on_chap_1_pressed"]
 [connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_2" to="Comics/ScrollContainer/GridContainer" method="_on_chap_2_pressed"]

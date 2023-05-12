@@ -4,7 +4,7 @@
 font_path = "res://fonts/DigitalStripBB_BoldItal.ttf"
 
 [resource]
-size = 14
+size = 83
 outline_color = Color( 0, 0, 0, 1 )
 extra_spacing_top = -3
 extra_spacing_bottom = -4

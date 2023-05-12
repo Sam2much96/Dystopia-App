@@ -12,6 +12,7 @@
 #(2) Uses New multitouch gestures by implementing a touch input manager
 #(3) Decentralized Storage IPFS module (1/2)
 #(4) Swipe Gestures as Global Events
+#(5) Uses Networking Timer as await parameters for changing Panel
 
 #
 # To DO:
@@ -59,7 +60,7 @@ export var SwipeLocked : bool
 export var  current_frame : int   = 0 # Global Frame Variable
 
 #Stores comics current page as a global variable 
-export var current_page : int  = -2# Global page variable, same as above, but differentiating for testing
+#export var current_page : int  = -2# Global page variable, same as above, but differentiating for testing
 
 
 
@@ -172,7 +173,7 @@ var direction_var : String = "idle"
 
 var _state = IDLE
 
-#var _e : Timer = Timer.new()
+const SWIPE_AWAIT = 1.9
 
 onready var _debug_= get_tree().get_root().get_node("/root/Debug")
 onready var cmx_root : Control = get_tree().get_nodes_in_group("Cmx_Root").pop_front()
@@ -359,7 +360,7 @@ func _input(event):
 		#if Networking.Timeout == false:
 		
 		
-		Networking.start_check(4)
+		Networking.start_check(SWIPE_AWAIT)
 		
 		# should save event positions to an array and 
 		# run calculations using the first and last array positions
@@ -481,8 +482,8 @@ func _process(_delta):
 		if _debug_ != null && _debug_.enabled == true:
 			#var Debug  = Engine.get_singleton('Debug')
 			_debug_.Comics_debug = str(
-				'Curr frme:', current_frame , 'Cmx: ',current_comics, 'Enbled',enabled,'can drag: ',#can_drag,
-				' Zoom: ',zoom 
+				'CFrme:', current_frame, "SL:", SwipeLocked , 'cd: ',can_drag, 'Enbled',enabled,'loaded comics: ',_loaded_comics,
+				' Zoom: ',zoom, 'cp: ', 'cs: ', comics_sprite
 				)
 
 	"Unused State Machine implementation"
@@ -600,7 +601,7 @@ func next_panel(comics_sprite : AnimatedSprite) -> int:
 	if !can_drag && !SwipeLocked && Input.is_action_pressed("next_panel") && comics_sprite != null: #&& !Timemout:
 	#if comics_sprite != null && !Timemout:
 		
-		Networking.start_check(1)
+		#Networking.start_check(1)
 		
 		current_frame = abs(current_frame + 1 )
 		#var next_frame : int =  (current_frame + 1) 
@@ -1104,7 +1105,7 @@ class Functions extends Reference:
 				#Kinematic_2d =  CharacterBody2D.new()
 				#comics_placeholder = Control.new()
 				
-				#Kinematic_2d.name= 'Kinematic_2d'
+				Kinematic_2d.name= 'Kinematic_2d'
 				comics_placeholder.name = 'comics_placeholder'
 		
 				comics_placeholder.set_mouse_filter(2)
@@ -1390,23 +1391,23 @@ class Extensions extends AnimatedSprite:
 		
 		#print(Comics_v6.current_frame, "/", CurrentPage) # for debug purposes
 		
-		#CurrentPage = comics.get_frame()
-		
 		# Makes Current Page a Local integer
 		CurrentPage = self.get_frame()
 
-		#print(CurrentPage, "/", TotalPageCount) # for Debug purposes only
-		
-		# Last Page
-		if (CurrentPage + 1) == (TotalPageCount) : # Make Practical 
-			#print ("freeing comics placeholder method")
-			#self.queue_free()
+		"Last Page Conditionals"
+		if (CurrentPage + 1) == (TotalPageCount) && !Comics_v6.LastPage: # Make Practical 
 			Comics_v6.LastPage = true
+			return Comics_v6.LastPage
 
 	func _ready():
 		Comics_v6.comics_sprite = self
 		TotalPageCount = self.frames.get_frame_count('default')
 		
+		" Mobile OS Conditionals"
+		if Globals.screenOrientation == Globals.SCREEN_VERTICAL:
+			
+			# Upscale on Mobile Devices
+			self.set_scale(Vector2(1.3,1.3))
 		print_debug("Extension Script Initialized" + str(Comics_v6.comics_sprite) )
 
 

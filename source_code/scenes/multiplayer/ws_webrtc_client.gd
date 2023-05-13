@@ -1072,18 +1072,10 @@ func client_debug()-> void:
 	print ('/Client Player info : Linear velocity: ',linear_vel, "// Peer ID: ", rtc_mp.get_peers(), ' State: ',state) #for debug purposes only
 	print (rtc_mp)
 
-"CHATS"
-func _on_Chat_Button_pressed():
-	var _text = $UI/LineEdit.text
-	Functions.add_chat(web_client,chat,_text)
 
 
 func _on_peers_pressed():
 	WebRTC.peers(rtc_mp)
-
-
-func _on_ping_pressed():
-	ping()
 
 
 

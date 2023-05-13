@@ -2,20 +2,20 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/damage.png-63e519560bdd46c5b57e46f39eb84710.stex"
+path="res://.import/object.png-6e8af22ee1bd6a0b5cc59179a8618cb7.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://New game code and features/multiplayer/images/damage.png"
-dest_files=[ "res://.import/damage.png-63e519560bdd46c5b57e46f39eb84710.stex" ]
+source_file="res://scenes/multiplayer/images/minimap/object.png"
+dest_files=[ "res://.import/object.png-6e8af22ee1bd6a0b5cc59179a8618cb7.stex" ]
 
 [params]
 
 compress/mode=1
-compress/lossy_quality=1.0
+compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=2
@@ -23,7 +23,7 @@ flags/repeat=0
 flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
-flags/srgb=0
+flags/srgb=2
 process/fix_alpha_border=false
 process/premult_alpha=false
 process/HDR_as_SRGB=false

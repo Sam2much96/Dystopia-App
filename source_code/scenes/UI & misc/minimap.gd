@@ -17,8 +17,8 @@ extends TextureRect
 class_name minimap
 
 #tweak code for multiplayer
-onready var texture_object = preload("res://New game code and features/multiplayer/images/minimap/object.png")
-onready var texture_player = preload("res://New game code and features/multiplayer/images/minimap/player.png")
+onready var texture_object : StreamTexture = preload("res://scenes/multiplayer/images/minimap/object.png")
+onready var texture_player : StreamTexture = preload("res://scenes/multiplayer/images/minimap/player.png")
 onready var label_position = $label_position
 onready var node_root = get_node("/root/world")
 var total_delta = 0

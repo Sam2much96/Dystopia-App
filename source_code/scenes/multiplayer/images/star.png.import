@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/object.png-0f928ebde64274c4f99330d500c9dc7d.stex"
+path="res://.import/star.png-1f5ad6f51c393576f533d81a69d92fc1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://New game code and features/multiplayer/images/minimap/object.png"
-dest_files=[ "res://.import/object.png-0f928ebde64274c4f99330d500c9dc7d.stex" ]
+source_file="res://scenes/multiplayer/images/star.png"
+dest_files=[ "res://.import/star.png-1f5ad6f51c393576f533d81a69d92fc1.stex" ]
 
 [params]
 
@@ -18,7 +18,7 @@ compress/mode=1
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
-compress/normal_map=2
+compress/normal_map=0
 flags/repeat=0
 flags/filter=false
 flags/mipmaps=false

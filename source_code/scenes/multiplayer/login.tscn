@@ -1,27 +1,27 @@
 [gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://New game code and features/multiplayer/scripts/login.gd" type="Script" id=1]
+[ext_resource path="res://fonts/DigitalStripBB_BoldItal.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://resources/illustrations/coins silver.png" type="Texture" id=2]
-[ext_resource path="res://fonts/DigitalStripBB_BoldItal.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://fonts/Comic_Andy.ttf" type="DynamicFontData" id=7]
+[ext_resource path="res://fonts/Comic_Andy.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://scenes/multiplayer/scripts/login.gd" type="Script" id=4]
 
 [sub_resource type="DynamicFont" id=23]
 size = 38
-font_data = ExtResource( 7 )
+font_data = ExtResource( 3 )
 
 [sub_resource type="DynamicFont" id=24]
 size = 32
-font_data = ExtResource( 7 )
+font_data = ExtResource( 3 )
 
 [sub_resource type="DynamicFont" id=25]
 size = 35
-font_data = ExtResource( 7 )
+font_data = ExtResource( 3 )
 
 [sub_resource type="DynamicFont" id=15]
 size = 64
 outline_size = 5
 outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 4 )
+font_data = ExtResource( 1 )
 
 [sub_resource type="Animation" id=16]
 resource_name = "HORIZONTAL_SCREEN"
@@ -105,7 +105,7 @@ tracks/1/keys = {
 }
 
 [node name="form" type="CanvasLayer"]
-script = ExtResource( 1 )
+script = ExtResource( 4 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_left = 6.0

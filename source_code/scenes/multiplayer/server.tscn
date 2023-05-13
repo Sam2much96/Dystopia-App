@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/levels/Testing Scene 2.tscn" type="PackedScene" id=2]
-[ext_resource path="res://New game code and features/multiplayer/scripts/ws_webrtc_server.gd" type="Script" id=3]
+[ext_resource path="res://scenes/multiplayer/ws_webrtc_server.gd" type="Script" id=3]
 
 [node name="world" type="Node" groups=["online_world"]]
 script = ExtResource( 3 )

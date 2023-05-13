@@ -39,6 +39,11 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://addons/algodot/gdnative/async_executor.gdns"
 }, {
+"base": "CPUParticles2D",
+"class": "BloodSplatter",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/Blood_Splatter_FX.gd"
+}, {
 "base": "StaticBody2D",
 "class": "BrokenShip",
 "language": "GDScript",
@@ -411,6 +416,7 @@ _global_script_class_icons={
 "Algodot": "res://addons/algodot/icon.png",
 "Appodeal": "res://ads/Appodeal/appodeal_logo.png",
 "AsyncExecutorDriver": "",
+"BloodSplatter": "res://resources/FX/Blood splatter fx.webp",
 "BrokenShip": "",
 "Bullet": "",
 "ChatGPTAPI": "",

@@ -75,6 +75,10 @@ var ui_sfx : Dictionary = {
 	1:'res://sounds/Menu1B.ogg',
 }
 
+var blood_fx : Dictionary = {
+	0 :"res://sounds/blood-spilling.ogg" 
+	
+}
 
 var hit_sfx : Dictionary = {
 	0:'res://sounds/hit01.ogg',

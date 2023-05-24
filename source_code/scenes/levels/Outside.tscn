@@ -7,7 +7,7 @@
 [ext_resource path="res://scenes/levels/buildings.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/UI & misc/UI.tscn" type="PackedScene" id=15]
+[ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=15]
 [ext_resource path="res://scenes/UI & misc/Rain_Fx.tscn" type="PackedScene" id=26]
 [ext_resource path="res://scenes/levels/Outside_Level_Properties.gd" type="Script" id=28]
 

@@ -19,10 +19,12 @@ extends Control
 #(3)  
 # TO DO:
 #(1) Update Documentation
-# (2) Reorganise code into classes
+# (2) Reorganise code into classes (Done)
+# (3) Fix video Positionig on multiple devices
 
 class_name cinematic
 
+#hvjhvjhv
 
 export (bool) var cinematic_on = true
 export(String, FILE, "*.ogv") var vid_stream = ""
@@ -74,13 +76,14 @@ func _ready(): #create a video player function
 	#use current scene to trigger cinematic
 	Globals.update_curr_scene()
 	
+	'Screen Display Calculations'
 	# Get Viewport Size, Make it Globally accessible
 	Globals.viewport_size = Globals.calculateViewportSize(self)
 	Globals.center_of_viewport = Globals.calc_center_of_rectangle(Globals.viewport_size)
 	
 	# Prints out the Current Viewport Size
-	#print ("Viewport Size: ", Globals.viewport_size ) # for debug purposes only
-	#print ("Center of Viewprt: ", Globals.center_of_viewport ) # for debug purposes onlys
+	print ("Viewport Size: ", Globals.viewport_size ) # for debug purposes only
+	print ("Center of Viewprt: ", Globals.center_of_viewport ) # for debug purposes onlys
 	
 	
 	'Cinematics scene'
@@ -148,11 +151,15 @@ func Video_Stream(stream, os: String): #This code works
 		videoplayer.expand = false
 		
 		#True Center of Screen
-		videoplayer.set_position(Vector2(-(Globals.center_of_viewport.x),300))
-	
+		self.set_position(Vector2(-(Globals.center_of_viewport.x),300))
+		#videoplayer.set_position($Position2D.position) #Video Player Position: (-1334.26001, 412.127014)
+
+		
+		print("Video Player Position: ",videoplayer.get_position()) # For Debug Purposes only
+
 	if os == "X11" or "Windows":
 		
-		print (Globals.center_of_viewport)
+		#print (Globals.center_of_viewport) # for debug purposes only
 		#True Center of Screen
 		videoplayer.set_position(Vector2((Globals.center_of_viewport.x/20),100)) # Globals.ceter_of_viewport calculation is off
 		#videoplayer.set_position($Position2D.position) 

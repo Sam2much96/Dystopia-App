@@ -8,11 +8,13 @@
 # (1) It check for user's internet access
 # (2)It triggers an error splash page in the debug script if user is offline
 # (3) It aids monetization through online advertising on Mobile
+# (4) It implements Translations UI
 # *************************************************
 # To Do:
-# (1) Languague functionality to convert to various languages via a global script variable or a state machine
-		# How?
-		#parse a csv file and trigger language functions / states through the dialogue singleton at res://singletons/Dialogs.gd
+# (1) Only show once, when installing file. Should Save Information to Globals save file and only Load once
+
+
+
 extends CanvasLayer
 
 
@@ -22,7 +24,7 @@ class_name Login
 This is a gate-keeper script to keep check user's internet connections, restrict their access
 """
 ####
-
+#jcjclyici
 
 var cinematics = load('res://scenes/cinematics/cinematics.tscn')
 var index : int = 0
@@ -50,9 +52,14 @@ onready var _debug =get_tree().get_root().get_node("/root/Debug")
 
 
 func _ready():
-	if _debug != null:
-		_debug = get_tree().get_root().get_node("/root/Debug")
+# Described Above
+#	if _debug != null:
+#		_debug = get_tree().get_root().get_node("/root/Debug")
 
+	# Load Users Prefered DIalogue 
+	Globals.Functions.load_user_data('languague')
+	
+	# If Dialogue Already Preset, Skip to Cinematics.
 	if Dialogs.language != "":
 		get_tree().change_scene_to(cinematics)
 
@@ -82,6 +89,20 @@ func _input(_event):
 
 
 func _on_play_pressed():
+	
+	# Saves User's Language to Global Variable
+	
+	if language.get_selected() == 0:
+		Dialogs.language = "en_US"
+		#Globals.save_game()
+	elif language.get_selected() == 1:
+		Dialogs.language = "pt_BR"
+		#Globals.save_game()
+	elif language.get_selected() == 2:
+		Dialogs.language = "fr"
+		#Globals.save_game()
+	else : Dialogs.language = ""
+
 	get_tree().change_scene_to(cinematics)
 
 
@@ -151,19 +172,6 @@ func translate()-> void:
 	print ("Testing Translation Es: ", Dialogs.translate_to("char3", "fr"))
 	print ("Testing Translation Error: ", Dialogs.translate_to("char7", "en"))
 
-
-# Saves User's Language to Global Variable
-func _on_language_item_selected(index):
-	if index == 0:
-		Dialogs.language = "en_US"
-		#Globals.save_game()
-	elif index == 1:
-		Dialogs.language = "pt_BR"
-		#Globals.save_game()
-	elif index == 2:
-		Dialogs.language = "fr"
-		#Globals.save_game()
-	else : Dialogs.language = ""
 
 
 

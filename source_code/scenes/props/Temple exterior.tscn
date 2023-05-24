@@ -2,23 +2,7 @@
 
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/temple exterior 3d WEBP.webp" type="Texture" id=1]
 [ext_resource path="res://scenes/UI & misc/Exit.gd" type="Script" id=2]
-
-[sub_resource type="GDScript" id=1]
-script/source = "extends StaticBody2D
-
-export(String, FILE, \"*.tscn\") var to_scene = \"res://scenes/levels/Temple interior.tscn\"
-export(String) var spawnpoint = ''
-
-func _ready():
-	$to_inside.to_scene = to_scene
-	$to_inside.spawnpoint = spawnpoint
-	
-	Globals.prev_scene = get_tree().get_current_scene().get_name() #saves current scene as pervious scene
-	Globals.prev_scene_spawnpoint =$to_inside/spawnpoint.position #updates your position and saves
-	Globals.save_game()
-	#Globals.spawnpoint = Globals.spawnpoint #i dunno what this does but lets see what happens
-	pass # Replace with function body.
-"
+[ext_resource path="res://scenes/props/Temple exterior.gd" type="Script" id=3]
 
 [sub_resource type="SegmentShape2D" id=4]
 a = Vector2( -63, 28 )
@@ -57,7 +41,7 @@ extents = Vector2( 50.7669, 42.5125 )
 
 [node name="Temple" type="StaticBody2D"]
 z_index = 1
-script = SubResource( 1 )
+script = ExtResource( 3 )
 
 [node name="temple" type="Sprite" parent="."]
 position = Vector2( 56.652, -16.0833 )

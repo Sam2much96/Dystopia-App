@@ -6,8 +6,7 @@
 # This is an Ingame UI (Separate from Ingame Menu) containing
 # information used by the player's Dialogue, Inventory, Health bar,.
 # Kill count, Directional, Comics.
-# The touch interface functions control it's state machine
-# On the 16/04/22 , i started an update to the dialogue button.
+#
 # Features
 # To DO
 #(1) Implement State Machine to goggle between different Screen orientations using global orientation state

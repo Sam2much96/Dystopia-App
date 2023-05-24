@@ -20,30 +20,30 @@ signal enabled
 func _ready():
 	
 	
-	Globals.save_game()
+	#Globals.save_game() # Depreciated
 	get_tree().set_auto_accept_quit(false)
 	hide()
 
 func _input(event):
 	if event.is_action_pressed("pause")  && enabled == false: #this code breaks
-			emit_signal("not_enabled")
-			enabled = true
-			visible = enabled
-			get_tree().paused = enabled
-			grab_focus()
-			_update_quest_listing()
-			_update_item_listing()
-			_update_wallet_stats()
-			return enabled
-			pass
+		emit_signal("not_enabled")
+		enabled = true
+		visible = enabled
+		get_tree().paused = enabled
+		grab_focus()
+		_update_quest_listing()
+		_update_item_listing()
+		_update_wallet_stats()
+		return enabled
+		pass
 	if event.is_action_pressed("pause") && enabled == true:
-			enabled = false
-			emit_signal('enabled')
-			visible = enabled
-			hide()
-			get_tree().paused = false
-			#print (enabled)
-			return enabled
+		enabled = false
+		emit_signal('enabled')
+		visible = enabled
+		hide()
+		get_tree().paused = false
+		#print (enabled)
+		return enabled
 
 
 

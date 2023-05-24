@@ -6,10 +6,10 @@
 [ext_resource path="res://scenes/UI & misc/Healthbar.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/UI & misc/ingame_menu.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/UI & misc/Comics.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/UI & misc/Touch interface.tscn" type="PackedScene" id=8]
-[ext_resource path="res://scenes/UI & misc/UI.gd" type="Script" id=9]
+[ext_resource path="res://scenes/UI & misc/TouchScreen HUD.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/UI & misc/GameHUD.gd" type="Script" id=9]
 
-[node name="UI" type="CanvasLayer"]
+[node name="GameHUD" type="CanvasLayer"]
 process_priority = 1
 script = ExtResource( 9 )
 

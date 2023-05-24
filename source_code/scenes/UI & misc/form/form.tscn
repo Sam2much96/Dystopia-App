@@ -167,4 +167,3 @@ visible = false
 [node name="Timer" type="Timer" parent="."]
 
 [connection signal="pressed" from="ui/grid/play" to="." method="_on_play_pressed"]
-[connection signal="item_selected" from="ui/grid/language" to="." method="_on_language_item_selected"]

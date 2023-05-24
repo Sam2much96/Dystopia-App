@@ -19,24 +19,22 @@
 # (3) Use resource oader for video loading script
 # Bugs
 # (1) COnnect to GDUNZIP via editor script to zip and unzip 
-# (2) Lacks proper documentation
-# (3) Lacks Performance Optimization and Proper variable mnaming conventions
+# (2) Lacks proper documentation (fixed)
+# (3) Lacks Performance Optimization and Proper variable mnaming conventions (fixed)
 # (4) Causes a performance hog with process functions
-# (5) Causes a ram hog with loaded adn preloaded variables
+# (5) Causes a ram hog with loaded and preloaded variables
 # *************************************************
 
 extends Node
 
-#use variables to code ux +add a scene tree calculator
-var cinematics = preload ('res://resources/title animation/title..ogv') #I free memory once this is used
-#var Pilot_ep
 
-#var AMV 
+var cinematics = preload ('res://resources/title animation/title..ogv') #I free memory once this is used
+var title_screen = load( 'res://scenes/Title screen.tscn')
 var pilot_ep 
 var VIDEO
 
 onready var form = load ('res://scenes/UI & misc/form/form.tscn')
-var title_screen = load( 'res://scenes/Title screen.tscn')
+
 #var shop = load('res://scenes/UI & misc/Shop.tscn')
 var controls = load ('res://scenes/UI & misc/Controls.tscn')
 
@@ -74,7 +72,7 @@ var spawn_y : int
 var current_level : String
 
 
-var Music_on_settings
+var Music_on_settings # Depreciated
 export (String, 'analogue', 'direction') var direction_control = ''  #toggles btw analogue and d-pad
 
 var uncompressed # Varible holds uncompressed zip files
@@ -110,11 +108,8 @@ var user_data_dir : String =OS.get_user_data_dir()
 'Screen Size Resolution'
 var screenSize : Vector2
 enum { SCREEN_HORIZONTAL, SCREEN_VERTICAL} 
-
-var screenOrientation 
-
+var screenOrientation : int
 var viewport_size : Vector2
-
 var center_of_viewport : Vector2 
 
 "In Game FX"
@@ -166,105 +161,6 @@ func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_pr
 	else: return 1;
 
 
-"""
-Really simple save file implementation. Just saving some variables to a dictionary
-"""
-
-#modify code to include current scene and player position. also enemy spawner postions and info
-# should take a parameter to save individual variables
-func save_game(): 
-	
-	print ("-------Saving Game -------")
-	
-	var save_game = File.new()
-	save_game.open("user://savegeme.save", File.WRITE)
-	var save_dict = {}
-	save_dict.player = player #saves the player node 
-	#save_dict.spawnpoint = spawnpoint
-	save_dict.spawn_x = spawn_x
-	save_dict.spawn_y =spawn_y
-	save_dict.current_level = current_level
-	save_dict.inventory = Inventory.list()
-	save_dict.quests = Quest.get_quest_list()
-	#my code
-	save_dict.os = os
-	save_dict.kill_count = kill_count
-	#save_dict.currency = Suds #should load from encrypted wallet.cfg
-	save_dict.prev_scene = prev_scene
-	save_dict.prev_scene_spawnpoint = prev_scene_spawnpoint
-	save_dict.player_hitpoints = player_hitpoints
-	save_dict.direction_control = direction_control
-	save_dict.Music_on_settings = Music_on_settings #add other variables to save
-	
-	save_dict.languague = Dialogs.language
-	#Comics Variables
-	#save_dict.comics_chapter
-	#save_dict.comics_page
-	
-	save_game.store_line(to_json(save_dict))
-	save_game.close()
-	print ("saved gameplay")
-
-"""
-If check_only is true it will only check for a valid save file and return true or false without
-restoring any data
-"""
-func load_game(check_only=false) -> bool:
-	
-	
-	print ("-------Loading Game -------")
-	
-	
-	var save_game = File.new()
-	
-	if not save_game.file_exists("user://savegeme.save"):
-		return false
-	
-	save_game.open("user://savegeme.save", File.READ)
-	
-	var save_dict = parse_json(save_game.get_line())
-	if typeof(save_dict) != TYPE_DICTIONARY:
-		return false
-	if not check_only:
-		_restore_data(save_dict)
-	
-	save_game.close()
-	return true
-
-"""
-Restores data from the JSON dictionary inside the save files
-"""
-func _restore_data(save_dict):
-	# JSON numbers are always parsed as floats. In this case we need to turn them into ints
-	for key in save_dict.quests:
-		save_dict.quests[key] = int(save_dict.quests[key])
-	Quest.quest_list = save_dict.quests
-	
-	# JSON numbers are always parsed as floats. In this case we need to turn them into ints
-	for key in save_dict.inventory:
-		save_dict.inventory[key] = int(save_dict.inventory[key])
-	Inventory.inventory = save_dict.inventory
-	
-	spawn_x = save_dict.spawn_x 
-	spawn_y = save_dict.spawn_y
-	current_level = save_dict.current_level
-	
-	player = save_dict.player
-	
-	os = save_dict.os 
-	kill_count = save_dict.kill_count 
-	#Suds = save_dict.currency #should load from encrypted wallet.cfg. Check NFT parser 
-	player_hitpoints = save_dict.player_hitpoints
-	prev_scene =save_dict.prev_scene 
-	prev_scene_spawnpoint = save_dict.prev_scene_spawnpoint 
-	
-	direction_control = save_dict.direction_control
-	
-	Dialogs.language = save_dict.languague
-	
-	######################################################
-	print ("Loaded gameplay")
-
 func update_curr_scene() -> void:
 	curr_scene= get_tree().get_current_scene().get_name() 
 	print ("current scene is: ", curr_scene)
@@ -284,7 +180,7 @@ func _go_to_cinematics():
 	return get_tree().change_scene('res://scenes/cinematics/cinematics.tscn') 
 
 
-
+# Deprecoated
 func resize_window(x,y): #resizes the game window
 	screenSize = Vector2(x,y);
 	return OS.set_window_size(Vector2(x,y));
@@ -365,6 +261,135 @@ class Functions extends Reference:
 		return scene_resource
 
 
+
+	"""
+	Really simple save file implementation. Just saving some variables to a dictionary
+	"""
+
+	#modify code to include current scene and player position. also enemy spawner postions and info
+	# should take a parameter to save individual variables
+	static func save_game(
+		player: Array, 
+		player_hitpoints : int, 
+		spawn_x, spawn_y, 
+		current_level, 
+		os : String, 
+		kill_count : int, 
+		prev_scene, 
+		prev_scene_spawnpoint,
+		direction_control,
+		Music_on_settings
+		)-> bool: 
+		
+		print ("-------Saving Game -------")
+		
+		var save_game = File.new()
+		save_game.open("user://savegeme.save", File.WRITE)
+		var save_dict = {}
+		if !player.empty():
+			save_dict.player = player #saves the player node 
+		if spawn_x != null:
+			save_dict.spawn_x = spawn_x
+		if spawn_y != null:
+			save_dict.spawn_y =spawn_y
+		if current_level != null:
+			save_dict.current_level = current_level
+		if !Inventory.list().empty():
+			save_dict.inventory = Inventory.list()
+		if !Quest.get_quest_list().empty():
+			save_dict.quests = Quest.get_quest_list()
+		if os != '':
+			save_dict.os = os
+		if kill_count != null:
+			save_dict.kill_count = kill_count
+		#save_dict.currency = Suds #should load from encrypted wallet.cfg
+		if prev_scene != null:
+			save_dict.prev_scene = prev_scene
+		if prev_scene_spawnpoint != null: # Depreciate in favor of a singular spawpoint variable
+			save_dict.prev_scene_spawnpoint = prev_scene_spawnpoint
+		if player_hitpoints != 0:
+			save_dict.player_hitpoints = player_hitpoints
+		if direction_control != "":
+			save_dict.direction_control = direction_control
+		if Music_on_settings != null : # Redefine variable name
+			save_dict.Music_on_settings = Music_on_settings #add other variables to save
+		if Dialogs.language != '':
+			save_dict.languague = Dialogs.language
+		
+		save_game.store_line(to_json(save_dict))
+		save_game.close()
+		print ("saved gameplay")
+		return true
+
+	"""
+	If check_only is true it will only check for a valid save file and return true or false without
+	restoring any data
+	"""
+	static func load_game(check_only=false) -> bool:
+		print ("-------Loading Game -------")
+		var save_game = File.new()
+		
+		if not save_game.file_exists("user://savegeme.save"):
+			return false
+		save_game.open("user://savegeme.save", File.READ)
+		var save_dict = parse_json(save_game.get_line())
+		if typeof(save_dict) != TYPE_DICTIONARY:
+			return false
+		if not check_only:
+			_restore_data(save_dict)
+		
+		save_game.close()
+		return true
+
+	"""
+	Restores data from the JSON dictionary inside the save files
+	"""
+	static func _restore_data(save_dict):
+		# JSON numbers are always parsed as floats. In this case we need to turn them into ints
+		for key in save_dict.quests:
+			save_dict.quests[key] = int(save_dict.quests[key])
+		Quest.quest_list = save_dict.quests
+		
+		# JSON numbers are always parsed as floats. In this case we need to turn them into ints
+		for key in save_dict.inventory:
+			save_dict.inventory[key] = int(save_dict.inventory[key])
+		Inventory.inventory = save_dict.inventory
+		
+		Globals.spawn_x = save_dict.spawn_x 
+		Globals.spawn_y = save_dict.spawn_y
+		Globals.current_level = save_dict.current_level
+		Globals.player = save_dict.player
+		Globals.os = save_dict.os 
+		Globals.kill_count = save_dict.kill_count  
+		Globals.player_hitpoints = save_dict.player_hitpoints
+		Globals.prev_scene =save_dict.prev_scene 
+		Globals.prev_scene_spawnpoint = save_dict.prev_scene_spawnpoint 
+		
+		Globals.direction_control = save_dict.direction_control
+		
+		Dialogs.language = save_dict.languague
+		
+		######################################################
+		print ("Loaded gameplay")
+
+	# Loads Singular User Data from local storage
+	# Version 2 of Load_game function
+	# Should allow for loading individual variables from Local
+	static func load_user_data( data: String ):
+		print ("-------Loading User Data -------")
+		var save_game = File.new()
+		
+		if not save_game.file_exists("user://savegeme.save"):
+			return false
+		save_game.open("user://savegeme.save", File.READ)
+		var save_dict = parse_json(save_game.get_line())
+		if typeof(save_dict) != TYPE_DICTIONARY:
+			return false
+
+		if save_dict.has(data):
+			if data == 'languague':
+				Dialogs.language = save_dict.languague
+		pass
 
 
 func turn_off_processing(toggle): # to improve game speed and turn off idle processsing

@@ -48,7 +48,7 @@ onready var _multiplayer = $MarginContainer/ScrollContainer/HSeparator/multiplay
 
 onready var anime : Button = $MarginContainer/ScrollContainer/HSeparator/Anime
 onready var practice : Button = $MarginContainer/ScrollContainer/HSeparator/Testing_Scene
-onready var City_scape : Button = $MarginContainer/ScrollContainer/HSeparator/City_scape
+#onready var City_scape : Button = $MarginContainer/ScrollContainer/HSeparator/City_scape # Depreciated
 onready var wallet_ : Button = $MarginContainer/ScrollContainer/HSeparator/wallet
 onready var controls : Button = $MarginContainer/ScrollContainer/HSeparator/controls
 onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit Button"
@@ -62,14 +62,11 @@ const scroll_constant: int = 4
 
 onready var MenuButtons : Array = [
 	comics, new_game, continue_game, game_menu,
-	_multiplayer, anime, practice, City_scape, 
+	_multiplayer, anime, practice, 
 	wallet_, controls, quit
 ]
 
 func _ready():
-	
-	# Get Scroller node when ready
-	#scroller = 
 	
 	
 	" Translation"
@@ -81,10 +78,10 @@ func _ready():
 	
 	
 	'Hides the Menu once the scene tree is ready'
-	#hide()
+	
 	menu_state =  HIDDEN
 	
-	if Globals.load_game(true) and continue_game != null:
+	if Globals.Functions.load_game(true) and continue_game != null:
 		continue_game.disabled = false 
 	else:
 		continue_game.disabled = true
@@ -170,11 +167,10 @@ func _input(event): #Toggles menu visibility on/off
 	else: pass
 
 
-func _on_continue_pressed(): #breaks the Globals.current_level script
-	print (" --loading game--")
+func _on_continue_pressed():
 	
 	Music.play_track(Music.ui_sfx[0])
-	Globals.load_game()
+	Globals.Functions.load_game()
 	if Globals.current_level != null:
 		
 		"Loads Large Scene"
@@ -220,8 +216,18 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 		Music.play_track(Music.ui_sfx[0]) #plays ui sfx in a loop
 		
 
-		
-		if Globals.save_game() == false:
+		# Required Variables
+		#player: Array, 
+		#player_hitpoints : int, 
+		#spawn_x, spawn_y, 
+		#current_level, 
+		#os : String, 
+		#kill_count : int, 
+		#prev_scene, 
+		#prev_scene_spawnpoint,
+		#direction_control,
+		#Music_on_settings
+		if Globals.Functions.save_game([], 3, null, null, Globals.current_level, Globals.os, 0, null, null, Globals.direction_control, null) == false:
 			push_error("Error saving game")
 		
 	else:
@@ -359,7 +365,7 @@ func manually_translate()-> void:
 		_multiplayer.set_text(Dialogs.translate_to("multiplayer", Dialogs.language))
 		anime.set_text(Dialogs.translate_to("anime", Dialogs.language))
 		practice.set_text(Dialogs.translate_to("practice", Dialogs.language))
-		City_scape.set_text(Dialogs.translate_to("cityscape", Dialogs.language))
+		#City_scape.set_text(Dialogs.translate_to("cityscape", Dialogs.language))
 		wallet_ .set_text(Dialogs.translate_to("wallet", Dialogs.language))
 		controls.set_text(Dialogs.translate_to("controls", Dialogs.language))
 		quit.set_text(Dialogs.translate_to("quit", Dialogs.language))

@@ -22,16 +22,35 @@
 #(4) Edit Documentation to be neater (Online documetation)
 # (5) Joystick Colors?
 # (6) Fix Brken Ingame Controller changer (fixed 1/2)
+# (7) Should Resize to fit Screen Diameters using Global Scripts & Variables
+# # (a) Write a Resize function using Global Screen Orientation Calculation and Screen Size
 # *************************************************
 
 
 extends Node2D
 
-class_name TouchInterface
+class_name TouchScreenHUD
 
 var _Hide_touch_interface : bool
 
+#gdgjuujttu
+
+#State Machine
+enum { MENU, INTERRACT, ATTACK, STATS, COMICS, RESET }
+
+export var _state_controller = RESET
+export (String, 'analogue', 'direction') var _control
 export (bool) var _Debug
+
+
+#signal menu
+signal interract
+signal attack
+signal stats
+signal comics
+signal reset
+
+
 onready var menu = $menu
 onready var _interract = $interact
 onready var stats = $stats
@@ -44,22 +63,6 @@ onready var D_pad = $"D-pad"
 
 onready var Anim = $AnimationPlayer
 
-
-#signal menu
-signal interract
-signal attack
-signal stats
-signal comics
-signal reset
-
-#Rewritten State Machine
-enum { MENU, INTERRACT, ATTACK, STATS, COMICS, RESET }
-
-export var _state_controller = RESET
-
-
-export (String, 'analogue', 'direction') var _control
-
 onready var action_buttons : Array = [menu ,stats,_interract,roll, slash,comics]
 onready var direction_buttons : Array = [D_pad, joystick]
 
@@ -68,17 +71,20 @@ func _ready():
 	#touch_interface_debug() disabling for now
 
 	"Touch UI Visibility"
-	#toggles touch interface visibility depending on the os and screen orientation (Pc or Mobiles)
-	if Globals.os != 'Android' && Globals.screenOrientation == 0: 
-		_Hide_touch_interface = true
-		self.hide()
-		print('Hiding touch interface for ', Globals.os)
-		
-		pass
-		#disabled for debugging purposer. Reactivate later
-#########Auto sets the controller button
+	hide_self(Globals.os, Globals.screenOrientation, _Hide_touch_interface, self)
 
+	"Auto sets the controller button"
 	reset()
+
+
+static func hide_self(operating_sys: String, screenOrientation : int, _Hide_touch_interface : bool, _node : TouchScreenHUD) -> void:
+	#toggles touch interface visibility depending on the os and screen orientation (Pc or Mobiles)
+	if operating_sys != 'Android' && screenOrientation == 0 :
+		_Hide_touch_interface = true
+		_node.hide()
+		print('Hiding touch interface for ', Globals.os)
+
+
 
 # I wrote all the states within functions. I should'vve instead written them within a process fucntion
 """

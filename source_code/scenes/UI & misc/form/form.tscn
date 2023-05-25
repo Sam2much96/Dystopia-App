@@ -67,9 +67,6 @@ margin_top = -488.574
 margin_right = 89.9542
 margin_bottom = 111.426
 rect_scale = Vector2( 2, 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="grid" type="GridContainer" parent="ui"]
 margin_left = 316.0

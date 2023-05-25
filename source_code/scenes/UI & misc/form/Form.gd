@@ -23,32 +23,29 @@ class_name Login
 """
 This is a gate-keeper script to keep check user's internet connections, restrict their access
 """
-####
-#jcjclyici
 
 var cinematics = load('res://scenes/cinematics/cinematics.tscn')
 var index : int = 0
 
-#Saves player name and emaol address to global script
-var player_name : String
-var email_addr : String
 onready var play_button : Button = $ui/grid/play
 onready var dialgue_box = $Dialog_box
 onready var language = $ui/grid/language
+
 ########Label Spacer Codes Are Used For Aesthetics#########
 onready var label_spacer = $ui/grid/label_spacer
 onready var label_spacer2 = $ui/grid/label_spacer2
 onready var label_spacer3 =$ui/grid/label_spacer3
 
 onready var timer = $Timer
-
-var os = Globals.os
 onready var _debug =get_tree().get_root().get_node("/root/Debug")
 
-#func _init():
-#	if Dialogs.language == "":
-#		Globals.load_game()
+var os = Globals.os # Pointer
 
+onready var UI_buttons : Array = [
+	play_button, dialgue_box, 
+	language, label_spacer, 
+	label_spacer2, label_spacer3
+	]
 
 
 func _ready():
@@ -177,3 +174,7 @@ func translate()-> void:
 
 func _exit_tree():
 	print ("Selected Language: ",Dialogs.language)
+	
+	# Clear Memory
+	for i in UI_buttons:
+		i.queue_free()

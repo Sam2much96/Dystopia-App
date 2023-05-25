@@ -1,3 +1,17 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Idol
+# Saves Player Object details via Global Script to Local Storage
+# Features:
+# (1) Saves Player Information to Local Storage
+# (2) Connects to the Global Functions class for Saving Functions
+
+# To Do:
+#(1) Document
+# *************************************************
+
 extends Area2D
 
 class_name Idol
@@ -17,16 +31,25 @@ func _ready():
 
 func _on_body_entered(body):
 	if body is Player:
-		if Engine.has_singleton('Debug'):
-			var Debug = Engine.get_singleton('Debug')
-			Debug.Autosave_debug = str(' Autosaving player position:', (body.position) ) #improve code to not rely on the globals player script
-		#Globals.current_level = Globals.curr_scene
+		
+		# Debugger
+		var _debug = get_tree().get_root().get_node("/root/Debug")
+		_debug.Autosave_debug = str(' Autosaving player position:', (body.position) )
+		
 		Globals.spawn_x = body.position.x #saves the player's position to spawnpoint
 		Globals.spawn_y = body.position.y
 		Globals.player_hitpoints = body.hitpoints
-		Globals.save_game()# = to_scene #saves the spawnpoint as the current level
-			#push_error("Error changing scene")
-	pass
+		Globals.Functions.save_game(
+			[body], 
+			body.player_hitpoints, 
+			body.spawn_x, 
+			body.spawn_y, 
+			null, 
+			Globals.os, 
+			body.kill_count, 
+			null,null,null,null
+			)
+
 
 func _on_body_exited(body):
 	if body is Player:

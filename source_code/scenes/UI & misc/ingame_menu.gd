@@ -8,9 +8,14 @@
 #(1) Impement State Machine (done)
 # (2) Scales for mobile UI (done)
 # (3) Translations
-#Bugs
-# (2) Implements Swipe Gestures for Auto Scroll
-#(3) Spagetti code 
+# *************************************************
+
+# To-Do
+# (1) Implement Different States (Portrait & LandScape) Using Global Screen Orientation
+
+#Bugs 
+# (2) Implements Swipe Gestures for Auto Scroll (fixed)
+# (3) Spagetti code 
 # (5) Should implemente Touch Input without emulation
 # *************************************************
 

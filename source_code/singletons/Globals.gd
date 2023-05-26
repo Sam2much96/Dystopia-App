@@ -6,16 +6,16 @@
 # This is a auto-included singleton containing
 # information used by the Game 
 # Features
-# (1) Savings function
+# (1) Functions Class for Saving & Loading.
 # (2) A Call to find the current scene
-# (3) Both save and load functions
+# (3) 
 # (4) A video streaming function, which should originally have been a child of the video streamers, 
 #     but it runs faster on a singleton script and so, was called from here
 # (5) Store video files functions
 # (6) It loads scenes for faster switiching between
 # To Add
 # (1) A working zip and unzip function through GDUnzip repurposed as an editor plugin #('insert GDUNzip github address')
-# (2) ArrAnge code base, make it easier to read at a glance
+# (2) ArrAnge code base, make it easier to read at a glance (1/2)
 # (3) Use resource oader for video loading script
 # Bugs
 # (1) COnnect to GDUNZIP via editor script to zip and unzip 
@@ -133,11 +133,13 @@ func _ready():
 	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	
 	# Resizes window the preselected sizes
-	
+	# Sets Default Screen Orientation
 	if os == "Android":
 		screenOrientation = SCREEN_VERTICAL
 	else: screenOrientation = SCREEN_HORIZONTAL 
 	print ("Screen orientation is: ", screenOrientation)
+
+
 
 	player.append( get_tree().get_nodes_in_group('player') )#gets all player nodes in the scene
 	 #it shows deleted object once player is despawns.
@@ -145,13 +147,16 @@ func _ready():
 		player.clear()
 	
 	
-	
-	VisualServer.set_default_clear_color(ColorN("white")) #what does this do?
+	#Set White Background
+	VisualServer.set_default_clear_color(ColorN("white")) 
 
 
 func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_processing()
 
 # Handles Screen Orientation
+	screenOrientation = OS.get_screen_orientation() # Updates Global Screen Orientation
+
+
 	if screenOrientation == SCREEN_VERTICAL :
 
 		pass

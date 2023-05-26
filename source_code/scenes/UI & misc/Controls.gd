@@ -6,7 +6,7 @@
 # 
 # To-Do:
 # (1) Finish D-pad to Joystick button change illustration 
-# 
+# (2) Add Swipe Gestures on/off controls
 
 extends Control
 

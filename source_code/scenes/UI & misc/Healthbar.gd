@@ -9,6 +9,7 @@
 
 # To Do:
 #(1) Implement procedural animation for Healthbar
+# (2) Implement Heart Empty UI animation using a Max Health Constant
 # *************************************************
 
 extends HBoxContainer
@@ -20,8 +21,12 @@ Connects to the player node and shows a health bar in the form of hearts
 """
 
 var player = null
-var heart_scene = preload("res://scenes/UI & misc/Heart.tscn")
-# Called when the node enters the scene tree for the first time.
+var heart_scene : PackedScene = preload("res://scenes/UI & misc/Heart.tscn")
+
+# Disabling until ready to Implement
+#var heart_empty : PackedScene = preload ("res://scenes/UI & misc/HeartEmpty.tscn")
+
+
 func _ready():
 	# Try to get the player node. If null wait till next frame, rinse, repeat.
 	while (player == null):
@@ -31,11 +36,13 @@ func _ready():
 		else:
 			yield(get_tree(), "idle_frame")
 	
+	# Connect Player Node to Self
 	player.connect("health_changed", self, "_on_health_changed")
 	_on_health_changed(player.hitpoints)
 	pass # Replace with function body.
 
 
+# Should Implement a New Constant for Max Health
 func _on_health_changed(new_hp):
 	for child in get_children():
 		child.queue_free() #removes life

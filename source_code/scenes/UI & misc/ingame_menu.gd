@@ -14,6 +14,7 @@
 # (1) Implement Different States (Portrait & LandScape) Using Global Screen Orientation
 
 #Bugs 
+# (1) Buggy on Screen Orientation Rotation
 # (2) Implements Swipe Gestures for Auto Scroll (fixed)
 # (3) Spagetti code 
 # (5) Should implemente Touch Input without emulation
@@ -78,6 +79,10 @@ func _ready():
 	manually_translate()
 	
 	"Scales for Mobile UI"
+	# Disabling for debuggin
+	
+	print_debug("Global Screen Orientatin", Globals.screenOrientation)# For Debug Purposes only
+	
 	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
 		upscale()
 	
@@ -86,7 +91,7 @@ func _ready():
 	
 	menu_state =  HIDDEN
 	
-	if Globals.Functions.load_game(true) and continue_game != null:
+	if Globals.Functions.load_game(true, Globals) and continue_game != null:
 		continue_game.disabled = false 
 	else:
 		continue_game.disabled = true
@@ -137,11 +142,13 @@ func _input(event): #Toggles menu visibility on/off
 			set_focus_mode(Control.FOCUS_CLICK)
 			Music.play_track(Music.ui_sfx[0])
 			#print ("Menu State: ",menu_state) #For debug purposes only
+			Globals.Screen.debug_screen_properties()# Debug Screen Settingd
 			return menu_state
 		if menu_state== SHOWING:
 			menu_state = HIDDEN
 			Music.play_track(Music.ui_sfx[1])
 			#print ("Menu State: ",menu_state) #For debug purposes only
+			Globals.Screen.debug_screen_properties()# Debug Screen Settingd
 			return menu_state
 		else:
 			return
@@ -175,7 +182,7 @@ func _input(event): #Toggles menu visibility on/off
 func _on_continue_pressed():
 	
 	Music.play_track(Music.ui_sfx[0])
-	Globals.Functions.load_game()
+	Globals.Functions.load_game(false, Globals)
 	if Globals.current_level != null:
 		
 		"Loads Large Scene"

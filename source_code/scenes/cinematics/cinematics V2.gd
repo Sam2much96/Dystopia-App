@@ -78,14 +78,9 @@ func _ready(): #create a video player function
 	
 	'Screen Display Calculations'
 	# Get Viewport Size, Make it Globally accessible
-	Globals.viewport_size = Globals.calculateViewportSize(self)
-	Globals.center_of_viewport = Globals.calc_center_of_rectangle(Globals.viewport_size)
-	
-	# Prints out the Current Viewport Size
-	print ("Viewport Size: ", Globals.viewport_size ) # for debug purposes only
-	print ("Center of Viewprt: ", Globals.center_of_viewport ) # for debug purposes onlys
-	
-	
+	# Calculations are now being run in GLobal Screen Class
+	# Display calculations are now being run in Global Screen Class
+
 	'Cinematics scene'
 	if Globals.curr_scene == 'Cinematics':
 		videoplayer  = get_node('VideoPlayer') #video player node

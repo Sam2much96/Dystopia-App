@@ -107,7 +107,18 @@ var user_data_dir : String =OS.get_user_data_dir()
 
 'Screen Size Resolution'
 var screenSize : Vector2
+
+# This Apps Global Screen Orientation
 enum { SCREEN_HORIZONTAL, SCREEN_VERTICAL} 
+
+# OS based Hardware Screen Orientation
+# Would most likely be 6 for Auto-Rotate Setting on Android
+enum {
+	SCREEN_ORIENTATION_LANDSCAPE, SCREEN_ORIENTATION_PORTRAIT , SCREEN_ORIENTATION_REVERSE_LANDSCAPE,
+	SCREEN_ORIENTATION_REVERSE_PORTRAIT ,SCREEN_ORIENTATION_SENSOR_LANDSCAPE , SCREEN_ORIENTATION_SENSOR_PORTRAIT 
+	SCREEN_ORIENTATION_SENSOR  
+}
+
 var screenOrientation : int
 var viewport_size : Vector2
 var center_of_viewport : Vector2 
@@ -132,13 +143,7 @@ var FileDirectory=Directory.new() #deletes all theon reset
 func _ready():
 	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	
-	# Resizes window the preselected sizes
-	# Sets Default Screen Orientation
-	if os == "Android":
-		screenOrientation = SCREEN_VERTICAL
-	else: screenOrientation = SCREEN_HORIZONTAL 
-	print ("Screen orientation is: ", screenOrientation)
-
+	Screen.display_calculations(get_tree().get_root(), self)
 
 
 	player.append( get_tree().get_nodes_in_group('player') )#gets all player nodes in the scene
@@ -151,19 +156,8 @@ func _ready():
 	VisualServer.set_default_clear_color(ColorN("white")) 
 
 
-func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_processing()
+#func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_processing()
 
-# Handles Screen Orientation
-	screenOrientation = OS.get_screen_orientation() # Updates Global Screen Orientation
-
-
-	if screenOrientation == SCREEN_VERTICAL :
-
-		pass
-	elif screenOrientation == SCREEN_HORIZONTAL:
-
-		pass
-	else: return 1;
 
 
 func update_curr_scene() -> void:
@@ -330,18 +324,20 @@ class Functions extends Reference:
 	If check_only is true it will only check for a valid save file and return true or false without
 	restoring any data
 	"""
-	static func load_game(check_only=false) -> bool:
+	static func load_game(check_only : bool, GlobalScript) -> bool:
+		check_only = false
 		print ("-------Loading Game -------")
 		var save_game = File.new()
+		
 		
 		if not save_game.file_exists("user://savegeme.save"):
 			return false
 		save_game.open("user://savegeme.save", File.READ)
-		var save_dict = parse_json(save_game.get_line())
+		var save_dict : Dictionary = parse_json(save_game.get_line())
 		if typeof(save_dict) != TYPE_DICTIONARY:
 			return false
 		if not check_only:
-			_restore_data(save_dict)
+			_restore_data(save_dict, GlobalScript)
 		
 		save_game.close()
 		return true
@@ -349,33 +345,61 @@ class Functions extends Reference:
 	"""
 	Restores data from the JSON dictionary inside the save files
 	"""
-	static func _restore_data(save_dict):
-		# JSON numbers are always parsed as floats. In this case we need to turn them into ints
-		for key in save_dict.quests:
-			save_dict.quests[key] = int(save_dict.quests[key])
-		Quest.quest_list = save_dict.quests
+	static func _restore_data(save_dict : Dictionary, GlobalScript ):
 		
-		# JSON numbers are always parsed as floats. In this case we need to turn them into ints
-		for key in save_dict.inventory:
-			save_dict.inventory[key] = int(save_dict.inventory[key])
-		Inventory.inventory = save_dict.inventory
+		"Quest Loader"
 		
-		Globals.spawn_x = save_dict.spawn_x 
-		Globals.spawn_y = save_dict.spawn_y
-		Globals.current_level = save_dict.current_level
-		Globals.player = save_dict.player
-		Globals.os = save_dict.os 
-		Globals.kill_count = save_dict.kill_count  
-		Globals.player_hitpoints = save_dict.player_hitpoints
-		Globals.prev_scene =save_dict.prev_scene 
-		Globals.prev_scene_spawnpoint = save_dict.prev_scene_spawnpoint 
+		if save_dict.has('quests'):
+			# JSON numbers are always parsed as floats. In this case we need to turn them into ints
+			for key in save_dict.quests:
+				save_dict.quests[key] = int(save_dict.quests[key])
+			Quest.quest_list = save_dict.quests
 		
-		Globals.direction_control = save_dict.direction_control
+		"Inventory Loader"
+		
+		if save_dict.has('inventory'):
+			# JSON numbers are always parsed as floats. In this case we need to turn them into ints
+			for key in save_dict.inventory:
+				save_dict.inventory[key] = int(save_dict.inventory[key])
+			Inventory.inventory = save_dict.inventory
+		
+		'OS loader'
+		
+		if save_dict.has('os'):
+			GlobalScript.os = save_dict.os
+		
+		'Player'
+		if save_dict.has('player'):
+			GlobalScript.player = save_dict.player
+			GlobalScript.kill_count = save_dict.kill_count  
+			GlobalScript.player_hitpoints = save_dict.player_hitpoints
+			
+		
+		
+		'Player Object Spawn Position'
+		if save_dict.has('spawn_x'):
+			GlobalScript.spawn_x = save_dict.spawn_x 
+			GlobalScript.spawn_y = save_dict.spawn_y
+		
+		
+		GlobalScript.current_level = save_dict.current_level
+		
+		 
+		"Scene Loader"
+		if save_dict.has('prev_scene'):
+			# Presumably a bugfix for scene changing
+			GlobalScript.prev_scene =save_dict.prev_scene 
+			GlobalScript.prev_scene_spawnpoint = save_dict.prev_scene_spawnpoint 
+		
+		'Control Settings'
+		# Direction controller
+		if save_dict.has('direction_control'):
+			GlobalScript.direction_control = save_dict.direction_control
 		
 		Dialogs.language = save_dict.languague
 		
 		######################################################
-		print ("Loaded gameplay")
+		print_debug("Loaded gameplay")
 
 	# Loads Singular User Data from local storage
 	# Version 2 of Load_game function
@@ -422,9 +446,7 @@ func restaVectores(v1, v2): #vector substraction
 func sumaVectores(v1, v2): #vector sum
 	return Vector2(v1.x + v2.x, v1.y + v2.y)
 
-#prints all orphaned nodes in project
-func memory_leak_management():
-	return print_stray_nodes() 
+
 
 "Memory Leak/ Orphaned Nodes Management System"
 class MemoryManagement extends Reference :
@@ -443,6 +465,78 @@ class MemoryManagement extends Reference :
 		for i in nodes:
 			if i != null:
 				i.queue_free()
+
+	#prints all orphaned nodes in project
+	static func memory_leak_management(from : Node):
+		return from.print_stray_nodes() 
+
+"Screen Class "
+class Screen extends Reference :
+	var screenOrientation : int
+	var screenOrientationSettings : int = OS.get_screen_orientation()
+	# Should Get Screen Size, Screen Scale and All screen properties
+	# Should Debug this data to the Debug Singleton
+	# Should only be called once
+	static func debug_screen_properties():
+		print (OS.get_screen_orientation())
+		
+		# match this variable to Global Screen Orientation
+		print (OS.get_screen_size(-1)) #yes. This variable changes when screen rotates
+		print (OS.get_screen_scale())
+		pass
+
+
+		"Handles Screen Orientation"
+	static func Orientation(screenOrientation : int, GlobalScript):
+		
+		# screen orientation enum copied from Globals main
+		# Write an algorithm that compares the x and y values for OS.get_screen_size(-1) and the OS.get_screen_orientation() parameters
+		# to determine if Screen is Horizontal or vertical. Use the Result to set Screen Orientation
+		# in a process function
+		
+		
+		# Resizes window the preselected sizes
+		# Sets Default Screen Orientation
+		if GlobalScript.os == "Android":
+			screenOrientation = GlobalScript.SCREEN_VERTICAL
+		else: screenOrientation = GlobalScript.SCREEN_HORIZONTAL 
+		print ("Screen orientation is: ", screenOrientation)
+
+
+		# SHould run an  Algorithmic calculation using screen orientation
+		# And screen size to determine if the screen 
+		# is horizontal or vertical
+		
+		#screenOrientation = OS.get_screen_orientation() # Should return a 6 for AutoRotate on Ndroid # Should ideally be a process function
+		if screenOrientation == GlobalScript.SCREEN_VERTICAL :
+
+			pass
+		elif screenOrientation == GlobalScript.SCREEN_HORIZONTAL:
+
+			pass
+		else: return 1;
+
+	static func calculateViewportSize( t : CanvasItem ) -> Vector2 :
+		return t.get_viewport_rect().size
+
+	
+	static func display_calculations( display, GlobalScript):
+		'Screen Display Calculations'
+		if display is CanvasItem:
+			# Get Viewport Size, Make it Globally accessible
+			GlobalScript.viewport_size = calculateViewportSize(display)
+			#Globals.center_of_viewport = Globals.calc_center_of_rectangle(Globals.viewport_size)
+			
+		if display is Viewport:
+			GlobalScript.viewport_size = display.size
+		
+		
+		GlobalScript.center_of_viewport = GlobalScript.calc_center_of_rectangle(GlobalScript.viewport_size)
+		# Prints out the Current Viewport Size
+		print ("Viewport Size: ", GlobalScript.viewport_size ) # for debug purposes only
+		print ("Center of Viewprt: ", GlobalScript.center_of_viewport ) # for debug purposes onlys
+		
+		
 
 
 'Delete Files'
@@ -559,20 +653,20 @@ func uncompress(FILE: String) : #-> PoolByteArray:
 Quickly sets a videoplayer to Play music and videos
 """
 # Would break if passed to anything other than videosteam player
-func _Video_Stream(node : VideoPlayer, stream , _sound, viewport):
-	if stream and node != null or '':
-		print('Playing Video Stream:/',stream)
-		#node._set_size((viewport))
-		node.set_stream(stream) 
-		node.play() 
-		print ('Video player is playing: ',node.is_playing())
-		
-		# Plays the sound through the music singleton
-		#get_tree().get_root().get_node("/root/Music").play(sound)
-		return
-	else:
-		push_error('Video player uses the video player node, and music singleton')
-		push_warning(str(node) +"/" +str(stream) + "/"+ str (_sound))
+#func _Video_Stream(node : VideoPlayer, stream , _sound, viewport):
+#	if stream and node != null or '':
+#		print('Playing Video Stream:/',stream)
+#		#node._set_size((viewport))
+#		node.set_stream(stream) 
+#		node.play() 
+#		print ('Video player is playing: ',node.is_playing())
+#		
+#		# Plays the sound through the music singleton
+#		#get_tree().get_root().get_node("/root/Music").play(sound)
+#		return
+#	else:
+#		push_error('Video player uses the video player node, and music singleton')
+#		push_warning(str(node) +"/" +str(stream) + "/"+ str (_sound))
 
 
 
@@ -585,15 +679,12 @@ func randomize_enemy_type() -> String:
 	randomize()
 	return ['Easy', "Intermediate", "Hard"][randi()%3]
 
-static func calculateViewportSize( t : CanvasItem ) -> Vector2 :
-	return t.get_viewport_rect().size
-
 
 
 func _exit_tree():
 	
 	"Prints All Orphaned Nodes"
 	# For proper Memory Leak Management
-	memory_leak_management()
+	MemoryManagement.memory_leak_management(self)
 	#Globals.queue_free_children(Util)
 	#MemoryManagement.free_object(Util)

@@ -142,13 +142,18 @@ func _input(event): #Toggles menu visibility on/off
 			set_focus_mode(Control.FOCUS_CLICK)
 			Music.play_track(Music.ui_sfx[0])
 			#print ("Menu State: ",menu_state) #For debug purposes only
-			Globals.Screen.debug_screen_properties()# Debug Screen Settingd
+			#Globals.Screen.debug_screen_properties()# Debug Screen Settingd
+			
+			Globals.Screen.Orientation(Globals)
+			
 			return menu_state
 		if menu_state== SHOWING:
 			menu_state = HIDDEN
 			Music.play_track(Music.ui_sfx[1])
 			#print ("Menu State: ",menu_state) #For debug purposes only
-			Globals.Screen.debug_screen_properties()# Debug Screen Settingd
+			#Globals.Screen.debug_screen_properties()# Debug Screen Settingd
+			
+			
 			return menu_state
 		else:
 			return

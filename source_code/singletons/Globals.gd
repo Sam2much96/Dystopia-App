@@ -113,11 +113,11 @@ enum { SCREEN_HORIZONTAL, SCREEN_VERTICAL}
 
 # OS based Hardware Screen Orientation
 # Would most likely be 6 for Auto-Rotate Setting on Android
-enum {
-	SCREEN_ORIENTATION_LANDSCAPE, SCREEN_ORIENTATION_PORTRAIT , SCREEN_ORIENTATION_REVERSE_LANDSCAPE,
-	SCREEN_ORIENTATION_REVERSE_PORTRAIT ,SCREEN_ORIENTATION_SENSOR_LANDSCAPE , SCREEN_ORIENTATION_SENSOR_PORTRAIT 
-	SCREEN_ORIENTATION_SENSOR  
-}
+#enum {
+#	SCREEN_ORIENTATION_LANDSCAPE, SCREEN_ORIENTATION_PORTRAIT , SCREEN_ORIENTATION_REVERSE_LANDSCAPE,
+#	SCREEN_ORIENTATION_REVERSE_PORTRAIT ,SCREEN_ORIENTATION_SENSOR_LANDSCAPE , SCREEN_ORIENTATION_SENSOR_PORTRAIT 
+#	SCREEN_ORIENTATION_SENSOR  
+#}
 
 var screenOrientation : int
 var viewport_size : Vector2
@@ -479,15 +479,20 @@ class Screen extends Reference :
 	# Should only be called once
 	static func debug_screen_properties():
 		print (OS.get_screen_orientation())
-		
+		print('Global Screen Orientation: ',Globals.screenOrientation)
 		# match this variable to Global Screen Orientation
-		print (OS.get_screen_size(-1)) #yes. This variable changes when screen rotates
-		print (OS.get_screen_scale())
+		print ('Screen Size 1: ',OS.get_screen_size(-1)) #yes. This variable changes when screen rotates
+		print ('Screen Scale: ',OS.get_screen_scale())
 		pass
 
 
 		"Handles Screen Orientation"
-	static func Orientation(screenOrientation : int, GlobalScript):
+	static func Orientation(GlobalScript):
+		
+		
+		'Algorithm for Calculating Screen Orientation'
+		var screen : Vector2 =OS.get_screen_size(-1)
+		
 		
 		# screen orientation enum copied from Globals main
 		# Write an algorithm that compares the x and y values for OS.get_screen_size(-1) and the OS.get_screen_orientation() parameters
@@ -496,11 +501,20 @@ class Screen extends Reference :
 		
 		
 		# Resizes window the preselected sizes
-		# Sets Default Screen Orientation
-		if GlobalScript.os == "Android":
-			screenOrientation = GlobalScript.SCREEN_VERTICAL
-		else: screenOrientation = GlobalScript.SCREEN_HORIZONTAL 
-		print ("Screen orientation is: ", screenOrientation)
+		# Sets Default Screen Orientation for Android
+		# Disabled
+		#if GlobalScript.os == "Android":
+		#	screenOrientation = GlobalScript.SCREEN_VERTICAL
+		#else: screenOrientation = GlobalScript.SCREEN_HORIZONTAL 
+		
+		
+		if screen.x > screen.y:
+			GlobalScript.screenOrientation = GlobalScript.SCREEN_HORIZONTAL
+		if screen.x < screen.y:
+			GlobalScript.screenOrientation =  GlobalScript.SCREEN_VERTICAL
+
+		
+		print_debug("Screen orientation is: ", GlobalScript.screenOrientation, "/",screen)
 
 
 		# SHould run an  Algorithmic calculation using screen orientation
@@ -508,14 +522,15 @@ class Screen extends Reference :
 		# is horizontal or vertical
 		
 		#screenOrientation = OS.get_screen_orientation() # Should return a 6 for AutoRotate on Ndroid # Should ideally be a process function
-		if screenOrientation == GlobalScript.SCREEN_VERTICAL :
+		if GlobalScript.screenOrientation == GlobalScript.SCREEN_VERTICAL :
 
 			pass
-		elif screenOrientation == GlobalScript.SCREEN_HORIZONTAL:
+		elif GlobalScript.screenOrientation == GlobalScript.SCREEN_HORIZONTAL:
 
 			pass
 		else: return 1;
-
+		
+		
 	static func calculateViewportSize( t : CanvasItem ) -> Vector2 :
 		return t.get_viewport_rect().size
 
@@ -533,8 +548,8 @@ class Screen extends Reference :
 		
 		GlobalScript.center_of_viewport = GlobalScript.calc_center_of_rectangle(GlobalScript.viewport_size)
 		# Prints out the Current Viewport Size
-		print ("Viewport Size: ", GlobalScript.viewport_size ) # for debug purposes only
-		print ("Center of Viewprt: ", GlobalScript.center_of_viewport ) # for debug purposes onlys
+		print_debug("Viewport Size: ", GlobalScript.viewport_size ) # for debug purposes only
+		print_debug ("Center of Viewprt: ", GlobalScript.center_of_viewport ) # for debug purposes onlys
 		
 		
 

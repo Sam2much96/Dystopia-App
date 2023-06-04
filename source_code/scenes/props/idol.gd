@@ -41,12 +41,12 @@ func _on_body_entered(body):
 		Globals.player_hitpoints = body.hitpoints
 		Globals.Functions.save_game(
 			[body], 
-			body.player_hitpoints, 
-			body.spawn_x, 
-			body.spawn_y, 
+			body.hitpoints, 
+			body.position.x, 
+			body.position.y, 
 			null, 
 			Globals.os, 
-			body.kill_count, 
+			Globals.kill_count, 
 			null,null,null,null
 			)
 

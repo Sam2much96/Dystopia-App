@@ -377,7 +377,7 @@ func _process(_delta):
 				#return
 				#touch_interface_debug() # For Debug Purposes only
 				"SHows the directional based on a global variable?"
-				if not Globals.direction_control.empty():
+				if not Globals.direction_control == '':
 					_control = Globals.direction_control
 				
 				if Globals.direction_control == 'analogue':
@@ -390,10 +390,10 @@ func _process(_delta):
 					joystick_parent.hide()
 					D_pad.show()
 				
-				elif Globals.direction_control.empty() && _control == "analogue":
+				elif Globals.direction_control == '' && _control == "analogue":
 					joystick_parent.show()
 					D_pad.hide()
-				elif Globals.direction_control.empty() && _control == "direction":
+				elif Globals.direction_control== '' && _control == "direction":
 					joystick_parent.hide()
 					D_pad.show()
 				else:

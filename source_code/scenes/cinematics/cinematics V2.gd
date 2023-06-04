@@ -715,7 +715,7 @@ func play_loading_cinematic(): #A simple loading loop
 
 	#_Video_Stream(Globals.cinematics) broken function. Video stream function is a global function now
 	
-	print ('Playing loading Cinematic ')
+	print_debug('Playing loading Cinematic ')
 	yield(get_tree().create_timer(5), "timeout") #Runs this loop every 5 secs
 
 

@@ -161,7 +161,7 @@ func _ready():
 
 func update_curr_scene() -> void:
 	curr_scene= get_tree().get_current_scene().get_name() 
-	print ("current scene is: ", curr_scene)
+	print_debug ("current scene is: ", curr_scene)
 
 
 func _go_to_title():
@@ -380,8 +380,9 @@ class Functions extends Reference:
 			GlobalScript.spawn_x = save_dict.spawn_x 
 			GlobalScript.spawn_y = save_dict.spawn_y
 		
-		
-		GlobalScript.current_level = save_dict.current_level
+		'Saves Player Spawn Point'
+		if save_dict.has('current_level'):
+			GlobalScript.current_level = save_dict.current_level
 		
 		 
 		"Scene Loader"
@@ -477,7 +478,7 @@ class Screen extends Reference :
 	# Should Debug this data to the Debug Singleton
 	# Should only be called once
 	static func debug_screen_properties():
-		print (OS.get_screen_orientation())
+		print ('OS Screen Orientation: ', OS.get_screen_orientation())
 		print('Global Screen Orientation: ',Globals.screenOrientation)
 		# match this variable to Global Screen Orientation
 		print ('Screen Size 1: ',OS.get_screen_size(-1)) #yes. This variable changes when screen rotates

@@ -81,6 +81,7 @@ var D_pad_position : Vector2
 var buttons_positional_data : Array
 
 var LineDebug : Line2D 
+onready var joystick_parent: Control = $Joystick
 
 func _ready():
  
@@ -92,6 +93,7 @@ func _ready():
 	slash = $slash
 	comics = $comics
 	joystick = $Joystick/joystick_circle2
+	 
 	Anim = $AnimationPlayer
 	D_pad = $"D-pad"
 
@@ -338,9 +340,9 @@ func _process(_delta):
 				if _control == 'analogue':
 					D_pad.hide()
 
-					joystick.show()
+					joystick_parent.show()
 				if _control == 'direction':
-					joystick.hide()
+					joystick_parent.hide()
 					D_pad.show()
 
 
@@ -379,20 +381,20 @@ func _process(_delta):
 					_control = Globals.direction_control
 				
 				if Globals.direction_control == 'analogue':
-					joystick.show()
+					joystick_parent.show()
 					D_pad.hide()
 
 					return
 					#touch_interface_debug() # For Debug Purposes only
 				elif Globals.direction_control == 'direction':
-					joystick.hide()
+					joystick_parent.hide()
 					D_pad.show()
 				
 				elif Globals.direction_control.empty() && _control == "analogue":
-					joystick.show()
+					joystick_parent.show()
 					D_pad.hide()
 				elif Globals.direction_control.empty() && _control == "direction":
-					joystick.hide()
+					joystick_parent.hide()
 					D_pad.show()
 				else:
 				

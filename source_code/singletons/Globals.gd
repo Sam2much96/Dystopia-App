@@ -518,7 +518,7 @@ class Screen extends Reference :
 			GlobalScript.screenOrientation =  GlobalScript.SCREEN_VERTICAL
 
 		
-		print_debug("Screen orientation is: ", GlobalScript.screenOrientation, "/",screen)
+		print_debug("Screen orientation is: ", GlobalScript.screenOrientation, "/",'screen size :',screen)
 
 
 		
@@ -664,25 +664,6 @@ func uncompress(FILE: String) : #-> PoolByteArray:
 
 
 
-
-"""
-Quickly sets a videoplayer to Play music and videos
-"""
-# Would break if passed to anything other than videosteam player
-#func _Video_Stream(node : VideoPlayer, stream , _sound, viewport):
-#	if stream and node != null or '':
-#		print('Playing Video Stream:/',stream)
-#		#node._set_size((viewport))
-#		node.set_stream(stream) 
-#		node.play() 
-#		print ('Video player is playing: ',node.is_playing())
-#		
-#		# Plays the sound through the music singleton
-#		#get_tree().get_root().get_node("/root/Music").play(sound)
-#		return
-#	else:
-#		push_error('Video player uses the video player node, and music singleton')
-#		push_warning(str(node) +"/" +str(stream) + "/"+ str (_sound))
 
 
 

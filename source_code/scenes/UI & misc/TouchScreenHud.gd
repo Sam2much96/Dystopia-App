@@ -34,14 +34,15 @@ class_name TouchScreenHUD
 
 var _Hide_touch_interface : bool
 
-#gdgjuujttu
+#Debug
+onready var _debug = get_tree().get_root().get_node("/root/Debug")
 
 #State Machine
 enum { MENU, INTERRACT, ATTACK, STATS, COMICS, RESET }
 
 export var _state_controller = RESET
 export (String, 'analogue', 'direction') var _control
-export (bool) var _Debug
+var _Debug_Run : bool = false
 
 
 #signal menu
@@ -106,8 +107,7 @@ func _ready():
 	"Auto sets the controller button"
 	reset()
 
-	"Display Screen Calculations"
-	Globals.Screen.display_calculations(get_tree().get_root(), Globals)
+
 
 	#touch_interface_debug()
 
@@ -170,8 +170,8 @@ func calculate_button_positional_data()-> void:
 
 	buttons_positional_data = [
 		menu_position,
-		comics_position,
 		stats_position,
+		comics_position,
 		_interract_position,
 		slash_position,
 		roll_position,
@@ -181,12 +181,40 @@ func calculate_button_positional_data()-> void:
 		menu_position
 	]
 
+func calculate_length_breadth(point_positions: Array) -> Vector2:
+	var min_x = float('inf')
+	var max_x = -float('inf')
+	var min_y = float('inf')
+	var max_y = -float('inf')
+
+	# Find the minimum and maximum x and y coordinates
+	for point in point_positions:
+		min_x = min(min_x, point.x)
+		max_x = max(max_x, point.x)
+		min_y = min(min_y, point.y)
+		max_y = max(max_y, point.y)
+
+	# Calculate the length and breadth
+	var length = max_x - min_x
+	var breadth = max_y - min_y
+
+	return Vector2(length, breadth)
 
 
 # Handles Debugging Variables from the touch interface system
+# Should PNly run once
 func touch_interface_debug(): #Debug singleton is broken
-	if _Hide_touch_interface == false && get_tree().get_root().get_node("/root/Debug").enabled == true:
+	if _Hide_touch_interface == false && _debug.debug_panel != null && _Debug_Run == false:
 		calculate_button_positional_data()
+		
+		"Display Screen Calculations"
+		Globals.Screen.display_calculations(get_tree().get_root(), Globals)
+		var dimensions = calculate_length_breadth(buttons_positional_data)
+		print("Length of HUD:", dimensions.x)
+		print("Breadth of HUD:", dimensions.y) # Breath of the wild lmao
+		
+		
+		_Debug_Run = true# Runs this Debug Loop Only Once
 		
 		#print_debug ('Touch Interface Debug: ', 
 		#" COntrol: ",Globals.direction_control, 
@@ -230,9 +258,7 @@ func set_controller(_control):
 
 
 func _process(_delta):
-	if _Debug == true:
-		touch_interface_debug() # For Debug Purposes only
-	
+
 	
 	
 	# *************************************************

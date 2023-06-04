@@ -24,6 +24,7 @@
 # (6) Fix Brken Ingame Controller changer (fixed 1/2)
 # (7) Should Resize to fit Screen Diameters using Global Scripts & Variables
 # # (a) Write a Resize function using Global Screen Orientation Calculation and Screen Size
+#	#	# (b) Variables available : Globals.os, Globals.screen Orientation, Globals.screenSize,Globals.viewport_size, GLobals.center_of_viewport
 # *************************************************
 
 
@@ -51,31 +52,64 @@ signal comics
 signal reset
 
 
-onready var menu = $menu
-onready var _interract = $interact
-onready var stats = $stats
-onready var roll = $roll
-onready var slash = $slash
+var menu : TouchScreenButton 
+var _interract : TouchScreenButton 
+var stats : TouchScreenButton
+var roll : TouchScreenButton 
+var slash  : TouchScreenButton 
 
-onready var comics = $comics
-onready var joystick = $Joystick
-onready var D_pad = $"D-pad"
+var comics : TouchScreenButton 
+var joystick : TouchScreenButton 
+var D_pad : YSort 
 
-onready var Anim = $AnimationPlayer
+var Anim : AnimationPlayer 
 
-onready var action_buttons : Array = [menu ,stats,_interract,roll, slash,comics]
-onready var direction_buttons : Array = [D_pad, joystick]
+var action_buttons : Array = [menu ,stats,_interract,roll, slash,comics]
+var direction_buttons : Array = [D_pad, joystick]
+
+
+var menu_position : Vector2
+var _interract_position : Vector2
+var stats_position : Vector2
+var roll_position : Vector2
+var slash_position : Vector2
+var comics_position : Vector2
+var joystick_position : Vector2
+var D_pad_position : Vector2
+
+var buttons_positional_data : Array
+
+var LineDebug : Line2D 
 
 func _ready():
  
+
+	menu = $menu
+	_interract = $interact
+	stats = $stats
+	roll = $roll
+	slash = $slash
+	comics = $comics
+	joystick = $Joystick/joystick_circle2
+	Anim = $AnimationPlayer
+	D_pad = $"D-pad"
+
+	LineDebug = $Line2D
 	#touch_interface_debug() disabling for now
 
+
+
 	"Touch UI Visibility"
+	# Disabling for Debug
 	hide_self(Globals.os, Globals.screenOrientation, _Hide_touch_interface, self)
 
 	"Auto sets the controller button"
 	reset()
 
+	"Display Screen Calculations"
+	Globals.Screen.display_calculations(get_tree().get_root(), Globals)
+
+	#touch_interface_debug()
 
 static func hide_self(operating_sys: String, screenOrientation : int, _Hide_touch_interface : bool, _node : TouchScreenHUD) -> void:
 	#toggles touch interface visibility depending on the os and screen orientation (Pc or Mobiles)
@@ -117,12 +151,68 @@ func interract(): #used by ui scene when interract is clicked
 func attack(): #used by ui scene when attack is clicked 
 	_state_controller = ATTACK
 	return _state_controller 
+
+
+
+func calculate_button_positional_data()-> void:
+
 	
+# *************************************************
+	# BUTTONS POSITIONAL DATA 
+	menu_position = menu.position
+	_interract_position = _interract.position
+	stats_position = stats.position
+	roll_position = roll.position
+	slash_position = slash.position
+	comics_position = comics.position
+	joystick_position = joystick.position
+	D_pad_position = D_pad.position
+
+	buttons_positional_data = [
+		menu_position,
+		comics_position,
+		stats_position,
+		_interract_position,
+		slash_position,
+		roll_position,
+		
+		#joystick_position, # Joystick Positional data is buggy in debugg
+		D_pad_position,
+		menu_position
+	]
+
+
+
 # Handles Debugging Variables from the touch interface system
 func touch_interface_debug(): #Debug singleton is broken
-	if _Hide_touch_interface == false:
-		print ('Touch Interface Debug: ', " COntrol: ",Globals.direction_control, "Global Control", Globals.direction_control )
+	if _Hide_touch_interface == false && get_tree().get_root().get_node("/root/Debug").enabled == true:
+		calculate_button_positional_data()
+		
+		#print_debug ('Touch Interface Debug: ', 
+		#" COntrol: ",Globals.direction_control, 
+		#"Global Control", Globals.direction_control, 
+		#'Touch Interface size: ', self.scale,
+		#'Touch Interface pos: ', self.position,
+		
+		# *************************************************
+		# Buttons Debug
+		# (a) Plot a line2d with all Buttons Position (done)
+		# (b) Use Line Point Dimensions to Compare Global Screen Size calculations  
+		# *************************************************
+		#'Menu Button Pos: ',menu_position ,
+		#'Stats Button Pos:',stats_position,
+		#'Interact Button Pos:',_interract_position,
+		#'Roll Button Pos:',roll_position, 
+		#'Slash BUtton Pos:',slash_position,
+		#'Comics Button Pos:',comics_position
+		#)
 
+		# 
+		
+		for i in buttons_positional_data:
+			LineDebug.add_point(i)
+			
+			
 
 	#update Globals Direction Control variable to Local Variable
 	# Should Fix  Broken Joystick/ Direction Changer
@@ -145,13 +235,28 @@ func _process(_delta):
 	
 	
 	
-	
-	
+	# *************************************************
+	"Touch Screen UI"
+	#hvliyilycic
+	# Features
+	# (1) Uses a Global Screen Orienation variable
+	# (2) Uses an Animation Player to Set Node Position
+	#
+	# Bugs
+	# (1) Disaligns on Different Mobile Devices
+	# To Do
+	# (1) Implement Globals Screnn Class Calculations
+	# (2) Use Scene Display Calculations to Fix Misalignment Bug on Mobile Devices 
+	# (3) Implement Calculations in the Animation Player
+	# *************************************************
 	
 	
 	
 	#'Changes the button Layout depending on the screen orientation for Mobile UI'
 	#implement joystick and D-pad variations
+	
+	#ssdgsfg
+	
 	if Globals.screenOrientation == 1 && _control == 'direction': #works
 		Anim.play("SCREEN_VERTICAL_1");
 	if Globals.screenOrientation == 1 && _control == 'analogue': #works
@@ -278,10 +383,13 @@ func _process(_delta):
 
 func hide_buttons()-> void:
 	for i in action_buttons:
-		i.hide()
+		if i != null:
+			i.hide()
 	for h in direction_buttons:
-		h.hide()
+		if h != null:
+			h.hide()
 
 func show_action_buttons()-> void:
 	for j in action_buttons:
-		j.show()
+		if j != null:
+			j.show()

@@ -140,6 +140,20 @@ tracks/9/keys = {
 "update": 0,
 "values": [ true ]
 }
+tracks/10/type = "method"
+tracks/10/path = NodePath(".")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "touch_interface_debug"
+} ]
+}
 
 [sub_resource type="Animation" id=3]
 resource_name = "SCREEN_HORIZONTAL"
@@ -238,6 +252,20 @@ tracks/7/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 203.651, 467.955 ) ]
+}
+tracks/8/type = "method"
+tracks/8/path = NodePath(".")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0.2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "touch_interface_debug"
+} ]
 }
 
 [sub_resource type="Animation" id=5]
@@ -350,6 +378,20 @@ tracks/8/keys = {
 "update": 1,
 "values": [ true ]
 }
+tracks/9/type = "method"
+tracks/9/path = NodePath(".")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0.2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "touch_interface_debug"
+} ]
+}
 
 [sub_resource type="Animation" id=6]
 resource_name = "SCREEN_VERTICAL_2"
@@ -461,13 +503,25 @@ tracks/8/keys = {
 "update": 1,
 "values": [ true ]
 }
+tracks/9/type = "method"
+tracks/9/path = NodePath(".")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0.2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "touch_interface_debug"
+} ]
+}
 
 [node name="TouchInterface" type="Node2D"]
 modulate = Color( 1, 1, 1, 0.698039 )
 script = ExtResource( 4 )
-_state_controller = null
 _control = "direction"
-_Debug = null
 
 [node name="stats" type="TouchScreenButton" parent="."]
 pause_mode = 2
@@ -585,3 +639,5 @@ anims/RESET = SubResource( 4 )
 anims/SCREEN_HORIZONTAL = SubResource( 3 )
 anims/SCREEN_VERTICAL_1 = SubResource( 5 )
 anims/SCREEN_VERTICAL_2 = SubResource( 6 )
+
+[node name="Line2D" type="Line2D" parent="."]

@@ -143,7 +143,6 @@ var FileDirectory=Directory.new() #deletes all theon reset
 func _ready():
 	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	
-	Screen.display_calculations(get_tree().get_root(), self)
 
 
 	player.append( get_tree().get_nodes_in_group('player') )#gets all player nodes in the scene
@@ -508,6 +507,11 @@ class Screen extends Reference :
 		#else: screenOrientation = GlobalScript.SCREEN_HORIZONTAL 
 		
 		
+		
+		# Algorithmic calculation using screen orientation
+		# And screen size to determine if the screen 
+		# is horizontal or vertical
+		
 		if screen.x > screen.y:
 			GlobalScript.screenOrientation = GlobalScript.SCREEN_HORIZONTAL
 		if screen.x < screen.y:
@@ -517,9 +521,6 @@ class Screen extends Reference :
 		print_debug("Screen orientation is: ", GlobalScript.screenOrientation, "/",screen)
 
 
-		# SHould run an  Algorithmic calculation using screen orientation
-		# And screen size to determine if the screen 
-		# is horizontal or vertical
 		
 		#screenOrientation = OS.get_screen_orientation() # Should return a 6 for AutoRotate on Ndroid # Should ideally be a process function
 		if GlobalScript.screenOrientation == GlobalScript.SCREEN_VERTICAL :

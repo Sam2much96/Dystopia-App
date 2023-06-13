@@ -396,7 +396,8 @@ class Functions extends Reference:
 		if save_dict.has('direction_control'):
 			GlobalScript.direction_control = save_dict.direction_control
 		
-		Dialogs.language = save_dict.languague
+		if save_dict.has("languague"):
+			Dialogs.language = save_dict.languague
 		
 		######################################################
 		print_debug("Loaded gameplay")

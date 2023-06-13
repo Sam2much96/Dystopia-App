@@ -24,18 +24,19 @@ The purpose of this code is to beautify the UI programmatically
 
 
 #changes Title Screen Art using Global Screen Orientation
-onready var art1 = $TextureRect
-onready var art2 = $TextureRect2
+onready var art1 :  TextureRect = $TextureRect
+onready var art2 : TextureRect = $TextureRect2
 
 
 func _ready():
+	"Titl screen Art"
 	if Globals.screenOrientation == 0:
 		art1.show()
 		art2.hide()
 	elif Globals.screenOrientation == 1:
 		art1.hide()
 		art2.show()
-	pass
+#	else: pass
 
 
 

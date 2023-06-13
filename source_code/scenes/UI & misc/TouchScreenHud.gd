@@ -25,6 +25,8 @@
 # (7) Should Resize to fit Screen Diameters using Global Scripts & Variables
 # # (a) Write a Resize function using Global Screen Orientation Calculation and Screen Size
 #	#	# (b) Variables available : Globals.os, Globals.screen Orientation, Globals.screenSize,Globals.viewport_size, GLobals.center_of_viewport
+#		#(c) set grouped buttons positioning programmatically
+
 # *************************************************
 
 
@@ -61,7 +63,7 @@ var slash  : TouchScreenButton
 
 var comics : TouchScreenButton 
 var joystick : TouchScreenButton 
-var D_pad : YSort 
+var D_pad : Control 
 
 var Anim : AnimationPlayer 
 
@@ -87,11 +89,11 @@ func _ready():
  
 
 	menu = $menu
-	_interract = $interact
-	stats = $stats
-	roll = $roll
-	slash = $slash
-	comics = $comics
+	_interract = $Control/InterractButtons/interact
+	stats = $Control/InterractButtons/stats
+	roll = $Control/ActionButtons/roll
+	slash = $Control/ActionButtons/slash
+	comics = $Control/InterractButtons/comics
 	joystick = $Joystick/joystick_circle2
 	 
 	Anim = $AnimationPlayer
@@ -168,7 +170,7 @@ func calculate_button_positional_data()-> void:
 	slash_position = slash.position
 	comics_position = comics.position
 	joystick_position = joystick.position
-	D_pad_position = D_pad.position
+	D_pad_position = D_pad.get_rect().position
 
 	buttons_positional_data = [
 		menu_position,
@@ -214,8 +216,10 @@ func touch_interface_debug(): #Debug singleton is broken
 		var dimensions = calculate_length_breadth(buttons_positional_data)
 		print("Length of HUD:", dimensions.x)
 		print("Breadth of HUD:", dimensions.y) # Breath of the wild lmao
+		var dimensional_diff : Vector2 = Globals.center_of_viewport - dimensions
+		print("Dimension difference: ",dimensional_diff
 		
-		
+		 )
 		_Debug_Run = true# Runs this Debug Loop Only Once
 		
 		#print_debug ('Touch Interface Debug: ', 

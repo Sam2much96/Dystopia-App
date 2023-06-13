@@ -144,6 +144,7 @@ func _input(event): #Toggles menu visibility on/off
 			#print ("Menu State: ",menu_state) #For debug purposes only
 			#Globals.Screen.debug_screen_properties()# Debug Screen Settingd
 			
+			" Checks Device orentation"
 			Globals.Screen.Orientation(Globals)
 			
 			return menu_state

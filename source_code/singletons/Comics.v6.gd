@@ -1414,6 +1414,8 @@ class Extensions extends AnimatedSprite:
 # It Uses a camera 2d to simulate guided view. Should not be used when running the game
 func guided_view()-> void: #Unwriten code
 	#It's supposed tobe a controlled zoom
+	# USing matrix of array positions to guide a camera smoothing
+	# ANd a physics process
 	pass
 
 

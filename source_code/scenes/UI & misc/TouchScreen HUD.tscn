@@ -33,7 +33,7 @@ tracks/0/keys = {
 "values": [ Vector2( 6, 44 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("interact:position")
+tracks/1/path = NodePath("Control/InterractButtons/interact:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -45,7 +45,7 @@ tracks/1/keys = {
 "values": [ Vector2( 1073.75, 245.527 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("comics:position")
+tracks/2/path = NodePath("Control/InterractButtons/comics:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -57,7 +57,7 @@ tracks/2/keys = {
 "values": [ Vector2( 1103.5, 113.137 ) ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("stats:position")
+tracks/3/path = NodePath("Control/InterractButtons/stats:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -69,7 +69,7 @@ tracks/3/keys = {
 "values": [ Vector2( 1110.48, 29.2283 ) ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("roll:position")
+tracks/4/path = NodePath("Control/ActionButtons/roll:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
@@ -81,7 +81,7 @@ tracks/4/keys = {
 "values": [ Vector2( 904.39, 476.15 ) ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("slash:position")
+tracks/5/path = NodePath("Control/ActionButtons/slash:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
@@ -154,6 +154,54 @@ tracks/10/keys = {
 "method": "touch_interface_debug"
 } ]
 }
+tracks/11/type = "value"
+tracks/11/path = NodePath("Control:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -180, -16 ) ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("Control/InterractButtons:rect_position")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 856, 2 ) ]
+}
+tracks/13/type = "value"
+tracks/13/path = NodePath("Control/ActionButtons:rect_position")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 703.767, 321.086 ) ]
+}
+tracks/14/type = "value"
+tracks/14/path = NodePath("D-pad:rect_position")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 180.76, 1541.21 ) ]
+}
 
 [sub_resource type="Animation" id=3]
 resource_name = "SCREEN_HORIZONTAL"
@@ -170,7 +218,7 @@ tracks/0/keys = {
 "values": [ Vector2( 6, 44 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("interact:position")
+tracks/1/path = NodePath("D-pad:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -179,10 +227,10 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 1073.75, 245.527 ) ]
+"values": [ Vector2( 178.18, 506.03 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("comics:position")
+tracks/2/path = NodePath("Joystick:rect_position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -191,22 +239,24 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 1103.5, 113.137 ) ]
+"values": [ Vector2( 203.651, 467.955 ) ]
 }
-tracks/3/type = "value"
-tracks/3/path = NodePath("stats:position")
+tracks/3/type = "method"
+tracks/3/path = NodePath(".")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0 ),
+"times": PoolRealArray( 0.2 ),
 "transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 1110.48, 29.2283 ) ]
+"values": [ {
+"args": [  ],
+"method": "touch_interface_debug"
+} ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("roll:position")
+tracks/4/path = NodePath("Control/ActionButtons:rect_position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
@@ -215,10 +265,10 @@ tracks/4/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 904.39, 476.15 ) ]
+"values": [ Vector2( 703.767, 321.086 ) ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("slash:position")
+tracks/5/path = NodePath("Control/InterractButtons:rect_position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
@@ -227,10 +277,10 @@ tracks/5/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 1014.57, 361.592 ) ]
+"values": [ Vector2( 856, 2 ) ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("D-pad:position")
+tracks/6/path = NodePath("D-pad:rect_position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
@@ -239,33 +289,7 @@ tracks/6/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 178.18, 506.03 ) ]
-}
-tracks/7/type = "value"
-tracks/7/path = NodePath("Joystick:rect_position")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 203.651, 467.955 ) ]
-}
-tracks/8/type = "method"
-tracks/8/path = NodePath(".")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/keys = {
-"times": PoolRealArray( 0.2 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "touch_interface_debug"
-} ]
+"values": [ Vector2( 175.42, 425.286 ) ]
 }
 
 [sub_resource type="Animation" id=5]
@@ -295,7 +319,7 @@ tracks/1/keys = {
 "values": [ Vector2( 163.651, 1566.8 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("roll:position")
+tracks/2/path = NodePath("Joystick:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -303,11 +327,11 @@ tracks/2/enabled = true
 tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 717.714, 1493.78 ) ]
+"update": 1,
+"values": [ false ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("slash:position")
+tracks/3/path = NodePath("D-pad:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -315,23 +339,25 @@ tracks/3/enabled = true
 tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 856.178, 1341.47 ) ]
+"update": 1,
+"values": [ true ]
 }
-tracks/4/type = "value"
-tracks/4/path = NodePath("comics:position")
+tracks/4/type = "method"
+tracks/4/path = NodePath(".")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0 ),
+"times": PoolRealArray( 0.2 ),
 "transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 894.197, 136.16 ) ]
+"values": [ {
+"args": [  ],
+"method": "touch_interface_debug"
+} ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("interact:position")
+tracks/5/path = NodePath("Control/ActionButtons:rect_position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
@@ -340,10 +366,10 @@ tracks/5/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 921.015, 1215.16 ) ]
+"values": [ Vector2( 741.822, 1434.18 ) ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("stats:position")
+tracks/6/path = NodePath("Control/InterractButtons:rect_position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
@@ -352,10 +378,10 @@ tracks/6/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 884.206, 29.2283 ) ]
+"values": [ Vector2( 856, 2 ) ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("Joystick:visible")
+tracks/7/path = NodePath("D-pad:rect_position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
@@ -363,34 +389,8 @@ tracks/7/enabled = true
 tracks/7/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
-tracks/8/type = "value"
-tracks/8/path = NodePath("D-pad:visible")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/9/type = "method"
-tracks/9/path = NodePath(".")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/keys = {
-"times": PoolRealArray( 0.2 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "touch_interface_debug"
-} ]
+"update": 0,
+"values": [ Vector2( 180.76, 1541.21 ) ]
 }
 
 [sub_resource type="Animation" id=6]
@@ -420,7 +420,7 @@ tracks/1/keys = {
 "values": [ Vector2( 163.651, 1566.8 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("roll:position")
+tracks/2/path = NodePath("D-pad:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -428,11 +428,11 @@ tracks/2/enabled = true
 tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 717.714, 1493.78 ) ]
+"update": 1,
+"values": [ false ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("slash:position")
+tracks/3/path = NodePath("Joystick:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -440,76 +440,16 @@ tracks/3/enabled = true
 tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 856.178, 1341.47 ) ]
+"update": 1,
+"values": [ true ]
 }
-tracks/4/type = "value"
-tracks/4/path = NodePath("comics:position")
+tracks/4/type = "method"
+tracks/4/path = NodePath(".")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 894.197, 136.16 ) ]
-}
-tracks/5/type = "value"
-tracks/5/path = NodePath("interact:position")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 921.015, 1215.16 ) ]
-}
-tracks/6/type = "value"
-tracks/6/path = NodePath("stats:position")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 884.206, 29.2283 ) ]
-}
-tracks/7/type = "value"
-tracks/7/path = NodePath("D-pad:visible")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
-tracks/8/type = "value"
-tracks/8/path = NodePath("Joystick:visible")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/9/type = "method"
-tracks/9/path = NodePath(".")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/keys = {
 "times": PoolRealArray( 0.2 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
@@ -523,14 +463,6 @@ modulate = Color( 1, 1, 1, 0.698039 )
 script = ExtResource( 4 )
 _control = "direction"
 
-[node name="stats" type="TouchScreenButton" parent="."]
-pause_mode = 2
-position = Vector2( 1110.48, 29.2283 )
-normal = ExtResource( 13 )
-bitmask = ExtResource( 3 )
-action = "pause"
-visibility_mode = 1
-
 [node name="menu" type="TouchScreenButton" parent="."]
 modulate = Color( 0, 0, 0, 1 )
 position = Vector2( 6, 44 )
@@ -538,14 +470,24 @@ scale = Vector2( 0.607283, 0.565069 )
 normal = ExtResource( 2 )
 action = "menu"
 
-[node name="interact" type="TouchScreenButton" parent="."]
-position = Vector2( 1073.75, 245.527 )
-normal = ExtResource( 11 )
+[node name="Control" type="Control" parent="."]
+
+[node name="InterractButtons" type="Control" parent="Control"]
+anchor_right = 1.0
+margin_left = 856.0
+margin_top = 2.0
+margin_right = 1022.0
+margin_bottom = 337.0
+
+[node name="stats" type="TouchScreenButton" parent="Control/InterractButtons"]
+pause_mode = 2
+position = Vector2( 1110.48, 29.2283 )
+normal = ExtResource( 13 )
 bitmask = ExtResource( 3 )
-action = "interact"
+action = "pause"
 visibility_mode = 1
 
-[node name="comics" type="TouchScreenButton" parent="."]
+[node name="comics" type="TouchScreenButton" parent="Control/InterractButtons"]
 position = Vector2( 1103.5, 113.137 )
 rotation = 0.370864
 scale = Vector2( 0.9, 0.9 )
@@ -554,16 +496,22 @@ bitmask = ExtResource( 3 )
 action = "comics"
 visibility_mode = 1
 
-[node name="roll" type="TouchScreenButton" parent="."]
-position = Vector2( 904.39, 476.15 )
-scale = Vector2( 1.29269, 1.29269 )
-normal = ExtResource( 14 )
+[node name="interact" type="TouchScreenButton" parent="Control/InterractButtons"]
+position = Vector2( 1073.75, 245.527 )
+normal = ExtResource( 11 )
 bitmask = ExtResource( 3 )
-passby_press = true
-action = "roll"
+action = "interact"
 visibility_mode = 1
 
-[node name="slash" type="TouchScreenButton" parent="."]
+[node name="ActionButtons" type="Control" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 703.767
+margin_top = 321.086
+margin_right = 983.767
+margin_bottom = 599.086
+
+[node name="slash" type="TouchScreenButton" parent="Control/ActionButtons"]
 position = Vector2( 1014.57, 361.592 )
 scale = Vector2( 1.64391, 1.64391 )
 normal = ExtResource( 16 )
@@ -572,9 +520,22 @@ passby_press = true
 action = "attack"
 visibility_mode = 1
 
-[node name="D-pad" type="YSort" parent="."]
+[node name="roll" type="TouchScreenButton" parent="Control/ActionButtons"]
+position = Vector2( 904.39, 476.15 )
+scale = Vector2( 1.29269, 1.29269 )
+normal = ExtResource( 14 )
+bitmask = ExtResource( 3 )
+passby_press = true
+action = "roll"
+visibility_mode = 1
+
+[node name="D-pad" type="Control" parent="."]
 visible = false
-position = Vector2( 178.18, 506.03 )
+anchor_bottom = 1.0
+margin_left = 180.76
+margin_top = 1541.21
+margin_right = 180.76
+margin_bottom = 1541.21
 
 [node name="right" type="TouchScreenButton" parent="D-pad"]
 position = Vector2( 34.2971, -58.3689 )
@@ -616,6 +577,7 @@ action = "move_down"
 visibility_mode = 1
 
 [node name="Joystick" type="Control" parent="."]
+anchor_bottom = 1.0
 margin_left = 203.651
 margin_top = 467.955
 margin_right = 243.651

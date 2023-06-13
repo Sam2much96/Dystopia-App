@@ -67,6 +67,7 @@ var D_pad : Control
 
 var Anim : AnimationPlayer 
 
+'UI button as arrays'
 var action_buttons : Array = [menu ,stats,_interract,roll, slash,comics]
 var direction_buttons : Array = [D_pad, joystick]
 
@@ -79,6 +80,14 @@ var slash_position : Vector2
 var comics_position : Vector2
 var joystick_position : Vector2
 var D_pad_position : Vector2
+
+'UI control Parents'
+var interract_buttons : Control
+var action_interract_buttons : Control
+
+"Dimensions Calculator"
+var dimensions : Vector2  
+var dimensional_diff : Vector2  
 
 var buttons_positional_data : Array
 
@@ -102,7 +111,8 @@ func _ready():
 	LineDebug = $Line2D
 	#touch_interface_debug() disabling for now
 
-
+	action_interract_buttons = $Control/ActionButtons 
+	interract_buttons = $Control/InterractButtons
 
 	"Touch UI Visibility"
 	# Disabling for Debug
@@ -111,7 +121,15 @@ func _ready():
 	"Auto sets the controller button"
 	reset()
 
+	calculate_button_positional_data()
+	
+	"Display Screen Calculations"
+	Globals.Screen.display_calculations(get_tree().get_root(), Globals)
 
+	dimensions = calculate_length_breadth(buttons_positional_data)
+	dimensional_diff = dimensions - Globals.center_of_viewport 
+	print_debug("HUD Dimensions:", dimensions) # Breath of the wild lmao
+	print_debug("Dimension difference: ",dimensional_diff )
 
 	#touch_interface_debug()
 
@@ -209,39 +227,15 @@ func calculate_length_breadth(point_positions: Array) -> Vector2:
 # Should PNly run once
 func touch_interface_debug(): #Debug singleton is broken
 	if _Hide_touch_interface == false && _debug.debug_panel != null && _Debug_Run == false:
-		calculate_button_positional_data()
-		
-		"Display Screen Calculations"
-		Globals.Screen.display_calculations(get_tree().get_root(), Globals)
-		var dimensions = calculate_length_breadth(buttons_positional_data)
-		print("Length of HUD:", dimensions.x)
-		print("Breadth of HUD:", dimensions.y) # Breath of the wild lmao
-		var dimensional_diff : Vector2 = Globals.center_of_viewport - dimensions
-		print("Dimension difference: ",dimensional_diff
-		
-		 )
+
 		_Debug_Run = true# Runs this Debug Loop Only Once
 		
-		#print_debug ('Touch Interface Debug: ', 
-		#" COntrol: ",Globals.direction_control, 
-		#"Global Control", Globals.direction_control, 
-		#'Touch Interface size: ', self.scale,
-		#'Touch Interface pos: ', self.position,
-		
+		#RepositionButtonsHUD()
 		# *************************************************
 		# Buttons Debug
 		# (a) Plot a line2d with all Buttons Position (done)
 		# (b) Use Line Point Dimensions to Compare Global Screen Size calculations  
 		# *************************************************
-		#'Menu Button Pos: ',menu_position ,
-		#'Stats Button Pos:',stats_position,
-		#'Interact Button Pos:',_interract_position,
-		#'Roll Button Pos:',roll_position, 
-		#'Slash BUtton Pos:',slash_position,
-		#'Comics Button Pos:',comics_position
-		#)
-
-		# 
 		
 		for i in buttons_positional_data:
 			LineDebug.add_point(i)
@@ -259,8 +253,11 @@ func set_controller(_control):
 		#return
 	
 
-
-
+func RepositionButtonsHUD()-> void:
+	#pass
+	action_interract_buttons.set_position(action_interract_buttons.get_position() + dimensional_diff)
+	interract_buttons.set_position(action_interract_buttons.get_position() + dimensional_diff)
+	
 
 
 func _process(_delta):

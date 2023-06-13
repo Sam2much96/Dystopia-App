@@ -155,7 +155,7 @@ tracks/10/keys = {
 } ]
 }
 tracks/11/type = "value"
-tracks/11/path = NodePath("Control:position")
+tracks/11/path = NodePath("Control/InterractButtons:rect_position")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/imported = false
@@ -164,10 +164,10 @@ tracks/11/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( -180, -16 ) ]
+"values": [ Vector2( 856, 2 ) ]
 }
 tracks/12/type = "value"
-tracks/12/path = NodePath("Control/InterractButtons:rect_position")
+tracks/12/path = NodePath("Control/ActionButtons:rect_position")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/imported = false
@@ -176,27 +176,15 @@ tracks/12/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 856, 2 ) ]
+"values": [ Vector2( 703.767, 321.086 ) ]
 }
 tracks/13/type = "value"
-tracks/13/path = NodePath("Control/ActionButtons:rect_position")
+tracks/13/path = NodePath("D-pad:rect_position")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/imported = false
 tracks/13/enabled = true
 tracks/13/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 703.767, 321.086 ) ]
-}
-tracks/14/type = "value"
-tracks/14/path = NodePath("D-pad:rect_position")
-tracks/14/interp = 1
-tracks/14/loop_wrap = true
-tracks/14/imported = false
-tracks/14/enabled = true
-tracks/14/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
@@ -236,7 +224,7 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0.2 ),
+"times": PoolRealArray( 0.1 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
@@ -283,7 +271,7 @@ tracks/5/keys = {
 [sub_resource type="Animation" id=5]
 resource_name = "SCREEN_VERTICAL_1"
 tracks/0/type = "value"
-tracks/0/path = NodePath("D-pad:position")
+tracks/0/path = NodePath("Joystick:rect_position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -292,120 +280,19 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 178.18, 1576.07 ) ]
+"values": [ Vector2( 163.651, 1566.8 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Joystick:rect_position")
+tracks/1/path = NodePath("Joystick:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 163.651, 1566.8 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("Joystick:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
 "values": [ false ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("D-pad:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/4/type = "method"
-tracks/4/path = NodePath(".")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0.2 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "touch_interface_debug"
-} ]
-}
-tracks/5/type = "value"
-tracks/5/path = NodePath("Control/ActionButtons:rect_position")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( -149.076, 999.425 ) ]
-}
-tracks/6/type = "value"
-tracks/6/path = NodePath("Control/InterractButtons:rect_position")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( -220.205, -19.3816 ) ]
-}
-tracks/7/type = "value"
-tracks/7/path = NodePath("D-pad:rect_position")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 173.633, 1469.94 ) ]
-}
-
-[sub_resource type="Animation" id=6]
-resource_name = "SCREEN_VERTICAL_2"
-tracks/0/type = "value"
-tracks/0/path = NodePath("D-pad:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 178.18, 1576.07 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Joystick:rect_position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 163.651, 1566.8 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("D-pad:visible")
@@ -417,33 +304,122 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ false ]
+"values": [ true ]
 }
-tracks/3/type = "value"
-tracks/3/path = NodePath("Joystick:visible")
+tracks/3/type = "method"
+tracks/3/path = NodePath(".")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/4/type = "method"
-tracks/4/path = NodePath(".")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
 "times": PoolRealArray( 0.2 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
 "method": "touch_interface_debug"
 } ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Control/ActionButtons:rect_position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -149.076, 999.425 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Control/InterractButtons:rect_position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -220.205, -19.3816 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("D-pad:rect_position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 173.633, 1469.94 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "SCREEN_VERTICAL_2"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Joystick:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 163.651, 1566.8 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("D-pad:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Joystick:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "touch_interface_debug"
+} ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("D-pad:rect_position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 173.633, 1469.94 ) ]
 }
 
 [node name="TouchInterface" type="Node2D"]
@@ -459,9 +435,14 @@ normal = ExtResource( 2 )
 action = "menu"
 
 [node name="Control" type="Control" parent="."]
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
 [node name="InterractButtons" type="Control" parent="Control"]
-anchor_right = 1.0
+anchor_left = 0.5
+anchor_right = 0.5
 margin_left = 856.0
 margin_top = 2.0
 margin_right = 1022.0
@@ -492,12 +473,14 @@ action = "interact"
 visibility_mode = 1
 
 [node name="ActionButtons" type="Control" parent="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 margin_left = 703.767
 margin_top = 321.086
-margin_right = 983.767
-margin_bottom = 599.086
+margin_right = 703.767
+margin_bottom = 321.086
 
 [node name="slash" type="TouchScreenButton" parent="Control/ActionButtons"]
 position = Vector2( 1014.57, 361.592 )
@@ -524,6 +507,9 @@ margin_left = 180.76
 margin_top = 1541.21
 margin_right = 180.76
 margin_bottom = 1541.21
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
 [node name="right" type="TouchScreenButton" parent="D-pad"]
 position = Vector2( 34.2971, -58.3689 )

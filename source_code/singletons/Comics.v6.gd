@@ -2,7 +2,7 @@
 # godot3-Dystopia-game by INhumanity_arts
 # Released under MIT License
 # *************************************************
-# Comics V5
+# Comics V6
 # This is a plugin containing the comics bool page logic
 # A comic book module for Godot game engine.
 # I implemented A touch input manager here
@@ -11,7 +11,7 @@
 #(1) Loads, Zooms and Drags Comic Pages
 #(2) Uses New multitouch gestures by implementing a touch input manager
 #(3) Decentralized Storage IPFS module (1/2)
-#(4) Swipe Gestures as Global Events
+#(4) Swipe Gestures as Global Events (done)
 #(5) Uses Networking Timer as await parameters for changing Panel
 
 #
@@ -25,7 +25,7 @@
 # (6) Implement Extendible (NFT) drag and Drop (Done)
 		# Implemeny godot-rust-ipfs cat for steamlined downloads
 # (7) Implement Page state and Pages state 
-# (8) Expand on this mechanics (1/3)
+# (8) Expand on this mechanics (2/3)
 # (9) Dystopia App Swipe Gestures Using Swipe Detection
 # *************************************************
 # Bugs:
@@ -147,11 +147,12 @@ var swipe_target_memory_x : Array = [] # for swipe direction x calculation
 var swipe_target_memory_y : Array = [] # for swipe direction y calculation
 var direction : Vector2
 var swipe_parameters : float = 0.1 # is 1 in Dystopia-App
-var x1 #: float
-var x2 #: float
-var y1 #: float
-var y2 #: float
+var x1 : float = 0
+var x2 : float = 0
+var y1 : float = 0
+var y2 : float = 0
 #export(float,0.5,1.5) var MAX_DIAGONAL_SLOPE  = 1.3
+var SwipeSpeed : Vector2
 
 
 
@@ -352,58 +353,63 @@ func _input(event):
 			#Functions.drag(event.position, event.position, Kinematic_2d,center, target_memory_x, target_memory_y)
 
 
-	"Swipe Direction Debug"
+	"Global Swipe Detection"
 	# Should Ideally be in COmics script. Requires rewrite for better structure
 	# The current implementation is a fast hack
 	if event is InputEventScreenDrag && !SwipeLocked : #kinda works, for NFT Drag & Drop
-		#Networking.start_check(4) #should take a timer as a parameter
-		#if Networking.Timeout == false:
+		
+		# Debug the screen drag event
+		#print_debug("index/",event.get_index(), "/speed: ", event.get_speed())
+		
+		SwipeSpeed = event.get_speed()
+		if abs(SwipeSpeed.x) > 1000 or abs(SwipeSpeed.y) > 1000: 
 		
 		
-		Networking.start_check(SWIPE_AWAIT)
-		
-		# should save event positions to an array and 
-		# run calculations using the first and last array positions
-		# Swipe position detector implemented it as state controller changer
-		#
-		Swipe._start_detection(
-			event.position,
-			true,
-			_e, 
-			swipe_target_memory_x, 
-			swipe_target_memory_y
-			)
-		
-		
-		"Detect Swipe State"
-		_state = Swipe._end_detection(
-			event.position, 
-			Vector2(0,0), 
-			direction_var,
-			_state, 
-			_e, 
-			swipe_target_memory_x, 
-			swipe_target_memory_y, 
-			Swipe.swipe_start_position, 
-			swipe_parameters,  
-			x1,x2,y1,y2, 
-			Swipe.MAX_DIAGONAL_SLOPE
-			)
+		# A Timer for disabling Swipe Action Temporarily
+			Networking.start_check(SWIPE_AWAIT)
+			
+			# should save event positions to an array and 
+			# run calculations using the first and last array positions
+			# Swipe position detector implemented it as state controller changer
+			#
+			Swipe._start_detection(
+				event.position,
+				true,
+				_e, 
+				swipe_target_memory_x, 
+				swipe_target_memory_y
+				)
+			
+			
+			"Detect Swipe State"
+			_state = Swipe._end_detection(
+				event.position, 
+				Vector2(0,0), 
+				direction_var,
+				_state, 
+				_e, 
+				swipe_target_memory_x, 
+				swipe_target_memory_y, 
+				Swipe.swipe_start_position, 
+				swipe_parameters,  
+				x1,
+				x2,
+				y1,
+				y2, 
+				Swipe.MAX_DIAGONAL_SLOPE
+				)
 	
 	
-
 	
-		#print("_state Debug: ",_state) #for debug purposes only
+	
+	#print("_state Debug: ",_state) #for debug purposes only
 	" Zoom 2"
 	if event is InputEventScreenTouch :
 		
 		target =  event.get_position()
-		#if event is  InputEventMultiScreenDrag == true : # Works
-			#target =  event.get_position()
 		if event.get_index() == int(2): # and event is InputEventScreenPinch : #zoom if screentouch is 2 fingers & uses input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases
-		#if event.is_double_tap():
-			
-			print ("zoom")
+
+			print_debug ("zoom")
 			Functions._zoom(cmx_root, !zoom) #you can use get_index to get the number of fingers
 			
 			zoom = !zoom
@@ -787,7 +793,11 @@ class Local extends Reference:
 
 
 
-class Swipe :
+class Swipe extends Reference:
+	# Bugs
+	# (1) Print Overflow
+	# (2) Coflates Swipe and Touch Input simultaneously
+	# (3) Cannot be turned off 
 	
 	#**********Swipe Detection Direction Calculation Parameters************#
 	const swipe_start_position : Vector2 = Vector2()
@@ -797,9 +807,6 @@ class Swipe :
 	" Swipe Direction Detection"
 	#var _e = Timer.new()
 	static func _init_(_e : Timer): # Not tested yet
-			_e
-			
-			
 			
 			#for swipe detection
 			_e.one_shot = true
@@ -831,7 +838,7 @@ class Swipe :
 
 
 	static func _start_detection(
-		_position, 
+		_position : Vector2, 
 		enabled: bool, 
 		_e : Timer ,
 		swipe_target_memory_x : Array, 
@@ -839,7 +846,8 @@ class Swipe :
 		): #for swipe detection
 		
 		#use current scene to trigger cinematic
-		Globals.update_curr_scene()
+		#Globals.update_curr_scene() # depreciated
+		
 		if enabled == true:
 			#swipe_start_position = _position
 			if not swipe_target_memory_x.has(_position.x): 
@@ -849,12 +857,11 @@ class Swipe :
 			
 			
 			_e.start()
-			print ('start swipe detection :') #for debug purposes delete later
-
+			print_debug ('started swipe detection ') #for debug purposes delete later
+	
+	
 	"Only Two Swipe Directions Are Currently Implemented"
-
 	# Contains a Calibration Bug
-
 	static func _end_detection(
 		__position, direction : Vector2, 
 		direction_var, _state, _e : Timer, 
@@ -862,7 +869,10 @@ class Swipe :
 		swipe_target_memory_y : Array, 
 		swipe_start_position : Vector2, 
 		swipe_parameters: float, 
-		x1,x2,y1,y2,
+		x1 : float,
+		x2 : float,
+		y1 : float,
+		y2 : float,
 		MAX_DIAGONAL_SLOPE
 		):
 	
@@ -893,7 +903,7 @@ class Swipe :
 			
 			
 			
-				# Play Animation
+			# Play Animation
 			GlobalAnimation.get_child(0).play("SWIPE_LEFT")
 			
 			# next panel
@@ -961,13 +971,13 @@ class Swipe :
 				
 				var x_average: int = Globals.calc_average(swipe_target_memory_x)
 				
-				print ("X average: ",x_average)
+				print_debug ("X average: ",x_average)
 				print (x1, "/",x2)
 				direction.x  = (x1-x2)/x_average
 				
-				print ("direction x: ",direction.x)
+				print_debug ("direction x: ",direction.x)
 				
-				print ('end detection: ','direction: ',direction ,'position',__position, "max diag slope", MAX_DIAGONAL_SLOPE) #for debug purposes only
+				print_debug ('end detection: ','direction: ',direction ,'position',__position, "max diag slope", MAX_DIAGONAL_SLOPE) #for debug purposes only
 				#print ("X: ",swipe_target_memory_x)#*********For Debug purposes only
 				#print ("Y: ",swipe_target_memory_x)#*********For Debug purposes only
 			
@@ -1324,18 +1334,18 @@ class Functions extends Reference:
 
 	static func _zoom(comics_placeholder : Control, zoom : bool)-> bool:
 		
-		#if _loaded_comics == true:
-		var scale =comics_placeholder.get_scale()
-		if scale == Vector2(1,1)  :
-			#print ('zoom in') #for debug purposes only
-			comics_placeholder.set_scale(scale * 2) 
-			zoom = true
-			return true 
-		if scale > Vector2(1,1):
-			#print ('zoom out') #for debug purposes only
-			scale = comics_placeholder.get_scale()
-			comics_placeholder.set_scale(scale / 2) 
-			zoom = false
+		if comics_placeholder != null:
+			var scale =comics_placeholder.get_scale()
+			if scale == Vector2(1,1)  :
+				#print ('zoom in') #for debug purposes only
+				comics_placeholder.set_scale(scale * 2) 
+				zoom = true
+				return true 
+			if scale > Vector2(1,1):
+				#print ('zoom out') #for debug purposes only
+				scale = comics_placeholder.get_scale()
+				comics_placeholder.set_scale(scale / 2) 
+				zoom = false
 		return zoom 
 
 	static func _zoom_2(comics_placeholder : Node, zoom : bool)-> bool:

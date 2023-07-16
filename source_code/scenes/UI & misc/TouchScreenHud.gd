@@ -67,9 +67,7 @@ var D_pad : Control
 
 var Anim : AnimationPlayer 
 
-'UI button as arrays'
-var action_buttons : Array = [menu ,stats,_interract,roll, slash,comics]
-var direction_buttons : Array = [D_pad, joystick]
+
 
 
 var menu_position : Vector2
@@ -93,6 +91,10 @@ var buttons_positional_data : Array
 
 var LineDebug : Line2D 
 onready var joystick_parent: Control = $Joystick
+
+'UI button as arrays'
+onready var action_buttons : Array = [menu ,stats,_interract,roll, slash,comics]
+onready var direction_buttons : Array = [D_pad, joystick]
 
 func _ready():
  
@@ -132,6 +134,8 @@ func _ready():
 	print_debug("Dimension difference: ",dimensional_diff )
 
 	#touch_interface_debug()
+
+
 
 static func hide_self(operating_sys: String, screenOrientation : int, _Hide_touch_interface : bool, _node : TouchScreenHUD) -> void:
 	#toggles touch interface visibility depending on the os and screen orientation (Pc or Mobiles)
@@ -223,6 +227,38 @@ func calculate_length_breadth(point_positions: Array) -> Vector2:
 	return Vector2(length, breadth)
 
 
+func ScreenCalculationLogic():
+	
+	# *************************************************
+	"Touch Screen UI"
+	#hvliyilycic
+	# Features
+	# (1) Uses a Global Screen Orienation variable
+	# (2) Uses an Animation Player to Set Node Position
+	#
+	# Bugs
+	# (1) Disaligns on Different Mobile Devices
+	# To Do
+	# (1) Implement Globals Screnn Class Calculations
+	# (2) Use Scene Display Calculations to Fix Misalignment Bug on Mobile Devices 
+	# (3) Implement Calculations in the Animation Player
+	# *************************************************
+	
+	
+	
+	#'Changes the button Layout depending on the screen orientation for Mobile UI'
+	#implement joystick and D-pad variations
+	
+	if Globals.screenOrientation == 1 && _control == 'direction': #works
+		Anim.play("SCREEN_VERTICAL_1");
+	if Globals.screenOrientation == 1 && _control == 'analogue': #works
+		Anim.play("SCREEN_VERTICAL_2");
+	##If screen Is Horizontal, it would be PC UI, making this code obsolete
+	elif Globals.screenOrientation == 0:
+		Anim.play("SCREEN_HORIZONTAL");
+	else: pass;
+
+
 # Handles Debugging Variables from the touch interface system
 # Should PNly run once
 func touch_interface_debug(): #Debug singleton is broken
@@ -263,70 +299,42 @@ func RepositionButtonsHUD()-> void:
 func _process(_delta):
 
 	
-	
-	# *************************************************
-	"Touch Screen UI"
-	#hvliyilycic
-	# Features
-	# (1) Uses a Global Screen Orienation variable
-	# (2) Uses an Animation Player to Set Node Position
-	#
-	# Bugs
-	# (1) Disaligns on Different Mobile Devices
-	# To Do
-	# (1) Implement Globals Screnn Class Calculations
-	# (2) Use Scene Display Calculations to Fix Misalignment Bug on Mobile Devices 
-	# (3) Implement Calculations in the Animation Player
-	# *************************************************
-	
-	
-	
-	#'Changes the button Layout depending on the screen orientation for Mobile UI'
-	#implement joystick and D-pad variations
-	
-	#ssdgsfg
-	
-	if Globals.screenOrientation == 1 && _control == 'direction': #works
-		Anim.play("SCREEN_VERTICAL_1");
-	if Globals.screenOrientation == 1 && _control == 'analogue': #works
-		Anim.play("SCREEN_VERTICAL_2");
-	##If screen Is Horizontal, it would be PC UI, making this code obsolete
-	elif Globals.screenOrientation == 0:
-		Anim.play("SCREEN_HORIZONTAL");
-	else: pass;
-	
+	ScreenCalculationLogic()
 	
 	#write a rule that Joystick and Dpad cannot be visible at the same time
 	
 	"""
 	State Machine For the TOuch interface
 	"""
-	match _state_controller:
-		MENU:
-			
-			if _Hide_touch_interface == false: #include analogue controls
+	if _Hide_touch_interface == false:
+		
+		match _state_controller:
+			MENU:
 				
+				#if _Hide_touch_interface == false: #include analogue controls
+					
 				hide_buttons()
-				
+					
 				menu.show()
+					
+				#pass
 				
-			pass
-		INTERRACT:
-			#The interract state should only show when it's close to an interactible object 
-			if _Hide_touch_interface == false:
+			INTERRACT:
+				#The interract state should only show when it's close to an interactible object 
+				#if _Hide_touch_interface == false:
 
-				
+					
 				hide_buttons()
-				
+					
 				menu.show()
 				_interract.show()
 
-				return
-				
-			pass
-		ATTACK:
-		
-			if _Hide_touch_interface == false:
+				#return
+					
+				#pass
+			ATTACK:
+			
+				#if _Hide_touch_interface == false:
 
 				emit_signal('attack')
 				
@@ -340,43 +348,44 @@ func _process(_delta):
 				roll.show()
 				if _control == 'analogue':
 					D_pad.hide()
-
 					joystick_parent.show()
+					
 				if _control == 'direction':
 					joystick_parent.hide()
 					D_pad.show()
 
 
-			pass
-		STATS:
-			#state = 'status'
-			emit_signal('status')
-			if _Hide_touch_interface == false :
+				pass
+			STATS:
+				#state = 'status'
+				emit_signal('status')
+				#if _Hide_touch_interface == false :
+				print_debug("Status")
 				hide_buttons()
-				
+					
 				stats.show()
 
-		
-			pass
-		COMICS:
-			if _Hide_touch_interface== false: 
+			
+				pass
+			COMICS:
+				#if _Hide_touch_interface== false: 
 				hide_buttons()
 
 				comics.show()
 				emit_signal('comics')
-			
-		
-			pass
-		RESET: #$ Too many ifs conditions #simplify state?
-			if _Hide_touch_interface == false :
-
 				
+			
+				pass
+			RESET: #$ Too many ifs conditions #simplify state?
+				#if _Hide_touch_interface == false :
+
+					
 				"shows all the UI options"
 
 				show_action_buttons()
-				
-				#return
-				#touch_interface_debug() # For Debug Purposes only
+					
+					#return
+					#touch_interface_debug() # For Debug Purposes only
 				"SHows the directional based on a global variable?"
 				if not Globals.direction_control == '':
 					_control = Globals.direction_control
@@ -384,13 +393,12 @@ func _process(_delta):
 				if Globals.direction_control == 'analogue':
 					joystick_parent.show()
 					D_pad.hide()
-
 					return
-					#touch_interface_debug() # For Debug Purposes only
+						#touch_interface_debug() # For Debug Purposes only
 				elif Globals.direction_control == 'direction':
-					joystick_parent.hide()
-					D_pad.show()
-				
+						joystick_parent.hide()
+						D_pad.show()
+					
 				elif Globals.direction_control == '' && _control == "analogue":
 					joystick_parent.show()
 					D_pad.hide()
@@ -398,25 +406,22 @@ func _process(_delta):
 					joystick_parent.hide()
 					D_pad.show()
 				else:
-				
+					
 					return
-			else:
-				return
-			
-		
-			pass
-	pass
 
 
 
-
-func hide_buttons()-> void:
-	for i in action_buttons:
+func hide_buttons()-> bool:
+	print_debug(action_buttons, direction_buttons)# for debug purposes only
+	for i in action_buttons && direction_buttons:
 		if i != null:
 			i.hide()
-	for h in direction_buttons:
-		if h != null:
-			h.hide()
+			return true
+	return false
+	#for h in :
+	#	if h != null:
+	#		h.hide()
+	#		return true
 
 func show_action_buttons()-> void:
 	for j in action_buttons:

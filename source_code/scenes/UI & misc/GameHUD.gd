@@ -17,7 +17,8 @@
 # (2) UI connects to depreciated state machine (fixed)
 # (3) UI joystick and D pad changes (fixed)
 # (4) Status UI misalgnment
-# (5) Doesn't implement Mobile Gyroscope
+# (5) Doesn't implement Mobile Gyroscope (f1/2 fixed)
+# TouchInterface State Machine is buggy
 # *************************************************
 
 
@@ -26,10 +27,10 @@ extends CanvasLayer
 class_name GameHUD
 
 
-onready var menu = $"Menu "
-onready var TouchInterface= $TouchInterface
+onready var menu : Container = $"Menu "
+onready var TouchInterface : Node2D =  $TouchInterface
 onready var _Comics = Comics_v6 #$Comics
-onready var _Stats = $Stats
+onready var _Stats : PanelContainer = $Stats
 
 
 func _ready():
@@ -51,8 +52,10 @@ func _input(_event):
 
 	" UI Animation"
 	# Controls the Touch interface state machine from the player's input 
+	# Buggy and Broken
 	
 	
+	# nested If Statements?
 	if Input.is_action_just_pressed("comics"):
 		if _Comics.enabled == true:
 			if TouchInterface._state_controller != 4 : # and _Comics.loaded_comics == true:
@@ -87,13 +90,15 @@ func _on_comics_freed():
 	TouchInterface.reset()
 
 func _on_status_showing():
-	TouchInterface.reset()
-	print('status hidden') #for debug purposes
+	TouchInterface.status()
+	print_debug("TC hidden:",TouchInterface._Hide_touch_interface, " SC: ", TouchInterface._state_controller) # Touch Interface Debug
+	print_debug('status hidden') #for debug purposes
 
 func _on_status_hidden():
 	#$Stats.enabled = false
-	TouchInterface.status()
-	print('status showing')
+	TouchInterface.reset()
+	print_debug("TC hidden:",TouchInterface._Hide_touch_interface, " SC: ", TouchInterface._state_controller) # Touch Interface Debug
+	print_debug('status showing')
 
 func on_comics_showing():
 	TouchInterface.comics()
@@ -110,7 +115,7 @@ func on_menu_showing(): # connects from the ingame menu signal
 func on_menu_hidden(): # connects from the ingame menu signal
 	if menu.menu_state == 1: #uses the menu state in it's logic where 0 is showing and 1 is hidden
 		TouchInterface.reset() #buggy function
-		print ("menu hidden --fix menu hidden bug")
+		print_debug ("menu hidden --fix menu hidden bug")
 
 func connect_signals()-> bool:
 	# 

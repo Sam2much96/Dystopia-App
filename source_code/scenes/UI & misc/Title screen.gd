@@ -12,6 +12,7 @@
 # To-Do:
 # (1) Finish D-pad to Joystick button change illustration 
 # (2) Add Swipe Gestures on/off controls
+# (3) Add Default Config Settings Depending on OS
 
 extends Control
 

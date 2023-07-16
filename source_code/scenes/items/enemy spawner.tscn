@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/items/enemy spawner.gd" type="Script" id=1]
 [ext_resource path="res://resources/FX/flame_fx_webp.webp" type="Texture" id=2]
@@ -47,6 +47,9 @@ tracks/1/keys = {
 "values": [ 0, 1, 2, 3, 4, 5 ]
 }
 
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 10, 17.2053 )
+
 [node name="enemy_spawner" type="Position2D"]
 script = ExtResource( 1 )
 enabled = true
@@ -68,4 +71,17 @@ vframes = 2
 anims/normal = SubResource( 1 )
 anims/spawning = SubResource( 2 )
 
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 0, 371.055 )
+scale = Vector2( 40.2025, -154.2 )
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+rotation = -1.55863
+scale = Vector2( 40.2025, -154.2 )
+shape = SubResource( 3 )
+
 [connection signal="timeout" from="enemy spawner" to="." method="_on_enemy_spawner_timeout"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]

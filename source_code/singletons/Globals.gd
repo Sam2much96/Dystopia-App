@@ -421,6 +421,26 @@ class Functions extends Reference:
 				Dialogs.language = save_dict.languague
 		pass
 
+	
+	static func scroll(direction : bool , visible : bool, _scroller : ScrollContainer)-> void:
+		# DOCS : https://godotengine.org/qa/92054/how-programmatically-scroll-horizontal-list-texturerects
+		# using a boolean because it allows for only two options in it's data structure
+		# True is up, false is down
+		# Max is 449
+		var scroll_constant : int = 4
+		# Requires Delta Parameter for smooth scrolling 
+		# but running this function as a static function means
+		# it scrolls choppily
+		
+		
+		if visible && direction:
+			_scroller.scroll_vertical += 20 * scroll_constant  #* delta
+		elif visible && !direction:
+			_scroller.scroll_vertical -= 20 * scroll_constant  #* delta
+
+			#print (scroller.scroll_vertical )#= scroll_constant  * delta
+
+
 
 func turn_off_processing(toggle): # to improve game speed and turn off idle processsing
 	if toggle is String:

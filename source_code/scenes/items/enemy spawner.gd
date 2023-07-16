@@ -10,6 +10,7 @@
 # To Do:
 #(1) Spawn different enemy types
 # (2) Expand code's functionaliy
+	# -(a) Only Spawns if Player is nearby, so as to optimize for performance
 # *************************************************
 
 extends Position2D
@@ -24,15 +25,18 @@ onready var anim = $AnimationPlayer
 
 #var enemy = load('res://scenes/characters/Bandits.tscn') 
 
-
+var SPAWNNING : bool = false
 export(int) var spawn_count 
 
 
 func _ready():
 	randomize()
 	anim.play("normal") #hides spriite animation by default
-	
-	if enemy_spawn_1 != null:
+
+
+func _process(_delta):
+	# ENemy spawn 1 checks for the Enemy Packed Scene to instance
+	if enemy_spawn_1 != null && SPAWNNING:
 		spawn_enemy()
 
 
@@ -53,3 +57,10 @@ func spawn_enemy():
 func _on_enemy_spawner_timeout():
 	spawn_enemy()
 	pass # Replace with function body.
+
+
+" SPAWN STARTER/ PLAYER DETECTOR"
+func _on_Area2D_body_exited(body):
+	if body is Player:
+		SPAWNNING = true
+	else : pass

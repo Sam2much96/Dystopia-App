@@ -100,6 +100,6 @@ func update_collision_list( area : String)-> void:
 		return
 
 func debug_grass( area_name : String)-> void: 
-	print (area_name+' cuts ' + nodeName)
+	print_debug (area_name+' cuts ' + nodeName)
 	print (similar_names) #list of all objects grass and flower nodes collide with
 

@@ -17,8 +17,6 @@ script = ExtResource( 9 )
 margin_right = 8448.0
 
 [node name="Stats" parent="." instance=ExtResource( 2 )]
-margin_right = 4741.0
-margin_bottom = 2763.0
 
 [node name="Status_text" parent="." instance=ExtResource( 3 )]
 margin_top = 150.609

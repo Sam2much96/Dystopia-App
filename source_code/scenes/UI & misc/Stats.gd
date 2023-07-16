@@ -3,10 +3,18 @@
 # Released under MIT License
 # *************************************************
 # Stats
-# Updates Game Stats to the UI
+# Updates Game Stats to the UI.
+# Displays Quest and Inventory INformation to the Player
 # currenty updates quests, Killcount and Algos
 # Features
 # (1) Parses Quest Data from Singleton
+#
+# TO-DO:
+# 
+# (1) SCrolling Inbentory Menu
+#(2 ) Should AutoScale to Screen Display size using Global screen calculation functions
+
+
 # *************************************************
 
 extends PanelContainer
@@ -16,15 +24,20 @@ class_name Stats
 export (bool) var enabled #= false
 signal not_enabled
 signal enabled
-	
+
+onready var scroller : ScrollContainer = $ScrollContainer
+
 func _ready():
-	
+	self.get_child(0)
 	
 	#Globals.save_game() # Depreciated
 	get_tree().set_auto_accept_quit(false)
 	hide()
 
 func _input(event):
+	"""
+	UPDATES STATUS HUD ON PAUSE 
+	"""
 	if event.is_action_pressed("pause")  && enabled == false: #this code breaks
 		emit_signal("not_enabled")
 		enabled = true
@@ -47,9 +60,29 @@ func _input(event):
 
 
 
-#
+	
+	"Auto Scroller"
+	# DIsabled
+	# Connects to Global Comics Swipe Feature
+	#'AutoScroller'
+	# Implemented but Requires Proper Swipe Gesture Callibration
+	# 
+
+	#if Comics_v6._state == Comics_v6.SWIPE_RIGHT:
+		
+		# Scroll Down
+	#	Globals.Functions.scroll(false, enabled,scroller)
+	#elif Comics_v6._state == Comics_v6.SWIPE_DOWN:
+		
+		# Scroll Up
+	#	Globals.Functions.scroll(true, enabled,scroller)
+		
+	#else: pass
+
+
+
 func _update_wallet_stats(): #Updates killcount and Algos
-	$VBoxContainer/HBoxContainer/Quests/Algos.text = 'mAlgos: ' + str (Globals.algos)
+	$ScrollContainer/Quests/Algos.text = 'mAlgos: ' + str (Globals.algos)
 
 
 func _update_quest_listing():
@@ -61,7 +94,7 @@ func _update_quest_listing():
 	for quest in Quest.list(Quest.STATUS.FAILED):
 		text += "  %s\n" % quest
 	
-	$VBoxContainer/HBoxContainer/Quests/Details.text = text
+	$ScrollContainer/Quests/Details.text = text
 	pass
 
 func _update_item_listing():
@@ -70,16 +103,13 @@ func _update_item_listing():
 	if inventory.empty():
 		text += "[Empty]"
 	for item in inventory:
+		# Sorts Items Into Individual Lines using REGEX
 		text += "%s x %s\n" % [item, inventory[item]]
-	$VBoxContainer/HBoxContainer/Inventory/Details.text = text
+	$ScrollContainer/Quests/Details2.text = text
 	pass
 
 
 
 func _notification(what):  #i removed this notification functioncode from the game cuz i don't know what it does yet
 	if (what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST):
-		quit_game()
-		pass
-func quit_game():
-	Globals.save_game()
-	get_tree().quit()
+		print_debug("STATUS NOTIFICATION")

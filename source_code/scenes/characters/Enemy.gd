@@ -448,7 +448,8 @@ func debug()-> void:
 
 func _on_VisibilityNotifier2D_screen_entered():
 	set_process(true)
-
+	set_physics_process(true)
 
 func _on_VisibilityNotifier2D_screen_exited():
 	set_process(false)
+	set_physics_process(false)

@@ -63,7 +63,7 @@ onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit Bu
 # Auto Scroll with Swipe Gestures
 onready var scroller : ScrollContainer= get_node("MarginContainer/ScrollContainer")
 
-const scroll_constant: int = 4
+
 
 
 onready var MenuButtons : Array = [
@@ -117,24 +117,6 @@ func _process(delta):
 	pass
 
 
-static func scroll(direction : bool , visible : bool, _scroller : ScrollContainer)-> void:
-	# DOCS : https://godotengine.org/qa/92054/how-programmatically-scroll-horizontal-list-texturerects
-	# using a boolean because it allows for only two options in it's data structure
-	# True is up, false is down
-	# Max is 449
-	
-	# Requires Delta Parameter for smooth scrolling 
-	# but running this function as a static function means
-	# it scrolls choppily
-	
-	
-	if visible && direction:
-		_scroller.scroll_vertical += 20 * scroll_constant  #* delta
-	elif visible && !direction:
-		_scroller.scroll_vertical -= 20 * scroll_constant  #* delta
-
-		#print (scroller.scroll_vertical )#= scroll_constant  * delta
-
 func _input(event): #Toggles menu visibility on/off
 	if event.is_action_pressed("menu") == true :# 
 		if menu_state == HIDDEN:
@@ -174,13 +156,12 @@ func _input(event): #Toggles menu visibility on/off
 
 	if Comics_v6._state == Comics_v6.SWIPE_RIGHT:
 		
-		
 		# Scroll Down
-		scroll(false, true,scroller)
+		Globals.Functions.scroll(false, true,scroller)
 	elif Comics_v6._state == Comics_v6.SWIPE_DOWN:
 		
 		# Scroll Up
-		scroll(true, true,scroller)
+		Globals.Functions.scroll(true, true,scroller)
 		
 	else: pass
 

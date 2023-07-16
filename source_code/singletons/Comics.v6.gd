@@ -167,8 +167,8 @@ SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT, NOT_SWIPING, ERROR
 
 # Swipe Direction Enum (Struct)
 #enum { } 
-#export (String, 'Up', "Down", "Left", "Right", "Idle") var direction_var ="Idle"
-var direction_var : String = "idle"
+export (String, 'Up', "Down", "Left", "Right", "Idle") var direction_var ="Idle"
+#var direction_var : String = "idle"
 
 #var dir_var = NOT_SWIPING
 
@@ -863,8 +863,11 @@ class Swipe extends Reference:
 	"Only Two Swipe Directions Are Currently Implemented"
 	# Contains a Calibration Bug
 	static func _end_detection(
-		__position, direction : Vector2, 
-		direction_var, _state, _e : Timer, 
+		__position : Vector2, 
+		direction : Vector2, 
+		direction_var : String, 
+		_state : int, 
+		_e : Timer, 
 		swipe_target_memory_x : Array, 
 		swipe_target_memory_y : Array, 
 		swipe_start_position : Vector2, 
@@ -884,9 +887,7 @@ class Swipe extends Reference:
 			
 		if round(direction.x) == -1: # Doesnt work
 			print('left swipe 1') #for debug purposes
-			#next_panel()
-			
-			
+
 			
 			# Play Animation
 			GlobalAnimation.get_child(0).play("SWIPE_LEFT")
@@ -896,9 +897,7 @@ class Swipe extends Reference:
 		if round(direction.x) == 1: # works
 			print('left swipe 1') #for debug purposes
 			
-			
-			#prev_panel()
-			
+
 			direction_var = "Left"
 			
 			
@@ -1091,7 +1090,7 @@ class Functions extends Reference:
 		) -> AnimatedSprite: 
 
 		
-		#var err : PackedScene = load(current_comics)
+		
 		var err : PackedScene = Globals.Functions.LoadLargeScene(
 					current_comics, 
 					Globals.scene_resource, 

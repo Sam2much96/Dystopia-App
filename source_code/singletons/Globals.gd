@@ -73,7 +73,7 @@ var current_level : String
 
 
 var Music_on_settings # Depreciated
-export (String, 'analogue', 'direction') var direction_control = ''  #toggles btw analogue and d-pad
+export (String, 'analogue', 'direction') var direction_control = "direction"  #toggles btw analogue and d-pad
 
 var uncompressed # Varible holds uncompressed zip files
 
@@ -145,7 +145,7 @@ var FileDirectory=Directory.new() #deletes all theon reset
 var _TouchScreenHUD : TouchScreenHUD
 
 func _ready():
-	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
+	print_debug('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	
 
 

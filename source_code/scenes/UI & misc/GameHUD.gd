@@ -16,7 +16,7 @@
 #(1) Ingame menu bug (fixed)
 # (2) UI connects to depreciated state machine (fixed)
 # (3) UI joystick and D pad changes (fixed)
-# (4) Status UI misalgnment
+# (4) Status UI misalgnment (fixed)
 # (5) Doesn't implement Mobile Gyroscope (f1/2 fixed)
 # TouchInterface State Machine is buggy
 # *************************************************
@@ -77,7 +77,11 @@ func _input(_event):
 			
 			# Uses Networking Timer to Reset Touch Interface
 			Networking.start_check(3)
-			
+	#if Input.is_action_just_pressed('comics'):
+	#	if _Comics.enabled :
+	#		TouchInterface.comics()
+	
+	
 	#'Sets Interract UI'
 	# Hard connects to all interractible objects connected via the global variable
 	if Globals.near_interractible_objects == true : #&& Input.is_action_just_pressed("interact"):
@@ -86,41 +90,7 @@ func _input(_event):
 		# if Input.is_action_just_pressed("interact") : return TouchInterface.reset()
 		return TouchInterface.reset()
 
-func _on_comics_freed():
-	TouchInterface.reset()
 
-func _on_status_showing():
-	#TouchInterface.status()
-	
-	#TouchInterface.Anim.play("STATUS") # doesnt work
-	
-	print_debug("TC hidden:",TouchInterface._Hide_touch_interface, " SC: ", TouchInterface._state_controller) # Touch Interface Debug
-	print_debug('status hidden') #for debug purposes
-
-func _on_status_hidden():
-	#$Stats.enabled = false
-	 #Duplicate of 
-	#TouchInterface.reset()
-	TouchInterface.status()
-	print_debug("TC hidden:",TouchInterface._Hide_touch_interface, " SC: ", TouchInterface._state_controller) # Touch Interface Debug
-	print_debug('status showing')
-
-func on_comics_showing():
-	TouchInterface.comics()
-
-
-
-#doesn't work
-#should hide all UI items once menu is showing
-#s
-#connect TouchInterface to Menu Visibility
-func on_menu_showing(): # connects from the ingame menu signal
-	if menu.menu_state == 0: #uses the menu state in it's logic where 0 is showing and 1 is hidden
-		TouchInterface.menu()
-func on_menu_hidden(): # connects from the ingame menu signal
-	if menu.menu_state == 1: #uses the menu state in it's logic where 0 is showing and 1 is hidden
-		TouchInterface.reset() #buggy function
-		print_debug ("menu hidden --fix menu hidden bug")
 
 func connect_signals()-> bool:
 	# 
@@ -131,14 +101,17 @@ func connect_signals()-> bool:
 	if not Dialogs.is_connected("dialog_ended", self, "_on_dialog_ended"):
 		Dialogs.connect("dialog_ended", self, "_on_dialog_ended")
 	
-	if not _Stats.is_connected("not_enabled",self, '_on_status_hidden'):
-		_Stats.connect("not_enabled",self, '_on_status_hidden')
+	if not _Stats.is_connected("not_enabled",_Stats, '_on_status_hidden'):
+		_Stats.connect("not_enabled",_Stats, '_on_status_hidden')
 	
-	if not _Stats.connect('enabled',self,'_on_status_showing'):
-		_Stats.connect('enabled',self,'_on_status_showing')
+	if not _Stats.connect('enabled',_Stats,'_on_status_showing'):
+		_Stats.connect('enabled',_Stats,'_on_status_showing')
 	
-	if not _Comics.connect( 'freed_comics', self, '_on_comics_freed'  ):
-		 _Comics.connect( 'freed_comics', self, '_on_comics_freed'  )
+	if not _Comics.connect( 'comics_showing', TouchInterface, '_on_comics_showing'  ):
+		 _Comics.connect( 'comics_showing', TouchInterface, '_on_comics_showing'  )
+	
+	if not _Comics.connect( 'comics_hidden', TouchInterface, '_on_comics_hidden'  ):
+		 _Comics.connect( 'comics_hidden', TouchInterface, '_on_comics_hidden'  )
 	
 	if not menu.is_connected("menu_showing", TouchInterface, "menu"): #works
 		menu.connect("menu_showing", TouchInterface, "menu")
@@ -167,8 +140,11 @@ func disconnect_signals()-> bool:
 	if _Stats.connect('enabled',self,'_on_status_showing'):
 		_Stats.disconnect('enabled',self,'_on_status_showing')
 	
-	if _Comics.connect( 'freed_comics', self, '_on_comics_freed'  ):
-		 _Comics.disconnect( 'freed_comics', self, '_on_comics_freed'  )
+	if _Comics.connect( 'freed_comics', TouchInterface, '_on_comics_hidden'  ):
+		 _Comics.disconnect( 'freed_comics', TouchInterface, '_on_comics_hidden'  )
+
+	if _Comics.connect( 'freed_comics', TouchInterface, '_on_comics_showing'  ):
+		 _Comics.disconnect( 'freed_comics', TouchInterface, '_on_comics_showing'  )
 	
 	if menu.is_connected("menu_showing", TouchInterface, "menu"): #works
 		menu.disconnect("menu_showing", TouchInterface, "menu")

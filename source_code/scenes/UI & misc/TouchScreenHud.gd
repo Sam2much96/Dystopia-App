@@ -63,6 +63,7 @@ var slash  : TouchScreenButton
 
 var comics : TouchScreenButton 
 var joystick : TouchScreenButton 
+var joystick2 : TouchScreenButton 
 var D_pad : Control 
 
 var Anim : AnimationPlayer 
@@ -104,6 +105,8 @@ func _enter_tree():
 	"Global Pointer"
 	Globals._TouchScreenHUD = self
 
+	
+
 func _ready():
  
 
@@ -113,7 +116,8 @@ func _ready():
 	roll = $Control/ActionButtons/roll
 	slash = $Control/ActionButtons/slash
 	comics = $Control/InterractButtons/comics
-	joystick = $Joystick/joystick_circle2
+	joystick = $Joystick/joystick_circle
+	joystick2 = $Joystick/joystick_circle2
 	 
 	Anim = $AnimationPlayer
 	D_pad = $"D-pad"
@@ -126,7 +130,7 @@ func _ready():
 
 	"Set Button Arraqys for easy on/off"
 	action_buttons = [menu ,stats,_interract,roll, slash,comics]
-	direction_buttons = [D_pad, joystick]
+	direction_buttons = [D_pad, joystick, joystick2]
 
 	"Touch UI Visibility"
 	# Disabling for Debug
@@ -149,6 +153,7 @@ func _ready():
 
 
 func _input(event):
+	
 	
 	"Actions Triggered by Global Input Keys"
 	if event.is_action_pressed("pause"):
@@ -178,20 +183,14 @@ func reset():  #resets node visibility statuses
 #Enumerate each of the following states
 
 func status():  #used by ui scene when status is clicked
-	print_debug("Status Triggered ", counter, " times" )
-	counter += 1
-	_state_controller = STATS
-	#Anim.play("STATUS")
-	#return _state_controller 
+	
 	hide_buttons()
 	stats.show()
 
 
 func comics():  #used by ui scene when comics is clicked
 	_state_controller = COMICS
-	#return _state_controller 
-	hide_buttons()
-	comics.show()
+	return _state_controller 
 
 
 func menu(): #used by ui scene when menu is clicked
@@ -328,126 +327,96 @@ func RepositionButtonsHUD()-> void:
 func _process(_delta):
 
 	
-	ScreenCalculationLogic()
 	
 	#write a rule that Joystick and Dpad cannot be visible at the same time
 	
 	"""
 	State Machine For the TOuch interface
-	# May not always work as this script is a low process priority
+	# Works
 	"""
-	if visible :
-		
+
 		# calls to state machine work
-		match _state_controller:
-			MENU:
+	match _state_controller:
+		MENU:
+			
+			#if _Hide_touch_interface == false: #include analogue controls
+			
+			#Anim.play("MENU")
+			hide_buttons()
 				
-				#if _Hide_touch_interface == false: #include analogue controls
+			menu.show()
 				
-				Anim.play("MENU")
-				#hide_buttons()
+			#pass
+			
+		INTERRACT:
+			#The interract state should only show when it's close to an interactible object 
+			#if _Hide_touch_interface == false:
 					
-				#menu.show()
-					
-				#pass
-				
-			INTERRACT:
-				#The interract state should only show when it's close to an interactible object 
-				#if _Hide_touch_interface == false:
-
-					
-				hide_buttons()
-					
-				menu.show()
-				_interract.show()
-
+			hide_buttons()
+			
+			menu.show()
+			_interract.show()
 				#return
-					
-				#pass
-			ATTACK:
+				
+			#pass
+		ATTACK:
+		
+			#if _Hide_touch_interface == false:
+			emit_signal('attack')
+		
+			hide_buttons()
 			
-				#if _Hide_touch_interface == false:
-
-				emit_signal('attack')
+			#stats.hide()
+			menu.show()
+			#_interract.hide()
+			#comics.hide()
+			slash.show()
+			roll.show()
+			if _control == 'analogue':
+				D_pad.hide()
+				joystick_parent.show()
 				
-				hide_buttons()
-				
-				#stats.hide()
-				menu.show()
-				#_interract.hide()
-				#comics.hide()
-				slash.show()
-				roll.show()
-				if _control == 'analogue':
-					D_pad.hide()
-					joystick_parent.show()
-					
-				if _control == 'direction':
-					joystick_parent.hide()
-					D_pad.show()
+			if _control == 'direction':
+				joystick_parent.hide()
+				D_pad.show()
 
-
-				pass
-			STATS:
-				#state = 'status'
-				#emit_signal('status')
-				#if _Hide_touch_interface == false :
+			pass
+		STATS:
+			#state = 'status'
+			#emit_signal('status')
+			#if _Hide_touch_interface == false :
 				#print_debug("Status")
-				#hide_buttons()
-					
-				#stats.show()
-				Anim.play("STATUS")
+			hide_buttons()
 			
-				#pass
-			COMICS:
-				#if _Hide_touch_interface== false: 
-				hide_buttons()
-
-				comics.show()
-				emit_signal('comics')
-				
+			stats.show()
+			#Anim.play("STATUS")
+		
+			#pass
+		COMICS:
+			#if _Hide_touch_interface== false: 
+			#hide_buttons()
 			
-				pass
-			RESET: #$ Too many ifs conditions #simplify state?
-				#if _Hide_touch_interface == false :
-
+			Anim.play("COMICS")
+				#emit_signal('comics')
+			
+		
+			pass
+		RESET: #$ Too many ifs conditions #simplify state?
+			#if _Hide_touch_interface == false :
 					
-				"shows all the UI options"
-
-				show_action_buttons()
-					
-					#return
-					#touch_interface_debug() # For Debug Purposes only
-				"SHows the directional based on a global variable?"
-				if not Globals.direction_control == '':
-					_control = Globals.direction_control
-				
-				if Globals.direction_control == 'analogue':
-					joystick_parent.show()
-					D_pad.hide()
-					return
-						#touch_interface_debug() # For Debug Purposes only
-				elif Globals.direction_control == 'direction':
-						joystick_parent.hide()
-						D_pad.show()
-					
-				elif Globals.direction_control == '' && _control == "analogue":
-					joystick_parent.show()
-					D_pad.hide()
-				elif Globals.direction_control== '' && _control == "direction":
-					joystick_parent.hide()
-					D_pad.show()
-				else:
-					
-					return
+			"shows all the UI options"
+			show_action_buttons()
+			
+			show_direction_buttons()
 
 
+	ScreenCalculationLogic()
 
 func hide_buttons() :
 	# Beware:  Hide Buttons FUnctions Clashes with UI Animation NOde player. The Animation node player Takes priority and canels 
 	#	#	#GDScript Calls to this method
-	print_debug("ACTION BUTTONS: ",action_buttons," / ","DIRECTION BUTTONS", direction_buttons)# for debug purposes only
-
+	print_debug("ACTION BUTTONS: ",action_buttons)# for debug purposes only
+	print_debug("DIRECTION BUTTONS ", direction_buttons)
 	
 	for i in action_buttons :
 		i.hide()
@@ -459,3 +428,27 @@ func show_action_buttons()-> void:
 	for j in action_buttons:
 		if j != null:
 			j.show()
+
+func show_direction_buttons()-> void:
+	# Default Direction Control is Null	#print_debug("Global Direction COntroller : ",Globals.direction_control)
+	
+	for j in direction_buttons:
+		
+	#if Globals.direction_control == "direction" :
+		j.show()
+	#	direction_buttons[0].show()
+
+	#if Globals.direction_control == "analogue" :
+		#j.show()
+	#	direction_buttons[1].show()
+	#	direction_buttons[2].show()
+
+func _on_comics_showing(): # Doesnt Work
+	print_debug("Comics SHowing")
+	comics() 
+
+
+func _on_comics_hidden():
+	print_debug("Comics Hidden")
+	reset()
+

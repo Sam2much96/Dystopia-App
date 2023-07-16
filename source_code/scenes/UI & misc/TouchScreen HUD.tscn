@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Joystick circle.tscn" type="PackedScene" id=1]
 [ext_resource path="res://resources/Buttons/menu.png" type="Texture" id=2]
@@ -17,6 +17,93 @@ extents = Vector2( 30, 100 )
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 50.0
+
+[sub_resource type="Animation" id=10]
+resource_name = "COMICS"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Control/InterractButtons/comics:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Control/InterractButtons/interact:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("D-pad:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("menu:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Control/ActionButtons:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Control/InterractButtons/stats:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Joystick:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
 
 [sub_resource type="Animation" id=9]
 resource_name = "MENU"
@@ -142,6 +229,18 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Control/InterractButtons/comics:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -528,6 +627,7 @@ margin_bottom = 311.573
 
 [node name="stats" type="TouchScreenButton" parent="Control/InterractButtons"]
 pause_mode = 2
+visible = false
 position = Vector2( 1110.48, 29.2283 )
 normal = ExtResource( 13 )
 bitmask = ExtResource( 3 )
@@ -535,7 +635,6 @@ action = "pause"
 visibility_mode = 1
 
 [node name="comics" type="TouchScreenButton" parent="Control/InterractButtons"]
-visible = false
 position = Vector2( 1103.5, 113.137 )
 rotation = 0.370864
 scale = Vector2( 0.9, 0.9 )
@@ -652,6 +751,7 @@ position = Vector2( 0, 4 )
 circle_size = 156
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/COMICS = SubResource( 10 )
 anims/MENU = SubResource( 9 )
 anims/RESET = SubResource( 8 )
 anims/SCREEN_HORIZONTAL = SubResource( 3 )

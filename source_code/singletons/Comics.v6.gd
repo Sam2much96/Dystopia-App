@@ -45,7 +45,7 @@ extends Control
 
 signal comics_showing
 signal loaded_comics 
-signal freed_comics
+signal comics_hidden
 signal panel_change
 signal swiped(direction)
 signal swiped_canceled(start_position)
@@ -274,14 +274,13 @@ func _input(event):
 #Toggles comics visibility on/off
 #It disappears if not enabled 
 	"Enables and Disables Comics Node (when Comics button is pressed)"
-	#if not enabled && event.is_action_pressed("comics") : 
-	#	enabled = true
-	#else: enabled = !enabled
 	
 	if  enabled == false and event.is_action_pressed("comics") : #SImplifying this code bloc
 		enabled = true 
+		emit_signal("comics_showing")
 	elif enabled == true and event.is_action_pressed("comics") :
 		enabled = false
+		emit_signal("comics_hidden")
 
 	"Controller for Joypad"
 	

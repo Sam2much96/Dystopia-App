@@ -120,3 +120,22 @@ func _update_item_listing():
 func _notification(what):  #i removed this notification functioncode from the game cuz i don't know what it does yet
 	if (what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST):
 		print_debug("STATUS NOTIFICATION")
+
+
+
+func _on_status_showing():
+	#TouchInterface.status()
+	Globals._TouchScreenHUD.reset()
+	#TouchInterface.Anim.play("STATUS") # doesnt work
+	
+	#print_debug("TC hidden:",TouchInterface._Hide_touch_interface, " SC: ", TouchInterface._state_controller) # Touch Interface Debug
+	print_debug('status hidden') #for debug purposes
+
+func _on_status_hidden():
+	#$Stats.enabled = false
+	 #Duplicate of 
+	#TouchInterface.reset()
+	Globals._TouchScreenHUD.status()
+	#print_debug("TC hidden:",TouchInterface._Hide_touch_interface, " SC: ", TouchInterface._state_controller) # Touch Interface Debug
+	print_debug('status showing')
+

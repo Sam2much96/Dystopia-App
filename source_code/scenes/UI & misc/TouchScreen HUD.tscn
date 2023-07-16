@@ -740,12 +740,14 @@ mouse_filter = 1
 script = ExtResource( 5 )
 
 [node name="joystick_circle" parent="Joystick" instance=ExtResource( 1 )]
+visible = false
 position = Vector2( 0, 0 )
 shape = SubResource( 2 )
 shape_centered = false
 circle_size = 80
 
 [node name="joystick_circle2" parent="Joystick" instance=ExtResource( 1 )]
+visible = false
 modulate = Color( 1, 1, 1, 0.454902 )
 position = Vector2( 0, 4 )
 circle_size = 156

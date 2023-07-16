@@ -105,7 +105,7 @@ func _enter_tree():
 	"Global Pointer"
 	Globals._TouchScreenHUD = self
 
-	
+	print_debug("Global Direction COntrols : ",Globals.direction_control)
 
 func _ready():
  
@@ -130,7 +130,12 @@ func _ready():
 
 	"Set Button Arraqys for easy on/off"
 	action_buttons = [menu ,stats,_interract,roll, slash,comics]
-	direction_buttons = [D_pad, joystick, joystick2]
+	
+	if str(Globals.direction_control )== "direction" :
+		direction_buttons = [D_pad]
+	elif str(Globals.direction_control) == "analogue" :
+		direction_buttons = [joystick, joystick2]
+	else: direction_buttons = [D_pad, joystick, joystick2]
 
 	"Touch UI Visibility"
 	# Disabling for Debug
@@ -150,6 +155,7 @@ func _ready():
 	print_debug("Dimension difference: ",dimensional_diff )
 
 	#touch_interface_debug()
+
 
 
 func _input(event):
@@ -430,19 +436,12 @@ func show_action_buttons()-> void:
 			j.show()
 
 func show_direction_buttons()-> void:
-	# Default Direction Control is Null	
-	print_debug("Global Direction COntroller : ",Globals.direction_control)
+	#print_debug("Direction Buttons : ",direction_buttons)
+	#print_debug("Direction COntrols : ",Globals.direction_control)
 	
-	#for j in direction_buttons:
-		
-	if Globals.direction_control == "direction" :
-		#j.show()
-		direction_buttons[0].show()
+	for j in direction_buttons:
+		j.show()
 
-	if Globals.direction_control == "analogue" :
-		#j.show()
-		direction_buttons[1].show()
-		direction_buttons[2].show()
 
 func _on_comics_showing(): # Doesnt Work
 	print_debug("Comics SHowing")

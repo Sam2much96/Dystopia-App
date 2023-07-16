@@ -430,18 +430,19 @@ func show_action_buttons()-> void:
 			j.show()
 
 func show_direction_buttons()-> void:
-	# Default Direction Control is Null	#print_debug("Global Direction COntroller : ",Globals.direction_control)
+	# Default Direction Control is Null	
+	print_debug("Global Direction COntroller : ",Globals.direction_control)
 	
-	for j in direction_buttons:
+	#for j in direction_buttons:
 		
-	#if Globals.direction_control == "direction" :
-		j.show()
-	#	direction_buttons[0].show()
-
-	#if Globals.direction_control == "analogue" :
+	if Globals.direction_control == "direction" :
 		#j.show()
-	#	direction_buttons[1].show()
-	#	direction_buttons[2].show()
+		direction_buttons[0].show()
+
+	if Globals.direction_control == "analogue" :
+		#j.show()
+		direction_buttons[1].show()
+		direction_buttons[2].show()
 
 func _on_comics_showing(): # Doesnt Work
 	print_debug("Comics SHowing")

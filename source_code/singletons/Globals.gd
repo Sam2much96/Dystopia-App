@@ -73,7 +73,8 @@ var current_level : String
 
 
 var Music_on_settings # Depreciated
-export (String, 'analogue', 'direction') var direction_control = "direction"  #toggles btw analogue and d-pad
+var _controller_type : Dictionary = {1:'analogue', 2:'direction'}
+var direction_control  : String = _controller_type[1]  #toggles btw analogue and d-pad
 
 var uncompressed # Varible holds uncompressed zip files
 
@@ -397,8 +398,8 @@ class Functions extends Reference:
 		
 		'Control Settings'
 		# Direction controller
-		if save_dict.has('direction_control'):
-			GlobalScript.direction_control = save_dict.direction_control
+		if save_dict.has('direction_control') && str(save_dict.direction_control) != 'Null':
+			GlobalScript.direction_control = str(save_dict.direction_control)
 		
 		if save_dict.has("languague"):
 			Dialogs.language = save_dict.languague

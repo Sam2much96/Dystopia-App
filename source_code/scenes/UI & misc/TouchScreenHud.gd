@@ -26,7 +26,7 @@
 # # (a) Write a Resize function using Global Screen Orientation Calculation and Screen Size
 #	#	# (b) Variables available : Globals.os, Globals.screen Orientation, Globals.screenSize,Globals.viewport_size, GLobals.center_of_viewport
 #		#(c) set grouped buttons positioning programmatically
-
+# (8) ReWrite Logic Using Animation Player Nodes to fix Stuck Button Bug
 # *************************************************
 
 
@@ -90,11 +90,19 @@ var dimensional_diff : Vector2
 var buttons_positional_data : Array
 
 var LineDebug : Line2D 
+
 onready var joystick_parent: Control = $Joystick
 
 'UI button as arrays'
-onready var action_buttons : Array = [menu ,stats,_interract,roll, slash,comics]
-onready var direction_buttons : Array = [D_pad, joystick]
+onready var action_buttons : Array 
+onready var direction_buttons : Array 
+
+
+# debug COunter counts how many times a mehtod has been called
+var counter : int = 0
+func _enter_tree():
+	"Global Pointer"
+	Globals._TouchScreenHUD = self
 
 func _ready():
  
@@ -116,6 +124,10 @@ func _ready():
 	action_interract_buttons = $Control/ActionButtons 
 	interract_buttons = $Control/InterractButtons
 
+	"Set Button Arraqys for easy on/off"
+	action_buttons = [menu ,stats,_interract,roll, slash,comics]
+	direction_buttons = [D_pad, joystick]
+
 	"Touch UI Visibility"
 	# Disabling for Debug
 	hide_self(Globals.os, Globals.screenOrientation, _Hide_touch_interface, self)
@@ -136,6 +148,15 @@ func _ready():
 	#touch_interface_debug()
 
 
+func _input(event):
+	
+	"Actions Triggered by Global Input Keys"
+	if event.is_action_pressed("pause"):
+		_state_controller = STATS
+	if event.is_action_pressed("comics"):
+		_state_controller = COMICS
+	if event.is_action_pressed("interact"):
+		_state_controller = INTERRACT
 
 static func hide_self(operating_sys: String, screenOrientation : int, _Hide_touch_interface : bool, _node : TouchScreenHUD) -> void:
 	#toggles touch interface visibility depending on the os and screen orientation (Pc or Mobiles)
@@ -157,13 +178,21 @@ func reset():  #resets node visibility statuses
 #Enumerate each of the following states
 
 func status():  #used by ui scene when status is clicked
+	print_debug("Status Triggered ", counter, " times" )
+	counter += 1
 	_state_controller = STATS
-	return _state_controller 
+	#Anim.play("STATUS")
+	#return _state_controller 
+	hide_buttons()
+	stats.show()
 
 
 func comics():  #used by ui scene when comics is clicked
 	_state_controller = COMICS
-	return _state_controller 
+	#return _state_controller 
+	hide_buttons()
+	comics.show()
+
 
 func menu(): #used by ui scene when menu is clicked
 	_state_controller = MENU
@@ -305,17 +334,20 @@ func _process(_delta):
 	
 	"""
 	State Machine For the TOuch interface
+	# May not always work as this script is a low process priority
 	"""
-	if _Hide_touch_interface == false:
+	if visible :
 		
+		# calls to state machine work
 		match _state_controller:
 			MENU:
 				
 				#if _Hide_touch_interface == false: #include analogue controls
+				
+				Anim.play("MENU")
+				#hide_buttons()
 					
-				hide_buttons()
-					
-				menu.show()
+				#menu.show()
 					
 				#pass
 				
@@ -358,15 +390,15 @@ func _process(_delta):
 				pass
 			STATS:
 				#state = 'status'
-				emit_signal('status')
+				#emit_signal('status')
 				#if _Hide_touch_interface == false :
-				print_debug("Status")
-				hide_buttons()
+				#print_debug("Status")
+				#hide_buttons()
 					
-				stats.show()
-
+				#stats.show()
+				Anim.play("STATUS")
 			
-				pass
+				#pass
 			COMICS:
 				#if _Hide_touch_interface== false: 
 				hide_buttons()
@@ -411,17 +443,17 @@ func _process(_delta):
 
 
 
-func hide_buttons()-> bool:
-	print_debug(action_buttons, direction_buttons)# for debug purposes only
-	for i in action_buttons && direction_buttons:
-		if i != null:
-			i.hide()
-			return true
-	return false
-	#for h in :
-	#	if h != null:
-	#		h.hide()
-	#		return true
+func hide_buttons() :
+	# Beware:  Hide Buttons FUnctions Clashes with UI Animation NOde player. The Animation node player Takes priority and canels 
+	#	#	#GDScript Calls to this method
+	print_debug("ACTION BUTTONS: ",action_buttons," / ","DIRECTION BUTTONS", direction_buttons)# for debug purposes only
+
+	
+	for i in action_buttons :
+		i.hide()
+		for x in direction_buttons:
+			x.hide()
+				
 
 func show_action_buttons()-> void:
 	for j in action_buttons:

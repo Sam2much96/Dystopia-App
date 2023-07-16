@@ -34,6 +34,7 @@
 # (3) Drag and Drop across small distances is buggy (fixed)
 # (4) Set frame state is buggy when combine with swipe gestures (fixed)
 # (5) Callibration is off for Swipe Gestures
+# (6) Bug on Line 1408
 # *************************************************
 
 
@@ -1404,6 +1405,7 @@ class Extensions extends AnimatedSprite:
 		CurrentPage = self.get_frame()
 
 		"Last Page Conditionals"
+		# Bug: Invalid get index 'LastPage' (on base: 'Control (Comics.v6.gd)').
 		if (CurrentPage + 1) == (TotalPageCount) && !Comics_v6.LastPage: # Make Practical 
 			Comics_v6.LastPage = true
 			return Comics_v6.LastPage

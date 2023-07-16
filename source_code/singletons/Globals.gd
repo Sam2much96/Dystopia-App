@@ -140,6 +140,10 @@ var wallet_state  #wallet state global variabe
 var FileCheck1=File.new() # checks wallet mnemonic
 var FileDirectory=Directory.new() #deletes all theon reset
 
+"Ingame HUD"
+# Mobiles
+var _TouchScreenHUD : TouchScreenHUD
+
 func _ready():
 	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	

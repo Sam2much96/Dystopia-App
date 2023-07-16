@@ -26,7 +26,7 @@ enum STATUS { NONEXISTENT, STARTED, COMPLETE, FAILED }
 # Emitted whenever a quests changes. It'll pass the quest name and new status
 signal quest_changed(quest_name, status)
 
-var quest_list = {}
+var quest_list : Dictionary = {}
 
 # Get the status of a quest. If it's not found it returns STATUS.NONEXISTENT
 func get_status(quest_name:String) -> int:

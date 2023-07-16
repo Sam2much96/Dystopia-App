@@ -11,9 +11,9 @@
 #
 # TO-DO:
 # 
-# (1) SCrolling Inbentory Menu
-#(2 ) Should AutoScale to Screen Display size using Global screen calculation functions
-
+# (1) Scrolling Inbentory Menu (Done)
+# (2) Should AutoScale to Screen Display size using Global screen calculation functions
+# (3) Inventory Items Should be Accessible
 
 # *************************************************
 
@@ -42,8 +42,14 @@ func _input(event):
 		emit_signal("not_enabled")
 		enabled = true
 		visible = enabled
+		Music.play_track(Music.ui_sfx[0])
 		get_tree().paused = enabled
-		grab_focus()
+		
+		Globals._TouchScreenHUD.status()
+		#TouchScreenHUD.status(Globals._TouchScreenHUD) #GameHUD already calls this method
+		
+		"Grab Focus ?"
+		#grab_focus()
 		_update_quest_listing()
 		_update_item_listing()
 		_update_wallet_stats()
@@ -53,6 +59,7 @@ func _input(event):
 		enabled = false
 		emit_signal('enabled')
 		visible = enabled
+		Music.play_track(Music.ui_sfx[1])
 		hide()
 		get_tree().paused = false
 		#print (enabled)

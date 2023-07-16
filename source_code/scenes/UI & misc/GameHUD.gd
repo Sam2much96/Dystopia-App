@@ -90,13 +90,18 @@ func _on_comics_freed():
 	TouchInterface.reset()
 
 func _on_status_showing():
-	TouchInterface.status()
+	#TouchInterface.status()
+	
+	#TouchInterface.Anim.play("STATUS") # doesnt work
+	
 	print_debug("TC hidden:",TouchInterface._Hide_touch_interface, " SC: ", TouchInterface._state_controller) # Touch Interface Debug
 	print_debug('status hidden') #for debug purposes
 
 func _on_status_hidden():
 	#$Stats.enabled = false
-	TouchInterface.reset()
+	 #Duplicate of 
+	#TouchInterface.reset()
+	TouchInterface.status()
 	print_debug("TC hidden:",TouchInterface._Hide_touch_interface, " SC: ", TouchInterface._state_controller) # Touch Interface Debug
 	print_debug('status showing')
 

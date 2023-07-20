@@ -10,7 +10,7 @@
 # To Do:
 #(1) Spawn different enemy types
 # (2) Expand code's functionaliy
-	# -(a) Only Spawns if Player is nearby, so as to optimize for performance
+	# -(a) Only Spawns if Player is nearby, so as to optimize for performance (Done)
 # *************************************************
 
 extends Position2D

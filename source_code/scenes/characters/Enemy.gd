@@ -15,7 +15,7 @@
 # (3) No Documentation
 # (4) Enemy mob uses too much computer procesing power
 # (5) Too much Physics procesing (fixed)
-# (6) Navigation AI
+# (6) Navigation AI (1/2)
 # (7) Too much Detection
 # (8) Stop Enemy Collision with Enemy bug
 # (9) Enemy Physics is a performance hog
@@ -40,9 +40,9 @@ var m=0;  #distance variable
 var enemy_distance_to_player : float # used to calculate how closely the enemy should follow the layer
 export (int) var attack_wait_time #attack pause time
 
-onready var raycast := $enemy_eyesight/pointer/RayCast2D
-onready var pointer := $enemy_eyesight/pointer
-
+onready var raycast : RayCast2D = $enemy_eyesight/pointer/RayCast2D
+onready var pointer : Node2D = $enemy_eyesight/pointer
+onready var navigation_agent : NavigationAgent2D = $NavigationAgent2D
 
 export (String, 'Easy', "Intermediate", "Hard") var enemy_type #changes enemy behaviour depending on the enemy tpype # 
 """
@@ -60,7 +60,7 @@ var despawn_fx = preload("res://scenes/UI & misc/DespawnFX.tscn")
 #var Bullet = Globals.bullet_fx#load ("res://scenes/items/Bullet.tscn") #null resource
 
 
-var linear_vel = Vector2()
+var linear_vel = Vector2.ZERO
 export(String, "up", "down", "left", "right") var facing = "down"
 
 var anim = ""
@@ -108,10 +108,13 @@ class Functions extends Reference:
 	
 
 class Behaviour extends Reference:
-	# Enemy AI Behaviour as A Class
+	"""
+	# Enemy AI Behaviour in A  SeparateClass
 	
 	# Using Global Methods and Classes makes enemy behaviour AI to perform better
 	# And Faster, in Realtime Gameplay
+	
+	"""
 	
 	func _ready():
 		randomize()
@@ -148,8 +151,10 @@ class Behaviour extends Reference:
 			pass
 
 
-	
-	
+	static func enemy_navigation(navigation_agent : NavigationAgent2D, position : Vector2): 
+		var move_direction = position.direction_to(navigation_agent.get_next_location())
+		var linear_vel
+		navigation_agent.set_velocity(linear_vel)
 	
 	static func behaviour_logic(hitpoints: int, raycast : RayCast2D, player : Player, player_pos , _position,_enemy, enemy_type : String, state, enemy_distance_to_player):
 		
@@ -157,6 +162,8 @@ class Behaviour extends Reference:
 		# Provides Randomized enemy behaviour
 		if not hitpoints == 0:
 			if raycast.is_enabled() == true:
+				"Enemy Envcounters Player Node"
+				
 				if raycast.is_colliding() && player != null:
 					var center = Functions.calculate_center(player, _position) #calculates distance to plaer
 					_enemy.move_and_slide(center) # moves to player
@@ -220,7 +227,6 @@ func _process(_delta):
 	
 	"FACE THE PLAYER, IF HE'S VISIBLE"
 	if player != null: 
-		#var enemy_direction = Vector2(0,0)
 		facing = Behaviour.update_facing(self.position, player.position, player, pointer, facing, Vector2(0,0))
 
 
@@ -246,7 +252,7 @@ func _physics_process(_delta):
 		STATE_WALKING:
 			linear_vel = move_and_slide(linear_vel)
 			var target_speed = Vector2()
-			
+
 			if facing == "down":
 				target_speed += Vector2.DOWN
 			if facing == "left":
@@ -258,6 +264,8 @@ func _physics_process(_delta):
 			
 			target_speed *= WALK_SPEED
 			linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
+			
+
 			
 			new_anim = ""
 			if abs(linear_vel.x) > abs(linear_vel.y):

@@ -1221,7 +1221,7 @@ shape = SubResource( 18 )
 
 [node name="item_spawner" parent="." instance=ExtResource( 3 )]
 spawn_1 = ExtResource( 4 )
-spawn_2 = ExtResource( 5 )
+spawn_2 = ExtResource( 4 )
 spawn_3 = ExtResource( 6 )
 item_scene = ExtResource( 5 )
 item_type = "Bandit Head"
@@ -1252,6 +1252,9 @@ autostart = true
 position = Vector2( 11.7851, -90.9139 )
 rotation = 0.74002
 scale = Vector2( 44.2683, 43.0897 )
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+avoidance_enabled = true
 
 [connection signal="area_entered" from="hurtbox" to="." method="_on_hurtbox_area_entered" flags=3]
 [connection signal="area_exited" from="hurtbox" to="." method="_on_hurtbox_area_exited"]

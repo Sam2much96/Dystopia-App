@@ -1405,7 +1405,7 @@ class Extensions extends AnimatedSprite:
 
 		"Last Page Conditionals"
 		# Bug: Invalid get index 'LastPage' (on base: 'Control (Comics.v6.gd)').
-		if (CurrentPage + 1) == (TotalPageCount) && !Comics_v6.LastPage: # Make Practical 
+		if (CurrentPage + 1) == (TotalPageCount) && bool(Comics_v6.LastPage) == false: # Make Practical 
 			Comics_v6.LastPage = true
 			return Comics_v6.LastPage
 

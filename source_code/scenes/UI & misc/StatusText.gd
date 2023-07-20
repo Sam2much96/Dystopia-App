@@ -1,3 +1,19 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Status Text
+# Shows Updats on the Player's Status Changes
+# Bugs:
+# (1) Doesn't Display Text
+# (2) Display Doesn't Adapt for Mobile Screens and PC Screens
+# 
+
+# To Do:
+#(1) Fix Bugs
+# *************************************************
+
+
 extends Label
 
 

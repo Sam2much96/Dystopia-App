@@ -36,6 +36,7 @@
 # (4) Wallet's Animation UI has Stuck animation transition bug. Use Animation Tree to Activate and Deactivate UI animations
 # (5) _process method is buggy
 # (6) _state_controller's implementation of the process controller method is buggy
+# (7) cOINS IMPLEMENTATION IS BUGGY AND DISABLED
 
 # To-DO:
 # (9) Implement UI scaling for Mobile & PC screens

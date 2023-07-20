@@ -55,6 +55,7 @@ action = "menu"
 [node name="Notification2" parent="." instance=ExtResource( 5 )]
 
 [node name="logo" type="TextureRect" parent="."]
+self_modulate = Color( 0, 0, 0, 1 )
 show_behind_parent = true
 anchor_left = 0.5
 anchor_top = 0.5

@@ -7,6 +7,7 @@
 # To-Do:
 # (1) Finish D-pad to Joystick button change illustration 
 # (2) Add Swipe Gestures on/off controls
+#(3) Include a GitHub Login
 
 extends Control
 
@@ -136,10 +137,12 @@ func _on_Help_pressed():
 
 func _on_Direction_controls_toggled(button_pressed):
 	if button_pressed:
-		Globals.direction_control = 'direction'
+		#'direction'
+		Globals.direction_control = Globals._controller_type[1]
 		$ScrollContainer/VBoxContainer/Direction_controls.set_text(Globals.direction_control)
 	else:
-		Globals.direction_control = 'analogue'
+		#'analogue'
+		Globals.direction_control = Globals._controller_type[2]
 		$ScrollContainer/VBoxContainer/Direction_controls.set_text(Globals.direction_control)
 
 

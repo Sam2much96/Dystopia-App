@@ -509,7 +509,6 @@ run/flush_stdout_on_print=true
 run/flush_stdout_on_print.debug=false
 boot_splash/image="res://resources/title animation/Dystopia Logo Drop shadow.png"
 boot_splash/fullsize=false
-boot_splash/use_filter=false
 boot_splash/bg_color=Color( 1, 1, 1, 1 )
 config/icon="res://icon.png"
 config/windows_native_icon="res://windows icon.ico"

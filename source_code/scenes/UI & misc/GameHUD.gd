@@ -80,15 +80,19 @@ func _input(_event):
 	#if Input.is_action_just_pressed('comics'):
 	#	if _Comics.enabled :
 	#		TouchInterface.comics()
-	
+	else : pass #TouchInterface.reset()
 	
 	#'Sets Interract UI'
+	# Disabled for Debugging
+	#
 	# Hard connects to all interractible objects connected via the global variable
-	if Globals.near_interractible_objects == true : #&& Input.is_action_just_pressed("interact"):
-		TouchInterface.status()
-	elif Globals.near_interractible_objects == null or false:
-		# if Input.is_action_just_pressed("interact") : return TouchInterface.reset()
-		return TouchInterface.reset()
+	#if Globals.near_interractible_objects == true : #&& Input.is_action_just_pressed("interact"):
+		#TouchInterface.status()
+	#	print_debug("Player near Interractible Object", Globals.near_interractible_objects)
+	#elif Globals.near_interractible_objects == null or false:
+	#	# if Input.is_action_just_pressed("interact") : return TouchInterface.reset()
+	#	#return TouchInterface.reset()
+	#	print_debug("PLayer Left Interactibe object")
 
 
 

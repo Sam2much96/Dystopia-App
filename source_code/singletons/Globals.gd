@@ -376,9 +376,10 @@ class Functions extends Reference:
 		if save_dict.has('player'):
 			GlobalScript.player = save_dict.player
 			GlobalScript.kill_count = save_dict.kill_count  
-			GlobalScript.player_hitpoints = save_dict.player_hitpoints
 			
 		
+		if save_dict.has('player_hitpoints'):
+			GlobalScript.player_hitpoints = int(save_dict.player_hitpoints)
 		
 		'Player Object Spawn Position'
 		if save_dict.has('spawn_x'):

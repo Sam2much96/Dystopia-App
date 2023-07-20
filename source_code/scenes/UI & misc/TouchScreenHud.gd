@@ -421,8 +421,9 @@ func _process(_delta):
 func hide_buttons() :
 	# Beware:  Hide Buttons FUnctions Clashes with UI Animation NOde player. The Animation node player Takes priority and canels 
 	#	#	#GDScript Calls to this method
-	print_debug("ACTION BUTTONS: ",action_buttons)# for debug purposes only
-	print_debug("DIRECTION BUTTONS ", direction_buttons)
+	
+	#print_debug("ACTION BUTTONS: ",action_buttons)# for debug purposes only
+	#print_debug("DIRECTION BUTTONS ", direction_buttons)
 	
 	for i in action_buttons :
 		i.hide()

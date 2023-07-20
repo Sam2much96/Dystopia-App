@@ -1,10 +1,32 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Stats.gd" type="Script" id=1]
 [ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=2]
 [ext_resource path="res://fonts/stats.tres" type="DynamicFont" id=3]
 [ext_resource path="res://scenes/UI & misc/stats.stylebox" type="StyleBox" id=4]
 [ext_resource path="res://fonts/scroll_bar_theme.tres" type="Theme" id=5]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.792157, 0.792157, 0.792157, 0.415686 )
+border_color = Color( 0.84375, 0.84375, 0.84375, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.14902, 0.14902, 0.14902, 0.67451 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="Theme" id=3]
+TabContainer/styles/panel = SubResource( 2 )
+TabContainer/styles/tab_bg = SubResource( 4 )
+TabContainer/styles/tab_fg = SubResource( 6 )
 
 [node name="Stats" type="PanelContainer"]
 pause_mode = 2
@@ -18,33 +40,65 @@ custom_styles/panel = ExtResource( 4 )
 script = ExtResource( 1 )
 enabled = true
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="TabContainer" type="TabContainer" parent="."]
 margin_left = 20.0
 margin_top = 20.0
 margin_right = 1008.0
 margin_bottom = 580.0
+theme = SubResource( 3 )
+custom_colors/font_color_bg = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 3 )
+
+[node name="Stats" type="Tabs" parent="TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 74.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Stats"]
+margin_left = 3.07108
+margin_top = 3.35535
+margin_right = 991.071
+margin_bottom = 905.355
 theme = ExtResource( 5 )
 scroll_horizontal_enabled = false
 
-[node name="Quests" type="VBoxContainer" parent="ScrollContainer"]
-margin_right = 948.0
-margin_bottom = 994.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-alignment = 1
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Stats/ScrollContainer"]
+margin_right = 62.0
+margin_bottom = 178.0
 
-[node name="Title" type="Label" parent="ScrollContainer/Quests"]
-margin_right = 948.0
+[node name="Title" type="Label" parent="TabContainer/Stats/ScrollContainer/VBoxContainer"]
+margin_right = 62.0
 margin_bottom = 43.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
 text = "Stats"
 align = 1
 
-[node name="Algos" type="Label" parent="ScrollContainer/Quests"]
+[node name="Kill_count" type="Label" parent="TabContainer/Stats/ScrollContainer/VBoxContainer"]
 margin_top = 47.0
-margin_right = 948.0
-margin_bottom = 240.0
+margin_right = 62.0
+margin_bottom = 178.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 3 )
+text = "KC
+"
+align = 1
+
+[node name="Wallet" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Algos" type="Label" parent="TabContainer/Wallet"]
+margin_left = 3.07108
+margin_top = 50.3553
+margin_right = 118.071
+margin_bottom = 243.355
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
@@ -52,10 +106,32 @@ text = "Coins
 "
 align = 1
 
-[node name="Details" type="Label" parent="ScrollContainer/Quests"]
-margin_top = 244.0
-margin_right = 948.0
-margin_bottom = 535.0
+[node name="Quests" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="ScrollContainer2" type="ScrollContainer" parent="TabContainer/Quests"]
+margin_left = 3.07108
+margin_top = 3.35535
+margin_right = 991.071
+margin_bottom = 905.355
+theme = ExtResource( 5 )
+scroll_horizontal_enabled = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Quests/ScrollContainer2"]
+margin_right = 122.0
+margin_bottom = 198.0
+
+[node name="Quests" type="Label" parent="TabContainer/Quests/ScrollContainer2/VBoxContainer"]
+margin_left = -7.07108
+margin_top = -35.3553
+margin_right = 980.929
+margin_bottom = 255.645
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
@@ -64,38 +140,62 @@ Quest 2
 "
 align = 1
 
-[node name="Debug" type="Label" parent="ScrollContainer/Quests"]
-margin_top = 539.0
-margin_right = 948.0
-margin_bottom = 553.0
-align = 1
+[node name="Inventory" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
 
-[node name="Title2" type="Label" parent="ScrollContainer/Quests"]
-margin_top = 557.0
-margin_right = 948.0
-margin_bottom = 600.0
+[node name="ScrollContainer3" type="ScrollContainer" parent="TabContainer/Inventory"]
+margin_left = 3.07108
+margin_top = 3.35535
+margin_right = 991.071
+margin_bottom = 905.355
+theme = ExtResource( 5 )
+scroll_horizontal_enabled = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Inventory/ScrollContainer3"]
+margin_right = 103.0
+margin_bottom = 117.0
+
+[node name="Title2" type="Label" parent="TabContainer/Inventory/ScrollContainer3/VBoxContainer"]
+margin_left = -7.07108
+margin_top = -35.3553
+margin_right = 980.929
+margin_bottom = 7.64465
 custom_fonts/font = ExtResource( 2 )
 text = "Inventory"
 align = 1
 
-[node name="Details2" type="Label" parent="ScrollContainer/Quests"]
-margin_top = 604.0
-margin_right = 948.0
-margin_bottom = 797.0
+[node name="Inventory" type="Button" parent="TabContainer/Inventory/ScrollContainer3/VBoxContainer"]
+margin_left = -7.07108
+margin_top = 29.6447
+margin_right = 980.929
+margin_bottom = 274.645
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
 text = "Item 1
 "
-align = 1
+flat = true
 
-[node name="Kill_count" type="Label" parent="ScrollContainer/Quests"]
-margin_top = 801.0
-margin_right = 948.0
-margin_bottom = 994.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 3 )
-text = "KC
-"
+[node name="CHaracter" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Title2" type="Label" parent="TabContainer/CHaracter"]
+margin_left = -4.0
+margin_top = -32.0
+margin_right = 984.0
+margin_bottom = 11.0
+custom_fonts/font = ExtResource( 2 )
+text = "Customization Placeholder"
 align = 1

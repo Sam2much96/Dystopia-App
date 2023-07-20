@@ -131,6 +131,8 @@ func _ready():
 	"Set Button Arraqys for easy on/off"
 	action_buttons = [menu ,stats,_interract,roll, slash,comics]
 	
+	# 
+	
 	if str(Globals.direction_control )== "direction" :
 		direction_buttons = [D_pad]
 	elif str(Globals.direction_control) == "analogue" :
@@ -423,13 +425,17 @@ func hide_buttons() :
 	#	#	#GDScript Calls to this method
 	
 	#print_debug("ACTION BUTTONS: ",action_buttons)# for debug purposes only
+	#print_debug('Global Controller;',Globals.direction_control)
 	#print_debug("DIRECTION BUTTONS ", direction_buttons)
 	
-	for i in action_buttons :
+	for i in direction_buttons :
+		#if i.visible() :
 		i.hide()
-		for x in direction_buttons:
+	for x in action_buttons:
+		if x.visible:
 			x.hide()
-				
+	# hackky bug fix for D-pad UI showing Bug
+	D_pad.hide()
 
 func show_action_buttons()-> void:
 	for j in action_buttons:

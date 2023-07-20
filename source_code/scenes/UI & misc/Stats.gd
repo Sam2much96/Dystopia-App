@@ -49,6 +49,8 @@ func _ready():
 	#Globals.save_game() # Depreciated
 	get_tree().set_auto_accept_quit(false)
 	hide()
+	
+	# Disables Stats Panel to fix stuck input but
 	enabled = false
 
 

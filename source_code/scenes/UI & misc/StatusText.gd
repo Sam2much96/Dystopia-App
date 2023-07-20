@@ -6,7 +6,7 @@
 # Shows Updats on the Player's Status Changes
 # Bugs:
 # (1) Doesn't Display Text
-# (2) Display Doesn't Adapt for Mobile Screens and PC Screens
+# (2) Display Doesn't Adapt for Mobile Screens and PC Screen s
 # 
 
 # To Do:

@@ -14,8 +14,9 @@
 # (1) Scrolling Inbentory Menu (Done)
 # (2) Should AutoScale to Screen Display size using Global screen calculation functions
 # (3) Inventory Items Should be more Accessible
-# (4) Implement Character Customization UI
-# (5) Implement Tabbed VIew
+# (4) Implement Character Customization UI (1/2)
+# (5) Implement Tabbed VIew (Done)
+# (6) Implement Tab Icons
 
 # *************************************************
 
@@ -48,6 +49,7 @@ func _ready():
 	#Globals.save_game() # Depreciated
 	get_tree().set_auto_accept_quit(false)
 	hide()
+	enabled = false
 
 
 func _input(event):

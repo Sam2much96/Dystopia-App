@@ -114,7 +114,7 @@ func _update_quest_listing():
 
 func _update_inventory_button_cache() -> bool:
 	# save all UI stats Nodes to Array pointer
-	for nodes in _quest_parent:
+	for nodes in _quest_parent.get_children():
 		if not _stats_buttons.has(nodes):
 			_stats_buttons.append(nodes)
 			return true
@@ -130,7 +130,9 @@ func _update_inventory_listing():
 	var inventory : Dictionary = Inventory.list()
 	var _inventory_size : int = inventory.size()
 	
-	#  _update_inventory_button_cache() # Bugg Functions
+	#print_debug("Inventory Size Debug : ", _inventory_size) # For Debug Purposes only
+	
+	_update_inventory_button_cache() # Bugg Functions
 	
 	# add COnditional for if quest parent has inventory item to avoid dupliucation bug
 	# it'll compate an array of the button names to check if it is already created
@@ -142,7 +144,7 @@ func _update_inventory_listing():
 	
 	elif not inventory.empty() && _inventory_size >= 1 :
 		
-		if inventory.size() == 1:
+		if inventory.size() == 1: # Works
 			for item in inventory:
 				if not _stats_buttons.has(str(item)):
 					text = "%s x %s\n" % [item, inventory[item]]
@@ -151,20 +153,25 @@ func _update_inventory_listing():
 		
 		if _inventory_size > 1 :
 			
-			for item in inventory:
+			if not _stats_buttons.size() > _inventory_size : # Buggy Conditional
+			
+			
 				# Bugs: 
 				# (1) Only Uses the first item in t he inventory dictionary sometimes
-				# (2) Duplicates the number of items everytime (1/2)
+				# (2) Duplicates the number of items everytime (2/3)
 				# (3) REGEX code concatonates Inventory item names together (fixed)
+				# (4) Items of same type repeat themselves
+				# (5) Doesnt Reflect Item Current Count
+				
 				
 				# Add Conditionals
-				 
-				if not _stats_buttons.has(str(item)):
+				#print_debug("Item Debug: ", item) # For Debug Purposes only
+				for item in inventory:
+				
 					# DUplicates button using instancing
 					# Item Button should ideally be low poly texture buttons
 					var new_item_button : Button = _inventory_button.duplicate(8) 
 					
-					new_item_button.name = str(item)
 					
 					#create new button object anbd or remove exisiting buttons if they exist
 					_quest_parent.add_child_below_node(_inventory_button, new_item_button)
@@ -176,7 +183,11 @@ func _update_inventory_listing():
 					
 					# set each item button Text to their corresponding item 
 					new_item_button.text = text
-				else : pass
+					new_item_button.name = str(item)
+					
+					_stats_buttons.append(new_item_button)
+					#print_debug("Inventory Stats Debug: ", _stats_buttons) # For Debug Purposes only
+			else : pass
 
 
 

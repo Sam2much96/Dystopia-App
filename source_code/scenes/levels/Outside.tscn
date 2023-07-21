@@ -32,8 +32,6 @@ position = Vector2( -22, 186 )
 [node name="Outside City" parent="." instance=ExtResource( 5 )]
 position = Vector2( 12571.8, -3727.55 )
 
-[node name="UI" parent="." instance=ExtResource( 15 )]
-
 [node name="Player" parent="." instance=ExtResource( 7 )]
 position = Vector2( 966, 3239 )
 
@@ -85,3 +83,5 @@ position = Vector2( 2755, 2746 )
 amount = 10
 
 [node name="Rain_Fx" parent="." instance=ExtResource( 26 )]
+
+[node name="GameHUD" parent="." instance=ExtResource( 15 )]

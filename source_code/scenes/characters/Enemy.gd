@@ -32,7 +32,7 @@ class_name Enemy
 
 
 
-var run_speed = 100   #mob runspeeed
+var run_speed : int = 100   #mob runspeeed
 var velocity = Vector2.ZERO #the movement vector
 onready var player # = get_tree().get_nodes_in_group('player')  #reference to player
 var m=0;  #distance variable

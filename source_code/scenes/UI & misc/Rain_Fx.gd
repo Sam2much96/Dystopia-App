@@ -26,18 +26,19 @@ export (float) var time #in secs
 const MINUMUM_FPS : int = 10
 
 # Lifetime OPtimizations for Particle FX
-const Mobile_lifetime : int = 6
-const Default_lifetime : int = 3
+const Long_lifetime : int = 6
+const Short_lifetime : int = 3
 
 
 func _ready():
 	
 	"Performance Optimizations"
+	# Particle Optimization for Differing Screen Orientations
 	
-	if Globals.os == "Android":
-		rain_particles.lifetime = Mobile_lifetime
-	elif not Globals.os == "Android":
-		rain_particles.lifetime = Default_lifetime
+	if Globals.screenOrientation == Globals.SCREEN_HORIZONTAL:
+		rain_particles.lifetime = Long_lifetime
+	elif Globals.screenOrientation == Globals.SCREEN_VERTICAL:
+		rain_particles.lifetime = Short_lifetime
 
 
 # Add other Parameters to Automatically trigger the rain on and off

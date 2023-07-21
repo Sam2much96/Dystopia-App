@@ -72,8 +72,11 @@ var spawn_y : int
 var current_level : String
 
 
-var Music_on_settings # Depreciated
-var _controller_type : Dictionary = {1:'analogue', 2:'direction'}
+# Music
+
+
+
+var _controller_type : Dictionary = {1:'modern', 2:'classic'}
 var direction_control  : String = _controller_type[1]  #toggles btw analogue and d-pad
 
 var uncompressed # Varible holds uncompressed zip files

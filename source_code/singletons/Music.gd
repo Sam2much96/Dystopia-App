@@ -173,10 +173,10 @@ func _ready():
 		shuffle(playlist_one) #disabled for debugging
 		_music = music_track.get_file()
 		play(music_track) #Not needed for release
-		Globals.Music_on_settings = true
+		#Globals.Music_on_settings = true
 	elif music_on == false:
 		$A.stop()
-		Globals.Music_on_settings = false
+		#Globals.Music_on_settings = false
 		pass
 
 

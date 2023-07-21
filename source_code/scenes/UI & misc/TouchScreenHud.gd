@@ -133,9 +133,9 @@ func _ready():
 	
 	# 
 	
-	if str(Globals.direction_control )== "direction" :
+	if str(Globals.direction_control )== "classic" :
 		direction_buttons = [D_pad]
-	elif str(Globals.direction_control) == "analogue" :
+	elif str(Globals.direction_control) == "modern" :
 		direction_buttons = [joystick, joystick2]
 	else: direction_buttons = [D_pad, joystick, joystick2]
 

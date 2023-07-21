@@ -34,7 +34,6 @@ onready var smoke_fx = $smoke_fx
 onready var smoke_fx_2 = $smoke_fx2
 #toggles comics placeholder visible on player contact
 func _on_Area2D_body_entered(body):
-	var comic_placeholder=get_tree().get_nodes_in_group('Cmx_Root') # Calls the comic placeholder node
 	if body is Player : 
 		#print ("dfahsdoshgoashgaoghsfogh")# Works # For Testing Purposes, Delete Later.
 		emitting_smoke == true
@@ -50,13 +49,19 @@ func _on_Area2D_body_entered(body):
 		# 2 turns it off 1 turns it on
 		smoke_fx._emit() # Emits smoke Programmatically
 		
-		print ("Is Smoke Emitting? :",smoke_fx._emit()) #not working
+		print_debug ("Player Near Spaceship. Is Smoke Emitting? :",smoke_fx._emit()) #not working
 		
-		if comic_placeholder.empty() != true && counter == 0: # Turns on the comic placeholder once the player is near
-			comic_placeholder = comic_placeholder.pop_front()
-			
-			comic_placeholder.enabled= true
-			counter+=1
+		
+
+func show_scene_comic() -> void:
+	# Turns on the comic placeholder once the player is near
+	# Disabled for bad UX
+	var comic_placeholder=get_tree().get_nodes_in_group('Cmx_Root') # Calls the comic placeholder node
+	if comic_placeholder.empty() != true && counter == 0: 
+		comic_placeholder = comic_placeholder.pop_front()
+		
+		comic_placeholder.enabled= true
+		counter+=1
 		
 
 

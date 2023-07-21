@@ -14,7 +14,7 @@
 # (2) Enemy AI lacks ability to throw Projectiles (fixed not implemented)
 # (3) No Documentation
 # (4) Enemy mob uses too much computer procesing power
-# (5) Too much Physics procesing (fixed)
+# (5) Too much Physics procesing (1/3)
 # (6) Navigation AI (1/2)
 # (7) Too much Detection
 # (8) Stop Enemy Collision with Enemy bug

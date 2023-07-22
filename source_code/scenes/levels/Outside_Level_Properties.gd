@@ -7,7 +7,8 @@
 #(2) I want to implement a Loading screen while this level loads. This Node lays the groundwork for that
 
  # Bugs:
-# (1) Frame rate Drop from 60 fps to 12 fps. (fixed)
+# (1) Frame rate Drop from 60 fps to 5 fps. because of too much Collision objects in the scene
+#		-Fix : Implement Tilemap, autotiles and Procedurally Generated Dunes
 # (2) Fix loading bug by busing tileMaps for grphics and calculations referemce node "TileMap1"
 # (3) TileMaps is broken. Requires More Research
 # *************************************************

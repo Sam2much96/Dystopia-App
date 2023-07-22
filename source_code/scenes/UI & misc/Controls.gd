@@ -161,5 +161,12 @@ func manual_translate()-> void:
 
 "Memory Leak Management"
 func _exit_tree():
+	
+	"Saves Player's Configuration"
+	Globals.Functions.save_game([], 0, null, null, Globals.current_level, Globals.os, 0, null, null, Globals.direction_control, null)
+	
+	# FOr Memorey Management ( Garbage Collector)
 	for i in ControlButtons:
 		i.queue_free()
+		
+

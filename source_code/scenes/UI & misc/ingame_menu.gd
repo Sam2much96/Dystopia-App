@@ -226,7 +226,7 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 		#prev_scene_spawnpoint,
 		#direction_control,
 		#Music_on_settings
-		if Globals.Functions.save_game([], 3, null, null, Globals.current_level, Globals.os, 0, null, null, Globals.direction_control, null) == false:
+		if Globals.Functions.save_game([], 0, null, null, Globals.current_level, Globals.os, 0, null, null, Globals.direction_control, null) == false:
 			push_error("Error saving game")
 		
 	else:

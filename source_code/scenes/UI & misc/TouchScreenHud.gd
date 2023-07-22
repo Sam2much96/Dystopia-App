@@ -137,7 +137,9 @@ func _ready():
 		direction_buttons = [D_pad]
 	elif str(Globals.direction_control) == "modern" :
 		direction_buttons = [joystick, joystick2]
-	else: direction_buttons = [D_pad, joystick, joystick2]
+		
+		# Default Direction Button should be Analgue
+	else: direction_buttons = [joystick, joystick2]
 
 	"Touch UI Visibility"
 	# Disabling for Debug

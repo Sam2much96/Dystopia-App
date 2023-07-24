@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/items/enemy spawner.gd" type="Script" id=1]
 [ext_resource path="res://resources/FX/flame_fx_webp.webp" type="Texture" id=2]
@@ -47,9 +47,6 @@ tracks/1/keys = {
 "values": [ 0, 1, 2, 3, 4, 5 ]
 }
 
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 10, 17.2053 )
-
 [node name="enemy_spawner" type="Position2D"]
 script = ExtResource( 1 )
 enabled = true
@@ -72,16 +69,9 @@ anims/normal = SubResource( 1 )
 anims/spawning = SubResource( 2 )
 
 [node name="Area2D" type="Area2D" parent="."]
+monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 0, 371.055 )
-scale = Vector2( 40.2025, -154.2 )
-shape = SubResource( 3 )
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PoolVector2Array( -435.132, -397.866, -2632.43, -438.184, -2662.67, 418.563, -425.053, 438.721, -404.894, 3069.44, 401.455, 3039.2, 411.535, 428.642, 2679.39, 458.88, 2649.15, -357.549, 401.455, -418.025, 401.455, -2272.63, -435.132, -2272.63 )
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
-rotation = -1.55863
-scale = Vector2( 40.2025, -154.2 )
-shape = SubResource( 3 )
-
-[connection signal="timeout" from="enemy spawner" to="." method="_on_enemy_spawner_timeout"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]

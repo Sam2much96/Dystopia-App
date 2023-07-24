@@ -54,13 +54,15 @@ func spawn_enemy():
 	elif spawn_count <= 0:
 		return
 
-func _on_enemy_spawner_timeout():
-	spawn_enemy()
-	pass # Replace with function body.
+#func _on_enemy_spawner_timeout():
+#	#Depreciated
+#	spawn_enemy()
+#	pass # Replace with function body.
 
 
 " SPAWN STARTER/ PLAYER DETECTOR"
 func _on_Area2D_body_exited(body):
 	if body is Player:
+		print_debug("Player Leaves Enemy Spawn Range")
 		SPAWNNING = true
-	else : pass
+

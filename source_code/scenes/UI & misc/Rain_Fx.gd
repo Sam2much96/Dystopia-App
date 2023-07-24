@@ -30,15 +30,6 @@ const Long_lifetime : int = 6
 const Short_lifetime : int = 3
 
 
-func _ready():
-	
-	"Performance Optimizations"
-	# Particle Optimization for Differing Screen Orientations
-	
-	if Globals.screenOrientation == Globals.SCREEN_HORIZONTAL:
-		rain_particles.lifetime = Long_lifetime
-	elif Globals.screenOrientation == Globals.SCREEN_VERTICAL:
-		rain_particles.lifetime = Short_lifetime
 
 
 # Add other Parameters to Automatically trigger the rain on and off
@@ -60,13 +51,13 @@ func _process(_delta):
 	if  enable == true && int (Debug.FPS_debug()) < MINUMUM_FPS:
 		rain_particles.emitting = false
 
-#	if  enable == true && int (Debug.FPS_debug()) >= 30:
-#		rain_particles.emitting = true
+	"Performance Optimizations"
+	# Particle Optimization for Differing Screen Orientations
 	
-	
-	else:
-		pass
-
+	if Globals.screenOrientation == Globals.SCREEN_HORIZONTAL:
+		rain_particles.lifetime = Long_lifetime
+	if Globals.screenOrientation == Globals.SCREEN_VERTICAL:
+		rain_particles.lifetime = Short_lifetime
 
 
 

@@ -4,6 +4,7 @@ extends Node
 #How to Use
 # Attach this NOde As a child top the Tilemap with AutoTIle
 
+export (bool) var enabled
 
 # Specifies the Draw Map Area so the Tilemap drawn isnt infinite
 export(int) var map_width = 80
@@ -25,15 +26,16 @@ var simplex_noise : OpenSimplexNoise = OpenSimplexNoise.new()
 
 func _ready() -> void:
 	
-	# Gets the Parent Tilemap Node
-	self.tile_map = get_parent() as TileMap
-	
-	clear()
-	generate()
+	if enabled:
+		# Gets the Parent Tilemap Node
+		tile_map = get_parent() as TileMap
+		
+		clear()
+		generate()
 
 
 func redraw(value = null) -> void:
-	if self.tile_map == null:
+	if tile_map == null:
 		return
 	
 	clear()
@@ -41,45 +43,45 @@ func redraw(value = null) -> void:
 
 func clear() -> void:
 	# Completely clearts the current tilemap
-	self.tile_map.clear()
+	tile_map.clear()
 
 
 func generate() -> void:
 	
 	# generate a seed using a string and the hash of that string
-	self.simplex_noise.seed = self.world_seed.hash()
+	simplex_noise.seed = world_seed.hash()
 	
 	# set simplex noise using Editor values
-	self.simplex_noise.octaves = self.noise_octaves
-	self.simplex_noise.period = self.noise_period
-	self.simplex_noise.persistence = self.noise_persistence
-	self.simplex_noise.lacunarity = self.noise_lacunarity
+	simplex_noise.octaves = noise_octaves
+	simplex_noise.period = noise_period
+	simplex_noise.persistence = noise_persistence
+	simplex_noise.lacunarity = noise_lacunarity
 	
 	# Loop to every tile within Map Area Co-ordinates
-	for x in range( -self.map_width / 2, self.map_width / 2):
-		for y in range(-self.map_height / 2, self.map_height / 2):
+	for x in range( -map_width / 2, map_width / 2):
+		for y in range(-map_height / 2, map_height / 2):
 			
 			# conditional
-			if self.simplex_noise.get_noise_2d(x, y) < self.noise_threshold:
+			if simplex_noise.get_noise_2d(x, y) < noise_threshold:
 				
 				# generataes a tilemap
-				self._set_autotile(x, y)
+				_set_autotile(x, y)
 	
-	self.tile_map.update_dirty_quadrants()
+	tile_map.update_dirty_quadrants()
 
 
 
 # Sets the scenes autotile programmatically
 # Uses the Tilemap's set cell method & the x and y auto tile co-ordinates
 func _set_autotile(x : int, y : int) -> void :
-	self.tile_map.set_cell(
+	tile_map.set_cell(
 		x,
 		y, 
-		self.tile_map.get_tileset().get_tiles_ids()[0], # Tile ID, the first one 
+		tile_map.get_tileset().get_tiles_ids()[0], # Tile ID, the first one 
 		false, # Completeley ignore the next three arguments
 		false, 
 		false, 
-		self.tile_map.get_cell_autotile_coord(x, y ) # co-ordinate of the TileSet
+		tile_map.get_cell_autotile_coord(x, y ) # co-ordinate of the TileSet
 	)
 	
-	self.tile_map.update_bitmask_area(Vector2(x, y)) # so the engine knows where to configure the autotiling
+	tile_map.update_bitmask_area(Vector2(x, y)) # so the engine knows where to configure the autotiling

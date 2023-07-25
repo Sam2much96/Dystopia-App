@@ -546,7 +546,7 @@ enabled=PoolStringArray( "res://addons/algodot/plugin.cfg" )
 
 [gdnative]
 
-singletons=[ "res://addons/videodecoder/videodecoder.gdnlib", "res://webrtc/webrtc.tres" ]
+singletons=[ "res://addons/videodecoder/videodecoder.gdnlib" ]
 singletons_disabled=[  ]
 
 [global]

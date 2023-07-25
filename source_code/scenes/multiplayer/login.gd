@@ -10,17 +10,21 @@
 #(1) should use player's wallet address
 #
 # *************************************************
+# Bugs
+# (1) Multiplayer Doesn't Work
+# (2) WebRTC library is depreciated
+# *************************************************
 extends CanvasLayer
 
 
 class_name lobby
 
 "UI inputs buttons"
-onready var input_color = $ui/ScrollContainer/grid/input_color 
-onready var input_player =$ui/ScrollContainer/grid/text_player
-onready var input_hostname = $ui/ScrollContainer/grid/text_hostname
+onready var input_color : OptionButton = $ui/ScrollContainer/grid/input_color 
+onready var input_player : LineEdit =$ui/ScrollContainer/grid/text_player
+onready var input_hostname : LineEdit = $ui/ScrollContainer/grid/text_hostname
 
-onready var animation = $AnimationPlayer
+onready var animation : AnimationPlayer= $AnimationPlayer
 
 func _ready():
 	# Adding four spaceship colors

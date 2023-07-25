@@ -18,7 +18,9 @@
 # (3) UI joystick and D pad changes (fixed)
 # (4) Status UI misalgnment (fixed)
 # (5) Doesn't implement Mobile Gyroscope (f1/2 fixed)
-# TouchInterface State Machine is buggy
+# (6) TouchInterface State Machine is buggy
+# (7) Dialogue State is Buggy
+#		#-Icons Do not hide when dialogue ia triggered
 # *************************************************
 
 

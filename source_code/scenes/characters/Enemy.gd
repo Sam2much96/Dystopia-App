@@ -265,8 +265,6 @@ func _physics_process(_delta):
 			target_speed *= WALK_SPEED
 			linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
 			
-
-			
 			new_anim = ""
 			if abs(linear_vel.x) > abs(linear_vel.y):
 				if linear_vel.x < 0:
@@ -452,7 +450,7 @@ func debug()-> void:
 #	#Globals.queue_free_children(self)
 #	#Globals.free_children(self)
 
-
+"Perfomance Optimizers"
 
 func _on_VisibilityNotifier2D_screen_entered():
 	set_process(true)

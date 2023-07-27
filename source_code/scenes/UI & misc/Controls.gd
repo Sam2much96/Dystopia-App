@@ -170,3 +170,8 @@ func _exit_tree():
 		i.queue_free()
 		
 
+
+"Triggers Translation subsystem by changing scene to Form"
+func _on_languague_pressed():
+	Dialogs.reset()
+	get_tree().change_scene("res://scenes/UI & misc/form/form.tscn")

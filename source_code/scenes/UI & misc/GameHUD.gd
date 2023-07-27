@@ -14,12 +14,11 @@
 # (3) Fix UI misalignment
 #Bugs
 #(1) Ingame menu bug (fixed)
-# (2) UI connects to depreciated state machine (fixed)
-# (3) UI joystick and D pad changes (fixed)
+# (2) Multiple State can be active at the same time Bug
 # (4) Status UI misalgnment (fixed)
 # (5) Doesn't implement Mobile Gyroscope (f1/2 fixed)
 # (6) TouchInterface State Machine is buggy
-# (7) Dialogue State is Buggy
+# (7) Touch Interface INterract State  State is Buggy
 #		#-Icons Do not hide when dialogue ia triggered
 # *************************************************
 

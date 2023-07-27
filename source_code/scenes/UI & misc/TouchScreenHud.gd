@@ -209,7 +209,16 @@ func menu(): #used by ui scene when menu is clicked
 
 func interract(): #used by ui scene when interract is clicked
 	_state_controller = INTERRACT
-	return _state_controller  
+	
+	# Note: 
+	# Duplicate of State Machine Commands
+	# TOuch Interface State machine is buggy
+	# This might be due to the Scene Tree Pause that
+	# Is triggered by certain Game HUD Modules
+	hide_buttons()
+	menu.show()
+	_interract.show()
+	#return _state_controller  
 
 
 func attack(): #used by ui scene when attack is clicked 

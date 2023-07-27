@@ -66,3 +66,7 @@ func _on_Area2D_body_exited(body):
 		print_debug("Player Leaves Enemy Spawn Range")
 		SPAWNNING = true
 
+
+# tEMPLATE FOR iMPLEMENTING A SPAWNING cOOLDOWN WITH tIMER
+func _on_COOL_DOWN_timeout():
+	pass # Replace with function body.

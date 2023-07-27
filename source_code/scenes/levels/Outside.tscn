@@ -89,3 +89,11 @@ amount = 10
 [node name="signpost" parent="." instance=ExtResource( 8 )]
 position = Vector2( 1917.85, 3183.76 )
 dialogue = "Tutorial Signpost"
+
+[node name="signpost2" parent="." instance=ExtResource( 8 )]
+position = Vector2( 2920.06, -4487.94 )
+dialogue = "Left: Abbi City, RDown : Ukwani Desert"
+
+[node name="signpost3" parent="." instance=ExtResource( 8 )]
+position = Vector2( 19345.9, -5382.61 )
+dialogue = "MRO Corp"

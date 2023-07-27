@@ -9,6 +9,7 @@
 # (2)It triggers an error splash page in the debug script if user is offline
 # (3) It aids monetization through online advertising on Mobile
 # (4) It implements Translations UI
+# (5) It is only Called Once and sets the user's pre-entered Languague for the Duration of the Match
 # *************************************************
 # To Do:
 # (1) Only show once, when installing file. Should Save Information to Globals save file and only Load once
@@ -57,7 +58,8 @@ func _ready():
 	Globals.Functions.load_user_data('languague')
 	
 	# If Dialogue Already Preset, Skip to Cinematics.
-	if Dialogs.language != "":
+	print_debug("User Preloaded Language: ", Dialogs.has_language())
+	if Dialogs.has_language() :
 		get_tree().change_scene_to(cinematics)
 
 	
@@ -74,7 +76,8 @@ func _ready():
 
 	"Disables the Play button Until Internet Access is Verified "
 
-	hide_play_button() 
+	# Hiding the Play Button is terrible UX
+	#hide_play_button() 
 	_check_if_device_is_online()
 	translate()
 

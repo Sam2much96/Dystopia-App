@@ -103,6 +103,21 @@ func translate_to(_language : String, locale: String)-> String:
 	#else: return ("sdgdsdhdh") # returns an empty string
 
 
+func reset() -> void:
+	# Resets Dialogue Key Variables
+	language = ""
+
+
+func has_language() -> bool:
+	# Boolean method for checking if
+	# the language variable is empty
+	
+	if language != "":
+		return true
+	elif language == "" :
+		return false
+	return false
+
 
 class Parser extends Reference :
 	

@@ -6,6 +6,12 @@
 # An interractible environment object
 # To Do:
 # SHould connect to a signal from UI to trigger the UI once player is nearby
+# *************************************************
+# Bugs:
+# (1) Cn be triggered frm anywhere within the Game's main loop, showing previous signpost ext, which is bad UX
+# (2) Displays A buggy Dialog Box
+# *************************************************
+
 
 extends Area2D
 

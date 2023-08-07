@@ -10,7 +10,7 @@
 # To Add
 #(1) Different enemy behaviours and classes
 #Bugs 
-# (1) Enemy AI is too simple to beat (i.e Dumb) (fixed)
+
 # (2) Enemy AI lacks ability to throw Projectiles (fixed not implemented)
 # (3) No Documentation
 # (4) Enemy mob uses too much computer procesing power
@@ -19,10 +19,11 @@
 # (7) Too much Detection
 # (8) Stop Enemy Collision with Enemy bug
 # (9) Enemy Physics is a performance hog
+# (10) To Much Static Memory is Used
 # *************************************************
 # New Features
-#(1) Raycast 2d for precision 
-#
+# (1) Raycast 2d for precision 
+# (2) Navigation Agent for better Navigation
 
 
 

@@ -9,7 +9,8 @@
 # *************************************************
 # Bugs:
 # (1) Cn be triggered frm anywhere within the Game's main loop, showing previous signpost ext, which is bad UX
-# (2) Displays A buggy Dialog Box
+# (2) Displays A buggy Dialog Box is Outside Level
+# (3) Doesnt't Trigger UI changes in Touch HUD
 # *************************************************
 
 
@@ -24,8 +25,9 @@ Displays A Dialogue Text When the Player comes near
 export (bool) var shown = false # it runs as a oneshot bool
 export (bool) var interract = false
 
-export(String) var dialogue #signpost dialogue
+export(String) var dialogue = ""
 
+# 
 export (bool) var _player_near 
 func _ready():
 	#shown = false
@@ -50,22 +52,30 @@ func _input(_event):
 			Dialogs.dialog_box.hide_dialogue()
 			shown = false
 
-func _on_player_area_entered(body):
+
+
+
+
+
+
+func _on_signpost_body_entered(body):
 	#print('_on_player_area_entered_ functin running', body.get_parent().name)
-	if  body.get_parent().name == 'Player' :
+	#if  body.get_parent().name == 'Player' :
+	if body is Player:
+		
+		# Shoud Trigger UI changes in Touch HUD
 		_player_near = true
 		print ('player near signpost: ', _player_near) #send this information to the UI viab a global variable
 		Globals.near_interractible_objects = _player_near
 
 
-
-func _on_player_area_exited(body):
-	if  body.get_parent().name == 'Player' :
+func _on_signpost_body_exited(body):
+	if body is Player:
+	#if  body.get_parent().name == 'Player' :
+		
+		# Shoud Trigger UI changes in Touch HUD
 		_player_near = false
 		interract = false
 		print ('player near signpost: ', _player_near)
 		Globals.near_interractible_objects = _player_near
 		shown = false
-
-func _process(delta): # Triggers the UI if _player_near is true.
-	return 

@@ -64,7 +64,7 @@ margin_top = 461.566
 margin_right = 604.419
 margin_bottom = 504.566
 theme = SubResource( 9 )
-text = "Update: UX Bug Fixes"
+text = "Update: Map Expansion"
 
 [node name="Label3" type="Label" parent="."]
 margin_left = 146.37
@@ -72,7 +72,7 @@ margin_top = 18.6091
 margin_right = 612.37
 margin_bottom = 61.6091
 theme = SubResource( 11 )
-text = "NEW UPDATES AVAILABLE"
+text = "NEW UPDATES : chap 1 fixed"
 align = 1
 
 [node name="Label4" type="Label" parent="."]

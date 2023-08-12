@@ -27,6 +27,7 @@
 # (7) Implement Page state and Pages state 
 # (8) Expand on this mechanics (2/3)
 # (9) Dystopia App Swipe Gestures Using Swipe Detection
+# (10 Each page Should Have Zoom and Position Data Separate from Other Pages
 # *************************************************
 # Bugs:
 # (1) it has a wierd updatable bug that's visible in the debug panel

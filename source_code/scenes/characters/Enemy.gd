@@ -8,7 +8,7 @@
 # it uses a Finite state machine, with a mob state for attacking
 # It also includes signals for when the player is enters and exits the enemy's collision
 # To Add
-#(1) Different enemy behaviours and classes
+#(1) Different enemy behaviours and classes (Done)
 #Bugs 
 
 # (2) Enemy AI lacks ability to throw Projectiles (fixed not implemented)
@@ -21,10 +21,11 @@
 # (9) Enemy Physics is a performance hog
 # (10) To Much Static Memory is Used
 # *************************************************
-# New Features
+# Features
 # (1) Raycast 2d for precision 
 # (2) Navigation Agent for better Navigation
-
+# (3) Static Memory optimization
+# (4) Enemy Can Either Be Hard Intermediate or Easy
 
 
 extends KinematicBody2D
@@ -32,8 +33,23 @@ extends KinematicBody2D
 class_name Enemy
 
 
+# Organize Vabiables Please?
 
 var run_speed : int = 100   #mob runspeeed
+onready var frame_counter : int = 0
+
+# Used As Delta for Determining AI Processing rate
+# i.e, if calculations are called every 30th frame or 5th frame
+# This also Affects enemy mob speed and processor
+
+# Match Frame Rate to Both Enemy TIme And Engine FPS
+const IDIOT_FRAME_RATE = 60
+const SLOW_FRAME_RATE = 30
+const AVERAGE_FRAME_RATE = 15
+const FAST_FRAME_RATE = 5
+
+var selected_frame_rate : int
+
 var velocity = Vector2.ZERO #the movement vector
 onready var player # = get_tree().get_nodes_in_group('player')  #reference to player
 var m=0;  #distance variable
@@ -96,6 +112,7 @@ func _ready():
 	
 	state = STATE_WALKING#for debug purposes only
 	
+
 
 class Functions extends Reference:
 	
@@ -222,18 +239,41 @@ class Behaviour extends Reference:
 		pointer.rotation_degrees = temp
 
 
-func _process(_delta):
+func _process(delta : float):
 	#debug() #turn off when not debugging
 	
+	# Raises up a Frame Counter
+	frame_counter += 1
 	
-	"FACE THE PLAYER, IF HE'S VISIBLE"
-	if player != null: 
-		facing = Behaviour.update_facing(self.position, player.position, player, pointer, facing, Vector2(0,0))
+	# set processor's rate as a correlation of the enemy type
+	if enemy_type == "Easy":
+		selected_frame_rate = SLOW_FRAME_RATE
+	if enemy_type == "Intermediate":
+		selected_frame_rate = AVERAGE_FRAME_RATE
+	if enemy_type == "Hard":
+		selected_frame_rate = FAST_FRAME_RATE
+	
+	# If the Frame Rate is Low, Optimizze Processor
+	# Bug: THis creates a scenerio where a players that hack the games enemies by overloading the processors
+	# Bug: Bugt It also allows for a smoothe framerate
+	if Debug.FPS_debug() < 15:
+		selected_frame_rate = IDIOT_FRAME_RATE
+	
+
+	
+	# Checks the Conditional Every 30th Frame
+	# Called every selected framerate. 30th Frame for slower processing
+	# LOGIC: frame counter is a modulous of the selected frame rate
+	if frame_counter % selected_frame_rate == 0:
+		
+		"FACE THE PLAYER, IF HE'S VISIBLE"
+		if player != null: 
+			facing = Behaviour.update_facing(self.position, player.position, player, pointer, facing, Vector2(0,0))
 
 
-		"Enemy Behaviour Logic"
+			"Enemy Behaviour Logic"
 
-		state = Behaviour.behaviour_logic(hitpoints, raycast, player, player.position, self.position , self, enemy_type, state, enemy_distance_to_player)
+			state = Behaviour.behaviour_logic(hitpoints, raycast, player, player.position, self.position , self, enemy_type, state, enemy_distance_to_player)
 
 
 	if hitpoints <= 0: # Dies if hitpoint is zero
@@ -241,7 +281,9 @@ func _process(_delta):
 		#despawn()
 
 
-
+	# Reset Frame Counter TO Conserver Memory
+	if frame_counter >= 1000:
+		frame_counter = 0
 
 func _physics_process(_delta):
 	

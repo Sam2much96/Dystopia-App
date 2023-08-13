@@ -12,6 +12,11 @@
 # (2) Expand code's functionaliy
 	# -(a) Only Spawns if Player is nearby, so as to optimize for performance (Done)
 # *************************************************
+# Bugs
+# (1) Becomes a performance hog is constantly active in scene. Shold Auto Delete
+#
+#
+# *************************************************
 
 extends Position2D
 
@@ -22,23 +27,32 @@ export (bool) var enabled
 export (PackedScene) var enemy_spawn_1
 onready var position_in_area = self.position #origin point
 onready var anim = $AnimationPlayer
-
+onready var cool_down: Timer = $COOL_DOWN
 #var enemy = load('res://scenes/characters/Bandits.tscn') 
 
+# Boolean For Triggering Spawning
 var SPAWNNING : bool = false
 export(int) var spawn_count 
 
 
 func _ready():
-	randomize()
+	# IT shouldn't call Randomize
+	
+	#randomize()
+	if enemy_spawn_1 != null:
+		push_error(" Enemy Spawn is Null, It Cannot Be Null")
 	anim.play("normal") #hides spriite animation by default
 
 
 func _process(_delta):
+	
+	
+	# Should Use a Delta So It's Not Calld Every Frame
+	
 	# ENemy spawn 1 checks for the Enemy Packed Scene to instance
-	if enemy_spawn_1 != null && SPAWNNING:
+	if SPAWNNING:
 		spawn_enemy()
-
+	else : pass
 
 
 func spawn_enemy(): 
@@ -62,11 +76,21 @@ func spawn_enemy():
 
 " SPAWN STARTER/ PLAYER DETECTOR"
 func _on_Area2D_body_exited(body):
+	# :Bug Causes a Perfoormance hog because of a process Loop
+	#if body is Player:
+	#	print_debug("Player Leaves Enemy Spawn Range")
+	#	SPAWNNING = true
+	pass
+
+# tEMPLATE FOR iMPLEMENTING A SPAWNING cOOLDOWN WITH tIMER
+func _on_COOL_DOWN_timeout():
+	self.queue_free()
+
+
+
+
+func _on_Area2D_body_entered(body):
 	if body is Player:
 		print_debug("Player Leaves Enemy Spawn Range")
 		SPAWNNING = true
 
-
-# tEMPLATE FOR iMPLEMENTING A SPAWNING cOOLDOWN WITH tIMER
-func _on_COOL_DOWN_timeout():
-	pass # Replace with function body.

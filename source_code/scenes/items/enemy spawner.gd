@@ -7,6 +7,8 @@
 # Features
 # (1) Spawns 12 enemies and turns off once the ememy count is at 3
 # (2) Plays a flames animation once Enemy node is bieng instanced
+# (3) Should Extend Idol Code base And Store Player's Body
+
 # To Do:
 #(1) Spawn different enemy types
 # (2) Expand code's functionaliy
@@ -25,15 +27,23 @@ class_name enemy_spawner
 
 export (bool) var enabled 
 export (PackedScene) var enemy_spawn_1
+
+
 onready var position_in_area = self.position #origin point
 onready var anim = $AnimationPlayer
 onready var cool_down: Timer = $COOL_DOWN
 #var enemy = load('res://scenes/characters/Bandits.tscn') 
 
+# Frame Counter
+var frame_counter : int = 0
+
+
 # Boolean For Triggering Spawning
 var SPAWNNING : bool = false
 export(int) var spawn_count 
 
+var idol = Idol
+var savepoint = idol.new()
 
 func _ready():
 	# IT shouldn't call Randomize
@@ -44,29 +54,50 @@ func _ready():
 	anim.play("normal") #hides spriite animation by default
 
 
-func _process(_delta):
+func _process(delta: float):
 	
+	# Raises up a Frame Counter
+	frame_counter += 1
 	
-	# Should Use a Delta So It's Not Calld Every Frame
+	# Checks the Spawning Boolean Every 30th Frame
+	# Called #very 30th Frame
+	if frame_counter % 30 == 0:
+		if SPAWNNING:
+			spawn_enemy()
+			
+	#print(frame_counter) # FOr Debug Purposes only
 	
-	# ENemy spawn 1 checks for the Enemy Packed Scene to instance
-	if SPAWNNING:
-		spawn_enemy()
-	else : pass
+	# To Prevent Large Inteeger Memory Bug
+	if frame_counter >= 500:
+		# Reset 
+		frame_counter = 0
+	
+
+func spawn_enemy() -> void:
+	if not finished_spawning():
+		
+		if  enabled == true:
+			spawn_count -= 1
+
+			#spawn an object in the position
+			var spawn = enemy_spawn_1.instance()
+			anim.play("spawning")
+			spawn.position = position_in_area
+			get_parent().call_deferred('add_child', spawn)
+			print ('spawning enemy...')
+
+	#elif spawn_count <= 0:
+	#	return
 
 
-func spawn_enemy(): 
-	if spawn_count >= 1 && enabled == true:
-		spawn_count -= 1
-
-		#spawn an object in the position
-		var spawn = enemy_spawn_1.instance()
-		anim.play("spawning")
-		spawn.position = position_in_area
-		get_parent().call_deferred('add_child', spawn)
-		print ('spawning enemy...')
-	elif spawn_count <= 0:
-		return
+func finished_spawning() -> bool:
+	if spawn_count > 1 :
+		return false
+	else : 
+		return true
+	
+	
+	
 
 #func _on_enemy_spawner_timeout():
 #	#Depreciated
@@ -84,13 +115,20 @@ func _on_Area2D_body_exited(body):
 
 # tEMPLATE FOR iMPLEMENTING A SPAWNING cOOLDOWN WITH tIMER
 func _on_COOL_DOWN_timeout():
-	self.queue_free()
+		# Reset 
+		frame_counter = 0
+		savepoint._reset_autosave_debugger()
 
 
-
-
+# Triggers a Spawn When Player Body Enters the Collision
 func _on_Area2D_body_entered(body):
 	if body is Player:
 		print_debug("Player Leaves Enemy Spawn Range")
 		SPAWNNING = true
+		
+		# Saves Using A Savepoint Class
+		savepoint._save(body)
+
+
+
 

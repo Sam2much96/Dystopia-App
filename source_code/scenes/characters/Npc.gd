@@ -9,6 +9,7 @@
 # TO do:
 # (1) Copy Mob code from enemy and implement it for NPC to follow Player (Done)
 # (2) Add walking Animation
+# (3) Implement Navigation AI
 # *************************************************
 
 

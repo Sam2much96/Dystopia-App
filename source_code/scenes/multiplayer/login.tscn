@@ -18,6 +18,9 @@ onready var network = NetworkedMultiplayerENet.new()
 
 func _ready():
 	
+	# Make UI Global
+	Networking.UserInterface = $ui
+	
 	#Connect Lobby Signals
 	Networking.Lobby.ConnectSignal(get_tree(), self)
 

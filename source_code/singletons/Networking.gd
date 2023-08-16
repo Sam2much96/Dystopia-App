@@ -102,6 +102,9 @@ var selected_gateway : String
 
 var good_internet : bool
 
+# Lobby UI
+var UserInterface : Control
+
 func _ready():
 	_init_timer()
 	
@@ -479,6 +482,56 @@ func _on_Timer2_timeout():
 	Comics_v6.SwipeLocked = false#!Comics_v6.SwipeLocked
 	stop_check()
 
+"""
+MULTIPLAYER SIGNALS
+"""
+# Executes Multiplayer Logic In the Lobby Class
+func _server_disconnected():
+	pass
+
+func _player_disconnected():
+	pass
+
+func _player_connected(_id):
+	# Calls Player Logic in the Lobby Class
+	# Method is called with the Noe's Unique ID
+	# Idenftifying the player. This ID Should Be Saved
+	
+	
+	"Starts Game"
+	
+	Globals.current_level = "res://scenes/levels/Testing Scene.tscn"
+	# Someone connected, start the game!
+	var Map : PackedScene = Globals.Functions.LoadLargeScene(
+		Globals.current_level, 
+		Globals.scene_resource, 
+		Globals._o, 
+		Globals.scene_loader, 
+		Globals.loading_resource, 
+		Globals.a, 
+		Globals.b, 
+		Globals.progress
+		)
+	
+	var map_instance = Map.instance()
+	
+	# Connect deferred so we can safely erase it from the callback.
+	# Defines the Type of COnnection
+	# Connects the Game Loop's Game Finished Signal to an End Game Method
+	map_instance.connect("game_finished", Lobby, "_end_game", [], CONNECT_DEFERRED)
+
+	# Add Game Scene to tree
+	get_tree().get_root().add_child(map_instance)
+	
+	Networking.UserInterface.hide()
+	#UI.hide()
+	#pass
+
+func _connected_fail():
+	pass
+
+
+
 
 
 class Downloader extends Node:
@@ -692,17 +745,22 @@ class Lobby extends Control:
 	# FOrmerly Ready Method
 	static func ConnectSignal(scene_tree_obj : SceneTree, Lobby : Node) -> void:
 		# Connect all the callbacks related to networking.
+		# Inernet Class Contains Logic for the Implmentations Requiring Parameters
 		
 		# Players/CLients
-		scene_tree_obj.connect("network_peer_connected", Lobby, "_player_connected")
-		scene_tree_obj.connect("network_peer_disconnected", Lobby, "_player_disconnected")
+		# Connect Signals
+		# Debug Signal Connections
+		# Signals Connect to Networking Main Script, which executeds Lobby Static Functions
+		# Present in the Lobby Class
+		scene_tree_obj.connect("network_peer_connected", Networking, "_player_connected")
+		scene_tree_obj.connect("network_peer_disconnected", Networking, "_player_disconnected")
 		
 		# Connection Signal
-		scene_tree_obj.connect("connected_to_server", Lobby, "_connected_ok")
-		scene_tree_obj.connect("connection_failed", Lobby, "_connected_fail")
+		scene_tree_obj.connect("connected_to_server", Lobby, "_connected_ok") 
+		scene_tree_obj.connect("connection_failed", Networking, "_connected_fail")
 		
 		# Server
-		scene_tree_obj.connect("server_disconnected", Lobby, "_server_disconnected")
+		scene_tree_obj.connect("server_disconnected", Networking, "_server_disconnected")
 
 	#### Network callbacks from SceneTree ####
 
@@ -711,23 +769,10 @@ class Lobby extends Control:
 	# Logic: If player connected, Start Game
 	#
 	#
-	static func _player_connected(_id, Lobby : Node, Map: PackedScene, obj_ref: Object, UI : Control):
-		"Starts Game"
-		# Someone connected, start the game!
-		
-		var pong = Map.instance()
-		
-		# Connect deferred so we can safely erase it from the callback.
-		# Defines the Type of COnnection
-		# Connects the Game Loop's Game Finished Signal to an End Game Method
-		pong.connect("game_finished", Lobby, "_end_game", [], obj_ref.CONNECT_DEFERRED)
-
-		# Add Game Scene to tree
-		Lobby.get_root().add_child(pong)
-		UI.hide()
 
 
-	static func _player_disconnected(_id, Lobby: SceneTree, UI : Control):
+
+	static func _on_player_disconnected(_id, Lobby: SceneTree, UI : Control):
 		if Lobby.is_network_server():
 			# with_error : String , Lobby : SceneTree, UI: Control ,Map = "/root/Pong"
 			_end_game("Client disconnected", Lobby, UI)
@@ -736,12 +781,12 @@ class Lobby extends Control:
 
 
 	# Callback from SceneTree, only for clients (not server).
-	static func _connected_ok():
-		pass # This function is not needed for this project.
+	static func _on_connected_ok():
+		print_debug(" Connection OK")
 
 
 	# Callback from SceneTree, only for clients (not server).
-	static func _connected_fail(Lobby : SceneTree):
+	static func _on_connected_fail(Lobby : SceneTree):
 		
 		print_debug("Couldn't Connect")
 		#_set_status("Couldn't connect", false)
@@ -754,7 +799,7 @@ class Lobby extends Control:
 		#join_button.set_disabled(false)
 
 
-	static func _server_disconnected(Lobby : SceneTree, UI : Control):
+	static func _on_server_disconnected(Lobby : SceneTree, UI : Control):
 		_end_game("Server disconnected", Lobby, UI)
 
 

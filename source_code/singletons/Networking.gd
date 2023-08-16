@@ -48,8 +48,9 @@ var debug = ''
 const DEFAULT_HOSTNAME = "ws://localhost"
 
 const BACKUP_HOSTNAME = "127.0.0.1"
-
-var player_info = {} # should store Crypto info
+# should store Non-threathening Crypto and Multiplayerinfo
+# Data Integrity can be checked using hash
+var player_info : Dictionary = {"peer id": 0} 
 
 var camera #stores general camera variables
 ###############################multiplayer codes########################
@@ -85,7 +86,7 @@ const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
 onready var timer :Timer  = $Timer2
 
 
-#var youtube_dl = preload ('res://New game code and features/youtube streamer/Youtube-DL.gd') #what if youtube goes down lool
+#var youtube_dl # Replace with GodotRustube
 
 
 #**********Helper Booleans***********#
@@ -500,6 +501,7 @@ func _player_connected(_id):
 	# Method is called with the Noe's Unique ID
 	# Idenftifying the player. This ID Should Be Saved
 	
+	Networking.player_info["peer id"] = _id
 	
 	"Starts Game"
 	
@@ -532,12 +534,15 @@ func _player_connected(_id):
 	
 	
 	# Implements a Compatible statmechine optimized for  the rpc node/ multiplayer architecture 
-	var networked_player : GDScript = load("res://scenes/characters/Player v2.gd")
+	#var networked_player : GDScript = load("res://scenes/characters/Player v2.gd")
 	# Set Player Script
 	
 	var player_group =get_tree().get_nodes_in_group("player")
 	var player_ = player_group.pop_front() # Implement Unique ID
-	player_.set_script(networked_player)
+	
+	
+	# Set Player Object With Networked Multiplayer Script
+	#player_.set_script(networked_player)
 
 func _connected_fail():
 	pass

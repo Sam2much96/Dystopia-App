@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scenes/props/idol.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://scenes/items/enemy spawner.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scenes/UI & misc/TouchScreen HUD.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/items/Item.tscn" type="PackedScene" id=15]
+[ext_resource path="res://scenes/characters/Player v2.gd" type="Script" id=16]
 
 [node name="Node2D" type="Node2D"]
 
@@ -58,7 +59,7 @@ enabled = false
 spawn_count = 1
 
 [node name="Player" parent="." instance=ExtResource( 7 )]
-script = null
+script = ExtResource( 16 )
 
 [node name="NPC" parent="." instance=ExtResource( 3 )]
 

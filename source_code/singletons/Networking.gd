@@ -105,6 +105,9 @@ var good_internet : bool
 # Lobby UI
 var UserInterface : Control
 
+# Multiplayer map
+var map_instance
+
 func _ready():
 	_init_timer()
 	
@@ -513,7 +516,7 @@ func _player_connected(_id):
 		Globals.progress
 		)
 	
-	var map_instance = Map.instance()
+	map_instance = Map.instance()
 	
 	# Connect deferred so we can safely erase it from the callback.
 	# Defines the Type of COnnection
@@ -526,6 +529,15 @@ func _player_connected(_id):
 	Networking.UserInterface.hide()
 	#UI.hide()
 	#pass
+	
+	
+	# Implements a Compatible statmechine optimized for  the rpc node/ multiplayer architecture 
+	var networked_player : GDScript = load("res://scenes/characters/Player v2.gd")
+	# Set Player Script
+	
+	var player_group =get_tree().get_nodes_in_group("player")
+	var player_ = player_group.pop_front() # Implement Unique ID
+	player_.set_script(networked_player)
 
 func _connected_fail():
 	pass
@@ -603,14 +615,38 @@ All Multiplayer Networking Logics in One FIle
 Client, Server and Lobby
 """
 
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# THe Player Script v2 implements networking calls via rpc 
+# Features
+# (1) THe world's camera
+# (2) Player hitboxes
+# (3) It's a class and stores variables to the UI, Globals singleton, PlayersSave Files, and the Debug SIngleton
+# To Do:
+#(1) Update Documentation
+# (2) Implement Remote Proceedure calls Networking
+# (3) Im not sure how to implement sstate machine calls to the client/server
+# (4) Too much Detection going on
+# (5) Implement RPC calls as methods (implemented as child of Client Node)
+# (6) Implement tokenized player asset
+# (7) Play animation remotely (works)
+# (8) Player Camera Hierarchy bug
+#		2 or more spawned players have their own cameras which misaligns the scene tree
+
+# Depreciated, Delete Script Later
+# *************************************************
 
 
-class player extends Area2D:
+
+class Player_v3_networking extends KinematicBody2D:
+
 	
 	# Refactor to instead Extend Kinematic Bodt
 	# Player
 	# All the Player Logic In One Class
-	
+	# Implement Player v2 Networking here
 	
 	const MOTION_SPEED = 150
 
@@ -621,7 +657,9 @@ class player extends Area2D:
 
 	onready var _screen_size_y = get_viewport_rect().size.y
 
-	func _process(delta):
+
+
+	func ___process___(delta): # Depreciated
 		# Is the master of the paddle.
 		if is_network_master():
 			_motion = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
@@ -643,11 +681,19 @@ class player extends Area2D:
 		# Set screen limits.
 		position.y = clamp(position.y, 16, _screen_size_y - 16)
 
-
-	# Synchronize position and speed to the other peers.
+	"""
+	GAME SYNCHRONIZER
+	"""
+	#Synchronize position and speed to the other peers.
 	puppet func set_pos_and_motion(pos, motion):
 		position = pos
 		_motion = motion
+		
+		# Other Data to Synchronize
+		# Health
+		# Inventory with inventory duplicate
+		# State
+		#
 
 
 	func _hide_you_label():
@@ -805,14 +851,14 @@ class Lobby extends Control:
 
 	##### Game creation functions ######
 	# Change Map Parameter To Game Level (Map) Position in the Scene Trees 
-	static func _end_game(with_error : String , Lobby : SceneTree, UI: Control ,Map = "/root/Pong"):
+	static func _end_game(with_error : String , Lobby : SceneTree, Map = Networking.map_instance):
 		if Lobby.has_node(Map):
 			# Erase immediately, otherwise network might show
 			# errors (this is why we connected deferred above).
 			Lobby.get_node(Map).free()
 			
 			# UI SHow
-			UI.show()
+			Networking.UserInterface.show()
 
 		# Update UI when current Game Ends
 		Lobby.set_network_peer(null) # Remove peer.
@@ -822,7 +868,7 @@ class Lobby extends Control:
 		#join_button.set_disabled(false)
 
 		print_debug(with_error , false)
-		#_set_status(with_error, false)
+		_set_status(with_error, Dialogs.dialog_box , false)
 
 	# SHows ingame Status
 	# Connect to Dialogue Box
@@ -883,7 +929,7 @@ class Lobby extends Control:
 		ClientPeer.create_client(ip, DEFAULT_PORT)
 		Lobby.set_network_peer(ClientPeer)
 
-		#_set_status("Connecting...", true)
+		_set_status("Connecting...", Dialogs.dialog_box, true)
 		print_debug(" Connecting...")
 		
 		return true

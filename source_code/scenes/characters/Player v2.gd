@@ -18,7 +18,7 @@
 # (8) Player Camera Hierarchy bug
 #		2 or more spawned players have their own cameras which misaligns the scene tree
 
-# Depreciated, Delete Script Later
+
 # *************************************************
 
 extends KinematicBody2D
@@ -28,9 +28,9 @@ class_name Player_v2_networking
 
 
 
-export(int) var WALK_SPEED = 350 # pixels per second
-export(int) var ROLL_SPEED = 1000 # pixels per second
-export(int) var hitpoints = 3
+const WALK_SPEED = 350 # pixels per second
+const ROLL_SPEED = 1000 # pixels per second
+var hitpoints = 3
 
 export var linear_vel = Vector2()
 export var roll_direction = Vector2.DOWN

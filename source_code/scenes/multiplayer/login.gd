@@ -8,7 +8,7 @@
 # on buttons.
 # To DO
 #(1) should use player's wallet address
-#
+# DEPRECIATED
 # *************************************************
 # Bugs
 # (1) Multiplayer Doesn't Work

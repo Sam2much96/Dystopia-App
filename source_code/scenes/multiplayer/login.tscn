@@ -4,44 +4,7 @@
 [ext_resource path="res://resources/illustrations/coins silver.png" type="Texture" id=2]
 [ext_resource path="res://fonts/Comic_Andy.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=4]
-
-[sub_resource type="GDScript" id=27]
-script/source = "extends Node
-
-#Lobby Scene
-
-\"\"\"
-I'LL BE CONNECTING STATIC METHODS FROM THE NETWORKING SINGLETON 
-Code may be really hacky but will be thoughroughly Documented.
-\"\"\"
-onready var network = NetworkedMultiplayerENet.new()
-
-func _ready():
-	
-	# Make UI Global
-	Networking.UserInterface = $ui
-	
-	#Connect Lobby Signals
-	Networking.Lobby.ConnectSignal(get_tree(), self)
-
-	# Connect UI Button Signals
-	
-	#$ui/ScrollContainer/grid/play.connect(\"pressed\", Networking.Lobby, ) #Can Only Call Static Functions
-	#$ui/ScrollContainer/grid/host
-
-
-
-func _on_play_pressed():
-	# Connects UI Button Signals
-	
-	#address: LineEdit, ClientPeer: NetworkedMultiplayerENet, Lobby : SceneTree
-	Networking.Lobby._on_join_pressed($ui/ScrollContainer/grid/address_text, network, get_tree())
-
-func _on_host_pressed():
-	# Connects UI Button Signals
-	#peer : NetworkedMultiplayerENet, Lobby : SceneTree, host_button : Button, join_button : Button , dialog_box : DialogBox
-	Networking.Lobby._on_host_pressed(network, get_tree(), $ui/ScrollContainer/grid/host, $ui/ScrollContainer/grid/play, $Dialog_box)
-"
+[ext_resource path="res://scenes/multiplayer/lobby.gd" type="Script" id=5]
 
 [sub_resource type="DynamicFont" id=23]
 size = 38
@@ -143,7 +106,7 @@ tracks/1/keys = {
 }
 
 [node name="form" type="Node"]
-script = SubResource( 27 )
+script = ExtResource( 5 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_left = 6.0
@@ -249,13 +212,13 @@ margin_top = 252.0
 margin_right = 128.0
 margin_bottom = 266.0
 
-[node name="Twitter Button" type="Button" parent="ui/ScrollContainer/grid"]
+[node name="search_IP" type="Button" parent="ui/ScrollContainer/grid"]
 margin_top = 270.0
 margin_right = 128.0
 margin_bottom = 316.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_fonts/font = SubResource( 25 )
-text = "Twitter"
+text = "Find IP"
 
 [node name="Back_Button" type="Button" parent="."]
 margin_left = 60.3213
@@ -275,3 +238,4 @@ anims/VERTICAL_SCREEN = SubResource( 18 )
 
 [connection signal="pressed" from="ui/ScrollContainer/grid/play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="ui/ScrollContainer/grid/host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="ui/ScrollContainer/grid/search_IP" to="." method="_on_search_IP_pressed"]

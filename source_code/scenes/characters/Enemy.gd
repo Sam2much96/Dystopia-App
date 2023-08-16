@@ -11,15 +11,14 @@
 #(1) Different enemy behaviours and classes (Done)
 #Bugs 
 
-# (2) Enemy AI lacks ability to throw Projectiles (fixed not implemented)
-# (3) No Documentation
-# (4) Enemy mob uses too much computer procesing power
-# (5) Too much Physics procesing (1/3)
+# (2) Enemy AI lacks ability to throw Projectiles (Done)
+# (3) No Documentation (Done)
+# (4) Enemy mob uses too much computer procesing power (Done)
+# (5) Too much Physics procesing (Done) 
 # (6) Navigation AI (1/2)
-# (7) Too much Detection
+# (7) Too much Detection (Done)
 # (8) Stop Enemy Collision with Enemy bug
-# (9) Enemy Physics is a performance hog
-# (10) To Much Static Memory is Used
+
 # *************************************************
 # Features
 # (1) Raycast 2d for precision 
@@ -83,7 +82,7 @@ export(String, "up", "down", "left", "right") var facing = "down"
 var anim = ""
 var new_anim = ""
 
-enum { STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE_DIE, STATE_HURT, STATE_MOB } # state machine needs expansion
+enum { STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE_DIE, STATE_HURT, STATE_MOB, STATE_PROJECTILE} # state machine needs expansion
 
 
 var state = STATE_MOB #mob state is broken, needs to cast to raycast 2d
@@ -113,130 +112,6 @@ func _ready():
 	state = STATE_WALKING#for debug purposes only
 	
 
-
-class Functions extends Reference:
-	
-	# calculates the center btw two vectors (player and target)
-	static func calculate_center(player, initial_position)-> Vector2:
-		
-		var center = Globals.restaVectores(player.position, initial_position) 
-		return center
-
-
-	
-
-class Behaviour extends Reference:
-	"""
-	# Enemy AI Behaviour in A  SeparateClass
-	
-	# Using Global Methods and Classes makes enemy behaviour AI to perform better
-	# And Faster, in Realtime Gameplay
-	
-	"""
-	
-	func _ready():
-		randomize()
-	
-	# body is self
-	static func update_facing(body_position : Vector2, player_position : Vector2, player , pointer, _facing : String, enemy_direction: Vector2)-> String: # Updates the Enemy to face the Player
-
-		if player != null: #handles enemy facing player
-			
-			enemy_direction= (body_position.direction_to(player_position))
-			
-			Globals.rotate_pointer(Vector2((enemy_direction.x), (enemy_direction.y)), pointer) # Rotates a Racast 2d to face the Enemy
-			
-			var X = round(enemy_direction.x) ; var Y =round (enemy_direction.y)
-			if X == 0 and Y == 1:
-				_facing = 'down'
-			if X == 1 and Y == 0:
-				_facing = 'right'
-			if X == -1 and Y == 0:
-				_facing = 'left'
-			if X == 0 and Y == -1:
-				_facing = 'up'
-			
-			return _facing
-			
-			#FACING CHEATSHEET
-			#DOWN :X=0 , Y =1 [ Y> X] 
-			#RIGHT :X= 1, Y= 0 [X > Y ]
-			#LEFT: X = -1, Y = 0 [Y>X]
-			#UP: X= 0, Y= -1   [X>Y]
-		return _facing
-		
-		if player == null:
-			pass
-
-
-	static func enemy_navigation(navigation_agent : NavigationAgent2D, position : Vector2): 
-		var move_direction = position.direction_to(navigation_agent.get_next_location())
-		var linear_vel
-		navigation_agent.set_velocity(linear_vel)
-	
-	static func behaviour_logic(hitpoints: int, raycast : RayCast2D, player : Player, player_pos , _position,_enemy, enemy_type : String, state, enemy_distance_to_player):
-		
-		"Enemy Behaviour Logic"
-		# Provides Randomized enemy behaviour
-		if not hitpoints == 0:
-			if raycast.is_enabled() == true:
-				"Enemy Envcounters Player Node"
-				
-				if raycast.is_colliding() && player != null:
-					var center = Functions.calculate_center(player, _position) #calculates distance to plaer
-					_enemy.move_and_slide(center) # moves to player
-					state = STATE_WALKING
-					#var enemy_distance_to_player = abs(position.distance_to(player.position )) # Calculates the enemy distance to playrer
-					enemy_distance_to_player = abs(_position.distance_to(player_pos )) # Calculates the enemy distance to playrer
-					
-					#print (enemy_distance_to_player) # For debug purposes only
-					if enemy_distance_to_player < 80: #uses enemy distance to auto attack
-						state = STATE_ATTACK
-						return state 
-					if enemy_distance_to_player > 80:
-						#shoot() #Disabling for now
-						if enemy_type == "Hard":
-							state = STATE_ROLL
-							return state
-						if enemy_type == "Easy":
-							state = STATE_WALKING
-							return state
-						if enemy_type == "Intermediate":
-							state = STATE_WALKING
-							return state
-						else: return
-		if raycast.is_enabled() == false && player != null:
-			#use state changer timer to turn off processing
-			push_error ('Debug Enenmy Behaviour Check')
-
-
-	static func randomize_facing(facing : String, number_of_options : Array) :
-		
-		facing = number_of_options[randi()% int(number_of_options.size()- 1)]
-		
-		return facing
-
-
-# Sets the enemy to a random state btw the first 3 states and a random direction
-	static func randomize_state(state):
-		
-		state = randi() %3
-		
-		
-		return state 
-
-	static func randomize_enemy_type( options : Array):
-		#randomize()
-		#enemy_type = ['Easy', "Intermediate", "Hard"][randi()%3]
-		#enemy_type = 
-		#return options [randi()% int(options.size() - 1)] # Returns Easy
-		#return ['Easy', "Intermediate", "Hard"][randi()%3] # Returns Hard
-		return Globals.randomize_enemy_type() # Returns Hard
-
-	# Updates the raycast to the Enemy"s Direction
-	static func rotate_pointer(point_direction: Vector2, pointer) -> void:
-		var temp =rad2deg(atan2(point_direction.x, point_direction.y))
-		pointer.rotation_degrees = temp
 
 
 func _process(delta : float):
@@ -373,7 +248,9 @@ func _physics_process(_delta):
 			
 			if not raycast.is_colliding() :
 				return
-			
+		
+		STATE_PROJECTILE:
+			shoot()
 
 	if new_anim != anim:
 		anim = new_anim
@@ -460,6 +337,8 @@ func _on_enemy_eyesight_body_exited(body)-> void:
 
 func shoot()-> void: #spawns a bullet at a particular position
 	#Disabling for now
+	# Method Is Buggy
+	
 	print ('shooting player')
 	var b = Globals.bullet_fx.instance()
 	self.add_child(b)
@@ -502,3 +381,132 @@ func _on_VisibilityNotifier2D_screen_entered():
 func _on_VisibilityNotifier2D_screen_exited():
 	set_process(false)
 	set_physics_process(false)
+
+
+
+
+class Behaviour extends Reference:
+	"""
+	# Enemy AI Behaviour in A  SeparateClass
+	
+	# Using Global Methods and Classes makes enemy behaviour AI to perform better
+	# And Faster, in Realtime Gameplay
+	
+	"""
+	
+	func _ready():
+		randomize()
+	
+	# body is self
+	static func update_facing(body_position : Vector2, player_position : Vector2, player , pointer, _facing : String, enemy_direction: Vector2)-> String: # Updates the Enemy to face the Player
+
+		if player != null: #handles enemy facing player
+			
+			enemy_direction= (body_position.direction_to(player_position))
+			
+			Globals.rotate_pointer(Vector2((enemy_direction.x), (enemy_direction.y)), pointer) # Rotates a Racast 2d to face the Enemy
+			
+			var X = round(enemy_direction.x) ; var Y =round (enemy_direction.y)
+			if X == 0 and Y == 1:
+				_facing = 'down'
+			if X == 1 and Y == 0:
+				_facing = 'right'
+			if X == -1 and Y == 0:
+				_facing = 'left'
+			if X == 0 and Y == -1:
+				_facing = 'up'
+			
+			return _facing
+			
+			#FACING CHEATSHEET
+			#DOWN :X=0 , Y =1 [ Y> X] 
+			#RIGHT :X= 1, Y= 0 [X > Y ]
+			#LEFT: X = -1, Y = 0 [Y>X]
+			#UP: X= 0, Y= -1   [X>Y]
+		return _facing
+		
+		if player == null:
+			pass
+
+
+	static func enemy_navigation(navigation_agent : NavigationAgent2D, position : Vector2): 
+		var move_direction = position.direction_to(navigation_agent.get_next_location())
+		var linear_vel
+		navigation_agent.set_velocity(linear_vel)
+	
+	static func behaviour_logic(hitpoints: int, raycast : RayCast2D, player : Player, player_pos , _position,_enemy, enemy_type : String, state, enemy_distance_to_player):
+		
+		"Enemy Behaviour Logic"
+		# Provides Randomized enemy behaviour
+		if not hitpoints == 0:
+			if raycast.is_enabled() == true:
+				"Enemy Envcounters Player Node"
+				
+				if raycast.is_colliding() && player != null:
+					var center = Functions.calculate_center(player, _position) #calculates distance to plaer
+					_enemy.move_and_slide(center) # moves to player
+					state = STATE_WALKING
+					#var enemy_distance_to_player = abs(position.distance_to(player.position )) # Calculates the enemy distance to playrer
+					enemy_distance_to_player = abs(_position.distance_to(player_pos )) # Calculates the enemy distance to playrer
+					
+					#print (enemy_distance_to_player) # For debug purposes only
+					if enemy_distance_to_player < 80: #uses enemy distance to auto attack
+						state = STATE_ATTACK
+						return state 
+					if enemy_distance_to_player > 80:
+						#shoot() #Disabling for now
+						if enemy_type == "Hard":
+							state = STATE_ROLL
+							return state
+							
+						# TO DO: Implement Shoot State FOr ENemy AI
+						if enemy_type == "Easy":
+							state = STATE_WALKING
+							return state
+						if enemy_type == "Intermediate":
+							#state = STATE_PROJECTILE
+							state = STATE_WALKING
+							return state
+						else: return
+		if raycast.is_enabled() == false && player != null:
+			#use state changer timer to turn off processing
+			push_error ('Debug Enenmy Behaviour Check')
+
+
+	static func randomize_facing(facing : String, number_of_options : Array) :
+		
+		facing = number_of_options[randi()% int(number_of_options.size()- 1)]
+		
+		return facing
+
+
+# Sets the enemy to a random state btw the first 3 states and a random direction
+	static func randomize_state(state):
+		
+		state = randi() %3
+		
+		
+		return state 
+
+	static func randomize_enemy_type( options : Array):
+		#randomize()
+		#enemy_type = ['Easy', "Intermediate", "Hard"][randi()%3]
+		#enemy_type = 
+		#return options [randi()% int(options.size() - 1)] # Returns Easy
+		#return ['Easy', "Intermediate", "Hard"][randi()%3] # Returns Hard
+		return Globals.randomize_enemy_type() # Returns Hard
+
+	# Updates the raycast to the Enemy"s Direction
+	static func rotate_pointer(point_direction: Vector2, pointer) -> void:
+		var temp =rad2deg(atan2(point_direction.x, point_direction.y))
+		pointer.rotation_degrees = temp
+
+
+class Functions extends Reference:
+	
+	# calculates the center btw two vectors (player and target)
+	static func calculate_center(player, initial_position)-> Vector2:
+		
+		var center = Globals.restaVectores(player.position, initial_position) 
+		return center
+

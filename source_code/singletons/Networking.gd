@@ -14,14 +14,14 @@
 # ************************************************* 
 # Features to Add
 # (1) Smart contract implementation using GDteal and Algodot (done)
-# (2) Multiplayer lobby room logic And Client and Server Netcodes (next)
-# (3) Youtube Download Streamer Logic impementation 
+# (2) Multiplayer lobby room logic And Client and Server Netcodes (Done)
+# (3) Youtube Download Streamer Logic impementation (1/3 using godot-rustube)
 # (4) Proper Documentation (done)
-# (5) Run an online for PC and mobile Devices. The Hardware is available now
+# (5) Run an online for PC and mobile Devices. The Hardware is available now (Done)
 # (6) Implement Rollback NetCodes for Multiplayer Gameplay (Depreciated)
 # (7) Video Downloaders
 # (8) Downloads several files
-# (9) Regex parser for IPFS (test)
+# (9) Regex parser for IPFS (Done)
 
 
 
@@ -30,7 +30,7 @@ extends HTTPRequest
 class_name Internet
 
 """
-NETWORKING SINGLETON 3.0
+NETWORKING SINGLETON 4.0
 
 To query if there's internet access and connect to various websites
 """
@@ -542,4 +542,376 @@ class Downloader extends Node:
 		var r = t.wait_to_finish()
 		emit_signal("loaded",r)
 		pass
+
+
+"""
+
+All Multiplayer Networking Logics in One FIle
+Client, Server and Lobby
+"""
+
+
+
+class player extends Area2D:
+	
+	# Refactor to instead Extend Kinematic Bodt
+	# Player
+	# All the Player Logic In One Class
+	
+	
+	const MOTION_SPEED = 150
+
+	export var left = false
+
+	var _motion = 0
+	var _you_hidden = false
+
+	onready var _screen_size_y = get_viewport_rect().size.y
+
+	func _process(delta):
+		# Is the master of the paddle.
+		if is_network_master():
+			_motion = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
+
+			if not _you_hidden and _motion != 0:
+				_hide_you_label()
+
+			_motion *= MOTION_SPEED
+
+			# Using unreliable to make sure position is updated as fast
+			# as possible, even if one of the calls is dropped.
+			rpc_unreliable("set_pos_and_motion", position, _motion)
+		else:
+			if not _you_hidden:
+				_hide_you_label()
+
+		translate(Vector2(0, _motion * delta))
+
+		# Set screen limits.
+		position.y = clamp(position.y, 16, _screen_size_y - 16)
+
+
+	# Synchronize position and speed to the other peers.
+	puppet func set_pos_and_motion(pos, motion):
+		position = pos
+		_motion = motion
+
+
+	func _hide_you_label():
+		_you_hidden = true
+		get_node("You").hide()
+
+
+	func _on_paddle_area_enter(area):
+		if is_network_master():
+			# Random for new direction generated on each peer.
+			area.rpc("bounce", left, randf())
+
+
+
+
+#  Object/ Scene Manager
+
+class SceneManager extends Node2D:
+
+	signal game_finished()
+
+	const SCORE_TO_WIN = 10
+
+	var score_left = 0
+	var score_right = 0
+
+	onready var player2 = $Player2
+	onready var score_left_node = $ScoreLeft
+	onready var score_right_node = $ScoreRight
+	onready var winner_left = $WinnerLeft
+	onready var winner_right = $WinnerRight
+
+	func _ready():
+		# By default, all nodes in server inherit from master,
+		# while all nodes in clients inherit from puppet.
+		# set_network_master is tree-recursive by default.
+		if get_tree().is_network_server():
+			# For the server, give control of player 2 to the other peer.
+			player2.set_network_master(get_tree().get_network_connected_peers()[0])
+		else:
+			# For the client, give control of player 2 to itself.
+			player2.set_network_master(get_tree().get_network_unique_id())
+
+		print("Unique id: ", get_tree().get_network_unique_id())
+
+
+	remotesync func update_score(add_to_left):
+		if add_to_left:
+			score_left += 1
+			score_left_node.set_text(str(score_left))
+		else:
+			score_right += 1
+			score_right_node.set_text(str(score_right))
+
+		var game_ended = false
+		if score_left == SCORE_TO_WIN:
+			winner_left.show()
+			game_ended = true
+		elif score_right == SCORE_TO_WIN:
+			winner_right.show()
+			game_ended = true
+
+		if game_ended:
+			$ExitGame.show()
+			$Ball.rpc("stop")
+
+
+	func _on_exit_game_pressed():
+		emit_signal("game_finished")
+
+
+
+# Lobby 
+
+class Lobby extends Control:
+
+	# Default game server port. Can be any number between 1024 and 49151.
+	# Not on the list of registered or common ports as of November 2020:
+	# https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
+	const DEFAULT_PORT = 8910
+
+
+	# Lobby UI
+	# Declares Variables
+	onready var address = $Address
+	onready var host_button = $HostButton
+	onready var join_button = $JoinButton
+	onready var status_ok = $StatusOk
+	onready var status_fail = $StatusFail
+	onready var port_forward_label = $PortForward
+	onready var find_public_ip_button = $FindPublicIP
+
+	var peer = null
+
+	# FOrmerly Ready Method
+	static func ConnectSignal(scene_tree_obj : SceneTree, Lobby : Node) -> void:
+		# Connect all the callbacks related to networking.
+		
+		# Players/CLients
+		scene_tree_obj.connect("network_peer_connected", Lobby, "_player_connected")
+		scene_tree_obj.connect("network_peer_disconnected", Lobby, "_player_disconnected")
+		
+		# Connection Signal
+		scene_tree_obj.connect("connected_to_server", Lobby, "_connected_ok")
+		scene_tree_obj.connect("connection_failed", Lobby, "_connected_fail")
+		
+		# Server
+		scene_tree_obj.connect("server_disconnected", Lobby, "_server_disconnected")
+
+	#### Network callbacks from SceneTree ####
+
+	# Callback from SceneTree.
+	#
+	# Logic: If player connected, Start Game
+	#
+	#
+	static func _player_connected(_id, Lobby : Node, Map: PackedScene, obj_ref: Object, UI : Control):
+		"Starts Game"
+		# Someone connected, start the game!
+		
+		var pong = Map.instance()
+		
+		# Connect deferred so we can safely erase it from the callback.
+		# Defines the Type of COnnection
+		# Connects the Game Loop's Game Finished Signal to an End Game Method
+		pong.connect("game_finished", Lobby, "_end_game", [], obj_ref.CONNECT_DEFERRED)
+
+		# Add Game Scene to tree
+		Lobby.get_root().add_child(pong)
+		UI.hide()
+
+
+	static func _player_disconnected(_id, Lobby: SceneTree, UI : Control):
+		if Lobby.is_network_server():
+			# with_error : String , Lobby : SceneTree, UI: Control ,Map = "/root/Pong"
+			_end_game("Client disconnected", Lobby, UI)
+		else:
+			_end_game("Server disconnected", Lobby, UI)
+
+
+	# Callback from SceneTree, only for clients (not server).
+	static func _connected_ok():
+		pass # This function is not needed for this project.
+
+
+	# Callback from SceneTree, only for clients (not server).
+	static func _connected_fail(Lobby : SceneTree):
+		
+		print_debug("Couldn't Connect")
+		#_set_status("Couldn't connect", false)
+
+		Lobby.set_network_peer(null) # Remove peer.
+
+		# Update UI and Enable Disabled Buttons
+		
+		#host_button.set_disabled(false)
+		#join_button.set_disabled(false)
+
+
+	static func _server_disconnected(Lobby : SceneTree, UI : Control):
+		_end_game("Server disconnected", Lobby, UI)
+
+
+	##### Game creation functions ######
+	# Change Map Parameter To Game Level (Map) Position in the Scene Trees 
+	static func _end_game(with_error : String , Lobby : SceneTree, UI: Control ,Map = "/root/Pong"):
+		if Lobby.has_node(Map):
+			# Erase immediately, otherwise network might show
+			# errors (this is why we connected deferred above).
+			Lobby.get_node(Map).free()
+			
+			# UI SHow
+			UI.show()
+
+		# Update UI when current Game Ends
+		Lobby.set_network_peer(null) # Remove peer.
+		
+		# Enable UI buttons
+		#host_button.set_disabled(false)
+		#join_button.set_disabled(false)
+
+		print_debug(with_error , false)
+		#_set_status(with_error, false)
+
+	# SHows ingame Status
+	# Connect to Dialogue Box
+	static func _set_status(text : String, status : DialogBox, isok : bool):
+		# Simple way to show status.
+		#if isok:
+		status.show_dialog( text + str(isok), "Admin") 
+			#status_ok.set_text(text)
+			#status_fail.set_text("") #Unnecessary Code Line
+		#else:
+			
+			#status_ok.set_text("")
+			#status_fail.set_text(text)
+
+	# Starts Server Connections
+	# Connects to UI Buttons
+	static func _on_host_pressed( peer : NetworkedMultiplayerENet, Lobby : SceneTree, host_button : Button, join_button : Button , dialog_box : DialogBox) -> bool:
+		peer = NetworkedMultiplayerENet.new()
+		peer.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER)
+		var err = peer.create_server(DEFAULT_PORT, 1) # Maximum of 1 peer, since it's a 2-player game.
+		
+		# If Bad COnnection
+		if err != OK:
+			# Is another server running?
+			_set_status("Can't host, address in use.",dialog_box ,false)
+			return true
+
+		# Sets Network Peer
+		Lobby.set_network_peer(peer)
+		
+		
+		host_button.set_disabled(true)
+		join_button.set_disabled(true)
+		
+		#i/o
+		print("Waiting for player...")
+		
+		# Sets UI Status : text : String, status : DialogBox, isok : bool
+		_set_status("Waiting for player...",dialog_box ,true)
+
+		# Only show hosting instructions when relevant.
+		#
+		# Show Host Instructionals
+		#port_forward_label.visible = true
+		#find_public_ip_button.visible = true
+		return true
+
+	# Connects to Server From Client
+	static func _on_join_pressed( address: LineEdit, ClientPeer: NetworkedMultiplayerENet, Lobby : SceneTree ) -> bool :
+		var ip = address.get_text()
+		if not ip.is_valid_ip_address():
+			print_debug("IP Address Is Invalid")
+			#_set_status("IP address is invalid", false)
+			return true
+
+		#peer = NetworkedMultiplayerENet.new()
+		ClientPeer.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER)
+		ClientPeer.create_client(ip, DEFAULT_PORT)
+		Lobby.set_network_peer(ClientPeer)
+
+		#_set_status("Connecting...", true)
+		print_debug(" Connecting...")
+		
+		return true
+
+	# Finds Device Public IP Address from a WebSite
+	static func _on_find_public_ip_pressed() -> void:
+		OS.shell_open("https://icanhazip.com/")
+
+class NetworkedObject extends Area2D:
+
+	const DEFAULT_SPEED = 100
+
+	var direction = Vector2.LEFT
+	var stopped = false
+	var _speed = DEFAULT_SPEED
+
+	onready var _screen_size = get_viewport_rect().size
+
+	func _process(delta):
+		_speed += delta
+		# Ball will move normally for both players,
+		# even if it's sightly out of sync between them,
+		# so each player sees the motion as smooth and not jerky.
+		if not stopped:
+			translate(_speed * delta * direction)
+
+		# Check screen bounds to make ball bounce.
+		var ball_pos = position
+		if (ball_pos.y < 0 and direction.y < 0) or (ball_pos.y > _screen_size.y and direction.y > 0):
+			direction.y = -direction.y
+
+		if is_network_master():
+			# Only the master will decide when the ball is out in
+			# the left side (it's own side). This makes the game
+			# playable even if latency is high and ball is going
+			# fast. Otherwise ball might be out in the other
+			# player's screen but not this one.
+			if ball_pos.x < 0:
+				get_parent().rpc("update_score", false)
+				rpc("_reset_ball", false)
+		else:
+			# Only the puppet will decide when the ball is out in
+			# the right side, which is it's own side. This makes
+			# the game playable even if latency is high and ball
+			# is going fast. Otherwise ball might be out in the
+			# other player's screen but not this one.
+			if ball_pos.x > _screen_size.x:
+				get_parent().rpc("update_score", true)
+				rpc("_reset_ball", true)
+
+
+	remotesync func bounce(left, random):
+		# Using sync because both players can make it bounce.
+		if left:
+			direction.x = abs(direction.x)
+		else:
+			direction.x = -abs(direction.x)
+
+		_speed *= 1.1
+		direction.y = random * 2.0 - 1
+		direction = direction.normalized()
+
+
+	remotesync func stop():
+		stopped = true
+
+
+	remotesync func _reset_ball(for_left):
+		position = _screen_size / 2
+		if for_left:
+			direction = Vector2.LEFT
+		else:
+			direction = Vector2.RIGHT
+		_speed = DEFAULT_SPEED
+
 

@@ -172,7 +172,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="Shuffle2" type="Button" parent="ScrollContainer/VBoxContainer"]
+[node name="Github" type="Button" parent="ScrollContainer/VBoxContainer"]
 margin_top = 328.0
 margin_right = 352.0
 margin_bottom = 406.0
@@ -227,5 +227,6 @@ toggle_mode = true
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/Debug" to="." method="_on_Debug_toggled"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/languague" to="." method="_on_languague_pressed"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/Shuffle" to="." method="_on_Shuffle_pressed"]
+[connection signal="pressed" from="ScrollContainer/VBoxContainer/Github" to="." method="_on_Github_pressed"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/Help" to="." method="_on_Help_pressed"]
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/Direction_controls" to="." method="_on_Direction_controls_toggled"]

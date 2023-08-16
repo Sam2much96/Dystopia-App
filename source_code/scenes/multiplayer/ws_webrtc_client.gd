@@ -6,6 +6,7 @@
 # *************************************************
 # All the client logics in one file!
 # Needs Mesh network for peer to peer
+# WebRTC Codebase Is Currently Depreciated
 # To Do:
 # (1) Send Player inputs via remote functions
 # (2) Duplicate Input Functions btw Client and Server (Using ROll back netcode as a reference)

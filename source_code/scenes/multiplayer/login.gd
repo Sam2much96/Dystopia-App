@@ -18,6 +18,7 @@ extends CanvasLayer
 
 
 class_name lobby
+# Depreciated In Favour Of Networking Class
 
 "UI inputs buttons"
 onready var input_color : OptionButton = $ui/ScrollContainer/grid/input_color 

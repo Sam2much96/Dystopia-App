@@ -7,7 +7,7 @@
 # To-Do:
 # (1) Finish D-pad to Joystick button change illustration 
 # (2) Add Swipe Gestures on/off controls
-#(3) Include a GitHub Login
+#(3) Include a GitHub Login, to encourage Players to Inspect the Code Base
 
 extends Control
 
@@ -175,3 +175,7 @@ func _exit_tree():
 func _on_languague_pressed():
 	Dialogs.reset()
 	get_tree().change_scene("res://scenes/UI & misc/form/form.tscn")
+
+
+func _on_Github_pressed():
+	get_tree().change_scene("res://addons/github-integration/scenes/GitHub.tscn")

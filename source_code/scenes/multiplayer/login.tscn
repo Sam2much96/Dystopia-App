@@ -1,9 +1,44 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://fonts/DigitalStripBB_BoldItal.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://resources/illustrations/coins silver.png" type="Texture" id=2]
 [ext_resource path="res://fonts/Comic_Andy.ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://scenes/multiplayer/login.gd" type="Script" id=4]
+[ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=4]
+
+[sub_resource type="GDScript" id=27]
+script/source = "extends Node
+
+#Lobby Scene
+
+\"\"\"
+I'LL BE CONNECTING STATIC METHODS FROM THE NETWORKING SINGLETON 
+Code may be really hacky but will be thoughroughly Documented.
+\"\"\"
+onready var network = NetworkedMultiplayerENet.new()
+
+func _ready():
+	
+	#Connect Lobby Signals
+	Networking.Lobby.ConnectSignal(get_tree(), self)
+
+	# Connect UI Button Signals
+	
+	#$ui/ScrollContainer/grid/play.connect(\"pressed\", Networking.Lobby, ) #Can Only Call Static Functions
+	#$ui/ScrollContainer/grid/host
+
+
+
+func _on_play_pressed():
+	# Connects UI Button Signals
+	
+	#address: LineEdit, ClientPeer: NetworkedMultiplayerENet, Lobby : SceneTree
+	Networking.Lobby._on_join_pressed($ui/ScrollContainer/grid/address_text, network, get_tree())
+
+func _on_host_pressed():
+	# Connects UI Button Signals
+	#peer : NetworkedMultiplayerENet, Lobby : SceneTree, host_button : Button, join_button : Button , dialog_box : DialogBox
+	Networking.Lobby._on_host_pressed(network, get_tree(), $ui/ScrollContainer/grid/host, $ui/ScrollContainer/grid/play, $Dialog_box)
+"
 
 [sub_resource type="DynamicFont" id=23]
 size = 38
@@ -104,8 +139,8 @@ tracks/1/keys = {
 "values": [ Vector2( 356.312, 23.2817 ) ]
 }
 
-[node name="form" type="CanvasLayer"]
-script = ExtResource( 4 )
+[node name="form" type="Node"]
+script = SubResource( 27 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_left = 6.0
@@ -142,48 +177,52 @@ rect_scale = Vector2( 2, 2 )
 scroll_horizontal_enabled = false
 
 [node name="grid" type="VBoxContainer" parent="ui/ScrollContainer"]
-margin_right = 142.0
+margin_right = 128.0
 margin_bottom = 316.0
 
 [node name="text_player" type="LineEdit" parent="ui/ScrollContainer/grid"]
-margin_right = 142.0
+margin_right = 128.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 128, 0 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "NAME"
+caret_blink = true
+caret_blink_speed = 0.5
 
 [node name="label_spacer5" type="Label" parent="ui/ScrollContainer/grid"]
 margin_top = 28.0
-margin_right = 142.0
+margin_right = 128.0
 margin_bottom = 42.0
 
 [node name="input_color" type="OptionButton" parent="ui/ScrollContainer/grid"]
 margin_top = 46.0
-margin_right = 142.0
+margin_right = 128.0
 margin_bottom = 66.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 
 [node name="label_spacer4" type="Label" parent="ui/ScrollContainer/grid"]
 margin_top = 70.0
-margin_right = 142.0
+margin_right = 128.0
 margin_bottom = 84.0
 
-[node name="text_hostname" type="LineEdit" parent="ui/ScrollContainer/grid"]
+[node name="address_text" type="LineEdit" parent="ui/ScrollContainer/grid"]
 margin_top = 88.0
-margin_right = 142.0
+margin_right = 128.0
 margin_bottom = 112.0
 rect_min_size = Vector2( 128, 0 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "ws://localhost:9080"
+text = "127.0.0.1"
+caret_blink = true
+caret_blink_speed = 0.5
 
 [node name="label_spacer" type="Label" parent="ui/ScrollContainer/grid"]
 margin_top = 116.0
-margin_right = 142.0
+margin_right = 128.0
 margin_bottom = 130.0
 
-[node name="button_login" type="Button" parent="ui/ScrollContainer/grid"]
+[node name="play" type="Button" parent="ui/ScrollContainer/grid"]
 margin_top = 134.0
-margin_right = 142.0
+margin_right = 128.0
 margin_bottom = 184.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_fonts/font = SubResource( 23 )
@@ -191,25 +230,25 @@ text = "Play!"
 
 [node name="label_spacer2" type="Label" parent="ui/ScrollContainer/grid"]
 margin_top = 188.0
-margin_right = 142.0
+margin_right = 128.0
 margin_bottom = 202.0
 
-[node name="button_start_server" type="Button" parent="ui/ScrollContainer/grid"]
+[node name="host" type="Button" parent="ui/ScrollContainer/grid"]
 margin_top = 206.0
-margin_right = 142.0
+margin_right = 128.0
 margin_bottom = 248.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_fonts/font = SubResource( 24 )
-text = "Start Server"
+text = "Host"
 
 [node name="label_spacer3" type="Label" parent="ui/ScrollContainer/grid"]
 margin_top = 252.0
-margin_right = 142.0
+margin_right = 128.0
 margin_bottom = 266.0
 
 [node name="Twitter Button" type="Button" parent="ui/ScrollContainer/grid"]
 margin_top = 270.0
-margin_right = 142.0
+margin_right = 128.0
 margin_bottom = 316.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_fonts/font = SubResource( 25 )
@@ -229,7 +268,7 @@ anims/HORIZONTAL_SCREEN = SubResource( 16 )
 anims/RESET = SubResource( 26 )
 anims/VERTICAL_SCREEN = SubResource( 18 )
 
-[connection signal="pressed" from="ui/ScrollContainer/grid/button_login" to="." method="_on_button_login_pressed"]
-[connection signal="pressed" from="ui/ScrollContainer/grid/button_start_server" to="." method="_on_button_start_server_pressed"]
-[connection signal="pressed" from="ui/ScrollContainer/grid/Twitter Button" to="." method="_on_Twitter_Button_pressed"]
-[connection signal="pressed" from="Back_Button" to="." method="_on_Back_Button_pressed"]
+[node name="Dialog_box" parent="." instance=ExtResource( 4 )]
+
+[connection signal="pressed" from="ui/ScrollContainer/grid/play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="ui/ScrollContainer/grid/host" to="." method="_on_host_pressed"]

@@ -52,6 +52,7 @@ onready var player_camera = $camera #the player's camera
 #onready var impact_fx = $Impact
 onready var timer = $ScentTimer
 var timeout: bool = false
+var frame_counter : int = 0
 
 func _enter_tree():
 	Globals.update_curr_scene()
@@ -99,9 +100,17 @@ func _ready():
 	pass
 
 
-func _process(_delta):
+func _process(delta: float):
+		# Raises up a Frame Counter
+	frame_counter += 1
+	
+	# Checks the Spawning Boolean Every 30th Frame
+	# Called #very 60th Frame
+	if frame_counter % 60 == 0:
 	#####this updates the player's node to a globals variable
-	Globals._player_state = state
+		Globals._player_state = state
+	if frame_counter >= 1000:
+		frame_counter = 0
 
 	#print ('Current scene:',Globals.curr_scene, 'Current level',Globals.current_level) #for debug purposes only
 	

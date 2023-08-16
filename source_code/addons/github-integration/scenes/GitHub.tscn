@@ -22,7 +22,6 @@ size_flags_vertical = 3
 theme = ExtResource( 2 )
 script = ExtResource( 1 )
 __meta__ = {
-"_edit_use_anchors_": false,
 "_editor_description_": "1. fixed bug that was resetting the editor mode to light
 2. refactoring
 3. code style revisited"

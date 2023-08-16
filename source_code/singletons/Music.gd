@@ -12,6 +12,7 @@
 # (3) Plays single music file
 # (4) Uses 4 Music channels
 # (5) Downloads music files from Server
+
 # To do:
 # (1) Use state machine to descibe different states for this signleton
 # (2) Turn on/ off debugging reduce draining performance
@@ -19,7 +20,7 @@
 # (4) Document code
 # (5) Organize code into states {Finite State Machine}
 # (6) Implement Global file checker and Directory Checker
-
+# (7) Implement Spotify API
 
 # *************************************************
 # Bugs:
@@ -158,6 +159,9 @@ onready var music_bus_2 = AudioServer.get_bus_index($B.bus)
 onready var music_bus = AudioServer.get_bus_index($A.bus)
 
 
+# Spotify Node
+# Implement SoundCLoud API for Audio Downloads
+# onready var spotify = $Gopotify
 
 func _ready():
 	
@@ -174,6 +178,9 @@ func _ready():
 		_music = music_track.get_file()
 		play(music_track) #Not needed for release
 		#Globals.Music_on_settings = true
+		
+
+		
 	elif music_on == false:
 		$A.stop()
 		#Globals.Music_on_settings = false

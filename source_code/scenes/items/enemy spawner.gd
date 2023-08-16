@@ -52,26 +52,8 @@ func _ready():
 	if enemy_spawn_1 != null:
 		push_error(" Enemy Spawn is Null, It Cannot Be Null")
 	anim.play("normal") #hides spriite animation by default
+	
 
-
-func _process(delta: float):
-	
-	# Raises up a Frame Counter
-	frame_counter += 1
-	
-	# Checks the Spawning Boolean Every 30th Frame
-	# Called #very 30th Frame
-	if frame_counter % 30 == 0:
-		if SPAWNNING:
-			spawn_enemy()
-			
-	#print(frame_counter) # FOr Debug Purposes only
-	
-	# To Prevent Large Inteeger Memory Bug
-	if frame_counter >= 500:
-		# Reset 
-		frame_counter = 0
-	
 
 func spawn_enemy() -> void:
 	if not finished_spawning():
@@ -107,10 +89,6 @@ func finished_spawning() -> bool:
 
 " SPAWN STARTER/ PLAYER DETECTOR"
 func _on_Area2D_body_exited(body):
-	# :Bug Causes a Perfoormance hog because of a process Loop
-	#if body is Player:
-	#	print_debug("Player Leaves Enemy Spawn Range")
-	#	SPAWNNING = true
 	pass
 
 # tEMPLATE FOR iMPLEMENTING A SPAWNING cOOLDOWN WITH tIMER
@@ -118,13 +96,20 @@ func _on_COOL_DOWN_timeout():
 		# Reset 
 		frame_counter = 0
 		savepoint._reset_autosave_debugger()
-
+		
+		spawn_enemy()
+		
+		if finished_spawning():
+			#delete
+			queue_free()
 
 # Triggers a Spawn When Player Body Enters the Collision
 func _on_Area2D_body_entered(body):
 	if body is Player:
 		print_debug("Player Leaves Enemy Spawn Range")
-		SPAWNNING = true
+		#SPAWNNING = true
+		
+		spawn_enemy()
 		
 		# Saves Using A Savepoint Class
 		savepoint._save(body)

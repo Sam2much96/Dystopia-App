@@ -21,7 +21,7 @@ extends Node
 
 class_name debug
 
-var error_splash_page = load ('res://New game code and features/Error splash page for crashes.tscn')
+var error_splash_page : PackedScene = load ('res://New game code and features/Error splash page for crashes.tscn')
 
 
 var logging = false
@@ -66,6 +66,8 @@ var _state_ = STOP_DEBUG
 
 # Debug panel cannot be more than 1
 var debug_panels_cr8ted = [] # append the debug pannel to this array to stop double instance bug
+
+
 """
 THE DEBUG SINGLETON
 """
@@ -77,7 +79,7 @@ THE DEBUG SINGLETON
 	#start_debug_v1()
 	#return
 
-
+var frame_counter = 0
 
 
 func _input(event): 
@@ -92,49 +94,56 @@ func _input(event):
 		return
 
 
-func _process(_delta):
+func _process(delta : float):
 
+	frame_counter += 1
 
-
-	" DEBUG STATE MACHINE " #Disabling to Debug
-	match _state_:
-		START_DEBUG: # works
-			#start_debug_v1() # creates multiple instances bug
-			Music_debug ='Music debug:' + str(Music.music_debug)
-			Player_debug ='Player debug:'+ str(Globals.player) + 'Spawn point:' + str(Globals.spawnpoint) + 'Current level: ' + str(Globals.current_level) 
+	if frame_counter >= 1000:
 		
-			#it uses the ram_mb funtion to convert bytes to mb
-			Ram_debug= ('Ram Used :'+ ((_ram_debug())) + 'mb') 
-			FPS_debug = 'FPS: '+ str(Engine.get_frames_per_second())
-			Enemy_debug = 'Enemy debug:' + str('Killcount:' , Globals.kill_count)
-			Autosave_debug = Autosave_debug
+		#Reset Counter
+		frame_counter = 0
 
-			Network_debug =  str(Networking.debug )
-			misc_debug = str(misc_debug) #+ str("/")  + _new_debug('new debugs are run in this function: ')
-			Globals_debug='Direction type' + '/'+ str(Globals.direction_control)
-			avail_thread = str('Available threads: ',int (OS.get_processor_count())) 
+	if frame_counter % 60 == 0:
 
+		" DEBUG STATE MACHINE " #Disabling to Debug
+		match _state_:
+			START_DEBUG: # works
+				#start_debug_v1() # creates multiple instances bug
+				Music_debug ='Music debug:' + str(Music.music_debug)
+				Player_debug ='Player debug:'+ str(Globals.player) + 'Spawn point:' + str(Globals.spawnpoint) + 'Current level: ' + str(Globals.current_level) 
 			
-			
-			return show_debug_v1() #causes the double instance bug
-		STOP_DEBUG:
-			if not debug_panel == null:
-				debug_panel.queue_free()
-				debug_panel = null # Null instance bug from the debug panel
-				enabled = false
-				Music_debug = null
-				Player_debug = null
-				Ram_debug= null
-				FPS_debug= null
-				Enemy_debug= null
-				Network_debug = null
-				misc_debug = null
-				avail_thread = null
-				enabled = false
-				return
-			if debug_panel == null:
-				return
+				#it uses the ram_mb funtion to convert bytes to mb
+				Ram_debug= ('Ram Used :'+ ((_ram_debug())) + 'mb') 
+				FPS_debug = 'FPS: '+ str(Engine.get_frames_per_second())
+				Enemy_debug = 'Enemy debug:' + str('Killcount:' , Globals.kill_count)
+				Autosave_debug = Autosave_debug
 
+				Network_debug =  str(Networking.debug )
+				misc_debug = str(misc_debug) #+ str("/")  + _new_debug('new debugs are run in this function: ')
+				Globals_debug='Direction type' + '/'+ str(Globals.direction_control)
+				avail_thread = str('Available threads: ',int (OS.get_processor_count())) 
+
+				
+				
+				return show_debug_v1() #causes the double instance bug
+			STOP_DEBUG:
+				if not debug_panel == null:
+					debug_panel.queue_free()
+					debug_panel = null # Null instance bug from the debug panel
+					enabled = false
+					Music_debug = null
+					Player_debug = null
+					Ram_debug= null
+					FPS_debug= null
+					Enemy_debug= null
+					Network_debug = null
+					misc_debug = null
+					avail_thread = null
+					enabled = false
+					return
+				if debug_panel == null:
+					return
+	
 
 
 	"""
@@ -296,6 +305,7 @@ func show_debug_v1():
 	if debug_panel == null and !enabled :
 		push_error('error getting debug panel')
 		return
+	
 
 func show_debug_2(): #works, but the label spawn point breaks
 	if debug_panel != null && __label != null:

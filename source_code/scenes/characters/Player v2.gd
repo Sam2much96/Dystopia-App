@@ -54,7 +54,7 @@ export var state = STATE_IDLE
 onready var camera = $camera #the player's camera
 onready var impact_fx = $Impact
 
-onready var animation = $anims
+onready var animation : AnimationPlayer = $anims
 
 var peer_id
 
@@ -70,6 +70,11 @@ func _enter_tree():
 	'Makes Player Hitpoint a Global Variable'
 	Globals.player_hitpoints = hitpoints
 
+
+	# Load Unique Player ID
+	peer_id = Networking.player_info["peer id"]
+	
+	print_debug("Peer ID: ", peer_id)
 
 func _ready():
 	

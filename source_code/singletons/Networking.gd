@@ -490,11 +490,13 @@ func _on_Timer2_timeout():
 MULTIPLAYER SIGNALS
 """
 # Executes Multiplayer Logic In the Lobby Class
-func _server_disconnected():
-	pass
+func _server_disconnected(_id):
+	Lobby._on_server_disconnected(_id, get_tree(), UserInterface)
 
-func _player_disconnected():
-	pass
+func _player_disconnected(_id):
+	 # _id, Lobby: SceneTree, UI : Control)
+	Lobby._on_player_disconnected(_id, get_tree(), UserInterface)
+	
 
 func _player_connected(_id):
 	# Calls Player Logic in the Lobby Class
@@ -503,6 +505,8 @@ func _player_connected(_id):
 	
 	Networking.player_info["peer id"] = _id
 	
+	OS.set_window_title('Client' + _id)
+	 
 	"Starts Game"
 	
 	Globals.current_level = "res://scenes/levels/Testing Scene.tscn"
@@ -850,14 +854,14 @@ class Lobby extends Control:
 		#join_button.set_disabled(false)
 
 
-	static func _on_server_disconnected(Lobby : SceneTree, UI : Control):
-		_end_game("Server disconnected", Lobby, UI)
+	static func _on_server_disconnected(_id, Lobby : SceneTree, UI : Control):
+		_end_game(_id + "Server disconnected", Lobby, UI)
 
 
 	##### Game creation functions ######
 	# Change Map Parameter To Game Level (Map) Position in the Scene Trees 
 	static func _end_game(with_error : String , Lobby : SceneTree, Map = Networking.map_instance):
-		if Lobby.has_node(Map):
+		if Lobby.get_root().has_node(Map):
 			# Erase immediately, otherwise network might show
 			# errors (this is why we connected deferred above).
 			Lobby.get_node(Map).free()
@@ -879,14 +883,9 @@ class Lobby extends Control:
 	# Connect to Dialogue Box
 	static func _set_status(text : String, status : DialogBox, isok : bool):
 		# Simple way to show status.
-		#if isok:
+		#
 		status.show_dialog( text + str(isok), "Admin") 
-			#status_ok.set_text(text)
-			#status_fail.set_text("") #Unnecessary Code Line
-		#else:
-			
-			#status_ok.set_text("")
-			#status_fail.set_text(text)
+
 
 	# Starts Server Connections
 	# Connects to UI Buttons
@@ -901,6 +900,8 @@ class Lobby extends Control:
 			_set_status("Can't host, address in use.",dialog_box ,false)
 			return true
 
+		OS.set_window_title('Server')
+		
 		# Sets Network Peer
 		Lobby.set_network_peer(peer)
 		

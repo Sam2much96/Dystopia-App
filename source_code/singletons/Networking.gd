@@ -48,12 +48,27 @@ var debug = ''
 const DEFAULT_HOSTNAME = "ws://localhost"
 
 const BACKUP_HOSTNAME = "127.0.0.1"
-# should store Non-threathening Crypto and Multiplayerinfo
+# should store Non-threathening Crypto and Multiplayerinfo too
 # Data Integrity can be checked using hash
-var player_info : Dictionary = {"peer id": 0} 
+# Stores Data FOr Synchronizing Player Data Among Multiple Peers
+# SHould be converted to Json before sent over Network
+var player_info : Dictionary = {
+	"peer id": {},
+	"hitpoints" : {},
+	"facing": {},
+	"roll dir": {},
+	"updates":{},  # Stores Present Update ID Across All Clients
+	"wallet addr": {},
+	"asset id": {},
+	"smart contract": [], # Arrays As it will only be one Smart COntract
+	"kill Count": {},
+	"inventory": {},
+	"hash": [] # Arrays because hash data is discarded eventually
+	} 
 
 var camera #stores general camera variables
 ###############################multiplayer codes########################
+# Debugs to Debugger Singleton
 var multiplayer_client_debug
 var multiplayer_server_debug
 
@@ -156,6 +171,7 @@ func _init_timer() :
 	check_timer.wait_time = 5
 	
 	# connect timer timeout signal
+	"Updates the Networking Boolean of Timer State"
 	if not timer.is_connected("timeout",self, "_on_Timer2_timeout"):
 		timer.connect("timeout",self, "_on_Timer2_timeout")
 	
@@ -490,22 +506,22 @@ func _on_Timer2_timeout():
 MULTIPLAYER SIGNALS
 """
 # Executes Multiplayer Logic In the Lobby Class
-func _server_disconnected(_id):
+func _server_disconnected(_id : int):
 	Lobby._on_server_disconnected(_id, get_tree(), UserInterface)
 
-func _player_disconnected(_id):
+func _player_disconnected(_id : int):
 	 # _id, Lobby: SceneTree, UI : Control)
 	Lobby._on_player_disconnected(_id, get_tree(), UserInterface)
 	
 
-func _player_connected(_id):
+func _player_connected(_id : int):
 	# Calls Player Logic in the Lobby Class
 	# Method is called with the Noe's Unique ID
 	# Idenftifying the player. This ID Should Be Saved
 	
 	Networking.player_info["peer id"] = _id
 	
-	OS.set_window_title('Client' + _id)
+	OS.set_window_title('Client' + str(_id))
 	 
 	"Starts Game"
 	
@@ -528,7 +544,10 @@ func _player_connected(_id):
 	# Defines the Type of COnnection
 	# Connects the Game Loop's Game Finished Signal to an End Game Method
 	map_instance.connect("game_finished", Lobby, "_end_game", [], CONNECT_DEFERRED)
-
+	
+	
+	# Logic: If player connected, Start Game
+	
 	# Add Game Scene to tree
 	get_tree().get_root().add_child(map_instance)
 	
@@ -618,34 +637,6 @@ class Downloader extends Node:
 		pass
 
 
-"""
-
-All Multiplayer Networking Logics in One FIle
-Client, Server and Lobby
-"""
-
-# *************************************************
-# godot3-Dystopia-game by INhumanity_arts
-# Released under MIT License
-# *************************************************
-# THe Player Script v2 implements networking calls via rpc 
-# Features
-# (1) THe world's camera
-# (2) Player hitboxes
-# (3) It's a class and stores variables to the UI, Globals singleton, PlayersSave Files, and the Debug SIngleton
-# To Do:
-#(1) Update Documentation
-# (2) Implement Remote Proceedure calls Networking
-# (3) Im not sure how to implement sstate machine calls to the client/server
-# (4) Too much Detection going on
-# (5) Implement RPC calls as methods (implemented as child of Client Node)
-# (6) Implement tokenized player asset
-# (7) Play animation remotely (works)
-# (8) Player Camera Hierarchy bug
-#		2 or more spawned players have their own cameras which misaligns the scene tree
-
-# Depreciated, Delete Script Later
-# *************************************************
 
 
 
@@ -666,24 +657,25 @@ class Player_v3_networking extends KinematicBody2D:
 
 	onready var _screen_size_y = get_viewport_rect().size.y
 
-
+	
 
 	func ___process___(delta): # Depreciated
 		# Is the master of the paddle.
 		if is_network_master():
 			_motion = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
 
-			if not _you_hidden and _motion != 0:
-				_hide_you_label()
+			#Depreciated
+			#if not _you_hidden and _motion != 0:
+			#	_hide_you_label()
 
 			_motion *= MOTION_SPEED
 
 			# Using unreliable to make sure position is updated as fast
 			# as possible, even if one of the calls is dropped.
 			rpc_unreliable("set_pos_and_motion", position, _motion)
-		else:
-			if not _you_hidden:
-				_hide_you_label()
+		#else:
+		#	if not _you_hidden:
+		#		_hide_you_label()
 
 		translate(Vector2(0, _motion * delta))
 
@@ -705,9 +697,40 @@ class Player_v3_networking extends KinematicBody2D:
 		#
 
 
-	func _hide_you_label():
-		_you_hidden = true
-		get_node("You").hide()
+	# Client Side Code
+
+	# Player update function
+	# This function is named "pu" to lower the network bandwidth usage, sending something
+	# like "player_update" will use an extra 220 bytes / second for each connected player. 
+	remote func pu(id, update_id : int, pos : Vector2, velocity, rotation):
+		
+		var last_update = -1
+		
+		# Unreliable packets can be sent in wrong order, we only work with the latest
+		# data available.
+		if update_id < last_update:
+			print("Received update in wrong order. Discarding!")
+			return
+			
+		last_update = update_id
+		Networking.player_info[id].updates[OS.get_ticks_msec()] = { position = pos, velocity = velocity, rotation = rotation }
+		while len(Networking.player_info[id].updates) > 10:
+			Networking.player_info[id].updates.erase(
+				Networking.player_info[id].updates.keys()[0]
+				)
+		
+		if Networking.player_info[id].destroyed:
+			return
+			
+		if Networking.player_info[id].node.has_node("particles"):
+			Networking.player_info[id].node.get_node("particles").set_emitting(velocity != 0)
+
+		if Networking.player_info[id].node.has_node("audio_thruster"):
+			
+			# SOund FX? Depreciated
+			Networking.player_info[id].node.get_node("audio_thruster").stream_paused = velocity == 0
+
+
 
 
 	func _on_paddle_area_enter(area):
@@ -775,6 +798,11 @@ class SceneManager extends Node2D:
 
 
 
+"""
+
+All Multiplayer Networking Logics in One FIle
+Client, Server and Lobby
+"""
 # Lobby 
 
 class Lobby extends Control:
@@ -787,13 +815,13 @@ class Lobby extends Control:
 
 	# Lobby UI
 	# Declares Variables
-	onready var address = $Address
-	onready var host_button = $HostButton
-	onready var join_button = $JoinButton
-	onready var status_ok = $StatusOk
-	onready var status_fail = $StatusFail
-	onready var port_forward_label = $PortForward
-	onready var find_public_ip_button = $FindPublicIP
+	#onready var address = $Address
+	#onready var host_button = $HostButton
+	#onready var join_button = $JoinButton
+	#onready var status_ok = $StatusOk
+	#onready var status_fail = $StatusFail
+	#onready var port_forward_label = $PortForward
+	#onready var find_public_ip_button = $FindPublicIP
 
 	var peer = null
 
@@ -817,13 +845,6 @@ class Lobby extends Control:
 		# Server
 		scene_tree_obj.connect("server_disconnected", Networking, "_server_disconnected")
 
-	#### Network callbacks from SceneTree ####
-
-	# Callback from SceneTree.
-	#
-	# Logic: If player connected, Start Game
-	#
-	#
 
 
 
@@ -860,11 +881,17 @@ class Lobby extends Control:
 
 	##### Game creation functions ######
 	# Change Map Parameter To Game Level (Map) Position in the Scene Trees 
+	# End Game is Buggy
 	static func _end_game(with_error : String , Lobby : SceneTree, Map = Networking.map_instance):
-		if Lobby.get_root().has_node(Map):
+		if is_instance_valid(Map):
+			
+			# Debug Loobby Map Instance
+			print_debug (Lobby.has_node(Map), is_instance_valid(Map))
+			#if Lobby.has_node(Map):
 			# Erase immediately, otherwise network might show
 			# errors (this is why we connected deferred above).
-			Lobby.get_node(Map).free()
+			#Lobby.get_node(Map).free()
+			Map.free()
 			
 			# UI SHow
 			Networking.UserInterface.show()
@@ -885,6 +912,8 @@ class Lobby extends Control:
 		# Simple way to show status.
 		#
 		status.show_dialog( text + str(isok), "Admin") 
+		
+		
 
 
 	# Starts Server Connections

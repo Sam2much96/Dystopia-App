@@ -11,6 +11,8 @@
 #(1) Update Documentation
 # (2) Implement Networking Calls (done in v2)
 # (3) State blocked is unimplemented
+# (4) State Hurt Should Implement Blood Spawning FX not Process
+# (5) Implement State Emote for Dancing with New Dancing Animation
 # *************************************************
 
 extends KinematicBody2D
@@ -37,7 +39,7 @@ signal health_changed(current_hp)
 export(String, "up", "down", "left", "right") var facing = "down"
 
 
-var despawn_fx = preload("res://scenes/UI & misc/DespawnFX.tscn")
+var despawn_fx : PackedScene = Globals.despawn_fx
 #export (PackedScene) var blood_fx #= load("res://scenes/UI & misc/Blood_Splatter_FX.tscn")
 
 var anim = ""

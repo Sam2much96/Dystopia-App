@@ -150,7 +150,7 @@ var _TouchScreenHUD : TouchScreenHUD
 
 func _ready():
 	print_debug('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
-	
+	print_debug("Despawn Fx:", despawn_fx)
 
 
 	player.append( get_tree().get_nodes_in_group('player') )#gets all player nodes in the scene

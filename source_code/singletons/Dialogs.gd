@@ -6,17 +6,15 @@
 # I sure as fvck don't know what it does. Ama fuck around and find out!
 # To Do:
 #(1) Write a documentation
-#(2) Connect it to ChatGPT addon for AI Generated Dialogues & Translation
-#(3) Converts Text to speech (pytts)
+#(2) 
+#(3) Converts Text to speech (pytts equivalent)
+# (4) Implement Dialogue AutoHide Using Dialogue Frame Tmer
 # *************************************************
-# fEATURES:
+# Features:
 
 # (2) shows a dialogue function, hide_a dialogue function (1/2)
 # (3) Has two signals for when dialogue starts and when it ends.
 # (4) Translates between languages using a translation .csv file
-
-#Questions. WHy not just make it a class instead?
-# why all the complicated codes
 
 extends Node
 
@@ -36,6 +34,8 @@ Calls to show_dialog will be forwarded to the dialog_box which is free to implem
 using text to speech, etc)
 """
 
+
+
 signal dialog_started
 signal dialog_ended
 
@@ -48,9 +48,13 @@ var language : String = ""# stores the current language the user selects
 
 var _script_testing : String = 'res://resources/dialogues/script_testing.gd'
 
+
+
 func show_dialog(text:String, speaker:String):
 	if is_instance_valid(dialog_box): # If an instance of dialogue box hasn't been deleted from memory?
 		dialog_box.show_dialog(text, speaker)
+		#Networking.start_check(1)
+		
 
 func hide_dialogue(): #can be used to hide the dialogue box. Not best Practice
 	if is_instance_valid(dialog_box): # If an instance of dialogue box hasn't been deleted from memory?

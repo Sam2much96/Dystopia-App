@@ -12,6 +12,8 @@
 #(1) Broken Alignment with long texts
 #(2) Broken Alignment on Mobiles with Horizontal UI
 # (3) Doesn't work sometimes
+# (4) Press "E" interract to Hide is not intuitive
+
 #
 # To DO:
 # (1) Implement Decision Tree
@@ -38,6 +40,8 @@ signal dialog_ended
 
 var lines_to_skip : int = 0
 
+
+
 func _ready():
 	Dialogs.dialog_box = self
 	hide()
@@ -53,6 +57,9 @@ func show_dialog(new_text, speaker):
 
 func hide_dialogue(): #Hides the Dialogue box
 	anims.play("disappear")
+
+
+
 
 func _input(event):
 	if event.is_action_pressed("interact"):

@@ -236,6 +236,8 @@ anims/VERTICAL_SCREEN = SubResource( 18 )
 
 [node name="Dialog_box" parent="." instance=ExtResource( 4 )]
 
+[node name="world" type="Node" parent="."]
+
 [connection signal="pressed" from="ui/ScrollContainer/grid/play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="ui/ScrollContainer/grid/host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="ui/ScrollContainer/grid/search_IP" to="." method="_on_search_IP_pressed"]

@@ -54,25 +54,12 @@ const BACKUP_HOSTNAME = "127.0.0.1"
 # SHould be converted to Json before sent over Network
 var player_info : Dictionary = {
 	"peer id": {},
-	"node": {},
-	"hitpoints" : {},
-	"facing": {},
-	"roll dir": {},
-	"destroyed":{},
-	"updates":{},  # Stores Present Update ID Across All Clients
-	"wallet addr": {},
-	"asset id": {},
-	"smart contract": [], # Arrays As it will only be one Smart COntract
-	"kill Count": {},
-	"inventory": {},
-	"velocity":[],
-	"rotation":[],
-	"firing":[],
-	"current_angle": [],
-	"rewspawn_time":{},
 	"hash": [] # Arrays because hash data is discarded eventually
 	} 
 
+var peer_id : int
+var my_peer : NetworkedMultiplayerENet
+var player_data : PoolByteArray
 var camera #stores general camera variables
 ###############################multiplayer codes########################
 # Debugs to Debugger Singleton
@@ -91,7 +78,7 @@ var cfg_player_name : String = ""
 signal connection_success
 signal error_connection_failed(code,message)
 signal error_ssl_handshake
-
+signal game_finished
 
 onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
@@ -134,6 +121,9 @@ var map_instance
 # Server Update ID
 var update_id : int = -1
 
+# World Root Node
+var WorldRoot : Node
+
 func _ready():
 	_init_timer()
 	
@@ -147,7 +137,7 @@ func _ready():
 	
 	print ("Networking Server Config and Player Name: ",cfg_server_ip,cfg_player_name, "/")
 	
-	
+
 
 
 func _process(_delta): 
@@ -516,21 +506,28 @@ func _on_Timer2_timeout():
 MULTIPLAYER SIGNALS
 """
 # Executes Multiplayer Logic In the Lobby Class
-func _server_disconnected(_id : int):
-	Lobby._on_server_disconnected(_id, get_tree(), UserInterface)
+func _server_disconnected():
+	#emit_signal("game_finished")
+	#Lobby._on_server_disconnected(_id, get_tree(), UserInterface)
+	_end_game()
 
 func _player_disconnected(_id : int):
 	 # _id, Lobby: SceneTree, UI : Control)
+	#emit_signal("game_finished")
 	Lobby._on_player_disconnected(_id, get_tree(), UserInterface)
+	#_end_game()
 	
+	Lobby._set_status((str (_id )+ " Disconnected"), Dialogs.dialog_box, true)
+	# SHould Ideally Only Delete the player that is disconnected
 
 func _player_connected(_id : int):
 	# Calls Player Logic in the Lobby Class
 	# Method is called with the Noe's Unique ID
 	# Idenftifying the player. This ID Should Be Saved
 	
-	Networking.player_info["peer id"] = _id
+	Networking.player_info["peer id"] = {_id : {}}
 	
+	peer_id = _id
 	OS.set_window_title('Client' + str(_id))
 	 
 	"Starts Game"
@@ -553,12 +550,14 @@ func _player_connected(_id : int):
 	# Connect deferred so we can safely erase it from the callback.
 	# Defines the Type of COnnection
 	# Connects the Game Loop's Game Finished Signal to an End Game Method
-	map_instance.connect("game_finished", Lobby, "_end_game", [], CONNECT_DEFERRED)
+	# ENd Game Is a Non Existent Function SO it throws a warning
+	connect("game_finished", self, "_end_game", [], CONNECT_DEFERRED)
 	
-	
+	#asafaf
 	# Logic: If player connected, Start Game
 	
 	# Add Game Scene to tree
+	# Instace As A child of Server Node
 	get_tree().get_root().add_child(map_instance)
 	
 	Networking.UserInterface.hide()
@@ -570,17 +569,67 @@ func _player_connected(_id : int):
 	#var networked_player : GDScript = load("res://scenes/characters/Player v2.gd")
 	# Set Player Script
 	
-	var player_group =get_tree().get_nodes_in_group("player")
-	var player_ = player_group.pop_front() # Implement Unique ID
+	#var player_group =get_tree().get_nodes_in_group("player")
+	#var player_ = player_group.pop_front() # Implement Unique ID
 	
 	
 	# Set Player Object With Networked Multiplayer Script
 	#player_.set_script(networked_player)
 
+func _end_game():
+	print_debug("Ending Game")
+	#if is_instance_valid(map_instance):
+		
+		# Debug Loobby Map Instance
+	#print_debug (get_tree().has_node(map_instance), is_instance_valid(map_instance))
+	#if Lobby.has_node(Map):
+	# Erase immediately, otherwise network might show
+	# errors (this is why we connected deferred above).
+	#Lobby.get_node(Map).free()
+	
+	var _map = get_tree().get_nodes_in_group("Multiplayer").pop_front()
+	map_instance.free()
+	#_map.free()
+	# UI SHow
+	# Enable UI buttons
+	UserInterface.show()
+
+	# Update UI when current Game Ends
+	get_tree().set_network_peer(null) # Remove peer.
+		
+		
+		#host_button.set_disabled(false)
+		#join_button.set_disabled(false)
+	var with_error : String = "End Game! Server Disconnected"
+	#print_debug(with_error , false)
+	Lobby._set_status(with_error, Dialogs.dialog_box , false)
+
+
 func _connected_fail():
 	pass
 
 
+remote func broadcast_world_positions():
+	# Server Call
+	# Calls the pu Method in all Renote peers
+	
+	# Only the Hosting Device Can Update All NEtwork peers
+	if is_network_master():
+		
+		# First, Convert Player Info Dictionary to Pool Byte Array
+		player_data = PoolByteArray([player_info])
+		
+		print_debug(player_data)
+		
+		for i in player_info["peer id"]:
+			#for peer_id_2 in Networking.player_info:
+			
+			 #id : int, update_id : int, updates: PoolByteArray
+			rpc_unreliable_id(peer_id, "pu", peer_id, update_id, player_data)
+					
+		update_id += 1
+		
+	
 
 
 
@@ -667,18 +716,6 @@ class Player_v3_networking extends KinematicBody2D:
 
 	onready var _screen_size_y = get_viewport_rect().size.y
 
-	remote func broadcast_world_positions():
-		# Server Call
-		# Calls the pu Method in all Renote peers
-		if is_network_master():
-			
-			for peer_id in Networking.player_info:
-				for peer_id_2 in Networking.player_info:
-					rpc_unreliable_id(peer_id, "pu", peer_id_2, Networking.update_id, Networking.player_info[peer_id_2].position, Networking.player_info[peer_id_2].velocity, Networking.player_info[peer_id_2].current_angle)
-					
-			Networking.update_id += 1
-		
-	
 
 	func ___process___(delta): # Depreciated
 		# Is the master of the paddle.
@@ -903,6 +940,7 @@ class Lobby extends Control:
 	##### Game creation functions ######
 	# Change Map Parameter To Game Level (Map) Position in the Scene Trees 
 	# End Game is Buggy
+	# Moving to Networking Singleton Implementation
 	static func _end_game(with_error : String , Lobby : SceneTree, Map = Networking.map_instance):
 		if is_instance_valid(Map):
 			
@@ -912,8 +950,10 @@ class Lobby extends Control:
 			# Erase immediately, otherwise network might show
 			# errors (this is why we connected deferred above).
 			#Lobby.get_node(Map).free()
-			Map.free()
 			
+			var _map = Lobby.get_nodes_in_group("Multiplayer").pop_front()
+			Map.free()
+			_map.free()
 			# UI SHow
 			Networking.UserInterface.show()
 

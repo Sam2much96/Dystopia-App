@@ -20,6 +20,7 @@
 # (6) TouchInterface State Machine is buggy
 # (7) Touch Interface INterract State  State is Buggy
 #		#-Icons Do not hide when dialogue ia triggered
+# (8) Breaks when in scene with player networking v2
 # *************************************************
 
 

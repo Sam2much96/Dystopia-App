@@ -20,7 +20,9 @@ func _ready():
 	
 	#$ui/ScrollContainer/grid/play.connect("pressed", Networking.Lobby, ) #Can Only Call Static Functions
 	#$ui/ScrollContainer/grid/host
-
+	
+	# WOrld ROor Node
+	#Networking.WorldRoot = $world
 
 
 func _on_play_pressed():

@@ -163,8 +163,20 @@ onready var music_bus = AudioServer.get_bus_index($A.bus)
 # Implement SoundCLoud API for Audio Downloads
 # onready var spotify = $Gopotify
 
+# Pointers to Node for Memory Mgmt
+var my_nodes : Array = []
+
 func _ready():
 	
+	my_nodes.append($A)
+	my_nodes.append($B)
+	my_nodes.append($C)
+	my_nodes.append($D)
+	my_nodes.append($anims)
+	my_nodes.append($HTTPRequest)
+	my_nodes.append($Timer)
+	
+	#, $C, $D, $anims, $HTTPRequest, $Timer
 	# Needs more code
 	#download_and_uncompress_music() 
 	
@@ -332,7 +344,7 @@ func sound(what): #Turns on/ off and saves it via a global script
 func _exit_tree(): 
 	#turn_off()
 	sound('off')
-
+	Globals.MemoryManagement.queue_free_array(my_nodes)
 
 
 func _on_Timer_timeout():

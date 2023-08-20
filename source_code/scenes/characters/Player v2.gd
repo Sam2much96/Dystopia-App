@@ -18,6 +18,9 @@
 # (8) Player Camera Hierarchy bug
 #		2 or more spawned players have their own cameras which misaligns the scene tree
 
+# Bugs:
+# (1) Breaks GameHUD
+
 
 # *************************************************
 
@@ -33,8 +36,8 @@ const WALK_SPEED = 350 # pixels per second
 const ROLL_SPEED = 1000 # pixels per second
 var hitpoints = 3
 
-export var linear_vel = Vector2()
-export var roll_direction = Vector2.DOWN
+var linear_vel = Vector2()
+var roll_direction = Vector2.DOWN
 
 signal health_changed(current_hp)
 
@@ -62,7 +65,10 @@ var last_update = -1
 
 #Server Variable
 var update_id : int = 0
-var delta_update
+
+var delta_update : int = 0 
+var delta_interval : int = 1000
+
 var my_info
 
 "Update Player Peer Physics"
@@ -72,33 +78,70 @@ var trust_origin
 var rotate_origin1
 var rotate_origin2
 
-func _enter_tree():
-	Globals.update_curr_scene()
+var SIMULATING : bool = false
+
+
+
+func _ready():
+	#Globals.update_curr_scene()
 	#if Globals.player_hitpoints != null:
 	#	hitpoints = Globals.player_hitpoints #Updates player health across scenes
 
-	Globals.player.append(self)  #saves player to the Global player variable
+	#Globals.player.append(self)  #saves player to the Global player variable
 	
 
 	'Makes Player Hitpoint a Global Variable'
-	Globals.player_hitpoints = hitpoints
+	#Globals.player_hitpoints = hitpoints
 
 
 	# Load Unique Player ID
 	peer_id = get_tree().get_network_unique_id()
 	
+	Networking.player_info["peer id"] = {peer_id : {}}
+	
 	print_debug("Networking Peer ID: ",Networking.player_info["peer id"])
 	
 	print_debug("Peer ID: ", peer_id)
 
-func _ready():
+	# Update Networking Player Info With Player Info
+	Networking.player_info["peer id"][peer_id] = {
+		"node": [],
+		"position": Vector2.ZERO, 
+		"hitpoints" : 3,
+		"facing": "",
+		"roll dir": {},
+		"destroyed": false,
+		"updates": [],  # Stores Present Update ID Across All Clients
+		"wallet addr": {},
+		"asset id": {},
+		"smart contract": [], # Arrays As it will only be one Smart COntract
+		"kill Count": 0,
+		"inventory": {},
+		"velocity":0,
+		"rotation":0,
+		"firing":false,
+		"current_angle": 0,
+		"rewspawn_time":1000,
+		
+		
+		}
+	print_debug(Networking.player_info)
 	
 	#detect if networking connection
 	camera._set_current(true) 
 	
 	# Error Catcher 1
-	if peer_id == 0:
-		peer_id = get_tree().get_network_unique_id()
+	#if peer_id == 0:
+	#	peer_id = get_tree().get_network_unique_id() # Defaults to Zero If Not Connected to MultiplayerENet
+
+	#for i in Networking.player_info:
+		
+
+	# Error Catcher 2
+	if Networking.player_info["peer id"].empty():
+		Networking.player_info["peer id"] = {peer_id : {}}
+		print_debug(Networking.player_info["peer id"])# For Debug Purposes ONly
+
 
 	" Connects to the Dialogue System"
 	if not (
@@ -113,82 +156,96 @@ func get_spawn_position(): pass
 
 func _process(delta):
 
-	"SIMULATION LOGIC 1"
-	# Updates All Player Peers with Most Recent Update
 	
-	for i in Networking.player_info["peer id"]:
-		if Networking.player_info[peer_id].respawn_time != -999:
-			Networking.player_info[peer_id].respawn_time -= delta
-			if Networking.player_info[peer_id].respawn_time <= 0:
-				
-				Networking.player_info[peer_id].position = get_spawn_position()
-				Networking.player_info[peer_id].velocity = 0
-				Networking.player_info[peer_id].rotation = 0
-				Networking.player_info[peer_id].firing = 0
-				Networking.player_info[peer_id].firing_delta = 0
-				Networking.player_info[peer_id].current_angle = 0
-				Networking.player_info[peer_id].health = 100
-				Networking.player_info[peer_id].respawn_time = -999
-				Networking.player_info[peer_id].destroyed = false
-				
-				# pointer to player node which wuld be self
-				#var node_player = preload_player.instance()
-				Networking.player_info[peer_id].node = self
-			
-				var pos : Vector2 = Vector2(Networking.player_info[peer_id].position.x, Networking.player_info[peer_id].position.y)
-				
-				set_position(pos)
-				#show()
-				#node_player.set_process(true)
-				
-				self.name = Networking.player_info[peer_id].name
-				
-				
-				#node_players.add_child(node_player)
-				
-				
-				# Broadcast the new player to everyone
-				for peer_id2 in Networking.player_info:
-					rpc_id(peer_id2, "player_respawned", peer_id, Networking.player_info[peer_id])
+	# BroadCasts player info to client peers from Host Devide
+	# Not SUre What this Code Bloc Does
+	# Delta Update, Delta Interval?
 
-	
-	"SIMULATION LOGIC 2"
-	# Simulates Peer Logic On All Client Peers
-	# By Interpolating Between the Last Update And Recent Updates
-	
-	# To mitigate latency issues we use interpolation. The idea is simple, we receive
-	# position updates every TICK_DURATION (50 ms, 20 per seconds). We interpolate between
-	# the last two previous updates, this way we always have smooth movements. The
-	# main drawback is added latency (100 ms).
-	var pos = Vector2(0,0)
-	var target_timestamp = OS.get_ticks_msec() - (Networking.TICK_DURATION*2)
-	
-	for peer_id in Networking.player_info:
-		# Update position using lerp with 2 prior states
-		var keys = Networking.player_info[peer_id].updates.keys()
-		for i in range(0, keys.size()):
-			if keys[i] > target_timestamp:
-				if not Networking.player_info[peer_id].destroyed:
-					var percent = float(target_timestamp - keys[i-1]) / Networking.TICK_DURATION
-					Networking.player_info[peer_id].position.x = lerp(Networking.player_info[peer_id].updates[keys[i-1]].position.x, Networking.player_info[peer_id].updates[keys[i]].position.x, percent)
-					Networking.player_info[peer_id].position.y = lerp(Networking.player_info[peer_id].updates[keys[i-1]].position.y, Networking.player_info[peer_id].updates[keys[i]].position.y, percent)
-					Networking.player_info[peer_id].node.set_position(Networking.player_info[peer_id].position)
-					Networking.player_info[peer_id].velocity = lerp(Networking.player_info[peer_id].updates[keys[i-1]].velocity, Networking.player_info[peer_id].updates[keys[i]].velocity, percent)
-					#Networking.player_info[peer_id].rotation = Networking.lerp_angle(Networking.player_info[peer_id].updates[keys[i-1]].rotation, Networking.player_info[peer_id].updates[keys[i]].rotation, percent)
-					Networking.player_info[peer_id].node.set_rotation(Networking.player_info[peer_id].rotation)
-				break
-	
-	
-	# Updates The Position of This Peer 
-	#@ Not Sure What This COde Does
-	if Networking.player_info.has(peer_id):
-		pos.x += Networking.player_info[peer_id].position.x
-		pos.y += Networking.player_info[peer_id].position.y
-	
-
-	# Handle input (keyboard)
-	#handle_input()
+	delta_update += delta
+	while delta_update >= delta_interval:
+		delta_update -= delta_interval
 		
+		# BroadCasts Player Info to Each Client Peer suing the pu remote call
+		Networking.broadcast_world_positions()
+
+
+	
+	if SIMULATING:
+		"SIMULATION LOGIC 1"
+		# Updates All Player Peers with Most Recent Update
+		
+		for i in Networking.player_info["peer id"]:
+			if Networking.player_info[peer_id].respawn_time != -999:
+				Networking.player_info[peer_id].respawn_time -= delta
+				
+				# Waits for Approximately 5 seconds before spawing Player with These Parameters
+				if Networking.player_info[peer_id].respawn_time <= 0:
+					
+					Networking.player_info[peer_id].position = get_spawn_position()
+					Networking.player_info[peer_id].velocity = 0
+					Networking.player_info[peer_id].rotation = 0
+					Networking.player_info[peer_id].firing = 0
+					Networking.player_info[peer_id].firing_delta = 0
+					Networking.player_info[peer_id].current_angle = 0
+					Networking.player_info[peer_id].health = 100
+					Networking.player_info[peer_id].respawn_time = -999
+					Networking.player_info[peer_id].destroyed = false
+					
+					# pointer to player node which wuld be self
+					#var node_player = preload_player.instance()
+					Networking.player_info[peer_id].node = self
+				
+					var pos : Vector2 = Vector2(Networking.player_info[peer_id].position.x, Networking.player_info[peer_id].position.y)
+					
+					set_position(pos)
+					#show()
+					#node_player.set_process(true)
+					
+					self.name = Networking.player_info[peer_id].name
+					
+					
+					#node_players.add_child(node_player)
+					
+					
+					# Broadcast the new player to everyone
+					for peer_id2 in Networking.player_info:
+						rpc_id(peer_id2, "player_respawned", peer_id, Networking.player_info[peer_id])
+
+		
+		"SIMULATION LOGIC 2"
+		# Simulates Peer Logic On All Client Peers
+		# By Interpolating Between the Last Update And Recent Updates
+		
+		# To mitigate latency issues we use interpolation. The idea is simple, we receive
+		# position updates every TICK_DURATION (50 ms, 20 per seconds). We interpolate between
+		# the last two previous updates, this way we always have smooth movements. The
+		# main drawback is added latency (100 ms).
+		var pos = Vector2(0,0)
+		var target_timestamp = OS.get_ticks_msec() - (Networking.TICK_DURATION*2)
+		
+		for peer_id in Networking.player_info:
+			# Update position using lerp with 2 prior states
+			var keys = Networking.player_info[peer_id].updates.keys()
+			for i in range(0, keys.size()):
+				if keys[i] > target_timestamp:
+					if not Networking.player_info[peer_id].destroyed:
+						var percent = float(target_timestamp - keys[i-1]) / Networking.TICK_DURATION
+						Networking.player_info[peer_id].position.x = lerp(Networking.player_info[peer_id].updates[keys[i-1]].position.x, Networking.player_info[peer_id].updates[keys[i]].position.x, percent)
+						Networking.player_info[peer_id].position.y = lerp(Networking.player_info[peer_id].updates[keys[i-1]].position.y, Networking.player_info[peer_id].updates[keys[i]].position.y, percent)
+						Networking.player_info[peer_id].node.set_position(Networking.player_info[peer_id].position)
+						Networking.player_info[peer_id].velocity = lerp(Networking.player_info[peer_id].updates[keys[i-1]].velocity, Networking.player_info[peer_id].updates[keys[i]].velocity, percent)
+						#Networking.player_info[peer_id].rotation = Networking.lerp_angle(Networking.player_info[peer_id].updates[keys[i-1]].rotation, Networking.player_info[peer_id].updates[keys[i]].rotation, percent)
+						Networking.player_info[peer_id].node.set_rotation(Networking.player_info[peer_id].rotation)
+					break
+		
+		
+		# Updates The Position of This Peer 
+		#@ Not Sure What This COde Does
+		if Networking.player_info.has(peer_id):
+			pos.x += Networking.player_info[peer_id].position.x
+			pos.y += Networking.player_info[peer_id].position.y
+		
+
 
 class projectiles:
 	# THe Projectile Class's TimeStamp
@@ -227,50 +284,51 @@ func _input(event):
 	var my_peer = peer_id
 	
 	# If not connected, don't handle input.
-	if not my_peer.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
+	#if not my_peer.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
+	if not get_tree().has_network_peer() :
 		push_error(" Connection Bad, Not Handling Input")
 		return
 		
 	# if not currently playing, don't handle input too.
-	if my_info == null:
-		return
+	#if my_info == null:
+	#	return
 
 
-		
-	# Send input events over network to the server My Peer Across the Networks
-	# Sends Input Twice, Once when Pressed and one when not pressed
-	# 
-	if Input.is_action_just_pressed("player_left"):
-		rpc_id(my_peer,"player_input",get_tree().get_network_unique_id(),"left",true)
-	if Input.is_action_just_released("player_left"):
-		
-		# Code Logic : Call Player Inputs function via remote calls sending the following parameters
-		#id, key, pressed
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"left",false)
-		
-	# Rotating right
-	if Input.is_action_just_pressed("player_right"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",true)
-	if Input.is_action_just_released("player_right"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",false)
-		
-	# Handle flying forward
-	if Input.is_action_just_pressed("player_up"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",true)
-	if Input.is_action_just_released("player_up"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
-		
-	# Handle flying backward
-	if Input.is_action_just_pressed("player_down"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",true)
-	if Input.is_action_just_released("player_down"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",false)
-		
-	# Handle player firing a projectile
-	if Input.is_action_just_pressed("player_fire"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
-	if Input.is_action_just_released("player_fire"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
+	if SIMULATING:
+		# Send input events over network to the server My Peer Across the Networks
+		# Sends Input Twice, Once when Pressed and one when not pressed
+		# 
+		if Input.is_action_just_pressed("player_left"):
+			rpc_id(my_peer,"player_input",get_tree().get_network_unique_id(),"left",true)
+		if Input.is_action_just_released("player_left"):
+			
+			# Code Logic : Call Player Inputs function via remote calls sending the following parameters
+			#id, key, pressed
+			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"left",false)
+			
+		# Rotating right
+		if Input.is_action_just_pressed("player_right"):
+			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",true)
+		if Input.is_action_just_released("player_right"):
+			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",false)
+			
+		# Handle flying forward
+		if Input.is_action_just_pressed("player_up"):
+			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",true)
+		if Input.is_action_just_released("player_up"):
+			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
+			
+		# Handle flying backward
+		if Input.is_action_just_pressed("player_down"):
+			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",true)
+		if Input.is_action_just_released("player_down"):
+			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",false)
+			
+		# Handle player firing a projectile
+		if Input.is_action_just_pressed("player_fire"):
+			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
+		if Input.is_action_just_released("player_fire"):
+			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
 
 
 func _physics_process(delta):
@@ -426,67 +484,67 @@ func _physics_process(delta):
 	pass
 	
 
-	"Multiplayer Enet"
-	
-	# Handles Calculations for all Peer ID
-	
-	for peer_id in Networking.player_info:
-		#print_debug(str(player_info[peer_id].node.rotation) + " / " + str(player_info[peer_id].node.position) + " / " + str(player_info[peer_id].velocity))
-		#print_debug("Player:" + str(peer_id) + " = " + str(player_info[peer_id].position) + " = " + str(player_info[peer_id].velocity))
-		if Networking.player_info[peer_id].destroyed:
-			continue
+
+	if SIMULATING:
+		"Multiplayer Enet"
 		
-		var v = Vector2(0,0)
-		var velocity_speed = 2
-		if Networking.player_info[peer_id].velocity != 0:
-			var trustp = Vector2(0,Networking.player_info[peer_id].velocity * velocity_speed).rotated(Networking.player_info[peer_id].node.rotation)
-			Networking.player_info[peer_id].node.apply_impulse(trust_origin, trustp * delta)
+		# Handles Calculations for all Peer ID
+		
+		for i in Networking.player_info["peer id"]:
+			#print_debug(str(player_info[peer_id].node.rotation) + " / " + str(player_info[peer_id].node.position) + " / " + str(player_info[peer_id].velocity))
+			#print_debug("Player:" + str(peer_id) + " = " + str(player_info[peer_id].position) + " = " + str(player_info[peer_id].velocity))
+			if bool(Networking.player_info["peer id"][peer_id]["destroyed"]) == false:
+				continue
 			
-		if Networking.player_info[peer_id].rotation != 0:
-			if Networking.player_info[peer_id].rotation < 0:
-				Networking.player_info[peer_id].node.apply_impulse(rotate_origin1, Vector2(320,0) * delta)
-				Networking.player_info[peer_id].node.apply_impulse(rotate_origin2, Vector2(-320,0) * delta)
-			else:
-				Networking.player_info[peer_id].node.apply_impulse(rotate_origin1, Vector2(-320,0) * delta)
-				Networking.player_info[peer_id].node.apply_impulse(rotate_origin2, Vector2(320,0) * delta)
+			var v = Vector2(0,0)
+			var velocity_speed = 2
+			if Networking.player_info["peer id"][peer_id].velocity != 0:
 				
-		v = Networking.player_info[peer_id].node.get_position()
+				# Apply Impulse Simulation To Peer UD
+				#var trustp = Vector2(0,Networking.player_info[peer_id].velocity * velocity_speed).rotated(Networking.player_info[peer_id].node.rotation)
+				#Networking.player_info[peer_id].node.apply_impulse(trust_origin, trustp * delta)
+				pass
+			if Networking.player_info["peer id"][peer_id]["rotation"] != 0:
+				if Networking.player_info["peer id"][peer_id].rotation < 0:
+					
+					# More Impulse Calculation
+					#Networking.player_info[peer_id].node.apply_impulse(rotate_origin1, Vector2(320,0) * delta)
+					#Networking.player_info[peer_id].node.apply_impulse(rotate_origin2, Vector2(-320,0) * delta)
+					pass
+				else:
+					#Networking.player_info[peer_id].node.apply_impulse(rotate_origin1, Vector2(-320,0) * delta)
+					#Networking.player_info[peer_id].node.apply_impulse(rotate_origin2, Vector2(320,0) * delta)
+					pass
+			v = Networking.player_info["peer id"][peer_id]["node"].get_position()
+			
+			# Keep the player within boundaries
+			# Disabling for Data Structure Refactor
+			
+			#var world_radius = Networking.WORLD_SIZE / 2
+			#if v.x > world_radius:
+			#	v.x = world_radius
+			#	Networking.player_info[peer_id].node.set_position(v)
+			#if v.x < -world_radius:
+			#	v.x = -world_radius
+			#	Networking.player_info[peer_id].node.set_position(v)
+			#if v.y > world_radius:
+			#	v.y = world_radius
+			#	Networking.player_info[peer_id].node.set_position(v)
+			#if v.y < -world_radius:
+			#	v.y = -world_radius
+			#	Networking.player_info[peer_id].node.set_position(v)
+			#
+			#Networking.player_info[peer_id].position = Networking.player_info[peer_id].node.get_position()
+			#Networking.player_info[peer_id].current_angle = Networking.player_info[peer_id].node.rotation
+			#
+			#if Networking.player_info[peer_id].firing == 1:
+			#	Networking.player_info[peer_id].firing_delta += delta
+			#	if Networking.player_info[peer_id].firing_delta > Networking.PROJECTILE_DELAY:
+			#		Networking.player_info[peer_id].firing_delta -= Networking.PROJECTILE_DELAY
+			#		#fire_weapon(peer_id)
+			#		print("Fire Weapon")
 		
-		# Keep the player within boundaries
-		var world_radius = Networking.WORLD_SIZE / 2
-		if v.x > world_radius:
-			v.x = world_radius
-			Networking.player_info[peer_id].node.set_position(v)
-		if v.x < -world_radius:
-			v.x = -world_radius
-			Networking.player_info[peer_id].node.set_position(v)
-		if v.y > world_radius:
-			v.y = world_radius
-			Networking.player_info[peer_id].node.set_position(v)
-		if v.y < -world_radius:
-			v.y = -world_radius
-			Networking.player_info[peer_id].node.set_position(v)
 		
-		Networking.player_info[peer_id].position = Networking.player_info[peer_id].node.get_position()
-		Networking.player_info[peer_id].current_angle = Networking.player_info[peer_id].node.rotation
-		
-		if Networking.player_info[peer_id].firing == 1:
-			Networking.player_info[peer_id].firing_delta += delta
-			if Networking.player_info[peer_id].firing_delta > Networking.PROJECTILE_DELAY:
-				Networking.player_info[peer_id].firing_delta -= Networking.PROJECTILE_DELAY
-				#fire_weapon(peer_id)
-				print("Fire Weapon")
-	
-	# Dela Update, Delta Interval?
-	var delta_update = 0
-	var delta_interval = -1
-	
-	delta_update += delta
-	while delta_update >= delta_interval:
-		delta_update -= delta_interval
-		Networking.broadcast_world_positions()
-
-
 
 func _on_dialog_started():
 	state = STATE_BLOCKED
@@ -614,7 +672,7 @@ func player_got_shot(body : Player_v2_networking):
 					
 
 
-
+# FUnction Called From Networking Singleton Instead
 func client_connected_ok():
 	print("Callback: client_connected_ok")
 	Dialogs.dialog_box.show_dialog("Connected. Enjoy!", "Admin")
@@ -624,6 +682,7 @@ func client_connected_ok():
 	rpc_id(1,"register_player", get_tree().get_network_unique_id(), my_info)
 	OS.set_window_title("Connected as " + my_info.name)
 
+# FUnction Called From Networking Singleton Instead
 func  server_disconnected():
 	print("Callback: server_disconnected")
 	OS.alert('You have been disconnected!', 'Connection Closed')	
@@ -631,6 +690,7 @@ func  server_disconnected():
 	if get_tree().change_scene("res://scenes/login.tscn") != OK:
 		print("Unable to load login scene!")
 
+# FUnction Called From Networking Singleton Instead
 func client_connected_fail():
 	print("Callback: client_connected_fail")
 	OS.alert('Unable to connect to server!', 'Connection Failed')
@@ -710,7 +770,7 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
 	# Updates the Update Parameter for This Peer ID. 
 	# Is Called Remotely From a Peer
-	print (updates.get_string_from_utf8())
+	print_debug (updates.get_string_from_utf8())
 	
 	# REwrite to instead Parse json
 	Networking.download_json_(updates, "res://")

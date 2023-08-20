@@ -128,7 +128,8 @@ func _process(delta : float):
 				return show_debug_v1() #causes the double instance bug
 			STOP_DEBUG:
 				if not debug_panel == null:
-					debug_panel.queue_free()
+					if is_instance_valid(debug_panel): debug_panel.queue_free()
+					
 					debug_panel = null # Null instance bug from the debug panel
 					enabled = false
 					Music_debug = null

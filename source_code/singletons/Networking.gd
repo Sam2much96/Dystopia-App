@@ -54,6 +54,7 @@ const BACKUP_HOSTNAME = "127.0.0.1"
 # SHould be converted to Json before sent over Network
 var player_info : Dictionary = {
 	"peer id": {},
+	"node": {},
 	"hitpoints" : {},
 	"facing": {},
 	"roll dir": {},
@@ -129,6 +130,9 @@ var UserInterface : Control
 
 # Multiplayer map
 var map_instance
+
+# Server Update ID
+var update_id : int = -1
 
 func _ready():
 	_init_timer()
@@ -663,6 +667,17 @@ class Player_v3_networking extends KinematicBody2D:
 
 	onready var _screen_size_y = get_viewport_rect().size.y
 
+	remote func broadcast_world_positions():
+		# Server Call
+		# Calls the pu Method in all Renote peers
+		if is_network_master():
+			
+			for peer_id in Networking.player_info:
+				for peer_id_2 in Networking.player_info:
+					rpc_unreliable_id(peer_id, "pu", peer_id_2, Networking.update_id, Networking.player_info[peer_id_2].position, Networking.player_info[peer_id_2].velocity, Networking.player_info[peer_id_2].current_angle)
+					
+			Networking.update_id += 1
+		
 	
 
 	func ___process___(delta): # Depreciated
@@ -927,7 +942,7 @@ class Lobby extends Control:
 	static func _on_host_pressed( peer : NetworkedMultiplayerENet, Lobby : SceneTree, host_button : Button, join_button : Button , dialog_box : DialogBox) -> bool:
 		peer = NetworkedMultiplayerENet.new()
 		peer.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER)
-		var err = peer.create_server(DEFAULT_PORT, 1) # Maximum of 1 peer, since it's a 2-player game.
+		var err = peer.create_server(DEFAULT_PORT, Networking.MAX_PLAYERS) # Maximum of % peers
 		
 		# If Bad COnnection
 		if err != OK:

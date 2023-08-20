@@ -28,6 +28,7 @@ class_name Player_v2_networking
 
 
 
+
 const WALK_SPEED = 350 # pixels per second
 const ROLL_SPEED = 1000 # pixels per second
 var hitpoints = 3
@@ -73,17 +74,20 @@ var rotate_origin2
 
 func _enter_tree():
 	Globals.update_curr_scene()
+	#if Globals.player_hitpoints != null:
+	#	hitpoints = Globals.player_hitpoints #Updates player health across scenes
 
-	if Globals.player != null:
-		if Globals.player.empty() == true  :
-			Globals.player.append(self)  #saves player to the Global player variable
+	Globals.player.append(self)  #saves player to the Global player variable
 	
+
 	'Makes Player Hitpoint a Global Variable'
 	Globals.player_hitpoints = hitpoints
 
 
 	# Load Unique Player ID
-	peer_id = Networking.player_info["peer id"]
+	peer_id = get_tree().get_network_unique_id()
+	
+	print_debug("Networking Peer ID: ",Networking.player_info["peer id"])
 	
 	print_debug("Peer ID: ", peer_id)
 
@@ -112,7 +116,7 @@ func _process(delta):
 	"SIMULATION LOGIC 1"
 	# Updates All Player Peers with Most Recent Update
 	
-	for peer_id in Networking.player_info:
+	for i in Networking.player_info["peer id"]:
 		if Networking.player_info[peer_id].respawn_time != -999:
 			Networking.player_info[peer_id].respawn_time -= delta
 			if Networking.player_info[peer_id].respawn_time <= 0:
@@ -272,18 +276,6 @@ func _input(event):
 func _physics_process(delta):
 
 	
-	# FOrmmerly update facing
-	# SHould Ideally Call Remote Player input for it's Client Peer Accross the Networl
-	if Input.is_action_pressed("move_left"):
-		
-		facing = "left"
-	if Input.is_action_pressed("move_right"):
-		facing = "right"
-	if Input.is_action_pressed("move_up"):
-		facing = "up"
-	if Input.is_action_pressed("move_down"):
-		facing = "down"
-
 	## PROCESS STATES
 	#only process states if connected to a newworking id and only change your peer id's parameters
 	
@@ -318,7 +310,23 @@ func _physics_process(delta):
 						- int( Input.is_action_pressed("move_left") ) + int( Input.is_action_pressed("move_right") ),
 						-int( Input.is_action_pressed("move_up") ) + int( Input.is_action_pressed("move_down") )
 					).normalized()
-				_update_facing()
+				
+				# Update Facing
+					
+				# FOrmmerly update facing
+				# SHould Ideally Call Remote Player input for it's Client Peer Accross the Networl
+				if Input.is_action_pressed("move_left"):
+					
+					facing = "left"
+				if Input.is_action_pressed("move_right"):
+					facing = "right"
+				if Input.is_action_pressed("move_up"):
+					facing = "up"
+				if Input.is_action_pressed("move_down"):
+					facing = "down"
+
+				
+				#_update_facing()
 			new_anim = "idle_" + facing
 			#get_material().
 			
@@ -350,7 +358,22 @@ func _physics_process(delta):
 			linear_vel = target_speed
 			roll_direction = linear_vel.normalized()
 			
-			_update_facing()
+			
+			# FOrmmerly update facing
+			# SHould Ideally Call Remote Player input for it's Client Peer Accross the Networl
+			if Input.is_action_pressed("move_left"):
+				
+				facing = "left"
+			if Input.is_action_pressed("move_right"):
+				facing = "right"
+			if Input.is_action_pressed("move_up"):
+				facing = "up"
+			if Input.is_action_pressed("move_down"):
+				facing = "down"
+
+			
+			
+			#_update_facing()
 			
 			if linear_vel.length() > 5:
 				new_anim = "walk_" + facing
@@ -479,8 +502,8 @@ func goto_idle():
 	state = STATE_IDLE
 
 
-func _update_facing():
-	pass
+#func _update_facing():
+#	pass
 func despawn():  #this code breaks
 	var blood = Globals.blood_fx.instance()
 	var despawn_particles = despawn_fx.instance()
@@ -513,7 +536,7 @@ func _on_hurtbox_area_entered():
 
 
 # Registers player info to Global peer id Dictionary
-remote func player_joined(id, info):
+remote func player_joined(id : int, info):
 	print("Callback: player_joined(" + str(id)+"," + str(info) + ")")
 	Networking.player_info[id] = info
 	
@@ -537,7 +560,7 @@ remote func player_joined(id, info):
 	#node_players.add_child(node_player)
 
 
-remote func player_leaving(id):
+remote func player_leaving(id : int):
 	print("Callback: player_leaving(" + str(id)+")")
 	Dialogs.dialog_box.show_dialog("Player leaving: " + Networking.player_info[id].name, "Admin")
 	Networking.player_info[id].node.queue_free()
@@ -669,8 +692,11 @@ remote func player_health(id : int, health: int):
 # like "player_update" will use an extra 220 bytes / second for each connected player. 
 
 # Use Player Info Hash to Verify Packet Integrity
-
-remote func pu(id : int, update_id : int, pos: Vector2, velocity : float, rotation : float):
+# Should Instead Receive A Json Compressed instead of individual Player Parameters
+remote func pu(id : int, update_id : int, updates: PoolByteArray):
+	
+	var velocity #placeholder depreciated Variable
+	
 	
 	# Unreliable packets can be sent in wrong order, we only work with the latest
 	# data available.
@@ -681,9 +707,14 @@ remote func pu(id : int, update_id : int, pos: Vector2, velocity : float, rotati
 	# Maintain an Updated Timeline so older packets are discarded
 	last_update = update_id
 	
+	
 	# Updates the Update Parameter for This Peer ID. 
 	# Is Called Remotely From a Peer
-	Networking.player_info[id].updates[OS.get_ticks_msec()] = { position = pos, velocity = velocity, rotation = rotation }
+	print (updates.get_string_from_utf8())
+	
+	# REwrite to instead Parse json
+	Networking.download_json_(updates, "res://")
+	#Networking.player_info[id].updates[OS.get_ticks_msec()] = { position = pos, velocity = velocity, rotation = rotation }
 	
 	# Stops a Stack Overflow or by Eraci=sing Excess Updates over 10
 	while len(Networking.player_info[id].updates) > 10:

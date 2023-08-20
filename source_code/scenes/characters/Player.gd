@@ -60,9 +60,8 @@ func _enter_tree():
 	Globals.update_curr_scene()
 	#if Globals.player_hitpoints != null:
 	#	hitpoints = Globals.player_hitpoints #Updates player health across scenes
-	if Globals.player != null:
-		if Globals.player.empty() == true  :
-			Globals.player.append(self)  #saves player to the Global player variable
+
+	Globals.player.append(self)  #saves player to the Global player variable
 	
 	'Makes Player Hitpoint a Global Variable'
 	Globals.player_hitpoints = hitpoints
@@ -111,7 +110,7 @@ func _process(delta: float):
 	if frame_counter % 60 == 0:
 	#####this updates the player's node to a globals variable
 		Globals._player_state = state
-	if frame_counter >= 1000:
+	if frame_counter >= 100:
 		frame_counter = 0
 
 	#print ('Current scene:',Globals.curr_scene, 'Current level',Globals.current_level) #for debug purposes only

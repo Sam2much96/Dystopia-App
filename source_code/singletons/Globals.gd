@@ -53,7 +53,9 @@ var next_scene = null
 onready var curr_scene : String = ""
 onready var os: String = OS.get_name()
 onready var kill_count : int = 0 #update to load from savefile
+
 var player : Array = []
+
 #var _p # Player placeholder
 var player_hitpoints : int
 var enemy = null

@@ -57,12 +57,18 @@ var player_info : Dictionary = {
 	"hitpoints" : {},
 	"facing": {},
 	"roll dir": {},
+	"destroyed":{},
 	"updates":{},  # Stores Present Update ID Across All Clients
 	"wallet addr": {},
 	"asset id": {},
 	"smart contract": [], # Arrays As it will only be one Smart COntract
 	"kill Count": {},
 	"inventory": {},
+	"velocity":[],
+	"rotation":[],
+	"firing":[],
+	"current_angle": [],
+	"rewspawn_time":{},
 	"hash": [] # Arrays because hash data is discarded eventually
 	} 
 
@@ -74,8 +80,8 @@ var multiplayer_server_debug
 
 # Those variables are only used by the client-side application
 
-var cfg_color = ""
-var cfg_player_name = ""
+var cfg_color : String = ""
+var cfg_player_name : String = ""
 
 
 
@@ -88,7 +94,7 @@ signal error_ssl_handshake
 
 onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
-onready var WORLD_SIZE = 40000.0
+onready var WORLD_SIZE : int = 40000.0
 onready var _reference_to_self =get_node('/root/Networking') #formerly _y
 
 

@@ -48,7 +48,7 @@ var language : String = ""# stores the current language the user selects
 
 var _script_testing : String = 'res://resources/dialogues/script_testing.gd'
 
-
+const WAIT_TIME = 5 # Wait time before hiding dialogue box
 
 func show_dialog(text:String, speaker:String):
 	if is_instance_valid(dialog_box): # If an instance of dialogue box hasn't been deleted from memory?
@@ -62,8 +62,8 @@ func hide_dialogue(): #can be used to hide the dialogue box. Not best Practice
 
 
 func _set_dialog_box(node):
-	if not node is Node: # if not node is not of type node?
-		push_error("provided node doesn't extend Node") # push error
+	if not node is DialogBox: # if not node is not of type node?
+		push_error("provided node doesn't extend Dialogue Box") # push error
 		return 
 	
 	dialog_box = node
@@ -94,6 +94,16 @@ func _on_dialog_ended():
 	active = false
 	emit_signal("dialog_ended")
 	
+	yield(get_tree().create_timer(WAIT_TIME), "timeout")
+	dialog_box.hide_dialogue()
+
+
+#func connect_signals():
+#	# Connects Dialogue To Networking Timeout Signal
+#	if dialog_box != null:
+#		dialog_box.connect("hide_dialogue", Networking, "Timeout")
+#		print_debug("Dialog Box Signal: ",dialog_box.is_connected("hide_dialogue", Networking, "Timeout"))
+
 
  # Uses the translate feature from the Form at res://scenes/UI & misc/form/form.tscn
  # It parses from translations .csv and returns a string

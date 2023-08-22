@@ -755,6 +755,7 @@ remote func player_health(id : int, health: int):
 # Should Instead Receive A Json Compressed instead of individual Player Parameters
 remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
+	print_debug (" Packet Recieved")
 	var velocity #placeholder depreciated Variable
 	
 	

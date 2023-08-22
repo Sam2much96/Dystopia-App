@@ -45,15 +45,17 @@ var lines_to_skip : int = 0
 func _ready():
 	Dialogs.dialog_box = self
 	hide()
-	pass # Replace with function body.
+	
+
 
 func show_dialog(new_text, speaker):
+	emit_signal("dialog_started")
 	dialog_text.text = new_text
 	character_text.text = speaker
 	lines_to_skip = 0
 	dialog_text.lines_skipped = lines_to_skip
 	anims.play("appear")
-
+	emit_signal("dialog_ended")
 
 func hide_dialogue(): #Hides the Dialogue box
 	anims.play("disappear")

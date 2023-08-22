@@ -79,6 +79,7 @@ signal connection_success
 signal error_connection_failed(code,message)
 signal error_ssl_handshake
 signal game_finished
+signal Timeout
 
 onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
@@ -500,6 +501,7 @@ func _on_Timer2_timeout():
 	print ('check timer stopped')
 	Timeout = true
 	Comics_v6.SwipeLocked = false#!Comics_v6.SwipeLocked
+	emit_signal("Timeout")
 	stop_check()
 
 """
@@ -508,8 +510,8 @@ MULTIPLAYER SIGNALS
 # Executes Multiplayer Logic In the Lobby Class
 func _server_disconnected():
 	#emit_signal("game_finished")
-	#Lobby._on_server_disconnected(_id, get_tree(), UserInterface)
-	_end_game()
+	Lobby._on_server_disconnected(Networking.player_info["peer id"], get_tree(), UserInterface)
+
 
 func _player_disconnected(_id : int):
 	 # _id, Lobby: SceneTree, UI : Control)
@@ -588,7 +590,7 @@ func _end_game():
 	#Lobby.get_node(Map).free()
 	
 	var _map = get_tree().get_nodes_in_group("Multiplayer").pop_front()
-	map_instance.free()
+	map_instance.queue_free()
 	#_map.free()
 	# UI SHow
 	# Enable UI buttons
@@ -605,9 +607,6 @@ func _end_game():
 	Lobby._set_status(with_error, Dialogs.dialog_box , false)
 
 
-func _connected_fail():
-	pass
-
 
 remote func broadcast_world_positions():
 	# Server Call
@@ -619,7 +618,7 @@ remote func broadcast_world_positions():
 		# First, Convert Player Info Dictionary to Pool Byte Array
 		player_data = PoolByteArray([player_info])
 		
-		print_debug(player_data)
+		print_debug("BroadCasting Player Data"+ str(player_data))
 		
 		for i in player_info["peer id"]:
 			#for peer_id_2 in Networking.player_info:
@@ -897,11 +896,12 @@ class Lobby extends Control:
 		scene_tree_obj.connect("network_peer_disconnected", Networking, "_player_disconnected")
 		
 		# Connection Signal
-		scene_tree_obj.connect("connected_to_server", Lobby, "_connected_ok") 
+		scene_tree_obj.connect("connected_to_server", Lobby, "_on_connected_ok") 
 		scene_tree_obj.connect("connection_failed", Networking, "_connected_fail")
 		
 		# Server
 		scene_tree_obj.connect("server_disconnected", Networking, "_server_disconnected")
+
 
 
 
@@ -919,6 +919,9 @@ class Lobby extends Control:
 		print_debug(" Connection OK")
 
 
+	static func _connected_fail():
+		print_debug("Connection Fail")
+
 	# Callback from SceneTree, only for clients (not server).
 	static func _on_connected_fail(Lobby : SceneTree):
 		
@@ -933,9 +936,9 @@ class Lobby extends Control:
 		#join_button.set_disabled(false)
 
 
-	static func _on_server_disconnected(_id, Lobby : SceneTree, UI : Control):
-		_end_game(_id + "Server disconnected", Lobby, UI)
-
+	static func _on_server_disconnected(_id : int, Lobby : SceneTree, UI : Control):
+		_end_game( str(_id) + " Server disconnected", Lobby)
+		UI.show()
 
 	##### Game creation functions ######
 	# Change Map Parameter To Game Level (Map) Position in the Scene Trees 
@@ -945,15 +948,18 @@ class Lobby extends Control:
 		if is_instance_valid(Map):
 			
 			# Debug Loobby Map Instance
-			print_debug (Lobby.has_node(Map), is_instance_valid(Map))
+			#print_debug (Lobby.has_node(Map), is_instance_valid(Map))
+			
 			#if Lobby.has_node(Map):
 			# Erase immediately, otherwise network might show
 			# errors (this is why we connected deferred above).
 			#Lobby.get_node(Map).free()
 			
-			var _map = Lobby.get_nodes_in_group("Multiplayer").pop_front()
-			Map.free()
-			_map.free()
+			Map.queue_free()
+			
+			#var _map = Lobby.get_nodes_in_group("Multiplayer").pop_front()
+			#Map.free()
+			#_map.free()
 			# UI SHow
 			Networking.UserInterface.show()
 
@@ -970,12 +976,14 @@ class Lobby extends Control:
 	# SHows ingame Status
 	# Connect to Dialogue Box
 	static func _set_status(text : String, status : DialogBox, isok : bool):
+		Networking. start_check(2)
 		# Simple way to show status.
 		#
+		 
 		status.show_dialog( text + str(isok), "Admin") 
+			
+		# Bug: Dialogue box doesnt stop showing 
 		
-		
-
 
 	# Starts Server Connections
 	# Connects to UI Buttons

@@ -48,7 +48,7 @@ var language : String = ""# stores the current language the user selects
 
 var _script_testing : String = 'res://resources/dialogues/script_testing.gd'
 
-const WAIT_TIME = 5 # Wait time before hiding dialogue box
+const WAIT_TIME = 6 # Wait time before hiding dialogue box
 
 func show_dialog(text:String, speaker:String):
 	if is_instance_valid(dialog_box): # If an instance of dialogue box hasn't been deleted from memory?
@@ -91,18 +91,14 @@ func _on_dialog_started():
 	emit_signal("dialog_started")
 	
 func _on_dialog_ended():
+	
 	active = false
 	emit_signal("dialog_ended")
 	
 	yield(get_tree().create_timer(WAIT_TIME), "timeout")
-	dialog_box.hide_dialogue()
+	if is_instance_valid(dialog_box):
+		dialog_box.hide_dialogue()
 
-
-#func connect_signals():
-#	# Connects Dialogue To Networking Timeout Signal
-#	if dialog_box != null:
-#		dialog_box.connect("hide_dialogue", Networking, "Timeout")
-#		print_debug("Dialog Box Signal: ",dialog_box.is_connected("hide_dialogue", Networking, "Timeout"))
 
 
  # Uses the translate feature from the Form at res://scenes/UI & misc/form/form.tscn

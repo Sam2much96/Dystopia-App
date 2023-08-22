@@ -95,7 +95,7 @@ func _ready():
 
 
 	# Load Unique Player ID
-	peer_id = get_tree().get_network_unique_id()
+	peer_id = int(get_tree().get_network_unique_id())
 	
 	Networking.player_info["peer id"] = {peer_id : {}}
 	
@@ -104,6 +104,7 @@ func _ready():
 	print_debug("Peer ID: ", peer_id)
 
 	# Update Networking Player Info With Player Info
+	# Works
 	Networking.player_info["peer id"][peer_id] = {
 		"node": [],
 		"position": Vector2.ZERO, 
@@ -277,11 +278,13 @@ class projectiles:
 	
 
 func _input(event):
-	# Sends Client Input To Remote Peers
-	# EachMethod Calls the Player Input Remote Function in
+	
+	# Send input events over network to the server My Peer Across the Networks
+	# Sends Input Twice, Once when Pressed and one when not pressed
+	
+	# Each Method Calls the Player Input Remote Function in
 	# It's Calls THis client Player Input to the Remote Peer
 	
-	var my_peer = peer_id
 	
 	# If not connected, don't handle input.
 	#if not my_peer.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
@@ -294,12 +297,49 @@ func _input(event):
 	#	return
 
 
+# Mapping All Player Input to A Remote Player Call Function
+# client peer id is peer_id whereas server peer_id for client peer is 1
+	if Input.is_action_just_pressed("move_up"):
+		rpc_id(1,"player_input",peer_id,"up",true) 
+		
+	if Input.is_action_just_released("move_up"):
+	
+		# Code Logic : Call Player Inputs function via remote calls sending the following parameters
+		#id, key, pressed
+		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
+		
+		# Rotating right
+	if Input.is_action_just_pressed("move_down"):
+		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",true)
+	if Input.is_action_just_released("move_down"):
+		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",false)
+		
+		# Handle flying forward
+	if Input.is_action_just_pressed("move_left"):
+		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",true)
+	if Input.is_action_just_released("move_left"):
+		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
+		
+		# Handle flying backward
+	if Input.is_action_just_pressed("move_right"):
+		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",true)
+	if Input.is_action_just_released("move_right"):
+		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",false)
+			
+		# Handle player firing a projectile
+	if Input.is_action_just_pressed("player_fire"):
+		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
+	if Input.is_action_just_released("player_fire"):
+		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
+
+
+
+
 	if SIMULATING:
 		# Send input events over network to the server My Peer Across the Networks
 		# Sends Input Twice, Once when Pressed and one when not pressed
 		# 
-		if Input.is_action_just_pressed("player_left"):
-			rpc_id(my_peer,"player_input",get_tree().get_network_unique_id(),"left",true)
+		
 		if Input.is_action_just_released("player_left"):
 			
 			# Code Logic : Call Player Inputs function via remote calls sending the following parameters
@@ -325,9 +365,15 @@ func _input(event):
 			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",false)
 			
 		# Handle player firing a projectile
-		if Input.is_action_just_pressed("player_fire"):
+		if Input.is_action_just_pressed("attack"):
 			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
-		if Input.is_action_just_released("player_fire"):
+		if Input.is_action_just_released("attack"):
+			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
+
+		# Handle player firing a projectile
+		if Input.is_action_just_pressed("roll"):
+			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
+		if Input.is_action_just_released("roll"):
 			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
 
 
@@ -630,21 +676,21 @@ remote func player_leaving(id : int):
 remote func player_input(id : int, key: String, pressed: bool):
 	# Remote Calls Player Input From Client Peer for each client peer
 	# Should Connect to Physics Process Simulation Logic
-	
+	# WOrks
 	
 	print("Remote: player_input(" + str(id)+","+key+","+str(pressed)+")")
 
-	if key == "left":
-		#Networking.player_info[id].facing = key
-		Networking.player_info[id].rotation = -1 if pressed else 0
-	elif key == "right":
-		Networking.player_info[id].rotation = 1 if pressed else 0
-	elif key == "up":
-		Networking.player_info[id].velocity = -1 if pressed else 0
-	elif key == "down":
-		Networking.player_info[id].velocity = 1 if pressed else 0
-	elif key == "fire":
-		Networking.player_info[id].firing = 1 if pressed else 0
+	#if key == "left":
+	#	#Networking.player_info[id].facing = key
+	#	Networking.player_info[id].rotation = -1 if pressed else 0
+	#elif key == "right":
+	#	Networking.player_info[id].rotation = 1 if pressed else 0
+	#elif key == "up":
+	#	Networking.player_info[id].velocity = -1 if pressed else 0
+	#elif key == "down":
+	#	Networking.player_info[id].velocity = 1 if pressed else 0
+	#elif key == "fire":
+	#	Networking.player_info[id].firing = 1 if pressed else 0
 		
 
 
@@ -673,31 +719,30 @@ func player_got_shot(body : Player_v2_networking):
 
 
 # FUnction Called From Networking Singleton Instead
-func client_connected_ok():
-	print("Callback: client_connected_ok")
-	Dialogs.dialog_box.show_dialog("Connected. Enjoy!", "Admin")
-	# Only called on clients, not server. Send my ID and info to all the other peers
-	my_info.name = Networking.cfg_player_name
-	my_info.color = Networking.cfg_color
-	rpc_id(1,"register_player", get_tree().get_network_unique_id(), my_info)
-	OS.set_window_title("Connected as " + my_info.name)
-
-# FUnction Called From Networking Singleton Instead
-func  server_disconnected():
-	print("Callback: server_disconnected")
-	OS.alert('You have been disconnected!', 'Connection Closed')	
-	# Change to login scene
-	if get_tree().change_scene("res://scenes/login.tscn") != OK:
-		print("Unable to load login scene!")
-
-# FUnction Called From Networking Singleton Instead
-func client_connected_fail():
-	print("Callback: client_connected_fail")
-	OS.alert('Unable to connect to server!', 'Connection Failed')
-	# Change to login scene
-	if get_tree().change_scene("res://scenes/login.tscn") != OK:
-		print("Unable to load login scene!")
-	
+#func client_connected_ok():
+#	print("Callback: client_connected_ok")
+#	Dialogs.dialog_box.show_dialog("Connected. Enjoy!", "Admin")
+#	# Only called on clients, not server. Send my ID and info to all the other peers
+#	my_info.name = Networking.cfg_player_name
+#	my_info.color = Networking.cfg_color
+#	rpc_id(1,"register_player", get_tree().get_network_unique_id(), my_info)
+#	OS.set_window_title("Connected as " + my_info.name)
+#
+## FUnction Called From Networking Singleton Instead
+#func  server_disconnected():
+#	print("Callback: server_disconnected")
+#	OS.alert('You have been disconnected!', 'Connection Closed')	
+#	# Change to login scene
+#	if get_tree().change_scene("res://scenes/login.tscn") != OK:
+#		print("Unable to load login scene!")
+#
+## FUnction Called From Networking Singleton Instead
+##	print("Callback: client_connected_fail")
+#	OS.alert('Unable to connect to server!', 'Connection Failed')
+#	# Change to login scene
+#	if get_tree().change_scene("res://scenes/login.tscn") != OK:
+#		print("Unable to load login scene!")
+#	
 
 remote func player_respawned(id : int, info):
 	print("Callback: player_respawned (" + str(id)+"," + str(info) + ")")

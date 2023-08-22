@@ -510,6 +510,7 @@ MULTIPLAYER SIGNALS
 # Executes Multiplayer Logic In the Lobby Class
 func _server_disconnected():
 	#emit_signal("game_finished")
+	print_debug(int(Networking.player_info["peer id"]))
 	Lobby._on_server_disconnected(Networking.player_info["peer id"], get_tree(), UserInterface)
 
 
@@ -611,7 +612,7 @@ func _end_game():
 remote func broadcast_world_positions():
 	# Server Call
 	# Calls the pu Method in all Renote peers
-	
+	# can only be called by Server
 	# Only the Hosting Device Can Update All NEtwork peers
 	if is_network_master():
 		

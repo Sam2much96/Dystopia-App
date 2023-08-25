@@ -20,7 +20,7 @@
 
 # Bugs:
 # (1) Breaks GameHUD
-
+# (2) Server and Client Codes are not Documented
 
 # *************************************************
 
@@ -66,8 +66,7 @@ var last_update = -1
 #Server Variable
 var update_id : int = 0
 
-var delta_update : int = 0 
-var delta_interval : int = 1000
+
 
 var my_info
 
@@ -80,7 +79,7 @@ var rotate_origin2
 
 var SIMULATING : bool = false
 
-
+var frame_counter : int = 0
 
 func _ready():
 	#Globals.update_curr_scene()
@@ -123,7 +122,7 @@ func _ready():
 		"firing":false,
 		"current_angle": 0,
 		"rewspawn_time":1000,
-		
+		"hash" : ""
 		
 		}
 	print_debug(Networking.player_info)
@@ -157,19 +156,34 @@ func get_spawn_position(): pass
 
 func _process(delta):
 
-	
-	# BroadCasts player info to client peers from Host Devide
-	# Not SUre What this Code Bloc Does
-	# Delta Update, Delta Interval?
-
-	delta_update += delta
-	while delta_update >= delta_interval:
-		delta_update -= delta_interval
 		
-		# BroadCasts Player Info to Each Client Peer suing the pu remote call
+	# BroadCasts player info to client peers from Host Devide
+	# 
+	# Delta Update counts up to Delta interval, and resets to zero when exceeding delta interval
+	# It also brodcasts player data to all remote peers from the server
+	# Allows the Server to Broadcast Player Data 
+	# To All Client Peers using pu remote function
+	
+	#if is_network_master(): #creates a bug on the Cluent device
+		# Raises up a Frame Counter
+	frame_counter += delta
+		
+		# Checks the Spawning Boolean Every 60th Frame
+		# Called #very 60th Frame
+	if frame_counter % 6_000 == 0:
+			# BroadCasts Player Info to Each Client Peer suing the pu remote call
+			# Should Be Called From the Server Class Instead
 		Networking.broadcast_world_positions()
 
+	
+	# Resets Frame Counter
+	if frame_counter >= 6_000:
+		frame_counter = 0
 
+
+
+
+	
 	
 	if SIMULATING:
 		"SIMULATION LOGIC 1"
@@ -299,6 +313,8 @@ func _input(event):
 
 # Mapping All Player Input to A Remote Player Call Function
 # client peer id is peer_id whereas server peer_id for client peer is 1
+
+# Move Up
 	if Input.is_action_just_pressed("move_up"):
 		rpc_id(1,"player_input",peer_id,"up",true) 
 		
@@ -308,73 +324,79 @@ func _input(event):
 		#id, key, pressed
 		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
 		
-		# Rotating right
+		# Move Down
 	if Input.is_action_just_pressed("move_down"):
 		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",true)
 	if Input.is_action_just_released("move_down"):
 		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",false)
 		
-		# Handle flying forward
+		# Move Left
 	if Input.is_action_just_pressed("move_left"):
 		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",true)
 	if Input.is_action_just_released("move_left"):
 		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
 		
-		# Handle flying backward
+		# Move RIght
 	if Input.is_action_just_pressed("move_right"):
 		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",true)
 	if Input.is_action_just_released("move_right"):
 		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",false)
-			
-		# Handle player firing a projectile
-	if Input.is_action_just_pressed("player_fire"):
+		
+		# Attack
+	if Input.is_action_just_pressed("attack"):
 		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
-	if Input.is_action_just_released("player_fire"):
+	if Input.is_action_just_released("attack"):
+		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
+
+		# Roll
+	if Input.is_action_just_pressed("roll"):
+		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
+	if Input.is_action_just_released("roll"):
 		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
 
 
 
 
-	if SIMULATING:
-		# Send input events over network to the server My Peer Across the Networks
-		# Sends Input Twice, Once when Pressed and one when not pressed
-		# 
-		
-		if Input.is_action_just_released("player_left"):
-			
-			# Code Logic : Call Player Inputs function via remote calls sending the following parameters
-			#id, key, pressed
-			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"left",false)
-			
-		# Rotating right
-		if Input.is_action_just_pressed("player_right"):
-			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",true)
-		if Input.is_action_just_released("player_right"):
-			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",false)
-			
-		# Handle flying forward
-		if Input.is_action_just_pressed("player_up"):
-			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",true)
-		if Input.is_action_just_released("player_up"):
-			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
-			
-		# Handle flying backward
-		if Input.is_action_just_pressed("player_down"):
-			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",true)
-		if Input.is_action_just_released("player_down"):
-			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",false)
-			
-		# Handle player firing a projectile
-		if Input.is_action_just_pressed("attack"):
-			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
-		if Input.is_action_just_released("attack"):
-			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
-
-		# Handle player firing a projectile
-		if Input.is_action_just_pressed("roll"):
-			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
-		if Input.is_action_just_released("roll"):
-			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
+	#if SIMULATING:
+	#	# Send input events over network to the server My Peer Across the Networks
+	#	# Sends Input Twice, Once when Pressed and one when not pressed
+	#	# 
+	#	
+	#	if Input.is_action_just_released("player_left"):
+	#		
+	#		# Code Logic : Call Player Inputs function via remote calls sending the following parameters
+	#		#id, key, pressed
+	#		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"left",false)
+	#		
+	#	# Rotating right
+	#	if Input.is_action_just_pressed("player_right"):
+	#		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",true)
+	#	if Input.is_action_just_released("player_right"):
+	#		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",false)
+	#		
+	#	# Handle flying forward
+	#	if Input.is_action_just_pressed("player_up"):
+	#		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",true)
+	#	if Input.is_action_just_released("player_up"):
+	#		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
+	#		
+	#	# Handle flying backward
+	#	if Input.is_action_just_pressed("player_down"):
+	#		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",true)
+	#	if Input.is_action_just_released("player_down"):
+	#		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",false)
+	#		
+	#	# Handle player firing a projectile
+	#	if Input.is_action_just_pressed("attack"):
+	#		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
+	#	if Input.is_action_just_released("attack"):
+	#		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
+#
+#		# Handle player firing a projectile
+#		if Input.is_action_just_pressed("roll"):
+#			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
+#		if Input.is_action_just_released("roll"):
+#			rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
 
 
 func _physics_process(delta):
@@ -490,9 +512,7 @@ func _physics_process(delta):
 		STATE_ATTACK:
 			new_anim = "slash_" + facing
 			
-			
-			#rpc calls to server
-			#Client.rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
+			 
 			pass
 		STATE_ROLL:
 			if roll_direction == Vector2.ZERO:
@@ -506,22 +526,17 @@ func _physics_process(delta):
 				linear_vel = target_speed
 				new_anim = "roll"
 				
-				#rpc calls to server
-				#Client.rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
 				
 				if Input.is_action_just_pressed("attack"): #punch and slide
 					state = STATE_ATTACK
 		STATE_DIE:
 			new_anim = "die"
 			
-			#rpc calls to server
-			#Client.rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
+
 			
 		STATE_HURT:
 			new_anim = "hurt"
 			
-			#rpc calls to server
-			#Client.rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
 	
 	'UPDATE ANIMATIONS'
 	if new_anim != anim:
@@ -718,32 +733,6 @@ func player_got_shot(body : Player_v2_networking):
 					
 
 
-# FUnction Called From Networking Singleton Instead
-#func client_connected_ok():
-#	print("Callback: client_connected_ok")
-#	Dialogs.dialog_box.show_dialog("Connected. Enjoy!", "Admin")
-#	# Only called on clients, not server. Send my ID and info to all the other peers
-#	my_info.name = Networking.cfg_player_name
-#	my_info.color = Networking.cfg_color
-#	rpc_id(1,"register_player", get_tree().get_network_unique_id(), my_info)
-#	OS.set_window_title("Connected as " + my_info.name)
-#
-## FUnction Called From Networking Singleton Instead
-#func  server_disconnected():
-#	print("Callback: server_disconnected")
-#	OS.alert('You have been disconnected!', 'Connection Closed')	
-#	# Change to login scene
-#	if get_tree().change_scene("res://scenes/login.tscn") != OK:
-#		print("Unable to load login scene!")
-#
-## FUnction Called From Networking Singleton Instead
-##	print("Callback: client_connected_fail")
-#	OS.alert('Unable to connect to server!', 'Connection Failed')
-#	# Change to login scene
-#	if get_tree().change_scene("res://scenes/login.tscn") != OK:
-#		print("Unable to load login scene!")
-#	
-
 remote func player_respawned(id : int, info):
 	print("Callback: player_respawned (" + str(id)+"," + str(info) + ")")
 	Networking.player_info[id] = info
@@ -791,7 +780,7 @@ remote func player_health(id : int, health: int):
 	var peer_id = get_tree().get_network_unique_id()
 	if id == peer_id:
 		progress_health.value = health
-	
+
 # Player update function
 # This function is named "pu" to lower the network bandwidth usage, sending something
 # like "player_update" will use an extra 220 bytes / second for each connected player. 
@@ -816,7 +805,7 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
 	# Updates the Update Parameter for This Peer ID. 
 	# Is Called Remotely From a Peer
-	print_debug (updates.get_string_from_utf8())
+	print ("Data Packet:",updates.get_string_from_utf8())
 	
 	# REwrite to instead Parse json
 	Networking.download_json_(updates, "res://")

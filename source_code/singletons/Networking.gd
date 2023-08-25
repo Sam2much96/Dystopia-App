@@ -510,8 +510,8 @@ MULTIPLAYER SIGNALS
 # Executes Multiplayer Logic In the Lobby Class
 func _server_disconnected():
 	#emit_signal("game_finished")
-	print_debug(int(Networking.player_info["peer id"]))
-	Lobby._on_server_disconnected(Networking.player_info["peer id"], get_tree(), UserInterface)
+	#print_debug(int(Networking.player_info["peer id"][peer_id]))
+	Lobby._on_server_disconnected(peer_id, get_tree(), UserInterface)
 
 
 func _player_disconnected(_id : int):
@@ -549,6 +549,9 @@ func _player_connected(_id : int):
 		)
 	
 	map_instance = Map.instance()
+	
+	
+
 	
 	# Connect deferred so we can safely erase it from the callback.
 	# Defines the Type of COnnection
@@ -616,20 +619,82 @@ remote func broadcast_world_positions():
 	# Only the Hosting Device Can Update All NEtwork peers
 	if is_network_master():
 		
+		
+		
 		# First, Convert Player Info Dictionary to Pool Byte Array
-		player_data = PoolByteArray([player_info])
+		# Error: it's sending an empty Poolbyte
+		# TO DO: COnvert Player Info Dictionary to PoolbyteArray encoded utf-8 
 		
-		print_debug("BroadCasting Player Data"+ str(player_data))
+		#(player_info) # isn't converted to PoolbyteArray
 		
+		player_data = PoolByteArray([1,2,3,4,5,6,7,8,9]) #Test Data
+		
+		
+		print_debug("BroadCasting Player Data"+ player_data.get_string_from_utf8() + " for peer id " + str(peer_id), "Master: ", is_network_master())
+		
+		
+		rpc_unreliable_id(peer_id, "pu", peer_id, update_id, player_data) # pu call is buggy cuz of peer id error
 		for i in player_info["peer id"]:
 			#for peer_id_2 in Networking.player_info:
 			
 			 #id : int, update_id : int, updates: PoolByteArray
-			rpc_unreliable_id(peer_id, "pu", peer_id, update_id, player_data)
-					
+			#rpc_unreliable_id(peer_id, "pu", peer_id, update_id, player_data)
+			
+			print (i)
+			#pass
 		update_id += 1
 		
 	
+
+
+# Player update function
+# This function is named "pu" to lower the network bandwidth usage, sending something
+# like "player_update" will use an extra 220 bytes / second for each connected player. 
+
+# Use Player Info Hash to Verify Packet Integrity
+# Should Instead Receive A Json Compressed instead of individual Player Parameters
+
+remote func pu(id : int, update_id : int, updates: PoolByteArray):
+	
+	print_debug (" Packet Recieved")
+	var velocity #placeholder depreciated Variable
+	
+	
+	#Error Catcher 1
+	# Unreliable packets can be sent in wrong order, we only work with the latest
+	# data available.
+	#if update_id < last_update:
+	#	print("Received update in wrong order. Discarding!")
+	#	return
+	
+	# Maintain an Updated Timeline so older packets are discarded
+#	last_update = update_id
+	print("Data Packets:",updates.get_string_from_utf8())
+	
+	# Updates the Update Parameter for This Peer ID. 
+	# Is Called Remotely From a Peer
+	#print_debug (updates.get_string_from_utf8())
+	
+	# REwrite to instead Parse json
+#	download_json_(updates, "res://")
+	#Networking.player_info[id].updates[OS.get_ticks_msec()] = { position = pos, velocity = velocity, rotation = rotation }
+	
+	# Stops a Stack Overflow or by Eraci=sing Excess Updates over 10
+	#while len(Networking.player_info["peer id"][id].updates) > 10:
+	#	Networking.player_info[id].updates.erase(Networking.player_info[id]["updates"].keys()[0])
+	
+	
+	# Dont Update If Peer Destroyed
+	#if Networking.player_info[id].destroyed:
+	#	return
+	
+	
+	# Remote Update Particles
+	#if Networking.player_info[id].node.has_node("particles"):
+	#	Networking.player_info[id].node.get_node("particles").set_emitting(velocity != 0)
+
+	#if Networking.player_info[id].node.has_node("audio_thruster"):
+	#	Networking.player_info[id].node.get_node("audio_thruster").stream_paused = velocity == 0
 
 
 
@@ -945,7 +1010,7 @@ class Lobby extends Control:
 	# Change Map Parameter To Game Level (Map) Position in the Scene Trees 
 	# End Game is Buggy
 	# Moving to Networking Singleton Implementation
-	static func _end_game(with_error : String , Lobby : SceneTree, Map = Networking.map_instance):
+	static func _end_game(with_error : String , Lobby : SceneTree, Map = Networking.map_instance, error = debug.error_splash_page):
 		if is_instance_valid(Map):
 			
 			# Debug Loobby Map Instance
@@ -955,6 +1020,7 @@ class Lobby extends Control:
 			# Erase immediately, otherwise network might show
 			# errors (this is why we connected deferred above).
 			#Lobby.get_node(Map).free()
+			Lobby.change_scene_to(error)
 			
 			Map.queue_free()
 			
@@ -1042,6 +1108,8 @@ class Lobby extends Control:
 	# Finds Device Public IP Address from a WebSite
 	static func _on_find_public_ip_pressed() -> void:
 		OS.shell_open("https://icanhazip.com/")
+
+
 
 class NetworkedObject extends Area2D:
 

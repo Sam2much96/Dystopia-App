@@ -625,12 +625,17 @@ remote func broadcast_world_positions():
 		# Error: it's sending an empty Poolbyte
 		# TO DO: COnvert Player Info Dictionary to PoolbyteArray encoded utf-8 
 		
-		#(player_info) # isn't converted to PoolbyteArray
-		
-		player_data = PoolByteArray([1,2,3,4,5,6,7,8,9]) #Test Data
 		
 		
-		print_debug("BroadCasting Player Data"+ player_data.get_string_from_utf8() + " for peer id " + str(peer_id), "Master: ", is_network_master())
+		
+		#print_debug( "Player Info as Json: " + to_json(player_info)) # isn't converted to PoolbyteArray
+		
+		
+		
+		player_data = var2bytes([to_json(player_info)]) #PoolByteArray([data]) #Test Data
+		
+		
+		print_debug("BroadCasting Player Data"+ str(bytes2var(player_data)) + " for peer id " + str(peer_id), "Master: ", is_network_master())
 		
 		
 		rpc_unreliable_id(peer_id, "pu", peer_id, update_id, player_data) # pu call is buggy cuz of peer id error
@@ -669,7 +674,7 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
 	# Maintain an Updated Timeline so older packets are discarded
 #	last_update = update_id
-	print("Data Packets:",updates.get_string_from_utf8())
+	print("Data Packets:", str(bytes2var(updates)))
 	
 	# Updates the Update Parameter for This Peer ID. 
 	# Is Called Remotely From a Peer

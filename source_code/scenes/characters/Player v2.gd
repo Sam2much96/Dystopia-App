@@ -21,6 +21,7 @@
 # Bugs:
 # (1) Breaks GameHUD
 # (2) Server and Client Codes are not Documented
+# (3) Player State Doesn't Update to Networking
 
 # *************************************************
 
@@ -61,7 +62,7 @@ onready var impact_fx = $Impact
 onready var animation : AnimationPlayer = $anims
 
 var peer_id : int
-var last_update = -1
+
 
 #Server Variable
 var update_id : int = 0
@@ -109,7 +110,8 @@ func _ready():
 		"position": Vector2.ZERO, 
 		"hitpoints" : 3,
 		"facing": "",
-		"roll dir": {},
+		"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
+		"roll dir": [],
 		"destroyed": false,
 		"updates": [],  # Stores Present Update ID Across All Clients
 		"wallet addr": {},
@@ -125,7 +127,10 @@ func _ready():
 		"hash" : ""
 		
 		}
-	print_debug(Networking.player_info)
+		
+	Networking.player_info["peer id"][peer_id] ["node"].append(self)
+	
+	print_debug("Initial Player Info Debug: ",Networking.player_info)
 	
 	#detect if networking connection
 	camera._set_current(true) 
@@ -180,9 +185,14 @@ func _process(delta):
 	if frame_counter >= 6_000:
 		frame_counter = 0
 
+	# Prevents Memory overflow and increased bandwidth from large packet sizes
+	# Should ideally only clear up to the last two?
+	if Networking.player_info["peer id"][peer_id]["state"].size() > 10:
+		Networking.player_info["peer id"][peer_id]["state"].clear()
 
 
-
+	# Position
+	Networking.player_info["peer id"][peer_id]["position"] = position
 	
 	
 	if SIMULATING:
@@ -190,13 +200,14 @@ func _process(delta):
 		# Updates All Player Peers with Most Recent Update
 		
 		for i in Networking.player_info["peer id"]:
-			if Networking.player_info[peer_id].respawn_time != -999:
+			print_debug(i)
+			if i.respawn_time != -999:
 				Networking.player_info[peer_id].respawn_time -= delta
 				
 				# Waits for Approximately 5 seconds before spawing Player with These Parameters
 				if Networking.player_info[peer_id].respawn_time <= 0:
 					
-					Networking.player_info[peer_id].position = get_spawn_position()
+					Networking.player_info[peer_id].position = position #get_spawn_position()
 					Networking.player_info[peer_id].velocity = 0
 					Networking.player_info[peer_id].rotation = 0
 					Networking.player_info[peer_id].firing = 0
@@ -292,6 +303,7 @@ class projectiles:
 	
 
 func _input(event):
+	"NETWORKING INPUTS"
 	
 	# Send input events over network to the server My Peer Across the Networks
 	# Sends Input Twice, Once when Pressed and one when not pressed
@@ -299,6 +311,8 @@ func _input(event):
 	# Each Method Calls the Player Input Remote Function in
 	# It's Calls THis client Player Input to the Remote Peer
 	
+	# Sends Data by updating the Netwprking.player info dictionary
+	# And broadcasting updates across network every 6000th frame
 	
 	# If not connected, don't handle input.
 	#if not my_peer.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
@@ -316,44 +330,68 @@ func _input(event):
 
 # Move Up
 	if Input.is_action_just_pressed("move_up"):
-		rpc_id(1,"player_input",peer_id,"up",true) 
+		#rpc_id(1,"player_input",peer_id,"up",true) 
+		
+		Networking.player_info["peer id"][peer_id]["facing"] = facing
 		
 	if Input.is_action_just_released("move_up"):
 	
 		# Code Logic : Call Player Inputs function via remote calls sending the following parameters
 		#id, key, pressed
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
+		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
+		Networking.player_info["peer id"][peer_id]["facing"] = facing
 		
 		# Move Down
 	if Input.is_action_just_pressed("move_down"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",true)
-	if Input.is_action_just_released("move_down"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",false)
+		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",true)
 		
+		Networking.player_info["peer id"][peer_id]["facing"] = facing
+	if Input.is_action_just_released("move_down"):
+		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",false)
+		
+		
+		Networking.player_info["peer id"][peer_id]["facing"] = facing
 		# Move Left
 	if Input.is_action_just_pressed("move_left"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",true)
+		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",true)
+		
+		
+		Networking.player_info["peer id"][peer_id]["facing"] = facing
 	if Input.is_action_just_released("move_left"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
+		
+		Networking.player_info["peer id"][peer_id]["facing"] = facing
+		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
 		
 		# Move RIght
 	if Input.is_action_just_pressed("move_right"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",true)
-	if Input.is_action_just_released("move_right"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",false)
 		
+		Networking.player_info["peer id"][peer_id]["facing"] = facing
+		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",true)
+	if Input.is_action_just_released("move_right"):
+		
+		
+		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",false)
+		Networking.player_info["peer id"][peer_id]["facing"] = facing
 		# Attack
+		
 	if Input.is_action_just_pressed("attack"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
+		
+		
+		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
+		Networking.player_info["peer id"][peer_id]["state"].append(state)
+		
 	if Input.is_action_just_released("attack"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
+		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
+		Networking.player_info["peer id"][peer_id]["state"].append(state)
 
 		# Roll
 	if Input.is_action_just_pressed("roll"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
+		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
+		Networking.player_info["peer id"][peer_id]["state"].append(state)
+		
 	if Input.is_action_just_released("roll"):
-		rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
-
+		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
+		Networking.player_info["peer id"][peer_id]["state"].append(state)
 
 
 
@@ -421,14 +459,16 @@ func _physics_process(delta):
 				):
 					state = STATE_WALKING
 					
-					#rpc calls to server
-					#Client.rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
+					# RPC calls to client peer
+					Networking.player_info["peer id"][peer_id]["state"].append(state)
+
 					
 			if Input.is_action_just_pressed("attack"):
 				state = STATE_ATTACK
 				
 				#rpc calls to server
-				#rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
+				Networking.player_info["peer id"][peer_id]["state"].append(state)
+
 				
 			if Input.is_action_just_pressed("roll"):
 				state = STATE_ROLL
@@ -437,6 +477,12 @@ func _physics_process(delta):
 						-int( Input.is_action_pressed("move_up") ) + int( Input.is_action_pressed("move_down") )
 					).normalized()
 				
+				
+				
+				#asfafaf
+				Networking.player_info["peer id"][peer_id]["roll direction"].append(roll_direction)
+
+
 				# Update Facing
 					
 				# FOrmmerly update facing
@@ -787,49 +833,48 @@ remote func player_health(id : int, health: int):
 
 # Use Player Info Hash to Verify Packet Integrity
 # Should Instead Receive A Json Compressed instead of individual Player Parameters
-remote func pu(id : int, update_id : int, updates: PoolByteArray):
+#remote func pu(id : int, update_id : int, updates: PoolByteArray):
+#	
+#	print_debug (" Packet Recieved")
+#	var velocity #placeholder depreciated Variable
+#	
+#	
+#	# Unreliable packets can be sent in wrong order, we only work with the latest
+#	# data available.
+#	if update_id < last_update:
+#		print("Received update in wrong order. Discarding!")
+#		return
+#	
+#	# Maintain an Updated Timeline so older packets are discarded
+#	last_update = update_id
+#	
+#	
+#	# Updates the Update Parameter for This Peer ID. 
+#	# Is Called Remotely From a Peer
+#	print ("Data Packet:",updates.get_string_from_utf8())
+##	# REwrite to instead Parse json
+#	Networking.download_json_(updates, "res://")
+#	#Networking.player_info[id].updates[OS.get_ticks_msec()] = { position = pos, velocity = velocity, rotation = rotation }
 	
-	print_debug (" Packet Recieved")
-	var velocity #placeholder depreciated Variable
-	
-	
-	# Unreliable packets can be sent in wrong order, we only work with the latest
-	# data available.
-	if update_id < last_update:
-		print("Received update in wrong order. Discarding!")
-		return
-	
-	# Maintain an Updated Timeline so older packets are discarded
-	last_update = update_id
-	
-	
-	# Updates the Update Parameter for This Peer ID. 
-	# Is Called Remotely From a Peer
-	print ("Data Packet:",updates.get_string_from_utf8())
-	
-	# REwrite to instead Parse json
-	Networking.download_json_(updates, "res://")
-	#Networking.player_info[id].updates[OS.get_ticks_msec()] = { position = pos, velocity = velocity, rotation = rotation }
-	
-	# Stops a Stack Overflow or by Eraci=sing Excess Updates over 10
-	while len(Networking.player_info[id].updates) > 10:
-		Networking.player_info[id].updates.erase(Networking.player_info[id].updates.keys()[0])
-	
+#	# Stops a Stack Overflow or by Eraci=sing Excess Updates over 10
+#	while len(Networking.player_info[id].updates) > 10:
+#		Networking.player_info[id].updates.erase(Networking.player_info[id].updates.keys()[0])
+#	
 	
 	# Dont Update If Peer Destroyed
-	if Networking.player_info[id].destroyed:
-		return
+#	if Networking.player_info[id].destroyed:
+#		return
 	
 	
 	# Remote Update Particles
-	if Networking.player_info[id].node.has_node("particles"):
-		Networking.player_info[id].node.get_node("particles").set_emitting(velocity != 0)
-
-	if Networking.player_info[id].node.has_node("audio_thruster"):
-		Networking.player_info[id].node.get_node("audio_thruster").stream_paused = velocity == 0
-
-
-# Remote FUnction for emitting and displaying Damages points and Particles
+#	if Networking.player_info[id].node.has_node("particles"):
+#		Networking.player_info[id].node.get_node("particles").set_emitting(velocity != 0)
+#
+#	if Networking.player_info[id].node.has_node("audio_thruster"):
+#		Networking.player_info[id].node.get_node("audio_thruster").stream_paused = velocity == 0
+#
+#
+## Remote FUnction for emitting and displaying Damages points and Particles
 remote func display_damage(body):
 	var player_info 
 	

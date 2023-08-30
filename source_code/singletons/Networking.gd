@@ -58,6 +58,7 @@ var player_info : Dictionary = {
 	} 
 
 var peer_id : int
+var last_update = -1
 var my_peer : NetworkedMultiplayerENet
 var player_data : PoolByteArray
 var camera #stores general camera variables
@@ -121,6 +122,11 @@ var map_instance
 
 # Server Update ID
 var update_id : int = -1
+
+# Raw Player Info Data
+var RawData : Array
+var RawJson 
+
 
 # World Root Node
 var WorldRoot : Node
@@ -662,19 +668,44 @@ remote func broadcast_world_positions():
 remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
 	print_debug (" Packet Recieved")
-	var velocity #placeholder depreciated Variable
+	#var velocity #placeholder depreciated Variable
 	
 	
 	#Error Catcher 1
 	# Unreliable packets can be sent in wrong order, we only work with the latest
 	# data available.
-	#if update_id < last_update:
-	#	print("Received update in wrong order. Discarding!")
-	#	return
+	if update_id < last_update:
+		print("Received update in wrong order. Discarding!")
+		return
+	
+	# parse data as array
+	RawData = bytes2var(updates) #Warning: Can also contain code for remote execution; potential security flaw
+	
 	
 	# Maintain an Updated Timeline so older packets are discarded
 #	last_update = update_id
-	print("Data Packets:", str(bytes2var(updates)))
+	
+	#print("Data Packets:", str(RawData)) # Works
+	
+	
+	for i in RawData:
+		#Returns a String. Converting to Dictionary
+		
+		RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
+		#print(i)
+		
+		# Returns a Dictionary
+		#print(RawJson.get_result()) # Works
+		
+		# Merges Server Player Info to Local Player Info with Peer ID's
+		player_info["peer id"].merge(RawJson.get_result()["peer id"])
+		
+		#print(player_info["peer id"].size()) # FOr debug purposes only
+	
+	#print ("Peer ID's: ",player_info["peer id"].keys()) # Peer ID's of the Connected CLient Peers with Respective Player info dictionaries
+	print(player_info)
+	
+	# Peer ID's 1 needs to be emulated
 	
 	# Updates the Update Parameter for This Peer ID. 
 	# Is Called Remotely From a Peer
@@ -695,12 +726,7 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
 	
 	# Remote Update Particles
-	#if Networking.player_info[id].node.has_node("particles"):
-	#	Networking.player_info[id].node.get_node("particles").set_emitting(velocity != 0)
-
-	#if Networking.player_info[id].node.has_node("audio_thruster"):
-	#	Networking.player_info[id].node.get_node("audio_thruster").stream_paused = velocity == 0
-
+	
 
 
 class Downloader extends Node:

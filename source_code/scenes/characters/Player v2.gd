@@ -23,6 +23,7 @@
 # (2) Server and Client Codes are not Documented
 # (3) Player State Doesn't Update to Networking
 # (4) Simulation Logic doesn't work on server peer
+# (5) AccuratePositional Data isn't being sent to Server peer
 # *************************************************
 
 extends KinematicBody2D
@@ -81,7 +82,7 @@ var rotate_origin2
 var SIMULATING : bool = false
 
 # Simulation Logic 1
-var SIMULATING_1 : bool = true
+var SIMULATING_1 : bool = false
 
 var frame_counter : int = 0
 
@@ -179,6 +180,10 @@ func _process(delta):
 		# Raises up a Frame Counter
 	frame_counter += delta
 		
+	if frame_counter % 30 == 0:
+		Networking.RawData = var2bytes([to_json(Networking.player_info)])
+		
+		
 		# Checks the Spawning Boolean Every 60th Frame
 		# Called #very 60th Frame
 	if frame_counter % 6_000 == 0:
@@ -197,8 +202,7 @@ func _process(delta):
 		Networking.player_info["peer id"][peer_id]["state"].clear()
 
 
-	# Position
-	Networking.player_info["peer id"][peer_id]["position"] = position
+
 	
 	
 	if SIMULATING_1:
@@ -401,10 +405,25 @@ func _input(event):
 # client peer id is peer_id whereas server peer_id for client peer is 1
 
 # Move Up
+# only works on Server Class
 	if Input.is_action_just_pressed("move_up"):
 		#rpc_id(1,"player_input",peer_id,"up",true) 
+		# Updates player Info to Server Object for Broadcasting
 		
 		Networking.player_info["peer id"][peer_id]["facing"] = facing
+		#print(Networking.peer_ids) # for debug purposes only
+			# Position
+		Networking.player_info["peer id"][peer_id]["position"] = position
+		#Hacky fix. Ideally, peer id's should be peered together
+		# Buggy
+		#var2bytes([to_json(Networking.player_info)])
+		#if not Networking.peer_ids.max() == null: 
+		#print (Networking.peer_ids[1], "/",peer_id)
+		
+		print(Networking.player_info["peer id"][peer_id]["position"])
+		
+		#print("Largest Peer ID: ",Networking.peer_ids[0], "No: ", Networking.peer_ids.size() ) # for debug purposes only
+		Networking.rpc_unreliable_id(int(Networking.peer_ids[1]), "pi", peer_id, "move_up", true, Networking.RawData) 
 		
 	if Input.is_action_just_released("move_up"):
 	
@@ -473,49 +492,105 @@ func _physics_process(delta):
 	
 	## PROCESS STATES
 	#only process states if connected to a newworking id and only change your peer id's parameters
+	# SHould Contain Different Physics processes for Server and Client Class
 	
+
+
+	"""
+	CLIENT SDE PHYSICS PROCESS
+	"""
+	# server dowsnrt do any processing
 	
-	
-	
-	match state:
-		STATE_BLOCKED:
-			new_anim = "idle_" + facing
-			pass
-		STATE_IDLE:
-			if (
-					Input.is_action_pressed("move_down") or
-					Input.is_action_pressed("move_left") or
-					Input.is_action_pressed("move_right") or
-					Input.is_action_pressed("move_up")
-				):
-					state = STATE_WALKING
+	if not is_network_master():
+		
+		match state:
+			STATE_BLOCKED:
+				new_anim = "idle_" + facing
+				pass
+			STATE_IDLE:
+				if (
+						Input.is_action_pressed("move_down") or
+						Input.is_action_pressed("move_left") or
+						Input.is_action_pressed("move_right") or
+						Input.is_action_pressed("move_up")
+					):
+						state = STATE_WALKING
+						
+						# Updates State to Global Dictionary
+						# RPC calls to client peer
+						Networking.player_info["peer id"][peer_id]["state"].append(state)
+						
+						
+
+						
+				if Input.is_action_just_pressed("attack"):
+					state = STATE_ATTACK
 					
-					# RPC calls to client peer
+					#rpc calls to server
 					Networking.player_info["peer id"][peer_id]["state"].append(state)
 
 					
-			if Input.is_action_just_pressed("attack"):
-				state = STATE_ATTACK
-				
-				#rpc calls to server
-				Networking.player_info["peer id"][peer_id]["state"].append(state)
-
-				
-			if Input.is_action_just_pressed("roll"):
-				state = STATE_ROLL
-				roll_direction = Vector2(
-						- int( Input.is_action_pressed("move_left") ) + int( Input.is_action_pressed("move_right") ),
-						-int( Input.is_action_pressed("move_up") ) + int( Input.is_action_pressed("move_down") )
-					).normalized()
-				
-				
-				
-				#asfafaf
-				Networking.player_info["peer id"][peer_id]["roll direction"].append(roll_direction)
-
-
-				# Update Facing
+				if Input.is_action_just_pressed("roll"):
+					state = STATE_ROLL
+					roll_direction = Vector2(
+							- int( Input.is_action_pressed("move_left") ) + int( Input.is_action_pressed("move_right") ),
+							-int( Input.is_action_pressed("move_up") ) + int( Input.is_action_pressed("move_down") )
+						).normalized()
 					
+					
+					
+					#asfafaf
+					Networking.player_info["peer id"][peer_id]["roll direction"].append(roll_direction)
+
+
+					# Update Facing
+						
+					# FOrmmerly update facing
+					# SHould Ideally Call Remote Player input for it's Client Peer Accross the Networl
+					if Input.is_action_pressed("move_left"):
+						
+						facing = "left"
+					if Input.is_action_pressed("move_right"):
+						facing = "right"
+					if Input.is_action_pressed("move_up"):
+						facing = "up"
+					if Input.is_action_pressed("move_down"):
+						facing = "down"
+
+					
+					#_update_facing()
+				new_anim = "idle_" + facing
+				#get_material().
+				
+				pass
+			STATE_WALKING:
+				if Input.is_action_just_pressed("attack"):
+					state = STATE_ATTACK
+					
+				if Input.is_action_just_pressed("roll"):
+					state = STATE_ROLL
+				
+				linear_vel = move_and_slide(linear_vel)
+				
+				#print('Player linear velocity: ', linear_vel) #for debug purposes only
+				
+				var target_speed = Vector2()
+				
+				if Input.is_action_pressed("move_down"):
+					target_speed += Vector2.DOWN
+				if Input.is_action_pressed("move_left"):
+					target_speed += Vector2.LEFT
+				if Input.is_action_pressed("move_right"):
+					target_speed += Vector2.RIGHT
+				if Input.is_action_pressed("move_up"):
+					target_speed += Vector2.UP
+				
+				target_speed *= WALK_SPEED
+				#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
+				linear_vel = target_speed
+				roll_direction = linear_vel.normalized()
+				
+				
 				# FOrmmerly update facing
 				# SHould Ideally Call Remote Player input for it's Client Peer Accross the Networl
 				if Input.is_action_pressed("move_left"):
@@ -529,99 +604,72 @@ func _physics_process(delta):
 					facing = "down"
 
 				
+				
 				#_update_facing()
-			new_anim = "idle_" + facing
-			#get_material().
-			
-			pass
-		STATE_WALKING:
-			if Input.is_action_just_pressed("attack"):
-				state = STATE_ATTACK
 				
-			if Input.is_action_just_pressed("roll"):
-				state = STATE_ROLL
-			
-			linear_vel = move_and_slide(linear_vel)
-			
-			#print('Player linear velocity: ', linear_vel) #for debug purposes only
-			
-			var target_speed = Vector2()
-			
-			if Input.is_action_pressed("move_down"):
-				target_speed += Vector2.DOWN
-			if Input.is_action_pressed("move_left"):
-				target_speed += Vector2.LEFT
-			if Input.is_action_pressed("move_right"):
-				target_speed += Vector2.RIGHT
-			if Input.is_action_pressed("move_up"):
-				target_speed += Vector2.UP
-			
-			target_speed *= WALK_SPEED
-			#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
-			linear_vel = target_speed
-			roll_direction = linear_vel.normalized()
-			
-			
-			# FOrmmerly update facing
-			# SHould Ideally Call Remote Player input for it's Client Peer Accross the Networl
-			if Input.is_action_pressed("move_left"):
+				if linear_vel.length() > 5:
+					new_anim = "walk_" + facing
+				else:
+					goto_idle()
 				
-				facing = "left"
-			if Input.is_action_pressed("move_right"):
-				facing = "right"
-			if Input.is_action_pressed("move_up"):
-				facing = "up"
-			if Input.is_action_pressed("move_down"):
-				facing = "down"
+				#rpc calls to server
+				#Client.rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
+				
+			STATE_ATTACK:
+				new_anim = "slash_" + facing
+				
+				 
+				pass
+			STATE_ROLL:
+				if roll_direction == Vector2.ZERO:
+					state = STATE_IDLE
+				else:
+					linear_vel = move_and_slide(linear_vel)
+					var target_speed = Vector2()
+					target_speed = roll_direction
+					target_speed *= ROLL_SPEED
+					#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
+					linear_vel = target_speed
+					new_anim = "roll"
+					
+					
+					if Input.is_action_just_pressed("attack"): #punch and slide
+						state = STATE_ATTACK
+			STATE_DIE:
+				new_anim = "die"
+				
 
-			
-			
-			#_update_facing()
-			
-			if linear_vel.length() > 5:
-				new_anim = "walk_" + facing
-			else:
-				goto_idle()
-			
-			#rpc calls to server
-			#Client.rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
-			
-		STATE_ATTACK:
-			new_anim = "slash_" + facing
-			
-			 
-			pass
-		STATE_ROLL:
-			if roll_direction == Vector2.ZERO:
-				state = STATE_IDLE
-			else:
-				linear_vel = move_and_slide(linear_vel)
-				var target_speed = Vector2()
-				target_speed = roll_direction
-				target_speed *= ROLL_SPEED
-				#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
-				linear_vel = target_speed
-				new_anim = "roll"
 				
+			STATE_HURT:
+				new_anim = "hurt"
 				
-				if Input.is_action_just_pressed("attack"): #punch and slide
-					state = STATE_ATTACK
-		STATE_DIE:
-			new_anim = "die"
-			
-
-			
-		STATE_HURT:
-			new_anim = "hurt"
-			
+		
+		'UPDATE ANIMATIONS'
+		if new_anim != anim:
+			anim = new_anim
+			animation.play(anim)
+		pass
 	
-	'UPDATE ANIMATIONS'
-	if new_anim != anim:
-		anim = new_anim
-		animation.play(anim)
-	pass
 	
-
+	"""
+	SERVER SDE PHYSICS PROCESS
+	"""
+	# Simulation Logic
+	if is_network_master():
+		
+		
+		#print(Networking.player_info["peer id"][Networking.peer_ids[2]]["position"])
+		# Sync Client Peer Position
+		#set_position(Vector2(Networking.player_info["peer id"][Networking.peer_ids[1]]["position"]))
+		
+		#print(Networking.player_info["peer id"][Networking.peer_ids[0]]["position"])
+		#print(Networking.player_info["peer id"].keys()) # works
+		if Networking.player_info["peer id"].keys().size() > 1:
+			print(Networking.player_info["peer id"].keys()[1] ,": ",Networking.player_info["peer id"][Networking.player_info["peer id"].keys()[1]]["position"] ,"/", Networking.player_info["peer id"][Networking.player_info["peer id"].keys()[0]]["position"])
+		#print(Networking.player_info["peer id"])
+		
+		#print_debug(Networking.peer_ids) # Works # For debug purposes only
+		pass
 
 func _on_dialog_started():
 	state = STATE_BLOCKED
@@ -704,25 +752,6 @@ remote func player_leaving(id : int):
 
 
 
-remote func player_input(id : int, key: String, pressed: bool):
-	# Remote Calls Player Input From Client Peer for each client peer
-	# Should Connect to Physics Process Simulation Logic
-	# WOrks
-	
-	print("Remote: player_input(" + str(id)+","+key+","+str(pressed)+")")
-
-	#if key == "left":
-	#	#Networking.player_info[id].facing = key
-	#	Networking.player_info[id].rotation = -1 if pressed else 0
-	#elif key == "right":
-	#	Networking.player_info[id].rotation = 1 if pressed else 0
-	#elif key == "up":
-	#	Networking.player_info[id].velocity = -1 if pressed else 0
-	#elif key == "down":
-	#	Networking.player_info[id].velocity = 1 if pressed else 0
-	#elif key == "fire":
-	#	Networking.player_info[id].firing = 1 if pressed else 0
-		
 
 
 

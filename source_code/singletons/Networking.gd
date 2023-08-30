@@ -538,7 +538,13 @@ func _player_connected(_id : int):
 	
 	peer_id = _id
 	#OS.set_window_title('Client' + str(_id))
-	 
+	
+	# Create Global Pointers to Connected Peer ID's
+	if not peer_ids.has(_id):
+		peer_ids.append(_id)
+	if not peer_ids.has(get_tree().get_network_unique_id()):
+		peer_ids.append(get_tree().get_network_unique_id())
+	
 	"Starts Game"
 	
 	Globals.current_level = "res://scenes/levels/Testing Scene.tscn"
@@ -617,7 +623,6 @@ func _end_game():
 	Lobby._set_status(with_error, Dialogs.dialog_box , false)
 
 
-
 remote func broadcast_world_positions():
 	# Server Call
 	# Calls the pu Method in all Renote peers
@@ -636,13 +641,14 @@ remote func broadcast_world_positions():
 		
 		#print_debug( "Player Info as Json: " + to_json(player_info)) # isn't converted to PoolbyteArray
 		
-		
+		#print(player_info)
 		
 		player_data = var2bytes([to_json(player_info)]) #PoolByteArray([data]) #Test Data
 		
 		
 		#print_debug("BroadCasting Player Data"+ str(bytes2var(player_data)) + " for peer id " + str(peer_id), "Master: ", is_network_master()) # For Debug Purposes only
 		
+		#	print(player_data.size())
 		
 		rpc_unreliable_id(peer_id, "pu", peer_id, update_id, player_data) # pu call is buggy cuz of peer id error
 	
@@ -652,20 +658,71 @@ remote func broadcast_world_positions():
 		update_id += 1
 		
 	
+	
+
+"""
+REGISTERS PLAYER INPUT AND RELEASES
+"""
+
+# Also updates the server object with player data from respective peers
+remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray):
+	# Remote Calls Player Input From Client Peer for each client peer
+	# Should Connect to Physics Process Simulation Logic
+	# bBug: Player positional data is not sent properly
+
+	if is_network_master():
+		print("Player Input Registered from ", id )
+			
+			# Decode poolbyte array data to dictionary
+		RawData = bytes2var(player_data)
+			
+			
+		for i in RawData:
+				#Returns a String. Converting to Dictionary
+				
+			RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
+				
+				
+				# Merges Server Player Info to Local Player Info with Peer ID's
+			player_info["peer id"].merge(RawJson.get_result()["peer id"])
+				
+			
+			print("Remote: player_input(" + str(id)+","+key+","+str(pressed)+")")
+			print(player_info["peer id"].keys())
+			print(peer_ids)
+			
+			#Requires Debugging
+			#if key == "left":
+			#	Networking.player_info[id].facing = key
+			##	Networking.player_info[id].rotation = -1 if pressed else 0
+			#elif key == "right":
+			#	Networking.player_info[id].rotation = 1 if pressed else 0
+			#elif key == "up":
+			#	Networking.player_info[id].velocity = -1 if pressed else 0
+			#elif key == "down":
+			#	Networking.player_info[id].velocity = 1 if pressed else 0
+			#elif key == "fire":
+			#	Networking.player_info[id].firing = 1 if pressed else 0
+			#elif key == "attack":
+			##	
+			#else : pass
 
 
+
+"""
+PLAYER UPDATE
+"""
 # Player update function
 # This function is named "pu" to lower the network bandwidth usage, sending something
 # like "player_update" will use an extra 220 bytes / second for each connected player. 
+# broadcasts server player data as poolbyte arrays to all peers
 
 # Use Player Info Hash to Verify Packet Integrity
 # Should Instead Receive A Json Compressed instead of individual Player Parameters
 
 remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
-	print_debug (" Packet Recieved")
-	#var velocity #placeholder depreciated Variable
-	
+	#print_debug (" Packet Recieved") # for debug purposes only
 	
 	#Error Catcher 1
 	# Unreliable packets can be sent in wrong order, we only work with the latest
@@ -700,8 +757,9 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
 	#print ("Peer ID's: ",player_info["peer id"].keys()) # Peer ID's of the Connected CLient Peers with Respective Player info dictionaries
 	
+	# only works on client peer
 	peer_ids = player_info["peer id"].keys()
-	print(player_info)
+	#print(player_info) # for debug purposes only
 	
 	# Peer ID's 1 needs to be emulated
 	

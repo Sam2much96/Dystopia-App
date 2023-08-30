@@ -126,7 +126,7 @@ var update_id : int = -1
 # Raw Player Info Data
 var RawData : Array
 var RawJson 
-
+var peer_ids : Array
 
 # World Root Node
 var WorldRoot : Node
@@ -537,7 +537,7 @@ func _player_connected(_id : int):
 	Networking.player_info["peer id"] = {_id : {}}
 	
 	peer_id = _id
-	OS.set_window_title('Client' + str(_id))
+	#OS.set_window_title('Client' + str(_id))
 	 
 	"Starts Game"
 	
@@ -641,18 +641,14 @@ remote func broadcast_world_positions():
 		player_data = var2bytes([to_json(player_info)]) #PoolByteArray([data]) #Test Data
 		
 		
-		print_debug("BroadCasting Player Data"+ str(bytes2var(player_data)) + " for peer id " + str(peer_id), "Master: ", is_network_master())
+		#print_debug("BroadCasting Player Data"+ str(bytes2var(player_data)) + " for peer id " + str(peer_id), "Master: ", is_network_master()) # For Debug Purposes only
 		
 		
 		rpc_unreliable_id(peer_id, "pu", peer_id, update_id, player_data) # pu call is buggy cuz of peer id error
-		for i in player_info["peer id"]:
-			#for peer_id_2 in Networking.player_info:
+	
+	#	for i in player_info["peer id"]:
+	#		print (i.keys())
 			
-			 #id : int, update_id : int, updates: PoolByteArray
-			#rpc_unreliable_id(peer_id, "pu", peer_id, update_id, player_data)
-			
-			print (i)
-			#pass
 		update_id += 1
 		
 	
@@ -703,6 +699,8 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 		#print(player_info["peer id"].size()) # FOr debug purposes only
 	
 	#print ("Peer ID's: ",player_info["peer id"].keys()) # Peer ID's of the Connected CLient Peers with Respective Player info dictionaries
+	
+	peer_ids = player_info["peer id"].keys()
 	print(player_info)
 	
 	# Peer ID's 1 needs to be emulated

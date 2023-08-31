@@ -96,6 +96,8 @@ func _ready():
 
 	#Globals.player.append(self)  #saves player to the Global player variable
 	
+	# Make Player object a global variable
+	
 
 	'Makes Player Hitpoint a Global Variable'
 	#Globals.player_hitpoints = hitpoints
@@ -114,7 +116,7 @@ func _ready():
 	# Works
 	Networking.player_info["peer id"][peer_id] = {
 		"node": [],
-		"position": Vector2.ZERO, 
+		"position": {"x":0, "y": 0 }, 
 		"hitpoints" : 3,
 		"facing": "",
 		"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
@@ -136,6 +138,8 @@ func _ready():
 		}
 		
 	Networking.player_info["peer id"][peer_id] ["node"].append(self)
+	
+	Networking.player = self
 	
 	print_debug("Initial Player Info Debug: ",Networking.player_info)
 	
@@ -180,16 +184,16 @@ func _process(delta):
 		# Raises up a Frame Counter
 	frame_counter += delta
 		
-	if frame_counter % 6_000 == 0:
-		Networking.RawData = var2bytes([to_json(Networking.player_info)])
+
 		
 		
 		# Checks the Spawning Boolean Every 60th Frame
 		# Called #very 60th Frame
-	if frame_counter % 6_000 == 0:
+		# tEMPORARILY dISABLED FOR DEBUGGING
+	#if frame_counter % 6_000 == 0:
 			# BroadCasts Player Info to Each Client Peer suing the pu remote call
 			# Should Be Called From the Server Class Instead
-		Networking.broadcast_world_positions()
+	#	Networking.broadcast_world_positions()
 
 	
 	# Resets Frame Counter
@@ -198,8 +202,9 @@ func _process(delta):
 
 	# Prevents Memory overflow and increased bandwidth from large packet sizes
 	# Should ideally only clear up to the last two?
-	if Networking.player_info["peer id"][peer_id]["state"].size() > 10:
-		Networking.player_info["peer id"][peer_id]["state"].clear()
+	# Buggy
+	#if Networking.player_info["peer id"][peer_id]["state"].size() > 10:
+	#	Networking.player_info["peer id"][peer_id]["state"].clear()
 
 
 
@@ -415,17 +420,24 @@ func _input(event):
 			Networking.player_info["peer id"][peer_id]["facing"] = facing
 			#print(Networking.peer_ids) # for debug purposes only
 				# Position
-			Networking.player_info["peer id"][peer_id]["position"] = position
+			Networking.player_info["peer id"][peer_id]["position"]["x"] = self.position.x
+			Networking.player_info["peer id"][peer_id]["position"]["y"] = self.position.y
 			#Hacky fix. Ideally, peer id's should be peered together
 			# Buggy
 			#var2bytes([to_json(Networking.player_info)])
 			#if not Networking.peer_ids.max() == null: 
 			#print (Networking.peer_ids[1], "/",peer_id)
 			
-			print(Networking.player_info["peer id"][peer_id]["position"])
+			# Update Player Info Data as poolbyte
+			Networking.RawData = Networking.array2poolByte([Networking.player_info])
+			
+			# One KB Per Input is too Large. Please optimize to 20 Bytes Maz
+			# Only send changed innformation rather than entire merged dictionary
+			print(Networking.player_info["peer id"][peer_id]["position"], "/", "Size (Bytes) : ", Networking.RawData.size())
+			
 			
 			#print("Largest Peer ID: ",Networking.peer_ids[0], "No: ", Networking.peer_ids.size() ) # for debug purposes only
-			Networking.rpc_unreliable_id(1, "pi", peer_id, "move_up", true, Networking.RawData) 
+			Networking.rpc_unreliable_id(1, "pi", peer_id, "move_up", true, Networking.RawData) # Packet Loss Error
 			
 		if Input.is_action_just_released("move_up"):
 		
@@ -651,7 +663,8 @@ func _physics_process(delta):
 			anim = new_anim
 			animation.play(anim)
 		pass
-	
+	#if is_network_master():
+	#	set_position(Networking.player_info["peer id"][peer_id]["position"]) 
 	
 	"""
 	SERVER SDE PHYSICS PROCESS
@@ -669,8 +682,8 @@ func _physics_process(delta):
 		#print(Networking.player_info["peer id"][Networking.peer_ids[0]]["position"])
 		#print(Networking.player_info["peer id"].keys()) # works
 		if Networking.player_info["peer id"].keys().size() > 1:
-			print(Networking.player_info["peer id"].keys()[1] ,": ",Networking.player_info["peer id"][Networking.player_info["peer id"].keys()[1]]["position"] ,"/", Networking.player_info["peer id"][Networking.player_info["peer id"].keys()[0]]["position"])
-		#print(Networking.player_info["peer id"])
+			#print(Networking.player_info["peer id"].keys()[1] ,": ",Networking.player_info["peer id"][Networking.player_info["peer id"].keys()[1]]["position"] ,"/", Networking.player_info["peer id"][Networking.player_info["peer id"].keys()[0]]["position"])
+			pass
 		
 		#print_debug(Networking.peer_ids) # Works # For debug purposes only
 		pass

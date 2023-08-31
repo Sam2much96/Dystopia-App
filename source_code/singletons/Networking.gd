@@ -131,6 +131,9 @@ var peer_ids : Array
 # World Root Node
 var WorldRoot : Node
 
+# My Player Networking object
+var player : Player_v2_networking
+
 func _ready():
 	_init_timer()
 	
@@ -643,22 +646,38 @@ remote func broadcast_world_positions():
 		
 		#print(player_info)
 		
-		player_data = var2bytes([to_json(player_info)]) #PoolByteArray([data]) #Test Data
+		#player_data = var2bytes([to_json(player_info)]) #PoolByteArray([data]) #Test Data
 		
 		
 		#print_debug("BroadCasting Player Data"+ str(bytes2var(player_data)) + " for peer id " + str(peer_id), "Master: ", is_network_master()) # For Debug Purposes only
 		
 		#	print(player_data.size())
 		
-		rpc_unreliable_id(peer_id, "pu", peer_id, update_id, player_data) # pu call is buggy cuz of peer id error
+		
+		rpc_unreliable_id(peer_id, "pu", peer_id, update_id, array2poolByte([player_info])) # pu call is buggy cuz of peer id error
 	
 	#	for i in player_info["peer id"]:
 	#		print (i.keys())
 			
 		update_id += 1
 		
-	
-	
+
+"Multiplayer NetCode Functions"
+
+func array2poolByte( data_from : Array) -> PoolByteArray: 
+	#	if frame_counter % 6_000 == 0:
+	RawData = var2bytes([to_json(data_from)])
+	return PoolByteArray(RawData)
+
+func poolByte2Array(data_from: PoolByteArray) -> Array:
+	RawData = bytes2var(data_from)
+	# Iterate through raw data
+	for i in RawData:
+		#Returns a String. Converting to Dictionary
+		
+		RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
+	return RawJson.get_result()
+
 
 """
 REGISTERS PLAYER INPUT AND RELEASES
@@ -671,26 +690,76 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 	# bBug: Player positional data is not sent properly
 
 	if is_network_master():
-		print("Player Input Registered from ", id )
-			
-			# Decode poolbyte array data to dictionary
-		RawData = bytes2var(player_data)
-			
-			
-		for i in RawData:
+		#print("Player Input Registered ",str (poolByte2Array(player_data)), "from ", id ) # player data returns array
+		
+		#print(player_info) # for debug purposes only
+		
+		var id_as_string : String = var2str(id) 
+		
+		for i in poolByte2Array(player_data):
 				#Returns a String. Converting to Dictionary
 				
-			RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
-				
-				
-				# Merges Server Player Info to Local Player Info with Peer ID's
-			player_info["peer id"].merge(RawJson.get_result()["peer id"])
+		#	RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
 				
 			
-			print("Remote: player_input(" + str(id)+","+key+","+str(pressed)+")")
-			print(player_info["peer id"].keys())
-			print(peer_ids)
+			# Bug : Nerging Dictionaries may be overwrite positional data? 
+			# Fix : Set Overwrite to true for duplicate keys
 			
+			
+			#print ("I: ", i["peer id"][var2str(id)]["position"]) # works # for debug purposes only
+			
+			if not player_info["peer id"].has(id_as_string):
+				player_info["peer id"][id_as_string] = {
+				"node": [],
+				"position": i["peer id"][id_as_string]["position"], # updated positional data, 
+				"hitpoints" : 3,
+				"facing": "",
+				"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
+				"roll dir": [],
+				"destroyed": false,
+				"updates": [],  # Stores Present Update ID Across All Clients
+				"wallet addr": {},
+				"asset id": {},
+				"smart contract": [], # Arrays As it will only be one Smart COntract
+				"kill Count": 0,
+				"inventory": {},
+				"velocity":0,
+				"rotation":0,
+				"firing":false,
+				"current_angle": 0,
+				"rewspawn_time":1000,
+				"hash" : ""
+				
+				}
+				
+				
+			print ("O: ", player_info["peer id"][id_as_string]["position"]) # works # for debug purposes only
+
+			
+			
+			# Merges Server Player Info to Server Player Info with Peer ID's
+			# Trying to get updated positinal data from data packed
+				
+			if player_info["peer id"].has(id_as_string):
+				print("Updating Player Information for peer ",id_as_string, " from " ,player_info["peer id"][id_as_string]["position"], " to " , i["peer id"][id_as_string]["position"])
+				player_info["peer id"][id_as_string]["position"] = i["peer id"][id_as_string]["position"] #WORKS
+
+				# position simulation
+				print(Vector2(float(i["peer id"][id_as_string]["position"]["x"]), float(i["peer id"][id_as_string]["position"]["y"]))) # For Debug Purposes only
+				
+				
+				player.set_position(Vector2(float(i["peer id"][id_as_string]["position"]["x"]), float(i["peer id"][id_as_string]["position"]["y"])))
+				
+				# BroadCast Update to all Network Peers
+				# Buggy : Doesnt send updated Player info
+				broadcast_world_positions()
+
+			
+		#print("Remote: player_input(" + str(id)+","+key+","+str(pressed)+")" , RawJson.get_result()["peer id"][])
+		#print(player_info)
+		#print(player_info["peer id"].keys())
+		#print(peer_ids)
+		
 			#Requires Debugging
 			#if key == "left":
 			#	Networking.player_info[id].facing = key
@@ -719,10 +788,13 @@ PLAYER UPDATE
 
 # Use Player Info Hash to Verify Packet Integrity
 # Should Instead Receive A Json Compressed instead of individual Player Parameters
+#
+# receives player info from sever object
+
 
 remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
-	#print_debug (" Packet Recieved") # for debug purposes only
+	print (" Packet Recieved") # for debug purposes only
 	
 	#Error Catcher 1
 	# Unreliable packets can be sent in wrong order, we only work with the latest
@@ -732,8 +804,9 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 		return
 	
 	# parse data as array
-	RawData = bytes2var(updates) #Warning: Can also contain code for remote execution; potential security flaw
+	#RawData = bytes2var(updates) #Warning: Can also contain code for remote execution; potential security flaw
 	
+	var id_as_string : String = var2str(peer_id) 
 	
 	# Maintain an Updated Timeline so older packets are discarded
 #	last_update = update_id
@@ -741,17 +814,27 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	#print("Data Packets:", str(RawData)) # Works
 	
 	
-	for i in RawData:
+	for i in poolByte2Array(updates):
 		#Returns a String. Converting to Dictionary
 		
-		RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
+		#RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
 		#print(i)
 		
 		# Returns a Dictionary
 		#print(RawJson.get_result()) # Works
 		
 		# Merges Server Player Info to Local Player Info with Peer ID's
-		player_info["peer id"].merge(RawJson.get_result()["peer id"])
+		#player_info["peer id"].merge(RawJson.get_result()["peer id"])
+		
+		#print("I: ",i) # for debug purposes only
+		
+		print (player_info["peer id"].keys()) #for debug purposes only
+		
+		
+		# Update Local Peer Data from peer Update
+		
+		#if player_info["peer id"].keys().size() > 1:
+		player_info["peer id"][player_info["peer id"].keys().pop_back()]["position"] = i["peer id"][id_as_string]["position"]
 		
 		#print(player_info["peer id"].size()) # FOr debug purposes only
 	

@@ -180,7 +180,7 @@ func _process(delta):
 		# Raises up a Frame Counter
 	frame_counter += delta
 		
-	if frame_counter % 30 == 0:
+	if frame_counter % 6_000 == 0:
 		Networking.RawData = var2bytes([to_json(Networking.player_info)])
 		
 		
@@ -406,83 +406,85 @@ func _input(event):
 
 # Move Up
 # only works on Server Class
-	if Input.is_action_just_pressed("move_up"):
-		#rpc_id(1,"player_input",peer_id,"up",true) 
-		# Updates player Info to Server Object for Broadcasting
-		
-		Networking.player_info["peer id"][peer_id]["facing"] = facing
-		#print(Networking.peer_ids) # for debug purposes only
-			# Position
-		Networking.player_info["peer id"][peer_id]["position"] = position
-		#Hacky fix. Ideally, peer id's should be peered together
-		# Buggy
-		#var2bytes([to_json(Networking.player_info)])
-		#if not Networking.peer_ids.max() == null: 
-		#print (Networking.peer_ids[1], "/",peer_id)
-		
-		print(Networking.player_info["peer id"][peer_id]["position"])
-		
-		#print("Largest Peer ID: ",Networking.peer_ids[0], "No: ", Networking.peer_ids.size() ) # for debug purposes only
-		Networking.rpc_unreliable_id(int(Networking.peer_ids[1]), "pi", peer_id, "move_up", true, Networking.RawData) 
-		
-	if Input.is_action_just_released("move_up"):
-	
-		# Code Logic : Call Player Inputs function via remote calls sending the following parameters
-		#id, key, pressed
-		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
-		Networking.player_info["peer id"][peer_id]["facing"] = facing
-		
-		# Move Down
-	if Input.is_action_just_pressed("move_down"):
-		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",true)
-		
-		Networking.player_info["peer id"][peer_id]["facing"] = facing
-	if Input.is_action_just_released("move_down"):
-		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",false)
-		
-		
-		Networking.player_info["peer id"][peer_id]["facing"] = facing
-		# Move Left
-	if Input.is_action_just_pressed("move_left"):
-		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",true)
-		
-		
-		Networking.player_info["peer id"][peer_id]["facing"] = facing
-	if Input.is_action_just_released("move_left"):
-		
-		Networking.player_info["peer id"][peer_id]["facing"] = facing
-		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
-		
-		# Move RIght
-	if Input.is_action_just_pressed("move_right"):
-		
-		Networking.player_info["peer id"][peer_id]["facing"] = facing
-		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",true)
-	if Input.is_action_just_released("move_right"):
-		
-		
-		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",false)
-		Networking.player_info["peer id"][peer_id]["facing"] = facing
-		# Attack
-		
-	if Input.is_action_just_pressed("attack"):
-		
-		
-		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
-		Networking.player_info["peer id"][peer_id]["state"].append(state)
-		
-	if Input.is_action_just_released("attack"):
-		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
-		Networking.player_info["peer id"][peer_id]["state"].append(state)
 
-		# Roll
-	if Input.is_action_just_pressed("roll"):
-		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
-		Networking.player_info["peer id"][peer_id]["state"].append(state)
+	if not is_network_master():
+		if Input.is_action_just_pressed("move_up"):
+			#rpc_id(1,"player_input",peer_id,"up",true) 
+			# Updates player Info to Server Object for Broadcasting
+			
+			Networking.player_info["peer id"][peer_id]["facing"] = facing
+			#print(Networking.peer_ids) # for debug purposes only
+				# Position
+			Networking.player_info["peer id"][peer_id]["position"] = position
+			#Hacky fix. Ideally, peer id's should be peered together
+			# Buggy
+			#var2bytes([to_json(Networking.player_info)])
+			#if not Networking.peer_ids.max() == null: 
+			#print (Networking.peer_ids[1], "/",peer_id)
+			
+			print(Networking.player_info["peer id"][peer_id]["position"])
+			
+			#print("Largest Peer ID: ",Networking.peer_ids[0], "No: ", Networking.peer_ids.size() ) # for debug purposes only
+			Networking.rpc_unreliable_id(1, "pi", peer_id, "move_up", true, Networking.RawData) 
+			
+		if Input.is_action_just_released("move_up"):
 		
-	if Input.is_action_just_released("roll"):
-		#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
-		Networking.player_info["peer id"][peer_id]["state"].append(state)
+			# Code Logic : Cal0l Player Inputs function via remote calls sending the following parameters
+			#id, key, pressed
+			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
+			Networking.player_info["peer id"][peer_id]["facing"] = facing
+			
+			# Move Down
+		if Input.is_action_just_pressed("move_down"):
+			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",true)
+			
+			Networking.player_info["peer id"][peer_id]["facing"] = facing
+		if Input.is_action_just_released("move_down"):
+			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",false)
+			
+			
+			Networking.player_info["peer id"][peer_id]["facing"] = facing
+			# Move Left
+		if Input.is_action_just_pressed("move_left"):
+			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",true)
+			
+			
+			Networking.player_info["peer id"][peer_id]["facing"] = facing
+		if Input.is_action_just_released("move_left"):
+			
+			Networking.player_info["peer id"][peer_id]["facing"] = facing
+			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
+			
+			# Move RIght
+		if Input.is_action_just_pressed("move_right"):
+			
+			Networking.player_info["peer id"][peer_id]["facing"] = facing
+			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",true)
+		if Input.is_action_just_released("move_right"):
+			
+			
+			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",false)
+			Networking.player_info["peer id"][peer_id]["facing"] = facing
+			# Attack
+			
+		if Input.is_action_just_pressed("attack"):
+			
+			
+			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
+			Networking.player_info["peer id"][peer_id]["state"].append(state)
+			
+		if Input.is_action_just_released("attack"):
+			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
+			Networking.player_info["peer id"][peer_id]["state"].append(state)
+
+			# Roll
+		if Input.is_action_just_pressed("roll"):
+			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
+			Networking.player_info["peer id"][peer_id]["state"].append(state)
+			
+		if Input.is_action_just_released("roll"):
+			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
+			Networking.player_info["peer id"][peer_id]["state"].append(state)
 
 
 
@@ -662,6 +664,8 @@ func _physics_process(delta):
 		# Sync Client Peer Position
 		#set_position(Vector2(Networking.player_info["peer id"][Networking.peer_ids[1]]["position"]))
 		
+		# Debugx Server sie position
+		
 		#print(Networking.player_info["peer id"][Networking.peer_ids[0]]["position"])
 		#print(Networking.player_info["peer id"].keys()) # works
 		if Networking.player_info["peer id"].keys().size() > 1:
@@ -670,6 +674,12 @@ func _physics_process(delta):
 		
 		#print_debug(Networking.peer_ids) # Works # For debug purposes only
 		pass
+		
+		
+		#should ideally set server player position to peer's position
+		# But getting positional data is somewhat buggy
+
+
 
 func _on_dialog_started():
 	state = STATE_BLOCKED

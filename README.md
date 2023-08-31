@@ -31,8 +31,8 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 **(1) Auto Music shuffle:**
 	This shuffles a selected music playlist (dictionary). It is in the Music singleton and uses the shuffle( function)
 
-**(2)Globals.comicbook[1]:**
-   This is a shortcut for calling the comicbook scenes. use the change_scene_to(load(...INSERT ...)) to call it. 
+**(2)Global Singleto Architecture**
+   This is a shortcut for calling the comicbook scenes and global objects via singlietons for improved performance. use the change_scene_to(load(...INSERT ...)) to call it. 
   check for other callable functions and variables in the globals singleton 
 **(3)Debug**
 	It calls debug funtions like Debug.start_debug(), Debug.stop_debug(), and passes its variables to the viewport
@@ -52,7 +52,7 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 **(7) Enemy kill count:**
 	This is a global variable that can be an indicator of player's progress
 
-**(8) Twitter** 
+**(8) X and Reddit Integrations** 
 
 (9) Player and Enemy Effects
 
@@ -74,10 +74,11 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 	-Ingame Algorand Wallet (testnet)
 	-NFT image parser
 	-Transaction capabilities for assets and Tokens (Testnet)
+	-Escrow SmartCOntract 
 
 **(18) Download Images, Documents and Videos:** Networking.download_image_(image url, image save path): Downloads a png image from a url and saves it at a given path 
 
-**(19) WebRTC :** WebRTC (web real time communication) for Multiplayer gameplay from https://github.com/godotengine/webrtc-native
+**(19) Multiplayer :** Server/Client Multiplayer Architechture
 ## -Features to Fix
 	
 	-Fix up Game's spawnpoints (look at the Exit code in the Temple interior scene)	
@@ -92,27 +93,20 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 ## -Features to Add
 	
 	-Game Vibrations
-	-Comic book dialogue system
-	-Enemy AI (using G.O.A.P)
 	-Hints system
-	-Expanded Dialogue System (Word bubble system)
-	-update control art with new button maps
-	
+	-Custom Button Mapping
 	-Guided view system
 	-Mana meter (Ogun meter)
 	-NPC_2 Quests
-	-New Environment(Create forest environment)
 	-Create Dungeon	
 	-Spritesheet animation upgrade
 	-Model player & enemy characters (Rig with mixamo)
 	-Procedurally generated sand dunes
 	-Update Game instructionals visuals
-	-Inventory system
 	-Colour changing joystick
 	-Create Dungeons
 	-Sandbox mechanics
 	-Polygon 2d to deconstruct comic panels
-	-Host game server with esp32
 	-Reprogrammable joystick
 	-Ads
 		-Interstitial Ads at the end of comic book page
@@ -120,6 +114,6 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 		-Banner Ads over video footage
 
 ## -3rd Party Integrations
-	-Admob 
-	-Appodeal
+	-Web3 Storage
+	-Algorand Testnet
 

@@ -3,12 +3,20 @@
 # Released under MIT License
 # *************************************************
 # THe Player Script v2 implements networking calls via rpc 
-# Features
+# 
+#
+# Contains
 # (1) THe world's camera
 # (2) Player hitboxes
-# (3) It's a class and stores variables to the UI, Globals singleton, PlayersSave Files, and the Debug SIngleton
+
+# Features:
+#
+# (1) It's a class and stores variables to the UI, Globals singleton, PlayersSave Files, and the Debug SIngleton
+# (2) Updates a Player Info Networkig Dictionary and Shares this as Data packets with a Networking peer
+#		as pool byte arrays
+#
 # To Do:
-#(1) Update Documentation
+#(1) Update Documentation (DOne)
 # (2) Implement Remote Proceedure calls Networking
 # (3) Im not sure how to implement sstate machine calls to the client/server
 # (4) Too much Detection going on
@@ -17,13 +25,18 @@
 # (7) Play animation remotely (works)
 # (8) Player Camera Hierarchy bug
 #		2 or more spawned players have their own cameras which misaligns the scene tree
+# (9) Check Data Synchronicity between Server and CLient Peer Player Info DIctionaries
+# (10) Optimize Data Packet size from 3 kb to 20 Bytes by compressing data using wallet encode algorithms
+#		- amdNetworking compression methods
+# (11) Optimize Networking Player iInfo dictionary to only send over canged data to reduce data packet size to 20 bytes
+# (12) Write proper debug methods dfor measuring data packet size received and sent
 
 # Bugs:
 # (1) Breaks GameHUD
 # (2) Server and Client Codes are not Documented
 # (3) Player State Doesn't Update to Networking
 # (4) Simulation Logic doesn't work on server peer
-# (5) AccuratePositional Data isn't being sent to Server peer
+# (5) AccuratePositional Data isn't being sent to Server peer (fixed)
 # *************************************************
 
 extends KinematicBody2D
@@ -123,7 +136,7 @@ func _ready():
 		"roll dir": [],
 		"destroyed": false,
 		"updates": [],  # Stores Present Update ID Across All Clients
-		"wallet addr": {},
+		"wallet addr": {Networking.cfg_player_name : Globals.address},
 		"asset id": {},
 		"smart contract": [], # Arrays As it will only be one Smart COntract
 		"kill Count": 0,
@@ -167,8 +180,14 @@ func _ready():
 	
 	pass
 
-# Placeholder Method
-func get_spawn_position(): pass
+
+
+	# Connect SIgnals
+	
+	if is_network_master():
+		Networking.connect("PlayerInput", self,"poop", [peer_id])
+		print_debug(Networking.is_connected("PlayerInput", self,"poop"))
+
 
 func _process(delta):
 
@@ -207,8 +226,6 @@ func _process(delta):
 	#	Networking.player_info["peer id"][peer_id]["state"].clear()
 
 
-
-	
 	
 	if SIMULATING_1:
 		"Multiplayer Enet"
@@ -417,7 +434,7 @@ func _input(event):
 			#rpc_id(1,"player_input",peer_id,"up",true) 
 			# Updates player Info to Server Object for Broadcasting
 			
-			Networking.player_info["peer id"][peer_id]["facing"] = facing
+			Networking.player_info["peer id"][peer_id]["facing"] = self.facing
 			#print(Networking.peer_ids) # for debug purposes only
 				# Position
 			Networking.player_info["peer id"][peer_id]["position"]["x"] = self.position.x
@@ -433,11 +450,11 @@ func _input(event):
 			
 			# One KB Per Input is too Large. Please optimize to 20 Bytes Maz
 			# Only send changed innformation rather than entire merged dictionary
-			print(Networking.player_info["peer id"][peer_id]["position"], "/", "Size (Bytes) : ", Networking.RawData.size())
+			print(Networking.player_info["peer id"][peer_id]["facing"], "/", "Size (Bytes) : ", Networking.RawData.size())
 			
 			
 			#print("Largest Peer ID: ",Networking.peer_ids[0], "No: ", Networking.peer_ids.size() ) # for debug purposes only
-			Networking.rpc_unreliable_id(1, "pi", peer_id, "move_up", true, Networking.RawData) # Packet Loss Error
+			Networking.rpc_unreliable_id(1, "pi", peer_id, "up", true, Networking.RawData) # Packet Loss Error
 			
 		if Input.is_action_just_released("move_up"):
 		
@@ -693,6 +710,43 @@ func _physics_process(delta):
 		# But getting positional data is somewhat buggy
 
 
+# COnnetcs to a Player Input Signal from the Networking Singleton
+func poop(id : String):
+
+	"Server Simulation Logic"
+	# Merges Server Player Info to Server Player Info with Peer ID's
+	# Trying to get updated positinal data from data packed
+	# SHould Ideally be called i the Player Networking script
+	# SHould connect to a Networking Signal to optimize performance
+	#if is_network_master():
+		
+	#print("poop")
+		
+	if Networking.player_info["peer id"].has(id):
+			
+			
+
+			# position simulation
+			#print(Vector2(float(i["peer id"][id_as_string]["position"]["x"]), float(i["peer id"][id_as_string]["position"]["y"]))) # For Debug Purposes only
+			
+			# should ideally be called in a process method
+		set_position(Vector2(float(Networking.player_info["peer id"][id]["position"]["x"]), float(Networking.player_info["peer id"][id]["position"]["y"])))
+					
+					# facing
+			#facing = player_info["peer id"][id_as_string]["facing"]
+					
+					# State
+					
+					# roll directin
+					
+					#linear velocity
+					
+					# BroadCast Update to all Network Peers
+					# Buggy : Doesnt send updated Player info
+		Networking.broadcast_world_positions()
+		
+
+
 
 func _on_dialog_started():
 	state = STATE_BLOCKED
@@ -707,9 +761,17 @@ func goto_idle():
 	new_anim = "idle_" + facing
 	state = STATE_IDLE
 
+func _update_facing():
+	facing = Networking.player_info["peer id"][var2str(peer_id)]["facing"]
+#	if Input.is_action_pressed("move_left"):
+#		facing = "left"
+#	if Input.is_action_pressed("move_right"):
+#		facing = "right"
+#	if Input.is_action_pressed("move_up"):
+#		facing = "up"
+#	if Input.is_action_pressed("move_down"):
+#		facing = "down"
 
-#func _update_facing():
-#	pass
 func despawn():  #this code breaks
 	var blood = Globals.blood_fx.instance()
 	var despawn_particles = despawn_fx.instance()

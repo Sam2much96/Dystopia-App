@@ -85,7 +85,9 @@ signal Timeout
 onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
 onready var WORLD_SIZE : int = 40000.0
+
 onready var _reference_to_self =get_node('/root/Networking') #formerly _y
+onready var _reference_to_debug =get_node('/root/Debug') #formerly _y
 
 
 const SERVER_PORT = 9080
@@ -133,6 +135,12 @@ var WorldRoot : Node
 
 # My Player Networking object
 var player : Player_v2_networking
+var id_as_string : String
+
+
+# Signals
+signal PlayerInput(peer_id)
+
 
 func _ready():
 	_init_timer()
@@ -144,6 +152,8 @@ func _ready():
 	if cfg_client_ip == '':
 		cfg_client_ip = DEFAULT_HOSTNAME
 		
+	if cfg_player_name == "":
+		cfg_player_name = DEFAULT_HOSTNAME
 	
 	print ("Networking Server Config and Player Name: ",cfg_server_ip,cfg_player_name, "/")
 	
@@ -687,14 +697,16 @@ REGISTERS PLAYER INPUT AND RELEASES
 remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray):
 	# Remote Calls Player Input From Client Peer for each client peer
 	# Should Connect to Physics Process Simulation Logic
-	# bBug: Player positional data is not sent properly
+	# Bug: Player positional data is not sent properly (Fixed)
 
 	if is_network_master():
 		#print("Player Input Registered ",str (poolByte2Array(player_data)), "from ", id ) # player data returns array
 		
+		print("Packet Size (Bytes): ", player_data.size())
+		
 		#print(player_info) # for debug purposes only
 		
-		var id_as_string : String = var2str(id) 
+		id_as_string = var2str(id) 
 		
 		for i in poolByte2Array(player_data):
 				#Returns a String. Converting to Dictionary
@@ -708,15 +720,16 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 			
 			#print ("I: ", i["peer id"][var2str(id)]["position"]) # works # for debug purposes only
 			
+			# Registers the Player Peer ID Locally
 			if not player_info["peer id"].has(id_as_string):
 				player_info["peer id"][id_as_string] = {
 				"node": [],
 				"position": i["peer id"][id_as_string]["position"], # updated positional data, 
 				"hitpoints" : 3,
-				"facing": "",
+				"facing": key,
 				"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
 				"roll dir": [],
-				"destroyed": false,
+				"destroyed": bool(i["peer id"][id_as_string]["destroyed"]),
 				"updates": [],  # Stores Present Update ID Across All Clients
 				"wallet addr": {},
 				"asset id": {},
@@ -733,26 +746,23 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 				}
 				
 				
-			print ("O: ", player_info["peer id"][id_as_string]["position"]) # works # for debug purposes only
+			"Player Variables"
+			# Positional Data
+			print("Updating Player Information for peer ",Networking.id_as_string, " from " ,Networking.player_info["peer id"][Networking.id_as_string]["position"], " to " , i["peer id"][Networking.id_as_string]["position"])
+			player_info["peer id"][id_as_string]["position"] = i["peer id"][id_as_string]["position"] #WORKS
+			
+			# Emit Signal
+			#emit_signal("PlayerInput", id_as_string) # Buggy Signal
+			
+			player.poop(id_as_string)
+			
+			#print ("O: ", player_info["peer id"][id_as_string]["position"]) # works # for debug purposes only
+			
+			# Facing Data
+			print ("O: ", player_info["peer id"][id_as_string]["facing"], i["peer id"][id_as_string]["facing"]) # works # for debug purposes only
 
 			
 			
-			# Merges Server Player Info to Server Player Info with Peer ID's
-			# Trying to get updated positinal data from data packed
-				
-			if player_info["peer id"].has(id_as_string):
-				print("Updating Player Information for peer ",id_as_string, " from " ,player_info["peer id"][id_as_string]["position"], " to " , i["peer id"][id_as_string]["position"])
-				player_info["peer id"][id_as_string]["position"] = i["peer id"][id_as_string]["position"] #WORKS
-
-				# position simulation
-				print(Vector2(float(i["peer id"][id_as_string]["position"]["x"]), float(i["peer id"][id_as_string]["position"]["y"]))) # For Debug Purposes only
-				
-				
-				player.set_position(Vector2(float(i["peer id"][id_as_string]["position"]["x"]), float(i["peer id"][id_as_string]["position"]["y"])))
-				
-				# BroadCast Update to all Network Peers
-				# Buggy : Doesnt send updated Player info
-				broadcast_world_positions()
 
 			
 		#print("Remote: player_input(" + str(id)+","+key+","+str(pressed)+")" , RawJson.get_result()["peer id"][])
@@ -794,7 +804,7 @@ PLAYER UPDATE
 
 remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
-	print (" Packet Recieved") # for debug purposes only
+	print (" Packet Recieved, Size (Bytes): ", updates.size()) # for debug purposes only
 	
 	#Error Catcher 1
 	# Unreliable packets can be sent in wrong order, we only work with the latest
@@ -1180,7 +1190,7 @@ class Lobby extends Control:
 	# Change Map Parameter To Game Level (Map) Position in the Scene Trees 
 	# End Game is Buggy
 	# Moving to Networking Singleton Implementation
-	static func _end_game(with_error : String , Lobby : SceneTree, Map = Networking.map_instance, error = debug.error_splash_page):
+	static func _end_game(with_error : String , Lobby : SceneTree, Map = Networking.map_instance, error = Networking._reference_to_debug.error_splash_page):
 		if is_instance_valid(Map):
 			
 			# Debug Loobby Map Instance

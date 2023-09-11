@@ -24,15 +24,18 @@ Connects to the inventory and quest systems and will show a message on screen
 for every change in either
 """
 
-var messages = []
+var messages : Array = []
 
 
 func _ready():
 	hide()
+	
+	# Connects to Both Quest and Item Singleton
 	Quest.connect("quest_changed", self, "_questlog_updated")
 	Inventory.connect("item_changed", self, "_inventory_updated")
-	pass # Replace with function body.
 
+
+# Quests
 func _questlog_updated(quest_name, status):
 	var txt
 	match status:
@@ -43,6 +46,7 @@ func _questlog_updated(quest_name, status):
 	_queue_message(txt)
 	pass
 
+# Inventory
 func _inventory_updated(action, type, amount):
 	var txt
 	match action:

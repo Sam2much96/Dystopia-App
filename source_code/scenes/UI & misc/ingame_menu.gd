@@ -146,7 +146,7 @@ func _input(event): #Toggles menu visibility on/off
 
 		if event.is_action_pressed("ui_cancel") && visible == true:
 			Globals._go_to_title()
-	 
+	else : pass 
 	
 	"Auto Scroller"
 	# Connects to Global Comics Swipe Feature

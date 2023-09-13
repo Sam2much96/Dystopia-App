@@ -22,8 +22,8 @@ class_name SignPost
 Displays A Dialogue Text When the Player comes near
 """
 
-export (bool) var shown = false # it runs as a oneshot bool
-export (bool) var interract = false
+var shown : bool = false # it runs as a oneshot bool
+var interract : bool = false
 
 export(String) var dialogue = ""
 
@@ -31,6 +31,7 @@ export(String) var dialogue = ""
 #export (bool) var _player_near 
 func _ready():
 	
+	#COnnect Signals
 	connect("area_entered", self, "_on_player_area_entered")
 	connect("area_exited", self, "_on_player_area_exited")
 	#Dialogs.connect("dialog_started", self, "_on_dialog_started")
@@ -38,8 +39,14 @@ func _ready():
 	
 
 
-
-
+func _input(event) :
+	
+	if Globals.near_interractible_objects:
+		# Processes the interact input every frame
+		if event.is_action_pressed("interact"):
+			interract = true
+			print_debug ('Interract is :', interract)
+	else: pass
 
 
 
@@ -56,9 +63,9 @@ func _on_signpost_body_entered(body):
 		Globals.near_interractible_objects = true
 
 
-	if Input.is_action_pressed("interact") :
-		interract = true
-		print_debug ('Interract is :', interract)
+	#if Input.is_action_pressed("interact") :
+	#	interract = true
+	#	print_debug ('Interract is :', interract)
 	
 	if interract == true  && shown == false:#  && _player_near == true: 
 		print('signpost clicked') #for debug purposes only

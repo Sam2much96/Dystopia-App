@@ -33,6 +33,9 @@ var final_pos
 
 onready var maxlength : float = $CollisionShape2D.shape.radius
 
+#Frame Rate COunter
+var frame_counter : int = 0
+
 func _on_pond_body_entered(body): #Low level program, would not execute
 	if body is Player: 
 		
@@ -67,24 +70,31 @@ func clamp_fx():
 		puddle_fx.position.y = sin(angle) * maxlength
 
 
-func _process(_delta):
+func _process(delta):
 
+	frame_counter += 1
+	
+	if frame_counter > 600:
+		frame_counter = 0
+		
+	
+	# Procesed every 30th frame
+	if frame_counter % 5 == 0:
 
-
-	## PROCESS STATES
-	match state:
-		STATE_ACTIVE:
-			#puddle_fx.ripple() #needs new ripple animation
-			
-			
-			
-			puddle_fx.change_position(final_pos)
-			clamp_fx() #works
-			
-			puddle_fx.splash()
-			pass
-		STATE_IDLE:
-			puddle_fx.change_position(Vector2(0, 0))
+		## PROCESS STATES
+		match state:
+			STATE_ACTIVE:
+				#puddle_fx.ripple() #needs new ripple animation
+				
+				
+				
+				puddle_fx.change_position(final_pos)
+				clamp_fx() #works
+				
+				puddle_fx.splash()
+				pass
+			STATE_IDLE:
+				puddle_fx.change_position(Vector2(0, 0))
 
 
 func _on_pond_body_exited(body):

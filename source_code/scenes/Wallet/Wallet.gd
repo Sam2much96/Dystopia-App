@@ -276,6 +276,9 @@ var dict : Dictionary = {'address': address, 'amount': 0, 'mnemonic': mnemonic }
 # For easy scaling up and down programmatically
 var All_UI_elements : Array = []
 
+# For Performance optimization
+var frame_counter : int = 0
+
 "Checks the Nodes connection Between Singleton & UI"
 func check_Nodes() -> bool:
 	 
@@ -434,58 +437,65 @@ func _ready():
 	
 	#print("----loaded acct info------")
 
-func _process(_delta):
+func _process(delta):
 	
+	frame_counter += 1
 	
-	if Globals.curr_scene == "Wallet_scene":
+	if frame_counter > 600:
+		frame_counter = 0
 		
-		# Get the Wallet Root Scene
-		WalletRoot = get_tree().get_nodes_in_group("Wallet").pop_front()
-		
-		# UI state Processing (works-ish)
-		# Remove New Account State. It has a new UI mapping
-		"Constantly Running Process Introduces a stuck state Bug"
-		if self.state_controller.visible :
-			if self.state_controller.get_selected() == 0:
-				state = SHOW_ACCOUNT #only loads wallet once
-				
-			elif self.state_controller.get_selected() == 1:
-				#wallet_check = 0 # resets the wallet check stopper
-				state = CHECK_ACCOUNT
-		#	elif self.state_controller.get_selected() == 2:
-		#		wallet_check = 0 # resets the wallet check stopper
-		#		state = NEW_ACCOUNT
-			elif self.state_controller.get_selected() == 2:
-				wallet_check = 0 # resets the wallet check stopper
-				state = IMPORT_ACCOUNT
-			elif self.state_controller.get_selected() == 3:
-				wallet_check = 0 # resets the wallet check stopper
-				state = TRANSACTIONS
-			elif self.state_controller.get_selected() == 4:
-				wallet_check = 0 # resets the wallet check stopper
-				state = SMARTCONTRACTS
-				
-				
-				
-			elif self.state_controller.get_selected() == 5:
-				wallet_check = 0 # resets the wallet check stopper
-				state = COLLECTIBLES
-			elif self.state_controller.get_selected() == 6:
-				wallet_check = 0
-				state = PASSWORD
-			elif self.state_controller.get_selected() == 7:
-				wallet_check = 0
-				state = SHOW_MNEMONIC
-			elif self.state_controller.get_selected() == 8:
-				wallet_check = 0
-				Globals.curr_scene = "Menu"
-				state = IDLE
-				
-				loaded_wallet = false
-				return Globals._go_to_title() # Breaks wallet scene
+	# Called Every 60th frame
+	if frame_counter % 60 == 0:
 	
-			elif self.state_controller.get_selected() == -1:
-				state = NEW_ACCOUNT
+		if Globals.curr_scene == "Wallet_scene":
+			
+			# Get the Wallet Root Scene
+			WalletRoot = get_tree().get_nodes_in_group("Wallet").pop_front()
+			
+			# UI state Processing (works-ish)
+			# Remove New Account State. It has a new UI mapping
+			"Constantly Running Process Introduces a stuck state Bug"
+			if self.state_controller.visible :
+				if self.state_controller.get_selected() == 0:
+					state = SHOW_ACCOUNT #only loads wallet once
+					
+				elif self.state_controller.get_selected() == 1:
+					#wallet_check = 0 # resets the wallet check stopper
+					state = CHECK_ACCOUNT
+			#	elif self.state_controller.get_selected() == 2:
+			#		wallet_check = 0 # resets the wallet check stopper
+			#		state = NEW_ACCOUNT
+				elif self.state_controller.get_selected() == 2:
+					wallet_check = 0 # resets the wallet check stopper
+					state = IMPORT_ACCOUNT
+				elif self.state_controller.get_selected() == 3:
+					wallet_check = 0 # resets the wallet check stopper
+					state = TRANSACTIONS
+				elif self.state_controller.get_selected() == 4:
+					wallet_check = 0 # resets the wallet check stopper
+					state = SMARTCONTRACTS
+					
+					
+					
+				elif self.state_controller.get_selected() == 5:
+					wallet_check = 0 # resets the wallet check stopper
+					state = COLLECTIBLES
+				elif self.state_controller.get_selected() == 6:
+					wallet_check = 0
+					state = PASSWORD
+				elif self.state_controller.get_selected() == 7:
+					wallet_check = 0
+					state = SHOW_MNEMONIC
+				elif self.state_controller.get_selected() == 8:
+					wallet_check = 0
+					Globals.curr_scene = "Menu"
+					state = IDLE
+					
+					loaded_wallet = false
+					return Globals._go_to_title() # Breaks wallet scene
+		
+				elif self.state_controller.get_selected() == -1:
+					state = NEW_ACCOUNT
 	
 	"WALLET STATES"
 	

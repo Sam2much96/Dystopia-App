@@ -72,7 +72,7 @@ export(int) var ROLL_SPEED = 1000
 export(int) var hitpoints = 3 #enemy life
 
 
-var despawn_fx = preload("res://scenes/UI & misc/DespawnFX.tscn")
+#var despawn_fx = preload("res://scenes/UI & misc/DespawnFX.tscn")
 #var Bullet = Globals.bullet_fx#load ("res://scenes/items/Bullet.tscn") #null resource
 
 
@@ -160,7 +160,7 @@ func _process(delta : float):
 	if frame_counter >= 1000:
 		frame_counter = 0
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	
 	# Consider Moving All Physics calculation to the Globals Script
 	

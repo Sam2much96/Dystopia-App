@@ -22,10 +22,8 @@ _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.383915, 0.8806 ), -1.68353
 [node name="smoke_fx" type="CPUParticles2D"]
 material = SubResource( 1 )
 position = Vector2( 443.999, 413.999 )
-emitting = false
 amount = 16
 lifetime = 0.5
-one_shot = true
 preprocess = 0.5
 explosiveness = 1.0
 texture = ExtResource( 2 )
@@ -42,7 +40,3 @@ damping = 100.0
 scale_amount_random = 0.5
 scale_amount_curve = SubResource( 3 )
 script = ExtResource( 3 )
-
-[node name="Timer" type="Timer" parent="."]
-
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

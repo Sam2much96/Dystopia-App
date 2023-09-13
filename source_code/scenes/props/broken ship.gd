@@ -30,8 +30,8 @@ export (int) var counter #= 0 #used to off and on the comics placeholder
 
 export (bool) var emitting_smoke
 
-onready var smoke_fx = $smoke_fx
-onready var smoke_fx_2 = $smoke_fx2
+onready var _smoke_fx = $smoke_fx
+onready var _smoke_fx_2 = $smoke_fx2
 #toggles comics placeholder visible on player contact
 func _on_Area2D_body_entered(body):
 	if body is Player : 
@@ -47,9 +47,10 @@ func _on_Area2D_body_entered(body):
 
 		# Via A class + statemachine combo
 		# 2 turns it off 1 turns it on
-		smoke_fx._emit() # Emits smoke Programmatically
+		_smoke_fx._emit(true) # Emits smoke Programmatically
+		_smoke_fx_2._emit(true) # Emits smoke Programmatically
 		
-		print_debug ("Player Near Spaceship. Is Smoke Emitting? :",smoke_fx._emit()) #not working
+		print_debug ("Player Near Spaceship. Is Smoke Emitting? :",_smoke_fx._state_controller) #not working
 		
 		
 
@@ -73,7 +74,8 @@ func _on_Area2D_body_exited(body):
 		emitting_smoke == false
 
 		# it saves cpu performance
-		smoke_fx._stop_emit() # Stops smoke Emits Programmatically
+		_smoke_fx._emit(false) # Stops smoke Emits Programmatically
+		_smoke_fx_2._emit(false) # Stops smoke Emits Programmatically
 
 
 #func _process(_delta):

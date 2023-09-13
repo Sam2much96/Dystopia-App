@@ -48,11 +48,14 @@ onready var UI_buttons : Array = [
 	label_spacer2, label_spacer3
 	]
 
+onready var _hide_dialogue_box : bool = false
 
 func _ready():
 # Described Above
 #	if _debug != null:
 #		_debug = get_tree().get_root().get_node("/root/Debug")
+
+	dialgue_box.hide_dialogue()
 
 	# Load Users Prefered DIalogue 
 	Globals.Functions.load_user_data('languague')
@@ -81,10 +84,6 @@ func _ready():
 	_check_if_device_is_online()
 	translate()
 
-
-
-func _input(_event):
-	dialgue_box.hide_dialogue()
 
 
 

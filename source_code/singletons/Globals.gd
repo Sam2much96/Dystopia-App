@@ -134,6 +134,9 @@ var blood_fx: PackedScene = load ('res://scenes/UI & misc/Blood_Splatter_FX.tscn
 var despawn_fx: PackedScene = load ("res://scenes/UI & misc/DespawnFX.tscn")
 var bullet_fx : PackedScene
 
+"Node Pointer"
+var _smoke_fx_ : smoke_fx 
+
 'Temporary variants'
 var temp
 

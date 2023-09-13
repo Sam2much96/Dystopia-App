@@ -47,16 +47,14 @@ var playlist_one : Dictionary = {
 	1:'res://music/chike san afro 1.ogg',
 	2:'res://music/chike san afro 2.ogg',
 	3:'res://music/chike san afro 3.ogg',
-	4:'res://music/chuks-dane_chuks-dane-shoot-back.ogg',
-	5:'res://music/Astrolife chike san.ogg',
-	6:'res://music/chuks-dane_chuks-dane-new-breed-prod-base.ogg',
-	7:'res://music/a-2-3-groovy-bgm.ogg',
-	8:'res://music/Spooky-Chike-san song.ogg',
-	9:'res://music/6Feet.ogg',
-	10:'res://music/Blow.ogg',
-	11:'res://music/HENSONN_SAHARA.ogg',
-	12:'res://music/Moya.ogg',
-	13:'res://music/Turn up.ogg',
+	4:'res://music/Astrolife chike san.ogg',
+	5:'res://music/a-2-3-groovy-bgm.ogg',
+	6:'res://music/Spooky-Chike-san song.ogg',
+	7:'res://music/6Feet.ogg',
+	8:'res://music/Blow.ogg',
+	9:'res://music/HENSONN_SAHARA.ogg',
+	10:'res://music/Moya.ogg',
+	11:'res://music/Turn up.ogg',
 }
 var comic_sfx : Dictionary = {
 	0: 'res://sounds/book_flip.1.ogg',
@@ -200,7 +198,7 @@ func _ready():
 
 
 
-func _process(_delta):
+func _process(delta):
 
 	"""
 	Music Debug

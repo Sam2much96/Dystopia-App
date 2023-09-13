@@ -10,7 +10,7 @@
 # (1) Frame rate Drop from 60 fps to 5 fps. because of too much Collision objects in the scene
 #		-Fix : Implement Tilemap, autotiles and Procedurally Generated Dunes (1/2)
 # (2) Fix loading bug by busing tileMaps for grphics and calculations referemce node "TileMap1"  
-# (3) TileMaps is broken. Requires More Research
+# (3) TileMaps is broken. Requires More Research (Fixed)
 # *************************************************
 
 extends Control

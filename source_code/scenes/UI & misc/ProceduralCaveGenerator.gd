@@ -1,6 +1,8 @@
 extends Node
 # Procedurally generated tilemap creator
 
+class_name ProceduralGeneration
+
 #How to Use
 # Attach this NOde As a child top the Tilemap with AutoTIle
 

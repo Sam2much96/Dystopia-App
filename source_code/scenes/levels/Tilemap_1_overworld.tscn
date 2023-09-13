@@ -209,8 +209,8 @@ format = 1
 tile_data = PoolIntArray( -393214, 0, 0, -393213, 0, 327681, -327678, 0, 262144, -327677, 0, 131074 )
 
 [node name="CaveGenerator" parent="Dune textures/Dunes_Procedural" instance=ExtResource( 13 )]
-map_width = 150
-map_height = 150
+map_width = 800
+map_height = 800
 world_seed = "Pleasse Give me a good result nitori olorun"
 noise_octaves = 53
 noise_period = 60

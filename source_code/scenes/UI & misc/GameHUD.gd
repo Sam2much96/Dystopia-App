@@ -46,7 +46,7 @@ func _on_dialog_ended():
 	TouchInterface.reset()
 
 
-func _input(_event):
+func _input(event):
 	" UI logic" # 
 	
 	

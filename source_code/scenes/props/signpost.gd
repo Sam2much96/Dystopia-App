@@ -28,29 +28,14 @@ export (bool) var interract = false
 export(String) var dialogue = ""
 
 # 
-export (bool) var _player_near 
+#export (bool) var _player_near 
 func _ready():
-	#shown = false
-	return connect("area_entered", self, "_on_player_area_entered")
-	return connect("area_exited", self, "_on_player_area_exited")
+	
+	connect("area_entered", self, "_on_player_area_entered")
+	connect("area_exited", self, "_on_player_area_exited")
 	#Dialogs.connect("dialog_started", self, "_on_dialog_started")
 	#Dialogs.connect("dialog_ended", self, "_on_dialog_ended")
-	pass
-
-
-
-func _input(_event):
-	if Input.is_action_pressed("interact") && _player_near == true:
-		interract = true
-		print ('Interract is :', interract)
-		if interract == true  && shown == false:#  && _player_near == true: 
-			print('signpost clicked') #for debug purposes only
-			shown = true
-			Dialogs.dialog_box.show_dialog(str(dialogue), 'Player')
-			#get_tree().paused = true
-			yield(get_tree().create_timer(2), "timeout") #Displays the dialogue for 2 seconds
-			Dialogs.dialog_box.hide_dialogue()
-			shown = false
+	
 
 
 
@@ -64,9 +49,28 @@ func _on_signpost_body_entered(body):
 	if body is Player:
 		
 		# Shoud Trigger UI changes in Touch HUD
-		_player_near = true
-		print ('player near signpost: ', _player_near) #send this information to the UI viab a global variable
-		Globals.near_interractible_objects = _player_near
+		#_player_near = true
+		#print ('player near signpost: ', _player_near) #send this information to the UI viab a global variable
+		
+		# Update a global boolean
+		Globals.near_interractible_objects = true
+
+
+	if Input.is_action_pressed("interact") :
+		interract = true
+		print_debug ('Interract is :', interract)
+	
+	if interract == true  && shown == false:#  && _player_near == true: 
+		print('signpost clicked') #for debug purposes only
+		shown = true
+		
+		# Use Networking Timer?
+		Dialogs.dialog_box.show_dialog(str(dialogue), 'Player')
+			
+		yield(get_tree().create_timer(2), "timeout") #Displays the dialogue for 2 seconds
+		Dialogs.dialog_box.hide_dialogue()
+		shown = false
+
 
 
 func _on_signpost_body_exited(body):
@@ -74,8 +78,8 @@ func _on_signpost_body_exited(body):
 	#if  body.get_parent().name == 'Player' :
 		
 		# Shoud Trigger UI changes in Touch HUD
-		_player_near = false
+		Globals.near_interractible_objects = false
 		interract = false
-		print ('player near signpost: ', _player_near)
-		Globals.near_interractible_objects = _player_near
+		print ('player near signpost: ', Globals.near_interractible_objects)
+		
 		shown = false

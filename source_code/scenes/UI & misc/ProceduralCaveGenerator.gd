@@ -71,6 +71,7 @@ func generate() -> void:
 	
 	tile_map.update_dirty_quadrants()
 
+	print_debug("Finished Procedural Generation")
 
 
 # Sets the scenes autotile programmatically

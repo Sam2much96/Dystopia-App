@@ -294,6 +294,7 @@ func despawn()->  void:
 		get_node("item_spawner").spawn()
 	
 	#Prevents memory leaks
+	get_parent().remove_child(self)
 	self.queue_free()
 	#Globals.queue_free_children(self)
 	#get_parent().remove_child(self) #buggy

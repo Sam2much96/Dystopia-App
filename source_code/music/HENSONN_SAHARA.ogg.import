@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/HENSONN_SAHARA.ogg-0b11a31dfbed8b17cb977378c9f45e74.oggstr"
+
+[deps]
+
+source_file="res://music/HENSONN_SAHARA.ogg"
+dest_files=[ "res://.import/HENSONN_SAHARA.ogg-0b11a31dfbed8b17cb977378c9f45e74.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

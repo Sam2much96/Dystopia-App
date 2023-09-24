@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/characters/Npc.gd" type="Script" id=1]
 [ext_resource path="res://resources/NPC old woman.webp" type="Texture" id=2]
+[ext_resource path="res://addons/GodotGPT/Llama2API.gd" type="Script" id=3]
 
 [sub_resource type="CircleShape2D" id=3]
 
@@ -63,6 +64,9 @@ anims/idle = SubResource( 1 )
 [node name="trigger" type="CollisionShape2D" parent="KinematicBody2D/NPC"]
 position = Vector2( -0.200337, -41.5847 )
 shape = SubResource( 2 )
+
+[node name="AI" type="HTTPRequest" parent="."]
+script = ExtResource( 3 )
 
 [connection signal="body_entered" from="KinematicBody2D/NPC" to="KinematicBody2D" method="_on_NPC_body_entered"]
 [connection signal="body_exited" from="KinematicBody2D/NPC" to="KinematicBody2D" method="_on_NPC_body_exited"]

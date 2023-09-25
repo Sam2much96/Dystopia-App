@@ -7,7 +7,7 @@
 # To Do:
 #(1) Write a documentation
 #(2) 
-#(3) Converts Text to speech (pytts equivalent)
+#(3) Converts Text to speech (pytts equivalent) with TTS AI API
 # (4) Implement Dialogue AutoHide Using Dialogue Frame Tmer
 # *************************************************
 # Features:

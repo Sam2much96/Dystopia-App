@@ -4,8 +4,3 @@
 
 [node name="AI" type="Node"]
 script = ExtResource( 1 )
-prompt = "You are a sentient A.I robot named Jim, in a maximum of 75 words, write an Email reminding the recipient about an Open Powerbank recycling project"
-
-[node name="prompt" type="HTTPRequest" parent="."]
-
-[node name="response" type="HTTPRequest" parent="."]

@@ -136,3 +136,7 @@ polygon = PoolVector2Array( -859.39, 362.047, -856.453, 670.362, 855.425, 676.23
 vertex_colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 0.831373, 0, 0, 0, 0.839216, 0, 0, 0, 0 )
 
 [node name="UI" parent="." instance=ExtResource( 7 )]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 131.851, 203.77 )
+current = true

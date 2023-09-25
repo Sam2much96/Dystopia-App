@@ -1,3 +1,18 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Procedural Generated Cave
+# Creates Procedural Cave Collision Objects Within the Scene Tree using a seed phrase
+# Features:
+# Uses Auto TIle and Perlin Noise to generate a proceudrally generated cave 
+# 
+# *************************************************
+# Bugs:
+# (1) Stuck Collision Bug with Enemy Collision 
+# (2) Stuck Collision Bug with Item Objects
+# *************************************************
+
 extends Node
 # Procedurally generated tilemap creator
 

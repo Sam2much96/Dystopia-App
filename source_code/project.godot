@@ -547,10 +547,6 @@ GlobalAnimation="*res://singletons/GlobalAnimationPlayer.tscn"
 Wallet="*res://scenes/Wallet/Wallet.gd"
 FPSGraphOverlay="*res://addons/fps_graph_overlay/FPSGraphOverlay.tscn"
 DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
-PluginSettings="*res://addons/github-integration/scripts/PluginSettings.gd"
-IconLoaderGithub="*res://addons/github-integration/scripts/IconLoaderGithub.gd"
-UserData="*res://addons/github-integration/scripts/user_data.gd"
-RestHandler="*res://addons/github-integration/scenes/RestHandler.tscn"
 
 [debug]
 
@@ -565,7 +561,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/algodot/plugin.cfg", "res://addons/fps_graph_overlay/plugin.cfg", "res://addons/github-integration/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/algodot/plugin.cfg", "res://addons/fps_graph_overlay/plugin.cfg" )
 
 [gdnative]
 

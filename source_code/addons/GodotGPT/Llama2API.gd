@@ -15,10 +15,10 @@ var output_data = ""
 var output = ""
 var output_response : Dictionary
 
-onready var _prompt : HTTPRequest = get_node("prompt")
+onready var _prompt : HTTPRequest = HTTPRequest.new()
 
 # Make the GET request
-onready var response2 : HTTPRequest = get_node("response")
+onready var response2 : HTTPRequest = HTTPRequest.new()
 
 # Headers
 var _headers = PoolStringArray()
@@ -29,7 +29,7 @@ func _enter_tree():
 	"""
 	REPLICATE API
 	"""
-	print_debug(replicate_api)
+	#print_debug(replicate_api)
 	
 	if replicate_api != null:
 		
@@ -64,6 +64,10 @@ func _enter_tree():
 
 
 func _ready():
+	
+	add_child(_prompt)
+	add_child(response2)
+	
 	if replicate_api != null:
 		# For making direct api calls to replicate api
 		# POST method
@@ -126,23 +130,21 @@ func _output(result, response_code, headers, body) -> String:
 		
 		print_debug(output)
 	else:
-		print(body)
+		#print(body)
 		var response = str2var(body.get_string_from_utf8())
 		print_debug("ERROR: " + str(response_code))
-		print_debug("response", response)
-
-	
-	
+		print_debug("response: ", response)
 	return output
-	
-	
+
+
 func send_prompt(request: HTTPRequest) -> void:
 
 
 	if prompt != "" :
+		print("sending prompt >>>>")
 		request.request(url,_headers , false, HTTPClient.METHOD_POST, JSON.print(data))
-	#if replicate_api == null:
-	#	request.request(url,_headers , false, HTTPClient.METHOD_POST, JSON.print(data))
+	else:
+		push_error("prompt cannot be empty")
 
 
 

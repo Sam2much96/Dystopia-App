@@ -41,6 +41,7 @@ func _ready():
 
 func _input(event) :
 	
+	
 	if Globals.near_interractible_objects:
 		# Processes the interact input every frame
 		if event.is_action_pressed("interact"):

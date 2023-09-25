@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/levels/Tilemap_1_overworld.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/items/enemy spawner.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/props/signpost.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/levels/VisibilityOptimizer.gd" type="Script" id=9]
 [ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=15]
 [ext_resource path="res://scenes/UI & misc/Rain_Fx.tscn" type="PackedScene" id=26]
 [ext_resource path="res://scenes/levels/Outside_Level_Properties.gd" type="Script" id=28]
@@ -32,6 +33,11 @@ position = Vector2( -22, 186 )
 
 [node name="Outside City" parent="." instance=ExtResource( 5 )]
 position = Vector2( 12571.8, -3727.55 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="Outside City"]
+position = Vector2( 2280.12, 1071.42 )
+scale = Vector2( 380.22, 243.027 )
+script = ExtResource( 9 )
 
 [node name="Player" parent="." instance=ExtResource( 7 )]
 position = Vector2( 966, 3239 )

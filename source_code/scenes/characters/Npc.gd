@@ -5,7 +5,12 @@
 # NPC
 # 
 # information used by the Quest giving NPC.
-# AI code written here, should be written with Polymorphism in mind as it is shared by all Quest givers
+# current dialogue variable allows for multiline dialogue using array sizes
+# AI prompts
+# Features:
+# (1) AI prompt for dialogues
+# (2) Movement AI Behaviour to Move away from player
+
 # TO do:
 # (1) Copy Mob code from enemy and implement it for NPC to follow Player (Done)
 # (2) Add walking Animation
@@ -37,6 +42,11 @@ var __body : Player
 
 onready var npc : Area2D = $NPC
 
+# AI API fetches Prompt from server
+onready var _AI : Llama2API = $AI
+
+var frame_counter : int = 0
+
 func _ready():
 	randomize()
 	
@@ -51,16 +61,44 @@ func _ready():
 		# warning-ignore:return_value_discarded
 		npc.connect("body_exited", self, "_on_NPC_body_exited")
 
+	#print_debug(_AI.name)
 
-func _process(_delta):
+
+func _process(delta : float):
 	
+	frame_counter += 1
 	
-	if active && __body != null :
-		move_and_slide( -Behaviour.FollowPlayer(self, __body))
-	#print (get_tree().get_nodes_in_group('player').pop_front())
-	# Follow Player
-	#print(  Behaviour.FollowPlayer(self, get_tree().get_nodes_in_group('player').pop_front())  )
-	pass
+	# stops interger overflow from frame counter variable 
+	if frame_counter >= 1000: frame_counter = 0 # Reset frame counter
+	
+	# calculated every 5th frame
+	if frame_counter % 5 == 0:
+		
+		if active && __body != null:
+		 
+		
+		# Triggers Body Movement away from Player Object
+		#if  :
+			
+			# Move away from Player
+			# Works
+			# TO DO: Implement Behaviour in animal sprites
+			#move_and_slide( -Behaviour.FollowPlayer(self, __body))
+			#print (get_tree().get_nodes_in_group('player').pop_front())
+			
+			# Follow Player
+			#move_and_slide( Behaviour.FollowPlayer(self, __body))
+			
+			pass
+	
+	# Fetched Durrent Dialouge from AI Prompy
+	if frame_counter % 10 == 0 && _AI != null &&_AI.output != "":
+		if not dialogs.has(_AI.output):
+			current_dialog = 0
+			dialogs[current_dialog] =_AI.output
+			#print_debug(dialogs[current_dialog])
+		else : pass
+
 
 func _input(event):
 	if (

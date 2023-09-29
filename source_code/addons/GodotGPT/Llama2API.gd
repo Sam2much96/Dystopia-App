@@ -128,7 +128,7 @@ func _output(result, response_code, headers, body) -> String:
 		for item in output_data:
 			output += item
 		
-		print_debug(output)
+		#print_debug(output)
 	else:
 		#print(body)
 		var response = str2var(body.get_string_from_utf8())

@@ -23,13 +23,13 @@ onready var label = $Label
 func _ready():
 	label.set_text( text_2)
 	label.ALIGN_CENTER
-	yield(get_tree().create_timer(7), \"timeout\")
 	
-	get_tree().quit(0)
+	# Delete
+	queue_free()
 
-#func _process(_delta): 
-	#Debug.log_debug()  #Broken function
-#	pass
+func _exit_tree():
+	yield(get_tree().create_timer(7), \"timeout\")
+	get_tree().quit(0)
 "
 
 [node name="Error splash page for crashes" type="Control"]

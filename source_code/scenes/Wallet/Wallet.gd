@@ -1586,7 +1586,7 @@ class Functions extends Reference:
 
 
 	#loads from saved account info 
-	static func show_account_info(load_from_local_wallet: bool, loaded_wallet: bool, account_address : Label, wallet_algos : Label, UserData : Dictionary, Algorand : Algodot, node : wallet) -> void: 
+	static func show_account_info(load_from_local_wallet: bool, loaded_wallet: bool, account_address : Label, wallet_algos : Label, UserData : Dictionary, Algorand : Algodot, wallet_node ) -> void: 
 		# Load from Local Wallet Boolean parameters,
 		#determine which data source to display user info
 		# from
@@ -1641,7 +1641,7 @@ class Encryption extends Reference:
 
 class Wallet extends Reference:
 	
-	static func check_wallet_info(algod_node : Algod, UserData: Dictionary, account_info : Dictionary,FileDirectory : Directory, token_dir : String, wallet_script : wallet) -> int: #works. Pass a variable check
+	static func check_wallet_info(algod_node : Algod, UserData: Dictionary, account_info : Dictionary,FileDirectory : Directory, token_dir : String, wallet_script ) -> int: #works. Pass a variable check
 		#check if wallet token exits
 		# check if Internet is OK
 		#THen checks wallet account information

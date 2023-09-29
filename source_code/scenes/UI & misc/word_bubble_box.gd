@@ -93,11 +93,10 @@ onready var word_bubble_label_2 : Label = $Label2
 # Animation Player is for Syncing Label Text with Work Bubble Boundaries.
 onready var anims : AnimationPlayer = $AnimationPlayer
 
-
-
-var bubble_box : WordBubbleBox 
-
 onready var _word_bubble_nodes : Array = [anims, word_bubble_label, word_bubble_label_2]
+
+var bubble_box = self
+
 func show_dialog(new_text : String, placeholdr : String) -> void:
 	print('---showing dialog 1---') # For debug purposes only
 	word_bubble_label.text = new_text#new_text 
@@ -167,7 +166,7 @@ func _ready():
 	
 	#ignore the warning
 	Dialogs.word_bubble_box = self
-	bubble_box = self
+
 	
 
 

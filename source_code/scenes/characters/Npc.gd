@@ -113,6 +113,8 @@ func _input(event):
 				Dialogs.show_dialog(quest_dialog, character_name)
 				return
 		Dialogs.show_dialog(dialogs[current_dialog], character_name)
+		
+		# Updates the Current Dialogue
 		current_dialog = wrapi(current_dialog + 1, 0, dialogs.size())
 		
 #func _on_body_entered(body):

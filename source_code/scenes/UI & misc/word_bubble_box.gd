@@ -97,7 +97,7 @@ onready var anims : AnimationPlayer = $AnimationPlayer
 
 var bubble_box : WordBubbleBox 
 
-
+onready var _word_bubble_nodes : Array = [anims, word_bubble_label, word_bubble_label_2]
 func show_dialog(new_text : String, placeholdr : String) -> void:
 	print('---showing dialog 1---') # For debug purposes only
 	word_bubble_label.text = new_text#new_text 
@@ -325,3 +325,6 @@ func _process(_delta):
 			bubble_box.set_frame(6)
 			anims.play("Talk Left 3")
 			pass
+
+func _exit_tree():
+	Globals.MemoryManagement.queue_free_array(_word_bubble_nodes)

@@ -362,13 +362,15 @@ func upscale()-> void:
 func manually_translate()-> void:
 	print ("Selected Language: ",Dialogs.language)
 	#SHould Ideally Use Hashmap tuple + for loops  for translations
-	print(MenuButtons)
+	#print(MenuButtons)
 	
 	if Dialogs.language != "" or null:
 		#jggugu
 		Dialogs.set_font(MenuButtons)
 		
 		for i in MenuButtons:
+			# Note: If it breaks with a null object error, it means that the scene layout has been changed
+			# Update the button links then
 			i.set_text(Dialogs.translate_to(i.name, Dialogs.language))
 		
 		#comics.set_text(Dialogs.translate_to("comics", Dialogs.language))

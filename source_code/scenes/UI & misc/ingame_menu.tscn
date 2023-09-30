@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://themes/Bold+Large.tres" type="Theme" id=1]
 [ext_resource path="res://scenes/UI & misc/ingame_menu.gd" type="Script" id=2]
-[ext_resource path="res://scenes/UI & misc/generic_joystick_ui_selector.gd" type="Script" id=3]
 [ext_resource path="res://fonts/ingame_menu.tres" type="Theme" id=4]
 
 [node name="Menu " type="Container"]
@@ -30,7 +29,6 @@ scroll_horizontal_enabled = false
 [node name="HSeparator" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
 margin_right = 268.0
 margin_bottom = 626.0
-script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -38,8 +36,8 @@ __meta__ = {
 [node name="comics" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
 margin_right = 268.0
 margin_bottom = 66.0
-focus_next = NodePath("../music on & off")
-focus_previous = NodePath("../chap 2 ")
+focus_next = NodePath("../new game")
+focus_previous = NodePath("../quit")
 theme = ExtResource( 1 )
 text = "comics"
 flat = true
@@ -48,8 +46,8 @@ flat = true
 margin_top = 70.0
 margin_right = 268.0
 margin_bottom = 136.0
-focus_next = NodePath("../music on & off")
-focus_previous = NodePath("../chap 2 ")
+focus_next = NodePath("../continue")
+focus_previous = NodePath("../comics")
 mouse_filter = 1
 theme = ExtResource( 1 )
 text = "new game"
@@ -66,11 +64,10 @@ text = "continue"
 flat = true
 
 [node name="multiplayer" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-show_behind_parent = true
 margin_top = 210.0
 margin_right = 268.0
 margin_bottom = 276.0
-focus_neighbour_top = NodePath("../mini game")
+focus_neighbour_top = NodePath("../continue")
 focus_neighbour_bottom = NodePath("../anime")
 focus_next = NodePath("../anime")
 focus_previous = NodePath("../continue")
@@ -83,6 +80,8 @@ flat = true
 margin_top = 280.0
 margin_right = 268.0
 margin_bottom = 346.0
+focus_neighbour_top = NodePath("../multiplayer")
+focus_neighbour_bottom = NodePath("../practice")
 focus_next = NodePath("../practice")
 focus_previous = NodePath("../multiplayer")
 theme = ExtResource( 1 )
@@ -100,12 +99,9 @@ text = "practice"
 flat = true
 
 [node name="wallet" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-show_behind_parent = true
 margin_top = 420.0
 margin_right = 268.0
 margin_bottom = 486.0
-focus_neighbour_top = NodePath("../mini game")
-focus_neighbour_bottom = NodePath("../controls")
 focus_next = NodePath("../controls")
 focus_previous = NodePath("../practice")
 theme = ExtResource( 1 )
@@ -114,12 +110,9 @@ text = "Wallet"
 flat = true
 
 [node name="controls" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-show_behind_parent = true
 margin_top = 490.0
 margin_right = 268.0
 margin_bottom = 556.0
-focus_neighbour_top = NodePath("../mini game")
-focus_neighbour_bottom = NodePath("../quit")
 focus_next = NodePath("../quit")
 focus_previous = NodePath("../wallet")
 theme = ExtResource( 1 )
@@ -128,7 +121,6 @@ text = "Controls"
 flat = true
 
 [node name="quit" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-show_behind_parent = true
 margin_top = 560.0
 margin_right = 268.0
 margin_bottom = 626.0

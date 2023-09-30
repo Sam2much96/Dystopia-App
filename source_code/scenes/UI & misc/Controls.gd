@@ -22,14 +22,18 @@ var selector #for the menu cycle selector
 
 onready var back : Button = $ScrollContainer/VBoxContainer/back
 onready var music : Button = $ScrollContainer/VBoxContainer/music
-onready var debug : Button = $ScrollContainer/VBoxContainer/Debug
-onready var Shuffle : Button =$ScrollContainer/VBoxContainer/Shuffle
-onready var Change_Controller_type : Button = $ScrollContainer/VBoxContainer/Direction_controls
+onready var _debug : Button = $ScrollContainer/VBoxContainer/debug
+onready var Shuffle : Button =$ScrollContainer/VBoxContainer/shuffle
+onready var Change_Controller_type : Button = get_node("ScrollContainer/VBoxContainer/change controller")
+
+onready var github : Button = $ScrollContainer/VBoxContainer/github
+onready var languague : Button = $ScrollContainer/VBoxContainer/languague
+onready var help : Button = $ScrollContainer/VBoxContainer/help
 
 # Auto Scroll with Swipe Gestures 
 onready var scroller : ScrollContainer= get_node("ScrollContainer")
 
-onready var ControlButtons : Array =  [back, music,debug,Shuffle,Change_Controller_type]
+onready var ControlButtons : Array =  [back, music,_debug,Shuffle,Change_Controller_type, github, languague, help]
 
 func _ready():
 	if get_tree().get_root().has_node("/root/Debug") == true:
@@ -151,12 +155,13 @@ func _on_Direction_controls_toggled(button_pressed):
 func manual_translate()-> void:
 	if Dialogs.language != "" or null:
 		
-		back .set_text(Dialogs.translate_to("back", Dialogs.language))
-		music .set_text(Dialogs.translate_to("music", Dialogs.language))
-		debug .set_text(Dialogs.translate_to("debug", Dialogs.language))
-		Shuffle.set_text(Dialogs.translate_to("shuffle", Dialogs.language))
-		Change_Controller_type.set_text(Dialogs.translate_to("change controller", Dialogs.language))
-
+		print(ControlButtons)
+		Dialogs.set_font(ControlButtons)
+		
+		for i in ControlButtons:
+			# Note: If it breaks with a null object error, it means that the scene layout has been changed
+			# Update the button links then
+			i.set_text(Dialogs.translate_to(i.name, Dialogs.language))
 
 
 "Memory Leak Management"

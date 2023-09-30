@@ -31,7 +31,14 @@ onready var loaded_comics
 var size_A : Vector2 = Vector2(1772,1871)
 var size_B : Vector2 = Vector2(2490, 6289)
 
+# UI buttons
+onready var _back : Button = get_parent().get_parent().get_parent().get_node("back")
+
+onready var Comics__2_UI : Array = [_back]
+
 func _ready():
+	manually_translate()
+	
 	get_node("chap_1").grab_focus()
 	
 	#**********Buggy*****************#
@@ -122,3 +129,13 @@ func _on_chap_6_pressed():
 func _on_chap_7_pressed():
 	_on_Comics_loaded_comics()
 	return Comics_v6._on_chap_7_pressed()
+
+func manually_translate():
+	if Dialogs.language != "" or null:
+		#jggugu
+		Dialogs.set_font(Comics__2_UI)
+		
+		for i in Comics__2_UI:
+			# Note: If it breaks with a null object error, it means that the scene layout has been changed
+			# Update the button links then
+			i.set_text(Dialogs.translate_to(i.name, Dialogs.language))

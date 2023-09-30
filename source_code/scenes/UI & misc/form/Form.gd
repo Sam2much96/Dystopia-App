@@ -61,8 +61,8 @@ func _ready():
 	Globals.Functions.load_user_data('languague')
 	
 	# If Dialogue Already Preset, Skip to Cinematics.
-	print_debug("User Preloaded Language: ", Dialogs.has_language())
-	if Dialogs.has_language() :
+	print_debug("User Preloaded Language: ", Dialogs.language)
+	if not Dialogs.language.empty() :
 		get_tree().change_scene_to(cinematics)
 
 	
@@ -71,6 +71,11 @@ func _ready():
 	language.add_item('English') 
 	language.add_item('Brazilian Portuguese') 
 	language.add_item('French')
+	language.add_item('Hindi')
+	language.add_item('Japanese')
+	language.add_item('Mandarin')
+	language.add_item('Yoruba')
+	language.add_item('Arabic')
 	#language.add_item('Nigerian Pidgin')
 
 	# Connects the Networking signal
@@ -90,6 +95,8 @@ func _ready():
 func _on_play_pressed():
 	
 	# Saves User's Language to Global Variable
+	# Language Sub system has to be reworked to load/create font packs for every supported Languague
+	
 	
 	if language.get_selected() == 0:
 		Dialogs.language = "en_US"
@@ -99,6 +106,16 @@ func _on_play_pressed():
 		#Globals.save_game()
 	elif language.get_selected() == 2:
 		Dialogs.language = "fr"
+	elif language.get_selected() == 3:
+		Dialogs.language = "hi_IN"
+	elif language.get_selected() == 4:
+		Dialogs.language = "ja"
+	elif language.get_selected() == 5:
+		Dialogs.language = "zh_CN"
+	elif language.get_selected() == 6:
+		Dialogs.language = "yo_NG"
+	elif language.get_selected() == 7:
+		Dialogs.language = "ar"
 		#Globals.save_game()
 	else : Dialogs.language = ""
 
@@ -169,6 +186,11 @@ func translate()-> void:
 	print ("Testing Translation En: ",Dialogs.translate_to("char3", "en_US")) 
 	print ("Testing Translation Es: ", Dialogs.translate_to("char3", "pt_BR"))
 	print ("Testing Translation Es: ", Dialogs.translate_to("char3", "fr"))
+	print ("Testing Translation Te: ", Dialogs.translate_to("char3", "te_IN")) # Not working i 3.5 only in 4.0
+	print ("Testing Translation hi: ", Dialogs.translate_to("char3", "hi_IN"))
+	print ("Testing Translation ja: ", Dialogs.translate_to("char3", "ja"))
+	print ("Testing Translation cn: ", Dialogs.translate_to("char3", "zh_CN"))
+	print ("Testing Translation yo: ", Dialogs.translate_to("char3", "yo_NG"))
 	print ("Testing Translation Error: ", Dialogs.translate_to("char7", "en"))
 
 
@@ -178,5 +200,7 @@ func _exit_tree():
 	print ("Selected Language: ",Dialogs.language)
 	
 	# Clear Memory
-	for i in UI_buttons:
-		i.queue_free()
+	#for i in UI_buttons:
+	#	i.queue_free()
+
+	Globals.MemoryManagement.queue_free_array(UI_buttons)

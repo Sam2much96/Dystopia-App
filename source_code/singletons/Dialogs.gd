@@ -50,6 +50,22 @@ var _script_testing : String = 'res://resources/dialogues/script_testing.gd'
 
 const WAIT_TIME = 6 # Wait time before hiding dialogue box
 
+# Contains path to supported languague paired with supported language packs
+var font_pack : Dictionary = {
+"en":"res://fonts/Comic_Andy.ttf",
+"en_US": "res://fonts/Comic_Andy.ttf",
+"pt_BR": "res://fonts/Comic_Andy.ttf",
+"fr": "res://fonts/Comic_Andy.ttf",
+"te_IN":"",
+"hi_IN":"res://fonts/TiroDevanagariHindi-Regular.ttf",
+"yo_NG":"res://fonts/WarowniaBlkNrw.ttf",
+"ja":"res://fonts/NotoSerifJP-Regular.otf",
+"zh_CN":"res://fonts/NotoSerifJP-Regular.otf",
+"ar":"res://fonts/NotoSansArabic-VariableFont_wdth,wght.ttf"
+}
+
+var custom_font = DynamicFont.new()
+
 func show_dialog(text:String, speaker:String):
 	if is_instance_valid(dialog_box): # If an instance of dialogue box hasn't been deleted from memory?
 		dialog_box.show_dialog(text, speaker)
@@ -107,6 +123,7 @@ func _on_dialog_ended():
  # It parses from translations .csv and returns a string
  # Edit the translation sources .ods file to expand translations
 
+# should implement Language Based Font
 #Documentation: https://www.gotut.net/localisation-godot/
 func translate_to(_language : String, locale: String)-> String:
 	
@@ -120,15 +137,35 @@ func reset() -> void:
 	language = ""
 
 
-func has_language() -> bool:
+#func has_language() -> bool:
 	# Boolean method for checking if
 	# the language variable is empty
 	
-	if language != "":
-		return true
-	elif language == "" :
-		return false
-	return false
+#	if language != "":
+#		return true
+#	elif language == "" :
+#		return false
+#	return false
+
+func create_font_pack() -> DynamicFont:
+
+	# Uses font pack path dictionary to create custom languague packs per languague
+	custom_font.font_data = load(font_pack.get(language)) 
+	custom_font.size = 30
+	custom_font.outline_size = 2
+	custom_font.outline_color= Color(0,0,0,1)
+	custom_font.use_filter = true
+	return custom_font
+
+func set_font(nodes:  Array):
+	create_font_pack()
+	#for i in nodes:
+	#if nodes != null:
+	if not nodes.empty():
+		for i in nodes:
+			if i is Button:
+				print (i.name)
+				i.add_font_override('font', custom_font)
 
 
 class Parser extends Reference :

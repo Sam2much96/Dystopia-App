@@ -1,20 +1,20 @@
-,en_US,pt_BR,fr
-char1,hello,olá,allo
-char2,how are you,como vai,comment allez-vous
-char3,options,opções,choix
-comics,comics,banda desenhada,bandes dessinées
-new game,new game,novo jogo,nouveau jeu
-continue,continue,continuar,continuer
-multiplayer,multiplayer,multijogador,multijoueur
-anime,anime,animação,animer
-practice,practice,prática,pratique
-cityscape,cityscape,urbano,urbain
-wallet,wallet,carteira,portefeuille
-controls,controls,controles,contrôles
-quit,quit,desistir,arrêter
-back,back,de volta,dos
-music,music,música,musique
-shuffle,shuffle,embaralhar as músicas,mélanger
-help,help,ajuda,aider
-debug,debug,debugar,déboguer
-change controller,change controller,trocar o controle,changer de contrôleur
+,en_US,pt_BR,fr,te_IN,hi_IN,yo_NG,ha_NG,ig_NG,ja,zh_CN,ar
+char1,hello,olá,allo,హలో,नमस्ते,ẹkọ.,,,こんにちは,你好,مرحباً
+char2,how are you,como vai,comment allez-vous,మీరు ఎలా ఉన్నారు,आप कैसे हैं,Bawo ni,,,お元気ですか,你好吗,كيف حالك؟
+char3,options,opções,choix,ఎంపికలు,विकल्प,ọrọ tuntun,,,選択肢,选项,خيارات
+comics,comics,banda desenhada,bandes dessinées,కామిక్స్,कॉमिक्स,kọ́míksì,,,漫画,漫画,قصص مصورة
+new game,new game,novo jogo,nouveau jeu,కొత్త ఆట,नया खेल,wọlé lati ṣẹdálẹ,,,新しいゲーム,新游戏,لعبة جديدة
+continue,continue,continuar,continuer,కొన్నిసారిగా,जारी रखें,tẹ,,,続ける,继续,استمر
+multiplayer,multiplayer,multijogador,multijoueur,బహుక్కలి,बहु-खिलाड़ी,òwe múlẹ́,,,まるちぷれいやー,多人模式,لاعبون متعددون
+anime,anime,animação,animer,ఆనిమే,एनिमे,ọran,,,あにめ,动画,أنمي
+practice,practice,prática,pratique,అభ్యాసం,अभ्यास,Ile-iṣẹ,,,練習,练习,ممارسة
+cityscape,cityscape,urbano,urbain,అభ్యాసం,शहर का दृश्य,Ayé ilu,,,都市の景観,都市风貌,منظر المدينة
+wallet,wallet,carteira,portefeuille,వాలెట్,बटुआ,agbada,,,財布,钱包,محفظة
+controls,controls,controles,contrôles,నియంత్రణలు,नियंत्रण,Ilo,,,こんとろーらー,操作,ضوابط
+quit,quit,desistir,arrêter,వద్దు,छोड़ना,dariji,,,やめる,放弃,ترك
+back,back,de volta,dos,వెనక్కి,पीछे,lẹhin,,,もどる,返回,رجوع
+music,music,música,musique,సంగీతం,संगीत,orin,,,おんがく,音乐,موسيقى
+shuffle,shuffle,embaralhar as músicas,mélanger,షఫిల్,मिलाकर खेलना,jìjìlẹ́,,,しゃっふる,随机播放,امزج
+help,help,ajuda,aider,సహాయం,मदद,ṣòfin,,,たすけて,帮助,مساعدة
+debug,debug,debugar,déboguer,పిలుపుట,डीबग,mọ́ nípada ewu,,,でばぐ,调试,إصلاح الأخطاء
+change controller,change controller,trocar o controle,changer de contrôleur,కంట్రోలర్ మార్చు,कंट्रोलर बदलें,fi ìlànì yẹ̀ títẹ̀,,,コントローラーをかえる,更换手柄,تغيير الوحدة التحكم

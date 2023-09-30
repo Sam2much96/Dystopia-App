@@ -52,12 +52,12 @@ onready var game_menu : MarginContainer = get_node("MarginContainer")
 
 onready var _multiplayer = $MarginContainer/ScrollContainer/HSeparator/multiplayer
 
-onready var anime : Button = $MarginContainer/ScrollContainer/HSeparator/Anime
-onready var practice : Button = $MarginContainer/ScrollContainer/HSeparator/Testing_Scene
+onready var anime : Button = $MarginContainer/ScrollContainer/HSeparator/anime
+onready var practice : Button = $MarginContainer/ScrollContainer/HSeparator/practice
 #onready var City_scape : Button = $MarginContainer/ScrollContainer/HSeparator/City_scape # Depreciated
 onready var wallet_ : Button = $MarginContainer/ScrollContainer/HSeparator/wallet
 onready var controls : Button = $MarginContainer/ScrollContainer/HSeparator/controls
-onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit Button"
+onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit"
 
 
 # Auto Scroll with Swipe Gestures
@@ -66,13 +66,20 @@ onready var scroller : ScrollContainer= get_node("MarginContainer/ScrollContaine
 
 
 
-onready var MenuButtons : Array = [
-	comics, new_game, continue_game, game_menu,
-	_multiplayer, anime, practice, 
-	wallet_, controls, quit
-]
+onready var MenuButtons : Array = [comics,new_game, continue_game, _multiplayer, anime,practice, wallet_,controls, quit]
+
 
 func _ready():
+	
+	#MenuButtons.append(comics)
+	#MenuButtons.append(new_game)
+	#MenuButtons.append(continue_game)
+	#MenuButtons.append(_multiplayer)
+	#MenuButtons.append(anime)
+	#MenuButtons.append(practice)
+	#MenuButtons.append(wallet_)
+	#MenuButtons.append(controls)
+	#MenuButtons.append(quit)
 	
 	
 	" Translation"
@@ -274,7 +281,7 @@ func _on_controls_pressed():
 	Globals.Functions.change_scene_to(Globals.controls, get_tree())
 
 
-func _on_quit_Button_pressed():
+func _on_quit_pressed():
 	if get_tree().get_current_scene().get_name() == 'Menu':
 		Music.play_track(Music.ui_sfx[1])
 		get_tree().quit()
@@ -317,7 +324,7 @@ func _hide_some_menu_options():
 
 
 
-func _on_Anime_pressed():
+func _on_anime_pressed():
 	Music.play_track(Music.ui_sfx[0])
 	return get_tree().change_scene_to((load('res://scenes/UI & misc/Shop.tscn')))
 
@@ -327,7 +334,7 @@ func _on_wallet_pressed():
 	return get_tree().change_scene_to((load('res://scenes/Wallet/Wallet main.tscn')))
 
 
-func _on_Testing_Scene_pressed(): # turn off in release build
+func _on_practice_pressed(): # turn off in release build
 	Globals.current_level = 'res://scenes/levels/Testing Scene.tscn' #breaks the Globals.current_level script
 	Globals.Functions.change_scene_to(Globals.Functions.LoadLargeScene(
 		Globals.current_level, 
@@ -355,16 +362,13 @@ func upscale()-> void:
 func manually_translate()-> void:
 	print ("Selected Language: ",Dialogs.language)
 	#SHould Ideally Use Hashmap tuple + for loops  for translations
+	print(MenuButtons)
+	
 	if Dialogs.language != "" or null:
 		#jggugu
-		comics.set_text(Dialogs.translate_to("comics", Dialogs.language))
-		new_game.set_text(Dialogs.translate_to("new game", Dialogs.language))
-		continue_game.set_text(Dialogs.translate_to("continue", Dialogs.language))
-		#game_menu.set_text(Dialogs.translate_to("comics", Dialogs.language))
-		_multiplayer.set_text(Dialogs.translate_to("multiplayer", Dialogs.language))
-		anime.set_text(Dialogs.translate_to("anime", Dialogs.language))
-		practice.set_text(Dialogs.translate_to("practice", Dialogs.language))
-		#City_scape.set_text(Dialogs.translate_to("cityscape", Dialogs.language))
-		wallet_ .set_text(Dialogs.translate_to("wallet", Dialogs.language))
-		controls.set_text(Dialogs.translate_to("controls", Dialogs.language))
-		quit.set_text(Dialogs.translate_to("quit", Dialogs.language))
+		Dialogs.set_font(MenuButtons)
+		
+		for i in MenuButtons:
+			i.set_text(Dialogs.translate_to(i.name, Dialogs.language))
+		
+		#comics.set_text(Dialogs.translate_to("comics", Dialogs.language))

@@ -40,12 +40,6 @@ margin_bottom = 1211.08
 rect_scale = Vector2( 2.2, 2.2 )
 texture = ExtResource( 7 )
 
-[node name="Menu " parent="." instance=ExtResource( 3 )]
-margin_left = -158.869
-margin_top = 100.329
-margin_right = 1023.13
-margin_bottom = 699.329
-
 [node name="menu" type="TouchScreenButton" parent="."]
 material = SubResource( 7 )
 position = Vector2( -5, 9 )
@@ -77,3 +71,5 @@ autostart = true
 [node name="Appodeal" parent="." instance=ExtResource( 12 )]
 enabled = true
 banner_size = "320x50"
+
+[node name="Menu " parent="." instance=ExtResource( 3 )]

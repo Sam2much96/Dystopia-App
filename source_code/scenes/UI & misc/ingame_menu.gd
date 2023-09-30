@@ -71,17 +71,7 @@ onready var MenuButtons : Array = [comics,new_game, continue_game, _multiplayer,
 
 func _ready():
 	
-	#MenuButtons.append(comics)
-	#MenuButtons.append(new_game)
-	#MenuButtons.append(continue_game)
-	#MenuButtons.append(_multiplayer)
-	#MenuButtons.append(anime)
-	#MenuButtons.append(practice)
-	#MenuButtons.append(wallet_)
-	#MenuButtons.append(controls)
-	#MenuButtons.append(quit)
-	
-	
+
 	" Translation"
 	manually_translate()
 	
@@ -311,13 +301,13 @@ func _on_Shop_pressed():
 	Globals.Functions.change_scene_to(shop, get_tree())
 
 func _hide_some_menu_options():
-	if Engine.has_singleton ('Debug'):
-		var Debug = Engine.get_singleton('Debug')
-		if Debug.debug_panel != null: #turns multiplayer on when debugging000
-			_multiplayer.show()
-		if Debug.debug_panel == null:
-			_multiplayer.hide()
-		pass
+	#if Engine.has_singleton ('Debug'):
+	#	var Debug = Engine.get_singleton('Debug')
+	#	if Debug.debug_panel != null: #turns multiplayer on when debugging000
+	#		_multiplayer.show()
+	#	if Debug.debug_panel == null:
+	#		_multiplayer.hide()
+	pass
 
 
 

@@ -20,7 +20,7 @@
 # (4) Document code
 # (5) Organize code into states {Finite State Machine}
 # (6) Implement Global file checker and Directory Checker
-# (7) Implement Spotify API
+# (7) Implement Spotify API (Depreciated)
 
 # *************************************************
 # Bugs:
@@ -44,17 +44,17 @@ export(String, FILE, "*.ogg") var music_track = ""
 # file checker should loop through playlist
 var playlist_one : Dictionary = {
 	0:'res://music/310-world-map-loop.ogg', 
-	1:'res://music/chike san afro 1.ogg',
-	2:'res://music/chike san afro 2.ogg',
-	3:'res://music/chike san afro 3.ogg',
-	4:'res://music/Astrolife chike san.ogg',
-	5:'res://music/a-2-3-groovy-bgm.ogg',
-	6:'res://music/Spooky-Chike-san song.ogg',
-	7:'res://music/6Feet.ogg',
-	8:'res://music/Blow.ogg',
-	9:'res://music/HENSONN_SAHARA.ogg',
-	10:'res://music/Moya.ogg',
-	11:'res://music/Turn up.ogg',
+	1:'user://Music/chike san afro 1.ogg',
+	2:'user://Music/chike san afro 2.ogg',
+	3:'user://Music/chike san afro 3.ogg',
+	4:'user://Music/Astrolife chike san.ogg',
+	5:'user://Music/a-2-3-groovy-bgm.ogg',
+	6:'user://Music/Spooky-Chike-san song.ogg',
+	7:'user://Music/6Feet.ogg',
+	8:'user://Music/Blow.ogg',
+	9:'user://Music/HENSONN_SAHARA.ogg',
+	10:'user://Music/Moya.ogg',
+	11:'user://Music/Turn up.ogg',
 }
 var comic_sfx : Dictionary = {
 	0: 'res://sounds/book_flip.1.ogg',
@@ -133,11 +133,7 @@ var nokia_soundpack : Dictionary = {
 	34 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/soundtest.ogg",
 }
 
-var _music
-onready var Music_streamer =get_node("A")  #Refrences the music player node
-onready var  Music_streamer_2 =get_node("D")
-onready var sfx_streamer 
-onready var track
+
 #create all your music actions here as animated nodes
 """
 I put in an automatic music shuffling script in here. Feel free to update it 
@@ -157,22 +153,73 @@ onready var music_bus_2 = AudioServer.get_bus_index($B.bus)
 onready var music_bus = AudioServer.get_bus_index($A.bus)
 
 
-# Spotify Node
-# Implement SoundCLoud API for Audio Downloads
-# onready var spotify = $Gopotify
+onready var A : AudioStreamPlayer = $A
+onready var B : AudioStreamPlayer = $B
+onready var C : AudioStreamPlayer = $C
+onready var D : AudioStreamPlayer = $D 
+
+onready var requests : HTTPRequest = $HTTPRequest
+onready var timer : Timer = $Timer
+
+
+var _music
+onready var Music_streamer : AudioStreamPlayer = get_node_or_null("A")  #Refrences the music player node
+onready var  Music_streamer_2  : AudioStreamPlayer=get_node_or_null("D")
+onready var sfx_streamer 
+onready var track
 
 # Pointers to Node for Memory Mgmt
-var my_nodes : Array = []
+onready var my_nodes : Array = [Music_streamer,B,C,Music_streamer_2]
+
+
+# THis URL fetches a Zip file from an AWS s3 buzket
+var musicAWS3_URL : Dictionary = {"zip":"https://llama2-7b.s3.eu-north-1.amazonaws.com/music.zip"} 
+
+var FileCheck4=File.new() # checks Music Files
+var FileCheck3=File.new() # checks Music Files
+var FileCheck2=File.new() # checks Music Files
+var FileCheck1=File.new() # checks Music Files
+var FileCheck=File.new() # checks Music Files
+var FileDirectory=Directory.new() #checks Music Irectory
+
+var Music_Available_Locally : bool = false
+var Music_Zip_Available_Locally : bool = false
+
+
 
 func _ready():
 	
-	my_nodes.append($A)
-	my_nodes.append($B)
-	my_nodes.append($C)
-	my_nodes.append($D)
-	my_nodes.append($anims)
-	my_nodes.append($HTTPRequest)
-	my_nodes.append($Timer)
+	# Debug nodes
+	print_debug(my_nodes)
+	
+	# connect signals
+	requests.connect("request_completed", self , "_http_request_completed")
+	
+	# Check if Local Music Directory exists
+	if not wallet.Functions.check_local_wallet_directory(FileDirectory,"user://Music") :
+		
+		# Make directory
+		FileDirectory.make_dir("user://Music")
+	
+	"CHecks the Playlist If Music file is available locally"
+	for i in playlist_one.values():
+		#print (i) # FOr debug purpose only
+		if not FileCheck4.file_exists(i):
+			Music_Available_Locally = false
+		# Downloal zip file
+	
+	"Checks if Music Zip file is available locally"
+	if not FileCheck1.file_exists("user://Music/music.zip"):
+		requests.request(musicAWS3_URL.get('zip'))
+	
+	
+	#my_nodes.append($A)
+	#my_nodes.append($B)
+	#my_nodes.append($C)
+	#my_nodes.append($D)
+	#my_nodes.append($anims)
+	#my_nodes.append($HTTPRequest)
+	#my_nodes.append($Timer)
 	
 	#, $C, $D, $anims, $HTTPRequest, $Timer
 	# Needs more code
@@ -181,14 +228,17 @@ func _ready():
 	#load on/off music settings
 	
 	
-	
-	if music_on == true:
+	"Online Music"
+	if music_on == true && Music_Available_Locally :
 		randomize() #randomizes shuffle code seed
 		shuffle(playlist_one) #disabled for debugging
 		_music = music_track.get_file()
 		play(music_track) #Not needed for release
 		#Globals.Music_on_settings = true
-		
+	
+	"Default Music"
+	if music_on == true && !Music_Available_Locally :
+		play(playlist_one.get(0))
 
 		
 	elif music_on == false:
@@ -289,7 +339,7 @@ func _notification(what):
 """
 MUSIC SHUFFLE
 """
-func shuffle (playlist):
+func shuffle (playlist : Dictionary):
 	music_track = ''
 	track = int(rand_range(-1,playlist.size())) #selects a random track number
 	music_track = playlist[track]
@@ -385,19 +435,19 @@ func download_and_uncompress_music() :
 		Globals.uncompress("res://music/online-hosting-main.zip")
 
 
-"Downloads Music files from Github"
+"Downloads Music files from AWS S3 Bucket"
 
 
-func _on_HTTPRequest_request_completed(result, response_code, headers, body):
+func _http_request_completed(result, response_code, headers, body):
 	print (" request done 1: ", result) #********for debug purposes only
 	print (" headers 1: ", headers)#*************for debug purposes only
 	print (" response code 1: ", response_code) #for debug purposes only
 	
 	if not body.empty():
-		print (11111111111111)
+		print ("Saving Music File")
 		var request_node = $HTTPRequest
 		#Buggy. Downloads a corrupt file
-		return Networking.download_file_(request_node, body, "res://music",".zip")
+		return Networking.download_file_(request_node, body, "user://Music/music",".zip")
 		#RestHandler.request_pull_branch(zip_filepath, typeball_url, current_repo._repository.diskUsage)
 	
 	if body.empty(): #returns an empty body

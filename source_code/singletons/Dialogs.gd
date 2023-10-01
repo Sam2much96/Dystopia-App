@@ -164,7 +164,7 @@ func set_font(nodes:  Array):
 	if not nodes.empty():
 		for i in nodes:
 			if i is Button:
-				#print (i.name) # for debug purposes only
+				#print (i.name) # for debug purposes only	
 				i.add_font_override('font', custom_font)
 
 

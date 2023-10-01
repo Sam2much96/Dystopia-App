@@ -26,46 +26,41 @@ margin_right = 150.662
 margin_bottom = -215.385
 rect_scale = Vector2( 2.8, 2.8 )
 
-[node name="watch anime" type="Button" parent="africa icon/VBoxContainer"]
+[node name="episode" type="Button" parent="africa icon/VBoxContainer"]
 margin_right = 567.0
 margin_bottom = 78.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 4 )
 text = " watch Ep 1"
 flat = true
 
-[node name="watch anime3" type="Button" parent="africa icon/VBoxContainer"]
+[node name="behind the scenes" type="Button" parent="africa icon/VBoxContainer"]
 margin_top = 82.0
 margin_right = 567.0
 margin_bottom = 160.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 4 )
 text = "Behind the scenes"
 flat = true
 
-[node name="watch anime2" type="Button" parent="africa icon/VBoxContainer"]
+[node name="animatic" type="Button" parent="africa icon/VBoxContainer"]
 margin_top = 164.0
 margin_right = 567.0
 margin_bottom = 242.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 4 )
 text = " watch Animatic"
 flat = true
 
-[node name="watch merch" type="Button" parent="africa icon/VBoxContainer"]
+[node name="merchandise" type="Button" parent="africa icon/VBoxContainer"]
 margin_top = 246.0
 margin_right = 567.0
 margin_bottom = 324.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 4 )
 text = "merch"
 flat = true
 
-[node name="watch_guidebook" type="Button" parent="africa icon/VBoxContainer"]
+[node name="guide book" type="Button" parent="africa icon/VBoxContainer"]
 margin_top = 328.0
 margin_right = 567.0
 margin_bottom = 406.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 4 )
 text = "Guidebook"
 flat = true
@@ -90,22 +85,21 @@ margin_right = 288.0
 margin_bottom = 288.0
 script = ExtResource( 7 )
 
-[node name="Button" type="Button" parent="."]
+[node name="back" type="Button" parent="."]
 margin_left = 17.8381
 margin_top = 5.70287
 margin_right = 161.838
 margin_bottom = 124.703
 rect_scale = Vector2( 1.00913, 1.00913 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 4 )
 text = "Back"
 flat = true
 
 [node name="Position2D" type="Position2D" parent="."]
 
-[connection signal="pressed" from="africa icon/VBoxContainer/watch anime" to="." method="_on_watch_anime_pressed"]
-[connection signal="pressed" from="africa icon/VBoxContainer/watch anime3" to="." method="_on_watch_anime3_pressed"]
-[connection signal="pressed" from="africa icon/VBoxContainer/watch anime2" to="." method="_on_watch_anime2_pressed"]
-[connection signal="pressed" from="africa icon/VBoxContainer/watch merch" to="." method="_on_watch_merch_pressed"]
-[connection signal="pressed" from="africa icon/VBoxContainer/watch_guidebook" to="." method="_on_watch_guidebook_pressed"]
-[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="africa icon/VBoxContainer/episode" to="." method="_on_watch_anime_pressed"]
+[connection signal="pressed" from="africa icon/VBoxContainer/behind the scenes" to="." method="_on_watch_anime3_pressed"]
+[connection signal="pressed" from="africa icon/VBoxContainer/animatic" to="." method="_on_watch_anime2_pressed"]
+[connection signal="pressed" from="africa icon/VBoxContainer/merchandise" to="." method="_on_watch_merch_pressed"]
+[connection signal="pressed" from="africa icon/VBoxContainer/guide book" to="." method="_on_watch_guidebook_pressed"]
+[connection signal="pressed" from="back" to="." method="_on_Button_pressed"]

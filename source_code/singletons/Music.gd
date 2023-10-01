@@ -27,7 +27,7 @@
 # (1) Music debug function breaks
 # (2) Debug Function breaks
 # (3) Music Volume is unimplemented
-# (4) Music Downloads is buggy for large (20mb) files
+# (4) Music Downloads is buggy for large (20mb) files (fixed : Public AWS s3 Bucket)
 # *************************************************
 """
 THERE ARE TWO FUNCTIONS FOR PLAYING MUSIC TRACKS AND MUSIC PLAYLISTS
@@ -40,21 +40,31 @@ export (int) var volume # volume controller code is not yet written
 
 export(String, FILE, "*.ogg") var music_track = ""
 
-# should me moved to github repository
+var default_playlist : Dictionary ={
+	0:"res://music/310-world-map-loop.ogg",
+	1:"res://music/Astrolife chike san.ogg",
+	2:"res://music/chike san afro 1.ogg",
+	3:"res://music/chike san afro 2.ogg",
+	4:"res://music/chike san afro 3.ogg",
+	5:"res://music/Spooky-Chike-san song.ogg"
+}
+
+# Files Hosted on AWS S3 Bucket
 # file checker should loop through playlist
 var playlist_one : Dictionary = {
 	0:'res://music/310-world-map-loop.ogg', 
-	1:'user://Music/chike san afro 1.ogg',
-	2:'user://Music/chike san afro 2.ogg',
-	3:'user://Music/chike san afro 3.ogg',
-	4:'user://Music/Astrolife chike san.ogg',
-	5:'user://Music/a-2-3-groovy-bgm.ogg',
-	6:'user://Music/Spooky-Chike-san song.ogg',
-	7:'user://Music/6Feet.ogg',
-	8:'user://Music/Blow.ogg',
-	9:'user://Music/HENSONN_SAHARA.ogg',
-	10:'user://Music/Moya.ogg',
-	11:'user://Music/Turn up.ogg',
+	1:'user://Music/Dystopia-App/source_code/music/chike san afro 1.ogg',
+	2:'user://Music/Dystopia-App/source_code/music/chike san afro 2.ogg',
+	3:'user://Music/Dystopia-App/source_code/music/chike san afro 3.ogg',
+	4:'user://Music/Dystopia-App/source_code/music/Astrolife chike san.ogg',
+	5:'user://Music/Dystopia-App/source_code/music/a-2-3-groovy-bgm.ogg',
+	6:'user://Music/Dystopia-App/source_code/music/Spooky-Chike-san song.ogg',
+	7:'user://Music/Dystopia-App/source_code/music/6Feet.ogg',
+	8:'user://Music/Dystopia-App/source_code/music/Blow.ogg',
+	9:'user://Music/Dystopia-App/source_code/music/HENSONN_SAHARA.ogg',
+	10:'user://Music/Dystopia-App/source_code/music/Moya.ogg',
+	11:'user://Music/Dystopia-App/source_code/music/Turn up.ogg',
+	12:'user://Music/Dystopia-App/source_code/music/310-world-map-loop.ogg',
 }
 var comic_sfx : Dictionary = {
 	0: 'res://sounds/book_flip.1.ogg',
@@ -173,7 +183,8 @@ onready var my_nodes : Array = [Music_streamer,B,C,Music_streamer_2]
 
 
 # THis URL fetches a Zip file from an AWS s3 buzket
-var musicAWS3_URL : Dictionary = {"zip":"https://llama2-7b.s3.eu-north-1.amazonaws.com/music.zip"} 
+var musicAWS3_URL : Dictionary = {"zip":"https://llama2-7b.s3.eu-north-1.amazonaws.com/music.zip"
+} 
 
 var FileCheck4=File.new() # checks Music Files
 var FileCheck3=File.new() # checks Music Files
@@ -186,6 +197,9 @@ var Music_Available_Locally : bool = false
 var Music_Zip_Available_Locally : bool = false
 
 
+var headers = ["Content-Type: application/zip"]
+
+onready var thread : Thread = Thread.new() 
 
 func _ready():
 	
@@ -200,48 +214,55 @@ func _ready():
 		
 		# Make directory
 		FileDirectory.make_dir("user://Music")
+		
+
 	
-	"CHecks the Playlist If Music file is available locally"
+	# Check if Music Unzip root folder exists
+	if not wallet.Functions.check_local_wallet_directory(FileDirectory, "user://Music/Dystopia-App/source_code/music"):
+		FileDirectory.make_dir_recursive("user://Music/Dystopia-App/source_code/music")
+	
+	"Logic CHecks the Playlist If Music file is available locally"
 	for i in playlist_one.values():
 		#print (i) # FOr debug purpose only
 		if not FileCheck4.file_exists(i):
 			Music_Available_Locally = false
 		# Downloal zip file
 	
-	"Checks if Music Zip file is available locally"
+	"Logic Checks if Music Zip file is available locally"
 	if not FileCheck1.file_exists("user://Music/music.zip"):
-		requests.request(musicAWS3_URL.get('zip'))
+		requests.request(musicAWS3_URL.get('zip'), headers,false, HTTPClient.METHOD_GET)
+	if FileCheck1.file_exists("user://Music/music.zip"):
+		Music_Zip_Available_Locally = true
 	
 	
-	#my_nodes.append($A)
-	#my_nodes.append($B)
-	#my_nodes.append($C)
-	#my_nodes.append($D)
-	#my_nodes.append($anims)
-	#my_nodes.append($HTTPRequest)
-	#my_nodes.append($Timer)
-	
-	#, $C, $D, $anims, $HTTPRequest, $Timer
-	# Needs more code
-	#download_and_uncompress_music() 
-	
+	"Unzip Music files in a thread"
+	thread.start(self, "_thread_function")
 	#load on/off music settings
 	
 	
-	"Online Music"
-	if music_on == true && Music_Available_Locally :
-		randomize() #randomizes shuffle code seed
-		shuffle(playlist_one) #disabled for debugging
+	"Music Player Logic"
+	if music_on == true:
+		randomize()
+		if Music_Available_Locally:
+			# SHuffle the Entire Playlist
+			#randomize() #randomizes shuffle code seed
+			shuffle(playlist_one) #disabled for debugging
+		
+		"Default Music"
+		if !Music_Available_Locally:
+			# Shuffle Default Playlist
+			shuffle(default_playlist)
+		
 		_music = music_track.get_file()
 		play(music_track) #Not needed for release
 		#Globals.Music_on_settings = true
 	
-	"Default Music"
-	if music_on == true && !Music_Available_Locally :
-		play(playlist_one.get(0))
+	
+#	if music_on == true && !Music_Available_Locally :
+#		play(playlist_one.get(0))
 
 		
-	elif music_on == false:
+	if music_on == false:
 		$A.stop()
 		#Globals.Music_on_settings = false
 		pass
@@ -251,10 +272,10 @@ func _ready():
 func _process(delta):
 
 	"""
-	Music Debug
+	Music Uncompress
 	"""
-	#_music_debug()  #breaks # for debug purposes only
 	
+
 	#Auto sets Globals Music Settings
 
 	"""
@@ -263,8 +284,13 @@ func _process(delta):
 	if Music_streamer != null:
 		if Music_streamer.stream != null and int(Music_streamer.get_playback_position())==int(Music_streamer.get_stream().get_length()):
 			print ('autoshuffle')
-			shuffle(playlist_one) 
-			play(music_track)
+			if Music_Available_Locally:
+				shuffle(playlist_one) 
+				play(music_track)
+				
+			if !Music_Available_Locally:
+				shuffle(default_playlist)
+				play(music_track)
 
 
 func _music_debug(): #Breaks
@@ -284,10 +310,10 @@ func _music_debug(): #Breaks
 
 
 
-func play(stream):
+func play(stream: String):
 	#kinda works
 	#it bugs out when the music track node is added to a scene
-	if stream != null or stream != '': #null error
+	if stream != null or !stream.empty(): #null error
 		if current_track == "a":
 			$B.stream = load(stream) #invalid funtion load, cannot convert arguement from nil to string
 			$anims.play("AtoB")
@@ -393,46 +419,21 @@ func _exit_tree():
 	#turn_off()
 	sound('off')
 	Globals.MemoryManagement.queue_free_array(my_nodes)
-
-
-func _on_Timer_timeout():
-	pass # Replace with function body.
-
-# Buggy for large Zip files
-# Needs more code to establish proper http get from github repo
-# might require admin login to github for users
-func download_and_uncompress_music() :
-
-	#Check if files are available locally
-#func _process(_delta):
-	"Downloads a Zip file from Github and unzips it locally"
-	# Works
-	# Written for Musics singleton optimization		
-	# Texting Server File Downloads
 	
-	# Checks for music files in playlist one in Local Storage
-	var request_node = $HTTPRequest
-	
-	for y in Music.playlist_one.values():
-		# checks local storage for files
-		if Globals.check_files("res://music", y) == false:
-		# Use Code load API for downloading Zip files
-		# Works
-		# Url was gotten from Github integration API
-			#Networking.url = "https://codeload.github.com/Sam2much96/online-hosting/legacy.zip/f79fd1aa94709b966dacea994a8eb5540be48bad"
-			Networking.url = "https://codeload.github.com/Sam2much96/online-hosting/legacy.zip/f79fd1aa94709b966dacea994a8eb5540be48bad"
-			return Networking._check_connection(Networking.url, request_node) # Part 1
-			
-			
+	# Causes game to crash if not finished uncompressing zip file
+	thread.wait_to_finish()
 
-		if Globals.check_files("res://music", y) == true:
-			print ("File Check for music file: ", y," exists")
-	
-	# check if zip file is downloaded
-	if Globals.check_files("res://music", "res://music/online-hosting-main.zip"):
+
+func _thread_function():
+	"Logic Unzips Local zip files to ogg audio files"
+	if !Music_Available_Locally && Music_Zip_Available_Locally:
 		
-		# Unzips them
-		Globals.uncompress("res://music/online-hosting-main.zip")
+		
+		# SHould be done in a separate Thread not using te ready method
+		# Unzip Audio files recursively
+		Globals.uncompress("user://Music/music.zip", "user://Music")
+		
+		Music_Available_Locally == true
 
 
 "Downloads Music files from AWS S3 Bucket"
@@ -441,17 +442,22 @@ func download_and_uncompress_music() :
 func _http_request_completed(result, response_code, headers, body):
 	print (" request done 1: ", result) #********for debug purposes only
 	print (" headers 1: ", headers)#*************for debug purposes only
-	print (" response code 1: ", response_code) #for debug purposes only
+	print (" response code 1: ", response_code)#*************for debug purposes only
 	
-	if not body.empty():
-		print ("Saving Music File")
-		var request_node = $HTTPRequest
-		#Buggy. Downloads a corrupt file
-		return Networking.download_file_(request_node, body, "user://Music/music",".zip")
-		#RestHandler.request_pull_branch(zip_filepath, typeball_url, current_repo._repository.diskUsage)
+	
+	if response_code == HTTPClient.RESPONSE_OK :
+		if not body.empty():
+			print ("Saving Music File")
+			var request_node = $HTTPRequest
+			
+			Networking.download_file_(request_node, body, "user://Music/music",".zip")
+			
+			# Restarts the Logic Loop
+			_ready()
 	
 	if body.empty(): #returns an empty body
 		push_error("Result Unsuccessful")
 		#good_internet = false
 		#Networking.stop_check()
-
+	else: push_error(" ERROR : " + str(response_code)) #for debug purposes only
+	

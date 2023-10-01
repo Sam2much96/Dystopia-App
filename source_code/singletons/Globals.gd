@@ -651,43 +651,58 @@ func check_files(path_to_dir: String, path_to_file : String)-> bool:
 
 "Compression and Uncompression Algorithm"
 # Documentation: https://git.sr.ht/~jelle/gdunzip
-# Returns a pool byte array
+# Reads Data from a Zip File
 # Has a problem with saving Text files
-func uncompress(FILE: String) : #-> PoolByteArray:
+# Has a problem with Large files (Decompression is really slow)
+func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PoolByteArray:
 	# Instance the gdunzip script
-	var gdunzip = load('res://addons/gdunzip/gdunzip.gd').new()
+	#var gdunzip = load('res://addons/gdunzip/gdunzip.gd').new()
 	
 	
-	var loaded = gdunzip.load(FILE)
+	var loaded = Gdunzip.load(FILE)
 	
+	# Used 
 	
 	if loaded:
 		
-		print ("Zip File Data : ",gdunzip.files)
+		#print ("Zip File Data : ",gdunzip.files) # works
 		
-		print ("Files: ",gdunzip.files.keys().size())
+		print ("Files: ",Gdunzip.files.keys().size()) #works
 		
-		print ("First File: ",gdunzip.files.keys().front())
-		
-
+		print ("First File: ",Gdunzip.files.keys().front())
 		
 
+		#var unziped_file : PoolByteArray = gdunzip.uncompress(gdunzip.files.keys().front())  #lags the scene tree 
+
+			#Uncompresses files locally
+		#print("saving", gdunzip.files.keys().front() , "Locally", unziped_file.size())
+
+		#Networking.save_file_(unziped_file, "user://Music/" + str(gdunzip.files.get(gdunzip.files.keys().front())['file_name']), int(gdunzip.files.get(gdunzip.files.keys().front())['uncompressed_size']) )
+
+
+		
 		# Returns an Uncompressed PoolByteArray
 		# If string files contains excess characters, it would return an invalid utf-8 string
 		# Only parses Zip files and decompresses the First Value 
 		
+		"Debugs Zip Files"
 		
-		
-		for f in gdunzip.files.values():
+		for f in Gdunzip.files.values():
 			print('File name: ' + f['file_name'])
 
+			var unziped_file : PoolByteArray
 			
+			"Checks if Zipped File is present at file path" 
+			if not FileCheck1.file_exists(Uncompressd_rooot_dir + f['file_name']):
+				# save the file's uncompressed Pool Byte Array
+				unziped_file = Gdunzip.uncompress(f["file_name"])
 
-			#Uncompresses files locally
-			
+				#Uncompresses files locally
+				print("savingg", f["file_name"], "Locally", unziped_file)
 			#for t in gdunzip.files.keys():
-			#print ("Type of " + f['file_name'] + " ",typeof(gdunzip.get_compressed(t))) # for debug purposes only
-			Networking.save_file_(gdunzip.get_compressed(f['file_name']), "res://"+f['file_name'], int(f['uncompressed_size'] ))
+			#	print ("Type of " + f['file_name'] + " ",typeof(gdunzip.get_compressed(t))) # for debug purposes only
+			
+				Networking.save_file_(unziped_file, Uncompressd_rooot_dir+f['file_name'], int(f['uncompressed_size'] ))
 
 
 			# "compression_method" will be either -1 for uncompressed data, or

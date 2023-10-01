@@ -547,6 +547,7 @@ GlobalAnimation="*res://singletons/GlobalAnimationPlayer.tscn"
 Wallet="*res://scenes/Wallet/Wallet.gd"
 FPSGraphOverlay="*res://addons/fps_graph_overlay/FPSGraphOverlay.tscn"
 DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
+Gdunzip="*res://addons/gdunzip/gdunzip.gd"
 
 [debug]
 

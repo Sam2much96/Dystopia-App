@@ -153,6 +153,9 @@ var FileDirectory=Directory.new() #deletes all theon reset
 # Mobiles
 var _TouchScreenHUD : TouchScreenHUD
 
+"Compression/Uncompression"
+var unziped_file : PoolByteArray
+
 func _ready():
 	print_debug('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	print_debug("Despawn Fx:", despawn_fx)
@@ -665,7 +668,7 @@ func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PoolByteArray
 	
 	if loaded:
 		
-		#print ("Zip File Data : ",gdunzip.files) # works
+		print ("Zip File Data : ",Gdunzip.files) # works
 		
 		print ("Files: ",Gdunzip.files.keys().size()) #works
 		
@@ -690,7 +693,10 @@ func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PoolByteArray
 		for f in Gdunzip.files.values():
 			print('File name: ' + f['file_name'])
 
-			var unziped_file : PoolByteArray
+			
+			
+			
+			var concat : String = Uncompressd_rooot_dir+f['file_name']
 			
 			"Checks if Zipped File is present at file path" 
 			if not FileCheck1.file_exists(Uncompressd_rooot_dir + f['file_name']):
@@ -698,11 +704,11 @@ func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PoolByteArray
 				unziped_file = Gdunzip.uncompress(f["file_name"])
 
 				#Uncompresses files locally
-				print("savingg", f["file_name"], "Locally", unziped_file)
+				print("saving", f["file_name"], "Locally", unziped_file.size(), "to: ", concat)
 			#for t in gdunzip.files.keys():
 			#	print ("Type of " + f['file_name'] + " ",typeof(gdunzip.get_compressed(t))) # for debug purposes only
 			
-				Networking.save_file_(unziped_file, Uncompressd_rooot_dir+f['file_name'], int(f['uncompressed_size'] ))
+				Networking.save_file_(unziped_file, concat, int(f['uncompressed_size']))
 
 
 			# "compression_method" will be either -1 for uncompressed data, or

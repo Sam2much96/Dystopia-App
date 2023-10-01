@@ -31,7 +31,7 @@ export (bool) var cinematic_on = true
 export(String, FILE, "*.ogv") var vid_stream = ""
 
 # Cread Object
-var yt_dlp = YtDlp.new()
+var yt_dlp = null # Depreciated Code #YtDlp.new()
 onready var dialgue_box = $Dialog_box
 onready var animation : AnimationPlayer = $"animation player"
 onready var position2d : Position2D = $Position2D

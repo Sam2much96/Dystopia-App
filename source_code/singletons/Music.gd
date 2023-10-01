@@ -236,7 +236,10 @@ func _ready():
 	
 	
 	"Unzip Music files in a thread"
+	#Bugs: 
+	#(1) GDUnzip Compression speeds are slow
 	thread.start(self, "_thread_function")
+	
 	#load on/off music settings
 	
 	
@@ -431,7 +434,7 @@ func _thread_function():
 		
 		# SHould be done in a separate Thread not using te ready method
 		# Unzip Audio files recursively
-		Globals.uncompress("user://Music/music.zip", "user://Music")
+		Globals.uncompress("user://Music/music.zip", "user://Music/")
 		
 		Music_Available_Locally == true
 

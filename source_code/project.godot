@@ -324,11 +324,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ads/Yodo1-lib/yodo1mas.gd"
 }, {
-"base": "Reference",
-"class": "YtDlp",
-"language": "GDScript",
-"path": "res://addons/yt-dlp/yt_dlp.gd"
-}, {
 "base": "Camera2D",
 "class": "camera",
 "language": "GDScript",
@@ -493,7 +488,6 @@ _global_script_class_icons={
 "WordBubbleBox": "",
 "XtraLife": "",
 "Yodo1Mas": "",
-"YtDlp": "",
 "camera": "",
 "cinematic": "",
 "coins": "",

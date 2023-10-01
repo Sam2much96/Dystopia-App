@@ -474,10 +474,10 @@ static func download_file_(node : HTTPRequest,body: PoolByteArray, Save_path: St
 'Saves A File and Stores it Locally'
 #consider running 2 operations here. A read operation and a write operation
 # works
-static func save_file_(body: PoolByteArray, Save_path: String, file_size: int) -> File:
+static func save_file_(body: PoolByteArray, Save_path: String, file_size: int ) -> File:
 	var file = File.new()
 	
-	var Dir = Directory.new()
+	#var Dir = Directory.new()
 	
 	if body != null : # && !Dir.file_exists(Save_path):
 		
@@ -488,19 +488,22 @@ static func save_file_(body: PoolByteArray, Save_path: String, file_size: int) -
 		#file.open_compressed((Save_path + file_type), File.WRITE, File.COMPRESSION_GZIP )
 		
 		
-		file.open((Save_path ), File.WRITE )
+		var err = file.open((Save_path ), File.WRITE )
 		
 		#while not node.get_downloaded_bytes() > node.get_body_size() && file.eof_reached() == false:
 		print ("storing file to ", Save_path)
 		
-		while not file.get_len() > file_size:
-			file.store_buffer(body)
+		if err==OK:
 			
-			if file.get_len() == file_size:
-				file.close()
-				break 
-		
-		if file.eof_reached(): file.close()
+			while not file.get_len() > file_size:
+				file.store_buffer(body)
+				
+				if file.get_len() == file_size:
+					file.close()
+					break 
+			
+			if file.eof_reached(): file.close()
+		else : push_error("Error:" + err)
 		
 		# it's sending the data across the network, but its not decoding it properly                                           
 		#var data = node.get_downloaded_bytes()

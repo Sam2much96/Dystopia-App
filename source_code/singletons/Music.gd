@@ -28,6 +28,7 @@
 # (2) Debug Function breaks
 # (3) Music Volume is unimplemented
 # (4) Music Downloads is buggy for large (20mb) files (fixed : Public AWS s3 Bucket)
+# (5) Music Unzip takes too long (Hours) to unzip, take s up half the FPS in core game loop
 # *************************************************
 """
 THERE ARE TWO FUNCTIONS FOR PLAYING MUSIC TRACKS AND MUSIC PLAYLISTS
@@ -238,7 +239,8 @@ func _ready():
 	"Unzip Music files in a thread"
 	#Bugs: 
 	#(1) GDUnzip Compression speeds are slow
-	thread.start(self, "_thread_function")
+	
+	#thread.start(self, "_thread_function", null, 2)
 	
 	#load on/off music settings
 	
@@ -424,10 +426,17 @@ func _exit_tree():
 	Globals.MemoryManagement.queue_free_array(my_nodes)
 	
 	# Causes game to crash if not finished uncompressing zip file
-	thread.wait_to_finish()
+	# Creates a Bug with Debugger Error Page
+	
+	# Note: This thread function is depreciated because it drops fps to 12
+	# It would be activated once the Unzipping algorith is optimized and fps >=60
+	
+	#thread.wait_to_finish()
 
 
 func _thread_function():
+	# Note: This thread function is depreciated because it drops fps to 12
+	# It would be activated once the Unzipping algorith is optimized and fps >=60
 	"Logic Unzips Local zip files to ogg audio files"
 	if !Music_Available_Locally && Music_Zip_Available_Locally:
 		

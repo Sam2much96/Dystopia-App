@@ -37,7 +37,7 @@ func _ready():
 
 # Quests
 func _questlog_updated(quest_name, status):
-	var txt
+	var txt : String
 	match status:
 		Quest.STATUS.STARTED:
 			txt = "Quest aquired: %s." % quest_name
@@ -47,22 +47,22 @@ func _questlog_updated(quest_name, status):
 	pass
 
 # Inventory
-func _inventory_updated(action, type, amount):
-	var txt
+func _inventory_updated(action : String, type, amount : int):
+	var txt : String
 	match action:
 		"added":
 			txt = "Obtained %s x %s" % [type, amount]
 		"removed":
 			txt = "Lost %s x %s" % [type, amount]
 	_queue_message(txt)
-	pass
+
 
 func _queue_message(text):
 	messages.push_back(text)
 	if not $anims.is_playing():
 		_play_next()
-	pass
-	
+
+
 func _play_next():
 	if messages.empty():
 		return

@@ -151,7 +151,7 @@ func create_font_pack() -> DynamicFont:
 
 	# Uses font pack path dictionary to create custom languague packs per languague
 	custom_font.font_data = load(font_pack.get(language)) 
-	custom_font.size = 30
+	custom_font.size = 40
 	custom_font.outline_size = 2
 	custom_font.outline_color= Color(0,0,0,1)
 	custom_font.use_filter = true

@@ -30,12 +30,15 @@ func _http_request_completed(result, response_code, headers, body):
 	if body.empty() != true:
 		#var response =regex('body',(body.get_string_from_ascii ( )))
 
-		var response = body.get_string_from_ascii ( )
+		var response = body.get_string_from_utf8()
 
-		var _y = regex('body', response)
+		var _y = regex('title', response)
 
 		print ('Parsing Webpages')
-		get_node("RichTextLabel").set_text(str(_y))
+		#print(body)
+		
+		get_node("Label").set_text(str(_y))
+		#get_node("RichTextLabel").set_text(str(_y))
 		
 		#print(response)
 	if body.empty() == true:
@@ -49,6 +52,7 @@ func regex(tag, html, default = ''):
 	#to customize regular expression #regex.compile('<' + tag + "insert regex symbols" + tag + '>')
 	regex.compile('<' + tag + ">(.|\nj*?</)" + tag + '>')
 	var result = regex.search(html)
+	print("Result: ",result)
 	if result:
 		result.get_string().replace('<' + tag + '>', '')
 		result.replace('</' + tag + '>', '')

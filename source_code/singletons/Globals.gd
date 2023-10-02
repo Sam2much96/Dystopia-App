@@ -668,19 +668,12 @@ func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PoolByteArray
 	
 	if loaded:
 		
-		print ("Zip File Data : ",Gdunzip.files) # works
+		#print ("Zip File Data : ",Gdunzip.files) # for debug purposes only
 		
-		print ("Files: ",Gdunzip.files.keys().size()) #works
+		print ("Files: ",Gdunzip.files.keys().size()) # For Debug purposes only
 		
-		print ("First File: ",Gdunzip.files.keys().front())
+		print ("First File: ",Gdunzip.files.keys().front()) # For Debug purposes only 
 		
-
-		#var unziped_file : PoolByteArray = gdunzip.uncompress(gdunzip.files.keys().front())  #lags the scene tree 
-
-			#Uncompresses files locally
-		#print("saving", gdunzip.files.keys().front() , "Locally", unziped_file.size())
-
-		#Networking.save_file_(unziped_file, "user://Music/" + str(gdunzip.files.get(gdunzip.files.keys().front())['file_name']), int(gdunzip.files.get(gdunzip.files.keys().front())['uncompressed_size']) )
 
 
 		

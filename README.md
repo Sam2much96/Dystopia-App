@@ -67,7 +67,14 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 
 **(13)FFmpeg Decoder Libraries** from 'https://github.com/kidrigger/godot-videodecoder ' are used in the Anime streaming section. I rendered the video in 720p, the game's resolution.
 
-(14) Adaptable Ads: (depreciated)
+**(14) Translations:**
+	-Hindi
+	-Arabic
+	-French
+	-Brazillian Portuguese
+	-Yoruba NG
+	-Japanese
+	-Mandarin
 
 (16) Touch input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases to fix the comics section ux problem
 **(17) Web 3.0 functionalities**
@@ -85,7 +92,6 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 	-changing pages centers new page 
 	-Multitouch settings in control
 	-Better Combat System
-	-Comic placeholder code
 	-Auto rotate gestures for the Comic placeholder code
 	-Guided view ( Controlled zoom )
 	
@@ -93,18 +99,14 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 ## -Features to Add
 	
 	-Game Vibrations
-	-Hints system
 	-Custom Button Mapping
 	-Guided view system
-	-Mana meter (Ogun meter)
-	-NPC_2 Quests
-	-Create Dungeon	
+	-NPC_2 Quests	
 	-Spritesheet animation upgrade
 	-Model player & enemy characters (Rig with mixamo)
 	-Procedurally generated sand dunes
 	-Update Game instructionals visuals
 	-Colour changing joystick
-	-Create Dungeons
 	-Sandbox mechanics
 	-Polygon 2d to deconstruct comic panels
 	-Reprogrammable joystick

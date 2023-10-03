@@ -35,6 +35,8 @@ onready var scroller : ScrollContainer= get_node("ScrollContainer")
 
 onready var ControlButtons : Array =  [back, music,_debug,Shuffle,Change_Controller_type, github, languague, help]
 
+onready var _Help_hint : hint = get_node("Help popup")
+
 func _ready():
 	if get_tree().get_root().has_node("/root/Debug") == true:
 		
@@ -136,7 +138,7 @@ func _on_music_toggled(button_pressed): #Music on and off settings
 
 
 func _on_Help_pressed():
-	$"Help popup"._ready()
+	_Help_hint._ready()
 
 
 func _on_Direction_controls_toggled(button_pressed):

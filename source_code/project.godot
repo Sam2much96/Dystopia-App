@@ -556,7 +556,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/algodot/plugin.cfg", "res://addons/fps_graph_overlay/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/algodot/plugin.cfg" )
 
 [gdnative]
 

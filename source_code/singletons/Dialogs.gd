@@ -150,9 +150,9 @@ func reset() -> void:
 func create_font_pack() -> DynamicFont:
 
 	# Uses font pack path dictionary to create custom languague packs per languague
-	custom_font.font_data = load(font_pack.get(language)) 
-	custom_font.size = 40
-	custom_font.outline_size = 2
+	custom_font.font_data = load(font_pack.get(language, "en")) 
+	custom_font.size = 44
+	custom_font.outline_size = 1
 	custom_font.outline_color= Color(0,0,0,1)
 	custom_font.use_filter = true
 	return custom_font
@@ -166,7 +166,8 @@ func set_font(nodes:  Array):
 			if i is Button:
 				#print (i.name) # for debug purposes only	
 				i.add_font_override('font', custom_font)
-
+			if i is StatusText:
+				i.add_font_override('font', custom_font)
 
 class Parser extends Reference :
 	

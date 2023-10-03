@@ -350,7 +350,7 @@ func upscale()-> void:
 
 
 func manually_translate()-> void:
-	print ("Selected Language: ",Dialogs.language)
+	print_debug ("Selected Language: ",Dialogs.language)
 	#SHould Ideally Use Hashmap tuple + for loops  for translations
 	#print(MenuButtons)
 	

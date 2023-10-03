@@ -148,9 +148,9 @@ func _http_request_completed(result, response_code, headers, body):
 		print ('No Internet Connection', result, response_code)
 		index += 1
 		_check_if_device_is_online()
-		if _debug != null:
-			
-			get_tree().change_scene_to( _debug.error_splash_page)
+		#if _debug != null:
+		
+		get_tree().change_scene_to( _debug.error_splash_page)
 		
 		#Resets Networking node
 		Networking.stop_check()

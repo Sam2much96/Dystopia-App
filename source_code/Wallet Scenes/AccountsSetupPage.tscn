@@ -54,33 +54,33 @@ grow_vertical = 2
 alignment = 1
 
 [node name="LineEdit" type="LineEdit" parent="VBoxContainer"]
-margin_top = 8.0
+margin_top = 14.0
 margin_right = 242.0
-margin_bottom = 30.0
+margin_bottom = 37.0
 theme = ExtResource( 2 )
 text = "Address"
 
 [node name="Label" type="Label" parent="VBoxContainer"]
-margin_top = 34.0
+margin_top = 36.0
 margin_right = 242.0
-margin_bottom = 48.0
+margin_bottom = 50.0
 
 [node name="LineEdit2" type="LineEdit" parent="VBoxContainer"]
-margin_top = 52.0
+margin_top = 54.0
 margin_right = 242.0
-margin_bottom = 74.0
+margin_bottom = 77.0
 theme = ExtResource( 2 )
 text = "App ID"
 
 [node name="Label2" type="Label" parent="VBoxContainer"]
-margin_top = 78.0
+margin_top = 76.0
 margin_right = 242.0
-margin_bottom = 92.0
+margin_bottom = 90.0
 
 [node name="LineEdit3" type="LineEdit" parent="VBoxContainer"]
-margin_top = 96.0
+margin_top = 94.0
 margin_right = 242.0
-margin_bottom = 118.0
+margin_bottom = 117.0
 theme = ExtResource( 2 )
 text = "Args"
 

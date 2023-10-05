@@ -98,13 +98,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -1582.94
-margin_top = -1157.42
-margin_right = -627.942
-margin_bottom = -562.424
+margin_left = -550.94
+margin_top = -325.42
+margin_right = 404.058
+margin_bottom = 269.576
 grow_horizontal = 0
 grow_vertical = 0
-rect_scale = Vector2( 3.26147, 3.26147 )
+rect_scale = Vector2( 1.15621, 1.15621 )
 mouse_filter = 1
 
 [node name="Mnemonic_UI" parent="CanvasLayer" instance=ExtResource( 8 )]
@@ -113,63 +113,63 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -1676.54
-margin_top = -1093.03
-margin_right = -1089.54
-margin_bottom = -507.026
-rect_scale = Vector2( 3.17673, 3.17673 )
+margin_left = -616.54
+margin_top = -341.03
+margin_right = -29.54
+margin_bottom = 244.974
+rect_scale = Vector2( 1.17891, 1.17891 )
 mouse_filter = 1
 
 [node name="Password_UI" parent="CanvasLayer" instance=ExtResource( 9 )]
 visible = false
-margin_left = -1073.37
-margin_top = -74.2864
-margin_right = -1073.37
-margin_bottom = -414.07
-rect_scale = Vector2( 3.41368, 3.41368 )
+margin_left = -42.9436
+margin_top = -22.9727
+margin_right = -42.9436
+margin_bottom = -362.756
+rect_scale = Vector2( 1.04306, 1.04306 )
 mouse_filter = 1
 
 [node name="FundingSuccess" parent="CanvasLayer" instance=ExtResource( 10 )]
 visible = false
-margin_left = -1158.77
-margin_top = -390.714
-margin_right = -1158.77
-margin_bottom = -868.714
-rect_scale = Vector2( 3.58359, 3.58359 )
+margin_left = -78.7701
+margin_top = -38.714
+margin_right = -78.7701
+margin_bottom = -516.714
+rect_scale = Vector2( 1.12115, 1.12115 )
 mouse_filter = 1
 
 [node name="Transaction_UI" parent="CanvasLayer" instance=ExtResource( 11 )]
 visible = false
-margin_left = -742.907
-margin_top = -139.094
-margin_right = -742.907
-margin_bottom = -478.878
-rect_scale = Vector2( 2.65389, 2.65389 )
+margin_left = -44.2854
+margin_top = -37.2706
+margin_right = -44.2854
+margin_bottom = -377.055
+rect_scale = Vector2( 1.10299, 1.10299 )
 mouse_filter = 1
 
 [node name="SmartContract_UI" parent="CanvasLayer" instance=ExtResource( 3 )]
 visible = false
-margin_left = -941.57
-margin_top = -554.488
-margin_right = -941.57
-margin_bottom = -554.488
-rect_scale = Vector2( 3.02027, 3.02027 )
+margin_left = 10.43
+margin_top = -0.487978
+margin_right = 10.4299
+margin_bottom = -0.487976
+rect_scale = Vector2( 0.999486, 0.999486 )
 
 [node name="CreateAccountSuccess" parent="CanvasLayer" instance=ExtResource( 12 )]
 visible = false
-margin_left = -948.693
-margin_top = -544.57
-margin_right = -948.693
-margin_bottom = -544.57
-rect_scale = Vector2( 2.92128, 2.92128 )
+margin_left = -97.3364
+margin_top = -32.6247
+margin_right = -97.3364
+margin_bottom = -32.6247
+rect_scale = Vector2( 1.15358, 1.15358 )
 
 [node name="Collectibles_UI" parent="CanvasLayer" instance=ExtResource( 4 )]
 visible = false
-margin_left = -877.835
-margin_top = -431.713
-margin_right = -877.835
-margin_bottom = -431.713
-rect_scale = Vector2( 2.84914, 2.84914 )
+margin_left = 89.487
+margin_top = 37.8058
+margin_right = 89.4871
+margin_bottom = 37.8058
+rect_scale = Vector2( 0.8357, 0.8357 )
 
 [node name="Asset_UI" parent="CanvasLayer" instance=ExtResource( 13 )]
 visible = false
@@ -177,14 +177,14 @@ margin_left = -578.0
 margin_top = 42.0
 margin_right = 19754.0
 margin_bottom = 12179.0
-rect_scale = Vector2( 3.6125, 3.6125 )
+rect_scale = Vector2( 0.993464, 0.993464 )
 
 [node name="state_controller" type="OptionButton" parent="."]
 margin_left = 2.63445
 margin_top = 32.1399
 margin_right = 130.634
 margin_bottom = 52.1399
-rect_scale = Vector2( 0.319564, 0.319564 )
+rect_scale = Vector2( 0.136668, 0.136668 )
 focus_mode = 0
 mouse_filter = 1
 theme = ExtResource( 5 )

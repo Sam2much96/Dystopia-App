@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://scenes/Wallet/state_controller.gd" type="Script" id=1]
 [ext_resource path="res://addons/algodot/Algod.gd" type="Script" id=2]
@@ -28,7 +28,6 @@
 [ext_resource path="res://scenes/Wallet/animation/SWIPE_LEFT_UI.tres" type="Animation" id=26]
 [ext_resource path="res://scenes/Wallet/animation/SLIDE_IN_UI.tres" type="Animation" id=27]
 [ext_resource path="res://scenes/Wallet/animation/WalletSHOW_MNEMONIC.tres" type="Animation" id=28]
-[ext_resource path="res://scenes/Wallet/animation/PASSWORD.tres" type="Animation" id=29]
 [ext_resource path="res://scenes/Wallet/animation/SUCCESSS.tres" type="Animation" id=30]
 
 [sub_resource type="AnimationRootNode" id=2]
@@ -45,7 +44,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 2.63445, 32.1399 ) ]
+"values": [ Vector2( 8.4174, 17.7982 ) ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -61,21 +60,6 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 4.94763, 15.3219 ) ]
-}
-
-[sub_resource type="Animation" id=1]
-resource_name = "SMARTCONTRACTS"
-tracks/0/type = "value"
-tracks/0/path = NodePath("state_controller:rect_position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = false
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 2.31318, 31.5724 ), Vector2( 5.07614, 15.7346 ) ]
 }
 
 [node name="Wallet_scene" type="Control" groups=["Wallet"]]
@@ -113,11 +97,11 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -616.54
-margin_top = -341.03
-margin_right = -29.54
-margin_bottom = 244.974
-rect_scale = Vector2( 1.17891, 1.17891 )
+margin_left = -571.591
+margin_top = -326.047
+margin_right = 15.4092
+margin_bottom = 259.957
+rect_scale = Vector2( 1.09568, 1.09568 )
 mouse_filter = 1
 
 [node name="Password_UI" parent="CanvasLayer" instance=ExtResource( 9 )]
@@ -175,15 +159,15 @@ rect_scale = Vector2( 0.8357, 0.8357 )
 visible = false
 margin_left = -578.0
 margin_top = 42.0
-margin_right = 19754.0
-margin_bottom = 12179.0
+margin_right = 20778.0
+margin_bottom = 12779.0
 rect_scale = Vector2( 0.993464, 0.993464 )
 
 [node name="state_controller" type="OptionButton" parent="."]
-margin_left = 2.63445
-margin_top = 32.1399
-margin_right = 130.634
-margin_bottom = 52.1399
+margin_left = 8.4174
+margin_top = 17.7982
+margin_right = 136.417
+margin_bottom = 37.7982
 rect_scale = Vector2( 0.136668, 0.136668 )
 focus_mode = 0
 mouse_filter = 1
@@ -204,7 +188,6 @@ anim_player = NodePath("AnimationPlayer")
 
 [node name="AnimationPlayer2" type="AnimationPlayer" parent="AnimationTree"]
 root_node = NodePath("../..")
-anims/PASSWORD = ExtResource( 29 )
 anims/RESET = SubResource( 3 )
 anims/RESET_UI = ExtResource( 21 )
 anims/REST_UP = SubResource( 4 )
@@ -222,7 +205,6 @@ root_node = NodePath("../..")
 anims/RESET = ExtResource( 14 )
 anims/SLIDE_IN = ExtResource( 19 )
 anims/SLIDE_OUT = ExtResource( 20 )
-anims/SMARTCONTRACTS = SubResource( 1 )
 anims/SWIPE_DOWN = ExtResource( 15 )
 anims/SWIPE_LEFT = ExtResource( 17 )
 anims/SWIPE_RIGHT = ExtResource( 16 )

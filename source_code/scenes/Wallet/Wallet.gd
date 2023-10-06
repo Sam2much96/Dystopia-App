@@ -429,6 +429,8 @@ func _ready():
 	self.add_child(q2) #add networking node to the scene tree
 	
 	
+	
+	
 	if Algorand == null: 
 		Algorand = Algodot.new()
 
@@ -445,489 +447,477 @@ func _process(delta):
 		frame_counter = 0
 		
 	# Called Every 60th frame
-	if frame_counter % 60 == 0:
-	
-		if Globals.curr_scene == "Wallet_scene":
-			
-			# Get the Wallet Root Scene
-			WalletRoot = get_tree().get_nodes_in_group("Wallet").pop_front()
-			
-			# UI state Processing (works-ish)
-			# Remove New Account State. It has a new UI mapping
-			"Constantly Running Process Introduces a stuck state Bug"
-			if self.state_controller.visible :
-				if self.state_controller.get_selected() == 0:
-					state = SHOW_ACCOUNT #only loads wallet once
-					
-				elif self.state_controller.get_selected() == 1:
-					#wallet_check = 0 # resets the wallet check stopper
-					state = CHECK_ACCOUNT
-			#	elif self.state_controller.get_selected() == 2:
-			#		wallet_check = 0 # resets the wallet check stopper
-			#		state = NEW_ACCOUNT
-				elif self.state_controller.get_selected() == 2:
-					wallet_check = 0 # resets the wallet check stopper
-					state = IMPORT_ACCOUNT
-				elif self.state_controller.get_selected() == 3:
-					wallet_check = 0 # resets the wallet check stopper
-					state = TRANSACTIONS
-				elif self.state_controller.get_selected() == 4:
-					wallet_check = 0 # resets the wallet check stopper
-					state = SMARTCONTRACTS
-					
-					
-					
-				elif self.state_controller.get_selected() == 5:
-					wallet_check = 0 # resets the wallet check stopper
-					state = COLLECTIBLES
-				elif self.state_controller.get_selected() == 6:
-					wallet_check = 0
-					state = PASSWORD
-				elif self.state_controller.get_selected() == 7:
-					wallet_check = 0
-					state = SHOW_MNEMONIC
-				elif self.state_controller.get_selected() == 8:
-					wallet_check = 0
-					Globals.curr_scene = "Menu"
-					state = IDLE
-					
-					loaded_wallet = false
-					return Globals._go_to_title() # Breaks wallet scene
+	if frame_counter % 6 == 0:
+		pass
 		
-				elif self.state_controller.get_selected() == -1:
-					state = NEW_ACCOUNT
+	if Globals.curr_scene == "Wallet_scene":
+		
+		# Get the Wallet Root Scene
+		WalletRoot = get_tree().get_nodes_in_group("Wallet").pop_front()
+		
+		# UI state Processing (works-ish)
+		# Remove New Account State. It has a new UI mapping
+		"Constantly Running Process Introduces a stuck state Bug"
+		if self.state_controller.visible :
+			if self.state_controller.get_selected() == 0:
+				state = SHOW_ACCOUNT #only loads wallet once
+				
+			elif self.state_controller.get_selected() == 1:
+				#wallet_check = 0 # resets the wallet check stopper
+				state = CHECK_ACCOUNT
+		#	elif self.state_controller.get_selected() == 2:
+		#		wallet_check = 0 # resets the wallet check stopper
+		#		state = NEW_ACCOUNT
+			elif self.state_controller.get_selected() == 2:
+				wallet_check = 0 # resets the wallet check stopper
+				state = IMPORT_ACCOUNT
+			elif self.state_controller.get_selected() == 3:
+				wallet_check = 0 # resets the wallet check stopper
+				state = TRANSACTIONS
+			elif self.state_controller.get_selected() == 4:
+				wallet_check = 0 # resets the wallet check stopper
+				state = SMARTCONTRACTS
+				
+				
+				
+			elif self.state_controller.get_selected() == 5:
+				wallet_check = 0 # resets the wallet check stopper
+				state = COLLECTIBLES
+			elif self.state_controller.get_selected() == 6:
+				wallet_check = 0
+				state = PASSWORD
+			elif self.state_controller.get_selected() == 7:
+				wallet_check = 0
+				state = SHOW_MNEMONIC
+			elif self.state_controller.get_selected() == 8:
+				wallet_check = 0
+				Globals.curr_scene = "Menu"
+				state = IDLE
+				
+				loaded_wallet = false
+				return Globals._go_to_title() # Breaks wallet scene
+	
+			elif self.state_controller.get_selected() == -1:
+				state = NEW_ACCOUNT
 	
 	"WALLET STATES"
 	
-	if canvas_layer != null: # null pointer Error Fixer
+	#if canvas_layer != null: # null pointer Error Fixer
 		
-		match state:
-			NEW_ACCOUNT: #loads wallet details if account already exists
+	match state:
+		NEW_ACCOUNT: #loads wallet details if account already exists
+			
+			# Reset UI animation for State controller 
+			_Animation_UI.play("RESET_UI")
+			
+			
+			'Generates New Account'
+			# if account info directory doesn't exist
+			# Error Catcher 1
+			if not FileDirectory.dir_exists(token_dir): 
+				print ("File directory" + token_dir + " doesn't exist") # for debug purposes only
 				
-				# Reset UI animation for State controller 
-				_Animation_UI.play("RESET_UI")
+				
+				"Creates Wallet Directory if it doesn't exist"
 				
 				
-				'Generates New Account'
-				# if account info directory doesn't exist
-				# Error Catcher 1
-				if not FileDirectory.dir_exists(token_dir): 
-					print ("File directory" + token_dir + " doesn't exist") # for debug purposes only
-					
-					
-					"Creates Wallet Directory if it doesn't exist"
-					
-					
-					create_wallet_directory()
-				if not FileCheck1.file_exists(token_write_path):
-					save_account_info(dict , 0)
+				create_wallet_directory()
+			if not FileCheck1.file_exists(token_write_path):
+				save_account_info(dict , 0)
+			
+			# Error Catcher 3
+			if FileCheck1.file_exists(token_write_path):
+				'Generate new Account'
+				self.Algorand.generate_new_account = true
+				Player_account_details=self.Algorand.create_new_account(Player_account_temp)
 				
-				# Error Catcher 3
-				if FileCheck1.file_exists(token_write_path):
-					'Generate new Account'
-					self.Algorand.generate_new_account = true
-					Player_account_details=self.Algorand.create_new_account(Player_account_temp)
+				#wallet_check += 1
+				'Gets the Users Wallet Address'
+				
+				address= Player_account_details[0]
+				mnemonic= Player_account_details[1]
 					
-					#wallet_check += 1
-					'Gets the Users Wallet Address'
+					#save_new_account_info(Player_account_details)
+				'Attempts saving new account info'
 					
-					address= Player_account_details[0]
-					mnemonic= Player_account_details[1]
-						
-						#save_new_account_info(Player_account_details)
-					'Attempts saving new account info'
-						
-					var _dict = {'address': address, 'amount': 0, 'mnemonic': mnemonic, 'asset_index': '','asset_name': '','asset_unit_name': '', 'asset_url': '' }
-					
-					print (_dict)
-					
-					"saves more account info"
-					print (" Save account Info: ",save_account_info(_dict,0))
+				var _dict : Dictionary = {'address': address, 'amount': 0, 'mnemonic': mnemonic, 'asset_index': '','asset_name': '','asset_unit_name': '', 'asset_url': '' }
+				
+				print_debug (_dict)
+				
+				"saves more account info"
+				print (" Save account Info: ",save_account_info(_dict,0))
 						
 						#dsfsf
 					# Exit Process Loop Show Mnemonic
-					self.state_controller.select(7)
-						
-					return self.set_process(false)
+				self.state_controller.select(7)
+					
+				return self.set_process(false)
+				#state = SHOW_ACCOUNT
+				#wallet_check += 1
+				#if FileDirectory.file_exists(token_dir) :
 					#state = SHOW_ACCOUNT
-					#wallet_check += 1
-					#if FileDirectory.file_exists(token_dir) :
-						#state = SHOW_ACCOUNT
-						
-						# Exit Process Loop
-					#	return self.state_controller.select(0)
 					
-					# Exit Process Loop to SHow Menm
-					#return self.state_controller.select(0)
-			CHECK_ACCOUNT:  #Works 
+					# Exit Process Loop
+				#	return self.state_controller.select(0)
 				
-				if wallet_check == 0: # stops overflow bug from running processes
-					#Make sure an algod node is running or connet to mainnet or testnet
-					if self.Algorand.algod == null:
-						self.Algorand.create_algod_node('TESTNET')
-					var status : bool
-					status= yield(self.Algorand.algod.health(), "completed")
-					
-					#print ("Status debug: ", status,' ',wallet_check_counter) #for debug purposes only
-					
-					# wallet check info returns an integer
-					Wallet.check_wallet_info(self.Algorand.algod, UserData, account_info, FileDirectory, token_dir, self) #checks saved wallet variables for error
-					
-					# Escape Current State to Show Account State
-					self.state_controller.select(0) 
-					state = SHOW_ACCOUNT
-					
-
-			#Loads all wallet details into Memory
-			# Entering any other derivative states without 
+				# Exit Process Loop to SHow Menm
+				#return self.state_controller.select(0)
+		CHECK_ACCOUNT:  #Works 
+			
+			if wallet_check == 0: # stops overflow bug from running processes
+				#Make sure an algod node is running or connet to mainnet or testnet
+				if self.Algorand.algod == null:
+					self.Algorand.create_algod_node('TESTNET')
+				var status : bool
+				status= yield(self.Algorand.algod.health(), "completed")
+				
+				#print ("Status debug: ", status,' ',wallet_check_counter) #for debug purposes only
+				
+				# wallet check info returns an integer
+				Wallet.check_wallet_info(self.Algorand.algod, UserData, account_info, FileDirectory, token_dir, self) #checks saved wallet variables for error
+				
+				# Escape Current State to Show Account State
+				self.state_controller.select(0) 
+				state = SHOW_ACCOUNT
+				
+		#Loads all wallet details into Memory
+		# Entering any other derivative states without 
 			# entering show account previously would present new bugs
-			SHOW_ACCOUNT: 
+		SHOW_ACCOUNT: 
 				
-				var t : Dictionary
-				# Reset UI animation for State controller 
-				_Animation_UI.play("RESET_UI")
+			var t : Dictionary
+			# Reset UI animation for State controller 
+			_Animation_UI.play("RESET_UI")
 				
 				
-				"it's always load account details when ready"
+			"it's always load account details when ready"
 				
-				if FileCheck1.file_exists(token_write_path)  :
-					#use animation player to alter UI
-					
-					Functions.hideUI(canvas_layer)
-					
-					self.dashboard_UI.show()
-					
-					# duplicate of fast load
-					if !loaded_wallet:
-						#returns a steady steam dictionadt
-						
-						t = Wallet.load_account_info(false, token_write_path, FileCheck3, UserData)
-						
-						# fast load
-						account_address.text = t.get("address")
-						wallet_algos.text = str(t.get("_wallet_algos"))
-						 
-					
-					
-					#print (UserData) # For Debug Purposes only
-					#load_from_local_wallet: bool, loaded_wallet: bool, account_address : Label, wallet_algos : Label, UserData : Dictionary, Algorand : Algod
-					
-					# slow load
-					var load_from_local_wallet : bool = true
-					Functions.show_account_info(load_from_local_wallet, loaded_wallet,account_address, wallet_algos, UserData, Algorand, self)
-					
-					#set_process(false)
-						#state = GENERATE_ADDRESS
-					
-				'Handles if account info is deleted'
-				#buggy on Android
-				if not FileCheck1.file_exists(token_write_path) :
-					#Revert to Import account state
-					
-					push_error('account info file does not exist, Import Wallet or generate New One')
-					self.state_controller.select(2) 
+			if FileCheck1.file_exists(token_write_path)  :
+				#use animation player to alter UI
 				
-				return
-			IMPORT_ACCOUNT: #works 
-				
-				#gdsfgsfdgdfgsd
 				Functions.hideUI(canvas_layer)
 				
+				self.dashboard_UI.show()
 				
-				# Reset UI animation for State controller 
-				_Animation_UI.play("RESET_UI")
+				# duplicate of fast load
+				if !loaded_wallet:
+					#returns a steady steam dictionadt
+					
+					t = Wallet.load_account_info(false, token_write_path, FileCheck3, UserData)
+					
+					# fast load
+					account_address.text = t.get("address")
+					wallet_algos.text = str(t.get("_wallet_algos"))
+					 
 				
-				self.mnemonic_ui.show()
 				
-				#self.set_process(false)
+				#print (UserData) # For Debug Purposes only
+				#load_from_local_wallet: bool, loaded_wallet: bool, account_address : Label, wallet_algos : Label, UserData : Dictionary, Algorand : Algod
 				
-				if  imported_mnemonic:
+				# slow load
+				var load_from_local_wallet : bool = true
+				Functions.show_account_info(load_from_local_wallet, loaded_wallet,account_address, wallet_algos, UserData, Algorand, self)
+				
+				#set_process(false)
+					#state = GENERATE_ADDRESS
 					
-					'Cannot convert argument error'
+			'Handles if account info is deleted'
+				#buggy on Android
+			if not FileCheck1.file_exists(token_write_path) :
+				#Revert to Import account state
+				
+				push_error('account info file does not exist, Import Wallet or generate New One')
+				self.state_controller.select(2) 
+				
+				return
+		IMPORT_ACCOUNT: #works 
+			
+			#gdsfgsfdgdfgsd
+			Functions.hideUI(canvas_layer)
+			
+			
+			# Reset UI animation for State controller 
+			_Animation_UI.play("RESET_UI")
+			
+			self.mnemonic_ui.show()
+			
+			#self.set_process(false)
+			
+			if  imported_mnemonic:
+				
+				'Cannot convert argument error'
+				
+				mnemonic = self.mnemonic_ui_lineEdit.text
 					
-					mnemonic = self.mnemonic_ui_lineEdit.text
-
-					
-					#*******Generates Address************#
-					address = generate_address(mnemonic) #works
-					
-					'savins imported account info'
-					
-					#FIxes null parameters errors
-					account_info = {"address":address, "amount":0, "mnemonic": mnemonic , "created-assets": [{"index": 0, "params":{"clawback":'', "creator":"", "decimals":0, "default-frozen": '', "freeze": '', "manager":"", "name":"Punk_001", "reserve":"", "total":1, "unit-name": 'XYZ', "url":""}}]}
+				#*******Generates Address************#
+				address = generate_address(mnemonic) #works
+				
+				'savins imported account info'
+				
+				#FIxes null parameters errors
+				account_info = {"address":address, "amount":0, "mnemonic": mnemonic , "created-assets": [{"index": 0, "params":{"clawback":'', "creator":"", "decimals":0, "default-frozen": '', "freeze": '', "manager":"", "name":"Punk_001", "reserve":"", "total":1, "unit-name": 'XYZ', "url":""}}]}
 					
 					#"saves more account info"
 					# Saves acct info & Debugs it to Output
-					print ("Saved Acct Info: ",save_account_info(account_info,0)) 
-					Wallet.check_wallet_info(self.Algorand.algod, UserData, account_info, FileDirectory, token_dir, self)
-
-
+				print ("Saved Acct Info: ",save_account_info(account_info,0)) 
+				Wallet.check_wallet_info(self.Algorand.algod, UserData, account_info, FileDirectory, token_dir, self)
 
 					#state = SHOW_MNEMONIC
 
 					#return self.set_process(false)
-					return self.state_controller.select(7)
+				return self.state_controller.select(7)
 			#Saves transactions to be processed in the ready function
 			# Saves the Transaction parameters and runs the txn() function
 			# as a subprocess of the _ready() function
 			#check https://github.com/lucasvanmol/algodot/issues/20 for more clarifications
-			TRANSACTIONS: #Debugging
-				#hide other ui states
-				#use animation player to alter UI
-				Functions.hideUI(canvas_layer)
-				self.transaction_ui.show()
-				self.transaction_ui.focus_mode = 2
+		TRANSACTIONS: #Debugging
+			#hide other ui states
+			#use animation player to alter UI
+			Functions.hideUI(canvas_layer)
+			self.transaction_ui.show()
+			self.transaction_ui.focus_mode = 2
+			# Reset UI animation for State controller 
+			_Animation_UI.play("RESET_UI")
 
-				# Reset UI animation for State controller 
-				_Animation_UI.play("RESET_UI")
-
-				
-				#transaction_hint.show()
-				
-				" Swtiches Between Assets and Normal Transactions UI"
-					
-				if transaction_valid : #user selected normal transactions
-						
-						#saves transaction details
-						#make them into a global variable so changing scenes doesn't reset it
-					recievers_addr = self.txn_addr.text
-					_amount = int(self.txn_amount.text)
-						
-						# cannot process any txn less than 10_000 microAlgos
-					if _amount  < 100_000:
-							
-							#should ideally be sent to the UI
-						# Use OS alert
-						OS.alert("Cannot send balance less than 100_000 MicroAlgos","Alert")
-						push_error('Cannot send balance less than 100_000 MicroAlgos')
-						
-						
-						'Error Catcher 1'
-							# return to show account
-						self.state_controller.select(0)
-					if _amount > 100_000 && txn_check == 0:
-							
-							
-							
-							#Saves the transaction files to be done
-							
-							#goes to the title screen to reset ready function
-							#state = SHOW_ACCOUNT 
-						self.state_controller.select(0) 
-
-							#calls the transaction function which is a child of _ready()
-						__ready()
-							
-						txn_check += 1
-						return txn_check
-					#uses two different buttons for assets and algo transactions
-					
-					# Remap asset_id_valid to Asset UI
-					# Asset Optin Txn
-					
-					#Parameters : 
-					# Asset optin Txn take 0 Amount as a Parameter with asset ID
-					# The wallet address is same as users address & UI linedit is empty
-					if asset_optin:
-						
-						Functions.hideUI(canvas_layer)
-						self.Asset_UI.show()
-						self.asset_UI_amountLabel. text = amount
-						self.asset_UI_ID_Label.text = asset_index
-					
-						recievers_addr = address
-					
-						asset_id_valid = true
-					# Sends Asset Transactions
-					
-					#Parameters : 
-					# Asset Transaction take 1 or more as an amount parameter
-					# THe wallet address is different from the users address
-					if asset_txn && _amount >= 1: # user selected asset transaction
-						#eee
-						_asset_id = int(self.nft_asset_id.text)
-						recievers_addr = self.txn_addr.text
-						
-						
-						asset_id_valid = true
-						
-						#Asset_UI.show()
-						
-						#change wallet state
-						#state = SHOW_ACCOUNT 
-						
-						#self.state_controller.select(0) 
-
-					if asset_id_valid:
-						#calls the transaction function which is a subprocess of _ready() function
-						__ready()
-						
-						
-				pass
 			
-			COLLECTIBLES:
-				# Reset UI animation for State controller 
-				_Animation_UI.play("RESET_UI")
+			#transaction_hint.show()
+			
+			" Swtiches Between Assets and Normal Transactions UI"
 				
-				"Checks if the Image is avalable Locally and either downloads or loads it"
-				if wallet_check == 0:
-					Functions.hideUI(canvas_layer) 
-					collectibles_UI.show()
-					if not FileCheck3.file_exists(local_image_file): #works
-						
-						
-						#print('NFT image is not available locally, Downloading now') 
-						
-						#************NFT Logic***********#
-						if wallet_check == 0 && asset_url == '':
-							#Make sure an algod node is running or connet to mainnet or testnet
-							if self.Algorand.algod == null:
-								self.Algorand.create_algod_node('TESTNET')
-								#var status
-							var status : bool
-							status= yield(self.Algorand.algod.health(), "completed")
-							
-							print ("Status debug: ", status,' ',wallet_check_counter)
-							
-							#duplicates check wallet state function
-							Wallet.check_wallet_info(self.Algorand.algod, UserData, account_info, FileDirectory, token_dir, self)#saves account info with assets details
-							
-
-							# show account
-							#self.state_controller.select(0) #Temporarily Disabling
-						if asset_url && asset_name != '':
-							
-							'theres a problem with the network connection'
-							'my server isnt serving the json file to godot properly'
-							"using python instead"
-							
-							#image url should be gotten from asset-id
-							# some hosted assets might be meta data, 
-							#thats why image url is different fromasset-url
-							
-							#print ("asset url: ", asset_url) #for debug purposes only
-							
-							image_url=asset_url 
-							
-							print ('nft host site',image_url) #image_url should not be null
-							Networking.url=image_url #disabling for now
-							
-							#makes a https request to download image from local server
-							Networking.start_check(5)
-							if not Networking.Timeout && wallet_check == 0 :
-								wallet_check += 1
-								
-								# selet a random IPFS web 2.0 Gateway
-								#Networking.genrate_random_gateway()
-								
-								# implement vaid gateways ass array link
-								Networking. _connect_to_ipfs_gateway(false,Networking.url, Networking.gateway[0], q2)  
-								#run this download in the __ready function
-								__ready()
-								return wallet_check
-							#<asfa<sfa
-							
-								
-						#***************************************************************
-					if FileCheck3.file_exists(local_image_file) or is_image_available_at_local_storage:
-						wallet_check += 1
-						
-						#connect to wallet NFT logic
-						
-						#NFT PFP
-						NFT_index_label.text = "ID: "+ str(asset_index) + "/" + str(asset_name)
-						Asset_UI_index.text = str(asset_index)
-						Asset_UI_amount.text = "100,000"
-						
-						
-						
-						Comics_v6.load_local_image_texture_from_global(self.pfp, local_image_file, true, 7)
-						
-						# Disabling Collectibes UI thumbnails
-						return Comics_v6.load_local_image_texture_from_global(self.NFT, local_image_file, true,1)
-						
-					"NFT PFP"
-					#if is_image_available_at_local_storage:
-						# set image texture
+			if transaction_valid : #user selected normal transactions
 					
-						
-					#if Asset_UI.is_visible_in_tree():
-						# Set Asset ID variables
+					#saves transaction details
+					#make them into a global variable so changing scenes doesn't reset it
+				recievers_addr = self.txn_addr.text
+				_amount = int(self.txn_amount.text)
 					
-					#pass
+					# cannot process any txn less than 10_000 microAlgos
+				if _amount  < 100_000:
 						
-					#if Comics_v5.is_swiping == true:
-					#	collectibles_UI.hide()
-					#	Asset_UI.show()
-					#else: return
-			#opts into smart contracts with wallet
-			SMARTCONTRACTS: # doesnt work 
-				#hide other ui states
-				#use animation player to alter UI
-				#opt into counter smart contract deployed to host address
-				#try running in ready function
+						#should ideally be sent to the UI
+					# Use OS alert
+					OS.alert("Cannot send balance less than 100_000 MicroAlgos","Alert")
+					push_error('Cannot send balance less than 100_000 MicroAlgos')
+					
+					
+					'Error Catcher 1'
+						# return to show account
+					self.state_controller.select(0)
+				if _amount > 100_000 && txn_check == 0:
+						
+						
+						
+						#Saves the transaction files to be done
+						
+						#goes to the title screen to reset ready function
+						#state = SHOW_ACCOUNT 
+					self.state_controller.select(0) 
+						#calls the transaction function which is a child of _ready()
+					__ready()
+						
+					txn_check += 1
+					return txn_check
+				#uses two different buttons for assets and algo transactions
 				
-				Functions.hideUI(canvas_layer)
-				smart_contract_UI.show()
+				# Remap asset_id_valid to Asset UI
+				# Asset Optin Txn
 				
-				#Play Animation
-				if state_controller.get_selected_id() == 4 :# && wallet_check == 0:
-					#_Animation_UI.play("SWIPE_UP_UI")
-					_Animation_UI.play("REST_UP")
+				#Parameters : 
+				# Asset optin Txn take 0 Amount as a Parameter with asset ID
+				# The wallet address is same as users address & UI linedit is empty
+				if asset_optin:
 					
+					Functions.hideUI(canvas_layer)
+					self.Asset_UI.show()
+					self.asset_UI_amountLabel. text = amount
+					self.asset_UI_ID_Label.text = asset_index
 				
-				if transaction_valid: 
-					smart_contract_addr = smartcontract_ui_address_lineEdit.text 
-					_app_id = int(smartcontract_ui_appID_lineEdit.text)
-					_app_args = smartcontract_ui_args_lineEdit.text
+					recievers_addr = address
+				
+					asset_id_valid = true
+				# Sends Asset Transactions
+				
+				#Parameters : 
+				# Asset Transaction take 1 or more as an amount parameter
+				# THe wallet address is different from the users address
+				if asset_txn && _amount >= 1: # user selected asset transaction
+					#eee
+					_asset_id = int(self.nft_asset_id.text)
+					recievers_addr = self.txn_addr.text
 					
-					#runs a smart contract deferred function in the ready function
+					
+					asset_id_valid = true
+					
+					#Asset_UI.show()
+					
+					#change wallet state
+					#state = SHOW_ACCOUNT 
+					
+					#self.state_controller.select(0) 
+				if asset_id_valid:
+				#calls the transaction function which is a subprocess of _ready() function
 					__ready()
 					
 					
-					self.state_controller.select(0) #check account state 1,  show account state 0
-				pass
+		COLLECTIBLES:
+			# Reset UI animation for State controller 
+			_Animation_UI.play("RESET_UI")
 			
-			IDLE:
-				set_process(false)
-				pass
-			PASSWORD:
-				#Shows Password UI once app is booted first
+			"Checks if the Image is avalable Locally and either downloads or loads it"
+			if wallet_check == 0:
+				Functions.hideUI(canvas_layer) 
+				collectibles_UI.show()
+				if not FileCheck3.file_exists(local_image_file): #works
+					
+					
+					#print('NFT image is not available locally, Downloading now') 
+					
+					#************NFT Logic***********#
+					if wallet_check == 0 && asset_url == '':
+						#Make sure an algod node is running or connet to mainnet or testnet
+						if self.Algorand.algod == null:
+							self.Algorand.create_algod_node('TESTNET')
+							#var status
+						var status : bool
+						status= yield(self.Algorand.algod.health(), "completed")
+						
+						print ("Status debug: ", status,' ',wallet_check_counter)
+						
+						#duplicates check wallet state function
+						Wallet.check_wallet_info(self.Algorand.algod, UserData, account_info, FileDirectory, token_dir, self)#saves account info with assets details
+						
+						# show account
+						#self.state_controller.select(0) #Temporarily Disabling
+					if asset_url && asset_name != '':
+						
+						'theres a problem with the network connection'
+						'my server isnt serving the json file to godot properly'
+						"using python instead"
+						
+						#image url should be gotten from asset-id
+						# some hosted assets might be meta data, 
+						#thats why image url is different fromasset-url
+						
+						#print ("asset url: ", asset_url) #for debug purposes only
+						
+						image_url=asset_url 
+						
+						print ('nft host site',image_url) #image_url should not be null
+						Networking.url=image_url #disabling for now
+						
+						#makes a https request to download image from local server
+						Networking.start_check(5)
+						if not Networking.Timeout && wallet_check == 0 :
+							wallet_check += 1
+							
+							# selet a random IPFS web 2.0 Gateway
+							#Networking.genrate_random_gateway()
+							
+							# implement vaid gateways ass array link
+							Networking. _connect_to_ipfs_gateway(false,Networking.url, Networking.gateway[0], q2)  
+							#run this download in the __ready function
+							__ready()
+							return wallet_check
+						
+							
+					#***************************************************************
+				if FileCheck3.file_exists(local_image_file) or is_image_available_at_local_storage:
+					wallet_check += 1
+					
+						#connect to wallet NFT logic
+						
+						#NFT PFP
+					NFT_index_label.text = "ID: "+ str(asset_index) + "/" + str(asset_name)
+					Asset_UI_index.text = str(asset_index)
+					Asset_UI_amount.text = "100,000"
+					
+					
+					
+					Comics_v6.load_local_image_texture_from_global(self.pfp, local_image_file, true, 7)
+					
+					# Disabling Collectibes UI thumbnails
+					return Comics_v6.load_local_image_texture_from_global(self.NFT, local_image_file, true,1)
+					
+				"NFT PFP"
+				#if is_image_available_at_local_storage:
+					# set image texture
 				
-							# Reset UI animation for State controller 
-				_Animation_UI.play("PASSWORD")
+					
+				#if Asset_UI.is_visible_in_tree():
+					# Set Asset ID variables
+				
+				#pass
+					
+				#if Comics_v5.is_swiping == true:
+				#	collectibles_UI.hide()
+				#	Asset_UI.show()
+				#else: return
+			#opts into smart contracts with wallet
+		SMARTCONTRACTS: # doesnt work 
+			#hide other ui states
+			#use animation player to alter UI
+			#opt into counter smart contract deployed to host address
+			#try running in ready function
+			
+			Functions.hideUI(canvas_layer)
+			smart_contract_UI.show()
+			
+			#Play Animation
+			if state_controller.get_selected_id() == 4 :# && wallet_check == 0:
+				#_Animation_UI.play("SWIPE_UP_UI")
+				_Animation_UI.play("REST_UP")
+				
+			
+			if transaction_valid: 
+				smart_contract_addr = smartcontract_ui_address_lineEdit.text 
+				_app_id = int(smartcontract_ui_appID_lineEdit.text)
+				_app_args = smartcontract_ui_args_lineEdit.text
+				
+				#runs a smart contract deferred function in the ready function
+				__ready()
 				
 				
-				Functions.hideUI(canvas_layer)
-				
-				passward_UI.show()
-				
-				self.set_process(false)
-				
-				if password_valid: 
+				self.state_controller.select(0) #check account state 1,  show account state 0
+			pass
+		
+		IDLE:
+			set_process(false)
+			pass
+		PASSWORD:
+			#Shows Password UI once app is booted first
+			
+			# Reset UI animation for State controller 
+			#_Animation_UI.play("PASSWORD")
+			
+			
+			Functions.hideUI(canvas_layer)
+			
+			passward_UI.show()
+			
+			self.set_process(false)
+			
+			if password_valid: 
 				
 				# Revert to dashboard state
-					self.state_controller.select(0)
-				pass
-			SHOW_MNEMONIC:
-				if mnemonic != "":
-					Functions.hideUI(canvas_layer)
-					
-				# Rest Up UI animation for State controller 
-					_Animation_UI.play("SHOW_MNEMONIC")
-					
-					# Show CreatAccountSuccessful UI
-					CreatAccountSuccessful_UI.show()
-					
-					# Display Mnemonic in UI label
-					CreatAccountSuccessful_Mnemonic_Label.text = "Mnemmonic : "+ mnemonic
-					self.set_process(false)
-				elif mnemonic == "":
-					# Revert to Import Mnemonic state
-					self.state_controller.select(2) 
-					return OS.alert("Mnemonic invalid", "Error")
-
-
+				self.state_controller.select(0)
+				
+		SHOW_MNEMONIC:
+			if mnemonic != "":
+				Functions.hideUI(canvas_layer)
+				
+			# Rest Up UI animation for State controller 
+				_Animation_UI.play("SHOW_MNEMONIC")
+				
+				# Show CreatAccountSuccessful UI
+				CreatAccountSuccessful_UI.show()
+				
+				# Display Mnemonic in UI label
+				CreatAccountSuccessful_Mnemonic_Label.text = "Mnemmonic : "+ mnemonic
+				self.set_process(false)
+			elif mnemonic == "":
+				# Revert to Import Mnemonic state
+				self.state_controller.select(2) 
+				return OS.alert("Mnemonic invalid", "Error")
 
 # Uses Connection Health and internet health to check Account info
 
@@ -982,8 +972,8 @@ func run_wallet_checks()-> bool: # works
 	"Load local wallet data"
 	if !loaded_wallet:
 		var t : Dictionary = Wallet.load_account_info(false, token_write_path, FileCheck3, UserData)
-		address = t.get("address")
-		mnemonic = t.get("mnemonic")
+		address = t.get("address", "Null")
+		mnemonic = t.get("mnemonic", "Null")
 		
 		#print ("mnemonic debug 2: ", mnemonic)
 
@@ -1284,7 +1274,9 @@ func _input(event):
 			
 			#Comics_v5.enabled = true
 			#_position, enabled: bool, _e : Timer ,swipe_target_memory_x : Array, swipe_target_memory_y : Array 
-			Comics_v6.Swipe._start_detection(event.position, true, Comics_v6._e ,Comics_v6.swipe_target_memory_x, Comics_v6.swipe_target_memory_y )
+			
+			
+			#Comics_v6.Swipe._start_detection(event.position, true, Comics_v6._e ,Comics_v6.swipe_target_memory_x, Comics_v6.swipe_target_memory_y )
 			
 			
 			# End Detection once Networking check has timedout
@@ -1293,20 +1285,25 @@ func _input(event):
 			# Swipe Detection SHould SHow A new Aset UI with NFT PFP
 			#__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array, swipe_start_position : Vector2, swipe_parameters: float, x1,x2,y1,y2,MAX_DIAGONAL_SLOPE
 			#__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array, swipe_start_position : Vector2, swipe_parameters: float, x1,x2,y1,y2,MAX_DIAGONAL_SLOPE
-			Comics_v6.Swipe._end_detection(event.position, Comics_v6.direction, Comics_v6.direction_var , Comics_v6._state, Comics_v6._e ,Comics_v6.swipe_target_memory_x, Comics_v6.swipe_target_memory_y,Comics_v6.swipe_start_position, Comics_v6.swipe_parameters, Comics_v6.x1, Comics_v6.x2, Comics_v6.y1, Comics_v6.y2, Comics_v6.MAX_DIAGONAL_SLOPE)
+			
+			
+			#Comics_v6.Swipe._end_detection(event.position, Comics_v6.direction, Comics_v6.direction_var , Comics_v6._state, Comics_v6._e ,Comics_v6.swipe_target_memory_x, Comics_v6.swipe_target_memory_y,Comics_v6.swipe_start_position, Comics_v6.swipe_parameters, Comics_v6.x1, Comics_v6.x2, Comics_v6.y1, Comics_v6.y2, Comics_v6.MAX_DIAGONAL_SLOPE)
 			
 			
 			"NFT drag and drop"
 			#works
+			# Disabled for debugging
 			if self.NFT.visible:
 				#print ("NFT visible: ",self.NFT.visible)
 				
-				Comics_v6.can_drag = self.NFT.visible
+				#Comics_v6.can_drag = self.NFT.visible
 				
 				# Activates Zoom
-				Comics_v6.loaded_comics = self.NFT.visible
-				Comics_v6.comics_placeholder = self.NFT
-				Comics_v6.drag(event.position, event.position, kinematic2d)
+				#Comics_v6.loaded_comics = self.NFT.visible
+				#Comics_v6.comics_placeholder = self.NFT
+				#Comics_v6.drag(event.position, event.position, kinematic2d)
+				
+				print_debug("NFT Visible: %s" % [self.NFT.visible])
 		
 		
 		

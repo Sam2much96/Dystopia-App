@@ -128,6 +128,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "$3000"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="YSort/VBoxContainer"]
+visible = false
 
 [node name="Line2D" type="Line2D" parent="YSort/VBoxContainer/CanvasLayer"]
 position = Vector2( -6, 12 )
@@ -206,6 +207,7 @@ custom_colors/font_color = Color( 0.52549, 0.52549, 0.52549, 1 )
 text = "-$3000"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="YSort2/VBoxContainer"]
+visible = false
 
 [node name="Line2D" type="Line2D" parent="YSort2/VBoxContainer/CanvasLayer"]
 position = Vector2( -52, -4 )
@@ -256,16 +258,19 @@ custom_colors/font_color = Color( 0.262745, 0.27451, 0.960784, 1 )
 text = "view more >"
 
 [node name="Icon1" parent="." instance=ExtResource( 9 )]
+visible = false
 offset = Vector2( 250, 400 )
 scale = Vector2( 0.2, 0.2 )
 transform = Transform2D( 0.2, 0, 0, 0.2, 250, 400 )
 
 [node name="Icon2" parent="." instance=ExtResource( 11 )]
+visible = false
 offset = Vector2( 165, 420 )
 scale = Vector2( 0.25, 0.25 )
 transform = Transform2D( 0.25, 0, 0, 0.25, 165, 420 )
 
 [node name="Icon3" parent="." instance=ExtResource( 10 )]
+visible = false
 offset = Vector2( 160, 500 )
 scale = Vector2( 0.3, 0.3 )
 transform = Transform2D( 0.3, 0, 0, 0.3, 160, 500 )

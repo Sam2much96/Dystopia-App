@@ -167,10 +167,9 @@ func _ready():
 	
 	# Triggers CUstom Ready State in Wallet Node
 	
+	
+	# Disabling for Debugging
 	Wallet.__ready()
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
 
 "Fixes Stuck Button Bug"
 # By toggling the Wallet's Processing on/off

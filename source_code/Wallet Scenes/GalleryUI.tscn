@@ -77,9 +77,6 @@ position = Vector2( 298, -15 )
 [node name="TextureRect" type="TextureRect" parent="KinematicBody2D"]
 margin_right = 368.0
 margin_bottom = 602.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
 position = Vector2( 181.5, 300.5 )

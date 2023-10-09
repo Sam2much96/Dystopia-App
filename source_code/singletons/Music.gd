@@ -388,25 +388,29 @@ func _on_A_finished(): #This  signals when the music has finished and autoshuffl
 func play_sfx(list): #a separate bus channel for sfx using dictionary playlist
 	if sfx_on== true:
 		shuffle(list)
-		$C.stream = load(music_track)
-		$C.play()
+		
+		C.stream = load(music_track)
+		C.play()
 		sfx_streamer = str ('playing sfx: ',music_track.get_file())
 		yield(get_tree().create_timer(0.8), "timeout")
-		$C.stop()
+		C.stop()
 
-func play_track(_track): #for playing single sample tracks
+func play_track(_track : String): 
+	#for playing single sample tracks
+	#_track is a pointer to the music file path
 	if _track != null  and Music_streamer_2 != null :
 		if music_on == true:
 			#print (_track)# For debug purposes only
 
-			$D.set_stream ( load (_track)) #Children Scripts should not load the soundtracks
-			$D.play(0.0)
+			D.set_stream ( load (_track)) #Children Scripts should not load the soundtracks
+			D.play(0.0)
 			sfx_streamer  = str('playing sfx: ',_track.get_file())
 			yield(get_tree().create_timer(0.8), "timeout")
-			$D.stop()
+			D.stop()
 
-func sound(what): #Turns on/ off and saves it via a global script
-	#Globals.Music_on_settings = false
+func sound(what : String): 
+	#Turns on/ off and saves it via a global script
+	Globals.Music_on_settings = false
 	if what == 'off' or 'Off' or 'OFF': #Debug
 		music_on = false
 		sfx_on = false

@@ -325,7 +325,7 @@ func _on_wallet_pressed():
 
 
 func _on_practice_pressed(): # turn off in release build
-	Globals.current_level = 'res://scenes/levels/Testing Scene.tscn' #breaks the Globals.current_level script
+	Globals.current_level = 'res://scenes/levels/Testing Scene 2.tscn' #breaks the Globals.current_level script
 	Globals.Functions.change_scene_to(Globals.Functions.LoadLargeScene(
 		Globals.current_level, 
 		Globals.scene_resource, 

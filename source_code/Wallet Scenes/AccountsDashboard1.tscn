@@ -19,12 +19,12 @@ anchor_bottom = 1.0
 margin_left = -12.0
 margin_top = 5.0
 margin_right = 1031.0
-margin_bottom = 602.0
+margin_bottom = 698.0
 color = Color( 0.811765, 0.811765, 0.811765, 1 )
 
 [node name="ColorRect2" type="ColorRect" parent="."]
 margin_left = -14.0
-margin_top = 5.0
+margin_top = -121.0
 margin_right = 1032.0
 margin_bottom = 183.0
 color = Color( 0.211765, 0.435294, 0.905882, 1 )

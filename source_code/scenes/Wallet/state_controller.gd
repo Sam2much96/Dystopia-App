@@ -171,8 +171,15 @@ func _ready():
 	# Triggers CUstom Ready State in Wallet Node
 	
 	
-	# Disabling for Debugging
+	# Wallet Singleton ready
 	Wallet.__ready()
+	
+	
+	#Quick Fix for Upscaing
+	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
+		upscale()
+
+	
 
 "Fixes Stuck Button Bug"
 # By toggling the Wallet's Processing on/off
@@ -194,5 +201,16 @@ func _on_state_controller_toggled(button_pressed):
 	
 	
 
+func upscale()-> void:
+	# This is a quick fix. It should ideally find the center of the screen and 
+	#position by an offset
+	var newScale = Vector2(2,2)
+	#var newPosition = Vector2(-650,250)
+	#var newPosition = Vector2(0,0)
+	var newPosition = Vector2($Position2D.position)
+	canvasLayer.set_scale(newScale)
+	
+	for i in canvasLayer.get_children():
+		i.set_position(newPosition)
 
 

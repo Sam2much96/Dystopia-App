@@ -80,6 +80,7 @@ func _ready():
 	
 	print_debug("Global Screen Orientatin", Globals.screenOrientation)# For Debug Purposes only
 	
+	#Quick Fix for Upscaing
 	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
 		upscale()
 	

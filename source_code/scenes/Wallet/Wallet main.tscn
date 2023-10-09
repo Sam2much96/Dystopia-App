@@ -157,10 +157,11 @@ margin_bottom = 37.8058
 rect_scale = Vector2( 0.8357, 0.8357 )
 
 [node name="Asset_UI" parent="CanvasLayer" instance=ExtResource( 13 )]
+visible = false
 margin_left = -578.0
 margin_top = 42.0
-margin_right = 20778.0
-margin_bottom = 12779.0
+margin_right = -60.0
+margin_bottom = 300.0
 rect_scale = Vector2( 0.993464, 0.993464 )
 
 [node name="state_controller" type="OptionButton" parent="."]
@@ -175,6 +176,16 @@ theme = ExtResource( 5 )
 enabled_focus_mode = 0
 text = "State Controller"
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Position2D" type="Position2D" parent="state_controller"]
+position = Vector2( -297.652, 40.8779 )
+scale = Vector2( 7.317, 7.317 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="SwipeIcon" parent="." instance=ExtResource( 6 )]
 visible = false

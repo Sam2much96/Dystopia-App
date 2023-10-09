@@ -202,6 +202,13 @@ var headers = ["Content-Type: application/zip"]
 
 onready var thread : Thread = Thread.new() 
 
+# Debug Variables
+var stream : AudioStream
+var stream_length : int
+var Playback_position : int
+var _track : String
+
+
 func _ready():
 	
 	# Debug nodes
@@ -275,14 +282,16 @@ func _ready():
 
 
 func _process(delta):
-
+	
+	_music_debug()
+	
 	"""
 	Music Uncompress
 	"""
 	
-
+	
 	#Auto sets Globals Music Settings
-
+	
 	"""
 	AUTO SHUFFLE
 	"""
@@ -298,18 +307,19 @@ func _process(delta):
 				play(music_track)
 
 
+
+
+
 func _music_debug(): #Breaks
 	if  music_on == true && get_tree().get_root().get_node("/root/Debug") != null: #Only Debugs if the debug singleton is running
 		if music_track != null:
 			for child in get_children() :
 				if child is AudioStreamPlayer:
 					if child.stream != null: 
-				
-						
-						var stream = Music_streamer.get_stream()
-						var stream_length = int(stream.get_length())
-						var _track = music_track.get_file()
-						var Playback_position = int(Music_streamer.get_playback_position())
+						stream = Music_streamer.get_stream()
+						stream_length = int(stream.get_length())
+						_track = music_track.get_file()
+						Playback_position = int(Music_streamer.get_playback_position())
 						music_debug = str(stream , _track, Playback_position , '/', stream_length, sfx_streamer)
 
 

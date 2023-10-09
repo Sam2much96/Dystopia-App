@@ -31,9 +31,6 @@ margin_bottom = 372.0
 rect_scale = Vector2( 0.420768, 0.420768 )
 theme = ExtResource( 3 )
 text = "Proceed"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="YSort" type="YSort" parent="."]
 position = Vector2( -260, -3 )

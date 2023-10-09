@@ -73,6 +73,7 @@ rect_scale = Vector2( 15.563, 19.384 )
 
 [node name="Algodot" type="Node" parent="."]
 script = ExtResource( 2 )
+network_type = "TESTNET"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = -1
@@ -156,7 +157,6 @@ margin_bottom = 37.8058
 rect_scale = Vector2( 0.8357, 0.8357 )
 
 [node name="Asset_UI" parent="CanvasLayer" instance=ExtResource( 13 )]
-visible = false
 margin_left = -578.0
 margin_top = 42.0
 margin_right = 20778.0

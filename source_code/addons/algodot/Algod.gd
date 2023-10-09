@@ -94,7 +94,7 @@ func create_algod_node(network_type: String):
 			algod_node_count += 1
 		elif network_type == "TESTNET":
 			algod = Algod.new() 
-			var url = "https://node.testnet.algoexplorerapi.io"
+			var url = "https://testnet-api.algonode.cloud"
 			var token = ""
 			
 			var headers_ : PoolStringArray = ["User-Agent","DoYouLoveMe?"]

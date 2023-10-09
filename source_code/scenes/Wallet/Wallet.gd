@@ -20,7 +20,7 @@
 # asset's url should be read 
 
 #Features
-#(1) Curerntly implements on the ALgorand blockchain, other chains not supported
+#(1) Curerntly implements on the ALgorand blockchain
 # (2) Uses state machine -a Accounts State & -Collectible state & Other states
 # (3) Implements Binary > Utf-8 encryption
 # (4) Networking Test for Algorand node health, Good internet connection and local img storage
@@ -34,18 +34,15 @@
 #(2) NFT drag and Drop is buggy 
 
 # (4) Wallet's Animation UI has Stuck animation transition bug. Use Animation Tree to Activate and Deactivate UI animations
-# (5) _process method is buggy
+# (5) _process method is buggy (stuck input bug)
 # (6) _state_controller's implementation of the process controller method is buggy
 # (7) cOINS IMPLEMENTATION IS BUGGY AND DISABLED
 
 # To-DO:
-# (9) Implement UI scaling for Mobile & PC screens
+# (9) Implement UI scaling for Mobile & PC screens (Done)
 # (10) IMplement Tokenized characters (player_v2)
 # (11) Implement cryptographic encryption and decryption
-# (12) 
-		# alter UI scale for PC using global viewport size calculations
-		#use animation player to alter UI (depreciated. Functions work faster)
-
+#
 # (17) Delete local NFT's if token is sent
 		#logic
 		#if asset_url ='' && local_image_texture exists
@@ -53,20 +50,14 @@
 # (18) Show Asset ID on NFT
 		#- Implement Asset UI
 # (19) Transfer assets back to Creator Wallet
-# (20) Implement Gallery UI for wallet
+# (20) Implement Gallery UI for wallet (1/2)
 		#-Collectibles UI logic
-# (21) Separate Codebase into Reference Classes
-# (22) Implement UI adjustments for PC using Global viewport calculations
+# (21) Separate Codebase into Reference Classes (Done)
+# 
 #( 23) Implement NFT asset place functionalities
-# (24) Methods cant be called from Other Scenes.
+# (24) Methods cant be called from Other Scenes. (Done)
 # (25) Make all methods Static Functions
 
-
-# Testing
-#(1) Image Downloder (works)
-# (2) Create NFT (work with python script)
-# (3) Parse NFT (works)
-# (4) New UI
 # *************************************************
 
 
@@ -643,7 +634,8 @@ func _process(delta):
 			
 			#self.set_process(false)
 			
-			if  imported_mnemonic:
+			if imported_mnemonic:
+				
 				
 				'Cannot convert argument error'
 				
@@ -1159,7 +1151,9 @@ func _on_testnetdispenser_pressed(): #connect to UI
 
 func _on_mnemonic_pressed():
 	if imported_mnemonic_button.pressed:
+		print("Mnemonic pressed")
 		imported_mnemonic = true
+		self.set_process(imported_mnemonic)
 
 
 func on_funding_success_close():
@@ -1262,12 +1256,12 @@ func _input(event):
 		"Swipe Direction Debug"
 		# Should Ideally be in COmics script. Requires rewrite for better structure
 		# The current implementation is a fast hack
-		if event is InputEventScreenDrag : #kinda works, for NFT Drag & Drop
+		if event is InputEventScreenDrag : #kinda works, for NFT Drag & Drop #Disbled for refactoring
 			#Networking.start_check(4) #should take a timer as a parameter
 			#if Networking.Timeout == false:
 			
 			
-			Networking.start_check(4)
+			#Networking.start_check(4)
 			
 			
 			"Swipe Detection"
@@ -1293,7 +1287,7 @@ func _input(event):
 			"NFT drag and drop"
 			#works
 			# Disabled for debugging
-			if self.NFT.visible:
+			#if self.NFT.visible:
 				#print ("NFT visible: ",self.NFT.visible)
 				
 				#Comics_v6.can_drag = self.NFT.visible
@@ -1303,9 +1297,10 @@ func _input(event):
 				#Comics_v6.comics_placeholder = self.NFT
 				#Comics_v6.drag(event.position, event.position, kinematic2d)
 				
-				print_debug("NFT Visible: %s" % [self.NFT.visible])
+				#print_debug("NFT Visible: %s" % [self.NFT.visible])
 		
 		
+			pass
 		
 		
 		#Depreciated
@@ -1314,27 +1309,27 @@ func _input(event):
 		# 
 		# Uses a Timer of 4 seconds to turn processing off
 		
-		#if event is InputEventScreenTouch:#InputEventSingleScreenTouch:
-		#	Networking.start_check(4) #should take a timer as a parameter
+		if event is InputEventScreenTouch:#InputEventSingleScreenTouch:
+			Networking.start_check(4) #should take a timer as a parameter
 			
 			
 			#Turns processing off for 20 secs
-		#	if Networking.Timeout == false :
+			#if Networking.Timeout == false :
 				
-		#		print ('Stoping Wallet Processing')
-		#		self.set_process(false)
-		#		processing = false
-		#		return processing
+			#	print ('Wallet Processing')
+			#	self.set_process(true)
+			#	processing = false
+			#	return processing
 			
 			
 			
-		#	if Networking.Timeout == true :
-				
-		#		print ('Wallet Processing')
-				
-		#		self.set_process(false)
-		#		processing = false
-		#		return processing
+			#if Networking.Timeout == true :
+			#	
+			#	print ('Stopping Wallet Processing')
+			#	
+			#	self.set_process(false)
+			#	processing = false
+			#	return processing
 		
 		
 		"BUTTON PRESSES"
@@ -1549,16 +1544,18 @@ class Functions extends Reference:
 		if not q2.is_connected("request_completed", node, "_http_request_completed_2"):
 			return q2.connect("request_completed", node, "_http_request_completed_2")
 
-	static func connect_signals_statecontroller(t: OptionButton, node ) : #fixes stuck input bug
-		print ("Connect StateCOntroller Signls")
+	static func connect_signals_statecontroller(t: OptionButton, node ) -> bool :#fixes stuck input bug
+		print_debug ("Connect StateCOntroller Signls")
 		#checks internet connectivity
 		if not t.is_connected("button_up", node, "on_processing"):
-			return t.connect("button_up", node, "on_processing")
+			t.connect("button_up", node, "on_processing")
+			return t.is_connected("button_up", node, "on_processing")
 
 		if not t.is_connected("button_down", node, "off_processing"):
-			return t.connect("button_down", node, "off_processing")
+			t.connect("button_down", node, "off_processing")
+			return t.is_connected("button_down", node, "off_processing")
 
-
+		else : return false
 
 	static func debug_signal_connections(q : HTTPRequest, node)->void:
 		#debuggers
@@ -1700,6 +1697,8 @@ class Wallet extends Reference:
 	"Loads Wallet Variables into Scene Tree Memory"
 	# By Modifying a loaded dictionary into the scene tree
 	static func _restore_wallet_data(user_data: Dictionary, info: Dictionary ) -> Dictionary:
+		
+		print_debug(info)
 		
 		# JSON numbers are always parsed as floats. In this case we need to turn them into ints
 		user_data.address = info.address

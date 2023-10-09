@@ -161,9 +161,12 @@ func _ready():
 	#print ("Wallet UI elemts: ",Wallet.UI_Elements) #for debug purposes only
 	
 	# Connects State Controller Button  Signals to Wallet
-	Wallet.Functions.connect_signals_statecontroller(self, Wallet)
+	# Should return a Boolean
+	print_debug(Wallet.Functions.connect_signals_statecontroller(self, Wallet))
 	
 	
+	
+	print_debug(Wallet.imported_mnemonic_button)
 	
 	# Triggers CUstom Ready State in Wallet Node
 	

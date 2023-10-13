@@ -7,8 +7,11 @@
 # To-Do:
 # (1) Finish D-pad to Joystick button change illustration 
 # (2) Add Swipe Gestures on/off controls
-#(3) Include a GitHub Login, to encourage Players to Inspect the Code Base
-
+# (3) Include a GitHub Login, to encourage Players to Inspect the Code Base
+#
+# Bugs:
+# (1) This scene resets presaved player settings
+#
 extends Control
 
 class_name GameControls

@@ -28,14 +28,13 @@
 extends Node
 
 
-var cinematics = preload ('res://resources/title animation/title..ogv') #I free memory once this is used
-var title_screen = load( 'res://scenes/Title screen.tscn')
+
 var pilot_ep 
 var VIDEO
 
+var cinematics = preload ('res://resources/title animation/title..ogv') #I free memory once this is used
+var title_screen = load( 'res://scenes/Title screen.tscn')
 onready var form = load ('res://scenes/UI & misc/form/form.tscn')
-
-#var shop = load('res://scenes/UI & misc/Shop.tscn')
 var controls = load ('res://scenes/UI & misc/Controls.tscn')
 
 "Comics  Book Module variables"
@@ -171,9 +170,6 @@ func _ready():
 	VisualServer.set_default_clear_color(ColorN("white")) 
 
 
-#func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_processing()
-
-
 
 func update_curr_scene() -> void:
 	curr_scene= get_tree().get_current_scene().get_name() 
@@ -279,55 +275,64 @@ class Functions extends Reference:
 	"""
 	Really simple save file implementation. Just saving some variables to a dictionary
 	"""
-
-	#modify code to include current scene and player position. also enemy spawner postions and info
-	# should take a parameter to save individual variables
+	# Can Save individual parameters by setting other parameters to Null
+	#
+	#
 	static func save_game(
 		player: Array, 
 		player_hitpoints : int, 
-		spawn_x, spawn_y, 
-		current_level, 
+		spawn_x : int, 
+		spawn_y : int, 
+		current_level : String, 
 		os : String, 
 		kill_count : int, 
-		prev_scene, 
+		prev_scene : String, 
 		prev_scene_spawnpoint,
-		direction_control,
-		Music_on_settings
+		direction_control : String
 		)-> bool: 
 		
 		print ("-------Saving Game -------")
-		
+		var save_dict : Dictionary = {}
 		var save_game = File.new()
-		save_game.open("user://savegeme.save", File.WRITE)
-		var save_dict = {}
+		save_game.open("user://savegeme.save", File.WRITE_READ)
 		if !player.empty():
 			save_dict.player = player #saves the player node 
-		if spawn_x != null:
+		if spawn_x != 0:
 			save_dict.spawn_x = spawn_x
-		if spawn_y != null:
+		if spawn_y != 0:
 			save_dict.spawn_y =spawn_y
-		if current_level != null:
+		if not current_level.empty() :
 			save_dict.current_level = current_level
+		
+		# Inventory List is saved individually
 		if !Inventory.list().empty():
 			save_dict.inventory = Inventory.list()
 		if !Quest.get_quest_list().empty():
 			save_dict.quests = Quest.get_quest_list()
-		if os != '':
+		if not os.empty():
 			save_dict.os = os
-		if kill_count != null:
+		if kill_count != 0 :
 			save_dict.kill_count = kill_count
 		#save_dict.currency = Suds #should load from encrypted wallet.cfg
-		if prev_scene != null:
+		
+		# For preserving scene changing information
+		if not prev_scene.empty() :
 			save_dict.prev_scene = prev_scene
+			
 		if prev_scene_spawnpoint != null: # Depreciate in favor of a singular spawpoint variable
 			save_dict.prev_scene_spawnpoint = prev_scene_spawnpoint
+		
 		if player_hitpoints != 0:
 			save_dict.player_hitpoints = player_hitpoints
-		if direction_control != "":
+		if not direction_control.empty():
 			save_dict.direction_control = direction_control
-		if Music_on_settings != null : # Redefine variable name
-			save_dict.Music_on_settings = Music_on_settings #add other variables to save
-		if Dialogs.language != '':
+		
+		#Music on settings is a boolean converted to int
+		if Music != null : 
+			save_dict.music = int(Music.music_on) #add other variables to save
+		
+		# Language is saved independently
+		if not Dialogs.language.empty():
 			save_dict.languague = Dialogs.language
 		
 		save_game.store_line(to_json(save_dict))
@@ -348,7 +353,7 @@ class Functions extends Reference:
 		if not save_game.file_exists("user://savegeme.save"):
 			return false
 		save_game.open("user://savegeme.save", File.READ)
-		var save_dict : Dictionary = parse_json(save_game.get_line())
+		var save_dict = parse_json(save_game.get_line())
 		if typeof(save_dict) != TYPE_DICTIONARY:
 			return false
 		if not check_only:
@@ -386,6 +391,8 @@ class Functions extends Reference:
 		'Player'
 		if save_dict.has('player'):
 			GlobalScript.player = save_dict.player
+			
+		if save_dict.has("kill_count"):
 			GlobalScript.kill_count = save_dict.kill_count  
 			
 		
@@ -415,6 +422,12 @@ class Functions extends Reference:
 		
 		if save_dict.has("languague"):
 			Dialogs.language = save_dict.languague
+
+
+		if save_dict.has("music"):
+			print_debug(bool(save_dict.music)) # For Debug Purposes Only
+			Music.music_on = bool(save_dict.music)
+
 		
 		######################################################
 		print_debug("Loaded gameplay")
@@ -423,7 +436,7 @@ class Functions extends Reference:
 	# Version 2 of Load_game function
 	# Should allow for loading individual variables from Local
 	static func load_user_data( data: String ):
-		print ("-------Loading User Data -------")
+		print ("-------Fast Loading User Data -------")
 		var save_game = File.new()
 		
 		if not save_game.file_exists("user://savegeme.save"):
@@ -436,6 +449,9 @@ class Functions extends Reference:
 		if save_dict.has(data):
 			if data == 'languague':
 				Dialogs.language = save_dict.languague
+		#	if data == "Music_on_settings":
+		#		Music.Music_on_settings = save_dict.Music_on_settings
+		#		Music._ready()
 		pass
 
 	

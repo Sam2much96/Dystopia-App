@@ -239,3 +239,4 @@ anims/VERTICAL_SCREEN = SubResource( 18 )
 [connection signal="pressed" from="ui/ScrollContainer/grid/play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="ui/ScrollContainer/grid/host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="ui/ScrollContainer/grid/search_IP" to="." method="_on_search_IP_pressed"]
+[connection signal="pressed" from="Back_Button" to="." method="_on_Back_Button_pressed"]

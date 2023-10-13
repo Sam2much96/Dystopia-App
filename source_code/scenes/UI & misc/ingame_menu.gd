@@ -165,7 +165,7 @@ func _input(event): #Toggles menu visibility on/off
 
 
 func _on_continue_pressed():
-	
+	# Buggy
 	Music.play_track(Music.ui_sfx[0])
 	Globals.Functions.load_game(false, Globals)
 	if Globals.current_level != null:
@@ -224,9 +224,18 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 		#prev_scene_spawnpoint,
 		#direction_control,
 		#Music_on_settings
-		if Globals.Functions.save_game([], 0, null, null, Globals.current_level, Globals.os, 0, null, null, Globals.direction_control, null) == false:
-			push_error("Error saving game")
-		
+		if Globals.Functions.save_game(
+			[], 
+			0, 
+			0, 
+			0, 
+			Globals.current_level, 
+			Globals.os, 
+			0, 
+			"", 
+			null, 
+			Globals.direction_control 
+			) == false: push_error("Error saving game")
 	else:
 		push_error("Error: initial_level shouldn't be empty")
 		
@@ -267,6 +276,7 @@ func _on_comics_pressed():
 	print_debug ('comics pressed')
 	Music.play_track(Music.ui_sfx[0])
 	Globals.Functions.change_scene_to(Globals.comics___2, get_tree())
+
 func _on_controls_pressed():
 	Music.play_track(Music.ui_sfx[0])
 	Globals.Functions.change_scene_to(Globals.controls, get_tree())

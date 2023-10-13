@@ -60,6 +60,10 @@ func _ready():
 	# Load Users Prefered DIalogue 
 	Globals.Functions.load_user_data('languague')
 	
+	
+	# Load Users Prefered DIalogue 
+	#Globals.Functions.load_user_data('Music_on_settings')
+	
 	# If Dialogue Already Preset, Skip to Cinematics.
 	print_debug("User Preloaded Language: ", Dialogs.language)
 	if not Dialogs.language.empty() :

@@ -122,14 +122,16 @@ func _ready(): #create a video player function
 			#if Globals.os == "XII" or "Windows" or "MacOs": 
 				# Connect Signals from Youtube Downloader
 				# Download Video File
+			
+			# YTDLP is depreciated
 				
-			"""
-			Doc: yt-dlp works best on Pc devices supporting Native Python
-			"""
-			yt_dlp.connect("ready", self, "download_yt_video") #Poll Downloads
-			yt_dlp.connect("download_completed", self, "stream_yt_video") # Auto Play Downloads
-		
-	
+			#"""
+			#Doc: yt-dlp works best on Pc devices supporting Native Python
+			#"""
+			#yt_dlp.connect("ready", self, "download_yt_video") #Poll Downloads
+			#yt_dlp.connect("download_completed", self, "stream_yt_video") # Auto Play Downloads
+			# 
+			pass
 		
 		
 		# File Exists

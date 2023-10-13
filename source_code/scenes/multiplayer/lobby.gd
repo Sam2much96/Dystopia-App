@@ -39,3 +39,7 @@ func _on_host_pressed():
 
 func _on_search_IP_pressed():
 	Networking.Lobby._on_find_public_ip_pressed()
+
+
+func _on_Back_Button_pressed():
+	Globals._go_to_title()

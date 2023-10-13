@@ -29,6 +29,7 @@
 # (3) Music Volume is unimplemented
 # (4) Music Downloads is buggy for large (20mb) files (fixed : Public AWS s3 Bucket)
 # (5) Music Unzip takes too long (Hours) to unzip, take s up half the FPS in core game loop
+# (6) Music sfx plays on the wrong Track
 # *************************************************
 """
 THERE ARE TWO FUNCTIONS FOR PLAYING MUSIC TRACKS AND MUSIC PLAYLISTS
@@ -38,6 +39,10 @@ extends Node
 export (bool) var music_on 
 export (bool) var sfx_on
 export (int) var volume # volume controller code is not yet written
+
+
+# Music COntrol Settings
+#var Music_on_settings : int = 0
 
 export(String, FILE, "*.ogg") var music_track = ""
 
@@ -200,7 +205,9 @@ var Music_Zip_Available_Locally : bool = false
 
 var headers = ["Content-Type: application/zip"]
 
+
 onready var thread : Thread = Thread.new() 
+
 
 # Debug Variables
 var stream : AudioStream
@@ -217,14 +224,10 @@ func _ready():
 	# connect signals
 	requests.connect("request_completed", self , "_http_request_completed")
 	
-	# Check if Local Music Directory exists
+	# Check if Local Music Directory exists & Makes directory
 	if not wallet.Functions.check_local_wallet_directory(FileDirectory,"user://Music") :
-		
-		# Make directory
 		FileDirectory.make_dir("user://Music")
 		
-
-	
 	# Check if Music Unzip root folder exists
 	if not wallet.Functions.check_local_wallet_directory(FileDirectory, "user://Music/Dystopia-App/source_code/music"):
 		FileDirectory.make_dir_recursive("user://Music/Dystopia-App/source_code/music")
@@ -249,7 +252,13 @@ func _ready():
 	
 	#thread.start(self, "_thread_function", null, 2)
 	
-	#load on/off music settings
+	"load on/off music settings"
+	Globals.Functions.load_game(true, Globals)
+	
+
+
+	print_debug("Music_on_settings :",bool (music_on))
+	#	music_on = bool (Music_on_settings)
 	
 	
 	"Music Player Logic"
@@ -283,7 +292,10 @@ func _ready():
 
 func _process(delta):
 	
-	_music_debug()
+	#_music_debug()
+	
+	"Music On.Off"
+	
 	
 	"""
 	Music Uncompress
@@ -298,13 +310,13 @@ func _process(delta):
 	if Music_streamer != null:
 		if Music_streamer.stream != null and int(Music_streamer.get_playback_position())==int(Music_streamer.get_stream().get_length()):
 			print ('autoshuffle')
-			if Music_Available_Locally:
+			if Music_Available_Locally && music_on:
 				shuffle(playlist_one) 
 				play(music_track)
 				
-			if !Music_Available_Locally:
-				shuffle(default_playlist)
-				play(music_track)
+			#if !Music_Available_Locally:
+			#	shuffle(default_playlist)
+			#	play(music_track)
 
 
 
@@ -343,38 +355,73 @@ func play(stream: String):
 		push_error('Music stream is null, fix')
 		print_debug('Stream:',stream)
 		print_debug('Music Track',music_track)
+	
+	Globals.Functions.save_game(
+		[], 
+		0, 
+		0, 
+		0, 
+		"", 
+		"", 
+		0, 
+		"", 
+		null,
+		""
+		)
+	print_debug('Play Music setting debug: ', music_on) #For Debug purposes only
+
 
 func clear():# triggers an autodelete in music track nodes
 	music_track = ''
-	print('Music cleared')
-	music_on = false
-
+	print_debug('Music cleared')
+	self.music_on = false
+	Globals.Functions.save_game(
+		[], 
+		0, 
+		0, 
+		0, 
+		"", 
+		"", 
+		0, 
+		"", 
+		null,
+		""
+		)
+	print_debug('Clear Music setting debug: ', self.music_on) #For Debug purposes only
+	return self.music_on
 
 
 # Simple 'muffled music' effect on pause using a low pass filter
-func _notification(what):
+func _notification(what : int):
+	# Docs: This code bloc calls uses multiple node states to Alter the State of this Music Object
+	
+	#print_debug(what) # for debug purposes only
 	if what == NOTIFICATION_PAUSED:
 		AudioServer.set_bus_effect_enabled(music_bus,0,true)
 		AudioServer.set_bus_volume_db(music_bus,-10)
+
 	if what == NOTIFICATION_UNPAUSED:
 		AudioServer.set_bus_effect_enabled(music_bus,0,false)
 		AudioServer.set_bus_volume_db(music_bus,0)
+
 	if what == NOTIFICATION_PREDELETE:
 		AudioServer.set_bus_volume_db(music_bus,-100)
 		AudioServer.set_bus_volume_db(music_bus_2,-100)
-		#turn_off()
-		print ('music off- Notificationh Predelete')
+		
+
 	if what == NOTIFICATION_APP_PAUSED:
+		
 		AudioServer.set_bus_mute(music_bus, true)
 		AudioServer.set_bus_mute(music_bus_2, true)
+		
 		clear()
-		#pass
 	if what == NOTIFICATION_APP_RESUMED:
 		AudioServer.set_bus_mute(music_bus, false)
 		AudioServer.set_bus_mute(music_bus_2, false)
+		
 		shuffle(playlist_one)
 		play(music_track)
-
+		
 
 
 """
@@ -390,7 +437,7 @@ func shuffle (playlist : Dictionary):
 
 func _on_A_finished(): #This  signals when the music has finished and autoshuffles
 	randomize() #disabled for debugging
-	print('music finished--music singleton') #code block works
+	print_debug('music finished--music singleton') #code block works
 	#shuffle()
 	#play(music_track)
 	#print (_n)
@@ -418,25 +465,31 @@ func play_track(_track : String):
 			yield(get_tree().create_timer(0.8), "timeout")
 			D.stop()
 
-func sound(what : String): 
-	#Turns on/ off and saves it via a global script
-	Globals.Music_on_settings = false
-	if what == 'off' or 'Off' or 'OFF': #Debug
-		music_on = false
-		sfx_on = false
-		_notification(NOTIFICATION_APP_PAUSED)
-		#print ('Turned off Music', Globals.Music_on_settings) #For Debug purposes only
-	if what == 'on' or 'On' or 'ON':
-		music_on = true
-		sfx_on = true
-
+# Depreciated Buggy Method
+#func sound(what : String): 
+#	#Turns on/ off and saves it via a global script
+#	#Globals.Music_on_settings = false
+#	if what == 'off' or 'Off' or 'OFF': #Debug
+#		#music_on = false
+#		#sfx_on = false
+#		_notification(NOTIFICATION_APP_PAUSED)
+#		
+#		
+#		
+#	if what == 'on' or 'On' or 'ON':
+#		#music_on = true
+#		#sfx_on = true
+#		_notification(NOTIFICATION_APP_RESUMED)
+#		
+		#Music_on_settings = 1
+		# Saves Users Preferred SOund Settings
 
 
 
 
 func _exit_tree(): 
 	#turn_off()
-	sound('off')
+	#sound('off')
 	Globals.MemoryManagement.queue_free_array(my_nodes)
 	
 	# Causes game to crash if not finished uncompressing zip file
@@ -449,6 +502,7 @@ func _exit_tree():
 
 
 func _thread_function():
+	# Depreciated thread function
 	# Note: This thread function is depreciated because it drops fps to 12
 	# It would be activated once the Unzipping algorith is optimized and fps >=60
 	"Logic Unzips Local zip files to ogg audio files"

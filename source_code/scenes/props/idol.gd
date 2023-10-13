@@ -71,10 +71,12 @@ func _save(body):
 			body.hitpoints, 
 			body.position.x, 
 			body.position.y, 
-			null, 
+			"", 
 			Globals.os, 
 			Globals.kill_count, 
-			null,null,null,null
+			"",
+			null,
+			""
 			)
 
 

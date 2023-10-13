@@ -132,8 +132,10 @@ func _on_Networking_toggled(button_pressed):
 
 func _on_music_toggled(button_pressed): #Music on and off settings
 	if button_pressed :
-		Music.sound('off')
-	else  :
+		#Music.sound('off')
+		Music._notification(NOTIFICATION_APP_PAUSED)
+	if not button_pressed  :
+		#Music.sound("on")
 		Music._notification(NOTIFICATION_APP_RESUMED)
 
 
@@ -157,7 +159,7 @@ func _on_Direction_controls_toggled(button_pressed):
 func manual_translate()-> void:
 	if Dialogs.language != "" or null:
 		
-		print(ControlButtons)
+		#print(ControlButtons) # for debug purposes only
 		Dialogs.set_font(ControlButtons)
 		
 		for i in ControlButtons:
@@ -169,8 +171,18 @@ func manual_translate()-> void:
 "Memory Leak Management"
 func _exit_tree():
 	
-	"Saves Player's Configuration"
-	Globals.Functions.save_game([], 0, null, null, Globals.current_level, Globals.os, 0, null, null, Globals.direction_control, null)
+	"Saves Player's PreferedConfiguration"
+	Globals.Functions.save_game(
+		[],
+		0,
+		0, 
+		0, 
+		Globals.current_level, 
+		Globals.os, 
+		0, 
+		"", 
+		null, 
+		Globals.direction_control)
 	
 	# FOr Memorey Management ( Garbage Collector)
 	for i in ControlButtons:

@@ -49,10 +49,9 @@ func _on_body_entered(body):
 			to_scene, 
 			"", 
 			Globals.kill_count, 
-			null, 
-			null, 
 			"", 
-			null
+			null, 
+			""
 			) 
 		
 		

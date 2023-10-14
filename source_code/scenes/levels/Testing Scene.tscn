@@ -1,7 +1,6 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/props/idol.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/props/BoulderSmall.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/props/Boulder Big.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/props/broken ship.tscn" type="PackedScene" id=6]
@@ -57,5 +56,3 @@ margin_bottom = -546.016
 rect_scale = Vector2( 2.48164, 2.48164 )
 
 [node name="Player" parent="." instance=ExtResource( 7 )]
-
-[node name="GameHUD" parent="." instance=ExtResource( 2 )]

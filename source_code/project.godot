@@ -384,11 +384,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/items/ItemSpawner.gd"
 }, {
-"base": "CanvasLayer",
-"class": "lobby",
-"language": "GDScript",
-"path": "res://scenes/multiplayer/login.gd"
-}, {
 "base": "Node",
 "class": "lobbyV2",
 "language": "GDScript",
@@ -500,7 +495,6 @@ _global_script_class_icons={
 "hint": "",
 "item": "",
 "itemSpawner": "",
-"lobby": "",
 "lobbyV2": "",
 "minimap": "",
 "projectile": "",

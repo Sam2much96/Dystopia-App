@@ -1,3 +1,20 @@
+# *************************************************
+# godot3-RPG by Samuel Harrison
+# Released under MIT License
+# *************************************************
+# CLIENT-SIDE CODE
+#
+# Populate the login form and handle callbacks
+# on buttons.
+# To DO
+#(1) should use player's wallet address
+# 
+# *************************************************
+# Bugs
+# (1) Multiplayer is buggy
+# (2) Networking Packet is too Large
+# *************************************************
+
 extends Node
 
 class_name lobbyV2

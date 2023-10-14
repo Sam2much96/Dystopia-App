@@ -418,9 +418,6 @@ func _input(event):
 		push_error(" Connection Bad, Not Handling Input")
 		return
 		
-	# if not currently playing, don't handle input too.
-	#if my_info == null:
-	#	return
 
 
 # Mapping All Player Input to A Remote Player Call Function
@@ -454,6 +451,8 @@ func _input(event):
 			
 			
 			#print("Largest Peer ID: ",Networking.peer_ids[0], "No: ", Networking.peer_ids.size() ) # for debug purposes only
+			
+			"Updates Player Input Data Across Client/Server Peers"
 			Networking.rpc_unreliable_id(1, "pi", peer_id, "up", true, Networking.RawData) # Packet Loss Error
 			
 		if Input.is_action_just_released("move_up"):

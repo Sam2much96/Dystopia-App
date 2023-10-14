@@ -29,9 +29,9 @@ func _enter_tree():
 	"""
 	REPLICATE API
 	"""
-	#print_debug(replicate_api)
+	print_debug(replicate_api)
 	
-	if replicate_api != null:
+	if not replicate_api == null :
 		
 		# Define the API endpoint and headers
 		url = "https://api.replicate.com/v1/predictions"
@@ -68,7 +68,7 @@ func _ready():
 	add_child(_prompt)
 	add_child(response2)
 	
-	if replicate_api != null:
+	if not replicate_api == null:
 		# For making direct api calls to replicate api
 		# POST method
 		_prompt.connect("request_completed",self, "_request_callback")
@@ -142,6 +142,8 @@ func send_prompt(request: HTTPRequest) -> void:
 
 	if prompt != "" :
 		print("sending prompt >>>>")
+		#print_debug(url)
+		
 		request.request(url,_headers , false, HTTPClient.METHOD_POST, JSON.print(data))
 	else:
 		push_error("prompt cannot be empty")

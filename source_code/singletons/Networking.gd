@@ -84,7 +84,7 @@ signal Timeout
 
 onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
-onready var WORLD_SIZE : int = 40000.0
+var WORLD_SIZE : int = 40000.0
 
 onready var _reference_to_self =get_node('/root/Networking') #formerly _y
 onready var _reference_to_debug =get_node('/root/Debug') #formerly _y

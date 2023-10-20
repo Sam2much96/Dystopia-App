@@ -1,6 +1,6 @@
 extends Area2D
 
-
+class_name XtraLife
 
 """
 EXTRA LIFE
@@ -22,4 +22,6 @@ func _on_Item_body_entered(body):
 		body.emit_signal("health_changed", body.hitpoints)
 		yield(get_tree().create_timer(0.8), "timeout")
 		$pickup.stop()
+		
+		self.queue_free()
 	pass

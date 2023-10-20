@@ -12,9 +12,9 @@ anchor_bottom = 1.0
 
 [node name="Panel" type="Panel" parent="."]
 margin_left = -6.0
-margin_top = -5.0
+margin_top = -123.0
 margin_right = 1045.0
-margin_bottom = 610.0
+margin_bottom = 722.0
 custom_styles/panel = ExtResource( 5 )
 
 [node name="ColorRect" type="ColorRect" parent="."]

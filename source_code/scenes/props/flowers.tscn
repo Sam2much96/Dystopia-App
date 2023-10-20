@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/props/Grass.gd" type="Script" id=1]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/flower_1.webp" type="Texture" id=2]
 [ext_resource path="res://sounds/Fantozzi-SandR3.ogg" type="AudioStream" id=3]
 [ext_resource path="res://scenes/Shaders/Wind move.shader" type="Shader" id=4]
+[ext_resource path="res://scenes/levels/VisibilityOptimizer.gd" type="Script" id=5]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 4 )
@@ -428,5 +429,10 @@ emission_shape = 1
 emission_sphere_radius = 80.0
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( -17.6502, -38.3138 )
+scale = Vector2( 7.75873, 7.32824 )
+script = ExtResource( 5 )
 
 [connection signal="area_entered" from="." to="." method="_on_flowers_area_entered"]

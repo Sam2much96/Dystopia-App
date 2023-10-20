@@ -8,12 +8,14 @@
 # 
 # Bugs
 # (1) Performance Hog. It slows frame ate  considerably/
-		# Fix: SHould only turn on when FrameRate is high, else, should shut off
+		# Fix: SHould only turn on when FrameRate is high, else, should shut off (Done)
 # *************************************************
 #It Emits a Particle 2D and turnis it off and on through a timer.
 
 
 extends CanvasLayer
+
+class_name RainFX
 
 onready var rain_particles = $Particles2D
 onready var timer = $Timer
@@ -23,17 +25,19 @@ export (float) var time #in secs
 
 const MINUMUM_FPS : int = 10
 
+# Lifetime OPtimizations for Particle FX
+const Long_lifetime : int = 6
+const Short_lifetime : int = 3
+
+
 
 
 # Add other Parameters to Automatically trigger the rain on and off
 func _process(_delta):
 	
-	#adfsdsdggsf might require rewriting _Debug singleton to make Framerate Globally accessible
-	
-	# Programmatically controls the Rain FX 
+	# Programmatically controls the Rain FX using the GLobal Game Framerate to OPtimize for perfomance
 	# Using the time node. set to 500 for 8.3 mins
 	
-	#if int (Debug.FPS_debug()) => 30: 
 	
 	if enable == true && int (Debug.FPS_debug()) >= MINUMUM_FPS:
 		rain_particles.emitting = true
@@ -47,13 +51,13 @@ func _process(_delta):
 	if  enable == true && int (Debug.FPS_debug()) < MINUMUM_FPS:
 		rain_particles.emitting = false
 
-#	if  enable == true && int (Debug.FPS_debug()) >= 30:
-#		rain_particles.emitting = true
+	"Performance Optimizations"
+	# Particle Optimization for Differing Screen Orientations
 	
-	
-	else:
-		pass
-
+	if Globals.screenOrientation == Globals.SCREEN_HORIZONTAL:
+		rain_particles.lifetime = Short_lifetime
+	if Globals.screenOrientation == Globals.SCREEN_VERTICAL:
+		rain_particles.lifetime = Long_lifetime
 
 
 

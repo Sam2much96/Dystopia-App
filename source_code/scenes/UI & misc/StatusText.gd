@@ -1,45 +1,86 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Status Text
+# Shows Updats on the Player's Status Changes
+# Bugs:
+# (1) Doesn't Display Text
+# (2) Display Doesn't Adapt for Mobile Screens and PC Screen s
+# 
+
+# To Do:
+#(1) Fix Bugs
+# *************************************************
+
+
 extends Label
+
+
+class_name StatusText
 
 """
 Connects to the inventory and quest systems and will show a message on screen
 for every change in either
 """
 
-var messages = []
+var messages : Array = []
 
+var nodes : Array = [self]
 
 func _ready():
+	
+	Dialogs.set_font(nodes)
 	hide()
+	
+	# Connects to Both Quest and Item Singleton
 	Quest.connect("quest_changed", self, "_questlog_updated")
 	Inventory.connect("item_changed", self, "_inventory_updated")
-	pass # Replace with function body.
 
+
+# Quests
 func _questlog_updated(quest_name, status):
-	var txt
+	var txt : String
 	match status:
 		Quest.STATUS.STARTED:
 			txt = "Quest aquired: %s." % quest_name
 		Quest.STATUS.COMPLETE:
 			txt = "Quest complete! %s." % quest_name
+	
+	# Print a translated version of this text for debugging
 	_queue_message(txt)
 	pass
 
-func _inventory_updated(action, type, amount):
-	var txt
+# Inventory
+func _inventory_updated(action : String, type: String, amount : int):
+	# Change status text font
+	
+	var txt : String
+
+	var _type : String = Dialogs.translate_to(type , Dialogs.language)
+	
+	
 	match action:
 		"added":
-			txt = "Obtained %s x %s" % [type, amount]
+			var obtained : String = Dialogs.translate_to("Obtained", Dialogs.language)
+			
+			txt = "%s  %s x %s" % [obtained,_type, amount]
 		"removed":
-			txt = "Lost %s x %s" % [type, amount]
+			
+			var lost : String = Dialogs.translate_to("Lost", Dialogs.language)
+			txt =  "%s %s x %s" % [lost,_type, amount]
+	# Print a translated version of this text for debugging 
+	
+	#++Dialogs.translate_to(i.name, Dialogs.language)
 	_queue_message(txt)
-	pass
+
 
 func _queue_message(text):
 	messages.push_back(text)
 	if not $anims.is_playing():
 		_play_next()
-	pass
-	
+
+
 func _play_next():
 	if messages.empty():
 		return

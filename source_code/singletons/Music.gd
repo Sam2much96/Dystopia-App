@@ -12,6 +12,7 @@
 # (3) Plays single music file
 # (4) Uses 4 Music channels
 # (5) Downloads music files from Server
+
 # To do:
 # (1) Use state machine to descibe different states for this signleton
 # (2) Turn on/ off debugging reduce draining performance
@@ -19,14 +20,16 @@
 # (4) Document code
 # (5) Organize code into states {Finite State Machine}
 # (6) Implement Global file checker and Directory Checker
-
+# (7) Implement Spotify API (Depreciated)
 
 # *************************************************
 # Bugs:
 # (1) Music debug function breaks
 # (2) Debug Function breaks
 # (3) Music Volume is unimplemented
-# (4) Music Downloads is buggy for large (20mb) files
+# (4) Music Downloads is buggy for large (20mb) files (fixed : Public AWS s3 Bucket)
+# (5) Music Unzip takes too long (Hours) to unzip, take s up half the FPS in core game loop
+# (6) Music sfx plays on the wrong Track
 # *************************************************
 """
 THERE ARE TWO FUNCTIONS FOR PLAYING MUSIC TRACKS AND MUSIC PLAYLISTS
@@ -37,25 +40,37 @@ export (bool) var music_on
 export (bool) var sfx_on
 export (int) var volume # volume controller code is not yet written
 
+
+# Music COntrol Settings
+#var Music_on_settings : int = 0
+
 export(String, FILE, "*.ogg") var music_track = ""
 
-# should me moved to github repository
+var default_playlist : Dictionary ={
+	0:"res://music/310-world-map-loop.ogg",
+	1:"res://music/Astrolife chike san.ogg",
+	2:"res://music/chike san afro 1.ogg",
+	3:"res://music/chike san afro 2.ogg",
+	4:"res://music/chike san afro 3.ogg",
+	5:"res://music/Spooky-Chike-san song.ogg"
+}
+
+# Files Hosted on AWS S3 Bucket
 # file checker should loop through playlist
 var playlist_one : Dictionary = {
 	0:'res://music/310-world-map-loop.ogg', 
-	1:'res://music/chike san afro 1.ogg',
-	2:'res://music/chike san afro 2.ogg',
-	3:'res://music/chike san afro 3.ogg',
-	4:'res://music/chuks-dane_chuks-dane-shoot-back.ogg',
-	5:'res://music/Astrolife chike san.ogg',
-	6:'res://music/chuks-dane_chuks-dane-new-breed-prod-base.ogg',
-	7:'res://music/a-2-3-groovy-bgm.ogg',
-	8:'res://music/Spooky-Chike-san song.ogg',
-	9:'res://music/6Feet.ogg',
-	10:'res://music/Blow.ogg',
-	11:'res://music/HENSONN_SAHARA.ogg',
-	12:'res://music/Moya.ogg',
-	13:'res://music/Turn up.ogg',
+	1:'user://Music/Dystopia-App/source_code/music/chike san afro 1.ogg',
+	2:'user://Music/Dystopia-App/source_code/music/chike san afro 2.ogg',
+	3:'user://Music/Dystopia-App/source_code/music/chike san afro 3.ogg',
+	4:'user://Music/Dystopia-App/source_code/music/Astrolife chike san.ogg',
+	5:'user://Music/Dystopia-App/source_code/music/a-2-3-groovy-bgm.ogg',
+	6:'user://Music/Dystopia-App/source_code/music/Spooky-Chike-san song.ogg',
+	7:'user://Music/Dystopia-App/source_code/music/6Feet.ogg',
+	8:'user://Music/Dystopia-App/source_code/music/Blow.ogg',
+	9:'user://Music/Dystopia-App/source_code/music/HENSONN_SAHARA.ogg',
+	10:'user://Music/Dystopia-App/source_code/music/Moya.ogg',
+	11:'user://Music/Dystopia-App/source_code/music/Turn up.ogg',
+	12:'user://Music/Dystopia-App/source_code/music/310-world-map-loop.ogg',
 }
 var comic_sfx : Dictionary = {
 	0: 'res://sounds/book_flip.1.ogg',
@@ -75,6 +90,10 @@ var ui_sfx : Dictionary = {
 	1:'res://sounds/Menu1B.ogg',
 }
 
+var blood_fx : Dictionary = {
+	0 :"res://sounds/blood-spilling.ogg" 
+	
+}
 
 var hit_sfx : Dictionary = {
 	0:'res://sounds/hit01.ogg',
@@ -130,11 +149,7 @@ var nokia_soundpack : Dictionary = {
 	34 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/soundtest.ogg",
 }
 
-var _music
-onready var Music_streamer =get_node("A")  #Refrences the music player node
-onready var  Music_streamer_2 =get_node("D")
-onready var sfx_streamer 
-onready var track
+
 #create all your music actions here as animated nodes
 """
 I put in an automatic music shuffling script in here. Feel free to update it 
@@ -154,46 +169,157 @@ onready var music_bus_2 = AudioServer.get_bus_index($B.bus)
 onready var music_bus = AudioServer.get_bus_index($A.bus)
 
 
+onready var A : AudioStreamPlayer = $A
+onready var B : AudioStreamPlayer = $B
+onready var C : AudioStreamPlayer = $C
+onready var D : AudioStreamPlayer = $D 
+
+onready var requests : HTTPRequest = $HTTPRequest
+onready var timer : Timer = $Timer
+
+
+var _music
+onready var Music_streamer : AudioStreamPlayer = get_node_or_null("A")  #Refrences the music player node
+onready var  Music_streamer_2  : AudioStreamPlayer=get_node_or_null("D")
+onready var sfx_streamer 
+onready var track
+
+# Pointers to Node for Memory Mgmt
+onready var my_nodes : Array = [Music_streamer,B,C,Music_streamer_2]
+
+
+# THis URL fetches a Zip file from an AWS s3 buzket
+var musicAWS3_URL : Dictionary = {"zip":"https://llama2-7b.s3.eu-north-1.amazonaws.com/music.zip"
+} 
+
+var FileCheck4=File.new() # checks Music Files
+var FileCheck3=File.new() # checks Music Files
+var FileCheck2=File.new() # checks Music Files
+var FileCheck1=File.new() # checks Music Files
+var FileCheck=File.new() # checks Music Files
+var FileDirectory=Directory.new() #checks Music Irectory
+
+var Music_Available_Locally : bool = false
+var Music_Zip_Available_Locally : bool = false
+
+
+var headers = ["Content-Type: application/zip"]
+
+
+onready var thread : Thread = Thread.new() 
+
+
+# Debug Variables
+var stream : AudioStream
+var stream_length : int
+var Playback_position : int
+var _track : String
+
 
 func _ready():
 	
-	# Needs more code
-	#download_and_uncompress_music() 
+	# Debug nodes
+	print_debug(my_nodes)
 	
-	#load on/off music settings
+	# connect signals
+	requests.connect("request_completed", self , "_http_request_completed")
+	
+	# Check if Local Music Directory exists & Makes directory
+	if not wallet.Functions.check_local_wallet_directory(FileDirectory,"user://Music") :
+		FileDirectory.make_dir("user://Music")
+		
+	# Check if Music Unzip root folder exists
+	if not wallet.Functions.check_local_wallet_directory(FileDirectory, "user://Music/Dystopia-App/source_code/music"):
+		FileDirectory.make_dir_recursive("user://Music/Dystopia-App/source_code/music")
+	
+	"Logic CHecks the Playlist If Music file is available locally"
+	for i in playlist_one.values():
+		#print (i) # FOr debug purpose only
+		if not FileCheck4.file_exists(i):
+			Music_Available_Locally = false
+		# Downloal zip file
+	
+	"Logic Checks if Music Zip file is available locally"
+	if not FileCheck1.file_exists("user://Music/music.zip"):
+		requests.request(musicAWS3_URL.get('zip'), headers,false, HTTPClient.METHOD_GET)
+	if FileCheck1.file_exists("user://Music/music.zip"):
+		Music_Zip_Available_Locally = true
 	
 	
+	"Unzip Music files in a thread"
+	#Bugs: 
+	#(1) GDUnzip Compression speeds are slow
 	
+	#thread.start(self, "_thread_function", null, 2)
+	
+	"load on/off music settings"
+	Globals.Functions.load_game(true, Globals)
+	
+
+
+	print_debug("Music_on_settings :",bool (music_on))
+	#	music_on = bool (Music_on_settings)
+	
+	
+	"Music Player Logic"
 	if music_on == true:
-		randomize() #randomizes shuffle code seed
-		shuffle(playlist_one) #disabled for debugging
+		randomize()
+		if Music_Available_Locally:
+			# SHuffle the Entire Playlist
+			#randomize() #randomizes shuffle code seed
+			shuffle(playlist_one) #disabled for debugging
+		
+		"Default Music"
+		if !Music_Available_Locally:
+			# Shuffle Default Playlist
+			shuffle(default_playlist)
+		
 		_music = music_track.get_file()
 		play(music_track) #Not needed for release
-		Globals.Music_on_settings = true
-	elif music_on == false:
+		#Globals.Music_on_settings = true
+	
+	
+#	if music_on == true && !Music_Available_Locally :
+#		play(playlist_one.get(0))
+
+		
+	if music_on == false:
 		$A.stop()
-		Globals.Music_on_settings = false
+		#Globals.Music_on_settings = false
 		pass
 
 
 
-func _process(_delta):
-
+func _process(delta):
+	
+	#_music_debug()
+	
+	"Music On.Off"
+	
+	
 	"""
-	Music Debug
+	Music Uncompress
 	"""
-	#_music_debug()  #breaks # for debug purposes only
+	
 	
 	#Auto sets Globals Music Settings
-
+	
 	"""
 	AUTO SHUFFLE
 	"""
 	if Music_streamer != null:
 		if Music_streamer.stream != null and int(Music_streamer.get_playback_position())==int(Music_streamer.get_stream().get_length()):
 			print ('autoshuffle')
-			shuffle(playlist_one) 
-			play(music_track)
+			if Music_Available_Locally && music_on:
+				shuffle(playlist_one) 
+				play(music_track)
+				
+			#if !Music_Available_Locally:
+			#	shuffle(default_playlist)
+			#	play(music_track)
+
+
+
 
 
 func _music_debug(): #Breaks
@@ -202,21 +328,19 @@ func _music_debug(): #Breaks
 			for child in get_children() :
 				if child is AudioStreamPlayer:
 					if child.stream != null: 
-				
-						
-						var stream = Music_streamer.get_stream()
-						var stream_length = int(stream.get_length())
-						var _track = music_track.get_file()
-						var Playback_position = int(Music_streamer.get_playback_position())
+						stream = Music_streamer.get_stream()
+						stream_length = int(stream.get_length())
+						_track = music_track.get_file()
+						Playback_position = int(Music_streamer.get_playback_position())
 						music_debug = str(stream , _track, Playback_position , '/', stream_length, sfx_streamer)
 
 
 
 
-func play(stream):
+func play(stream: String):
 	#kinda works
 	#it bugs out when the music track node is added to a scene
-	if stream != null or stream != '': #null error
+	if stream != null or !stream.empty(): #null error
 		if current_track == "a":
 			$B.stream = load(stream) #invalid funtion load, cannot convert arguement from nil to string
 			$anims.play("AtoB")
@@ -231,44 +355,79 @@ func play(stream):
 		push_error('Music stream is null, fix')
 		print_debug('Stream:',stream)
 		print_debug('Music Track',music_track)
+	
+	Globals.Functions.save_game(
+		[], 
+		0, 
+		0, 
+		0, 
+		"", 
+		"", 
+		0, 
+		"", 
+		null,
+		""
+		)
+	print_debug('Play Music setting debug: ', music_on) #For Debug purposes only
+
 
 func clear():# triggers an autodelete in music track nodes
 	music_track = ''
-	print('Music cleared')
-	music_on = false
-
+	print_debug('Music cleared')
+	self.music_on = false
+	Globals.Functions.save_game(
+		[], 
+		0, 
+		0, 
+		0, 
+		"", 
+		"", 
+		0, 
+		"", 
+		null,
+		""
+		)
+	print_debug('Clear Music setting debug: ', self.music_on) #For Debug purposes only
+	return self.music_on
 
 
 # Simple 'muffled music' effect on pause using a low pass filter
-func _notification(what):
+func _notification(what : int):
+	# Docs: This code bloc calls uses multiple node states to Alter the State of this Music Object
+	
+	#print_debug(what) # for debug purposes only
 	if what == NOTIFICATION_PAUSED:
 		AudioServer.set_bus_effect_enabled(music_bus,0,true)
 		AudioServer.set_bus_volume_db(music_bus,-10)
+
 	if what == NOTIFICATION_UNPAUSED:
 		AudioServer.set_bus_effect_enabled(music_bus,0,false)
 		AudioServer.set_bus_volume_db(music_bus,0)
+
 	if what == NOTIFICATION_PREDELETE:
 		AudioServer.set_bus_volume_db(music_bus,-100)
 		AudioServer.set_bus_volume_db(music_bus_2,-100)
-		#turn_off()
-		print ('music off- Notificationh Predelete')
+		
+
 	if what == NOTIFICATION_APP_PAUSED:
+		
 		AudioServer.set_bus_mute(music_bus, true)
 		AudioServer.set_bus_mute(music_bus_2, true)
+		
 		clear()
-		#pass
 	if what == NOTIFICATION_APP_RESUMED:
 		AudioServer.set_bus_mute(music_bus, false)
 		AudioServer.set_bus_mute(music_bus_2, false)
+		
 		shuffle(playlist_one)
 		play(music_track)
-
+		
 
 
 """
 MUSIC SHUFFLE
 """
-func shuffle (playlist):
+func shuffle (playlist : Dictionary):
 	music_track = ''
 	track = int(rand_range(-1,playlist.size())) #selects a random track number
 	music_track = playlist[track]
@@ -278,7 +437,7 @@ func shuffle (playlist):
 
 func _on_A_finished(): #This  signals when the music has finished and autoshuffles
 	randomize() #disabled for debugging
-	print('music finished--music singleton') #code block works
+	print_debug('music finished--music singleton') #code block works
 	#shuffle()
 	#play(music_track)
 	#print (_n)
@@ -286,101 +445,99 @@ func _on_A_finished(): #This  signals when the music has finished and autoshuffl
 func play_sfx(list): #a separate bus channel for sfx using dictionary playlist
 	if sfx_on== true:
 		shuffle(list)
-		$C.stream = load(music_track)
-		$C.play()
+		
+		C.stream = load(music_track)
+		C.play()
 		sfx_streamer = str ('playing sfx: ',music_track.get_file())
 		yield(get_tree().create_timer(0.8), "timeout")
-		$C.stop()
+		C.stop()
 
-func play_track(_track): #for playing single sample tracks
+func play_track(_track : String): 
+	#for playing single sample tracks
+	#_track is a pointer to the music file path
 	if _track != null  and Music_streamer_2 != null :
 		if music_on == true:
 			#print (_track)# For debug purposes only
 
-			$D.set_stream ( load (_track)) #Children Scripts should not load the soundtracks
-			$D.play(0.0)
+			D.set_stream ( load (_track)) #Children Scripts should not load the soundtracks
+			D.play(0.0)
 			sfx_streamer  = str('playing sfx: ',_track.get_file())
 			yield(get_tree().create_timer(0.8), "timeout")
-			$D.stop()
+			D.stop()
 
-func sound(what): #Turns on/ off and saves it via a global script
-	#Globals.Music_on_settings = false
-	if what == 'off' or 'Off' or 'OFF': #Debug
-		music_on = false
-		sfx_on = false
-		_notification(NOTIFICATION_APP_PAUSED)
-		#print ('Turned off Music', Globals.Music_on_settings) #For Debug purposes only
-	if what == 'on' or 'On' or 'ON':
-		music_on = true
-		sfx_on = true
-
+# Depreciated Buggy Method
+#func sound(what : String): 
+#	#Turns on/ off and saves it via a global script
+#	#Globals.Music_on_settings = false
+#	if what == 'off' or 'Off' or 'OFF': #Debug
+#		#music_on = false
+#		#sfx_on = false
+#		_notification(NOTIFICATION_APP_PAUSED)
+#		
+#		
+#		
+#	if what == 'on' or 'On' or 'ON':
+#		#music_on = true
+#		#sfx_on = true
+#		_notification(NOTIFICATION_APP_RESUMED)
+#		
+		#Music_on_settings = 1
+		# Saves Users Preferred SOund Settings
 
 
 
 
 func _exit_tree(): 
 	#turn_off()
-	sound('off')
-
-
-
-func _on_Timer_timeout():
-	pass # Replace with function body.
-
-# Buggy for large Zip files
-# Needs more code to establish proper http get from github repo
-# might require admin login to github for users
-func download_and_uncompress_music() :
-
-	#Check if files are available locally
-#func _process(_delta):
-	"Downloads a Zip file from Github and unzips it locally"
-	# Works
-	# Written for Musics singleton optimization		
-	# Texting Server File Downloads
+	#sound('off')
+	Globals.MemoryManagement.queue_free_array(my_nodes)
 	
-	# Checks for music files in playlist one in Local Storage
-	var request_node = $HTTPRequest
+	# Causes game to crash if not finished uncompressing zip file
+	# Creates a Bug with Debugger Error Page
 	
-	for y in Music.playlist_one.values():
-		# checks local storage for files
-		if Globals.check_files("res://music", y) == false:
-		# Use Code load API for downloading Zip files
-		# Works
-		# Url was gotten from Github integration API
-			#Networking.url = "https://codeload.github.com/Sam2much96/online-hosting/legacy.zip/f79fd1aa94709b966dacea994a8eb5540be48bad"
-			Networking.url = "https://codeload.github.com/Sam2much96/online-hosting/legacy.zip/f79fd1aa94709b966dacea994a8eb5540be48bad"
-			return Networking._check_connection(Networking.url, request_node) # Part 1
-			
-			
+	# Note: This thread function is depreciated because it drops fps to 12
+	# It would be activated once the Unzipping algorith is optimized and fps >=60
+	
+	#thread.wait_to_finish()
 
-		if Globals.check_files("res://music", y) == true:
-			print ("File Check for music file: ", y," exists")
-	
-	# check if zip file is downloaded
-	if Globals.check_files("res://music", "res://music/online-hosting-main.zip"):
+
+func _thread_function():
+	# Depreciated thread function
+	# Note: This thread function is depreciated because it drops fps to 12
+	# It would be activated once the Unzipping algorith is optimized and fps >=60
+	"Logic Unzips Local zip files to ogg audio files"
+	if !Music_Available_Locally && Music_Zip_Available_Locally:
 		
-		# Unzips them
-		Globals.uncompress("res://music/online-hosting-main.zip")
+		
+		# SHould be done in a separate Thread not using te ready method
+		# Unzip Audio files recursively
+		Globals.uncompress("user://Music/music.zip", "user://Music/")
+		
+		Music_Available_Locally == true
 
 
-"Downloads Music files from Github"
+"Downloads Music files from AWS S3 Bucket"
 
 
-func _on_HTTPRequest_request_completed(result, response_code, headers, body):
+func _http_request_completed(result, response_code, headers, body):
 	print (" request done 1: ", result) #********for debug purposes only
 	print (" headers 1: ", headers)#*************for debug purposes only
-	print (" response code 1: ", response_code) #for debug purposes only
+	print (" response code 1: ", response_code)#*************for debug purposes only
 	
-	if not body.empty():
-		print (11111111111111)
-		var request_node = $HTTPRequest
-		#Buggy. Downloads a corrupt file
-		return Networking.download_file_(request_node, body, "res://music",".zip")
-		#RestHandler.request_pull_branch(zip_filepath, typeball_url, current_repo._repository.diskUsage)
+	
+	if response_code == HTTPClient.RESPONSE_OK :
+		if not body.empty():
+			print ("Saving Music File")
+			var request_node = $HTTPRequest
+			
+			Networking.download_file_(request_node, body, "user://Music/music",".zip")
+			
+			# Restarts the Logic Loop
+			_ready()
 	
 	if body.empty(): #returns an empty body
 		push_error("Result Unsuccessful")
 		#good_internet = false
 		#Networking.stop_check()
-
+	else: push_error(" ERROR : " + str(response_code)) #for debug purposes only
+	

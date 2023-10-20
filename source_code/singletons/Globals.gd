@@ -6,38 +6,35 @@
 # This is a auto-included singleton containing
 # information used by the Game 
 # Features
-# (1) Savings function
+# (1) Functions Class for Saving & Loading.
 # (2) A Call to find the current scene
-# (3) Both save and load functions
+# (3) 
 # (4) A video streaming function, which should originally have been a child of the video streamers, 
 #     but it runs faster on a singleton script and so, was called from here
 # (5) Store video files functions
 # (6) It loads scenes for faster switiching between
 # To Add
 # (1) A working zip and unzip function through GDUnzip repurposed as an editor plugin #('insert GDUNzip github address')
-# (2) ArrAnge code base, make it easier to read at a glance
+# (2) ArrAnge code base, make it easier to read at a glance (1/2)
 # (3) Use resource oader for video loading script
 # Bugs
 # (1) COnnect to GDUNZIP via editor script to zip and unzip 
-# (2) Lacks proper documentation
-# (3) Lacks Performance Optimization and Proper variable mnaming conventions
+# (2) Lacks proper documentation (fixed)
+# (3) Lacks Performance Optimization and Proper variable mnaming conventions (fixed)
 # (4) Causes a performance hog with process functions
-# (5) Causes a ram hog with loaded adn preloaded variables
+# (5) Causes a ram hog with loaded and preloaded variables
 # *************************************************
 
 extends Node
 
-#use variables to code ux +add a scene tree calculator
-var cinematics = preload ('res://resources/title animation/title..ogv') #I free memory once this is used
-#var Pilot_ep
 
-#var AMV 
+
 var pilot_ep 
 var VIDEO
 
-onready var form = load ('res://scenes/UI & misc/form/form.tscn')
+var cinematics = preload ('res://resources/title animation/title..ogv') #I free memory once this is used
 var title_screen = load( 'res://scenes/Title screen.tscn')
-#var shop = load('res://scenes/UI & misc/Shop.tscn')
+onready var form = load ('res://scenes/UI & misc/form/form.tscn')
 var controls = load ('res://scenes/UI & misc/Controls.tscn')
 
 "Comics  Book Module variables"
@@ -55,7 +52,9 @@ var next_scene = null
 onready var curr_scene : String = ""
 onready var os: String = OS.get_name()
 onready var kill_count : int = 0 #update to load from savefile
+
 var player : Array = []
+
 #var _p # Player placeholder
 var player_hitpoints : int
 var enemy = null
@@ -71,11 +70,15 @@ var video_stream #for the video streamers
 var spawnpoint : Vector2
 var spawn_x : int 
 var spawn_y : int 
-var current_level 
+var current_level : String
 
 
-var Music_on_settings
-export (String, 'analogue', 'direction') var direction_control = ''  #toggles btw analogue and d-pad
+# Music
+
+
+
+var _controller_type : Dictionary = {1:'modern', 2:'classic'}
+var direction_control  : String = _controller_type[1]  #toggles btw analogue and d-pad
 
 var uncompressed # Varible holds uncompressed zip files
 
@@ -84,9 +87,9 @@ var uncompressed # Varible holds uncompressed zip files
 var near_interractible_objects #which objects use this?
 
 'Scene Loading variables'
-var _q : PackedScene # Large Resouce Scene Placeholder
-var _r # Large Resource Placeholder Variable
-var _o #for polling resource loader
+var scene_resource : PackedScene # Large Resouce Scene Placeholder
+var _to_load : String  # Large Resource Placeholder Variable
+var _o : ResourceInteractiveLoader#for polling resource loader
 var err
 var a : int # Loader progress variable (a/b) 
 var b : int
@@ -98,7 +101,10 @@ onready var progress : float
 var address : String
 var mnemonic : String
 var player_name : String
-var algos : int #MicroAlgos 
+
+# Buggy
+onready var algos : int  #=  Wallet.Wallet.load_account_info(false, Wallet.token_write_path, Wallet.FileCheck3, Wallet.UserData).get("_wallet_algos")
+	#MicroAlgos 
 
 
 "Device Variables"
@@ -106,18 +112,29 @@ var user_data_dir : String =OS.get_user_data_dir()
 
 'Screen Size Resolution'
 var screenSize : Vector2
+
+# This Apps Global Screen Orientation
 enum { SCREEN_HORIZONTAL, SCREEN_VERTICAL} 
 
-var screenOrientation 
+# OS based Hardware Screen Orientation
+# Would most likely be 6 for Auto-Rotate Setting on Android
+#enum {
+#	SCREEN_ORIENTATION_LANDSCAPE, SCREEN_ORIENTATION_PORTRAIT , SCREEN_ORIENTATION_REVERSE_LANDSCAPE,
+#	SCREEN_ORIENTATION_REVERSE_PORTRAIT ,SCREEN_ORIENTATION_SENSOR_LANDSCAPE , SCREEN_ORIENTATION_SENSOR_PORTRAIT 
+#	SCREEN_ORIENTATION_SENSOR  
+#}
 
+var screenOrientation : int
 var viewport_size : Vector2
-
 var center_of_viewport : Vector2 
 
 "In Game FX"
 var blood_fx: PackedScene = load ('res://scenes/UI & misc/Blood_Splatter_FX.tscn') #only load this once gameplay is on (optimization)
 var despawn_fx: PackedScene = load ("res://scenes/UI & misc/DespawnFX.tscn")
 var bullet_fx : PackedScene
+
+"Node Pointer"
+var _smoke_fx_ : smoke_fx 
 
 'Temporary variants'
 var temp
@@ -131,15 +148,17 @@ var wallet_state  #wallet state global variabe
 var FileCheck1=File.new() # checks wallet mnemonic
 var FileDirectory=Directory.new() #deletes all theon reset
 
+"Ingame HUD"
+# Mobiles
+var _TouchScreenHUD : TouchScreenHUD
+
+"Compression/Uncompression"
+var unziped_file : PoolByteArray
+
 func _ready():
-	print('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
-	
-	# Resizes window the preselected sizes
-	
-	if os == "Android":
-		screenOrientation = SCREEN_VERTICAL
-	else: screenOrientation = SCREEN_HORIZONTAL 
-	print ("Screen orientation is: ", screenOrientation)
+	print_debug('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
+	print_debug("Despawn Fx:", despawn_fx)
+
 
 	player.append( get_tree().get_nodes_in_group('player') )#gets all player nodes in the scene
 	 #it shows deleted object once player is despawns.
@@ -147,171 +166,14 @@ func _ready():
 		player.clear()
 	
 	
-	
-	VisualServer.set_default_clear_color(ColorN("white")) #what does this do?
+	#Set White Background
+	VisualServer.set_default_clear_color(ColorN("white")) 
 
 
-func _process(_delta): #Turn process off if not in use (optimiztion) turn_off_processing()
-
-# Handles Screen Orientation
-	if screenOrientation == SCREEN_VERTICAL :
-
-		pass
-	elif screenOrientation == SCREEN_HORIZONTAL:
-
-		pass
-	else: return 1;
-
-	'Resource Loader FOr Large Scenes'
-
-	if _r is String && _r != "" && _q == null:
-		var time_max = 50000 #sets an estimate maximum time to load scene
-		var t = OS.get_ticks_msec()
-		
-		#scene_loader.load_interactive(_r) 
-		
-		_o= (scene_loader.load_interactive(_r)) #function returns a resourceInteractiveLoader
-
-		scene_loader.load_interactive(_r) #function returns a resourceInteractiveLoader
-		
-	
-		print (" Loader Debug Outer loop >>> Inner Loop")
-		while OS.get_ticks_msec() < (t + time_max) && _o != null: 
-
-			err = _o.poll()
-			#loading_resource = true
-			
-			print ("_q: ",_q," _r: ",_r," Error: ",str(err),"Loop Debug") #Debugger
-			
-			
-			
-			if err == ERR_FILE_EOF: # Finished Loading #Works
-				loading_resource = false
-				
-				_q = (_o.get_resource()) 
-				print (_q , "Resource Loaded")
-				change_scene_to( _q) # auto changes the scene
-				#turn_off_processing("off") #introduces bugs
-				break
-				#return _q
-			elif err == OK: #works
-				a = _o.get_stage()
-				b = _o.get_stage_count() 
-				progress = (b/a) 
-				print (a, "/",b,'/',"Progress: ", progress) #progress Debug?
-			else: # Error during loading
-				push_error("Problems loading Scene.  Debug Gloabls scene loader")
-				print (str(progress) + "% " + str (_r))
-				
-				break
-	if _r is String && _q != null: # 
-		return
-
-
-
-
-"""
-Really simple save file implementation. Just saving some variables to a dictionary
-"""
-
-#modify code to include current scene and player position. also enemy spawner postions and info
-# should take a parameter to save individual variables
-func save_game(): 
-	
-	print ("-------Saving Game -------")
-	
-	var save_game = File.new()
-	save_game.open("user://savegeme.save", File.WRITE)
-	var save_dict = {}
-	save_dict.player = player #saves the player node 
-	#save_dict.spawnpoint = spawnpoint
-	save_dict.spawn_x = spawn_x
-	save_dict.spawn_y =spawn_y
-	save_dict.current_level = current_level
-	save_dict.inventory = Inventory.list()
-	save_dict.quests = Quest.get_quest_list()
-	#my code
-	save_dict.os = os
-	save_dict.kill_count = kill_count
-	#save_dict.currency = Suds #should load from encrypted wallet.cfg
-	save_dict.prev_scene = prev_scene
-	save_dict.prev_scene_spawnpoint = prev_scene_spawnpoint
-	save_dict.player_hitpoints = player_hitpoints
-	save_dict.direction_control = direction_control
-	save_dict.Music_on_settings = Music_on_settings #add other variables to save
-	
-	save_dict.languague = Dialogs.language
-	#Comics Variables
-	#save_dict.comics_chapter
-	#save_dict.comics_page
-	
-	save_game.store_line(to_json(save_dict))
-	save_game.close()
-	print ("saved gameplay")
-
-"""
-If check_only is true it will only check for a valid save file and return true or false without
-restoring any data
-"""
-func load_game(check_only=false) -> bool:
-	
-	
-	print ("-------Loading Game -------")
-	
-	
-	var save_game = File.new()
-	
-	if not save_game.file_exists("user://savegeme.save"):
-		return false
-	
-	save_game.open("user://savegeme.save", File.READ)
-	
-	var save_dict = parse_json(save_game.get_line())
-	if typeof(save_dict) != TYPE_DICTIONARY:
-		return false
-	if not check_only:
-		_restore_data(save_dict)
-	
-	save_game.close()
-	return true
-
-"""
-Restores data from the JSON dictionary inside the save files
-"""
-func _restore_data(save_dict):
-	# JSON numbers are always parsed as floats. In this case we need to turn them into ints
-	for key in save_dict.quests:
-		save_dict.quests[key] = int(save_dict.quests[key])
-	Quest.quest_list = save_dict.quests
-	
-	# JSON numbers are always parsed as floats. In this case we need to turn them into ints
-	for key in save_dict.inventory:
-		save_dict.inventory[key] = int(save_dict.inventory[key])
-	Inventory.inventory = save_dict.inventory
-	
-	spawn_x = save_dict.spawn_x 
-	spawn_y = save_dict.spawn_y
-	current_level = save_dict.current_level
-	
-	player = save_dict.player
-	
-	os = save_dict.os 
-	kill_count = save_dict.kill_count 
-	#Suds = save_dict.currency #should load from encrypted wallet.cfg. Check NFT parser 
-	player_hitpoints = save_dict.player_hitpoints
-	prev_scene =save_dict.prev_scene 
-	prev_scene_spawnpoint = save_dict.prev_scene_spawnpoint 
-	
-	direction_control = save_dict.direction_control
-	
-	Dialogs.language = save_dict.languague
-	
-	######################################################
-	print ("Loaded gameplay")
 
 func update_curr_scene() -> void:
 	curr_scene= get_tree().get_current_scene().get_name() 
-	print ("current scene iss: ", curr_scene)
+	print_debug ("current scene is: ", curr_scene)
 
 
 func _go_to_title():
@@ -328,7 +190,7 @@ func _go_to_cinematics():
 	return get_tree().change_scene('res://scenes/cinematics/cinematics.tscn') 
 
 
-
+# Deprecoated
 func resize_window(x,y): #resizes the game window
 	screenSize = Vector2(x,y);
 	return OS.set_window_size(Vector2(x,y));
@@ -340,19 +202,279 @@ func _ram_convert(bytes) :
 		return _mb
 
 
+class Functions extends Reference:
 
-func change_scene_to(scene): #Loads scenes faster?
-	if scene is PackedScene: 
-		if scene != null: return get_tree().change_scene_to(scene)  
-	elif scene is String: 
-		if scene != "": 
-			loading_resource = true
-			_r = scene # triggers an auto scene loader in the processes 
-			return _r
+	static func change_scene_to(scene : PackedScene, tree : SceneTree): #Loads scenes faster?
+		
+		#if scene is PackedScene: 
+			if scene != null: 
+				return tree.change_scene_to(scene)  
 
-	else: return (print (typeof(scene) ,"is not supported in this function"))
-	#if scene is 
+			else: return (print (typeof(scene) ,"is not supported in this function"))
 	
+	'Resource Loader FOr Large Scenes'
+	static func LoadLargeScene(
+		_to_load : String, 
+		scene_resource : PackedScene, 
+		_o : ResourceInteractiveLoader, 
+		scene_loader : ResourceLoader, 
+		loading_resource : bool, 
+		a: int , 
+		b : int, 
+		progress: float
+		) -> PackedScene:
+		
+		if _to_load != "" && scene_resource == null:
+			var time_max = 50000 #sets an estimate maximum time to load scene
+			var t = OS.get_ticks_msec()
+			
+			#scene_loader.load_interactive(_r) 
+			
+			_o= (scene_loader.load_interactive(_to_load)) #function returns a resourceInteractiveLoader
+
+			scene_loader.load_interactive(_to_load) #function returns a resourceInteractiveLoader
+			
+		
+			print (" Loader Debug Outer loop >>> Inner Loop")
+			while OS.get_ticks_msec() < (t + time_max) && _o != null: 
+
+				var err = _o.poll()
+				#loading_resource = true
+				
+				print ("_q: ",scene_resource," _r: ",_to_load," Error: ",str(err),"Loop Debug") #Debugger
+				
+				
+				
+				if err == ERR_FILE_EOF: # Finished Loading #Works
+					loading_resource = false
+					
+					scene_resource = (_o.get_resource()) 
+					print (scene_resource , "Resource Loaded")
+					#Functions.change_scene_to(scene_resource, get_tree()) # auto changes the scene
+					#turn_off_processing("off") #introduces bugs
+					
+					break
+					#return _q
+				elif err == OK: #works
+					a = _o.get_stage()
+					b = _o.get_stage_count() 
+					progress = (b/a) 
+					print (a, "/",b,'/',"Progress: ", progress) #progress Debug?
+				else: # Error during loading
+					push_error("Problems loading Scene.  Debug Gloabls scene loader")
+					print (str(progress) + "% " + str (_to_load))
+					
+					break
+		if scene_resource != null: # 
+			return scene_resource
+
+		return scene_resource
+
+
+
+	"""
+	Really simple save file implementation. Just saving some variables to a dictionary
+	"""
+	# Can Save individual parameters by setting other parameters to Null
+	#
+	#
+	static func save_game(
+		player: Array, 
+		player_hitpoints : int, 
+		spawn_x : int, 
+		spawn_y : int, 
+		current_level : String, 
+		os : String, 
+		kill_count : int, 
+		prev_scene : String, 
+		prev_scene_spawnpoint,
+		direction_control : String
+		)-> bool: 
+		
+		print ("-------Saving Game -------")
+		var save_dict : Dictionary = {}
+		var save_game = File.new()
+		save_game.open("user://savegeme.save", File.WRITE_READ)
+		if !player.empty():
+			save_dict.player = player #saves the player node 
+		if spawn_x != 0:
+			save_dict.spawn_x = spawn_x
+		if spawn_y != 0:
+			save_dict.spawn_y =spawn_y
+		if not current_level.empty() :
+			save_dict.current_level = current_level
+		
+		# Inventory List is saved individually
+		if !Inventory.list().empty():
+			save_dict.inventory = Inventory.list()
+		if !Quest.get_quest_list().empty():
+			save_dict.quests = Quest.get_quest_list()
+		if not os.empty():
+			save_dict.os = os
+		if kill_count != 0 :
+			save_dict.kill_count = kill_count
+		#save_dict.currency = Suds #should load from encrypted wallet.cfg
+		
+		# For preserving scene changing information
+		if not prev_scene.empty() :
+			save_dict.prev_scene = prev_scene
+			
+		if prev_scene_spawnpoint != null: # Depreciate in favor of a singular spawpoint variable
+			save_dict.prev_scene_spawnpoint = prev_scene_spawnpoint
+		
+		if player_hitpoints != 0:
+			save_dict.player_hitpoints = player_hitpoints
+		if not direction_control.empty():
+			save_dict.direction_control = direction_control
+		
+		#Music on settings is a boolean converted to int
+		if Music != null : 
+			save_dict.music = int(Music.music_on) #add other variables to save
+		
+		# Language is saved independently
+		if not Dialogs.language.empty():
+			save_dict.languague = Dialogs.language
+		
+		save_game.store_line(to_json(save_dict))
+		save_game.close()
+		print ("saved gameplay")
+		return true
+
+	"""
+	If check_only is true it will only check for a valid save file and return true or false without
+	restoring any data
+	"""
+	static func load_game(check_only : bool, GlobalScript) -> bool:
+		check_only = false
+		print ("-------Loading Game -------")
+		var save_game = File.new()
+		
+		
+		if not save_game.file_exists("user://savegeme.save"):
+			return false
+		save_game.open("user://savegeme.save", File.READ)
+		var save_dict = parse_json(save_game.get_line())
+		if typeof(save_dict) != TYPE_DICTIONARY:
+			return false
+		if not check_only:
+			_restore_data(save_dict, GlobalScript)
+		
+		save_game.close()
+		return true
+
+	"""
+	Restores data from the JSON dictionary inside the save files
+	"""
+	static func _restore_data(save_dict : Dictionary, GlobalScript ):
+		
+		"Quest Loader"
+		
+		if save_dict.has('quests'):
+			# JSON numbers are always parsed as floats. In this case we need to turn them into ints
+			for key in save_dict.quests:
+				save_dict.quests[key] = int(save_dict.quests[key])
+			Quest.quest_list = save_dict.quests
+		
+		"Inventory Loader"
+		
+		if save_dict.has('inventory'):
+			# JSON numbers are always parsed as floats. In this case we need to turn them into ints
+			for key in save_dict.inventory:
+				save_dict.inventory[key] = int(save_dict.inventory[key])
+			Inventory.inventory = save_dict.inventory
+		
+		'OS loader'
+		
+		if save_dict.has('os'):
+			GlobalScript.os = save_dict.os
+		
+		'Player'
+		if save_dict.has('player'):
+			GlobalScript.player = save_dict.player
+			
+		if save_dict.has("kill_count"):
+			GlobalScript.kill_count = save_dict.kill_count  
+			
+		
+		if save_dict.has('player_hitpoints'):
+			GlobalScript.player_hitpoints = int(save_dict.player_hitpoints)
+		
+		'Player Object Spawn Position'
+		if save_dict.has('spawn_x'):
+			GlobalScript.spawn_x = save_dict.spawn_x 
+			GlobalScript.spawn_y = save_dict.spawn_y
+		
+		'Saves Player Spawn Point'
+		if save_dict.has('current_level'):
+			GlobalScript.current_level = save_dict.current_level
+		
+		 
+		"Scene Loader"
+		if save_dict.has('prev_scene'):
+			# Presumably a bugfix for scene changing
+			GlobalScript.prev_scene =save_dict.prev_scene 
+			GlobalScript.prev_scene_spawnpoint = save_dict.prev_scene_spawnpoint 
+		
+		'Control Settings'
+		# Direction controller
+		if save_dict.has('direction_control') && str(save_dict.direction_control) != 'Null':
+			GlobalScript.direction_control = str(save_dict.direction_control)
+		
+		if save_dict.has("languague"):
+			Dialogs.language = save_dict.languague
+
+
+		if save_dict.has("music"):
+			print_debug(bool(save_dict.music)) # For Debug Purposes Only
+			Music.music_on = bool(save_dict.music)
+
+		
+		######################################################
+		print_debug("Loaded gameplay")
+
+	# Loads Singular User Data from local storage
+	# Version 2 of Load_game function
+	# Should allow for loading individual variables from Local
+	static func load_user_data( data: String ):
+		print ("-------Fast Loading User Data -------")
+		var save_game = File.new()
+		
+		if not save_game.file_exists("user://savegeme.save"):
+			return false
+		save_game.open("user://savegeme.save", File.READ)
+		var save_dict = parse_json(save_game.get_line())
+		if typeof(save_dict) != TYPE_DICTIONARY:
+			return false
+
+		if save_dict.has(data):
+			if data == 'languague':
+				Dialogs.language = save_dict.languague
+		#	if data == "Music_on_settings":
+		#		Music.Music_on_settings = save_dict.Music_on_settings
+		#		Music._ready()
+		pass
+
+	
+	static func scroll(direction : bool , visible : bool, _scroller : ScrollContainer)-> void:
+		# DOCS : https://godotengine.org/qa/92054/how-programmatically-scroll-horizontal-list-texturerects
+		# using a boolean because it allows for only two options in it's data structure
+		# True is up, false is down
+		# Max is 449
+		var scroll_constant : int = 4
+		# Requires Delta Parameter for smooth scrolling 
+		# but running this function as a static function means
+		# it scrolls choppily
+		
+		
+		if visible && direction:
+			_scroller.scroll_vertical += 20 * scroll_constant  #* delta
+		elif visible && !direction:
+			_scroller.scroll_vertical -= 20 * scroll_constant  #* delta
+
+			#print (scroller.scroll_vertical )#= scroll_constant  * delta
+
+
+
 func turn_off_processing(toggle): # to improve game speed and turn off idle processsing
 	if toggle is String:
 		if toggle == "on":
@@ -378,9 +500,7 @@ func restaVectores(v1, v2): #vector substraction
 func sumaVectores(v1, v2): #vector sum
 	return Vector2(v1.x + v2.x, v1.y + v2.y)
 
-#prints all orphaned nodes in project
-func memory_leak_management():
-	return print_stray_nodes() 
+
 
 "Memory Leak/ Orphaned Nodes Management System"
 class MemoryManagement extends Reference :
@@ -397,7 +517,97 @@ class MemoryManagement extends Reference :
 
 	static func queue_free_array(nodes: Array) -> void:
 		for i in nodes:
-			i.queue_free()
+			if i != null:
+				i.queue_free()
+
+	#prints all orphaned nodes in project
+	static func memory_leak_management(from : Node):
+		return from.print_stray_nodes() 
+
+"Screen Class "
+class Screen extends Reference :
+	var screenOrientation : int
+	var screenOrientationSettings : int = OS.get_screen_orientation()
+	# Should Get Screen Size, Screen Scale and All screen properties
+	# Should Debug this data to the Debug Singleton
+	# Should only be called once
+	static func debug_screen_properties():
+		print ('OS Screen Orientation: ', OS.get_screen_orientation())
+		print('Global Screen Orientation: ',Globals.screenOrientation)
+		# match this variable to Global Screen Orientation
+		print ('Screen Size 1: ',OS.get_screen_size(-1)) #yes. This variable changes when screen rotates
+		print ('Screen Scale: ',OS.get_screen_scale())
+		pass
+
+
+		"Handles Screen Orientation"
+	static func Orientation(GlobalScript):
+		
+		
+		'Algorithm for Calculating Screen Orientation'
+		var screen : Vector2 =OS.get_screen_size(-1)
+		
+		
+		# screen orientation enum copied from Globals main
+		# Write an algorithm that compares the x and y values for OS.get_screen_size(-1) and the OS.get_screen_orientation() parameters
+		# to determine if Screen is Horizontal or vertical. Use the Result to set Screen Orientation
+		# in a process function
+		
+		
+		# Resizes window the preselected sizes
+		# Sets Default Screen Orientation for Android
+		# Disabled
+		#if GlobalScript.os == "Android":
+		#	screenOrientation = GlobalScript.SCREEN_VERTICAL
+		#else: screenOrientation = GlobalScript.SCREEN_HORIZONTAL 
+		
+		
+		
+		# Algorithmic calculation using screen orientation
+		# And screen size to determine if the screen 
+		# is horizontal or vertical
+		
+		if screen.x > screen.y:
+			GlobalScript.screenOrientation = GlobalScript.SCREEN_HORIZONTAL
+		if screen.x < screen.y:
+			GlobalScript.screenOrientation =  GlobalScript.SCREEN_VERTICAL
+
+		
+		print_debug("Screen orientation is: ", GlobalScript.screenOrientation, "/",'screen size :',screen)
+
+
+		
+		#screenOrientation = OS.get_screen_orientation() # Should return a 6 for AutoRotate on Ndroid # Should ideally be a process function
+		if GlobalScript.screenOrientation == GlobalScript.SCREEN_VERTICAL :
+
+			pass
+		elif GlobalScript.screenOrientation == GlobalScript.SCREEN_HORIZONTAL:
+
+			pass
+		else: return 1;
+		
+		
+	static func calculateViewportSize( t : CanvasItem ) -> Vector2 :
+		return t.get_viewport_rect().size
+
+	
+	static func display_calculations( display, GlobalScript):
+		'Screen Display Calculations'
+		if display is CanvasItem:
+			# Get Viewport Size, Make it Globally accessible
+			GlobalScript.viewport_size = calculateViewportSize(display)
+			#Globals.center_of_viewport = Globals.calc_center_of_rectangle(Globals.viewport_size)
+			
+		if display is Viewport:
+			GlobalScript.viewport_size = display.size
+		
+		
+		GlobalScript.center_of_viewport = GlobalScript.calc_center_of_rectangle(GlobalScript.viewport_size)
+		# Prints out the Current Viewport Size
+		print_debug("Viewport Size: ", GlobalScript.viewport_size ) # for debug purposes only
+		print_debug ("Center of Viewprt: ", GlobalScript.center_of_viewport ) # for debug purposes onlys
+		
+		
 
 
 'Delete Files'
@@ -460,43 +670,54 @@ func check_files(path_to_dir: String, path_to_file : String)-> bool:
 
 "Compression and Uncompression Algorithm"
 # Documentation: https://git.sr.ht/~jelle/gdunzip
-# Returns a pool byte array
+# Reads Data from a Zip File
 # Has a problem with saving Text files
-func uncompress(FILE: String) : #-> PoolByteArray:
+# Has a problem with Large files (Decompression is really slow)
+func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PoolByteArray:
 	# Instance the gdunzip script
-	var gdunzip = load('res://addons/gdunzip/gdunzip.gd').new()
+	#var gdunzip = load('res://addons/gdunzip/gdunzip.gd').new()
 	
 	
-	var loaded = gdunzip.load(FILE)
+	var loaded = Gdunzip.load(FILE)
 	
+	# Used 
 	
 	if loaded:
 		
-		print ("Zip File Data : ",gdunzip.files)
+		#print ("Zip File Data : ",Gdunzip.files) # for debug purposes only
 		
-		print ("Files: ",gdunzip.files.keys().size())
+		print ("Files: ",Gdunzip.files.keys().size()) # For Debug purposes only
 		
-		print ("First File: ",gdunzip.files.keys().front())
-		
-
+		print ("First File: ",Gdunzip.files.keys().front()) # For Debug purposes only 
 		
 
+
+		
 		# Returns an Uncompressed PoolByteArray
 		# If string files contains excess characters, it would return an invalid utf-8 string
 		# Only parses Zip files and decompresses the First Value 
 		
+		"Debugs Zip Files"
 		
-		
-		for f in gdunzip.files.values():
+		for f in Gdunzip.files.values():
 			print('File name: ' + f['file_name'])
 
 			
-
-			#Uncompresses files locally
 			
+			
+			var concat : String = Uncompressd_rooot_dir+f['file_name']
+			
+			"Checks if Zipped File is present at file path" 
+			if not FileCheck1.file_exists(Uncompressd_rooot_dir + f['file_name']):
+				# save the file's uncompressed Pool Byte Array
+				unziped_file = Gdunzip.uncompress(f["file_name"])
+
+				#Uncompresses files locally
+				print("saving", f["file_name"], "Locally", unziped_file.size(), "to: ", concat)
 			#for t in gdunzip.files.keys():
-			#print ("Type of " + f['file_name'] + " ",typeof(gdunzip.get_compressed(t))) # for debug purposes only
-			Networking.save_file_(gdunzip.get_compressed(f['file_name']), "res://"+f['file_name'], int(f['uncompressed_size'] ))
+			#	print ("Type of " + f['file_name'] + " ",typeof(gdunzip.get_compressed(t))) # for debug purposes only
+			
+				Networking.save_file_(unziped_file, concat, int(f['uncompressed_size']))
 
 
 			# "compression_method" will be either -1 for uncompressed data, or
@@ -510,25 +731,6 @@ func uncompress(FILE: String) : #-> PoolByteArray:
 
 
 
-"""
-Quickly sets a videoplayer to Play music and videos
-"""
-# Would break if passed to anything other than videosteam player
-func _Video_Stream(node : VideoPlayer, stream , _sound, viewport):
-	if stream and node != null or '':
-		print('Playing Video Stream:/',stream)
-		#node._set_size((viewport))
-		node.set_stream(stream) 
-		node.play() 
-		print ('Video player is playing: ',node.is_playing())
-		
-		# Plays the sound through the music singleton
-		#get_tree().get_root().get_node("/root/Music").play(sound)
-		return
-	else:
-		push_error('Video player uses the video player node, and music singleton')
-		push_warning(str(node) +"/" +str(stream) + "/"+ str (_sound))
-
 
 
 # Calculates the center of a Rectangle
@@ -540,15 +742,12 @@ func randomize_enemy_type() -> String:
 	randomize()
 	return ['Easy', "Intermediate", "Hard"][randi()%3]
 
-static func calculateViewportSize( t : CanvasItem ) -> Vector2 :
-	return t.get_viewport_rect().size
-
 
 
 func _exit_tree():
 	
 	"Prints All Orphaned Nodes"
 	# For proper Memory Leak Management
-	memory_leak_management()
+	MemoryManagement.memory_leak_management(self)
 	#Globals.queue_free_children(Util)
 	#MemoryManagement.free_object(Util)

@@ -16,6 +16,9 @@ extends Popup
 """
 NOTIFICATION GENERIC BAR
 """
+
+class_name hint
+
 #add signals
 
 export (bool)var condition 

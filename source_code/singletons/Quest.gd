@@ -12,6 +12,8 @@
 
 extends Node
 
+class_name quest
+
 """
 Minimal quest system implementation.
 
@@ -24,7 +26,7 @@ enum STATUS { NONEXISTENT, STARTED, COMPLETE, FAILED }
 # Emitted whenever a quests changes. It'll pass the quest name and new status
 signal quest_changed(quest_name, status)
 
-var quest_list = {}
+var quest_list : Dictionary = {}
 
 # Get the status of a quest. If it's not found it returns STATUS.NONEXISTENT
 func get_status(quest_name:String) -> int:
@@ -88,10 +90,3 @@ func remove_quest(quest_name:String) -> bool:
 	pass
 	
 
-# Attemplts to save thye quest list  and the quest state to your Google Play Profile
-func playstore_connects() -> void: # currently implemented for Android
-	if Globals.os == "Android" :
-		pass
-	else: return 
-	
-	pass

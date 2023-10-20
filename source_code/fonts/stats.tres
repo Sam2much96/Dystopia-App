@@ -4,7 +4,6 @@
 font_path = "res://fonts/Candy Demo.otf"
 
 [resource]
-size = 70
-outline_color = Color( 0, 0, 0, 1 )
-extra_spacing_top = -3
+size = 45
+extra_spacing_space = 2
 font_data = SubResource( 1 )

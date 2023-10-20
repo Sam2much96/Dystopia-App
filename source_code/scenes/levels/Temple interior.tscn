@@ -6,7 +6,7 @@
 [ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=5]
 [ext_resource path="res://resources/FX/flame_fx_webp.webp" type="Texture" id=6]
-[ext_resource path="res://scenes/UI & misc/UI.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/UI & misc/Quest.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/levels/Temple interior.gd" type="Script" id=9]
 
@@ -129,11 +129,6 @@ shape = SubResource( 3 )
 position = Vector2( 130.26, -134.977 )
 facing = "up"
 
-[node name="lvl_camera" type="Camera2D" parent="."]
-position = Vector2( 1.10724, 6.72946 )
-current = true
-zoom = Vector2( 1.6, 1.6 )
-
 [node name="Polygon2D" type="Polygon2D" parent="."]
 position = Vector2( -69.8626, 278.127 )
 scale = Vector2( 0.974315, 0.532109 )
@@ -141,3 +136,7 @@ polygon = PoolVector2Array( -859.39, 362.047, -856.453, 670.362, 855.425, 676.23
 vertex_colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 0.831373, 0, 0, 0, 0.839216, 0, 0, 0, 0 )
 
 [node name="UI" parent="." instance=ExtResource( 7 )]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 131.851, 203.77 )
+current = true

@@ -1,0 +1,44 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/UI & misc/Stats.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/UI & misc/StatusText.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/UI & misc/Healthbar.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/UI & misc/ingame_menu.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/UI & misc/Comics.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/UI & misc/TouchScreen HUD.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/UI & misc/GameHUD.gd" type="Script" id=9]
+
+[node name="GameHUD" type="CanvasLayer"]
+process_priority = 1
+script = ExtResource( 9 )
+
+[node name="Dialog_box" parent="." instance=ExtResource( 1 )]
+margin_left = 90.0
+margin_top = -165.0
+margin_right = -21.0
+margin_bottom = 9.0
+
+[node name="Stats" parent="." instance=ExtResource( 2 )]
+
+[node name="Status_text" parent="." instance=ExtResource( 3 )]
+visible = false
+margin_top = 151.0
+margin_bottom = 265.0
+
+[node name="Healthbar" parent="." instance=ExtResource( 4 )]
+margin_right = 14.0
+
+[node name="Menu " parent="." instance=ExtResource( 6 )]
+margin_left = 54.6968
+margin_top = 65.2761
+margin_right = 1236.7
+margin_bottom = 664.276
+
+[node name="Comics" parent="." instance=ExtResource( 7 )]
+margin_left = -20.0
+margin_top = 44.0
+margin_right = -20.0
+margin_bottom = 44.0
+
+[node name="TouchInterface" parent="." instance=ExtResource( 8 )]

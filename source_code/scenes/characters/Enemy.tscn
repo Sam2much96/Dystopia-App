@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://scenes/characters/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://resources/FX/pj.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://scenes/items/Item.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/items/coins.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/items/extra life.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/levels/VisibilityOptimizer.gd" type="Script" id=7]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 35.8589
@@ -1221,7 +1222,7 @@ shape = SubResource( 18 )
 
 [node name="item_spawner" parent="." instance=ExtResource( 3 )]
 spawn_1 = ExtResource( 4 )
-spawn_2 = ExtResource( 5 )
+spawn_2 = ExtResource( 4 )
 spawn_3 = ExtResource( 6 )
 item_scene = ExtResource( 5 )
 item_type = "Bandit Head"
@@ -1252,6 +1253,10 @@ autostart = true
 position = Vector2( 11.7851, -90.9139 )
 rotation = 0.74002
 scale = Vector2( 44.2683, 43.0897 )
+script = ExtResource( 7 )
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+avoidance_enabled = true
 
 [connection signal="area_entered" from="hurtbox" to="." method="_on_hurtbox_area_entered" flags=3]
 [connection signal="area_exited" from="hurtbox" to="." method="_on_hurtbox_area_exited"]

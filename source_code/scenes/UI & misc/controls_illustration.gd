@@ -11,6 +11,9 @@
 
 extends TextureRect
 
+
+class_name ControlIllustrations
+
 var mobile_texture = load('res://resources/misc/Controls_illustration_touch_controls_webp.webp')
 var pc_texture = load('res://resources/misc/Controls_illustration_pad_&_keyboard_webp.webp')
 

@@ -7,9 +7,10 @@
 #(2) I want to implement a Loading screen while this level loads. This Node lays the groundwork for that
 
  # Bugs:
-# (1) Frame rate Drop from 60 fps to 12 fps. (fixed)
-# (2) Fix loading bug by busing tileMaps for grphics and calculations referemce node "TileMap1"
-# (3) TileMaps is broken. Requires More Research
+# (1) Frame rate Drop from 60 fps to 5 fps. because of too much Collision objects in the scene (1/3)
+#		-Fix : Implement Tilemap, autotiles and Procedurally Generated Dunes (Done)
+# (2) Fix loading bug by busing tileMaps for grphics and calculations referemce node "TileMap1"  
+# (3) TileMaps is broken. Requires More Research (Fixed)
 # *************************************************
 
 extends Control
@@ -47,16 +48,16 @@ extends Control
 "Objects to Add"
 # (1) Dungeons
 # (2) Projectile sEnemy Type
-# (3) Forest Environment
+# (3) Forest Environment (Done)
 # (4) Forest Maze
 # (5) Forest Exit
-# (6) Redesign scene with tilemaps to reduce scene object count
+# (6) Redesign scene with tilemaps to reduce scene object count (Done)
 
 "Bugs in Level"
-# (1) Too many particles emitting at once, creates a performance hog
+# (1) Too many particles emitting at once, creates a performance hog (2/3)
 # (2) Too many AI processes calculating, produced a performance hog
-# (3) Scene loading scene is long. (fixed)
-# (4) Deleting the world boundary creates crazy new bugs in enemy AI
-# (5) Scene uses to much RAM (Redesign desert dunes to use Line 2d instead of textures)
+# (3) Scene loading scene is long. (2/3)
+# (4) Collision Shapes Coliliding Introduces New Bugs
+# (5) Scene uses to much RAM 
 
 

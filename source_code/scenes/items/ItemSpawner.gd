@@ -17,6 +17,8 @@
 
 extends Position2D
 
+class_name itemSpawner
+
 """
 Add this to any node. spawn instances an Item.tscn node with the defined values
 """

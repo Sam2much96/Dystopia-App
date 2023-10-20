@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Comics.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Comics/chapter 1/Cover 1.webp" type="Texture" id=2]
@@ -8,12 +8,11 @@
 [ext_resource path="res://scenes/Comics/chapter 4/Cover 1.webp" type="Texture" id=6]
 [ext_resource path="res://resources/Buttons/comics.png" type="Texture" id=7]
 [ext_resource path="res://resources/misc/rotate_screen_webp.webp" type="Texture" id=8]
-[ext_resource path="res://fonts/adamwarrenpro-bold.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/UI & misc/Like button.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/Comics/chapter 5/chap 1 cover page.webp" type="Texture" id=12]
 [ext_resource path="res://scenes/Comics/chapter 7/Cover 1.webp" type="Texture" id=13]
-[ext_resource path="res://scenes/UI & misc/comics-reader-extension.gd" type="Script" id=14]
+[ext_resource path="res://scenes/UI & misc/comics__2.gd" type="Script" id=14]
 [ext_resource path="res://resources/misc/UI hover buttons.webp" type="Texture" id=15]
 [ext_resource path="res://fonts/scroll_bar_theme.tres" type="Theme" id=16]
 [ext_resource path="res://fonts/Word_bubble_dialogue.tres" type="DynamicFont" id=17]
@@ -21,12 +20,6 @@
 [ext_resource path="res://scenes/Comics/chapter 2/cover 2_pressed.webp" type="Texture" id=19]
 [ext_resource path="res://scenes/Comics/chapter 3/Chapter 3 cover_pressed.webp" type="Texture" id=20]
 [ext_resource path="res://scenes/Comics/chapter 4/Cover 1 pressed.webp" type="Texture" id=21]
-
-[sub_resource type="DynamicFont" id=4]
-size = 64
-outline_size = 6
-outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 9 )
 
 [sub_resource type="GDScript" id=5]
 script/source = "extends Popup
@@ -150,12 +143,11 @@ position = Vector2( 8.65696, 119.029 )
 scale = Vector2( 0.516441, 0.516441 )
 normal = ExtResource( 8 )
 
-[node name="Back_button" type="Button" parent="."]
-margin_left = 808.378
-margin_top = 11.3137
-margin_right = 991.378
-margin_bottom = 95.3137
-custom_fonts/font = SubResource( 4 )
+[node name="back" type="Button" parent="."]
+margin_left = 822.273
+margin_top = 13.5227
+margin_right = 948.273
+margin_bottom = 52.5227
 text = "back"
 flat = true
 
@@ -172,59 +164,61 @@ enabled_focus_mode = 0
 
 [node name="Hint" type="Popup" parent="."]
 visible = true
-margin_top = -354.897
-margin_right = 40.0
-margin_bottom = -314.897
+margin_left = -85.5263
+margin_top = -299.661
+margin_right = -45.5263
+margin_bottom = -259.661
 script = SubResource( 5 )
 
 [node name="ColorRect" type="ColorRect" parent="Hint"]
 margin_left = 100.0
 margin_top = 584.0
-margin_right = 1102.0
-margin_bottom = 679.0
+margin_right = 960.0
+margin_bottom = 823.0
 
 [node name="Label" type="Label" parent="Hint"]
-margin_left = 196.657
-margin_top = 617.029
-margin_right = 1490.66
-margin_bottom = 666.029
-rect_scale = Vector2( 0.63048, 0.63048 )
+margin_left = 96.1114
+margin_top = 610.014
+margin_right = 1762.11
+margin_bottom = 796.014
+rect_scale = Vector2( 0.63, 0.63 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 17 )
-text = "Double Tap to Zoom in, Swipe left and right to change pages"
+text = "Double Tap to Zoom in, 
+Swipe Top & Bottoms Screen
+to Change pages"
 
 [node name="Hint2" type="Popup" parent="."]
 visible = true
-margin_left = 53.9391
-margin_top = 586.04
-margin_right = 93.9391
-margin_bottom = 626.04
+margin_left = -115.579
+margin_top = 1224.75
+margin_right = -75.5789
+margin_bottom = 1264.75
 script = SubResource( 5 )
 
 [node name="ColorRect" type="ColorRect" parent="Hint2"]
-margin_left = 100.0
-margin_top = 584.0
-margin_right = 1102.0
-margin_bottom = 679.0
+margin_left = 128.0
+margin_top = -25.0
+margin_right = 1023.0
+margin_bottom = 170.0
 
 [node name="Label" type="Label" parent="Hint2"]
-margin_left = 196.657
-margin_top = 617.029
-margin_right = 1490.66
-margin_bottom = 666.029
+margin_left = 178.415
+margin_top = 16.8495
+margin_right = 1524.41
+margin_bottom = 76.8495
 rect_scale = Vector2( 0.63048, 0.63048 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 17 )
-text = "ADvertising placeholder ADvertising placeholder"
+text = "Swipe TOP & BOTTOM SCREENS
+ TO CHANGE PAGES"
 
-[connection signal="freed_comics" from="Comics" to="Comics/ScrollContainer/GridContainer" method="_on_Comics_freed_comics"]
-[connection signal="loaded_comics" from="Comics" to="Comics/ScrollContainer/GridContainer" method="_on_Comics_loaded_comics"]
-[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_1" to="Comics" method="_on_chap_1_pressed"]
-[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_2" to="Comics" method="_on_chap_2_pressed"]
-[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_3" to="Comics" method="_on_chap_3_pressed"]
-[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_4" to="Comics" method="_on_chap_4_pressed"]
-[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_5" to="Comics" method="_on_chap_5_pressed"]
-[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_6" to="Comics" method="_on_chap_6_pressed"]
-[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_7" to="Comics" method="_on_chap_7_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_1" to="Comics/ScrollContainer/GridContainer" method="_on_chap_1_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_2" to="Comics/ScrollContainer/GridContainer" method="_on_chap_2_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_3" to="Comics/ScrollContainer/GridContainer" method="_on_chap_3_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_4" to="Comics/ScrollContainer/GridContainer" method="_on_chap_4_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_5" to="Comics/ScrollContainer/GridContainer" method="_on_chap_5_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_6" to="Comics/ScrollContainer/GridContainer" method="_on_chap_6_pressed"]
+[connection signal="pressed" from="Comics/ScrollContainer/GridContainer/chap_7" to="Comics/ScrollContainer/GridContainer" method="_on_chap_7_pressed"]
 [connection signal="pressed" from="Rotate" to="Comics" method="_on_Rotate_pressed"]
-[connection signal="pressed" from="Back_button" to="Comics/ScrollContainer/GridContainer" method="_on_Back_button_pressed"]
+[connection signal="pressed" from="back" to="Comics/ScrollContainer/GridContainer" method="_on_Back_button_pressed"]

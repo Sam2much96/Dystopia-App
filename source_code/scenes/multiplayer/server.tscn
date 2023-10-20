@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/levels/Testing Scene 2.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/multiplayer/ws_webrtc_server.gd" type="Script" id=3]
+
+[node name="world" type="Node" groups=["online_world"]]
+script = ExtResource( 3 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Player" type="Node" parent="Camera2D"]
+
+[node name="Enemies" type="Node" parent="Camera2D"]
+
+[node name="Node2D" parent="Camera2D" instance=ExtResource( 2 )]
+
+[node name="Server" type="Node" parent="."]

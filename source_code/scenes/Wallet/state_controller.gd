@@ -33,8 +33,8 @@ onready var transaction_UI_address_lineEdit = get_parent().get_node("CanvasLayer
 onready var transaction_UI_amount_lineEdit = get_parent().get_node("CanvasLayer/Transaction_UI/LineEdit2")
 onready var FundingSuccessUI = get_parent().get_node("CanvasLayer/FundingSuccess")
 onready var Funding_Success_Close_Button = get_parent().get_node("CanvasLayer/FundingSuccess/Button")
-onready var fund_account_Button = get_parent().get_node("CanvasLayer/Dashboard_UI/VBoxContainer/Button")
-onready var make_payment_state_controller_button = get_parent().get_node("CanvasLayer/Dashboard_UI/Button2")
+onready var fund_account_Button = get_parent().get_node("CanvasLayer/Dashboard_UI/Panel/TabContainer/Dashboard/Button")
+onready var make_payment_state_controller_button = get_parent().get_node("CanvasLayer/Dashboard_UI/Panel/TabContainer/Dashboard/Button2")
 onready var smartcontract_UI_Address = get_parent().get_node("CanvasLayer/SmartContract_UI/VBoxContainer/LineEdit")
 onready var smartcontract_UI_AppID = get_parent().get_node("CanvasLayer/SmartContract_UI/VBoxContainer/LineEdit2")
 onready var smartcontract_UI_AppArgs = get_parent().get_node("CanvasLayer/SmartContract_UI/VBoxContainer/LineEdit3")
@@ -161,16 +161,25 @@ func _ready():
 	#print ("Wallet UI elemts: ",Wallet.UI_Elements) #for debug purposes only
 	
 	# Connects State Controller Button  Signals to Wallet
-	Wallet.Functions.connect_signals_statecontroller(self, Wallet)
+	# Should return a Boolean
+	print_debug(Wallet.Functions.connect_signals_statecontroller(self, Wallet))
 	
 	
+	
+	print_debug(Wallet.imported_mnemonic_button)
 	
 	# Triggers CUstom Ready State in Wallet Node
 	
+	
+	# Wallet Singleton ready
 	Wallet.__ready()
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+	
+	
+	#Quick Fix for Upscaing
+	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
+		upscale()
+
+	
 
 "Fixes Stuck Button Bug"
 # By toggling the Wallet's Processing on/off
@@ -192,5 +201,16 @@ func _on_state_controller_toggled(button_pressed):
 	
 	
 
+func upscale()-> void:
+	# This is a quick fix. It should ideally find the center of the screen and 
+	#position by an offset
+	var newScale = Vector2(2,2)
+	#var newPosition = Vector2(-650,250)
+	#var newPosition = Vector2(0,0)
+	var newPosition = Vector2($Position2D.position)
+	canvasLayer.set_scale(newScale)
+	
+	for i in canvasLayer.get_children():
+		i.set_position(newPosition)
 
 

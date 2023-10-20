@@ -12,6 +12,9 @@
 
 extends Node
 
+class_name QuestGiver
+
+
 """
 Instance this as a child of any Npc.tscn node and it turns into a 
 quest giver.

@@ -4,6 +4,9 @@
 font_path = "res://fonts/DigitalStripBB_BoldItal.ttf"
 
 [resource]
-size = 80
+size = 44
 outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+extra_spacing_top = -3
+extra_spacing_bottom = -4
 font_data = SubResource( 1 )

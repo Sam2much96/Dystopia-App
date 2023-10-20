@@ -15,9 +15,12 @@
 # (4) make white & black theme for joysitck circle
 # (5) Add a color changer setting function
 # (6) Disable the joystick conrol function use hidden analogue instead
+# (7) Input event is not consumed
 # *************************************************
 
 extends Control
+
+class_name JoystickV2
 
 
 ##################################################

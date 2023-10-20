@@ -21,6 +21,8 @@
 extends Area2D
 #export var debug : bool
 
+class_name grass
+
 onready var nodeName : String = self.get_name() 
 
 onready var timer : Node = $Timer
@@ -30,7 +32,7 @@ onready var anim : Node = $AnimationPlayer
 
 var list: Array = ["player_sword", "enemy_sword"] 
 
-var similar_names = [] #list comparer
+var similar_names : Array = [] #list comparer
 
 func _ready():
 	anim.play("idle",-1,1.0,0.0) 
@@ -95,9 +97,9 @@ func update_collision_list( area : String)-> void:
 	if not similar_names.has(area):
 		similar_names.append(area)
 	elif similar_names.has(area):
-		return
+		pass
 
 func debug_grass( area_name : String)-> void: 
-	print (area_name+' cuts ' + nodeName)
+	print_debug (area_name+' cuts ' + nodeName)
 	print (similar_names) #list of all objects grass and flower nodes collide with
 

@@ -3,6 +3,5 @@
 [ext_resource path="res://fonts/Comic_Andy.ttf" type="DynamicFontData" id=1]
 
 [resource]
-size = 100
-outline_size = 3
+size = 64
 font_data = ExtResource( 1 )

@@ -1,41 +1,15 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Title screen.gd" type="Script" id=1]
 [ext_resource path="res://resources/title animation/Dystopia Logo webp.webp" type="Texture" id=2]
 [ext_resource path="res://scenes/UI & misc/ingame_menu.tscn" type="PackedScene" id=3]
 [ext_resource path="res://resources/Buttons/menu.png" type="Texture" id=4]
-[ext_resource path="res://resources/illustrations/Newspaper_art.webp" type="Texture" id=5]
-[ext_resource path="res://fonts/Comic Book.otf" type="DynamicFontData" id=6]
+[ext_resource path="res://scenes/UI & misc/Hint.tscn" type="PackedScene" id=5]
 [ext_resource path="res://resources/illustrations/cover 1.png" type="Texture" id=7]
 [ext_resource path="res://resources/illustrations/Game_Cover Art WEBP.webp" type="Texture" id=8]
-[ext_resource path="res://fonts/Roboto-BlackItalic.ttf" type="DynamicFontData" id=9]
-[ext_resource path="res://fonts/Roboto-Black.ttf" type="DynamicFontData" id=10]
-[ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=11]
 [ext_resource path="res://ads/Appodeal/Appodeal.tscn" type="PackedScene" id=12]
-[ext_resource path="res://themes/Regular.tres" type="Theme" id=13]
 
 [sub_resource type="ShaderMaterial" id=7]
-
-[sub_resource type="DynamicFont" id=2]
-size = 38
-outline_size = 6
-outline_color = Color( 0.00392157, 0.00392157, 0.00392157, 1 )
-extra_spacing_top = -1
-font_data = ExtResource( 6 )
-
-[sub_resource type="DynamicFont" id=8]
-size = 36
-font_data = ExtResource( 9 )
-
-[sub_resource type="Theme" id=9]
-default_font = SubResource( 8 )
-
-[sub_resource type="DynamicFont" id=10]
-size = 36
-font_data = ExtResource( 10 )
-
-[sub_resource type="Theme" id=11]
-default_font = SubResource( 10 )
 
 [node name="Menu" type="Control"]
 light_mask = 0
@@ -66,74 +40,16 @@ margin_bottom = 1211.08
 rect_scale = Vector2( 2.2, 2.2 )
 texture = ExtResource( 7 )
 
-[node name="Menu " parent="." instance=ExtResource( 3 )]
-margin_left = -158.869
-margin_top = 100.329
-margin_right = 1023.13
-margin_bottom = 699.329
-
 [node name="menu" type="TouchScreenButton" parent="."]
 material = SubResource( 7 )
 position = Vector2( -5, 9 )
 normal = ExtResource( 4 )
 action = "menu"
 
-[node name="Notification" type="Popup" parent="."]
-visible = true
-margin_left = 393.67
-margin_top = 55.198
-margin_right = 801.668
-margin_bottom = 386.199
-rect_scale = Vector2( 0.988701, 0.988701 )
-script = ExtResource( 11 )
-
-[node name="Sprite" type="Sprite" parent="Notification"]
-position = Vector2( 369.169, 260.594 )
-scale = Vector2( 0.236339, 0.223401 )
-texture = ExtResource( 5 )
-
-[node name="Label" type="Label" parent="Notification"]
-margin_left = 108.77
-margin_top = 73.6963
-margin_right = 405.77
-margin_bottom = 223.696
-custom_colors/font_color = Color( 0.882353, 0.882353, 0.882353, 1 )
-custom_fonts/font = SubResource( 2 )
-text = "Dystopia App
-V2.0.1.1
-"
-align = 1
-autowrap = true
-
-[node name="Label2" type="Label" parent="Notification"]
-margin_left = 267.648
-margin_top = 445.383
-margin_right = 367.648
-margin_bottom = 488.383
-theme = SubResource( 9 )
-text = "Happy Birthday to ME!"
-
-[node name="Label3" type="Label" parent="Notification"]
-margin_left = 146.37
-margin_top = 18.6091
-margin_right = 612.37
-margin_bottom = 61.6091
-theme = SubResource( 11 )
-text = "NEW UPDATES AVAILABLE"
-align = 1
-
-[node name="Label4" type="Label" parent="Notification"]
-margin_left = 141.0
-margin_top = 454.0
-margin_right = 227.0
-margin_bottom = 499.0
-theme = ExtResource( 13 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "April 1st, 2093"
-autowrap = true
-uppercase = true
+[node name="Notification2" parent="." instance=ExtResource( 5 )]
 
 [node name="logo" type="TextureRect" parent="."]
+self_modulate = Color( 0, 0, 0, 1 )
 show_behind_parent = true
 anchor_left = 0.5
 anchor_top = 0.5
@@ -148,8 +64,6 @@ texture = ExtResource( 2 )
 expand = true
 stretch_mode = 6
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
-
 [node name="Timer" type="Timer" parent="."]
 wait_time = 20.0
 autostart = true
@@ -158,4 +72,4 @@ autostart = true
 enabled = true
 banner_size = "320x50"
 
-[connection signal="ready" from="HTTPRequest" to="." method="_on_HTTPRequest_ready"]
+[node name="Menu " parent="." instance=ExtResource( 3 )]

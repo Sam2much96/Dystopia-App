@@ -8,48 +8,65 @@
 # (1) It check for user's internet access
 # (2)It triggers an error splash page in the debug script if user is offline
 # (3) It aids monetization through online advertising on Mobile
+# (4) It implements Translations UI
+# (5) It is only Called Once and sets the user's pre-entered Languague for the Duration of the Match
 # *************************************************
 # To Do:
-# (1) Languague functionality to convert to various languages via a global script variable or a state machine
-		# How?
-		#parse a csv file and trigger language functions / states through the dialogue singleton at res://singletons/Dialogs.gd
+# (1) Only show once, when installing file. Should Save Information to Globals save file and only Load once
+
+
+
 extends CanvasLayer
+
+
+class_name Login
+
 """
 This is a gate-keeper script to keep check user's internet connections, restrict their access
 """
-####
-
 
 var cinematics = load('res://scenes/cinematics/cinematics.tscn')
 var index : int = 0
 
-#Saves player name and emaol address to global script
-var player_name : String
-var email_addr : String
 onready var play_button : Button = $ui/grid/play
 onready var dialgue_box = $Dialog_box
 onready var language = $ui/grid/language
+
 ########Label Spacer Codes Are Used For Aesthetics#########
 onready var label_spacer = $ui/grid/label_spacer
 onready var label_spacer2 = $ui/grid/label_spacer2
 onready var label_spacer3 =$ui/grid/label_spacer3
 
 onready var timer = $Timer
-
-var os = Globals.os
 onready var _debug =get_tree().get_root().get_node("/root/Debug")
 
-#func _init():
-#	if Dialogs.language == "":
-#		Globals.load_game()
+var os = Globals.os # Pointer
 
+onready var UI_buttons : Array = [
+	play_button, dialgue_box, 
+	language, label_spacer, 
+	label_spacer2, label_spacer3
+	]
 
+onready var _hide_dialogue_box : bool = false
 
 func _ready():
-	if _debug != null:
-		_debug = get_tree().get_root().get_node("/root/Debug")
+# Described Above
+#	if _debug != null:
+#		_debug = get_tree().get_root().get_node("/root/Debug")
 
-	if Dialogs.language != "":
+	dialgue_box.hide_dialogue()
+
+	# Load Users Prefered DIalogue 
+	Globals.Functions.load_user_data('languague')
+	
+	
+	# Load Users Prefered DIalogue 
+	#Globals.Functions.load_user_data('Music_on_settings')
+	
+	# If Dialogue Already Preset, Skip to Cinematics.
+	print_debug("User Preloaded Language: ", Dialogs.language)
+	if not Dialogs.language.empty() :
 		get_tree().change_scene_to(cinematics)
 
 	
@@ -58,6 +75,12 @@ func _ready():
 	language.add_item('English') 
 	language.add_item('Brazilian Portuguese') 
 	language.add_item('French')
+	language.add_item('Telugu')
+	language.add_item('Hindi')
+	language.add_item('Japanese')
+	language.add_item('Mandarin')
+	language.add_item('Yoruba')
+	language.add_item('Arabic')
 	#language.add_item('Nigerian Pidgin')
 
 	# Connects the Networking signal
@@ -66,18 +89,43 @@ func _ready():
 
 	"Disables the Play button Until Internet Access is Verified "
 
-	hide_play_button() 
+	# Hiding the Play Button is terrible UX
+	#hide_play_button() 
 	_check_if_device_is_online()
 	translate()
 
 
 
-func _input(_event):
-	dialgue_box.hide_dialogue()
-
-
 
 func _on_play_pressed():
+	
+	# Saves User's Language to Global Variable
+	# Language Sub system has to be reworked to load/create font packs for every supported Languague
+	
+	
+	if language.get_selected() == 0:
+		Dialogs.language = "en_US"
+		#Globals.save_game()
+	elif language.get_selected() == 1:
+		Dialogs.language = "pt_BR"
+		#Globals.save_game()
+	elif language.get_selected() == 2:
+		Dialogs.language = "fr"
+	elif language.get_selected() == 3:
+		Dialogs.language = "te_IN"
+	elif language.get_selected() == 4:
+		Dialogs.language = "hi_IN"
+	elif language.get_selected() == 4:
+		Dialogs.language = "ja"
+	elif language.get_selected() == 5:
+		Dialogs.language = "zh_CN"
+	elif language.get_selected() == 6:
+		Dialogs.language = "yo_NG"
+	elif language.get_selected() == 7:
+		Dialogs.language = "ar"
+		#Globals.save_game()
+	else : Dialogs.language = ""
+
 	get_tree().change_scene_to(cinematics)
 
 
@@ -107,9 +155,9 @@ func _http_request_completed(result, response_code, headers, body):
 		print ('No Internet Connection', result, response_code)
 		index += 1
 		_check_if_device_is_online()
-		if _debug != null:
-			
-			get_tree().change_scene_to( _debug.error_splash_page)
+		#if _debug != null:
+		
+		get_tree().change_scene_to( _debug.error_splash_page)
 		
 		#Resets Networking node
 		Networking.stop_check()
@@ -145,23 +193,21 @@ func translate()-> void:
 	print ("Testing Translation En: ",Dialogs.translate_to("char3", "en_US")) 
 	print ("Testing Translation Es: ", Dialogs.translate_to("char3", "pt_BR"))
 	print ("Testing Translation Es: ", Dialogs.translate_to("char3", "fr"))
+	print ("Testing Translation Te: ", Dialogs.translate_to("char3", "te_IN")) # Not working i 3.5 only in 4.0
+	print ("Testing Translation hi: ", Dialogs.translate_to("char3", "hi_IN"))
+	print ("Testing Translation ja: ", Dialogs.translate_to("char3", "ja"))
+	print ("Testing Translation cn: ", Dialogs.translate_to("char3", "zh_CN"))
+	print ("Testing Translation yo: ", Dialogs.translate_to("char3", "yo_NG"))
 	print ("Testing Translation Error: ", Dialogs.translate_to("char7", "en"))
 
-
-# Saves User's Language to Global Variable
-func _on_language_item_selected(index):
-	if index == 0:
-		Dialogs.language = "en_US"
-		#Globals.save_game()
-	elif index == 1:
-		Dialogs.language = "pt_BR"
-		#Globals.save_game()
-	elif index == 2:
-		Dialogs.language = "fr"
-		#Globals.save_game()
-	else : Dialogs.language = ""
 
 
 
 func _exit_tree():
 	print ("Selected Language: ",Dialogs.language)
+	
+	# Clear Memory
+	#for i in UI_buttons:
+	#	i.queue_free()
+
+	Globals.MemoryManagement.queue_free_array(UI_buttons)

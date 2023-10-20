@@ -15,6 +15,8 @@
 
 extends Control
 
+class_name JoyStickUI
+
 var selector = 0
 
 func _input(event):

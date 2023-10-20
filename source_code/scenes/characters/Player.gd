@@ -11,6 +11,8 @@
 #(1) Update Documentation
 # (2) Implement Networking Calls (done in v2)
 # (3) State blocked is unimplemented
+# (4) State Hurt Should Implement Blood Spawning FX not Process
+# (5) Implement State Emote for Dancing with New Dancing Animation
 # *************************************************
 
 extends KinematicBody2D
@@ -37,7 +39,7 @@ signal health_changed(current_hp)
 export(String, "up", "down", "left", "right") var facing = "down"
 
 
-var despawn_fx = preload("res://scenes/UI & misc/DespawnFX.tscn")
+var despawn_fx : PackedScene = Globals.despawn_fx
 #export (PackedScene) var blood_fx #= load("res://scenes/UI & misc/Blood_Splatter_FX.tscn")
 
 var anim = ""
@@ -52,14 +54,14 @@ onready var player_camera = $camera #the player's camera
 #onready var impact_fx = $Impact
 onready var timer = $ScentTimer
 var timeout: bool = false
+var frame_counter : int = 0
 
 func _enter_tree():
 	Globals.update_curr_scene()
 	#if Globals.player_hitpoints != null:
 	#	hitpoints = Globals.player_hitpoints #Updates player health across scenes
-	if Globals.player != null:
-		if Globals.player.empty() == true  :
-			Globals.player.append(self)  #saves player to the Global player variable
+
+	Globals.player.append(self)  #saves player to the Global player variable
 	
 	'Makes Player Hitpoint a Global Variable'
 	Globals.player_hitpoints = hitpoints
@@ -70,7 +72,8 @@ class Behaviour extends Reference:
 	"""
 	Autospawn Code
 	"""
-
+	 # Buggy:
+	 # Produces Stuck Collision on Player Bug 
 	static func AutoSpawn(body):
 			# Move the player to the corresponding spawnpoint, if any and connect to the dialog system
 		if Globals.spawnpoint is Vector2 and Globals.spawnpoint != null: #auto spawn code
@@ -85,10 +88,9 @@ func _ready():
 
 
 
-	#Globals.load_game()
 	
-	
-	Behaviour.AutoSpawn(self)
+	# Buggy check ln 74
+	#Behaviour.AutoSpawn(self)
 	
 	
 	if not (
@@ -99,9 +101,17 @@ func _ready():
 	pass
 
 
-func _process(_delta):
+func _process(delta: float):
+		# Raises up a Frame Counter
+	frame_counter += 1
+	
+	# Checks the Spawning Boolean Every 30th Frame
+	# Called #very 60th Frame
+	if frame_counter % 60 == 0:
 	#####this updates the player's node to a globals variable
-	Globals._player_state = state
+		Globals._player_state = state
+	if frame_counter >= 100:
+		frame_counter = 0
 
 	#print ('Current scene:',Globals.curr_scene, 'Current level',Globals.current_level) #for debug purposes only
 	
@@ -246,8 +256,8 @@ func respawn()-> void:
 	'Updated Respawn Code'
 	#Reboots the current scene if the Player Dies
 	# Triggered with animation player
-	if Globals._q != null:
-		Globals.change_scene_to(Globals._q)
+	if Globals.scene_resource != null:
+		Globals.change_scene_to(Globals.scene_resource)
 	else: get_tree().reload_current_scene()
 
 func _on_hurtbox_area_entered(area):

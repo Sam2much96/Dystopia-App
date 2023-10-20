@@ -128,6 +128,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "$3000"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="YSort/VBoxContainer"]
+visible = false
 
 [node name="Line2D" type="Line2D" parent="YSort/VBoxContainer/CanvasLayer"]
 position = Vector2( -6, 12 )
@@ -206,6 +207,7 @@ custom_colors/font_color = Color( 0.52549, 0.52549, 0.52549, 1 )
 text = "-$3000"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="YSort2/VBoxContainer"]
+visible = false
 
 [node name="Line2D" type="Line2D" parent="YSort2/VBoxContainer/CanvasLayer"]
 position = Vector2( -52, -4 )

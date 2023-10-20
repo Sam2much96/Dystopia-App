@@ -25,6 +25,10 @@ extends CanvasLayer
 # (4) Admob is banned. Attempt implementing yodo1mas
 
 
+
+class_name ADsManager
+
+
 """
 THIS CODE STARTED OUT AS A DEBUGGER FOR THE AD'S . IT IS EVOLVING TO AN AD MANAGER SYSTEM
 """

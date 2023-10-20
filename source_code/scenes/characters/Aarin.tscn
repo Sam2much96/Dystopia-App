@@ -1252,6 +1252,7 @@ __meta__ = {
 }
 
 [node name="sprite" type="Sprite" parent="."]
+modulate = Color( 0, 0, 0, 1 )
 material = SubResource( 1 )
 position = Vector2( 6.30249, -86.9744 )
 texture = ExtResource( 2 )

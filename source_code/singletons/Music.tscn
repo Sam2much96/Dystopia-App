@@ -116,6 +116,7 @@ pause_mode = 2
 script = ExtResource( 1 )
 music_on = true
 sfx_on = true
+volume = 10
 
 [node name="A" type="AudioStreamPlayer" parent="."]
 bus = "Music"
@@ -141,4 +142,3 @@ anims/play = SubResource( 5 )
 
 [connection signal="finished" from="A" to="." method="_on_A_finished"]
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

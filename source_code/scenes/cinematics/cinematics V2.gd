@@ -19,16 +19,19 @@ extends Control
 #(3)  
 # TO DO:
 #(1) Update Documentation
-# (2) Reorganise code into classes
+# (2) Reorganise code into classes (Done)
+# (3) Fix video Positionig on multiple devices
+# (4) Guidebook SHould Use HTML Parser
 
 class_name cinematic
 
+#hvjhvjhv
 
 export (bool) var cinematic_on = true
 export(String, FILE, "*.ogv") var vid_stream = ""
 
 # Cread Object
-var yt_dlp = YtDlp.new()
+var yt_dlp = null # Depreciated Code #YtDlp.new()
 onready var dialgue_box = $Dialog_box
 onready var animation : AnimationPlayer = $"animation player"
 onready var position2d : Position2D = $Position2D
@@ -74,15 +77,11 @@ func _ready(): #create a video player function
 	#use current scene to trigger cinematic
 	Globals.update_curr_scene()
 	
+	'Screen Display Calculations'
 	# Get Viewport Size, Make it Globally accessible
-	Globals.viewport_size = Globals.calculateViewportSize(self)
-	Globals.center_of_viewport = Globals.calc_center_of_rectangle(Globals.viewport_size)
-	
-	# Prints out the Current Viewport Size
-	#print ("Viewport Size: ", Globals.viewport_size ) # for debug purposes only
-	#print ("Center of Viewprt: ", Globals.center_of_viewport ) # for debug purposes onlys
-	
-	
+	# Calculations are now being run in GLobal Screen Class
+	# Display calculations are now being run in Global Screen Class
+
 	'Cinematics scene'
 	if Globals.curr_scene == 'Cinematics':
 		videoplayer  = get_node('VideoPlayer') #video player node
@@ -92,27 +91,47 @@ func _ready(): #create a video player function
 		
 		play_opening_cinematic() #Plays this video only on cinematics node
 	
-	"Anime Shop Scene"
+	" Anime Shop Scene "
 	if Globals.curr_scene == "Shop":
 		# Get the Parent
 		var animationplayer : Control = $AnimationPlayer#get_node("AnimationPlayer")
 		videoplayer = $AnimationPlayer/VideoPlayer
 		print ("video player: ", videoplayer)# For Debug puroses only
 		
+		var episode1 : Button = $"africa icon/VBoxContainer/episode"
+		var bts : Button = $"africa icon/VBoxContainer/behind the scenes"
+		var animatic : Button = $"africa icon/VBoxContainer/animatic"
+		var merch : Button = $"africa icon/VBoxContainer/merchandise"
+		var guidebook : Button = $"africa icon/VBoxContainer/guide book"
+		var back : Button = $back
+		var UI_buttons_2 : Array = [episode1, bts,animatic, merch,guidebook, back]
+		
+		print_debug("UI buttons: ",UI_buttons_2) #For Debug purposes only
+		
+		Dialogs.set_font(UI_buttons_2)
+		
+		# Manually Translate UI
+		for i in UI_buttons_2:
+			# Note: If it breaks with a null object error, it means that the scene layout has been changed
+			# Update the button links then
+			i.set_text(Dialogs.translate_to(i.name, Dialogs.language))
+
 		
 		# File Doesn't Exist but user has good internet
 		if not Globals.check_files(Globals.user_data_dir, cinematic["Test"]) && Globals.os != "Android": #&& Networking.good_internet:
 			#if Globals.os == "XII" or "Windows" or "MacOs": 
 				# Connect Signals from Youtube Downloader
 				# Download Video File
+			
+			# YTDLP is depreciated
 				
-			"""
-			Doc: yt-dlp works best on Pc devices supporting Native Python
-			"""
-			yt_dlp.connect("ready", self, "download_yt_video") #Poll Downloads
-			yt_dlp.connect("download_completed", self, "stream_yt_video") # Auto Play Downloads
-		
-		
+			#"""
+			#Doc: yt-dlp works best on Pc devices supporting Native Python
+			#"""
+			#yt_dlp.connect("ready", self, "download_yt_video") #Poll Downloads
+			#yt_dlp.connect("download_completed", self, "stream_yt_video") # Auto Play Downloads
+			# 
+			pass
 		
 		
 		# File Exists
@@ -148,13 +167,18 @@ func Video_Stream(stream, os: String): #This code works
 		videoplayer.expand = false
 		
 		#True Center of Screen
-		videoplayer.set_position(Vector2(-(Globals.center_of_viewport.x),300))
-	
+		self.set_position(Vector2(-(Globals.center_of_viewport.x),300))
+		#videoplayer.set_position($Position2D.position) #Video Player Position: (-1334.26001, 412.127014)
+
+		
+		print("Video Player Position: ",videoplayer.get_position()) # For Debug Purposes only
+
 	if os == "X11" or "Windows":
 		
+		#print (Globals.center_of_viewport) # for debug purposes only
 		#True Center of Screen
-		#videoplayer.set_position(Vector2(-(Globals.center_of_viewport.x),100)) # Globals.ceter_of_viewport calculation is off
-		videoplayer.set_position($Position2D.position) 
+		videoplayer.set_position(Vector2((Globals.center_of_viewport.x/20),100)) # Globals.ceter_of_viewport calculation is off
+		#videoplayer.set_position($Position2D.position) 
 
 	
 	
@@ -321,10 +345,10 @@ func download_yt_video():
 	# without affecting it's signals.
 	# How to pass parameters through signls
 	
-	dialgue_box.show_dialog( ("Downloading YT video: " + youtube[0]),  "admin")
-	print ("Downloading YT video: " + youtube[1])
+	#dialgue_box.show_dialog( ("Downloading YT video: " + youtube[0]),  "admin")
+	print ("Downloading YT video: " + youtube.get(1, "") + "Depreciated code") 
 	#Download video using url to local storage
-	yt_dlp.download(youtube[1],OS.get_user_data_dir(),cinematic["user://Test.webm"] ) # The cinematics dictionary returns the key as the File Save name
+	#yt_dlp.download(youtube[1],OS.get_user_data_dir(),cinematic["user://Test.webm"] ) # The cinematics dictionary returns the key as the File Save name
 	
 
 func stream_yt_video():
@@ -351,24 +375,31 @@ func _on_watch_anime_pressed():
 
 func cinematics_get(parameters : String) :
 	
-	# Enables Polymorphism of Cinematics Yt Downloader & Streamer
+	return OS.shell_open(youtube[parameters])
 	
+	
+	# Enables Polymorphism of Cinematics Yt Downloader & Streamer
+	# Disabled for Refactoring and Debugging
+	"""
 	for i in Mobile_Platforms:
 		# PC Platforms
 		if Globals.os != i && Globals.check_files(Globals.user_data_dir, cinematic[parameters]):  
+			
 			if Networking.good_internet:
+				
+				# PC platforms
 				var stream := VideoStreamWebm.new()
-				
-				
 				stream.set_file(cinematic[parameters])
 				dialgue_box.show_dialog("Playing " + parameters + ".webm" , "admin" )
 				Video_Stream(stream, Globals.os)
+				
+				
 			elif !Networking.good_internet:
 				return OS.shell_open(youtube[parameters])
 		
 		if Globals.os == i: # Mobile Platforms
 			return OS.shell_open(youtube[parameters])
-
+	"""
 
 
 # Rewrite this code
@@ -705,7 +736,7 @@ func play_loading_cinematic(): #A simple loading loop
 
 	#_Video_Stream(Globals.cinematics) broken function. Video stream function is a global function now
 	
-	print ('Playing loading Cinematic ')
+	print_debug('Playing loading Cinematic ')
 	yield(get_tree().create_timer(5), "timeout") #Runs this loop every 5 secs
 
 

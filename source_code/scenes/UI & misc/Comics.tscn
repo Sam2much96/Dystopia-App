@@ -1,9 +1,13 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://singletons/Comics.v5.1.gd" type="Script" id=1]
 [ext_resource path="res://resources/Buttons/bck.png" type="Texture" id=2]
 [ext_resource path="res://resources/Buttons/zoom.png" type="Texture" id=3]
 [ext_resource path="res://resources/misc/logo.png" type="Texture" id=4]
+
+[sub_resource type="GDScript" id=8]
+script/source = "extends 'res://singletons/Comics.v6.gd'
+#extends Control
+"
 
 [sub_resource type="Animation" id=1]
 resource_name = "Prev panel"
@@ -79,45 +83,62 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 
+[sub_resource type="GDScript" id=7]
+script/source = "extends Position2D
+
+# Updates the Screen Center
+func _ready():
+	Comics_v6.center = self.position
+	pass
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+"
+
 [node name="Comics" type="Control" groups=["Cmx_Root"]]
 mouse_filter = 1
-script = ExtResource( 1 )
+script = SubResource( 8 )
 
 [node name="panel" type="ColorRect" parent="."]
-modulate = Color( 0.254902, 0.254902, 0.254902, 1 )
+visible = false
 margin_left = 10.0
 margin_top = -57.0
 margin_right = 1199.0
 margin_bottom = 2038.0
 mouse_filter = 2
-color = Color( 1, 1, 1, 0.498039 )
+color = Color( 1, 1, 1, 0.254902 )
 
-[node name="Buttons" type="Node2D" parent="."]
+[node name="UI" type="Node2D" parent="."]
 modulate = Color( 1, 1, 1, 0.741176 )
 light_mask = 3
 z_index = 1
 z_as_relative = false
 
-[node name="Backwards" type="TouchScreenButton" parent="Buttons"]
+[node name="Backwards" type="TouchScreenButton" parent="UI"]
+visible = false
 modulate = Color( 1, 1, 1, 0.647059 )
 self_modulate = Color( 0, 0, 0, 1 )
 position = Vector2( 339.103, 615.738 )
 rotation = -3.11961
 normal = ExtResource( 2 )
-action = "ui_focus_prev"
+action = "prev_panel"
+visibility_mode = 1
 
-[node name="Forward" type="TouchScreenButton" parent="Buttons"]
+[node name="Forward" type="TouchScreenButton" parent="UI"]
+visible = false
 modulate = Color( 1, 1, 1, 0.647059 )
 self_modulate = Color( 0, 0, 0, 1 )
 position = Vector2( 680.175, 299.03 )
 normal = ExtResource( 2 )
-action = "ui_focus_next"
+action = "next_panel"
 
-[node name="Zoom" type="TouchScreenButton" parent="Buttons"]
+[node name="Zoom" type="TouchScreenButton" parent="UI"]
 visible = false
 position = Vector2( 470.987, 412.943 )
 scale = Vector2( 1.11574, 1.12516 )
 normal = ExtResource( 3 )
+visibility_mode = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 "anims/Prev panel" = SubResource( 1 )
@@ -140,6 +161,7 @@ __meta__ = {
 }
 
 [node name="Position2D" type="Position2D" parent="."]
-position = Vector2( 665.956, 42.8111 )
+position = Vector2( -436.65, -249.813 )
+script = SubResource( 7 )
 
-[connection signal="pressed" from="Buttons/Zoom" to="." method="_on_Zoom_pressed"]
+[connection signal="pressed" from="UI/Zoom" to="." method="_on_Zoom_pressed"]

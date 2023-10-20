@@ -12,6 +12,8 @@
 extends TextureButton
 
 
+class_name LikeButton
+
 #Add code here
 #connect to online api
 #get a variable called total like numbers

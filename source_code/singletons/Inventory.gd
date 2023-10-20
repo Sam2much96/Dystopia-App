@@ -19,6 +19,8 @@
 
 extends Node
 
+
+
 """
 Minimal inventory system implementation. 
 It's just a dictionary where items are identified by a string key and hold an int amount
@@ -28,15 +30,22 @@ It's just a dictionary where items are identified by a string key and hold an in
 # of some item is removed
 signal item_changed(action, type, amount)
 
-var inventory = {}
+var inventory : Dictionary = {}
 
+"""
+CHECKS IF THE INVENTROY HAS AN ITEM
+"""
 func get_item(type:String) -> int:
 	if inventory.has(type):
 		return inventory[type]
 	else:
 		return 0
 	pass
-	
+
+
+"""
+ADDS ITEMS TO THE INVENTORY DICTIONARY
+"""
 func add_item(type:String, amount:int) -> bool:
 	if inventory.has(type):
 		inventory[type] += amount
@@ -46,7 +55,10 @@ func add_item(type:String, amount:int) -> bool:
 		inventory[type] = amount
 		emit_signal("item_changed", "added", type, amount)
 		return true
-	
+
+"""
+REMOVES ITEMS FROM THE INVENTORY DICTIONARY
+"""
 func remove_item(type:String, amount:int) -> bool:
 	if inventory.has(type) and inventory[type] >= amount:
 		inventory[type] -= amount
@@ -57,6 +69,7 @@ func remove_item(type:String, amount:int) -> bool:
 	else:
 		return false
 	pass
-	
+
+"RETURNS A DUPLICATE OF THE INVENTORY DICTIONARY"
 func list() -> Dictionary:
 	return inventory.duplicate()

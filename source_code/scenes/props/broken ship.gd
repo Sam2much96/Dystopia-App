@@ -22,17 +22,18 @@
 
 extends StaticBody2D
 
+class_name BrokenShip
+
 
 "SMOKE FX TURNS OFF AND ON DEPENDEING ON THE PLAYER'S POSITION"
 export (int) var counter #= 0 #used to off and on the comics placeholder
 
 export (bool) var emitting_smoke
 
-onready var smoke_fx = $smoke_fx
-onready var smoke_fx_2 = $smoke_fx2
+onready var _smoke_fx = $smoke_fx
+onready var _smoke_fx_2 = $smoke_fx2
 #toggles comics placeholder visible on player contact
 func _on_Area2D_body_entered(body):
-	var comic_placeholder=get_tree().get_nodes_in_group('Cmx_Root') # Calls the comic placeholder node
 	if body is Player : 
 		#print ("dfahsdoshgoashgaoghsfogh")# Works # For Testing Purposes, Delete Later.
 		emitting_smoke == true
@@ -46,15 +47,22 @@ func _on_Area2D_body_entered(body):
 
 		# Via A class + statemachine combo
 		# 2 turns it off 1 turns it on
-		smoke_fx._emit() # Emits smoke Programmatically
+		_smoke_fx._emit(true) # Emits smoke Programmatically
+		_smoke_fx_2._emit(true) # Emits smoke Programmatically
 		
-		print ("Is Smoke Emitting? :",smoke_fx._emit()) #not working
+		print_debug ("Player Near Spaceship. Is Smoke Emitting? :",_smoke_fx._state_controller) #not working
 		
-		if comic_placeholder.empty() != true && counter == 0: # Turns on the comic placeholder once the player is near
-			comic_placeholder = comic_placeholder.pop_front()
-			
-			comic_placeholder.enabled= true
-			counter+=1
+		
+
+func show_scene_comic() -> void:
+	# Turns on the comic placeholder once the player is near
+	# Disabled for bad UX
+	var comic_placeholder=get_tree().get_nodes_in_group('Cmx_Root') # Calls the comic placeholder node
+	if comic_placeholder.empty() != true && counter == 0: 
+		comic_placeholder = comic_placeholder.pop_front()
+		
+		comic_placeholder.enabled= true
+		counter+=1
 		
 
 
@@ -66,7 +74,8 @@ func _on_Area2D_body_exited(body):
 		emitting_smoke == false
 
 		# it saves cpu performance
-		smoke_fx._stop_emit() # Stops smoke Emits Programmatically
+		_smoke_fx._emit(false) # Stops smoke Emits Programmatically
+		_smoke_fx_2._emit(false) # Stops smoke Emits Programmatically
 
 
 #func _process(_delta):

@@ -14,6 +14,9 @@
 
 extends Node2D
 
+class_name ImpactFX
+
+
 export (bool) var _impact
 export(float) var power #= 1;
 export(float) var maxSize #= 3;

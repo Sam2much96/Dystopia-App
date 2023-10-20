@@ -6,9 +6,17 @@
 # 
 # To-Do:
 # (1) Finish D-pad to Joystick button change illustration 
-# 
-
+# (2) Add Swipe Gestures on/off controls
+# (3) Include a GitHub Login, to encourage Players to Inspect the Code Base
+#
+# Bugs:
+# (1) This scene resets presaved player settings
+#
 extends Control
+
+class_name GameControls
+
+
 """
 Game Control settings
 """
@@ -17,14 +25,20 @@ var selector #for the menu cycle selector
 
 onready var back : Button = $ScrollContainer/VBoxContainer/back
 onready var music : Button = $ScrollContainer/VBoxContainer/music
-onready var debug : Button = $ScrollContainer/VBoxContainer/Debug
-onready var Shuffle : Button =$ScrollContainer/VBoxContainer/Shuffle
-onready var Change_Controller_type : Button = $ScrollContainer/VBoxContainer/Direction_controls
+onready var _debug : Button = $ScrollContainer/VBoxContainer/debug
+onready var Shuffle : Button =$ScrollContainer/VBoxContainer/shuffle
+onready var Change_Controller_type : Button = get_node("ScrollContainer/VBoxContainer/change controller")
+
+onready var github : Button = $ScrollContainer/VBoxContainer/github
+onready var languague : Button = $ScrollContainer/VBoxContainer/languague
+onready var help : Button = $ScrollContainer/VBoxContainer/help
 
 # Auto Scroll with Swipe Gestures 
 onready var scroller : ScrollContainer= get_node("ScrollContainer")
 
-onready var ControlButtons : Array =  [back, music,debug,Shuffle,Change_Controller_type]
+onready var ControlButtons : Array =  [back, music,_debug,Shuffle,Change_Controller_type, github, languague, help]
+
+onready var _Help_hint : hint = get_node("Help popup")
 
 func _ready():
 	if get_tree().get_root().has_node("/root/Debug") == true:
@@ -51,12 +65,12 @@ func _input(event):
 	# Implemented but Requires Proper Swipe Gesture Callibration
 	# 
 
-	if Comics_v5._state == Comics_v5.SWIPE_RIGHT:
+	if Comics_v6._state == Comics_v6.SWIPE_RIGHT:
 		
 		
 		# Scroll Down
 		Game_Menu.scroll(false, true,scroller)
-	elif Comics_v5._state == Comics_v5.SWIPE_DOWN:
+	elif Comics_v6._state == Comics_v6.SWIPE_DOWN:
 		
 		# Scroll Up
 		Game_Menu.scroll(true, true,scroller)
@@ -121,21 +135,25 @@ func _on_Networking_toggled(button_pressed):
 
 func _on_music_toggled(button_pressed): #Music on and off settings
 	if button_pressed :
-		Music.sound('off')
-	else  :
+		#Music.sound('off')
+		Music._notification(NOTIFICATION_APP_PAUSED)
+	if not button_pressed  :
+		#Music.sound("on")
 		Music._notification(NOTIFICATION_APP_RESUMED)
 
 
 func _on_Help_pressed():
-	$"Help popup"._ready()
+	_Help_hint._ready()
 
 
 func _on_Direction_controls_toggled(button_pressed):
 	if button_pressed:
-		Globals.direction_control = 'direction'
+		#'direction'
+		Globals.direction_control = Globals._controller_type[1]
 		$ScrollContainer/VBoxContainer/Direction_controls.set_text(Globals.direction_control)
 	else:
-		Globals.direction_control = 'analogue'
+		#'analogue'
+		Globals.direction_control = Globals._controller_type[2]
 		$ScrollContainer/VBoxContainer/Direction_controls.set_text(Globals.direction_control)
 
 
@@ -144,15 +162,42 @@ func _on_Direction_controls_toggled(button_pressed):
 func manual_translate()-> void:
 	if Dialogs.language != "" or null:
 		
-		back .set_text(Dialogs.translate_to("back", Dialogs.language))
-		music .set_text(Dialogs.translate_to("music", Dialogs.language))
-		debug .set_text(Dialogs.translate_to("debug", Dialogs.language))
-		Shuffle.set_text(Dialogs.translate_to("shuffle", Dialogs.language))
-		Change_Controller_type.set_text(Dialogs.translate_to("change controller", Dialogs.language))
-
+		#print(ControlButtons) # for debug purposes only
+		Dialogs.set_font(ControlButtons)
+		
+		for i in ControlButtons:
+			# Note: If it breaks with a null object error, it means that the scene layout has been changed
+			# Update the button links then
+			i.set_text(Dialogs.translate_to(i.name, Dialogs.language))
 
 
 "Memory Leak Management"
 func _exit_tree():
+	
+	"Saves Player's PreferedConfiguration"
+	Globals.Functions.save_game(
+		[],
+		0,
+		0, 
+		0, 
+		Globals.current_level, 
+		Globals.os, 
+		0, 
+		"", 
+		null, 
+		Globals.direction_control)
+	
+	# FOr Memorey Management ( Garbage Collector)
 	for i in ControlButtons:
 		i.queue_free()
+		
+
+
+"Triggers Translation subsystem by changing scene to Form"
+func _on_languague_pressed():
+	Dialogs.reset()
+	get_tree().change_scene("res://scenes/UI & misc/form/form.tscn")
+
+
+func _on_Github_pressed():
+	get_tree().change_scene("res://addons/github-integration/scenes/GitHub.tscn")

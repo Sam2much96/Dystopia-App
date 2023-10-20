@@ -21,6 +21,10 @@
 
 
 extends TouchScreenButton
+
+class_name JoystickV1
+
+
 ##########################################
 ## Draws a Circle                         ##
 ## Use cirlcle size to set circle size     ##

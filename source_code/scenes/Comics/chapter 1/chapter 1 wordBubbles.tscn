@@ -1,0 +1,268 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://scenes/Comics/chapter 1/chap_1_comic_spritesheets_webp.webp" type="Texture" id=1]
+[ext_resource path="res://scenes/UI & misc/word_bubble_box.tscn" type="PackedScene" id=2]
+
+[sub_resource type="AtlasTexture" id=9]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 2062, 2918 )
+
+[sub_resource type="AtlasTexture" id=10]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 2062, 0, 2062, 2918 )
+
+[sub_resource type="AtlasTexture" id=11]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 4124, 0, 2062, 2918 )
+
+[sub_resource type="AtlasTexture" id=12]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 2918, 2062, 2918 )
+
+[sub_resource type="AtlasTexture" id=13]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 2062, 2918, 2062, 2918 )
+
+[sub_resource type="AtlasTexture" id=14]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 4124, 2918, 2062, 2918 )
+
+[sub_resource type="AtlasTexture" id=15]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 5836, 2062, 2918 )
+
+[sub_resource type="SpriteFrames" id=8]
+animations = [ {
+"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="chapter_1" type="AnimatedSprite" groups=["comics"]]
+position = Vector2( 363.566, 57.1407 )
+scale = Vector2( 0.258752, 0.258752 )
+frames = SubResource( 8 )
+centered = false
+offset = Vector2( -428.761, -611.626 )
+
+[node name="Pg 1 Wordbubbles" type="YSort" parent="."]
+
+[node name="word bubble" parent="Pg 1 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( 112.994, 177.939 )
+scale = Vector2( 4.09136, 4.09136 )
+frame = 3
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+enable = true
+enable_multiline = false
+line_index = 31
+state = "Talk Left"
+
+[node name="word bubble2" parent="Pg 1 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( 1234.73, 483.336 )
+scale = Vector2( 4.09136, 4.09136 )
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 33
+line_to_end = 35
+
+[node name="word bubble3" parent="Pg 1 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( 1119.17, 1466.18 )
+scale = Vector2( 4.09136, 4.09136 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 37
+line_to_end = 39
+state = "Narration"
+
+[node name="Pg 2 Wordbubbles" type="YSort" parent="."]
+visible = false
+
+[node name="word bubble4" parent="Pg 2 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( -82.0347, -180.021 )
+scale = Vector2( 4.09136, 4.09136 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 46
+line_to_end = 50
+visible_on_page = 1
+state = "Narration"
+
+[node name="word bubble5" parent="Pg 2 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( 1255.21, 130.923 )
+scale = Vector2( 4.09136, 4.09136 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 50
+line_to_end = 52
+visible_on_page = 1
+state = "Narration"
+
+[node name="word bubble6" parent="Pg 2 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( 68.8049, 1132.33 )
+scale = Vector2( 4.09136, 4.09136 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 53
+line_to_end = 58
+visible_on_page = 1
+state = "Narration"
+
+[node name="word bubble7" parent="Pg 2 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( 1188.16, 1468.66 )
+scale = Vector2( 4.09136, 4.09136 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 57
+line_to_end = 59
+visible_on_page = 1
+state = "Narration"
+
+[node name="Pg 3 Wordbubbles" type="YSort" parent="."]
+visible = false
+position = Vector2( 1188.16, 1468.66 )
+scale = Vector2( 4.09136, 4.09136 )
+
+[node name="word bubble8" parent="Pg 3 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( -302.976, -408.086 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 57
+line_to_end = 59
+visible_on_page = 2
+state = "Narration"
+
+[node name="word bubble9" parent="Pg 3 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( 14.4283, -390.255 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 57
+line_to_end = 59
+visible_on_page = 2
+state = "Narration"
+
+[node name="word bubble10" parent="Pg 3 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( -313.675, -203.022 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 57
+line_to_end = 59
+visible_on_page = 2
+state = "Narration"
+
+[node name="word bubble11" parent="Pg 3 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( -229.866, -58.585 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 57
+line_to_end = 59
+visible_on_page = 2
+state = "Narration"
+
+[node name="Pg 4 Wordbubbles" type="YSort" parent="."]
+visible = false
+position = Vector2( 1188.16, 1468.66 )
+scale = Vector2( 4.09136, 4.09136 )
+
+[node name="word bubble8" parent="Pg 4 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( -427.219, -407.412 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 57
+line_to_end = 59
+visible_on_page = 3
+state = "Narration"
+
+[node name="word bubble9" parent="Pg 4 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( -8.0799, -278.636 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 57
+line_to_end = 59
+visible_on_page = 3
+state = "Narration"
+
+[node name="word bubble10" parent="Pg 4 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( -294.783, -218.135 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 57
+line_to_end = 59
+visible_on_page = 3
+state = "Narration"
+
+[node name="word bubble11" parent="Pg 4 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( -210.974, -73.6986 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 57
+line_to_end = 59
+visible_on_page = 3
+state = "Narration"
+
+[node name="word bubble12" parent="Pg 4 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( 6.28448, 126.557 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 57
+line_to_end = 59
+visible_on_page = 3
+state = "Narration"
+
+[node name="Pg 5 Wordbubbles" type="YSort" parent="."]
+visible = false
+position = Vector2( 1188.16, 1468.66 )
+scale = Vector2( 4.09136, 4.09136 )
+
+[node name="word bubble8" parent="Pg 5 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( -366.476, -480.904 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 57
+line_to_end = 59
+visible_on_page = 4
+state = "Narration"
+
+[node name="word bubble9" parent="Pg 5 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( 120.838, -385.032 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 57
+line_to_end = 59
+visible_on_page = 4
+state = "Narration"
+
+[node name="word bubble10" parent="Pg 5 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( -440.797, -197.799 )
+frame = 2
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+enable = true
+enable_multiline = false
+line_index = 57
+line_to_end = 59
+visible_on_page = 4
+state = "Talk Right"
+
+[node name="word bubble11" parent="Pg 5 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( -39.2089, -48.252 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 57
+line_to_end = 59
+visible_on_page = 4
+state = "Narration"
+
+[node name="word bubble12" parent="Pg 5 Wordbubbles" instance=ExtResource( 2 )]
+position = Vector2( 6.28448, 126.557 )
+frame = 0
+dialogue = "res://resources/dialogues/Dystopia chapter 1 Neo sud.gd"
+line_index = 57
+line_to_end = 59
+visible_on_page = 4
+state = "Narration"

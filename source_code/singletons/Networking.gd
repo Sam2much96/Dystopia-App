@@ -14,21 +14,23 @@
 # ************************************************* 
 # Features to Add
 # (1) Smart contract implementation using GDteal and Algodot (done)
-# (2) Multiplayer lobby room logic And Client and Server Netcodes (next)
-# (3) Youtube Download Streamer Logic impementation 
+# (2) Multiplayer lobby room logic And Client and Server Netcodes (Done)
+# (3) Youtube Download Streamer Logic impementation (1/3 using godot-rustube)
 # (4) Proper Documentation (done)
-# (5) Run an online for PC and mobile Devices. The Hardware is available now
+# (5) Run an online for PC and mobile Devices. The Hardware is available now (Done)
 # (6) Implement Rollback NetCodes for Multiplayer Gameplay (Depreciated)
 # (7) Video Downloaders
 # (8) Downloads several files
-# (9) Regex parser for IPFS (test)
+# (9) Regex parser for IPFS (Done)
 
 
 
 extends HTTPRequest
 
+class_name Internet
+
 """
-NETWORKING SINGLETON 3.0
+NETWORKING SINGLETON 4.0
 
 To query if there's internet access and connect to various websites
 """
@@ -46,18 +48,29 @@ var debug = ''
 const DEFAULT_HOSTNAME = "ws://localhost"
 
 const BACKUP_HOSTNAME = "127.0.0.1"
+# should store Non-threathening Crypto and Multiplayerinfo too
+# Data Integrity can be checked using hash
+# Stores Data FOr Synchronizing Player Data Among Multiple Peers
+# SHould be converted to Json before sent over Network
+var player_info : Dictionary = {
+	"peer id": {},
+	"hash": [] # Arrays because hash data is discarded eventually
+	} 
 
-var player_info = {} # should store Crypto info
-
+var peer_id : int
+var last_update = -1
+var my_peer : NetworkedMultiplayerENet
+var player_data : PoolByteArray
 var camera #stores general camera variables
 ###############################multiplayer codes########################
+# Debugs to Debugger Singleton
 var multiplayer_client_debug
 var multiplayer_server_debug
 
 # Those variables are only used by the client-side application
 
-var cfg_color = ""
-var cfg_player_name = ""
+var cfg_color : String = ""
+var cfg_player_name : String = ""
 
 
 
@@ -66,12 +79,15 @@ var cfg_player_name = ""
 signal connection_success
 signal error_connection_failed(code,message)
 signal error_ssl_handshake
-
+signal game_finished
+signal Timeout
 
 onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
-onready var WORLD_SIZE = 40000.0
+var WORLD_SIZE : int = 40000.0
+
 onready var _reference_to_self =get_node('/root/Networking') #formerly _y
+onready var _reference_to_debug =get_node('/root/Debug') #formerly _y
 
 
 const SERVER_PORT = 9080
@@ -83,7 +99,7 @@ const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
 onready var timer :Timer  = $Timer2
 
 
-#var youtube_dl = preload ('res://New game code and features/youtube streamer/Youtube-DL.gd') #what if youtube goes down lool
+#var youtube_dl # Replace with GodotRustube
 
 
 #**********Helper Booleans***********#
@@ -100,6 +116,32 @@ var selected_gateway : String
 
 var good_internet : bool
 
+# Lobby UI
+var UserInterface : Control
+
+# Multiplayer map
+var map_instance
+
+# Server Update ID
+var update_id : int = -1
+
+# Raw Player Info Data
+var RawData : Array
+var RawJson 
+var peer_ids : Array
+
+# World Root Node
+var WorldRoot : Node
+
+# My Player Networking object
+var player : Player_v2_networking
+var id_as_string : String
+
+
+# Signals
+signal PlayerInput(peer_id)
+
+
 func _ready():
 	_init_timer()
 	
@@ -110,10 +152,12 @@ func _ready():
 	if cfg_client_ip == '':
 		cfg_client_ip = DEFAULT_HOSTNAME
 		
+	if cfg_player_name == "":
+		cfg_player_name = DEFAULT_HOSTNAME
 	
 	print ("Networking Server Config and Player Name: ",cfg_server_ip,cfg_player_name, "/")
 	
-	
+
 
 
 func _process(_delta): 
@@ -147,6 +191,7 @@ func _init_timer() :
 	check_timer.wait_time = 5
 	
 	# connect timer timeout signal
+	"Updates the Networking Boolean of Timer State"
 	if not timer.is_connected("timeout",self, "_on_Timer2_timeout"):
 		timer.connect("timeout",self, "_on_Timer2_timeout")
 	
@@ -172,7 +217,7 @@ func stop_check()-> bool: #Stops timer check
 "Starts a check using Timer Node for 3 Seconds"
 func start_check(time: int): 
 	connection_debug = str('start check') # Debug Variable
-	#print ("start check")
+	Timeout = false
 	if time != null:
 		check_timer.start(time) 
 	
@@ -429,10 +474,10 @@ static func download_file_(node : HTTPRequest,body: PoolByteArray, Save_path: St
 'Saves A File and Stores it Locally'
 #consider running 2 operations here. A read operation and a write operation
 # works
-static func save_file_(body: PoolByteArray, Save_path: String, file_size: int) -> File:
+static func save_file_(body: PoolByteArray, Save_path: String, file_size: int ) -> File:
 	var file = File.new()
 	
-	var Dir = Directory.new()
+	#var Dir = Directory.new()
 	
 	if body != null : # && !Dir.file_exists(Save_path):
 		
@@ -443,19 +488,22 @@ static func save_file_(body: PoolByteArray, Save_path: String, file_size: int) -
 		#file.open_compressed((Save_path + file_type), File.WRITE, File.COMPRESSION_GZIP )
 		
 		
-		file.open((Save_path ), File.WRITE )
+		var err = file.open((Save_path ), File.WRITE )
 		
 		#while not node.get_downloaded_bytes() > node.get_body_size() && file.eof_reached() == false:
 		print ("storing file to ", Save_path)
 		
-		while not file.get_len() > file_size:
-			file.store_buffer(body)
+		if err==OK:
 			
-			if file.get_len() == file_size:
-				file.close()
-				break 
-		
-		if file.eof_reached(): file.close()
+			while not file.get_len() > file_size:
+				file.store_buffer(body)
+				
+				if file.get_len() == file_size:
+					file.close()
+					break 
+			
+			if file.eof_reached(): file.close()
+		else : push_error("Error:" + err)
 		
 		# it's sending the data across the network, but its not decoding it properly                                           
 		#var data = node.get_downloaded_bytes()
@@ -474,6 +522,843 @@ static func save_file_(body: PoolByteArray, Save_path: String, file_size: int) -
 func _on_Timer2_timeout():
 	print ('check timer stopped')
 	Timeout = true
+	Comics_v6.SwipeLocked = false#!Comics_v6.SwipeLocked
+	emit_signal("Timeout")
 	stop_check()
 
-	pass
+"""
+MULTIPLAYER SIGNALS
+"""
+# Executes Multiplayer Logic In the Lobby Class
+func _server_disconnected():
+	#emit_signal("game_finished")
+	#print_debug(int(Networking.player_info["peer id"][peer_id]))
+	Lobby._on_server_disconnected(peer_id, get_tree(), UserInterface)
+
+
+func _player_disconnected(_id : int):
+	 # _id, Lobby: SceneTree, UI : Control)
+	#emit_signal("game_finished")
+	Lobby._on_player_disconnected(_id, get_tree(), UserInterface)
+	#_end_game()
+	
+	Lobby._set_status((str (_id )+ " Disconnected"), Dialogs.dialog_box, true)
+	# SHould Ideally Only Delete the player that is disconnected
+
+func _player_connected(_id : int):
+	# Calls Player Logic in the Lobby Class
+	# Method is called with the Noe's Unique ID
+	# Idenftifying the player. This ID Should Be Saved
+	
+	Networking.player_info["peer id"] = {_id : {}}
+	
+	peer_id = _id
+	#OS.set_window_title('Client' + str(_id))
+	
+	# Create Global Pointers to Connected Peer ID's
+	if not peer_ids.has(_id):
+		peer_ids.append(_id)
+	if not peer_ids.has(get_tree().get_network_unique_id()):
+		peer_ids.append(get_tree().get_network_unique_id())
+	
+	"Starts Game"
+	
+	Globals.current_level = "res://scenes/levels/Testing Scene.tscn"
+	# Someone connected, start the game!
+	var Map : PackedScene = Globals.Functions.LoadLargeScene(
+		Globals.current_level, 
+		Globals.scene_resource, 
+		Globals._o, 
+		Globals.scene_loader, 
+		Globals.loading_resource, 
+		Globals.a, 
+		Globals.b, 
+		Globals.progress
+		)
+	
+	map_instance = Map.instance()
+	
+	
+
+	
+	# Connect deferred so we can safely erase it from the callback.
+	# Defines the Type of COnnection
+	# Connects the Game Loop's Game Finished Signal to an End Game Method
+	# ENd Game Is a Non Existent Function SO it throws a warning
+	connect("game_finished", self, "_end_game", [], CONNECT_DEFERRED)
+	
+	#asafaf
+	# Logic: If player connected, Start Game
+	
+	# Add Game Scene to tree
+	# Instace As A child of Server Node
+	get_tree().get_root().add_child(map_instance)
+	
+	Networking.UserInterface.hide()
+	#UI.hide()
+	#pass
+	
+	
+	# Implements a Compatible statmechine optimized for  the rpc node/ multiplayer architecture 
+	#var networked_player : GDScript = load("res://scenes/characters/Player v2.gd")
+	# Set Player Script
+	
+	#var player_group =get_tree().get_nodes_in_group("player")
+	#var player_ = player_group.pop_front() # Implement Unique ID
+	
+	
+	# Set Player Object With Networked Multiplayer Script
+	#player_.set_script(networked_player)
+
+func _end_game():
+	print_debug("Ending Game")
+	#if is_instance_valid(map_instance):
+		
+		# Debug Loobby Map Instance
+	#print_debug (get_tree().has_node(map_instance), is_instance_valid(map_instance))
+	#if Lobby.has_node(Map):
+	# Erase immediately, otherwise network might show
+	# errors (this is why we connected deferred above).
+	#Lobby.get_node(Map).free()
+	
+	var _map = get_tree().get_nodes_in_group("Multiplayer").pop_front()
+	map_instance.queue_free()
+	#_map.free()
+	# UI SHow
+	# Enable UI buttons
+	UserInterface.show()
+
+	# Update UI when current Game Ends
+	get_tree().set_network_peer(null) # Remove peer.
+		
+		
+		#host_button.set_disabled(false)
+		#join_button.set_disabled(false)
+	var with_error : String = "End Game! Server Disconnected"
+	#print_debug(with_error , false)
+	Lobby._set_status(with_error, Dialogs.dialog_box , false)
+
+
+remote func broadcast_world_positions():
+	# Server Call
+	# Calls the pu Method in all Renote peers
+	# can only be called by Server
+	# Only the Hosting Device Can Update All NEtwork peers
+	if is_network_master():
+		
+		
+		
+		# First, Convert Player Info Dictionary to Pool Byte Array
+		# Error: it's sending an empty Poolbyte
+		# TO DO: COnvert Player Info Dictionary to PoolbyteArray encoded utf-8 
+		
+		
+		
+		
+		#print_debug( "Player Info as Json: " + to_json(player_info)) # isn't converted to PoolbyteArray
+		
+		#print(player_info)
+		
+		#player_data = var2bytes([to_json(player_info)]) #PoolByteArray([data]) #Test Data
+		
+		
+		#print_debug("BroadCasting Player Data"+ str(bytes2var(player_data)) + " for peer id " + str(peer_id), "Master: ", is_network_master()) # For Debug Purposes only
+		
+		#	print(player_data.size())
+		
+		
+		rpc_unreliable_id(peer_id, "pu", peer_id, update_id, array2poolByte([player_info])) # pu call is buggy cuz of peer id error
+	
+	#	for i in player_info["peer id"]:
+	#		print (i.keys())
+			
+		update_id += 1
+		
+
+"Multiplayer NetCode Functions"
+
+func array2poolByte( data_from : Array) -> PoolByteArray: 
+	#	if frame_counter % 6_000 == 0:
+	RawData = var2bytes([to_json(data_from)])
+	return PoolByteArray(RawData)
+
+func poolByte2Array(data_from: PoolByteArray) -> Array:
+	RawData = bytes2var(data_from)
+	# Iterate through raw data
+	for i in RawData:
+		#Returns a String. Converting to Dictionary
+		
+		RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
+	return RawJson.get_result()
+
+
+"""
+REGISTERS PLAYER INPUT AND RELEASES
+"""
+
+# Also updates the server object with player data from respective peers
+remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray):
+	# Remote Calls Player Input From Client Peer for each client peer
+	# Should Connect to Physics Process Simulation Logic
+	# Bug: Player positional data is not sent properly (Fixed)
+
+	if is_network_master():
+		#print("Player Input Registered ",str (poolByte2Array(player_data)), "from ", id ) # player data returns array
+		
+		print("Packet Size (Bytes): ", player_data.size())
+		
+		#print(player_info) # for debug purposes only
+		
+		id_as_string = var2str(id) 
+		
+		for i in poolByte2Array(player_data):
+				#Returns a String. Converting to Dictionary
+				
+		#	RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
+				
+			
+			# Bug : Nerging Dictionaries may be overwrite positional data? 
+			# Fix : Set Overwrite to true for duplicate keys
+			
+			
+			#print ("I: ", i["peer id"][var2str(id)]["position"]) # works # for debug purposes only
+			
+			# Registers the Player Peer ID Locally
+			if not player_info["peer id"].has(id_as_string):
+				player_info["peer id"][id_as_string] = {
+				"node": [],
+				"position": i["peer id"][id_as_string]["position"], # updated positional data, 
+				"hitpoints" : 3,
+				"facing": key,
+				"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
+				"roll dir": [],
+				"destroyed": bool(i["peer id"][id_as_string]["destroyed"]),
+				"updates": [],  # Stores Present Update ID Across All Clients
+				"wallet addr": {},
+				"asset id": {},
+				"smart contract": [], # Arrays As it will only be one Smart COntract
+				"kill Count": 0,
+				"inventory": {},
+				"velocity":0,
+				"rotation":0,
+				"firing":false,
+				"current_angle": 0,
+				"rewspawn_time":1000,
+				"hash" : ""
+				
+				}
+				
+				
+			"Player Variables"
+			# Positional Data
+			print("Updating Player Information for peer ",Networking.id_as_string, " from " ,Networking.player_info["peer id"][Networking.id_as_string]["position"], " to " , i["peer id"][Networking.id_as_string]["position"])
+			player_info["peer id"][id_as_string]["position"] = i["peer id"][id_as_string]["position"] #WORKS
+			
+			# Emit Signal
+			#emit_signal("PlayerInput", id_as_string) # Buggy Signal
+			
+			player.poop(id_as_string)
+			
+			#print ("O: ", player_info["peer id"][id_as_string]["position"]) # works # for debug purposes only
+			
+			# Facing Data
+			print ("O: ", player_info["peer id"][id_as_string]["facing"], i["peer id"][id_as_string]["facing"]) # works # for debug purposes only
+
+			
+			
+
+			
+		#print("Remote: player_input(" + str(id)+","+key+","+str(pressed)+")" , RawJson.get_result()["peer id"][])
+		#print(player_info)
+		#print(player_info["peer id"].keys())
+		#print(peer_ids)
+		
+			#Requires Debugging
+			#if key == "left":
+			#	Networking.player_info[id].facing = key
+			##	Networking.player_info[id].rotation = -1 if pressed else 0
+			#elif key == "right":
+			#	Networking.player_info[id].rotation = 1 if pressed else 0
+			#elif key == "up":
+			#	Networking.player_info[id].velocity = -1 if pressed else 0
+			#elif key == "down":
+			#	Networking.player_info[id].velocity = 1 if pressed else 0
+			#elif key == "fire":
+			#	Networking.player_info[id].firing = 1 if pressed else 0
+			#elif key == "attack":
+			##	
+			#else : pass
+
+
+
+"""
+PLAYER UPDATE
+"""
+# Player update function
+# This function is named "pu" to lower the network bandwidth usage, sending something
+# like "player_update" will use an extra 220 bytes / second for each connected player. 
+# broadcasts server player data as poolbyte arrays to all peers
+
+# Use Player Info Hash to Verify Packet Integrity
+# Should Instead Receive A Json Compressed instead of individual Player Parameters
+#
+# receives player info from sever object
+
+
+remote func pu(id : int, update_id : int, updates: PoolByteArray):
+	
+	print (" Packet Recieved, Size (Bytes): ", updates.size()) # for debug purposes only
+	
+	#Error Catcher 1
+	# Unreliable packets can be sent in wrong order, we only work with the latest
+	# data available.
+	if update_id < last_update:
+		print("Received update in wrong order. Discarding!")
+		return
+	
+	# parse data as array
+	#RawData = bytes2var(updates) #Warning: Can also contain code for remote execution; potential security flaw
+	
+	var id_as_string : String = var2str(peer_id) 
+	
+	# Maintain an Updated Timeline so older packets are discarded
+#	last_update = update_id
+	
+	#print("Data Packets:", str(RawData)) # Works
+	
+	
+	for i in poolByte2Array(updates):
+		#Returns a String. Converting to Dictionary
+		
+		#RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
+		#print(i)
+		
+		# Returns a Dictionary
+		#print(RawJson.get_result()) # Works
+		
+		# Merges Server Player Info to Local Player Info with Peer ID's
+		#player_info["peer id"].merge(RawJson.get_result()["peer id"])
+		
+		#print("I: ",i) # for debug purposes only
+		
+		print (player_info["peer id"].keys()) #for debug purposes only
+		
+		
+		# Update Local Peer Data from peer Update
+		
+		#if player_info["peer id"].keys().size() > 1:
+		player_info["peer id"][player_info["peer id"].keys().pop_back()]["position"] = i["peer id"][id_as_string]["position"]
+		
+		#print(player_info["peer id"].size()) # FOr debug purposes only
+	
+	#print ("Peer ID's: ",player_info["peer id"].keys()) # Peer ID's of the Connected CLient Peers with Respective Player info dictionaries
+	
+	# only works on client peer
+	peer_ids = player_info["peer id"].keys()
+	#print(player_info) # for debug purposes only
+	
+	# Peer ID's 1 needs to be emulated
+	
+	# Updates the Update Parameter for This Peer ID. 
+	# Is Called Remotely From a Peer
+	#print_debug (updates.get_string_from_utf8())
+	
+	# REwrite to instead Parse json
+#	download_json_(updates, "res://")
+	#Networking.player_info[id].updates[OS.get_ticks_msec()] = { position = pos, velocity = velocity, rotation = rotation }
+	
+	# Stops a Stack Overflow or by Eraci=sing Excess Updates over 10
+	#while len(Networking.player_info["peer id"][id].updates) > 10:
+	#	Networking.player_info[id].updates.erase(Networking.player_info[id]["updates"].keys()[0])
+	
+	
+	# Dont Update If Peer Destroyed
+	#if Networking.player_info[id].destroyed:
+	#	return
+	
+	
+	# Remote Update Particles
+	
+
+
+class Downloader extends Node:
+	# Unused Downloader Class   
+	####Generic File downloader######
+	var t = Thread.new()
+		
+	func _init():
+		var arg_bytes_loaded = {"name":"bytes_loaded","type":TYPE_INT}
+		var arg_bytes_total = {"name":"bytes_total","type":TYPE_INT}
+		add_user_signal("loading",[arg_bytes_loaded,arg_bytes_total])
+		var arg_result = {"name":"result","type":TYPE_RAW_ARRAY}
+		add_user_signal("loaded",[arg_result])
+		pass
+		
+	func __get(domain,url,port,ssl):
+		if(t.is_active()):
+			return
+		t.start(self,"_load",{"domain":domain,"url":url,"port":port,"ssl":ssl})
+		 
+	func _load(params):
+		var err = 0
+		var http = HTTPClient.new()
+		err = http.connect(params.domain,params.port,params.ssl)
+		 
+		while(http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING):
+			http.poll()
+			OS.delay_msec(100)
+		  
+		var headers = [
+		  "User-Agent: Pirulo/1.0 (Godot)",
+		  "Accept: */*"
+		 ]
+		 
+		err = http.request(HTTPClient.METHOD_GET,params.url,headers)
+		 
+		while (http.get_status() == HTTPClient.STATUS_REQUESTING):
+			http.poll()
+			OS.delay_msec(500)
+		 
+		var rb = PoolByteArray()
+		if(http.has_response()):
+			headers = http.get_response_headers_as_dictionary()
+			while(http.get_status()==HTTPClient.STATUS_BODY):
+				http.poll()
+				var chunk = http.read_response_body_chunk()
+				if(chunk.size()==0):
+					OS.delay_usec(100)
+				else:
+					rb = rb+chunk
+					call_deferred("_send_loading_signal",rb.size(),http.get_response_body_length())
+		  
+		call_deferred("_send_loaded_signal")
+		http.close()
+		return rb
+	func _send_loading_signal(l,t):
+		emit_signal("loading",l,t)
+		pass
+		 
+	func _send_loaded_signal():
+		var r = t.wait_to_finish()
+		emit_signal("loaded",r)
+		pass
+
+
+
+
+
+class Player_v3_networking extends KinematicBody2D:
+
+	
+	# Refactor to instead Extend Kinematic Bodt
+	# Player
+	# All the Player Logic In One Class
+	# Implement Player v2 Networking here
+	
+	const MOTION_SPEED = 150
+
+	export var left = false
+
+	var _motion = 0
+	var _you_hidden = false
+
+	onready var _screen_size_y = get_viewport_rect().size.y
+
+
+	func ___process___(delta): # Depreciated
+		# Is the master of the paddle.
+		if is_network_master():
+			_motion = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
+
+			#Depreciated
+			#if not _you_hidden and _motion != 0:
+			#	_hide_you_label()
+
+			_motion *= MOTION_SPEED
+
+			# Using unreliable to make sure position is updated as fast
+			# as possible, even if one of the calls is dropped.
+			rpc_unreliable("set_pos_and_motion", position, _motion)
+		#else:
+		#	if not _you_hidden:
+		#		_hide_you_label()
+
+		translate(Vector2(0, _motion * delta))
+
+		# Set screen limits.
+		position.y = clamp(position.y, 16, _screen_size_y - 16)
+
+	"""
+	GAME SYNCHRONIZER
+	"""
+	#Synchronize position and speed to the other peers.
+	puppet func set_pos_and_motion(pos, motion):
+		position = pos
+		_motion = motion
+		
+		# Other Data to Synchronize
+		# Health
+		# Inventory with inventory duplicate
+		# State
+		#
+
+
+	# Client Side Code
+
+	# Player update function
+	# This function is named "pu" to lower the network bandwidth usage, sending something
+	# like "player_update" will use an extra 220 bytes / second for each connected player. 
+	remote func pu(id, update_id : int, pos : Vector2, velocity, rotation):
+		
+		var last_update = -1
+		
+		# Unreliable packets can be sent in wrong order, we only work with the latest
+		# data available.
+		if update_id < last_update:
+			print("Received update in wrong order. Discarding!")
+			return
+			
+		last_update = update_id
+		Networking.player_info[id].updates[OS.get_ticks_msec()] = { position = pos, velocity = velocity, rotation = rotation }
+		while len(Networking.player_info[id].updates) > 10:
+			Networking.player_info[id].updates.erase(
+				Networking.player_info[id].updates.keys()[0]
+				)
+		
+		if Networking.player_info[id].destroyed:
+			return
+			
+		if Networking.player_info[id].node.has_node("particles"):
+			Networking.player_info[id].node.get_node("particles").set_emitting(velocity != 0)
+
+		if Networking.player_info[id].node.has_node("audio_thruster"):
+			
+			# SOund FX? Depreciated
+			Networking.player_info[id].node.get_node("audio_thruster").stream_paused = velocity == 0
+
+
+
+
+	func _on_paddle_area_enter(area):
+		if is_network_master():
+			# Random for new direction generated on each peer.
+			area.rpc("bounce", left, randf())
+
+
+
+
+#  Object/ Scene Manager
+
+class SceneManager extends Node2D:
+
+	signal game_finished()
+
+	const SCORE_TO_WIN = 10
+
+	var score_left = 0
+	var score_right = 0
+
+	onready var player2 = $Player2
+	onready var score_left_node = $ScoreLeft
+	onready var score_right_node = $ScoreRight
+	onready var winner_left = $WinnerLeft
+	onready var winner_right = $WinnerRight
+
+	func _ready():
+		# By default, all nodes in server inherit from master,
+		# while all nodes in clients inherit from puppet.
+		# set_network_master is tree-recursive by default.
+		if get_tree().is_network_server():
+			# For the server, give control of player 2 to the other peer.
+			player2.set_network_master(get_tree().get_network_connected_peers()[0])
+		else:
+			# For the client, give control of player 2 to itself.
+			player2.set_network_master(get_tree().get_network_unique_id())
+
+		print("Unique id: ", get_tree().get_network_unique_id())
+
+
+	remotesync func update_score(add_to_left):
+		if add_to_left:
+			score_left += 1
+			score_left_node.set_text(str(score_left))
+		else:
+			score_right += 1
+			score_right_node.set_text(str(score_right))
+
+		var game_ended = false
+		if score_left == SCORE_TO_WIN:
+			winner_left.show()
+			game_ended = true
+		elif score_right == SCORE_TO_WIN:
+			winner_right.show()
+			game_ended = true
+
+		if game_ended:
+			$ExitGame.show()
+			$Ball.rpc("stop")
+
+
+	func _on_exit_game_pressed():
+		emit_signal("game_finished")
+
+
+
+"""
+
+All Multiplayer Networking Logics in One FIle
+Client, Server and Lobby
+"""
+# Lobby 
+
+class Lobby extends Control:
+
+	# Default game server port. Can be any number between 1024 and 49151.
+	# Not on the list of registered or common ports as of November 2020:
+	# https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
+	const DEFAULT_PORT = 8910
+
+
+	# Lobby UI
+	# Declares Variables
+	#onready var address = $Address
+	#onready var host_button = $HostButton
+	#onready var join_button = $JoinButton
+	#onready var status_ok = $StatusOk
+	#onready var status_fail = $StatusFail
+	#onready var port_forward_label = $PortForward
+	#onready var find_public_ip_button = $FindPublicIP
+
+	var peer = null
+
+	# FOrmerly Ready Method
+	static func ConnectSignal(scene_tree_obj : SceneTree, Lobby : Node) -> void:
+		# Connect all the callbacks related to networking.
+		# Inernet Class Contains Logic for the Implmentations Requiring Parameters
+		
+		# Players/CLients
+		# Connect Signals
+		# Debug Signal Connections
+		# Signals Connect to Networking Main Script, which executeds Lobby Static Functions
+		# Present in the Lobby Class
+		scene_tree_obj.connect("network_peer_connected", Networking, "_player_connected")
+		scene_tree_obj.connect("network_peer_disconnected", Networking, "_player_disconnected")
+		
+		# Connection Signal
+		scene_tree_obj.connect("connected_to_server", Lobby, "_on_connected_ok") 
+		scene_tree_obj.connect("connection_failed", Networking, "_connected_fail")
+		
+		# Server
+		scene_tree_obj.connect("server_disconnected", Networking, "_server_disconnected")
+
+
+
+
+
+	static func _on_player_disconnected(_id, Lobby: SceneTree, UI : Control):
+		if Lobby.is_network_server():
+			# with_error : String , Lobby : SceneTree, UI: Control ,Map = "/root/Pong"
+			_end_game("Client disconnected", Lobby, UI)
+		else:
+			_end_game("Server disconnected", Lobby, UI)
+
+
+	# Callback from SceneTree, only for clients (not server).
+	static func _on_connected_ok():
+		print_debug(" Connection OK")
+
+
+	static func _connected_fail():
+		print_debug("Connection Fail")
+
+	# Callback from SceneTree, only for clients (not server).
+	static func _on_connected_fail(Lobby : SceneTree):
+		
+		print_debug("Couldn't Connect")
+		#_set_status("Couldn't connect", false)
+
+		Lobby.set_network_peer(null) # Remove peer.
+
+		# Update UI and Enable Disabled Buttons
+		
+		#host_button.set_disabled(false)
+		#join_button.set_disabled(false)
+
+
+	static func _on_server_disconnected(_id : int, Lobby : SceneTree, UI : Control):
+		_end_game( str(_id) + " Server disconnected", Lobby)
+		UI.show()
+
+	##### Game creation functions ######
+	# Change Map Parameter To Game Level (Map) Position in the Scene Trees 
+	# End Game is Buggy
+	# Moving to Networking Singleton Implementation
+	static func _end_game(with_error : String , Lobby : SceneTree, Map = Networking.map_instance, error = Networking._reference_to_debug.error_splash_page):
+		if is_instance_valid(Map):
+			
+			# Debug Loobby Map Instance
+			#print_debug (Lobby.has_node(Map), is_instance_valid(Map))
+			
+			#if Lobby.has_node(Map):
+			# Erase immediately, otherwise network might show
+			# errors (this is why we connected deferred above).
+			#Lobby.get_node(Map).free()
+			Lobby.change_scene_to(error)
+			
+			Map.queue_free()
+			
+			#var _map = Lobby.get_nodes_in_group("Multiplayer").pop_front()
+			#Map.free()
+			#_map.free()
+			# UI SHow
+			Networking.UserInterface.show()
+
+		# Update UI when current Game Ends
+		Lobby.set_network_peer(null) # Remove peer.
+		
+		# Enable UI buttons
+		#host_button.set_disabled(false)
+		#join_button.set_disabled(false)
+
+		print_debug(with_error , false)
+		_set_status(with_error, Dialogs.dialog_box , false)
+
+	# SHows ingame Status
+	# Connect to Dialogue Box
+	static func _set_status(text : String, status : DialogBox, isok : bool):
+		Networking. start_check(2)
+		# Simple way to show status.
+		#
+		 
+		status.show_dialog( text + str(isok), "Admin") 
+			
+		# Bug: Dialogue box doesnt stop showing 
+		
+
+	# Starts Server Connections
+	# Connects to UI Buttons
+	static func _on_host_pressed( peer : NetworkedMultiplayerENet, Lobby : SceneTree, host_button : Button, join_button : Button , dialog_box : DialogBox) -> bool:
+		peer = NetworkedMultiplayerENet.new()
+		peer.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER)
+		var err = peer.create_server(DEFAULT_PORT, Networking.MAX_PLAYERS) # Maximum of % peers
+		
+		# If Bad COnnection
+		if err != OK:
+			# Is another server running?
+			_set_status("Can't host, address in use.",dialog_box ,false)
+			return true
+
+		OS.set_window_title('Server')
+		
+		# Sets Network Peer
+		Lobby.set_network_peer(peer)
+		
+		
+		host_button.set_disabled(true)
+		join_button.set_disabled(true)
+		
+		#i/o
+		print("Waiting for player...")
+		
+		# Sets UI Status : text : String, status : DialogBox, isok : bool
+		_set_status("Waiting for player...",dialog_box ,true)
+
+		# Only show hosting instructions when relevant.
+		#
+		# Show Host Instructionals
+		#port_forward_label.visible = true
+		#find_public_ip_button.visible = true
+		return true
+
+	# Connects to Server From Client
+	static func _on_join_pressed( address: LineEdit, ClientPeer: NetworkedMultiplayerENet, Lobby : SceneTree ) -> bool :
+		var ip = address.get_text()
+		if not ip.is_valid_ip_address():
+			print_debug("IP Address Is Invalid")
+			#_set_status("IP address is invalid", false)
+			return true
+
+		#peer = NetworkedMultiplayerENet.new()
+		ClientPeer.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER)
+		ClientPeer.create_client(ip, DEFAULT_PORT)
+		Lobby.set_network_peer(ClientPeer)
+
+		_set_status("Connecting...", Dialogs.dialog_box, true)
+		print_debug(" Connecting...")
+		
+		return true
+
+	# Finds Device Public IP Address from a WebSite
+	static func _on_find_public_ip_pressed() -> void:
+		OS.shell_open("https://icanhazip.com/")
+
+
+
+class NetworkedObject extends Area2D:
+
+	const DEFAULT_SPEED = 100
+
+	var direction = Vector2.LEFT
+	var stopped = false
+	var _speed = DEFAULT_SPEED
+
+	onready var _screen_size = get_viewport_rect().size
+
+	func _process(delta):
+		_speed += delta
+		# Ball will move normally for both players,
+		# even if it's sightly out of sync between them,
+		# so each player sees the motion as smooth and not jerky.
+		if not stopped:
+			translate(_speed * delta * direction)
+
+		# Check screen bounds to make ball bounce.
+		var ball_pos = position
+		if (ball_pos.y < 0 and direction.y < 0) or (ball_pos.y > _screen_size.y and direction.y > 0):
+			direction.y = -direction.y
+
+		if is_network_master():
+			# Only the master will decide when the ball is out in
+			# the left side (it's own side). This makes the game
+			# playable even if latency is high and ball is going
+			# fast. Otherwise ball might be out in the other
+			# player's screen but not this one.
+			if ball_pos.x < 0:
+				get_parent().rpc("update_score", false)
+				rpc("_reset_ball", false)
+		else:
+			# Only the puppet will decide when the ball is out in
+			# the right side, which is it's own side. This makes
+			# the game playable even if latency is high and ball
+			# is going fast. Otherwise ball might be out in the
+			# other player's screen but not this one.
+			if ball_pos.x > _screen_size.x:
+				get_parent().rpc("update_score", true)
+				rpc("_reset_ball", true)
+
+
+	remotesync func bounce(left, random):
+		# Using sync because both players can make it bounce.
+		if left:
+			direction.x = abs(direction.x)
+		else:
+			direction.x = -abs(direction.x)
+
+		_speed *= 1.1
+		direction.y = random * 2.0 - 1
+		direction = direction.normalized()
+
+
+	remotesync func stop():
+		stopped = true
+
+
+	remotesync func _reset_ball(for_left):
+		position = _screen_size / 2
+		if for_left:
+			direction = Vector2.LEFT
+		else:
+			direction = Vector2.RIGHT
+		_speed = DEFAULT_SPEED
+
+

@@ -75,6 +75,7 @@ func _ready():
 	language.add_item('English') 
 	language.add_item('Brazilian Portuguese') 
 	language.add_item('French')
+	language.add_item('Telugu')
 	language.add_item('Hindi')
 	language.add_item('Japanese')
 	language.add_item('Mandarin')
@@ -111,6 +112,8 @@ func _on_play_pressed():
 	elif language.get_selected() == 2:
 		Dialogs.language = "fr"
 	elif language.get_selected() == 3:
+		Dialogs.language = "te_IN"
+	elif language.get_selected() == 4:
 		Dialogs.language = "hi_IN"
 	elif language.get_selected() == 4:
 		Dialogs.language = "ja"

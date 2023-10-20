@@ -56,7 +56,7 @@ var font_pack : Dictionary = {
 "en_US": "res://fonts/Comic_Andy.ttf",
 "pt_BR": "res://fonts/Comic_Andy.ttf",
 "fr": "res://fonts/Comic_Andy.ttf",
-"te_IN":"",
+"te_IN":"res://fonts/NTR.ttf",
 "hi_IN":"res://fonts/TiroDevanagariHindi-Regular.ttf",
 "yo_NG":"res://fonts/WarowniaBlkNrw.ttf",
 "ja":"res://fonts/NotoSerifJP-Regular.otf",

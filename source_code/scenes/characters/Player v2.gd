@@ -689,10 +689,6 @@ func _physics_process(delta):
 	if is_network_master():
 		
 		
-		#print(Networking.player_info["peer id"][Networking.peer_ids[2]]["position"])
-		# Sync Client Peer Position
-		#set_position(Vector2(Networking.player_info["peer id"][Networking.peer_ids[1]]["position"]))
-		
 		# Debugx Server sie position
 		
 		#print(Networking.player_info["peer id"][Networking.peer_ids[0]]["position"])

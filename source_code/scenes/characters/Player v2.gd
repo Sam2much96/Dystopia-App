@@ -125,6 +125,7 @@ func _ready():
 	
 	print_debug("Peer ID: ", peer_id)
 
+	# Create A Frame Buffer for Player Information
 	# Update Networking Player Info With Player Info
 	# Works
 	Networking.player_info["peer id"][peer_id] = {
@@ -219,6 +220,8 @@ func _process(delta):
 	if frame_counter >= 6_000:
 		frame_counter = 0
 
+	
+	"Clears the Frame Buffer"
 	# Prevents Memory overflow and increased bandwidth from large packet sizes
 	# Should ideally only clear up to the last two?
 	# Buggy

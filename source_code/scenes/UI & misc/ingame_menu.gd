@@ -125,7 +125,7 @@ func _input(event): #Toggles menu visibility on/off
 			#Globals.Screen.debug_screen_properties()# Debug Screen Settingd
 			
 			" Checks Device orentation"
-			Globals.Screen.Orientation(Globals)
+			Utils.Screen.Orientation(Globals)
 			
 			return menu_state
 		if menu_state== SHOWING:
@@ -302,7 +302,7 @@ func _exit_tree():
 	#
 	# Clears all ui buttons
 	
-	Globals.MemoryManagement.queue_free_array(MenuButtons)
+	Utils.MemoryManagement.queue_free_array(MenuButtons)
 	Music._notification(NOTIFICATION_UNPAUSED) #resets music when exiting scene tree
 	
 

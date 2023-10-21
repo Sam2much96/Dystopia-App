@@ -151,7 +151,7 @@ func _ready():
 	calculate_button_positional_data()
 	
 	"Display Screen Calculations"
-	Globals.Screen.display_calculations(get_tree().get_root(), Globals)
+	Utils.Screen.display_calculations(get_tree().get_root(), Utils)
 
 	dimensions = calculate_length_breadth(buttons_positional_data)
 	dimensional_diff = dimensions - Globals.center_of_viewport 

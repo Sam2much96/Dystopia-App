@@ -48,9 +48,9 @@ func _on_pond_body_entered(body): #Low level program, would not execute
 		body_pos = body.position
 		#puddle_pos =  puddle_fx.get_position()
 		
-		Globals.set_process(true)
+		#Globals.set_process(true)
 		
-		final_pos= Globals.restaVectores(body.position, puddle_fx.get_position())
+		final_pos= Utils.restaVectores(body.position, puddle_fx.get_position())
 		
 		
 		

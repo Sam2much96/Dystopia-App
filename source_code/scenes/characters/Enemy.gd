@@ -405,7 +405,7 @@ class Behaviour extends Reference:
 			
 			enemy_direction= (body_position.direction_to(player_position))
 			
-			Globals.rotate_pointer(Vector2((enemy_direction.x), (enemy_direction.y)), pointer) # Rotates a Racast 2d to face the Enemy
+			Utils.rotate_pointer(Vector2((enemy_direction.x), (enemy_direction.y)), pointer) # Rotates a Racast 2d to face the Enemy
 			
 			var X = round(enemy_direction.x) ; var Y =round (enemy_direction.y)
 			if X == 0 and Y == 1:
@@ -444,7 +444,7 @@ class Behaviour extends Reference:
 				"Enemy Envcounters Player Node"
 				
 				if raycast.is_colliding() && player != null:
-					var center = Functions.calculate_center(player, _position) #calculates distance to plaer
+					var center = Functions.calculate_center(player.position, _position) #calculates distance to plaer
 					_enemy.move_and_slide(center) # moves to player
 					state = STATE_WALKING
 					#var enemy_distance_to_player = abs(position.distance_to(player.position )) # Calculates the enemy distance to playrer
@@ -490,12 +490,7 @@ class Behaviour extends Reference:
 		return state 
 
 	static func randomize_enemy_type( options : Array):
-		#randomize()
-		#enemy_type = ['Easy', "Intermediate", "Hard"][randi()%3]
-		#enemy_type = 
-		#return options [randi()% int(options.size() - 1)] # Returns Easy
-		#return ['Easy', "Intermediate", "Hard"][randi()%3] # Returns Hard
-		return Globals.randomize_enemy_type() # Returns Hard
+		return Utils.randomize_enemy_type() # Returns Hard
 
 	# Updates the raycast to the Enemy"s Direction
 	static func rotate_pointer(point_direction: Vector2, pointer) -> void:
@@ -506,8 +501,8 @@ class Behaviour extends Reference:
 class Functions extends Reference:
 	
 	# calculates the center btw two vectors (player and target)
-	static func calculate_center(player, initial_position)-> Vector2:
+	static func calculate_center(player_position : Vector2, initial_position : Vector2)-> Vector2:
 		
-		var center = Globals.restaVectores(player.position, initial_position) 
+		var center = Utils.restaVectores(player_position, initial_position) 
 		return center
 

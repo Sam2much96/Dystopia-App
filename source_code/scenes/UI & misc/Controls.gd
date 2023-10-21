@@ -143,7 +143,8 @@ func _on_music_toggled(button_pressed): #Music on and off settings
 
 
 func _on_Help_pressed():
-	_Help_hint._ready()
+	#_Help_hint._ready()
+	pass
 
 
 func _on_Direction_controls_toggled(button_pressed):
@@ -188,8 +189,9 @@ func _exit_tree():
 		Globals.direction_control)
 	
 	# FOr Memorey Management ( Garbage Collector)
-	for i in ControlButtons:
-		i.queue_free()
+	Utils.MemoryManagement.queue_free_array(ControlButtons)
+#	for i in ControlButtons:
+#		i.queue_free()
 		
 
 

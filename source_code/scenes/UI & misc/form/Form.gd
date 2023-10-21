@@ -204,10 +204,10 @@ func translate()-> void:
 
 
 func _exit_tree():
-	print ("Selected Language: ",Dialogs.language)
+	print_debug ("Selected Language: ",Dialogs.language)
 	
 	# Clear Memory
 	#for i in UI_buttons:
 	#	i.queue_free()
 
-	Globals.MemoryManagement.queue_free_array(UI_buttons)
+	Utils.MemoryManagement.queue_free_array(UI_buttons)

@@ -28,8 +28,21 @@ The purpose of this code is to beautify the UI programmatically
 onready var art1 :  TextureRect = $TextureRect
 onready var art2 : TextureRect = $TextureRect2
 
+onready var menu : TouchScreenButton = $menu
+#onready var notifications : Popup = $Notification2
+onready var logo : TextureRect = $logo
+onready var _ad_placeholder : Appodeal = $Appodeal
+onready var _menu = $"Menu "
+onready var title_nodes : Array = [art1, art2, menu,logo,_ad_placeholder,_menu]
+
+
 
 func _ready():
+	
+	# Memory Pointers to Title Screen Subnodes
+	
+	
+	
 	"Titl screen Art"
 	if Globals.screenOrientation == 0:
 		art1.show()
@@ -41,7 +54,9 @@ func _ready():
 
 
 
-
-
+func _exit_tree():
+	# Memory Leak Management
+	Utils.MemoryManagement.queue_free_array(title_nodes)
+#	_menu.queue_free()
 
 

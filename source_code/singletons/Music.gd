@@ -184,8 +184,11 @@ onready var  Music_streamer_2  : AudioStreamPlayer=get_node_or_null("D")
 onready var sfx_streamer 
 onready var track
 
+
+onready var transitions : AnimationPlayer = $anims
+
 # Pointers to Node for Memory Mgmt
-onready var my_nodes : Array = [Music_streamer,B,C,Music_streamer_2]
+onready var my_nodes : Array = [Music_streamer,B,C,Music_streamer_2,transitions,requests]
 
 
 # THis URL fetches a Zip file from an AWS s3 buzket
@@ -276,17 +279,11 @@ func _ready():
 		
 		_music = music_track.get_file()
 		play(music_track) #Not needed for release
-		#Globals.Music_on_settings = true
-	
-	
-#	if music_on == true && !Music_Available_Locally :
-#		play(playlist_one.get(0))
-
+		
+		
 		
 	if music_on == false:
-		$A.stop()
-		#Globals.Music_on_settings = false
-		pass
+		A.stop()
 
 
 
@@ -314,10 +311,6 @@ func _process(delta):
 				shuffle(playlist_one) 
 				play(music_track)
 				
-			#if !Music_Available_Locally:
-			#	shuffle(default_playlist)
-			#	play(music_track)
-
 
 
 
@@ -342,13 +335,13 @@ func play(stream: String):
 	#it bugs out when the music track node is added to a scene
 	if stream != null or !stream.empty(): #null error
 		if current_track == "a":
-			$B.stream = load(stream) #invalid funtion load, cannot convert arguement from nil to string
-			$anims.play("AtoB")
+			B.stream = load(stream) #invalid funtion load, cannot convert arguement from nil to string
+			transitions.play("AtoB")
 			current_track = "b"
 			music_on = true
 		else:
-			$A.stream = load(stream)
-			$anims.play("BtoA")
+			A.stream = load(stream)
+			transitions.play("BtoA")
 			current_track = "a"
 			music_on = true
 	if stream == null or stream == '':
@@ -465,32 +458,11 @@ func play_track(_track : String):
 			yield(get_tree().create_timer(0.8), "timeout")
 			D.stop()
 
-# Depreciated Buggy Method
-#func sound(what : String): 
-#	#Turns on/ off and saves it via a global script
-#	#Globals.Music_on_settings = false
-#	if what == 'off' or 'Off' or 'OFF': #Debug
-#		#music_on = false
-#		#sfx_on = false
-#		_notification(NOTIFICATION_APP_PAUSED)
-#		
-#		
-#		
-#	if what == 'on' or 'On' or 'ON':
-#		#music_on = true
-#		#sfx_on = true
-#		_notification(NOTIFICATION_APP_RESUMED)
-#		
-		#Music_on_settings = 1
-		# Saves Users Preferred SOund Settings
-
-
-
 
 func _exit_tree(): 
 	#turn_off()
 	#sound('off')
-	Globals.MemoryManagement.queue_free_array(my_nodes)
+	Utils.MemoryManagement.queue_free_array(my_nodes)
 	
 	# Causes game to crash if not finished uncompressing zip file
 	# Creates a Bug with Debugger Error Page

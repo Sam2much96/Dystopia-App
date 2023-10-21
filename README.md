@@ -104,7 +104,7 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 	-NPC_2 Quests	
 	-Spritesheet animation upgrade
 	-Model player & enemy characters (Rig with mixamo)
-	-Procedurally generated sand dunes
+
 	-Update Game instructionals visuals
 	-Colour changing joystick
 	-Sandbox mechanics

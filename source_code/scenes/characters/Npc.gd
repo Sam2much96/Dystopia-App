@@ -138,7 +138,7 @@ class Behaviour extends Reference:
 		#return Enemy.Behaviour.Mob(_body, player, Vector2(0,0))
 		#Behaviour.Mob(_body, player, Vector2(0,0))
 		
-		return Enemy.Functions.calculate_center(body_1, player.position)
+		return Enemy.Functions.calculate_center(body_1.position, player.position)
 	
 
 

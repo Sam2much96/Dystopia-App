@@ -79,6 +79,7 @@ network_type = "TESTNET"
 layer = -1
 
 [node name="Dashboard_UI" parent="CanvasLayer" instance=ExtResource( 7 )]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -93,7 +94,6 @@ rect_scale = Vector2( 1.15621, 1.15621 )
 mouse_filter = 1
 
 [node name="Mnemonic_UI" parent="CanvasLayer" instance=ExtResource( 8 )]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5

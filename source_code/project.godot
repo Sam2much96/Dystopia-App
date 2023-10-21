@@ -506,7 +506,6 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Dystopia App v2.0.1.6 Alpha"
 config/description="Changing the World? Sigh. A very lofty dream. It is a feat few men ever really achieve.It's an idea that infectts men to hope, fight, kill and to die. It was for this dream we hoped, fought, killed, starved, bled and died for in a hellish war that lasted 5 years. After fighting for so long, you lose sight if what you're really fighting for; and when you lose someone you love, all those lofty dreams you so valiantly fought for suddenly lose meaning. After all, what is the point of changing the world, when you have no one left to share it with.
 
 A Stable build for the Dystopia App, preloaded with Chapters 1-3. Read the Comics, Watch the Anime, Play the Game, all in one app. It's a playable comic."
@@ -519,6 +518,7 @@ boot_splash/bg_color=Color( 1, 1, 1, 1 )
 config/icon="res://icon.png"
 config/windows_native_icon="res://windows icon.ico"
 config/openai_api=""
+config/replicate_api=""
 
 [autoload]
 

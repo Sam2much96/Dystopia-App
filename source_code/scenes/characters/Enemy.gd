@@ -32,10 +32,11 @@ extends KinematicBody2D
 class_name Enemy
 
 
-# Organize Vabiables Please?
+# Organize Vabiables Please? (Done)
+export (int) var attack_wait_time #attack pause time
+export (String, 'Easy', "Intermediate", "Hard") var enemy_type #changes enemy behaviour depending on the enemy tpype # 
 
-var run_speed : int = 100   #mob runspeeed
-onready var frame_counter : int = 0
+
 
 # Used As Delta for Determining AI Processing rate
 # i.e, if calculations are called every 30th frame or 5th frame
@@ -50,17 +51,18 @@ const FAST_FRAME_RATE = 5
 var selected_frame_rate : int
 
 var velocity = Vector2.ZERO #the movement vector
-onready var player # = get_tree().get_nodes_in_group('player')  #reference to player
 var m=0;  #distance variable
 
-var enemy_distance_to_player : float # used to calculate how closely the enemy should follow the layer
-export (int) var attack_wait_time #attack pause time
+var run_speed : int = 100   #mob runspeeed
 
+var enemy_distance_to_player : float # used to calculate how closely the enemy should follow the layer
+
+onready var player # = get_tree().get_nodes_in_group('player')  #reference to player
 onready var raycast : RayCast2D = $enemy_eyesight/pointer/RayCast2D
 onready var pointer : Node2D = $enemy_eyesight/pointer
 onready var navigation_agent : NavigationAgent2D = $NavigationAgent2D
+onready var frame_counter : int = 0
 
-export (String, 'Easy', "Intermediate", "Hard") var enemy_type #changes enemy behaviour depending on the enemy tpype # 
 """
  the  MOB AI script works on the assumption there will
  be only one player type
@@ -91,6 +93,11 @@ var center
 "Enemy FX"
 var despawn_particles
 var blood
+
+func _enter_tree():
+	# Create A Global reference to self
+	Utils.EnemyObjPool.append(self)
+
 
 func _ready():
 	#player =get_tree().get_nodes_in_group('player').pop_front()
@@ -283,22 +290,27 @@ func _on_hurtbox_area_entered(area):
 # Despawn Logic
 # despawn logic is buggy
 func despawn()->  void:
+	# Increase global pointer
 	Globals.kill_count +=1
+	
+	# Create Despawn Particle fx
 	despawn_particles = Globals.despawn_fx.instance()
 	blood = Globals.blood_fx.instance()
 	get_parent().add_child(despawn_particles)
 	get_parent().add_child(blood)
 	despawn_particles.global_position = global_position
 	blood.global_position = global_position
+	
+	# Spawn Item If able to
 	if has_node("item_spawner"):
 		get_node("item_spawner").spawn()
+	
+	#Remove Object from Ojbject pool
+	Utils.EnemyObjPool.erase(self)
 	
 	#Prevents memory leaks
 	get_parent().remove_child(self)
 	self.queue_free()
-	#Globals.queue_free_children(self)
-	#get_parent().remove_child(self) #buggy
-
 
 
 #NEW_CODES
@@ -327,15 +339,6 @@ func _on_enemy_eyesight_body_exited(body)-> void:
 		
 
 
-# Moved to Global Singleton
-#func restaVectores(v1, v2): #vector substraction
-#		return Vector2(v1.x - v2.x, v1.y - v2.y)
-
-#func sumaVectores(v1, v2): #vector sum
-#		return Vector2(v1.x + v2.x, v1.y + v2.y)
-
-
-
 func shoot()-> void: #spawns a bullet at a particular position
 	#Disabling for now
 	# Method Is Buggy
@@ -353,25 +356,27 @@ func _on_hurtbox_area_exited(area):
 
 # to improve game speed and turn off idle processsing
 # use wisely
-func turn_processing(toggle): 
-	if toggle is String:
-		if toggle == "on":
-			set_process(true)
-			set_physics_process(true)
-		elif toggle == "off":
-			set_process(false)
-			set_physics_process(false)
-		else:
-			push_warning ("This function only uses on/off strings to control the globals processing functon")
-	else: return
+func turn_processing(toggle : String): 
 
-# Debugs AI variables to the Console log
+	if toggle == "on":
+		self.set_process(true)
+		self.set_physics_process(true)
+	elif toggle == "off":
+		set_process(false)
+		self.set_physics_process(false)
+	else:
+		push_warning ("This function only uses on/off strings to control the globals processing functon")
+
+
 func debug()-> void:
-	print ("State: ",state,"/ Distance to player " ,enemy_distance_to_player, "/ Enemy Type",enemy_type)
+	# Debugs AI variables to the Console log
+	if frame_counter % IDIOT_FRAME_RATE == 0:
+		print ("State: ",state,"/ Distance to player " ,enemy_distance_to_player, "/ Enemy Type",enemy_type)
 
-#func _exit_tree():
-#	#Globals.queue_free_children(self)
-#	#Globals.free_children(self)
+func _exit_tree():
+	# Delete self pointer from Global object pool 
+	if Utils.EnemyObjPool.has(self): Utils.EnemyObjPool.erase(self)
+
 
 "Perfomance Optimizers"
 

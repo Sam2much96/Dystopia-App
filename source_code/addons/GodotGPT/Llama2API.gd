@@ -123,12 +123,13 @@ func _output(result, response_code, headers, body) -> String:
 	if response_code == HTTPClient.RESPONSE_OK:
 		output_response = str2var(body.get_string_from_utf8())
 		
-		output_data = output_response["output"]
+		output_data = output_response.get("output", null)
 
-		for item in output_data:
-			output += item
-		
-		#print_debug(output)
+		if output_data != null :
+			for item in output_data:
+				output += item
+				#print_debug(output)
+		if output_data == null : push_error("Error in Prompt")
 	else:
 		#print(body)
 		var response = str2var(body.get_string_from_utf8())

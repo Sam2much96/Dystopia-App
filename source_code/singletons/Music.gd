@@ -449,19 +449,17 @@ func play_track(_track : String):
 	#for playing single sample tracks
 	#_track is a pointer to the music file path
 	if _track != null  and Music_streamer_2 != null :
-		if music_on == true:
+		#if music_on == true:
 			#print (_track)# For debug purposes only
 
-			D.set_stream ( load (_track)) #Children Scripts should not load the soundtracks
-			D.play(0.0)
-			sfx_streamer  = str('playing sfx: ',_track.get_file())
-			yield(get_tree().create_timer(0.8), "timeout")
-			D.stop()
+		D.set_stream ( load (_track)) #Children Scripts should not load the soundtracks
+		D.play(0.0)
+		sfx_streamer  = str('playing sfx: ',_track.get_file())
+		yield(get_tree().create_timer(0.8), "timeout")
+		D.stop()
 
 
 func _exit_tree(): 
-	#turn_off()
-	#sound('off')
 	Utils.MemoryManagement.queue_free_array(my_nodes)
 	
 	# Causes game to crash if not finished uncompressing zip file
@@ -483,7 +481,7 @@ func _thread_function():
 		
 		# SHould be done in a separate Thread not using te ready method
 		# Unzip Audio files recursively
-		Globals.uncompress("user://Music/music.zip", "user://Music/")
+		Utils.uncompress("user://Music/music.zip", "user://Music/")
 		
 		Music_Available_Locally == true
 

@@ -321,17 +321,17 @@ func _on_enemy_eyesight_body_entered(body)-> void:
 	if body is Player :
 		player = body
 		raycast.set_enabled(true)
-		run_speed = 150 #increase run speed if player is seen
+		run_speed = 300 #increase run speed if player is seen
 		state = STATE_MOB
-		print('player seen', 'State: ', state)
-		print ("Enemy Type:", enemy_type) # for debug purposes
+		print_debug('player seen', 'State: ', state)
+		print_debug ("Enemy Type:", enemy_type) # for debug purposes
 		#update_facing()
 
 func _on_enemy_eyesight_body_exited(body)-> void:
 	#help detect the player when he leaves
 	if body is Player:
 		
-		run_speed = 300
+		run_speed = 150
 		raycast.set_enabled(false) 
 		player = null
 		print ('player hidden, Turning of Raycast Detection')

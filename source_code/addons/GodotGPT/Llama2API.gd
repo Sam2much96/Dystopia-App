@@ -124,7 +124,7 @@ func _output(result, response_code, headers, body) -> String:
 		output_response = str2var(body.get_string_from_utf8())
 		
 		output_data = output_response.get("output", null)
-
+		
 		if output_data != null :
 			for item in output_data:
 				output += item

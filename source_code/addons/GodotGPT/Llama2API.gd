@@ -1,3 +1,18 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Llama2 (Meta) API wrapper in GDScript 
+# 
+#
+# Features:
+# (1) Uses API key or a custom self hosted server to make prompts to Meta's A.I
+# (2) Stroes the Result as output
+#
+# To Do:
+#
+# *************************************************
+
 class_name Llama2API
 
 extends Node

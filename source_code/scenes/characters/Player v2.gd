@@ -29,6 +29,7 @@
 # (10) Optimize Data Packet size from 3 kb to 20 Bytes by compressing data using wallet encode algorithms
 #		- amdNetworking compression methods
 # (11) Optimize Networking Player iInfo dictionary to only send over canged data to reduce data packet size to 20 bytes
+#	# [a] Facing should instead use an enumeration data structure rather than a string. 
 # (12) Write proper debug methods dfor measuring data packet size received and sent
 
 # Bugs:
@@ -709,6 +710,7 @@ func _physics_process(delta):
 
 
 # COnnetcs to a Player Input Signal from the Networking Singleton
+# Simulates player position on Kinematic body 2d
 func poop(id : String):
 
 	"Server Simulation Logic"
@@ -731,18 +733,18 @@ func poop(id : String):
 		set_position(Vector2(float(Networking.player_info["peer id"][id]["position"]["x"]), float(Networking.player_info["peer id"][id]["position"]["y"])))
 					
 					# facing
-			#facing = player_info["peer id"][id_as_string]["facing"]
-					
-					# State
-					
-					# roll directin
-					
-					#linear velocity
-					
-					# BroadCast Update to all Network Peers
-					# Buggy : Doesnt send updated Player info
-		Networking.broadcast_world_positions()
+		#facing = player_info["peer id"][id_as_string]["facing"]
 		
+		# State
+		
+		# roll directin
+		
+		#linear velocity
+		
+		# BroadCast Update to all Network Peers
+		# 
+		Networking.broadcast_world_positions()
+
 
 
 

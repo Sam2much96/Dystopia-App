@@ -33,13 +33,6 @@ func _ready():
 	#Connect Lobby Signals
 	Networking.Lobby.ConnectSignal(get_tree(), self)
 
-	# Connect UI Button Signals
-	
-	#$ui/ScrollContainer/grid/play.connect("pressed", Networking.Lobby, ) #Can Only Call Static Functions
-	#$ui/ScrollContainer/grid/host
-	
-	# WOrld ROor Node
-	#Networking.WorldRoot = $world
 
 
 func _on_play_pressed():

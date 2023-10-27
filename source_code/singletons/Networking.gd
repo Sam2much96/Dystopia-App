@@ -42,12 +42,8 @@ export (String) var cfg_client_ip
 var url : String = ''
 var check_timer 
 var debug = ''
+var WORLD_SIZE : int = 40000.0
 
-# Default hostname used by the login form
-#const DEFAULT_HOSTNAME = "127.0.0.1"
-const DEFAULT_HOSTNAME = "ws://localhost"
-
-const BACKUP_HOSTNAME = "127.0.0.1"
 # should store Non-threathening Crypto and Multiplayerinfo too
 # Data Integrity can be checked using hash
 # Stores Data FOr Synchronizing Player Data Among Multiple Peers
@@ -84,12 +80,15 @@ signal Timeout
 
 onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
-var WORLD_SIZE : int = 40000.0
+
 
 onready var _reference_to_self =get_node('/root/Networking') #formerly _y
 onready var _reference_to_debug =get_node('/root/Debug') #formerly _y
 
-
+# Default hostname used by the login form
+#const DEFAULT_HOSTNAME = "127.0.0.1"
+const DEFAULT_HOSTNAME = "ws://localhost"
+const BACKUP_HOSTNAME = "127.0.0.1"
 const SERVER_PORT = 9080
 const MAX_PLAYERS = 5
 
@@ -639,42 +638,6 @@ func _end_game():
 	Lobby._set_status(with_error, Dialogs.dialog_box , false)
 
 
-remote func broadcast_world_positions():
-	# Server Call
-	# Calls the pu Method in all Renote peers
-	# can only be called by Server
-	# Only the Hosting Device Can Update All NEtwork peers
-	if is_network_master():
-		
-		
-		
-		# First, Convert Player Info Dictionary to Pool Byte Array
-		# Error: it's sending an empty Poolbyte
-		# TO DO: COnvert Player Info Dictionary to PoolbyteArray encoded utf-8 
-		
-		
-		
-		
-		#print_debug( "Player Info as Json: " + to_json(player_info)) # isn't converted to PoolbyteArray
-		
-		#print(player_info)
-		
-		#player_data = var2bytes([to_json(player_info)]) #PoolByteArray([data]) #Test Data
-		
-		
-		#print_debug("BroadCasting Player Data"+ str(bytes2var(player_data)) + " for peer id " + str(peer_id), "Master: ", is_network_master()) # For Debug Purposes only
-		
-		#	print(player_data.size())
-		
-		
-		rpc_unreliable_id(peer_id, "pu", peer_id, update_id, array2poolByte([player_info])) # pu call is buggy cuz of peer id error
-	
-	#	for i in player_info["peer id"]:
-	#		print (i.keys())
-			
-		update_id += 1
-		
-
 "Multiplayer NetCode Functions"
 
 func array2poolByte( data_from : Array) -> PoolByteArray: 
@@ -705,7 +668,7 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 	if is_network_master():
 		#print("Player Input Registered ",str (poolByte2Array(player_data)), "from ", id ) # player data returns array
 		
-		print("Packet Size (Bytes): ", player_data.size())
+		print_debug("Packet Size (Bytes): ", player_data.size())
 		
 		#print(player_info) # for debug purposes only
 		
@@ -757,10 +720,12 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 			# Emit Signal
 			#emit_signal("PlayerInput", id_as_string) # Buggy Signal
 			
+			"Simulates Player Posititional Data "
 			player.poop(id_as_string)
 			
 			#print ("O: ", player_info["peer id"][id_as_string]["position"]) # works # for debug purposes only
 			
+			# Debug Positional Data
 			# Facing Data
 			print ("O: ", player_info["peer id"][id_as_string]["facing"], i["peer id"][id_as_string]["facing"]) # works # for debug purposes only
 
@@ -845,7 +810,7 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 		
 		
 		# Update Local Peer Data from peer Update
-		
+		# Simplify this code bloc
 		#if player_info["peer id"].keys().size() > 1:
 		player_info["peer id"][player_info["peer id"].keys().pop_back()]["position"] = i["peer id"][id_as_string]["position"]
 		
@@ -879,6 +844,50 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
 	# Remote Update Particles
 	
+
+
+
+"""
+BROADCAST WORLD POSITIONS
+"""
+#Broadcats world position from server to all peers using player update methods
+
+
+remote func broadcast_world_positions():
+	# Server Call
+	# Calls the pu Method in all Renote peers
+	# can only be called by Server
+	# Only the Hosting Device Can Update All NEtwork peers
+	if is_network_master():
+		
+		
+		
+		# First, Convert Player Info Dictionary to Pool Byte Array
+		# Error: it's sending an empty Poolbyte
+		# TO DO: COnvert Player Info Dictionary to PoolbyteArray encoded utf-8 
+		
+		
+		
+		
+		#print_debug( "Player Info as Json: " + to_json(player_info)) # isn't converted to PoolbyteArray
+		
+		#print(player_info)
+		
+		#player_data = var2bytes([to_json(player_info)]) #PoolByteArray([data]) #Test Data
+		
+		
+		#print_debug("BroadCasting Player Data"+ str(bytes2var(player_data)) + " for peer id " + str(peer_id), "Master: ", is_network_master()) # For Debug Purposes only
+		
+		#	print(player_data.size())
+		
+		
+		rpc_unreliable_id(peer_id, "pu", peer_id, update_id, array2poolByte([player_info])) # pu call is buggy cuz of peer id error
+	
+	#	for i in player_info["peer id"]:
+	#		print (i.keys())
+			
+		update_id += 1
+		
 
 
 class Downloader extends Node:
@@ -950,7 +959,7 @@ class Downloader extends Node:
 class Player_v3_networking extends KinematicBody2D:
 
 	
-	# Refactor to instead Extend Kinematic Bodt
+	
 	# Player
 	# All the Player Logic In One Class
 	# Implement Player v2 Networking here

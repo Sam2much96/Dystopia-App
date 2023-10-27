@@ -5,15 +5,15 @@
 # The Purpose of this Outside_Level_Properties is
 #(1) Simplify this level by listing all the Nodes and Effects Present in this environment
 #(2) I want to implement a Loading screen while this level loads. This Node lays the groundwork for that
+#(3) It should be able to iterate through all it's sub nodes, read ,preserve their states for sending in < 20 bytes
 
- # Bugs:
-# (1) Frame rate Drop from 60 fps to 5 fps. because of too much Collision objects in the scene (1/3)
-#		-Fix : Implement Tilemap, autotiles and Procedurally Generated Dunes (Done)
-# (2) Fix loading bug by busing tileMaps for grphics and calculations referemce node "TileMap1"  
-# (3) TileMaps is broken. Requires More Research (Fixed)
+# Bugs:
+# (1) Frame rate Drop from 60 fps to 5 fps. because of too much Collision objects in the scene (2/3)
+
+
 # *************************************************
 
-extends Control
+extends Node
 
 
 "List of FX in Level"

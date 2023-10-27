@@ -19,14 +19,10 @@ polygons = [ PoolIntArray( 0, 1, 2, 3 ), PoolIntArray( 4, 5, 0, 3, 6, 7, 8 ), Po
 outlines = [ PoolVector2Array( 2417.95, -4929.25, 2458.27, -736.232, -1815.38, -776.55, -1734.75, 4424.4, 7256.05, 4343.77, 7377, -937.819, 3425.89, -816.867, 3425.89, -4324.49, 15480.8, -4848.61, 13666.5, -1421.63, 13747.2, 150.752, 15319.5, 191.069, 15279.2, 1803.77, 21528.4, 1682.82, 21407.5, -7106.39, 20198, -7267.66, 20238.3, -5171.15, 17698.3, -5493.69, 16932.2, -5534.01 ) ]
 
 [node name="Outside" type="Node"]
+script = ExtResource( 28 )
 
 [node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="."]
 navpoly = SubResource( 1 )
-
-[node name="Outside_Level_Properties" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
-script = ExtResource( 28 )
 
 [node name="Outside Desert" parent="." instance=ExtResource( 1 )]
 position = Vector2( -22, 186 )

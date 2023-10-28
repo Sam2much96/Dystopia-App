@@ -19,6 +19,7 @@ extends KinematicBody2D
 
 class_name Player
 
+# To Do: 
 """
 This implements a very rudimentary state machine. There are better implementations
 in the AssetLib if you want to make something more complex. Also it shares code with Enemy.gd
@@ -29,6 +30,7 @@ and probably both should extend some parent script
 
 export(int) var WALK_SPEED = 350 # pixels per second
 export(int) var ROLL_SPEED = 1000 # pixels per second
+export(int) var GRAVITY = 0 # For Platforming Levels
 export(int) var hitpoints = 3
 
 export var linear_vel = Vector2()
@@ -36,14 +38,12 @@ export var roll_direction = Vector2.DOWN
 
 signal health_changed(current_hp)
 
-export(String, "up", "down", "left", "right") var facing = "down"
+export(String, "up", "down", "left", "right") var facing = "down" # used as a parameter for the player animation state machine
 
 
-#var despawn_fx : PackedScene = Globals.despawn_fx
-#export (PackedScene) var blood_fx #= load("res://scenes/UI & misc/Blood_Splatter_FX.tscn")
-
-var anim = ""
-var new_anim = ""
+# For Animation Player State Machine
+var anim : String = ""
+var new_anim : String= ""
 
 enum { STATE_BLOCKED, STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE_DIE, STATE_HURT }
 enum { UP, DOWN, LEFT, RIGHT}
@@ -102,6 +102,19 @@ func _ready():
 	
 	pass
 
+func _input(event):
+	if Input.is_action_pressed("move_left"):
+		
+		_facing = LEFT
+	if Input.is_action_pressed("move_right"):
+		
+		_facing = RIGHT
+	if Input.is_action_pressed("move_up"):
+		
+		_facing = UP
+	if Input.is_action_pressed("move_down"):
+		
+		_facing = DOWN
 
 func _process(delta: float):
 		# Raises up a Frame Counter
@@ -117,17 +130,28 @@ func _process(delta: float):
 
 	#print ('Current scene:',Globals.curr_scene, 'Current level',Globals.current_level) #for debug purposes only
 	
+	# Facing State machine
+	match _facing:
+		UP:
+			facing = "up"
+		DOWN:
+			facing = "down"
+		LEFT: 
+			facing = "left"
+		RIGHT:
+			facing = "right"
+
 func _physics_process(_delta):
 
 
 
 	
 	
-	## PROCESS STATES
+	##LOCALLY PROCESS STATES
 	match state:
 		STATE_BLOCKED:
 			new_anim = "idle_" + facing
-			pass
+			
 		STATE_IDLE:
 			if (
 					Input.is_action_pressed("move_down") or
@@ -144,10 +168,11 @@ func _physics_process(_delta):
 						- int( Input.is_action_pressed("move_left") ) + int( Input.is_action_pressed("move_right") ),
 						-int( Input.is_action_pressed("move_up") ) + int( Input.is_action_pressed("move_down") )
 					).normalized()
-				_update_facing()
+				
+				#_update_facing()
+			
 			new_anim = "idle_" + facing
-			#get_material().
-			pass
+		
 		STATE_WALKING:
 			if Input.is_action_just_pressed("attack"):
 				state = STATE_ATTACK
@@ -174,7 +199,7 @@ func _physics_process(_delta):
 			linear_vel = target_speed
 			roll_direction = linear_vel.normalized()
 			
-			_update_facing()
+			#_update_facing()
 			
 			if linear_vel.length() > 5:
 				new_anim = "walk_" + facing
@@ -195,7 +220,7 @@ func _physics_process(_delta):
 				#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
 				linear_vel = target_speed
 				new_anim = "roll"
-				if Input.is_action_just_pressed("attack"): #punch and slide
+				if Input.is_action_just_pressed("attack"): #punch and slide funtionality
 					state = STATE_ATTACK
 		STATE_DIE:
 			new_anim = "die"
@@ -223,20 +248,22 @@ func goto_idle():
 	state = STATE_IDLE
 
 
-func _update_facing():
-	if Input.is_action_pressed("move_left"):
-		facing = "left"
-		_facing = LEFT
-	if Input.is_action_pressed("move_right"):
-		facing = "right"
-		_facing = RIGHT
-	if Input.is_action_pressed("move_up"):
-		facing = "up"
-		_facing = UP
-	if Input.is_action_pressed("move_down"):
-		facing = "down"
-		_facing = DOWN
-
+#func _update_facing():
+#	# Depreciated code bloc
+#	# Should be an Input function instead
+#	if Input.is_action_pressed("move_left"):
+#		facing = "left"
+#		_facing = LEFT
+#	if Input.is_action_pressed("move_right"):
+#		facing = "right"
+#		_facing = RIGHT
+#	if Input.is_action_pressed("move_up"):
+#		facing = "up"
+#		_facing = UP
+#	if Input.is_action_pressed("move_down"):
+#		facing = "down"
+#		_facing = DOWN
+#	pass
 
 func despawn():  #this code breaks
 	var blood = Globals.blood_fx.instance()
@@ -261,6 +288,7 @@ func despawn():  #this code breaks
 func respawn()-> void:
 	'Updated Respawn Code'
 	#Reboots the current scene if the Player Dies
+	# Reusing the preloaded scene resource
 	# Triggered with animation player
 	if Globals.scene_resource != null:
 		Globals.change_scene_to(Globals.scene_resource)

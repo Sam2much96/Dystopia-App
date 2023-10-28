@@ -11,13 +11,12 @@
 #(1) Different enemy behaviours and classes (Done)
 #Bugs 
 
-# (2) Enemy AI lacks ability to throw Projectiles (Done)
-# (3) No Documentation (Done)
-# (4) Enemy mob uses too much computer procesing power (Done)
-# (5) Too much Physics procesing (Done) 
-# (6) Navigation AI (1/2)
-# (7) Too much Detection (Done)
-# (8) Stop Enemy Collision with Enemy bug
+# (1) Enemy AI lacks ability to throw Projectiles (Done)
+# (2) Enemy AI lacks projectile implementation
+# (3) Too much Physics procesing (Done) 
+# (4) Navigation AI (1/2)
+# (5) Stop Enemy Collision with Enemy bug
+# (6) Refactor Facing to use enumerations, not strings
 
 # *************************************************
 # Features

@@ -14,23 +14,23 @@
 # (1) It's a class and stores variables to the UI, Globals singleton, PlayersSave Files, and the Debug SIngleton
 # (2) Updates a Player Info Networkig Dictionary and Shares this as Data packets with a Networking peer
 #		as pool byte arrays
+# (3) Shares code with Player.gd script
+#
 #
 # To Do:
-#(1) Update Documentation (DOne)
-# (2) Implement Remote Proceedure calls Networking
-# (3) Im not sure how to implement sstate machine calls to the client/server
-# (4) Too much Detection going on
-# (5) Implement RPC calls as methods (implemented as child of Client Node)
-# (6) Implement tokenized player asset
-# (7) Play animation remotely (works)
-# (8) Player Camera Hierarchy bug
+# (1) Too much Detection going on
+# (2) 
+# (3) Implement tokenized player asset
+# (4) Play animation remotely (works)
+# (5) Player Camera Hierarchy bug
 #		2 or more spawned players have their own cameras which misaligns the scene tree
-# (9) Check Data Synchronicity between Server and CLient Peer Player Info DIctionaries
-# (10) Optimize Data Packet size from 3 kb to 20 Bytes by compressing data using wallet encode algorithms
+# (6) Check Data Synchronicity between Server and CLient Peer Player Info DIctionaries
+# (7) Optimize Data Packet size from 3 kb to 20 Bytes by compressing data using wallet encode algorithms
 #		- amdNetworking compression methods
-# (11) Optimize Networking Player iInfo dictionary to only send over canged data to reduce data packet size to 20 bytes
+# (8) Optimize Networking Player iInfo dictionary to only send over canged data to reduce data packet size to 20 bytes
 #	# [a] Facing should instead use an enumeration data structure rather than a string. 
-# (12) Write proper debug methods dfor measuring data packet size received and sent
+# (*) Write proper debug methods dfor measuring data packet size received and sent
+# (9) Rewrite Player Facing to use Enum instead
 
 # Bugs:
 # (1) Breaks GameHUD
@@ -40,7 +40,7 @@
 # (5) AccuratePositional Data isn't being sent to Server peer (fixed)
 # *************************************************
 
-extends KinematicBody2D
+extends Player
 
 class_name Player_v2_networking
 
@@ -48,27 +48,27 @@ class_name Player_v2_networking
 
 
 
-const WALK_SPEED = 350 # pixels per second
-const ROLL_SPEED = 1000 # pixels per second
-var hitpoints = 3
+#const WALK_SPEED = 350 # pixels per second
+#const ROLL_SPEED = 1000 # pixels per second
+#var hitpoints = 3
 
-var linear_vel = Vector2()
-var roll_direction = Vector2.DOWN
+#var linear_vel = Vector2()
+#var roll_direction = Vector2.DOWN
 
-signal health_changed(current_hp)
+#signal health_changed(current_hp)
 
-export(String, "up", "down", "left", "right") var facing = "down"
+#export(String, "up", "down", "left", "right") var facing = "down"
 
 
-var despawn_fx = preload("res://scenes/UI & misc/DespawnFX.tscn")
+#var despawn_fx = preload("res://scenes/UI & misc/DespawnFX.tscn")
 #export (PackedScene) var blood_fx #= load("res://scenes/UI & misc/Blood_Splatter_FX.tscn")
 
-var anim = ""
-var new_anim = ""
+#var anim = ""
+#var new_anim = ""
 
-enum { STATE_BLOCKED, STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE_DIE, STATE_HURT }
+#enum { STATE_BLOCKED, STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE_DIE, STATE_HURT }
 
-export var state = STATE_IDLE
+#export var state = STATE_IDLE
 
 #************ Scene Tree Objects *************#
 onready var camera = $camera #the player's camera
@@ -98,7 +98,7 @@ var SIMULATING : bool = false
 # Simulation Logic 1
 var SIMULATING_1 : bool = false
 
-var frame_counter : int = 0
+#var frame_counter : int = 0
 
 # For World Boundarty calculation
 var v : Vector2 = Vector2.ZERO
@@ -191,7 +191,7 @@ func _ready():
 		print_debug(Networking.is_connected("PlayerInput", self,"poop"))
 
 
-func _process(delta):
+func _process(delta : float):
 
 		
 	# BroadCasts player info to client peers from Host Devide
@@ -425,39 +425,31 @@ func _input(event):
 
 
 # Mapping All Player Input to A Remote Player Call Function
-# client peer id is peer_id whereas server peer_id for client peer is 1
+# Note: client peer id is peer_id whereas server peer_id for client peer is 1
 
-# Move Up
-# only works on Server Class
-
+# CLIENT SIDE CODE
 	if not is_network_master():
 		if Input.is_action_just_pressed("move_up"):
-			#rpc_id(1,"player_input",peer_id,"up",true) 
+			#
 			# Updates player Info to Server Object for Broadcasting
 			
 			Networking.player_info["peer id"][peer_id]["facing"] = self.facing
 			#print(Networking.peer_ids) # for debug purposes only
-				# Position
+			
+			# Update Positional Data
 			Networking.player_info["peer id"][peer_id]["position"]["x"] = self.position.x
 			Networking.player_info["peer id"][peer_id]["position"]["y"] = self.position.y
-			#Hacky fix. Ideally, peer id's should be peered together
-			# Buggy
-			#var2bytes([to_json(Networking.player_info)])
-			#if not Networking.peer_ids.max() == null: 
-			#print (Networking.peer_ids[1], "/",peer_id)
 			
 			# Update Player Info Data as poolbyte
 			Networking.RawData = Networking.array2poolByte([Networking.player_info])
 			
 			# One KB Per Input is too Large. Please optimize to 20 Bytes Maz
 			# Only send changed innformation rather than entire merged dictionary
-			print(Networking.player_info["peer id"][peer_id]["facing"], "/", "Size (Bytes) : ", Networking.RawData.size())
+			print_debug(Networking.player_info["peer id"][peer_id]["facing"], "/", "Size (Bytes) : ", Networking.RawData.size())
 			
 			
 			#print("Largest Peer ID: ",Networking.peer_ids[0], "No: ", Networking.peer_ids.size() ) # for debug purposes only
 			
-			"Updates Player Input Data Across Client/Server Peers"
-			Networking.rpc_unreliable_id(1, "pi", peer_id, "up", true, Networking.RawData) # Packet Loss Error
 			
 		if Input.is_action_just_released("move_up"):
 		
@@ -466,17 +458,25 @@ func _input(event):
 			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
 			Networking.player_info["peer id"][peer_id]["facing"] = facing
 			
-			# Move Down
+			
+			
+			"Updates Player Input Data Across Client/Server Peers"
+			Networking.rpc_unreliable_id(1, "pi", peer_id, "up", true, Networking.RawData) # Packet Loss Error
+			
+		# Move Down
 		if Input.is_action_just_pressed("move_down"):
 			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",true)
 			
 			Networking.player_info["peer id"][peer_id]["facing"] = facing
+			
 		if Input.is_action_just_released("move_down"):
 			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",false)
 			
 			
-			Networking.player_info["peer id"][peer_id]["facing"] = facing
-			# Move Left
+			"Updates Player Input Data Across Client/Server Peers"
+			Networking.rpc_unreliable_id(1, "pi", peer_id, "up", true, Networking.RawData) # Packet Loss Error
+		
+		# Move Left
 		if Input.is_action_just_pressed("move_left"):
 			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",true)
 			
@@ -484,10 +484,11 @@ func _input(event):
 			Networking.player_info["peer id"][peer_id]["facing"] = facing
 		if Input.is_action_just_released("move_left"):
 			
-			Networking.player_info["peer id"][peer_id]["facing"] = facing
-			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
 			
-			# Move RIght
+			"Updates Player Input Data Across Client/Server Peers"
+			Networking.rpc_unreliable_id(1, "pi", peer_id, "up", true, Networking.RawData) # Packet Loss Error
+			
+		# Move RIght
 		if Input.is_action_just_pressed("move_right"):
 			
 			Networking.player_info["peer id"][peer_id]["facing"] = facing
@@ -495,10 +496,10 @@ func _input(event):
 		if Input.is_action_just_released("move_right"):
 			
 			
-			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",false)
-			Networking.player_info["peer id"][peer_id]["facing"] = facing
-			# Attack
+			"Updates Player Input Data Across Client/Server Peers"
+			Networking.rpc_unreliable_id(1, "pi", peer_id, "up", true, Networking.RawData) # Packet Loss Error
 			
+		# Attack
 		if Input.is_action_just_pressed("attack"):
 			
 			
@@ -509,7 +510,11 @@ func _input(event):
 			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
 			Networking.player_info["peer id"][peer_id]["state"].append(state)
 
-			# Roll
+			
+			"Updates Player Input Data Across Client/Server Peers"
+			Networking.rpc_unreliable_id(1, "pi", peer_id, "up", true, Networking.RawData) # Packet Loss Error
+		
+		# Roll
 		if Input.is_action_just_pressed("roll"):
 			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
 			Networking.player_info["peer id"][peer_id]["state"].append(state)
@@ -517,7 +522,10 @@ func _input(event):
 		if Input.is_action_just_released("roll"):
 			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
 			Networking.player_info["peer id"][peer_id]["state"].append(state)
-
+			
+			
+			"Updates Player Input Data Across Client/Server Peers"
+			Networking.rpc_unreliable_id(1, "pi", peer_id, "up", true, Networking.RawData) # Packet Loss Error
 
 
 
@@ -761,8 +769,8 @@ func goto_idle():
 	new_anim = "idle_" + facing
 	state = STATE_IDLE
 
-func _update_facing():
-	facing = Networking.player_info["peer id"][var2str(peer_id)]["facing"]
+#func _update_facing():
+	#facing = Networking.player_info["peer id"][var2str(peer_id)]["facing"] #Buggy
 #	if Input.is_action_pressed("move_left"):
 #		facing = "left"
 #	if Input.is_action_pressed("move_right"):
@@ -771,10 +779,11 @@ func _update_facing():
 #		facing = "up"
 #	if Input.is_action_pressed("move_down"):
 #		facing = "down"
+#	pass
 
 func despawn():  #this code breaks
 	var blood = Globals.blood_fx.instance()
-	var despawn_particles = despawn_fx.instance()
+	var despawn_particles = Globals.despawn_fx.instance()
 	
 	
 	get_parent().add_child(despawn_particles)
@@ -795,8 +804,8 @@ func despawn():  #this code breaks
 		Globals.change_scene_to(Globals._q)
 	else: get_tree().reload_current_scene()
 
-func _on_hurtbox_area_entered():
-	pass
+#func _on_hurtbox_area_entered():
+#	pass
 
 
 

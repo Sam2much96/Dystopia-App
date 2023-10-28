@@ -190,15 +190,15 @@ TRANSLATES THE ENTIRE APP TO ONE OF THE PRESELECTED lANGUAGUES INDICATED
 func translate()-> void:
 
 	# For Debug Purposes only
-	print ("Testing Translation En: ",Dialogs.translate_to("char3", "en_US")) 
-	print ("Testing Translation Es: ", Dialogs.translate_to("char3", "pt_BR"))
-	print ("Testing Translation Es: ", Dialogs.translate_to("char3", "fr"))
-	print ("Testing Translation Te: ", Dialogs.translate_to("char3", "te_IN")) # Not working i 3.5 only in 4.0
-	print ("Testing Translation hi: ", Dialogs.translate_to("char3", "hi_IN"))
-	print ("Testing Translation ja: ", Dialogs.translate_to("char3", "ja"))
-	print ("Testing Translation cn: ", Dialogs.translate_to("char3", "zh_CN"))
-	print ("Testing Translation yo: ", Dialogs.translate_to("char3", "yo_NG"))
-	print ("Testing Translation Error: ", Dialogs.translate_to("char7", "en"))
+	print ("En: ",Dialogs.translate_to("char3", "en_US")) 
+	print ("Es: ", Dialogs.translate_to("char3", "pt_BR"))
+	print ("Es: ", Dialogs.translate_to("char3", "fr"))
+	print ("Te: ", Dialogs.translate_to("char3", "te_IN")) # Not working i 3.5 only in 4.0
+	print ("hi: ", Dialogs.translate_to("char3", "hi_IN"))
+	print ("ja: ", Dialogs.translate_to("char3", "ja"))
+	print ("cn: ", Dialogs.translate_to("char3", "zh_CN"))
+	print ("yo: ", Dialogs.translate_to("char3", "yo_NG"))
+	print_debug ("Error: ", Dialogs.translate_to("char7", "en"))
 
 
 

@@ -81,7 +81,7 @@ signal Timeout
 onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
 
-
+onready var timer :Timer  = $Timer2
 onready var _reference_to_self =get_node('/root/Networking') #formerly _y
 onready var _reference_to_debug =get_node('/root/Debug') #formerly _y
 
@@ -95,7 +95,7 @@ const MAX_PLAYERS = 5
 const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
 
 
-onready var timer :Timer  = $Timer2
+
 
 
 #var youtube_dl # Replace with GodotRustube
@@ -138,7 +138,7 @@ var id_as_string : String
 
 
 # Signals
-signal PlayerInput(peer_id)
+#signal PlayerInput(peer_id)
 
 
 func _ready():
@@ -194,8 +194,8 @@ func _init_timer() :
 	if not timer.is_connected("timeout",self, "_on_Timer2_timeout"):
 		timer.connect("timeout",self, "_on_Timer2_timeout")
 	
-	print ('Check_timer :' , check_timer, " Is connected: ", timer.is_connected("timeout",self, "_on_Timer2_timeout")) #code breaks here and gives cant resolve hostname errors
-	
+	print_debug ('Check_timer :' , check_timer, " Is connected: ", timer.is_connected("timeout",self, "_on_Timer2_timeout")) #code breaks here and gives cant resolve hostname errors
+
 
 
 "Stops a check using Check timer Node"

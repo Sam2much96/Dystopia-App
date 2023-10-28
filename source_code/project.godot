@@ -204,7 +204,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/characters/Player.gd"
 }, {
-"base": "KinematicBody2D",
+"base": "Player",
 "class": "Player_v2_networking",
 "language": "GDScript",
 "path": "res://scenes/characters/Player v2.gd"

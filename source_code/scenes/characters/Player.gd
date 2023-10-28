@@ -39,15 +39,17 @@ signal health_changed(current_hp)
 export(String, "up", "down", "left", "right") var facing = "down"
 
 
-var despawn_fx : PackedScene = Globals.despawn_fx
+#var despawn_fx : PackedScene = Globals.despawn_fx
 #export (PackedScene) var blood_fx #= load("res://scenes/UI & misc/Blood_Splatter_FX.tscn")
 
 var anim = ""
 var new_anim = ""
 
 enum { STATE_BLOCKED, STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE_DIE, STATE_HURT }
+enum { UP, DOWN, LEFT, RIGHT}
 
 export var state = STATE_IDLE
+export var _facing = DOWN
 
 #********Miscellaneous***********#
 onready var player_camera = $camera #the player's camera
@@ -224,17 +226,21 @@ func goto_idle():
 func _update_facing():
 	if Input.is_action_pressed("move_left"):
 		facing = "left"
+		_facing = LEFT
 	if Input.is_action_pressed("move_right"):
 		facing = "right"
+		_facing = RIGHT
 	if Input.is_action_pressed("move_up"):
 		facing = "up"
+		_facing = UP
 	if Input.is_action_pressed("move_down"):
 		facing = "down"
+		_facing = DOWN
 
 
 func despawn():  #this code breaks
 	var blood = Globals.blood_fx.instance()
-	var despawn_particles = despawn_fx.instance()
+	var despawn_particles = Globals.despawn_fx.instance()
 	
 	
 	get_parent().add_child(despawn_particles)

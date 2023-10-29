@@ -204,17 +204,18 @@ var smartcontract_ui_address_lineEdit : LineEdit
 var smartcontract_ui_appID_lineEdit : LineEdit
 var smartcontract_ui_args_lineEdit : LineEdit
 var smartcontract_UI_button : Button 
-var collectibles_UI : Control
+
 var txn_txn_valid_button : Button
 var funding_success_close_button : Button
 var imported_mnemonic_button : Button
 var fund_Acct_Button : Button
 var make_Payment_Button : Button
-var UI_Elements : Array
-var passward_UI_Buttons : Array
-var canvas_layer : CanvasLayer
 var _Create_Acct_button : Button
+
+var canvas_layer : CanvasLayer
+
 var CreatAccountSuccessful_UI : Control
+var collectibles_UI : Control
 var CreatAccountSuccessful_Mnemonic_Label : Label
 
 var asset_txn_valid_button : Button
@@ -222,6 +223,9 @@ var asset_optin_txn_valid_button : Button
 var asset_optin_txn_reject_button : Button
 var CreatAccountSuccessful_Copy_Mnemonic_button : Button
 var CreatAccountSuccessful_Proceed_home_button : Button
+
+var UI_Elements : Array
+var passward_UI_Buttons : Array
 
 var txn_addr : LineEdit
 var txn_amount : LineEdit

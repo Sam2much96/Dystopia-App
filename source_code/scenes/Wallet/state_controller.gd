@@ -1,4 +1,27 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Wallet State Controller
+# 
+# Features:
+# (1) Connects wallet UI with wallet backend 
+# (2) 
+# *************************************************
+# Bugs:
+#
+# *************************************************
+# Goals: 
+#
+# *************************************************
+# To Do:
+# (1) Implement wallet translate
+# *************************************************
+
+
 extends OptionButton
+
+class_name wallet_controller
 
 """
 WALLET NODE MANAGER
@@ -214,3 +237,5 @@ func upscale()-> void:
 		i.set_position(newPosition)
 
 
+func manually_translate()-> void:
+	pass

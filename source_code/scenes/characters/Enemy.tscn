@@ -1221,7 +1221,7 @@ shape = SubResource( 18 )
 
 [node name="item_spawner" parent="." instance=ExtResource( 3 )]
 spawn_1 = ExtResource( 4 )
-spawn_2 = ExtResource( 4 )
+spawn_2 = ExtResource( 5 )
 spawn_3 = ExtResource( 6 )
 item_scene = ExtResource( 5 )
 item_type = "Bandit Head"

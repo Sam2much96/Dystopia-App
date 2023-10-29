@@ -11,8 +11,9 @@
 # (1) Random spawn function
 # Bugs
 # (1) Spawns an item most of the time. It's spawn function should be more randomized
-# Reasons:
-# It makes the player work harder
+
+# Goals:
+# (1) It makes the player work harder
 # *************************************************
 
 extends Position2D

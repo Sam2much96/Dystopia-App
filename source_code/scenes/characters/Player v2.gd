@@ -38,6 +38,8 @@
 # (3) Player State Doesn't Update to Networking
 # (4) Simulation Logic doesn't work on server peer
 # (5) AccuratePositional Data isn't being sent to Server peer (fixed)
+# (6) Base Player script Input method needs refactoring
+# (7) Base Player Script accepts input from all devices
 # *************************************************
 
 extends Player
@@ -74,7 +76,7 @@ class_name Player_v2_networking
 onready var camera = $camera #the player's camera
 onready var impact_fx = $Impact
 
-onready var animation : AnimationPlayer = $anims
+#onready var animation : AnimationPlayer = $anims
 
 var peer_id : int
 
@@ -574,10 +576,10 @@ func _physics_process(delta):
 					
 				if Input.is_action_just_pressed("roll"):
 					state = STATE_ROLL
-					roll_direction = Vector2(
-							- int( Input.is_action_pressed("move_left") ) + int( Input.is_action_pressed("move_right") ),
-							-int( Input.is_action_pressed("move_up") ) + int( Input.is_action_pressed("move_down") )
-						).normalized()
+					#roll_direction = Vector2(
+					#		- int( Input.is_action_pressed("move_left") ) + int( Input.is_action_pressed("move_right") ),
+					#		-int( Input.is_action_pressed("move_up") ) + int( Input.is_action_pressed("move_down") )
+					#	).normalized()
 					
 					
 					
@@ -612,25 +614,25 @@ func _physics_process(delta):
 				if Input.is_action_just_pressed("roll"):
 					state = STATE_ROLL
 				
-				linear_vel = move_and_slide(linear_vel)
+				#linear_vel = move_and_slide(linear_vel)
 				
 				#print('Player linear velocity: ', linear_vel) #for debug purposes only
 				
-				var target_speed = Vector2()
+				#var target_speed = Vector2()
 				
-				if Input.is_action_pressed("move_down"):
-					target_speed += Vector2.DOWN
-				if Input.is_action_pressed("move_left"):
-					target_speed += Vector2.LEFT
-				if Input.is_action_pressed("move_right"):
-					target_speed += Vector2.RIGHT
-				if Input.is_action_pressed("move_up"):
-					target_speed += Vector2.UP
+				#if Input.is_action_pressed("move_down"):
+				#	target_speed += Vector2.DOWN
+				#if Input.is_action_pressed("move_left"):
+				#	target_speed += Vector2.LEFT
+				#if Input.is_action_pressed("move_right"):
+				#	target_speed += Vector2.RIGHT
+				#if Input.is_action_pressed("move_up"):
+				#	target_speed += Vector2.UP
 				
-				target_speed *= WALK_SPEED
+				#target_speed *= WALK_SPEED
 				#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
-				linear_vel = target_speed
-				roll_direction = linear_vel.normalized()
+				#linear_vel = target_speed
+				#roll_direction = linear_vel.normalized()
 				
 				
 				# FOrmmerly update facing
@@ -650,34 +652,36 @@ func _physics_process(delta):
 				
 				#_update_facing()
 				
-				if linear_vel.length() > 5:
-					new_anim = "walk_" + _facing
-				else:
-					goto_idle()
+				#if linear_vel.length() > 5:
+				#	new_anim = "walk_" + _facing
+				#else:
+				#	goto_idle()
 				
 				#rpc calls to server
 				#Client.rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
 				
 			STATE_ATTACK:
-				new_anim = "slash_" + _facing
+				#new_anim = "slash_" + _facing
 				
+				# should broadcast input 
 				 
 				pass
 			STATE_ROLL:
 				if roll_direction == Vector2.ZERO:
 					state = STATE_IDLE
 				else:
-					linear_vel = move_and_slide(linear_vel)
-					var target_speed = Vector2()
-					target_speed = roll_direction
-					target_speed *= ROLL_SPEED
+					#linear_vel = move_and_slide(linear_vel)
+					#var target_speed = Vector2()
+					#target_speed = roll_direction
+					#target_speed *= ROLL_SPEED
 					#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
-					linear_vel = target_speed
-					new_anim = "roll"
+					#linear_vel = target_speed
+					#new_anim = "roll"
 					
 					
-					if Input.is_action_just_pressed("attack"): #punch and slide
-						state = STATE_ATTACK
+					#if Input.is_action_just_pressed("attack"): #punch and slide
+					#	state = STATE_ATTACK
+					pass
 			STATE_DIE:
 				new_anim = "die"
 				

@@ -10,19 +10,25 @@
 # (1) Singleton's start and stop state is not properly defined
 # 
 # ************************************************* 
-# Contains Logic for querying internet access. Used by Game Form
+# Contains Logic for querying internet access and Web3 Access.
 # ************************************************* 
-# Features to Add
+# Features :
 # (1) Smart contract implementation using GDteal and Algodot (done)
 # (2) Multiplayer lobby room logic And Client and Server Netcodes (Done)
 # (3) Youtube Download Streamer Logic impementation (1/3 using godot-rustube)
 # (4) Proper Documentation (done)
 # (5) Run an online for PC and mobile Devices. The Hardware is available now (Done)
-# (6) Implement Rollback NetCodes for Multiplayer Gameplay (Depreciated)
-# (7) Video Downloaders
-# (8) Downloads several files
+# (7) Video Downloader
+# (8) Download Logic
 # (9) Regex parser for IPFS (Done)
-
+#
+# *************************************************
+# To Do:
+# (1) Implement Rollback NetCodes for Multiplayer Gameplay
+# (2) 
+#
+#
+# *************************************************
 
 
 extends HTTPRequest
@@ -109,7 +115,12 @@ var Timeout : bool = false
 #*********IPFS Gateway***************#
 # from https://ipfs.github.io/public-gateway-checker/
 # 1 ,2 , 3 work
-var gateway : Array = ['gateway.ipfs.io', "dweb.link", "ipfs.io","ipfs.runfission.com", "jorropo.net", "via0.com", "cloudflare-ipfs.com", "hardbin.com"]
+var gateway : Array = [
+	'gateway.ipfs.io', "dweb.link", "ipfs.io",
+	"ipfs.runfission.com", "jorropo.net", "via0.com", 
+	"cloudflare-ipfs.com", "hardbin.com"
+	]
+
 var random : int
 var selected_gateway : String
 
@@ -139,6 +150,11 @@ var id_as_string : String
 
 # Signals
 #signal PlayerInput(peer_id)
+
+# Local Play or Multiplayer Parameters
+enum {LOCAL, ONLINE}
+onready var GamePlay = LOCAL
+
 
 
 func _ready():
@@ -554,6 +570,9 @@ func _player_connected(_id : int):
 	peer_id = _id
 	#OS.set_window_title('Client' + str(_id))
 	
+	# Make Multiplayer Gameplay Started into Global
+	GamePlay = ONLINE
+	
 	# Create Global Pointers to Connected Peer ID's
 	if not peer_ids.has(_id):
 		peer_ids.append(_id)
@@ -863,22 +882,6 @@ remote func broadcast_world_positions():
 		
 		
 		# First, Convert Player Info Dictionary to Pool Byte Array
-		# Error: it's sending an empty Poolbyte
-		# TO DO: COnvert Player Info Dictionary to PoolbyteArray encoded utf-8 
-		
-		
-		
-		
-		#print_debug( "Player Info as Json: " + to_json(player_info)) # isn't converted to PoolbyteArray
-		
-		#print(player_info)
-		
-		#player_data = var2bytes([to_json(player_info)]) #PoolByteArray([data]) #Test Data
-		
-		
-		#print_debug("BroadCasting Player Data"+ str(bytes2var(player_data)) + " for peer id " + str(peer_id), "Master: ", is_network_master()) # For Debug Purposes only
-		
-		#	print(player_data.size())
 		
 		
 		rpc_unreliable_id(peer_id, "pu", peer_id, update_id, array2poolByte([player_info])) # pu call is buggy cuz of peer id error
@@ -1011,47 +1014,6 @@ class Player_v3_networking extends KinematicBody2D:
 		# State
 		#
 
-
-	# Client Side Code
-
-	# Player update function
-	# This function is named "pu" to lower the network bandwidth usage, sending something
-	# like "player_update" will use an extra 220 bytes / second for each connected player. 
-	remote func pu(id, update_id : int, pos : Vector2, velocity, rotation):
-		
-		var last_update = -1
-		
-		# Unreliable packets can be sent in wrong order, we only work with the latest
-		# data available.
-		if update_id < last_update:
-			print("Received update in wrong order. Discarding!")
-			return
-			
-		last_update = update_id
-		Networking.player_info[id].updates[OS.get_ticks_msec()] = { position = pos, velocity = velocity, rotation = rotation }
-		while len(Networking.player_info[id].updates) > 10:
-			Networking.player_info[id].updates.erase(
-				Networking.player_info[id].updates.keys()[0]
-				)
-		
-		if Networking.player_info[id].destroyed:
-			return
-			
-		if Networking.player_info[id].node.has_node("particles"):
-			Networking.player_info[id].node.get_node("particles").set_emitting(velocity != 0)
-
-		if Networking.player_info[id].node.has_node("audio_thruster"):
-			
-			# SOund FX? Depreciated
-			Networking.player_info[id].node.get_node("audio_thruster").stream_paused = velocity == 0
-
-
-
-
-	func _on_paddle_area_enter(area):
-		if is_network_master():
-			# Random for new direction generated on each peer.
-			area.rpc("bounce", left, randf())
 
 
 

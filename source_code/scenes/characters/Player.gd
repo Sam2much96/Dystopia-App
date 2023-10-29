@@ -12,7 +12,7 @@
 # (2) Implement Networking Calls (done in v2)
 # (3) State blocked is unimplemented
 # (4) State Hurt Should Implement Blood Spawning FX not Process
-# (5) Implement State Emote for Dancing with New Dancing Animation
+# (5) Implement State Emote for Dancing with New Dancing (Emote) Animation
 # *************************************************
 
 extends KinematicBody2D
@@ -55,8 +55,13 @@ export var facing = DOWN
 onready var player_camera = $camera #the player's camera
 #onready var impact_fx = $Impact
 onready var timer = $ScentTimer
+onready var animation = $anims
 var timeout: bool = false
 var frame_counter : int = 0
+
+
+# Helper Booleans
+var server_player : bool = false
 
 func _enter_tree():
 	Globals.update_curr_scene()
@@ -67,6 +72,17 @@ func _enter_tree():
 	
 	'Makes Player Hitpoint a Global Variable'
 	Globals.player_hitpoints = hitpoints
+
+
+	# Check if Player is playing a multipplayer game
+	# 0 is NO, 1 is yes
+	if Networking.GamePlay != Networking.ONLINE:
+		pass
+	
+	if Networking.GamePlay == Networking.ONLINE: # Connection Successful
+		if is_network_master(): # if Server
+			server_player = true # Indicate
+
 
 
 class Behaviour extends Reference:
@@ -103,6 +119,8 @@ func _ready():
 	pass
 
 func _input(event):
+	# Facing State Machine
+	
 	if Input.is_action_pressed("move_left"):
 		
 		facing = LEFT
@@ -142,96 +160,101 @@ func _process(delta: float):
 			_facing = "right"
 
 func _physics_process(_delta):
-
-
-
+	
+	
+	
 	
 	
 	##LOCALLY PROCESS STATES
-	match state:
-		STATE_BLOCKED:
-			new_anim = "idle_" + _facing
-			
-		STATE_IDLE:
-			if (
-					Input.is_action_pressed("move_down") or
-					Input.is_action_pressed("move_left") or
-					Input.is_action_pressed("move_right") or
-					Input.is_action_pressed("move_up")
-				):
-					state = STATE_WALKING
-			if Input.is_action_just_pressed("attack"):
-				state = STATE_ATTACK
-			if Input.is_action_just_pressed("roll"):
-				state = STATE_ROLL
-				roll_direction = Vector2(
-						- int( Input.is_action_pressed("move_left") ) + int( Input.is_action_pressed("move_right") ),
-						-int( Input.is_action_pressed("move_up") ) + int( Input.is_action_pressed("move_down") )
-					).normalized()
-				
-				#_update_facing()
-			
-			new_anim = "idle_" + _facing
+	# State Machine physics shouldn't be processed by the server
+	
+	if not server_player: 
 		
-		STATE_WALKING:
-			if Input.is_action_just_pressed("attack"):
-				state = STATE_ATTACK
-			if Input.is_action_just_pressed("roll"):
-				state = STATE_ROLL
+		match state:
+			STATE_BLOCKED:
+				new_anim = "idle_" + _facing
+				
+			STATE_IDLE:
+				if (
+						Input.is_action_pressed("move_down") or
+						Input.is_action_pressed("move_left") or
+						Input.is_action_pressed("move_right") or
+						Input.is_action_pressed("move_up")
+					):
+						state = STATE_WALKING
+				if Input.is_action_just_pressed("attack"):
+					state = STATE_ATTACK
+				if Input.is_action_just_pressed("roll"):
+					state = STATE_ROLL
+					roll_direction = Vector2(
+							- int( Input.is_action_pressed("move_left") ) + int( Input.is_action_pressed("move_right") ),
+							-int( Input.is_action_pressed("move_up") ) + int( Input.is_action_pressed("move_down") )
+						).normalized()
+					
+					#_update_facing()
+				
+				new_anim = "idle_" + _facing
 			
-			linear_vel = move_and_slide(linear_vel)
-			
-			#print('Player linear velocity: ', linear_vel) #for debug purposes only
-			
-			var target_speed = Vector2()
-			
-			if Input.is_action_pressed("move_down"):
-				target_speed += Vector2.DOWN
-			if Input.is_action_pressed("move_left"):
-				target_speed += Vector2.LEFT
-			if Input.is_action_pressed("move_right"):
-				target_speed += Vector2.RIGHT
-			if Input.is_action_pressed("move_up"):
-				target_speed += Vector2.UP
-			
-			target_speed *= WALK_SPEED
-			#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
-			linear_vel = target_speed
-			roll_direction = linear_vel.normalized()
-			
-			#_update_facing()
-			
-			if linear_vel.length() > 5:
-				new_anim = "walk_" + _facing
-			else:
-				goto_idle()
-			
-		STATE_ATTACK:
-			new_anim = "slash_" + _facing
-			
-		STATE_ROLL:
-			if roll_direction == Vector2.ZERO:
-				state = STATE_IDLE
-			else:
+			STATE_WALKING:
+				if Input.is_action_just_pressed("attack"):
+					state = STATE_ATTACK
+				if Input.is_action_just_pressed("roll"):
+					state = STATE_ROLL
+				
 				linear_vel = move_and_slide(linear_vel)
+				
+				#print('Player linear velocity: ', linear_vel) #for debug purposes only
+				
 				var target_speed = Vector2()
-				target_speed = roll_direction
-				target_speed *= ROLL_SPEED
+				
+				if Input.is_action_pressed("move_down"):
+					target_speed += Vector2.DOWN
+				if Input.is_action_pressed("move_left"):
+					target_speed += Vector2.LEFT
+				if Input.is_action_pressed("move_right"):
+					target_speed += Vector2.RIGHT
+				if Input.is_action_pressed("move_up"):
+					target_speed += Vector2.UP
+				
+				target_speed *= WALK_SPEED
 				#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
 				linear_vel = target_speed
-				new_anim = "roll"
-				if Input.is_action_just_pressed("attack"): #punch and slide funtionality
-					state = STATE_ATTACK
-		STATE_DIE:
-			new_anim = "die"
-		STATE_HURT:
-			new_anim = "hurt"
-	
-	## UPDATE ANIMATION
-	if new_anim != anim:
-		anim = new_anim
-		$anims.play(anim)
-	pass
+				roll_direction = linear_vel.normalized()
+				
+				#_update_facing()
+				
+				if linear_vel.length() > 5:
+					new_anim = "walk_" + _facing
+				else:
+					goto_idle()
+				
+			STATE_ATTACK:
+				new_anim = "slash_" + _facing
+				
+			STATE_ROLL:
+				if roll_direction == Vector2.ZERO:
+					state = STATE_IDLE
+				else:
+					linear_vel = move_and_slide(linear_vel)
+					var target_speed = Vector2()
+					target_speed = roll_direction
+					target_speed *= ROLL_SPEED
+					#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
+					linear_vel = target_speed
+					new_anim = "roll"
+					if Input.is_action_just_pressed("attack"): #punch and slide funtionality
+						state = STATE_ATTACK
+			STATE_DIE:
+				new_anim = "die"
+			STATE_HURT:
+				new_anim = "hurt"
+		
+		## UPDATE ANIMATION
+		if new_anim != anim:
+			anim = new_anim
+			
+			animation.play(anim)
+		pass
 
 
 func _on_dialog_started():

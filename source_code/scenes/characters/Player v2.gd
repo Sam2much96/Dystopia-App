@@ -547,7 +547,7 @@ func _physics_process(delta):
 		
 		match state:
 			STATE_BLOCKED:
-				new_anim = "idle_" + facing
+				new_anim = "idle_" + _facing
 				pass
 			STATE_IDLE:
 				if (
@@ -588,20 +588,20 @@ func _physics_process(delta):
 					# Update Facing
 						
 					# FOrmmerly update facing
+					# Depreciated code bloc
 					# SHould Ideally Call Remote Player input for it's Client Peer Accross the Networl
-					if Input.is_action_pressed("move_left"):
-						
-						facing = "left"
-					if Input.is_action_pressed("move_right"):
-						facing = "right"
-					if Input.is_action_pressed("move_up"):
-						facing = "up"
-					if Input.is_action_pressed("move_down"):
-						facing = "down"
-
+					#if Input.is_action_pressed("move_left"):
+					#	
+					#	_facing = "left"
+					#if Input.is_action_pressed("move_right"):
+					#	_facing = "right"
+					#if Input.is_action_pressed("move_up"):
+					#	_facing = "up"
+					#if Input.is_action_pressed("move_down"):
+					#	_facing = "down"
 					
 					#_update_facing()
-				new_anim = "idle_" + facing
+				new_anim = "idle_" + _facing
 				#get_material().
 				
 				pass
@@ -634,23 +634,24 @@ func _physics_process(delta):
 				
 				
 				# FOrmmerly update facing
+				# Depreciated code bloc
 				# SHould Ideally Call Remote Player input for it's Client Peer Accross the Networl
-				if Input.is_action_pressed("move_left"):
-					
-					facing = "left"
-				if Input.is_action_pressed("move_right"):
-					facing = "right"
-				if Input.is_action_pressed("move_up"):
-					facing = "up"
-				if Input.is_action_pressed("move_down"):
-					facing = "down"
+				#if Input.is_action_pressed("move_left"):
+				#	
+				#	facing = "left"
+				#if Input.is_action_pressed("move_right"):
+				#	facing = "right"
+				#if Input.is_action_pressed("move_up"):
+				#	facing = "up"
+				#if Input.is_action_pressed("move_down"):
+				#	facing = "down"
 
 				
 				
 				#_update_facing()
 				
 				if linear_vel.length() > 5:
-					new_anim = "walk_" + facing
+					new_anim = "walk_" + _facing
 				else:
 					goto_idle()
 				
@@ -658,7 +659,7 @@ func _physics_process(delta):
 				#Client.rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
 				
 			STATE_ATTACK:
-				new_anim = "slash_" + facing
+				new_anim = "slash_" + _facing
 				
 				 
 				pass
@@ -739,9 +740,9 @@ func poop(id : String):
 			
 			# should ideally be called in a process method
 		set_position(Vector2(float(Networking.player_info["peer id"][id]["position"]["x"]), float(Networking.player_info["peer id"][id]["position"]["y"])))
-					
-					# facing
-		#facing = player_info["peer id"][id_as_string]["facing"]
+		
+		# facing
+		self.facing = Networking.player_info["peer id"][id]["facing"]
 		
 		# State
 		
@@ -766,7 +767,7 @@ func _on_dialog_ended():
 ## HELPER FUNCS
 func goto_idle():
 	linear_vel = Vector2.ZERO
-	new_anim = "idle_" + facing
+	new_anim = "idle_" + _facing
 	state = STATE_IDLE
 
 #func _update_facing():

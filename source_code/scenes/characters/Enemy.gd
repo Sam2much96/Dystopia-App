@@ -308,7 +308,7 @@ func despawn()->  void:
 	Utils.EnemyObjPool.erase(self)
 	
 	#Prevents memory leaks
-	get_parent().remove_child(self)
+	#get_parent().remove_child(self)
 	self.queue_free()
 
 

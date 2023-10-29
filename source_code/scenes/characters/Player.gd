@@ -38,7 +38,7 @@ export var roll_direction = Vector2.DOWN
 
 signal health_changed(current_hp)
 
-export(String, "up", "down", "left", "right") var facing = "down" # used as a parameter for the player animation state machine
+export(String, "up", "down", "left", "right") var _facing = "down" # used as a parameter for the player animation state machine
 
 
 # For Animation Player State Machine
@@ -49,7 +49,7 @@ enum { STATE_BLOCKED, STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE
 enum { UP, DOWN, LEFT, RIGHT}
 
 export var state = STATE_IDLE
-export var _facing = DOWN
+export var facing = DOWN
 
 #********Miscellaneous***********#
 onready var player_camera = $camera #the player's camera
@@ -105,16 +105,16 @@ func _ready():
 func _input(event):
 	if Input.is_action_pressed("move_left"):
 		
-		_facing = LEFT
+		facing = LEFT
 	if Input.is_action_pressed("move_right"):
 		
-		_facing = RIGHT
+		facing = RIGHT
 	if Input.is_action_pressed("move_up"):
 		
-		_facing = UP
+		facing = UP
 	if Input.is_action_pressed("move_down"):
 		
-		_facing = DOWN
+		facing = DOWN
 
 func _process(delta: float):
 		# Raises up a Frame Counter
@@ -131,15 +131,15 @@ func _process(delta: float):
 	#print ('Current scene:',Globals.curr_scene, 'Current level',Globals.current_level) #for debug purposes only
 	
 	# Facing State machine
-	match _facing:
+	match facing:
 		UP:
-			facing = "up"
+			_facing = "up"
 		DOWN:
-			facing = "down"
+			_facing = "down"
 		LEFT: 
-			facing = "left"
+			_facing = "left"
 		RIGHT:
-			facing = "right"
+			_facing = "right"
 
 func _physics_process(_delta):
 
@@ -150,7 +150,7 @@ func _physics_process(_delta):
 	##LOCALLY PROCESS STATES
 	match state:
 		STATE_BLOCKED:
-			new_anim = "idle_" + facing
+			new_anim = "idle_" + _facing
 			
 		STATE_IDLE:
 			if (
@@ -171,7 +171,7 @@ func _physics_process(_delta):
 				
 				#_update_facing()
 			
-			new_anim = "idle_" + facing
+			new_anim = "idle_" + _facing
 		
 		STATE_WALKING:
 			if Input.is_action_just_pressed("attack"):
@@ -202,13 +202,13 @@ func _physics_process(_delta):
 			#_update_facing()
 			
 			if linear_vel.length() > 5:
-				new_anim = "walk_" + facing
+				new_anim = "walk_" + _facing
 			else:
 				goto_idle()
-			pass
+			
 		STATE_ATTACK:
-			new_anim = "slash_" + facing
-			pass
+			new_anim = "slash_" + _facing
+			
 		STATE_ROLL:
 			if roll_direction == Vector2.ZERO:
 				state = STATE_IDLE
@@ -244,26 +244,10 @@ func _on_dialog_ended():
 ## HELPER FUNCS
 func goto_idle():
 	linear_vel = Vector2.ZERO
-	new_anim = "idle_" + facing
+	new_anim = "idle_" + _facing
 	state = STATE_IDLE
 
 
-#func _update_facing():
-#	# Depreciated code bloc
-#	# Should be an Input function instead
-#	if Input.is_action_pressed("move_left"):
-#		facing = "left"
-#		_facing = LEFT
-#	if Input.is_action_pressed("move_right"):
-#		facing = "right"
-#		_facing = RIGHT
-#	if Input.is_action_pressed("move_up"):
-#		facing = "up"
-#		_facing = UP
-#	if Input.is_action_pressed("move_down"):
-#		facing = "down"
-#		_facing = DOWN
-#	pass
 
 func despawn():  #this code breaks
 	var blood = Globals.blood_fx.instance()

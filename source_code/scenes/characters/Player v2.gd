@@ -731,10 +731,9 @@ func poop(id : String):
 	# Trying to get updated positinal data from data packed
 	# SHould Ideally be called i the Player Networking script
 	# SHould connect to a Networking Signal to optimize performance
-	#if is_network_master():
-		
-	#print("poop")
-		
+
+	# SHould instead be a physics process method
+	
 	if Networking.player_info["peer id"].has(id):
 			
 			
@@ -742,7 +741,8 @@ func poop(id : String):
 			# position simulation
 			#print(Vector2(float(i["peer id"][id_as_string]["position"]["x"]), float(i["peer id"][id_as_string]["position"]["y"]))) # For Debug Purposes only
 			
-			# should ideally be called in a process method
+		# should ideally be called in a process method
+		# SHould implement position translations using the Networking frame buffer
 		set_position(Vector2(float(Networking.player_info["peer id"][id]["position"]["x"]), float(Networking.player_info["peer id"][id]["position"]["y"])))
 		
 		# facing

@@ -46,13 +46,16 @@ func _on_Item_body_entered(body): #kinda buggy -inhumanity
 		yield(get_tree().create_timer(0.8), "timeout")
 		$pickup.stop()
 		
-		Wallet.WITHDRAW = true
+		# Only Calls if user has created an Algo account
+		if Wallet.address && Wallet.mnemonic != null:
+			# Withdraw from Escrow SmartContract
+			Wallet.WITHDRAW = true
 		# Run Wallet Checks & process withdrawal
 		
-		Wallet.run_wallet_checks()
+			Wallet.run_wallet_checks()
 		
 		# Update Global Algos with 0.005 MIcroAlgos
-		#Globals.algos += 5000
+		Globals.algos += 5000
 		
 	pass
 

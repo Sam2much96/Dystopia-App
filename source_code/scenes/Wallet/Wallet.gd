@@ -27,6 +27,7 @@
 # (5) Drag and Drop Mechanics using custom comics script
 # (6) Swipe Gestures using custom comics script
 # (7) Animation Player, To fix State Controller button Positioning When changing states
+# (8) UI scaling for Mobile & PC screens 
 # *************************************************
 #Bugs:
 
@@ -36,10 +37,11 @@
 # (4) Wallet's Animation UI has Stuck animation transition bug. Use Animation Tree to Activate and Deactivate UI animations
 # (5) _process method is buggy (stuck input bug)
 # (6) _state_controller's implementation of the process controller method is buggy
-# (7) cOINS IMPLEMENTATION IS BUGGY AND DISABLED
+# (7) Coin Implementation of Escrow Smart Contract does not work if user doesn't create Testnet account
+# (8) Wallet Restore should happen on app boot up
 
 # To-DO:
-# (9) Implement UI scaling for Mobile & PC screens (Done)
+# (9) Implement 
 # (10) IMplement Tokenized characters (player_v2)
 # (11) Implement cryptographic encryption and decryption
 #
@@ -57,7 +59,7 @@
 #( 23) Implement NFT asset place functionalities
 # (24) Methods cant be called from Other Scenes. (Done)
 # (25) Make all methods Static Functions
-
+# (26) Implement Wallet Translations
 # *************************************************
 
 
@@ -1443,18 +1445,19 @@ func escrow_withdrawal(params):
 		#var save_dict = parse_json(FileCheck2.get_line())
 		#_restore_wallet_data(save_dict)
 		
+		# My Testnet Escrow App
 		var app_id : int = 161737986
 		
 		
 		var app_arg = "withdraw"
 		
 		
-		
+		# Async Method
 		var p : Dictionary = yield(self.Algorand.algod.construct_atc(params, UserData.get("address"), UserData.get("mnemonic") ,app_id, app_arg ), "completed")
 		
 		#Implement txid from reference in Algodot
 		#var txid = Algorand.algod.execute(t)]
-		print("Transaction : ",p)
+		print_debug("Transaction : ",p) # Prints transaction details
 		reset_transaction_parameters()
 	else : pass
 

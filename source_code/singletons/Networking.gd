@@ -705,7 +705,7 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 			
 			#print ("I: ", i["peer id"][var2str(id)]["position"]) # works # for debug purposes only
 			
-			# Registers the Player Peer ID Locally
+			# Registers the Player Peer ID Locally & Create Frame Buffer
 			if not player_info["peer id"].has(id_as_string):
 				player_info["peer id"][id_as_string] = {
 				"node": [],
@@ -1310,14 +1310,7 @@ class NetworkedObject extends Area2D:
 
 	remotesync func bounce(left, random):
 		# Using sync because both players can make it bounce.
-		if left:
-			direction.x = abs(direction.x)
-		else:
-			direction.x = -abs(direction.x)
-
-		_speed *= 1.1
-		direction.y = random * 2.0 - 1
-		direction = direction.normalized()
+		pass
 
 
 	remotesync func stop():

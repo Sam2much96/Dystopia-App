@@ -70,7 +70,7 @@ margin_top = 176.0
 margin_right = 611.0
 margin_bottom = 217.0
 theme = ExtResource( 1 )
-text = "Mnemonic "
+text = "Enter Mnemonic "
 align = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]

@@ -366,9 +366,10 @@ func manually_translate()-> void:
 	#print(MenuButtons)
 	
 	if Dialogs.language != "" or null:
-		#jggugu
-		Dialogs.set_font(MenuButtons)
+		#UI Array & Font Size
+		Dialogs.set_font(MenuButtons, 44, "")
 		
+		# Set UI Text to Translated Names
 		for i in MenuButtons:
 			# Note: If it breaks with a null object error, it means that the scene layout has been changed
 			# Update the button links then

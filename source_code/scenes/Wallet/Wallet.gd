@@ -185,26 +185,27 @@ signal transaction
 onready var q = HTTPRequest.new()
 onready var q2 = HTTPRequest.new()
 
-var WalletRoot : Control 
+ 
 var Algorand : Algodot
 var state_controller : OptionButton
+
+var account_address : Label
+var wallet_algos : Label
+var ingame_algos : Label
+var CreatAccountSuccessful_Mnemonic_Label : Label
+
+var WalletRoot : Control
 var dashboard_UI : Control
 var passward_UI : Control
 var Asset_UI : Control
-var account_address : Label
 var smart_contract_UI : Control
-var wallet_algos : Label
-var ingame_algos : Label
-var password_Entered_Button : Button
 var transaction_ui : Control
 var mnemonic_ui : Control
 var funding_success_ui : Control
-var mnemonic_ui_lineEdit : LineEdit
-var smartcontract_ui_address_lineEdit : LineEdit
-var smartcontract_ui_appID_lineEdit : LineEdit
-var smartcontract_ui_args_lineEdit : LineEdit
-var smartcontract_UI_button : Button 
+var CreatAccountSuccessful_UI : Control
+var collectibles_UI : Control
 
+var smartcontract_UI_button : Button 
 var txn_txn_valid_button : Button
 var funding_success_close_button : Button
 var imported_mnemonic_button : Button
@@ -214,10 +215,8 @@ var _Create_Acct_button : Button
 
 var canvas_layer : CanvasLayer
 
-var CreatAccountSuccessful_UI : Control
-var collectibles_UI : Control
-var CreatAccountSuccessful_Mnemonic_Label : Label
 
+var password_Entered_Button : Button
 var asset_txn_valid_button : Button
 var asset_optin_txn_valid_button : Button
 var asset_optin_txn_reject_button : Button
@@ -230,6 +229,10 @@ var passward_UI_Buttons : Array
 var txn_addr : LineEdit
 var txn_amount : LineEdit
 var nft_asset_id : LineEdit
+var mnemonic_ui_lineEdit : LineEdit
+var smartcontract_ui_address_lineEdit : LineEdit
+var smartcontract_ui_appID_lineEdit : LineEdit
+var smartcontract_ui_args_lineEdit : LineEdit
 
 #*****Collectible UI*******#
 var NFT : TextureRect
@@ -273,6 +276,11 @@ var dict : Dictionary = {'address': address, 'amount': 0, 'mnemonic': mnemonic }
 # For easy scaling up and down programmatically
 var All_UI_elements : Array = []
 
+
+# For UI Translations
+var UI_Button_Nodes : Array = []
+var UI_Label_Nodes : Array = []
+
 # For Performance optimization
 var frame_counter : int = 0
 
@@ -296,6 +304,17 @@ func check_Nodes() -> bool:
 	]
 	
 	passward_UI_Buttons = [_1,_2, _3, _4, _5, _6, _7, _8, _9, _0, zero,delete_last_button]
+	
+	# UI buttons used for Wallet Translation
+	UI_Button_Nodes = [smartcontract_UI_button, txn_txn_valid_button, funding_success_close_button, imported_mnemonic_button,
+	fund_Acct_Button, make_Payment_Button, _Create_Acct_button, password_Entered_Button, asset_txn_valid_button, asset_optin_txn_valid_button,
+	asset_optin_txn_reject_button, CreatAccountSuccessful_Copy_Mnemonic_button, CreatAccountSuccessful_Proceed_home_button
+	]
+	
+	
+	# UI Labels used for Translations
+	# Label nodes should have dedicated translations in the diaglous subsystem
+	UI_Label_Nodes = [CreatAccountSuccessful_Mnemonic_Label ]
 	
 	var p : bool
 	#checks if any UI element is null

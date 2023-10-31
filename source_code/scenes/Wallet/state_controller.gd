@@ -202,7 +202,7 @@ func _ready():
 	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
 		upscale()
 
-	
+	manually_translate()
 
 "Fixes Stuck Button Bug"
 # By toggling the Wallet's Processing on/off
@@ -238,4 +238,22 @@ func upscale()-> void:
 
 
 func manually_translate()-> void:
-	pass
+	print_debug ("Selected Language: ",Dialogs.language)
+	#SHould Ideally Use Hashmap tuple + for loops  for translations
+	#print(MenuButtons)
+	
+	if Dialogs.language != "" or null:
+		#Select A Font Pack
+		Dialogs.set_font(Wallet.UI_Button_Nodes, 44, Dialogs.font_pack.get("W1"))
+		
+		for i in Wallet.UI_Button_Nodes:
+			if i != null:
+			# Note: If it breaks with a null object error, it means that the scene layout has been changed
+			# Update the button links then
+				i.set_text(Dialogs.translate_to(i.text, Dialogs.language))
+	
+	# Translations
+	#for i in Wallet.UI_Button_Nodes:
+	#	if i != null:
+	#		print_debug(i.text)
+

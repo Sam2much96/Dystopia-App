@@ -164,7 +164,7 @@ func manual_translate()-> void:
 	if Dialogs.language != "" or null:
 		
 		#print(ControlButtons) # for debug purposes only
-		Dialogs.set_font(ControlButtons)
+		Dialogs.set_font(ControlButtons, 44, "")
 		
 		for i in ControlButtons:
 			# Note: If it breaks with a null object error, it means that the scene layout has been changed

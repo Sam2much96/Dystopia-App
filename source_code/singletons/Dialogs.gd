@@ -61,7 +61,8 @@ var font_pack : Dictionary = {
 "yo_NG":"res://fonts/WarowniaBlkNrw.ttf",
 "ja":"res://fonts/NotoSerifJP-Regular.otf",
 "zh_CN":"res://fonts/NotoSerifJP-Regular.otf",
-"ar":"res://fonts/NotoSansArabic-VariableFont_wdth,wght.ttf"
+"ar":"res://fonts/NotoSansArabic-VariableFont_wdth,wght.ttf",
+"W1":"res://Wallet fonts/Roboto-Medium.ttf"
 }
 
 var custom_font = DynamicFont.new()
@@ -137,37 +138,45 @@ func reset() -> void:
 	language = ""
 
 
-#func has_language() -> bool:
-	# Boolean method for checking if
-	# the language variable is empty
+# Dynamic function
+# Creates a CUstom Font Pack for UI with different Paramenters
+func create_font_pack(Size : int, prefered_font_pack : String ) -> DynamicFont:
 	
-#	if language != "":
-#		return true
-#	elif language == "" :
-#		return false
-#	return false
+	
+	# Default Languague Font Pack
+	if prefered_font_pack.empty():
+		# Uses font pack path dictionary to create custom languague packs per languague
+		# IF Language is not supported, English is the deefault
+		Dialogs.custom_font.font_data = load(Dialogs.font_pack.get(Dialogs.language, "en")) 
+		Dialogs.custom_font.size = Size
+		Dialogs.custom_font.outline_size = 1
+		Dialogs.custom_font.outline_color= Color(0,0,0,1)
+		Dialogs.custom_font.use_filter = true
+	
+	# Custom Font Pack
+	if not prefered_font_pack.empty():
+		# Uses font pack path dictionary to create custom languague packs per languague
+		# IF Language is not supported, English is the deefault
+		Dialogs.custom_font.font_data = load(prefered_font_pack) 
+		Dialogs.custom_font.size = Size
+		Dialogs.custom_font.outline_size = 1
+		Dialogs.custom_font.outline_color= Color(0,0,0,1)
+		Dialogs.custom_font.use_filter = true
 
-func create_font_pack() -> DynamicFont:
+	return Dialogs.custom_font
 
-	# Uses font pack path dictionary to create custom languague packs per languague
-	custom_font.font_data = load(font_pack.get(language, "en")) 
-	custom_font.size = 44
-	custom_font.outline_size = 1
-	custom_font.outline_color= Color(0,0,0,1)
-	custom_font.use_filter = true
-	return custom_font
+#Dynamic function
+func set_font(nodes:  Array, size : int, prefered_font_pack : String):
+	create_font_pack(size, prefered_font_pack)
 
-func set_font(nodes:  Array):
-	create_font_pack()
-	#for i in nodes:
-	#if nodes != null:
+	# Font Overide simple state machine
 	if not nodes.empty():
 		for i in nodes:
 			if i is Button:
 				#print (i.name) # for debug purposes only	
-				i.add_font_override('font', custom_font)
+				i.add_font_override('font', Dialogs.custom_font)
 			if i is StatusText:
-				i.add_font_override('font', custom_font)
+				i.add_font_override('font', Dialogs.custom_font)
 
 class Parser extends Reference :
 	

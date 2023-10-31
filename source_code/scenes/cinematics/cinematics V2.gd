@@ -108,7 +108,7 @@ func _ready(): #create a video player function
 		
 		print_debug("UI buttons: ",UI_buttons_2) #For Debug purposes only
 		
-		Dialogs.set_font(UI_buttons_2)
+		Dialogs.set_font(UI_buttons_2, 44, "")
 		
 		# Manually Translate UI
 		for i in UI_buttons_2:

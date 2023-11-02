@@ -140,7 +140,7 @@ func reset() -> void:
 
 # Dynamic function
 # Creates a CUstom Font Pack for UI with different Paramenters
-func create_font_pack(Size : int, prefered_font_pack : String ) -> DynamicFont:
+func create_font_pack(Size : int, prefered_font_pack : String, OutlineSize : int ) -> DynamicFont:
 	
 	
 	# Default Languague Font Pack
@@ -149,7 +149,7 @@ func create_font_pack(Size : int, prefered_font_pack : String ) -> DynamicFont:
 		# IF Language is not supported, English is the deefault
 		Dialogs.custom_font.font_data = load(Dialogs.font_pack.get(Dialogs.language, "en")) 
 		Dialogs.custom_font.size = Size
-		Dialogs.custom_font.outline_size = 1
+		Dialogs.custom_font.outline_size = OutlineSize
 		Dialogs.custom_font.outline_color= Color(0,0,0,1)
 		Dialogs.custom_font.use_filter = true
 	
@@ -159,15 +159,19 @@ func create_font_pack(Size : int, prefered_font_pack : String ) -> DynamicFont:
 		# IF Language is not supported, English is the deefault
 		Dialogs.custom_font.font_data = load(prefered_font_pack) 
 		Dialogs.custom_font.size = Size
-		Dialogs.custom_font.outline_size = 1
+		Dialogs.custom_font.outline_size = OutlineSize
 		Dialogs.custom_font.outline_color= Color(0,0,0,1)
 		Dialogs.custom_font.use_filter = true
 
 	return Dialogs.custom_font
 
 #Dynamic function
-func set_font(nodes:  Array, size : int, prefered_font_pack : String):
-	create_font_pack(size, prefered_font_pack)
+func set_font(nodes:  Array, size : int, prefered_font_pack : String, OutlineSize : int):
+	create_font_pack(
+		size, 
+		prefered_font_pack,
+		OutlineSize
+		)
 
 	# Font Overide simple state machine
 	if not nodes.empty():

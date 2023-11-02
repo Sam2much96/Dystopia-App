@@ -353,13 +353,15 @@ func __ready():
 		if (self.state_controller.get_item_count() == 0):
 			
 			#**********State Controller Options***********#
+			# State Controller Node would need a font overide for International Languages
+			
 			
 			self.state_controller.add_item("Show Account")
 			self.state_controller.add_item("Check Account")
 			#self.state_controller.add_item("New Account") # remove from state controller control. Has been mapped to UI button
 			self.state_controller.add_item("Import Account")
 			self.state_controller.add_item("Transactions")
-			self.state_controller.add_item("SmartContacts") #should be a sub of Transactions
+			self.state_controller.add_item("Smart Contracts") #should be a sub of Transactions
 			self.state_controller.add_item('Collectibles')
 			self.state_controller.add_item('Login')
 			self.state_controller.add_item('Show Mnemonic')
@@ -1723,7 +1725,8 @@ class Wallet extends Reference:
 	"Loads Wallet Variables into Scene Tree Memory"
 	# By Modifying a loaded dictionary into the scene tree
 	static func _restore_wallet_data(user_data: Dictionary, info: Dictionary ) -> Dictionary:
-		
+		# Bugs : It's called repeatedly
+		# Need a Paramter so it's only called onnce
 		print_debug(info)
 		
 		# JSON numbers are always parsed as floats. In this case we need to turn them into ints

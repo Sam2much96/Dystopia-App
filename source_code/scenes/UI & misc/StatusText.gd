@@ -30,7 +30,7 @@ var nodes : Array = [self]
 
 func _ready():
 	
-	Dialogs.set_font(nodes)
+	Dialogs.set_font(nodes, 32, "", 0)
 	hide()
 	
 	# Connects to Both Quest and Item Singleton

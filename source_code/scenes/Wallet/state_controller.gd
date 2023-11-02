@@ -244,7 +244,12 @@ func manually_translate()-> void:
 	
 	if Dialogs.language != "" or null:
 		#Select A Font Pack
-		Dialogs.set_font(Wallet.UI_Button_Nodes, 44, Dialogs.font_pack.get("W1"))
+		Dialogs.set_font(
+			Wallet.UI_Button_Nodes, 
+			44, 
+			Dialogs.font_pack.get("W1"), 
+			0
+			)
 		
 		for i in Wallet.UI_Button_Nodes:
 			if i != null:

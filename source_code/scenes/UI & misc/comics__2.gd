@@ -133,7 +133,7 @@ func _on_chap_7_pressed():
 func manually_translate():
 	if Dialogs.language != "" or null:
 		#jggugu
-		Dialogs.set_font(Comics__2_UI, 44, "")
+		Dialogs.set_font(Comics__2_UI, 44, "",0)
 		
 		for i in Comics__2_UI:
 			# Note: If it breaks with a null object error, it means that the scene layout has been changed

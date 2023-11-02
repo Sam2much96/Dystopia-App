@@ -367,7 +367,7 @@ func manually_translate()-> void:
 	
 	if Dialogs.language != "" or null:
 		#UI Array & Font Size
-		Dialogs.set_font(MenuButtons, 44, "")
+		Dialogs.set_font(MenuButtons, 44, "", 2)
 		
 		# Set UI Text to Translated Names
 		for i in MenuButtons:

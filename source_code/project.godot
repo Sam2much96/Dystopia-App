@@ -518,6 +518,7 @@ boot_splash/bg_color=Color( 1, 1, 1, 1 )
 config/icon="res://icon.png"
 config/windows_native_icon="res://windows icon.ico"
 config/openai_api=""
+config/replicate_api=""
 
 [autoload]
 

@@ -45,6 +45,11 @@ _global_script_classes=[ {
 "path": "res://scenes/UI & misc/Blood_Splatter_FX.gd"
 }, {
 "base": "StaticBody2D",
+"class": "Boulder_Big",
+"language": "GDScript",
+"path": "res://scenes/props/Boulder Big.gd"
+}, {
+"base": "StaticBody2D",
 "class": "BrokenShip",
 "language": "GDScript",
 "path": "res://scenes/props/broken ship.gd"
@@ -427,6 +432,7 @@ _global_script_class_icons={
 "Appodeal": "res://ads/Appodeal/appodeal_logo.png",
 "AsyncExecutorDriver": "",
 "BloodSplatter": "res://resources/FX/Blood splatter fx.webp",
+"Boulder_Big": "",
 "BrokenShip": "",
 "Bullet": "",
 "ChatGPTAPI": "",
@@ -518,7 +524,7 @@ boot_splash/bg_color=Color( 1, 1, 1, 1 )
 config/icon="res://icon.png"
 config/windows_native_icon="res://windows icon.ico"
 config/openai_api=""
-config/replicate_api=""
+config/replicate_api="r8_FHIx8sf9Jqr9gy3IeW5SjcsL7VEaRem31sjAC"
 
 [autoload]
 

@@ -59,7 +59,7 @@ var player : Array = []
 var player_hitpoints : int
 var enemy = null
 var enemy_debug : String 
-var initial_level : String = "res://scenes/levels/Outside.tscn"  # loading outside environment bug fixed
+var initial_level : String = "res://scenes/levels/Overworld.tscn"  # loading outside environment bug fixed
 #var _Debug = null
 var _player_state # gets state data from the player state machine
 var video_stream #for the video streamers

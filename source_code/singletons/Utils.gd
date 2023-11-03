@@ -210,8 +210,60 @@ class Screen extends Reference :
 		# Prints out the Current Viewport Size
 		print_debug("Viewport Size: ", GlobalScript.viewport_size ) # for debug purposes only
 		print_debug ("Center of Viewprt: ", GlobalScript.center_of_viewport ) # for debug purposes onlys
+
+
+class procedural extends Reference:
+	static func genereate(simplex_noise : OpenSimplexNoise, 
+	world_seed : String, 
+	noise_octaves : int, 
+	noise_period : int, 
+	noise_persistence : float, 
+	noise_lacunarity : float, 
+	noise_threshold : float,
+	map_height : int,
+	map_width : int,
+	tile_map : TileMap
+	):
+		# generate a seed using a string and the hash of that string
+		simplex_noise.seed = world_seed.hash()
 		
+		# set simplex noise using Editor values
+		simplex_noise.octaves = noise_octaves
+		simplex_noise.period = noise_period
+		simplex_noise.persistence = noise_persistence
+		simplex_noise.lacunarity = noise_lacunarity
 		
+		# Loop to every tile within Map Area Co-ordinates
+		for x in range( -map_width / 2, map_width / 2):
+			for y in range(-map_height / 2, map_height / 2):
+				
+				# conditional
+				if simplex_noise.get_noise_2d(x, y) < noise_threshold:
+					
+					# generataes a tilemap
+					_set_autotile(x, y, tile_map)
+		
+		tile_map.update_dirty_quadrants()
+
+
+	# Sets the scenes autotile programmatically
+	# Uses the Tilemap's set cell method & the x and y auto tile co-ordinates
+	static func _set_autotile(x : int, y : int, tile_map : TileMap) -> void :
+		tile_map.set_cell(
+			x,
+			y, 
+			tile_map.get_tileset().get_tiles_ids()[0], # Tile ID, the first one 
+			false, # Completeley ignore the next three arguments
+			false, 
+			false, 
+			tile_map.get_cell_autotile_coord(x, y ) # co-ordinate of the TileSet
+		)
+		
+		tile_map.update_bitmask_area(Vector2(x, y)) # so the engine knows where to configure the autotiling
+
+	static func clear(tile_map : TileMap):
+		# Completely clearts the current tilemap
+		tile_map.clear()
 
 
 'Delete Files'

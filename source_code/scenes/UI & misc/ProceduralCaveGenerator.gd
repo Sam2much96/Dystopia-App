@@ -9,8 +9,9 @@
 # 
 # *************************************************
 # Bugs:
-# (1) Stuck Collision Bug with Enemy Collision 
+# (1) Stuck Collision Bug with Enemy Collision     (Fixed with faster draw calls)
 # (2) Stuck Collision Bug with Item Objects
+# (3) Doesn't preserve tilemap data. Respawning results in massive time lag 
 # *************************************************
 
 extends Node
@@ -41,7 +42,10 @@ export(bool) var redraw setget redraw
 var tile_map : TileMap
 var simplex_noise : OpenSimplexNoise = OpenSimplexNoise.new()
 
-func _ready() -> void:
+# Generated Bool
+var generated : bool = false
+
+func _enter_tree()-> void:
 	
 	if enabled:
 		# Gets the Parent Tilemap Node
@@ -59,47 +63,30 @@ func redraw(value = null) -> void:
 	generate()
 
 func clear() -> void:
-	# Completely clearts the current tilemap
-	tile_map.clear()
+	Utils.procedural.clear(tile_map)
 
-
-func generate() -> void:
+func generate() :
 	
-	# generate a seed using a string and the hash of that string
-	simplex_noise.seed = world_seed.hash()
+	if !generated : # conditional prevents auto dungeon regeneration bug
+		
+		# generate a seed using a string and the hash of that string
+		#simplex_noise.seed = world_seed.hash()
+		
+		Utils.procedural.genereate(simplex_noise,
+		world_seed,
+		noise_octaves,
+		noise_period,
+		noise_persistence,
+		noise_lacunarity,
+		noise_threshold,
+		map_height,
+		map_width,
+		tile_map
+		)
+		
+		
+		print_debug("Finished Procedural Generation")
+		generated = true
+		
+	if generated: pass
 	
-	# set simplex noise using Editor values
-	simplex_noise.octaves = noise_octaves
-	simplex_noise.period = noise_period
-	simplex_noise.persistence = noise_persistence
-	simplex_noise.lacunarity = noise_lacunarity
-	
-	# Loop to every tile within Map Area Co-ordinates
-	for x in range( -map_width / 2, map_width / 2):
-		for y in range(-map_height / 2, map_height / 2):
-			
-			# conditional
-			if simplex_noise.get_noise_2d(x, y) < noise_threshold:
-				
-				# generataes a tilemap
-				_set_autotile(x, y)
-	
-	tile_map.update_dirty_quadrants()
-
-	print_debug("Finished Procedural Generation")
-
-
-# Sets the scenes autotile programmatically
-# Uses the Tilemap's set cell method & the x and y auto tile co-ordinates
-func _set_autotile(x : int, y : int) -> void :
-	tile_map.set_cell(
-		x,
-		y, 
-		tile_map.get_tileset().get_tiles_ids()[0], # Tile ID, the first one 
-		false, # Completeley ignore the next three arguments
-		false, 
-		false, 
-		tile_map.get_cell_autotile_coord(x, y ) # co-ordinate of the TileSet
-	)
-	
-	tile_map.update_bitmask_area(Vector2(x, y)) # so the engine knows where to configure the autotiling

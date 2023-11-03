@@ -112,7 +112,7 @@ func _request_callback(result, response_code, headers, body) -> void:
 		
 		
 		
-		url2 = response["urls"]["get"]
+		url2 = response["urls"]["get"] # code breaks here
 
 		print_debug(url2)
 

@@ -225,7 +225,6 @@ to_scene = "res://scenes/levels/DuneProcedural.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="level/House/Exit"]
 position = Vector2( 227.908, 150.863 )
-scale = Vector2( 1, 1 )
 shape = SubResource( 4 )
 
 [node name="broken ship" parent="level" instance=ExtResource( 9 )]

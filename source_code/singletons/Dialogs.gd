@@ -61,7 +61,7 @@ var font_pack : Dictionary = {
 "yo_NG":"res://fonts/WarowniaBlkNrw.ttf",
 "ja":"res://fonts/NotoSerifJP-Regular.otf",
 "zh_CN":"res://fonts/NotoSerifJP-Regular.otf",
-"ar":"res://fonts/NotoSansArabic-VariableFont_wdth,wght.ttf",
+"ar":"res://fonts/NotoSansArabic_Condensed-Bold.ttf",
 "W1":"res://Wallet fonts/Roboto-Medium.ttf"
 }
 

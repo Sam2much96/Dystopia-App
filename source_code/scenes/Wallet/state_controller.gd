@@ -247,7 +247,7 @@ func manually_translate()-> void:
 		Dialogs.set_font(
 			Wallet.UI_Button_Nodes, 
 			44, 
-			Dialogs.font_pack.get("W1"), 
+			"",#Dialogs.font_pack.get("W1"), 
 			0
 			)
 		

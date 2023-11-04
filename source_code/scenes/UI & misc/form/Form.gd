@@ -115,16 +115,18 @@ func _on_play_pressed():
 		Dialogs.language = "te_IN"
 	elif language.get_selected() == 4:
 		Dialogs.language = "hi_IN"
-	elif language.get_selected() == 4:
-		Dialogs.language = "ja"
 	elif language.get_selected() == 5:
-		Dialogs.language = "zh_CN"
+		Dialogs.language = "ja"
 	elif language.get_selected() == 6:
-		Dialogs.language = "yo_NG"
+		Dialogs.language = "zh_CN"
 	elif language.get_selected() == 7:
+		Dialogs.language = "yo_NG"
+	elif language.get_selected() == 8:
 		Dialogs.language = "ar"
 		#Globals.save_game()
 	else : Dialogs.language = ""
+
+	print_debug(Dialogs.language)
 
 	get_tree().change_scene_to(cinematics)
 

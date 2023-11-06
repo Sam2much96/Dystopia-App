@@ -864,7 +864,16 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	# Remote Update Particles
 	
 
+"""
+PING
+"""
 
+func ping() -> Array:
+	var output = []
+	OS.execute('ping', ['-w', '3', 'godotengine.org'], true, output) 
+	for line in output:
+		print(line)
+	return output
 
 """
 BROADCAST WORLD POSITIONS
@@ -879,6 +888,8 @@ remote func broadcast_world_positions():
 	# Only the Hosting Device Can Update All NEtwork peers
 	if is_network_master():
 		
+		# Ping
+		ping()
 		
 		
 		# First, Convert Player Info Dictionary to Pool Byte Array

@@ -149,6 +149,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/Shaders/impact_effect_script.gd"
 }, {
+"base": "Control",
+"class": "Input_Buffer",
+"language": "GDScript",
+"path": "res://singletons/Input.gd"
+}, {
 "base": "HTTPRequest",
 "class": "Internet",
 "language": "GDScript",
@@ -198,6 +203,21 @@ _global_script_classes=[ {
 "class": "NPC",
 "language": "GDScript",
 "path": "res://scenes/characters/Npc.gd"
+}, {
+"base": "AnimationPlayer",
+"class": "NetworkAnimationPlayer",
+"language": "GDScript",
+"path": "res://addons/godot-rollback-netcode/NetworkAnimationPlayer.gd"
+}, {
+"base": "Node",
+"class": "NetworkRandomNumberGenerator",
+"language": "GDScript",
+"path": "res://addons/godot-rollback-netcode/NetworkRandomNumberGenerator.gd"
+}, {
+"base": "Node",
+"class": "NetworkTimer",
+"language": "GDScript",
+"path": "res://addons/godot-rollback-netcode/NetworkTimer.gd"
 }, {
 "base": "Node",
 "class": "OnlineLeaderboard",
@@ -453,6 +473,7 @@ _global_script_class_icons={
 "Highscores": "",
 "Idol": "",
 "ImpactFX": "",
+"Input_Buffer": "",
 "Internet": "",
 "InvitationItem": "",
 "JoyStickUI": "",
@@ -463,6 +484,9 @@ _global_script_class_icons={
 "Llama2API": "",
 "Login": "",
 "NPC": "",
+"NetworkAnimationPlayer": "",
+"NetworkRandomNumberGenerator": "",
+"NetworkTimer": "",
 "OnlineLeaderboard": "",
 "Player": "",
 "Player_v2_networking": "",
@@ -542,6 +566,8 @@ FPSGraphOverlay="*res://addons/fps_graph_overlay/FPSGraphOverlay.tscn"
 DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
 Gdunzip="*res://addons/gdunzip/gdunzip.gd"
 Utils="*res://singletons/Utils.gd"
+SyncManager="*res://addons/godot-rollback-netcode/SyncManager.gd"
+GlobalInput="*res://singletons/Input.gd"
 
 [debug]
 
@@ -556,7 +582,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/algodot/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/algodot/plugin.cfg", "res://addons/godot-rollback-netcode/plugin.cfg" )
 
 [gdnative]
 

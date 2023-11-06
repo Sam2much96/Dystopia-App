@@ -246,9 +246,9 @@ func _ready():
 
 
 "INPUT "
-#multiplatform inputs
+# multiplatform inputs
 # Input class has Multiple Bugs
-
+# UnOptimized Codes
 func _input(event): 
 	"""
 	#Comic panel changer

@@ -7,6 +7,7 @@
 # (1) THe world's camera
 # (2) Player hitboxes
 # (3) It's a class and stores variables to the UI, Globals singleton, PlayersSave Files, and the Debug SIngleton
+# (4) Extend input from Global Input Singleton
 # To Do:
 #(1) Update Documentation
 # (2) Implement Networking Calls (done in v2)

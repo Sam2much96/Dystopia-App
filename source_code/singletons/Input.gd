@@ -44,7 +44,7 @@ func _input(event):
 		_state = LEFT
 		#facing = LEFT
 		pressed = true
-		#pass
+		vibrate(40)
 	if Input.is_action_just_released("move_left"):
 		
 		_state = RESET
@@ -55,7 +55,7 @@ func _input(event):
 		
 		_state = RIGHT
 		#facing = RIGHT
-		#pass
+		vibrate(40)
 	if Input.is_action_just_released("move_right"):
 		
 		_state = RESET
@@ -65,7 +65,7 @@ func _input(event):
 		
 		_state = UP
 		#facing = UP
-		#pass
+		vibrate(40)
 	if Input.is_action_just_released("move_up"):
 		
 		_state = UP
@@ -75,7 +75,7 @@ func _input(event):
 		
 		_state = DOWN
 		#facing = DOWN
-		#pass
+		vibrate(40)
 	if Input.is_action_just_released("move_down"):
 		
 		_state = DOWN
@@ -84,7 +84,8 @@ func _input(event):
 	if Input.is_action_just_pressed("attack"):
 		
 		_state = ATTACK
-		#pass
+		
+		vibrate(75)
 	if Input.is_action_just_released("attack"):
 		
 		_state = ATTACK
@@ -97,6 +98,7 @@ func _input(event):
 		
 		_state = ROLL
 		#pass
+		vibrate(40)
 	
 	# Comics Input
 	if event.is_action_pressed("reset"):
@@ -155,11 +157,7 @@ func _input(event):
 		#	print(input_buffer, _state, input_buffer.pop_front())
 			input_buffer.clear()
 
-	if vibrate:
-		# Shoud Connect to Controls so it can be turned on/off
-		
-		# Vibration on Mobile Devices
-		Input.vibrate_handheld(500)
+
 
 func _process(delta : float):
 	
@@ -182,3 +180,11 @@ func parse_input( action : String, _pressed : bool):
 	a.action = action
 	a.pressed = _pressed
 	Input.parse_input_event(a)
+
+
+func vibrate(duration_ms : int):
+	if vibrate:
+		# Shoud Connect to Controls so it can be turned on/off
+		
+		# Vibration on Mobile Devices
+		Input.vibrate_handheld(duration_ms)

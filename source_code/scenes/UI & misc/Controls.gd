@@ -40,6 +40,9 @@ onready var ControlButtons : Array =  [back, music,_debug,Shuffle,Change_Control
 
 onready var _Help_hint : hint = get_node("Help popup")
 
+# vibration
+onready var vibration : Button = $ScrollContainer/VBoxContainer/vibration
+
 func _ready():
 	if get_tree().get_root().has_node("/root/Debug") == true:
 		
@@ -95,10 +98,11 @@ func _on_Debug_toggled(button_pressed):
 	if get_tree().get_root().get_node("/root/Debug") != null:
 		if button_pressed:
 		
-			var a = InputEventAction.new()
-			a.action = "Debug"
-			a.pressed = true
-			Input.parse_input_event(a)
+			GlobalInput.parse_input("Debug", true)
+			#var a = InputEventAction.new()
+			#a.action = "Debug"
+			#a.pressed = true
+			#Input.parse_input_event(a)
 
 			#debug__.stop_debug()
 			$TextureRect2.show() #Shows Debug hint when in debug mode
@@ -203,3 +207,12 @@ func _on_languague_pressed():
 
 func _on_Github_pressed():
 	get_tree().change_scene("res://addons/github-integration/scenes/GitHub.tscn")
+
+
+func _on_vibration_toggled(button_pressed):
+	# Toggle Vibrations on/off for mobile devices
+	# TO Do: Implement Saving Vibration settings
+	if button_pressed:
+		GlobalInput.vibrate = false
+		vibration.set_text("off")
+	else: pass

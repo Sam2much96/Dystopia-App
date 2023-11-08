@@ -43,27 +43,34 @@ var tile_map : TileMap
 var simplex_noise : OpenSimplexNoise = OpenSimplexNoise.new()
 
 # Generated Bool
-var generated : bool = false
+export(bool) var generated 
 
 func _enter_tree()-> void:
 	
 	if enabled:
-		# Gets the Parent Tilemap Node
-		tile_map = get_parent() as TileMap
+		
+		if tile_map == null && Globals.tile_map == null:
+			# Gets the Parent Tilemap Node
+			tile_map = get_parent() as TileMap
+			
+			
+			# Make GLobal
+			Globals.tile_map = tile_map
+		
 		
 		clear()
 		generate()
 
 
 func redraw(value = null) -> void:
-	if tile_map == null:
+	if tile_map == null && Globals.tile_map == null:
 		return
 	
 	clear()
 	generate()
 
 func clear() -> void:
-	Utils.procedural.clear(tile_map)
+	Utils.procedural.clear(Globals.tile_map)
 
 func generate() :
 	
@@ -81,7 +88,7 @@ func generate() :
 		noise_threshold,
 		map_height,
 		map_width,
-		tile_map
+		Globals.tile_map
 		)
 		
 		

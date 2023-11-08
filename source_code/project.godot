@@ -567,7 +567,7 @@ DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
 Gdunzip="*res://addons/gdunzip/gdunzip.gd"
 Utils="*res://singletons/Utils.gd"
 SyncManager="*res://addons/godot-rollback-netcode/SyncManager.gd"
-GlobalInput="*res://singletons/Input.gd"
+GlobalInput="*res://singletons/Input.tscn"
 
 [debug]
 

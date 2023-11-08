@@ -5,9 +5,14 @@
 # INPUT SINGLE4TON
 #
 # Code Logic handles all input in the game/app project
-# It also implements an Input Buffer for netwoked multiplayer
-# To DO
-#(1) Should implement Vibrations for haptic feedback
+# Features:
+# (1) It implements an Input Buffer for netwoked multiplayer
+# (2) The Input Buffer stores players 12 last input
+#
+# 
+# TO-DO:
+#
+#(1) Should implement Vibrations for haptic feedback (None)
 # (2) Implement Input Lag (Delay) For Multiplayer Gameplay
 # *************************************************
 
@@ -16,17 +21,20 @@ extends Control
 class_name Input_Buffer
 
 # For Storing An Array of Input Data FOr Networking Multiplayer
-var input_buffer : Array = []
+export (Array) var input_buffer = []
 
 enum {LEFT,RIGHT,UP,DOWN,ATTACK,ROLL,BLOCK, RESET, COMICS, NEXTPANEL, PREVPANEL, DRAG}
 
 # State Machine
-var _state : int = LEFT
+var _state : int
 
 # Frame Counter
 var _frame_counter : int = 0
 
 var pressed : bool = false
+
+# Vibration Settings
+export (bool) var vibrate
 
 func _input(event):
 	# Player Input
@@ -36,73 +44,73 @@ func _input(event):
 		_state = LEFT
 		#facing = LEFT
 		pressed = true
-		pass
+		#pass
 	if Input.is_action_just_released("move_left"):
 		
 		_state = RESET
 		pressed = false
-		pass
+		#pass
 	
 	if Input.is_action_pressed("move_right"):
 		
 		_state = RIGHT
 		#facing = RIGHT
-		pass
+		#pass
 	if Input.is_action_just_released("move_right"):
 		
 		_state = RESET
 		#facing = RIGHT
-		pass
+		#pass
 	if Input.is_action_pressed("move_up"):
 		
 		_state = UP
 		#facing = UP
-		pass
+		#pass
 	if Input.is_action_just_released("move_up"):
 		
 		_state = UP
 		#facing = UP
-		pass
+		#pass
 	if Input.is_action_pressed("move_down"):
 		
 		_state = DOWN
 		#facing = DOWN
-		pass
+		#pass
 	if Input.is_action_just_released("move_down"):
 		
 		_state = DOWN
 		#facing = DOWN
-		pass
+		#pass
 	if Input.is_action_just_pressed("attack"):
 		
 		_state = ATTACK
-		pass
+		#pass
 	if Input.is_action_just_released("attack"):
 		
 		_state = ATTACK
-		pass
+		
 	if Input.is_action_just_pressed("roll"):
 		
 		_state = ROLL
-		pass
+		#pass
 	if Input.is_action_just_released("roll"):
 		
 		_state = ROLL
-		pass
+		#pass
 	
 	# Comics Input
 	if event.is_action_pressed("reset"):
 		
 		_state = RESET
-		pass
+		#pass
 	if event.is_action_pressed("next_panel"):
 		
 		_state = NEXTPANEL
-		pass
+		#pass
 	if event.is_action_pressed("comics"):
 		
 		_state = COMICS
-		pass
+		#pass
 	if event is InputEventScreenDrag : 
 		_state = DRAG
 
@@ -135,42 +143,42 @@ func _input(event):
 		# Scroll Up
 		#Game_Menu.scroll(true, true,scroller)
 		pass
+
+	if input_buffer.empty() == true && pressed:
+		input_buffer.append(_state)
 	
+	if not input_buffer.empty() && int(input_buffer[input_buffer.size()-1]) != _state:
+		input_buffer.append(_state)
+
+	# Prevent Memory Leak/ Stack Overflow error 
+	if input_buffer.size() > 12:
+		#	print(input_buffer, _state, input_buffer.pop_front())
+			input_buffer.clear()
+
+	if vibrate:
+		# Shoud Connect to Controls so it can be turned on/off
+		
+		# Vibration on Mobile Devices
+		Input.vibrate_handheld(500)
 
 func _process(delta : float):
 	
 	
 	_frame_counter += round(delta)
 	
-		# Save Input Pressed to Input Buffer
-		# Works but stores wrong data
-	#	if not input_buffer.has(str(event)):
-	#		input_buffer.append(str(event))
-		#print_debug(event)
-		
-	if _frame_counter % 12 == 0:
-		# REGISTER INPUT
-		# Buggy
-		#print(input_buffer, _state)
-		if input_buffer.empty() == true :
-			input_buffer.append(_state)
-			#pressed = false
-		if input_buffer.empty() == false && pressed == true:
-			#if int(input_buffer.pop_back() + 1) == _state:
-			input_buffer.insert(int(input_buffer.size()-1), _state)
-			#print(input_buffer, _state, input_buffer.pop_back())
-			#pressed= false
+	if _frame_counter > 500:
+		_frame_counter = 0
+	
+	# Input Calculation on Every 24th frame 
+	if _frame_counter % 24 == 0:
+		pass # DO nothing for now
 
 
-	# Logic for Storing Inpute States as Array[Int]
-	#if input_buffer.empty() :
-	#	input_buffer.append(_state)
-	#if input_buffer.pop_back() != _state:
-	#	input_buffer.append(_state)
-	#if input_buffer.pop_back() == _state: pass
 
-		# Prevent Memory Leak/ Stack Overflow error 
-		if input_buffer.size() > 200:
-			input_buffer.clear()
-
-
+func parse_input( action : String, _pressed : bool):
+	#This Logic Creates and Parses Input actions programmatically
+	
+	var a = InputEventAction.new()
+	a.action = action
+	a.pressed = _pressed
+	Input.parse_input_event(a)

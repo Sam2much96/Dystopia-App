@@ -116,14 +116,6 @@ var screenSize : Vector2
 # This Apps Global Screen Orientation
 enum { SCREEN_HORIZONTAL, SCREEN_VERTICAL} 
 
-# OS based Hardware Screen Orientation
-# Would most likely be 6 for Auto-Rotate Setting on Android
-#enum {
-#	SCREEN_ORIENTATION_LANDSCAPE, SCREEN_ORIENTATION_PORTRAIT , SCREEN_ORIENTATION_REVERSE_LANDSCAPE,
-#	SCREEN_ORIENTATION_REVERSE_PORTRAIT ,SCREEN_ORIENTATION_SENSOR_LANDSCAPE , SCREEN_ORIENTATION_SENSOR_PORTRAIT 
-#	SCREEN_ORIENTATION_SENSOR  
-#}
-
 var screenOrientation : int
 var viewport_size : Vector2
 var center_of_viewport : Vector2 
@@ -153,6 +145,8 @@ var wallet_state  #wallet state global variabe
 var _TouchScreenHUD : TouchScreenHUD
 
 
+"Tilemap"
+var tile_map : TileMap
 
 func _ready():
 	print_debug('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes

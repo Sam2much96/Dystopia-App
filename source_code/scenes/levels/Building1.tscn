@@ -78,4 +78,3 @@ position = Vector2( 512.159, 749.961 )
 scale = Vector2( 0.199171, 0.199171 )
 
 [node name="GameHUD" parent="." instance=ExtResource( 6 )]
-visible = false

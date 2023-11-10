@@ -38,7 +38,7 @@ scale = Vector2( 0.87822, 0.87822 )
 position = Vector2( 128, -2560 )
 scale = Vector2( 0.913953, 1.63395 )
 script = ExtResource( 2 )
-to_scene = "res://scenes/levels/Outside.tscn"
+to_scene = "res://scenes/levels/Overworld.tscn"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Exit"]
 position = Vector2( 700, 700 )

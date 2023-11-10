@@ -26,6 +26,9 @@ var center_of_viewport : Vector2
 
 var EnemyObjPool : Array = [] #Stores shared pointer to enemy Mob instances
 
+
+
+
 "Compression and Uncompression Algorithm"
 # Documentation: https://git.sr.ht/~jelle/gdunzip
 # Reads Data from a Zip File

@@ -15,7 +15,7 @@
 #Bugs
 #(1) Ingame menu bug (fixed)
 # (2) Multiple State can be active at the same time Bug
-# (4) Status UI misalgnment (fixed)
+# (4) Fix Intteract UI
 # (5) Doesn't implement Mobile Gyroscope (f1/2 fixed)
 # (6) TouchInterface State Machine is buggy
 # (7) Touch Interface INterract State  State is Buggy
@@ -35,7 +35,17 @@ onready var _Comics = Comics_v6 #$Comics
 onready var _Stats : PanelContainer = $Stats
 
 
+var frame_counter  : int = 0
+
 func _ready():
+	
+	
+	# Global Pointers
+	GlobalInput.menu = menu
+	GlobalInput.TouchInterface  = TouchInterface
+	GlobalInput._Comics = _Comics
+	GlobalInput._Stats = _Stats
+
 	
 	connect_signals()
 
@@ -47,33 +57,39 @@ func _on_dialog_ended():
 
 
 func _input(event):
+	pass
+
+func _process(delta: float):
 	" UI logic" # 
 	
+	frame_counter += round(delta)
 	
-
-
+	# Reset frame counter to prevent memory leaks
+	if frame_counter > 500:
+		frame_counter = 0
+	
 	" UI Animation"
 	# Controls the Touch interface state machine from the player's input 
-	# Buggy and Broken
-	
+	# Refactored
+	# Processed every frame?
 	
 	# nested If Statements?
-	if Input.is_action_just_pressed("comics"):
+	if GlobalInput._state == GlobalInput.COMICS: #if Input.is_action_just_pressed("comics"):
 		if _Comics.enabled == true:
 			if TouchInterface._state_controller != 4 : # and _Comics.loaded_comics == true:
 				TouchInterface.comics()
 		elif _Comics.enabled == false : #or _Comics.loaded_comics == false:
 			TouchInterface.reset()
-	if Input.is_action_just_pressed("pause"):
+	if GlobalInput._state == GlobalInput.PAUSE:#if Input.is_action_just_pressed("pause"):
 		if _Stats.enabled == true :
 			TouchInterface.status() #calls a display function int the touch interface scene
 			
-	if Input.is_action_just_pressed('menu'):
+	if GlobalInput._state == GlobalInput.MENU :#if Input.is_action_just_pressed('menu'):
 		if menu.enabled == true:
 			TouchInterface.menu()
 		elif menu.enabled == false:
 			TouchInterface.reset()
-	if Input.is_action_just_pressed('attack'):
+	if GlobalInput._state == GlobalInput.ATTACK: #Input.is_action_just_pressed('attack'):
 		if TouchInterface._state_controller != 2: #2 is attack state  #uses old state_machine?
 			TouchInterface.attack()
 			
@@ -84,7 +100,7 @@ func _input(event):
 	#		TouchInterface.comics()
 	else : pass #TouchInterface.reset()
 	
-	#'Sets Interract UI'
+	'Interract UI'
 	# Disabled for Debugging
 	#
 	# Hard connects to all interractible objects connected via the global variable

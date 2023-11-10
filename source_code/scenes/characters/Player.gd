@@ -120,20 +120,8 @@ func _ready():
 	pass
 
 func _input(event):
-	# Facing State Machine
-	
-	if Input.is_action_pressed("move_left"):
-		
-		facing = LEFT
-	if Input.is_action_pressed("move_right"):
-		
-		facing = RIGHT
-	if Input.is_action_pressed("move_up"):
-		
-		facing = UP
-	if Input.is_action_pressed("move_down"):
-		
-		facing = DOWN
+	# Node Individual Input Processes were depreciated in favor of GlobalInput Singleton
+	pass
 
 func _process(delta: float):
 		# Raises up a Frame Counter
@@ -147,8 +135,25 @@ func _process(delta: float):
 	if frame_counter >= 100:
 		frame_counter = 0
 
+	
 	#print ('Current scene:',Globals.curr_scene, 'Current level',Globals.current_level) #for debug purposes only
 	
+	# Facing State Machine
+	# 
+	if GlobalInput._state == GlobalInput.LEFT: #if Input.is_action_pressed("move_left"):
+		
+		facing = LEFT
+	if GlobalInput._state == GlobalInput.RIGHT: #if Input.is_action_pressed("move_right"):
+		
+		facing = RIGHT
+	if GlobalInput._state == GlobalInput.UP:#if Input.is_action_pressed("move_up"):
+		
+		facing = UP
+	if GlobalInput._state == GlobalInput.DOWN:#if Input.is_action_pressed("move_down"):
+		
+		facing = DOWN
+
+
 	# Facing State machine
 	match facing:
 		UP:
@@ -187,10 +192,9 @@ func _physics_process(_delta):
 					state = STATE_ATTACK
 				if Input.is_action_just_pressed("roll"):
 					state = STATE_ROLL
-					roll_direction = Vector2(
-							- int( Input.is_action_pressed("move_left") ) + int( Input.is_action_pressed("move_right") ),
-							-int( Input.is_action_pressed("move_up") ) + int( Input.is_action_pressed("move_down") )
-						).normalized()
+					
+					# Roll DIrection Calcualatin
+					roll_direction = GlobalInput.roll_direction_calculation()
 					
 					#_update_facing()
 				

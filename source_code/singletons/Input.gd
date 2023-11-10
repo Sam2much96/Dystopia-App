@@ -23,10 +23,13 @@ class_name Input_Buffer
 # For Storing An Array of Input Data FOr Networking Multiplayer
 export (Array) var input_buffer = []
 
-enum {LEFT,RIGHT,UP,DOWN,ATTACK,ROLL,BLOCK, RESET, COMICS, NEXTPANEL, PREVPANEL, DRAG}
+enum {LEFT,RIGHT,UP,DOWN,ATTACK,ROLL,BLOCK, RESET, 
+COMICS, NEXTPANEL, PREVPANEL, DRAG, PAUSE, MENU, 
+INTERRACT, DIALOGUE
+}
 
 # State Machine
-var _state : int
+var _state : int 
 
 # Frame Counter
 var _frame_counter : int = 0
@@ -36,6 +39,15 @@ var pressed : bool = false
 # Vibration Settings
 export (bool) var vibrate
 
+
+
+# Game HUD
+var menu : Container 
+var TouchInterface : Node2D 
+var _Comics = Comics_v6 #$Comics
+var _Stats : PanelContainer 
+
+
 func _input(event):
 	# Player Input
 	
@@ -44,7 +56,7 @@ func _input(event):
 		_state = LEFT
 		#facing = LEFT
 		pressed = true
-		vibrate(40)
+		vibrate(40, Globals.os)
 	if Input.is_action_just_released("move_left"):
 		
 		_state = RESET
@@ -55,7 +67,7 @@ func _input(event):
 		
 		_state = RIGHT
 		#facing = RIGHT
-		vibrate(40)
+		vibrate(40,Globals.os)
 	if Input.is_action_just_released("move_right"):
 		
 		_state = RESET
@@ -65,30 +77,30 @@ func _input(event):
 		
 		_state = UP
 		#facing = UP
-		vibrate(40)
+		vibrate(40,Globals.os)
 	if Input.is_action_just_released("move_up"):
 		
-		_state = UP
+		_state = RESET
 		#facing = UP
 		#pass
 	if Input.is_action_pressed("move_down"):
 		
 		_state = DOWN
 		#facing = DOWN
-		vibrate(40)
+		vibrate(40,Globals.os)
 	if Input.is_action_just_released("move_down"):
 		
-		_state = DOWN
+		_state = RESET
 		#facing = DOWN
 		#pass
 	if Input.is_action_just_pressed("attack"):
 		
 		_state = ATTACK
 		
-		vibrate(75)
+		vibrate(75,Globals.os)
 	if Input.is_action_just_released("attack"):
 		
-		_state = ATTACK
+		_state = RESET
 		
 	if Input.is_action_just_pressed("roll"):
 		
@@ -96,9 +108,9 @@ func _input(event):
 		#pass
 	if Input.is_action_just_released("roll"):
 		
-		_state = ROLL
+		_state = RESET
 		#pass
-		vibrate(40)
+		vibrate(40,Globals.os)
 	
 	# Comics Input
 	if event.is_action_pressed("reset"):
@@ -118,15 +130,24 @@ func _input(event):
 
 	# Ingame Menu
 	if event.is_action_pressed("menu"):
-		pass
+		_state = MENU
+	
+	if event.is_action_released("menu"):
+		_state = RESET
 	
 	# Dialogues
 	if event.is_action_pressed("interact") :
-		pass
+		_state = INTERRACT
+	
+	if event.is_action_released("interact") :
+		_state = RESET
 	
 	# HUD
 	if Input.is_action_just_pressed("pause"):
-		pass
+		_state = PAUSE
+	
+	if Input.is_action_just_released("pause"):
+		_state = RESET
 
 	"Auto Scroller"
 	# Connects to Global Comics Swipe Feature and Game Menu Scroller function
@@ -182,9 +203,16 @@ func parse_input( action : String, _pressed : bool):
 	Input.parse_input_event(a)
 
 
-func vibrate(duration_ms : int):
-	if vibrate:
-		# Shoud Connect to Controls so it can be turned on/off
-		
-		# Vibration on Mobile Devices
+func vibrate(duration_ms : int, os : String):
+	# Nested if?
+	if Globals.os == "Android" : #or "iOS" or "HTML5":
+		#if vibrate:
+			# Shoud Connect to Controls so it can be turned on/off
+			
+			# Vibration on Mobile Devices
 		Input.vibrate_handheld(duration_ms)
+
+
+func roll_direction_calculation()-> Vector2:
+	var calc = Vector2(- int( Input.is_action_pressed("move_left") ) + int( Input.is_action_pressed("move_right") ), -int( Input.is_action_pressed("move_up") ) + int( Input.is_action_pressed("move_down") )).normalized()
+	return calc

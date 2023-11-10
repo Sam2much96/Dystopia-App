@@ -47,6 +47,7 @@ polygon = PoolVector2Array( -5810.94, -5196.13, -5810.94, 5133.63, 7931.87, 4892
 
 [node name="enemy_spawner" parent="." instance=ExtResource( 3 )]
 position = Vector2( 5250.79, 2291.86 )
+_hitpoints = 1
 spawn_count = 10
 
 [node name="GameHUD" parent="." instance=ExtResource( 4 )]

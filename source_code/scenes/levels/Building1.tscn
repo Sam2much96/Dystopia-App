@@ -68,7 +68,7 @@ shape = SubResource( 1 )
 [node name="Exit2" type="Area2D" parent="."]
 position = Vector2( -11.9865, 869.018 )
 script = ExtResource( 4 )
-to_scene = "res://scenes/levels/Outside.tscn"
+to_scene = "res://scenes/levels/Overworld.tscn"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Exit2"]
 polygon = PoolVector2Array( 164.817, -917.425, 147.399, 29.7084, 937.924, 26.5336, 931.575, -1052.9, 166.447, -1046.55, 163.133, -925.283, 202.419, -924.721, 204.545, -1017.98, 906.176, -1027.5, 899.827, -11.564, 182.843, -13.1085, 204.103, -918.548 )

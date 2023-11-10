@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/building1.webp" type="Texture" id=1]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/buildingbush.webp" type="Texture" id=2]
@@ -7,6 +7,9 @@
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/items/enemy spawner.tscn" type="PackedScene" id=7]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 185.002, 17.9888 )
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 149.617, 26.4993 )
@@ -43,9 +46,15 @@ polygon = PoolVector2Array( 416.181, 554.456, 414.591, 714.435, 408.235, 714.964
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="BuildingWalls"]
 polygon = PoolVector2Array( 622.068, 556.937, 624.171, 568.709, 626.273, 712.503, 635.523, 713.764, 686.057, 669.108, 690.322, -4.2136, 677.961, -4.58818, 672.5, 517, 620.75, 555.25 )
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingWalls"]
+position = Vector2( 523.599, -17.6434 )
+scale = Vector2( 1, 1 )
+shape = SubResource( 2 )
+
 [node name="enemy_spawner" parent="." instance=ExtResource( 7 )]
 position = Vector2( 572.066, 181.879 )
 scale = Vector2( 0.403226, 0.403226 )
+_hitpoints = 3
 spawn_count = 7
 
 [node name="Exit" type="Area2D" parent="."]
@@ -69,3 +78,4 @@ position = Vector2( 512.159, 749.961 )
 scale = Vector2( 0.199171, 0.199171 )
 
 [node name="GameHUD" parent="." instance=ExtResource( 6 )]
+visible = false

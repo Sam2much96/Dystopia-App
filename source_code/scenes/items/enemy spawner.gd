@@ -26,6 +26,7 @@ class_name enemy_spawner
 
 
 export (bool) var enabled 
+export (int) var _hitpoints 
 export (PackedScene) var enemy_spawn_1
 
 
@@ -63,6 +64,10 @@ func spawn_enemy() -> void:
 
 			#spawn an object in the position
 			var spawn = enemy_spawn_1.instance()
+			
+			# set Enemy Spawn Parameters
+			spawn.hitpoints = _hitpoints
+			
 			anim.play("spawning")
 			spawn.position = position_in_area
 			get_parent().call_deferred('add_child', spawn)

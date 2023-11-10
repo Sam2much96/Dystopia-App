@@ -1,12 +1,14 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Controls.gd" type="Script" id=1]
 [ext_resource path="res://resources/misc/controls.png" type="Texture" id=2]
 [ext_resource path="res://fonts/scroll_bar_theme.tres" type="Theme" id=3]
 [ext_resource path="res://scenes/Comics/chapter 4/Cover 2.webp" type="Texture" id=4]
+[ext_resource path="res://resources/misc/Controls_illustration_touch_controls_webp.webp" type="Texture" id=5]
 [ext_resource path="res://scenes/UI & misc/generic_joystick_ui_selector.gd" type="Script" id=6]
 [ext_resource path="res://scenes/UI & misc/controls_illustration.gd" type="Script" id=7]
 [ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=8]
+[ext_resource path="res://resources/misc/Controls_illustration_pad_&_keyboard_webp.webp" type="Texture" id=9]
 [ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=14]
 
 [sub_resource type="Theme" id=1]
@@ -71,6 +73,8 @@ script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+mobile_texture = ExtResource( 5 )
+pc_texture = ExtResource( 9 )
 
 [node name="CheckButton" type="CheckButton" parent="."]
 visible = false
@@ -208,9 +212,9 @@ margin_bottom = 512.0
 
 [node name="TextureButton" type="TextureButton" parent="ScrollContainer/VBoxContainer"]
 visible = false
-margin_top = 516.0
+margin_top = 656.0
 margin_right = 352.0
-margin_bottom = 516.0
+margin_bottom = 656.0
 toggle_mode = true
 
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/back" to="." method="_on_Button_pressed"]

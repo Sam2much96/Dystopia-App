@@ -26,31 +26,27 @@ The purpose of this code is to beautify the UI programmatically
 
 #changes Title Screen Art using Global Screen Orientation
 onready var art1 :  TextureRect = $TextureRect
-onready var art2 : TextureRect = $TextureRect2
+onready var art2 :  TextureRect = $TextureRect
 
 onready var menu : TouchScreenButton = $menu
 #onready var notifications : Popup = $Notification2
 onready var logo : TextureRect = $logo
 onready var _ad_placeholder : Appodeal = $Appodeal
 onready var _menu = $"Menu "
-onready var title_nodes : Array = [art1, art2, menu,logo,_ad_placeholder,_menu]
+onready var title_nodes : Array = [art1, art2,menu,logo,_ad_placeholder,_menu]
 
-
+#res://scenes/UI & misc/controls_illustration.gd
 
 func _ready():
 	
-	# Memory Pointers to Title Screen Subnodes
-	
-	
-	
-	"Titl screen Art"
-	if Globals.screenOrientation == 0:
-		art1.show()
-		art2.hide()
-	elif Globals.screenOrientation == 1:
-		art1.hide()
-		art2.show()
-#	else: pass
+	# TItle Screen Art
+	# Controls_illustratins.gd has texture positional bug
+		if Globals.screenOrientation == 1:
+			art1.show()
+			art2.hide()
+		if Globals.screenOrientation == 0:
+			art1.hide()
+			art2.show()
 
 
 

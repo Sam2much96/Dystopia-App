@@ -33,11 +33,11 @@ texture = ExtResource( 8 )
 
 [node name="TextureRect2" type="TextureRect" parent="."]
 show_behind_parent = true
-margin_left = 47.6357
-margin_top = 583.082
-margin_right = 460.636
-margin_bottom = 1211.08
-rect_scale = Vector2( 2.2, 2.2 )
+margin_left = 3.97778
+margin_top = 832.637
+margin_right = 416.978
+margin_bottom = 1460.64
+rect_scale = Vector2( 2.42217, 2.42217 )
 texture = ExtResource( 7 )
 
 [node name="menu" type="TouchScreenButton" parent="."]

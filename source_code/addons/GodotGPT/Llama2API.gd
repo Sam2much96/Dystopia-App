@@ -10,14 +10,14 @@
 # (2) Stroes the Result as output
 #
 # To Do:
-#
+# (1) SHould be globally accessible to allow pre-prompting for better UX
 # *************************************************
 
 class_name Llama2API
 
 extends Node
 
-var replicate_api = ProjectSettings.get_setting("application/config/replicate_api")
+var replicate_api = ProjectSettings.get_setting("application/config/openai_api")
 
 export (String) var prompt = ""
 var timer

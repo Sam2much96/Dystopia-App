@@ -1,7 +1,6 @@
 [gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Controls.gd" type="Script" id=1]
-[ext_resource path="res://resources/misc/controls.png" type="Texture" id=2]
 [ext_resource path="res://fonts/scroll_bar_theme.tres" type="Theme" id=3]
 [ext_resource path="res://scenes/Comics/chapter 4/Cover 2.webp" type="Texture" id=4]
 [ext_resource path="res://resources/misc/Controls_illustration_touch_controls_webp.webp" type="Texture" id=5]
@@ -10,6 +9,9 @@
 [ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=8]
 [ext_resource path="res://resources/misc/Controls_illustration_pad_&_keyboard_webp.webp" type="Texture" id=9]
 [ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=14]
+
+[sub_resource type="StreamTexture" id=2]
+load_path = "res://.import/controls.png-771374b7062e19cc03833b2529311eac.stex"
 
 [sub_resource type="Theme" id=1]
 
@@ -67,7 +69,7 @@ margin_left = 11.0
 margin_top = 60.0
 margin_right = 11.0
 margin_bottom = -118.0
-texture = ExtResource( 2 )
+texture = SubResource( 2 )
 expand = true
 script = ExtResource( 7 )
 __meta__ = {

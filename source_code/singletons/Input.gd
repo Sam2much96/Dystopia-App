@@ -140,8 +140,8 @@ func _input(event):
 		_state = INTERRACT
 	
 	if event.is_action_released("interact") :
-		_state = RESET
-	
+		#_state = RESET
+		pass
 	# HUD
 	if Input.is_action_just_pressed("pause"):
 		_state = PAUSE

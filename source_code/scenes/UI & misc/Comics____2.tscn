@@ -7,7 +7,7 @@
 [ext_resource path="res://scenes/Comics/chapter 6/chap 6 cover art 1.webp" type="Texture" id=5]
 [ext_resource path="res://scenes/Comics/chapter 4/Cover 1.webp" type="Texture" id=6]
 [ext_resource path="res://resources/Buttons/comics.png" type="Texture" id=7]
-[ext_resource path="res://resources/misc/rotate_screen_webp.webp" type="Texture" id=8]
+[ext_resource path="res://resources/misc/rotate_screen_webp2.webp" type="Texture" id=8]
 [ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/UI & misc/Like button.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/Comics/chapter 5/chap 1 cover page.webp" type="Texture" id=12]
@@ -140,7 +140,7 @@ __meta__ = {
 
 [node name="Rotate" type="TouchScreenButton" parent="."]
 position = Vector2( 8.65696, 119.029 )
-scale = Vector2( 0.516441, 0.516441 )
+scale = Vector2( 1.39185, 1.39185 )
 normal = ExtResource( 8 )
 
 [node name="back" type="Button" parent="."]

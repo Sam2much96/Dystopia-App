@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/rotate_screen_webp.webp-59e13dfbf174773eb2f1ffb5050d76e6.stex"
+path="res://.import/rotate_screen_webp2.webp-5383514593fc1b33e46b3c12b86cbc42.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/misc/rotate_screen_webp.webp"
-dest_files=[ "res://.import/rotate_screen_webp.webp-59e13dfbf174773eb2f1ffb5050d76e6.stex" ]
+source_file="res://resources/misc/rotate_screen_webp2.webp"
+dest_files=[ "res://.import/rotate_screen_webp2.webp-5383514593fc1b33e46b3c12b86cbc42.stex" ]
 
 [params]
 

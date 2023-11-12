@@ -1,20 +1,39 @@
-[gd_scene load_steps=2 format=2]
-
-[ext_resource path="res://resources/misc/Controls_illustration_pad_&_keyboard_webp.webp" type="Texture" id=1]
+[gd_scene format=2]
 
 [node name="Node2D" type="Node2D"]
 
-[node name="ColorRect" type="ColorRect" parent="."]
-margin_right = 1022.0
-margin_bottom = 606.0
+[node name="Polygon2D5" type="Polygon2D" parent="."]
+color = Color( 0.898039, 0.890196, 0.682353, 1 )
+polygon = PoolVector2Array( 464, 444.5, 139.5, 444, 128.5, 485, 473, 485.5 )
 
-[node name="TextureRect" type="TextureRect" parent="."]
-modulate = Color( 1, 1, 1, 0.227451 )
-margin_left = -134.0
-margin_top = -78.0
-margin_right = 1430.0
-margin_bottom = 522.0
-texture = ExtResource( 1 )
+[node name="Polygon2D6" type="Polygon2D" parent="."]
+color = Color( 0.956863, 0.980392, 0.733333, 1 )
+polygon = PoolVector2Array( 567.427, 448.216, 525.707, 445.388, 514.04, 485.693, 569.548, 487.461 )
+
+[node name="Polygon2D7" type="Polygon2D" parent="."]
+position = Vector2( 62.579, 3.53552 )
+color = Color( 0.956863, 0.980392, 0.733333, 1 )
+polygon = PoolVector2Array( 564.598, 443.62, 521.111, 445.741, 521.818, 487.461, 563.184, 484.986 )
+
+[node name="Polygon2D8" type="Polygon2D" parent="."]
+position = Vector2( 120.562, 2.47485 )
+color = Color( 0.956863, 0.980392, 0.733333, 1 )
+polygon = PoolVector2Array( 564.598, 443.62, 521.111, 445.741, 521.818, 487.461, 567.427, 486.4 )
+
+[node name="Polygon2D9" type="Polygon2D" parent="."]
+position = Vector2( 57.9828, -50.5582 )
+color = Color( 0.956863, 0.980392, 0.733333, 1 )
+polygon = PoolVector2Array( 564.598, 443.62, 521.111, 445.741, 521.818, 487.461, 567.427, 486.4 )
+
+[node name="Polygon2D10" type="Polygon2D" parent="."]
+position = Vector2( 214.961, 2.47485 )
+color = Color( 0.956863, 0.980392, 0.733333, 1 )
+polygon = PoolVector2Array( 606.062, 445.873, 521.111, 445.741, 521.818, 487.461, 603.941, 480.521 )
+
+[node name="Polygon2D11" type="Polygon2D" parent="."]
+position = Vector2( 263.044, -325.623 )
+color = Color( 0.956863, 0.980392, 0.733333, 1 )
+polygon = PoolVector2Array( 574.956, 445.873, 526.706, 448.123, 521.818, 487.461, 579.206, 488.123 )
 
 [node name="Line2D" type="Line2D" parent="."]
 position = Vector2( -134, -68 )

@@ -31,9 +31,48 @@ color = Color( 0.956863, 0.980392, 0.733333, 1 )
 polygon = PoolVector2Array( 606.062, 445.873, 521.111, 445.741, 521.818, 487.461, 603.941, 480.521 )
 
 [node name="Polygon2D11" type="Polygon2D" parent="."]
-position = Vector2( 263.044, -325.623 )
+position = Vector2( -370.953, -77.2417 )
 color = Color( 0.956863, 0.980392, 0.733333, 1 )
 polygon = PoolVector2Array( 574.956, 445.873, 526.706, 448.123, 521.818, 487.461, 579.206, 488.123 )
+
+[node name="Line2D6" type="Line2D" parent="."]
+position = Vector2( -767.997, 180.381 )
+points = PoolVector2Array( 922, 191.25, 919.75, 233.25, 976.5, 230.75, 974.25, 188, 920.5, 190.75 )
+width = 6.0
+default_color = Color( 0, 0, 0, 1 )
+
+[node name="Polygon2D12" type="Polygon2D" parent="."]
+position = Vector2( -273.617, -151.345 )
+color = Color( 0.956863, 0.980392, 0.733333, 1 )
+polygon = PoolVector2Array( 574.956, 445.873, 526.706, 448.123, 521.818, 487.461, 579.206, 488.123 )
+
+[node name="Line2D8" type="Line2D" parent="."]
+position = Vector2( -670.661, 106.278 )
+points = PoolVector2Array( 922, 191.25, 919.75, 233.25, 976.5, 230.75, 974.25, 188, 920.5, 190.75 )
+width = 6.0
+default_color = Color( 0, 0, 0, 1 )
+
+[node name="Polygon2D13" type="Polygon2D" parent="."]
+position = Vector2( -473.81, -200.915 )
+color = Color( 0.956863, 0.980392, 0.733333, 1 )
+polygon = PoolVector2Array( 574.956, 445.873, 526.706, 448.123, 521.818, 487.461, 579.206, 488.123 )
+
+[node name="Line2D9" type="Line2D" parent="."]
+position = Vector2( -870.854, 56.7081 )
+points = PoolVector2Array( 922, 191.25, 919.75, 233.25, 976.5, 230.75, 974.25, 188, 920.5, 190.75 )
+width = 6.0
+default_color = Color( 0, 0, 0, 1 )
+
+[node name="Polygon2D14" type="Polygon2D" parent="."]
+position = Vector2( -474.134, -5.80865 )
+color = Color( 0.956863, 0.980392, 0.733333, 1 )
+polygon = PoolVector2Array( 574.956, 445.873, 526.706, 448.123, 521.818, 487.461, 579.206, 488.123 )
+
+[node name="Line2D10" type="Line2D" parent="."]
+position = Vector2( -871.178, 251.814 )
+points = PoolVector2Array( 922, 191.25, 919.75, 233.25, 976.5, 230.75, 974.25, 188, 920.5, 190.75 )
+width = 6.0
+default_color = Color( 0, 0, 0, 1 )
 
 [node name="Line2D" type="Line2D" parent="."]
 position = Vector2( -134, -68 )
@@ -79,12 +118,6 @@ polygon = PoolVector2Array( 793.25, 526.75, 790.75, 527.625, 789.875, 528.5, 790
 position = Vector2( -134, -68 )
 color = Color( 0.027451, 0.027451, 0.027451, 1 )
 polygon = PoolVector2Array( 737.375, 476.875, 735.75, 478.75, 732.625, 480.25, 729.625, 482.375, 728.25, 483.875, 728.25, 486.25, 730.375, 487.25, 731.5, 487.25, 733.25, 486.125, 733.875, 485.75, 733, 489.875, 733.375, 492.75, 735, 495.125, 737, 495.625, 738.5, 495.375, 740.125, 494.375, 740.5, 492.875, 741, 489.5, 740, 486.125, 740, 484.625, 741.5, 484.625, 742.75, 484.75, 743.625, 483.5, 743.25, 481.75, 741.75, 479, 738.75, 477 )
-
-[node name="Line2D6" type="Line2D" parent="."]
-position = Vector2( -134, -68 )
-points = PoolVector2Array( 922, 191.25, 919.75, 233.25, 976.5, 230.75, 974.25, 188, 920.5, 190.75 )
-width = 6.0
-default_color = Color( 0, 0, 0, 1 )
 
 [node name="Line2D7" type="Line2D" parent="."]
 position = Vector2( -134, -68 )

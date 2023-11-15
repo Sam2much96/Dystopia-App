@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Help.gd" type="Script" id=1]
 [ext_resource path="res://resources/misc/rotate_screen_webp2.webp" type="Texture" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://resources/Buttons/comics.png" type="Texture" id=11]
 [ext_resource path="res://resources/misc/PadIcon.tscn" type="PackedScene" id=12]
 [ext_resource path="res://resources/misc/KeyboardIcon.tscn" type="PackedScene" id=13]
+[ext_resource path="res://themes/Light.tres" type="Theme" id=14]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -26,12 +27,41 @@ margin_right = 286.0
 margin_bottom = 48.0
 
 [node name="Node2D" parent="PC" instance=ExtResource( 12 )]
-position = Vector2( -428.373, -60.4763 )
+position = Vector2( -255.148, 35.3859 )
 
 [node name="Node2D2" parent="PC" instance=ExtResource( 13 )]
-position = Vector2( -100.794, -27.7183 )
+position = Vector2( -184.884, -4.17326 )
+
+[node name="YSort" type="YSort" parent="PC"]
+position = Vector2( -428.373, -60.4763 )
+
+[node name="Label" type="Label" parent="PC/YSort"]
+margin_left = 784.232
+margin_top = 561.198
+margin_right = 929.232
+margin_bottom = 597.198
+theme = ExtResource( 4 )
+text = "Movement"
+
+[node name="Label2" type="Label" parent="PC/YSort"]
+margin_left = 446.191
+margin_top = 556.152
+margin_right = 591.191
+margin_bottom = 592.152
+theme = ExtResource( 4 )
+text = "Dash"
+
+[node name="Label3" type="Label" parent="PC/YSort"]
+margin_left = 300.153
+margin_top = 503.026
+margin_right = 340.153
+margin_bottom = 531.026
+theme = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "ctrl"
 
 [node name="Mobile" type="Control" parent="."]
+visible = false
 margin_left = 246.0
 margin_top = 8.0
 margin_right = 876.0

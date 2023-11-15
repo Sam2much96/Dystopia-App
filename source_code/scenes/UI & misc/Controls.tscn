@@ -1,17 +1,14 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Controls.gd" type="Script" id=1]
 [ext_resource path="res://fonts/scroll_bar_theme.tres" type="Theme" id=3]
 [ext_resource path="res://scenes/Comics/chapter 4/Cover 2.webp" type="Texture" id=4]
-[ext_resource path="res://resources/misc/Controls_illustration_touch_controls_webp.webp" type="Texture" id=5]
 [ext_resource path="res://scenes/UI & misc/generic_joystick_ui_selector.gd" type="Script" id=6]
 [ext_resource path="res://scenes/UI & misc/controls_illustration.gd" type="Script" id=7]
 [ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=8]
-[ext_resource path="res://resources/misc/Controls_illustration_pad_&_keyboard_webp.webp" type="Texture" id=9]
 [ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=14]
 
 [sub_resource type="StreamTexture" id=2]
-load_path = "res://.import/controls.png-771374b7062e19cc03833b2529311eac.stex"
 
 [sub_resource type="Theme" id=1]
 
@@ -47,6 +44,7 @@ margin_bottom = 1185.0
 color = Color( 1, 1, 1, 0.611765 )
 
 [node name="Help popup" type="Popup" parent="."]
+visible = true
 margin_right = 1285.0
 margin_bottom = 741.0
 script = ExtResource( 14 )
@@ -75,8 +73,6 @@ script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-mobile_texture = ExtResource( 5 )
-pc_texture = ExtResource( 9 )
 
 [node name="CheckButton" type="CheckButton" parent="."]
 visible = false

@@ -23,23 +23,17 @@ export(Texture) var mobile_texture
 export(Texture) var pc_texture
 export(Texture) var backup_texture
 
-#var mobile_texture 
-#var pc_texture = load('res://resources/misc/Controls_illustration_pad_&_keyboard_webp.webp')
-
-#var mobile_texture = load('res://resources/misc/Controls_illustration_touch_controls_webp.webp')
-#var pc_texture = load('res://resources/misc/Controls_illustration_pad_&_keyboard_webp.webp')
 
 # Sets different texture depending on the operating system
 func _ready():
 	
-	
-	
-	#if Globals.os=="Android" or "iOS" :
-	#	set_texture(mobile_texture)
+	# Disabled for refactoring
 	if Globals.screenOrientation == 1:
-		set_texture(mobile_texture)
+		#set_texture(mobile_texture)
+		pass
 	if Globals.screenOrientation == 0:
 		
-		set_texture(pc_texture)
+		#set_texture(pc_texture)
+		pass
 	#elif Globals.os ==  "OSX"or  "Server" or "Windows"or "UWP"or "X11":
 	#	set_texture(pc_texture)

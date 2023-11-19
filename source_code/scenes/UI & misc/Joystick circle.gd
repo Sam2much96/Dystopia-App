@@ -22,7 +22,7 @@
 
 extends TouchScreenButton
 
-class_name JoystickV1
+class_name JoystickCircle
 
 
 ##########################################

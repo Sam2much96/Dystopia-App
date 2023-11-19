@@ -2,23 +2,34 @@
 # godot3-Dystopia-game by INhumanity_arts
 # Released under MIT License
 # *************************************************
-# Buggy Joystick codes
+# Joystick version 2
 # The purpose of this code is to expand the Directional options to the Player
 # It runs as a child of the touch interface node and is enabled & disabled via a global variable (bool) linked to the TOuch Interface
 # It can be turned off and un in the game's Control scene, but it's buggy nature has made it unusable
 # It is possible to change the Joystick's color and use that as a player hint
 # On 16/04/22, i tried to write down the above pieces of code
-#Bugs
+# *************************************************
+# Features :
+# (1) 
+#
+# *************************************************
+# Bugs :
+#
 # (1) Misalignment in the joystick circles
 # (2) Break code blocs into functions for better processing
 # (3) Stuck input bug from input action
 # (4) make white & black theme for joysitck circle
 # (5) Add a color changer setting function
 # (6) Disable the joystick conrol function use hidden analogue instead
-# (7) Input event is not consumed
+# (7) Input event is not consumed (fixed)
+# *************************************************
+# To-Do :
+# (1) It is possible to change the Joystick's color and use that as a player hint
+#
 # *************************************************
 
-extends Control
+
+extends Input_Buffer
 
 class_name JoystickV2
 
@@ -41,14 +52,15 @@ onready var the_action
 
 onready var the_event
 
-onready var joystick_circle = $joystick_circle
-onready var outer_circle = $joystick_circle2
+onready var joystick_circle : JoystickCircle = $joystick_circle
+onready var outer_circle : JoystickCircle = $joystick_circle2
 
 enum {MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, RELEASE, NULL}
 
 
 export var state = RELEASE
 
+# Depreciated in favor of Global Input
 var prev_inputs = [] # An aray to store the last two joystick inputs
 
 func _ready():
@@ -164,12 +176,13 @@ func _input(event):
 		" ________END OF JOYSTICK LOGIC_______  "
 
 
-#should be a proces function
-func _process(_delta):
+# UnOptimized Code Bloc?
+func _process(delta):
 	
-	if prev_inputs.size() >= 10: # Stores only 2 input values max
-		prev_inputs.erase(prev_inputs.pop_front()) # Removes the first values
-		# Remove values that already exist
+	# Dwpreciated for Global Input Singleton
+	#if prev_inputs.size() >= 10: # Stores only 2 input values max
+	#	prev_inputs.erase(prev_inputs.pop_front()) # Removes the first values
+	#	# Remove values that already exist
 	
 	"Debug Input Actions"
 	var debug = false
@@ -297,6 +310,7 @@ func _process(_delta):
 				#release_the_action(__input.action) # Doesnt work
 				#state = RELEASE
 				" Fixes Stuck input bug"
+				
 				for _i in prev_inputs: 
 					__input.action = _i #uses a for loop to release all previous inputs
 				

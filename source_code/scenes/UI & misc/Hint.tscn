@@ -38,7 +38,7 @@ margin_bottom = 223.696
 custom_colors/font_color = Color( 0.882353, 0.882353, 0.882353, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "Dystopia App
-V2.0.1.7d
+V2.0.1.7e
 "
 align = 1
 autowrap = true
@@ -49,7 +49,7 @@ margin_top = 461.566
 margin_right = 604.419
 margin_bottom = 504.566
 theme = ExtResource( 4 )
-text = "Bug fixes "
+text = "Accessibility & UX upgrades"
 
 [node name="Label3" type="Label" parent="."]
 margin_left = 96.0473
@@ -57,7 +57,7 @@ margin_top = 7.64708
 margin_right = 615.047
 margin_bottom = 70.6471
 theme = ExtResource( 4 )
-text = "NEW UPDATES :  Controller update"
+text = "NEW UPDATES : A Better  Controller"
 align = 1
 
 [node name="Label4" type="Label" parent="."]
@@ -67,6 +67,6 @@ margin_right = 216.886
 margin_bottom = 517.206
 theme = ExtResource( 13 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Nov 10, 2093"
+text = "Nov 19, 2093"
 autowrap = true
 uppercase = true

@@ -134,6 +134,5 @@ vertex_colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 0.831373, 0, 0, 0, 0.839216
 [node name="UI" parent="." instance=ExtResource( 7 )]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 131.851, 203.77 )
-scale = Vector2( 0.514423, 1.05986 )
-current = true
+position = Vector2( -0.00202942, 139.625 )
+scale = Vector2( 2.19442, 4.52115 )

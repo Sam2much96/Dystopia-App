@@ -9,57 +9,96 @@
 # (2) Features Translations
 #
 # *************************************************
+# To-Do:
+# (1) Implement GamePad Testing/Caliberating
+# (2) Reuse pad and keyboard icons for other controller options
+#
+# *************************************************
  
 extends Control
 
 class_name Help
 
-# UI
-onready var rotate_page : Label = $"Control/GridContainer/HBoxContainer/Label"
-onready var _direction : Label = $"Control/GridContainer/HBoxContainer2/Label"
-onready var _lives : Label = $"Control/GridContainer/HBoxContainer3/Label"
-onready var dash : Label = $"Control/GridContainer/HBoxContainer4/Label"
-onready var _attack : Label = $"Control/GridContainer/HBoxContainer5/Label"
-onready var _interact : Label = $"Control/GridContainer/HBoxContainer6/Label"
-onready var _stats : Label = $"Control/GridContainer/HBoxContainer7/Label"
-onready var _comics : Label = $"Control/GridContainer/HBoxContainer8/Label"
-onready var _zoom : Label = $"Control/GridContainer/HBoxContainer9/Label"
+# Mobile UI
+# Label
+onready var rotate_page : Label = $"Mobile/GridContainer/HBoxContainer/Label"
+onready var _direction : Label = $"Mobile/GridContainer/HBoxContainer2/Label"
+onready var _lives : Label = $"Mobile/GridContainer/HBoxContainer3/Label"
+onready var dash : Label = $"Mobile/GridContainer/HBoxContainer4/Label"
+onready var _attack : Label = $"Mobile/GridContainer/HBoxContainer5/Label"
+onready var _interact : Label = $"Mobile/GridContainer/HBoxContainer6/Label"
+onready var _stats : Label = $"Mobile/GridContainer/HBoxContainer7/Label"
+onready var _comics : Label = $"Mobile/GridContainer/HBoxContainer8/Label"
+onready var _zoom : Label = $"Mobile/GridContainer/HBoxContainer9/Label"
 
-onready var mobile_help : Array = [
-	rotate_page, _direction, _lives, dash, _attack,
-	_interact, _stats, _comics, _zoom
-]
+# Mobile Held
+onready var _mobile_home : Control = $Mobile
 
-onready var pc_help : Array = []
+# ICons
 
-enum {MOBILE, PC}
+# Keyboard UI
+onready var _pad : CanvasLayer = $PC/Pad
+onready var _keyboard : CanvasLayer = $PC/Keyboard
+
+var mobile_help : Array = []
+var pc_help : Array = []
+
+enum {MOBILE, PAD, KEYBOARD}
 
 export (int) var _state = MOBILE
 
 func _ready():
-	print_debug("Help: ", show_help(Globals.os))
+	
+	
+	
+	mobile_help= [
+	rotate_page, _direction, _lives, dash, _attack,
+	_interact, _stats, _comics, _zoom
+	]
+	
+	pc_help = [_pad, _keyboard]
+	
+	
+	#print_debug("Mobile Help :",mobile_help) # For Debug Purposes only
+	#print_debug("Pc Help :",pc_help) # For Debug Purposes only
+	
+	 #Hide All
+	_mobile_home.hide()
+	
+	for t in pc_help:
+		if t != null:
+			t.hide()
 
-func show_help(os : String) -> int :
-	# Nested IF's?
-	# Bad Code Alert
-	if not os.empty(): # Error Catcher 1
-		if os == "Android" or "iOS":
-			_state = MOBILE
-		else:
-			_state = PC
-	return _state
-	if os.empty(): # Error Catcher 2
-		push_error("Global OS cannot be Empty")
 
-func _process(delta):
-	# Help State Machine
-	match _state:
-		MOBILE:
-			pass
-		PC:
-			pass
+	# Testing  Help State Machine
+	Mobile()
+	#PC("pad")
 
+func PC( type : String):
+	if not type.empty() && type == "pad":
+		_state = PAD
+		_pad.show()
+	if not type.empty() && type == "keyboard":
+		_state = KEYBOARD
+		_keyboard.show()
+	else: push_error("Error")
+
+
+func Mobile():
+	_state = MOBILE
+	
+	# Set Font
+	Dialogs.set_font(mobile_help, 44, "", 2)
+	
+	
+	_mobile_home.show()
+	for i in mobile_help:
+		if i != null:
+			i.show()
+			i.set_text(Dialogs.translate_to(i.text, Dialogs.language))
+	
 
 func _exit_tree():
 	# Memory Management
-	Utils.MemoryManagement.queue_free(mobile_help)
+	Utils.MemoryManagement.queue_free_array(mobile_help)
+	Utils.MemoryManagement.queue_free_array(pc_help)

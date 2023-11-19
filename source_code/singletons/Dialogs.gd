@@ -181,6 +181,8 @@ func set_font(nodes:  Array, size : int, prefered_font_pack : String, OutlineSiz
 				i.add_font_override('font', Dialogs.custom_font)
 			if i is StatusText:
 				i.add_font_override('font', Dialogs.custom_font)
+			if i is Label:
+				i.add_font_override('font', Dialogs.custom_font)
 
 class Parser extends Reference :
 	

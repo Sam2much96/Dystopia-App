@@ -28,6 +28,9 @@ var label
 
 enum { STATE_POPUP, STATE_HIDE,}
 export var state = STATE_POPUP
+
+onready var _help : Help = $Control
+
 func _ready():
 	# Node not found Error catcher
 	if get_node_or_null("CenterContainer/Label") != null:
@@ -52,8 +55,15 @@ func _ready():
 		state = STATE_HIDE
 
 
+
 func _input(event):
+	
+	
 	"Triggers A Disappearing sequence"
+	#Hides popup after 4 seconds of any input
+	# Refactoring
+	# Disabled for refactoring
+	
 	if event.is_pressed() == true:
 		Networking.start_check(4)
 	if Networking.stop_check() == true:
@@ -62,7 +72,7 @@ func _input(event):
 		state = STATE_HIDE
 		
 		#free from memory
-		call_deferred('queue_free')
+	#	call_deferred('queue_free')
 
 
 func _exit_tree():
@@ -70,6 +80,9 @@ func _exit_tree():
 
 
 func _process(_delta): #add other functionalities to the notificatioN bar
+	#if GlobalInput._state == GlobalInput.RESET:
+	#	state =STATE_POPUP
+	
 	
 	match state:
 		STATE_POPUP:

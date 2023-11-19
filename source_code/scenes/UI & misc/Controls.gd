@@ -35,13 +35,17 @@ onready var help : Button = $ScrollContainer/VBoxContainer/help
 
 # Auto Scroll with Swipe Gestures 
 onready var scroller : ScrollContainer= get_node("ScrollContainer")
-
-onready var ControlButtons : Array =  [back, music,_debug,Shuffle,Change_Controller_type, github, languague, help]
-
 onready var _Help_hint : hint = get_node("Help popup")
 
 # vibration
 onready var vibration : Button = $ScrollContainer/VBoxContainer/vibration
+
+onready var ControlButtons : Array =  [back, music,_debug,Shuffle,Change_Controller_type, github, languague, help, vibration]
+
+
+
+# COntroller Help
+onready var _controller_help : Help = $"Help popup/Control"
 
 func _ready():
 	if get_tree().get_root().has_node("/root/Debug") == true:
@@ -60,25 +64,26 @@ func _ready():
 	manual_translate()
 
 
-func _input(event):
+#func _input(event):
 	
-	"Auto Scroller"
+#	"Auto Scroller"
+	# Depreciated for Global Input Singleton
 	# Connects to Global Comics Swipe Feature and Game Menu Scroller function
 	#'AutoScroller'
 	# Implemented but Requires Proper Swipe Gesture Callibration
 	# 
 
-	if Comics_v6._state == Comics_v6.SWIPE_RIGHT:
+#	if Comics_v6._state == Comics_v6.SWIPE_RIGHT:
 		
 		
 		# Scroll Down
-		Game_Menu.scroll(false, true,scroller)
-	elif Comics_v6._state == Comics_v6.SWIPE_DOWN:
+#		Game_Menu.scroll(false, true,scroller)
+#	elif Comics_v6._state == Comics_v6.SWIPE_DOWN:
 		
 		# Scroll Up
-		Game_Menu.scroll(true, true,scroller)
+#		Game_Menu.scroll(true, true,scroller)
 		
-	else: pass
+#	else: pass
 
 
 func _on_Button_pressed():
@@ -147,7 +152,7 @@ func _on_music_toggled(button_pressed): #Music on and off settings
 
 
 func _on_Help_pressed():
-	#_Help_hint._ready()
+	_Help_hint.state = 0 # popup
 	pass
 
 

@@ -5,17 +5,21 @@
 # INPUT SINGLE4TON
 #
 # Code Logic handles all input in the game/app project
+# *************************************************
 # Features:
 # (1) It implements an Input Buffer for netwoked multiplayer
 # (2) The Input Buffer stores players 12 last input
 #
-# 
+# *************************************************
 # TO-DO:
 #
-#(1) Should implement Vibrations for haptic feedback (None)
+# (1) Should implement Vibrations for haptic feedback (None)
 # (2) Implement Input Lag (Delay) For Multiplayer Gameplay
 # *************************************************
-
+# Notes:
+# (1) Vibration is a Battery & Performance hog
+# (2) Vibration is currently only implemented on Android, porting would require custom libraries
+# *************************************************
 extends Control
 
 class_name Input_Buffer
@@ -50,6 +54,7 @@ var _Stats : PanelContainer
 
 func _input(event):
 	# Player Input
+	# Implement Player Objects Movement State Machine Simplified
 	
 	if Input.is_action_pressed("move_left"):
 		

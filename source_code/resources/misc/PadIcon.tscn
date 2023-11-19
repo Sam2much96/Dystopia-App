@@ -1,6 +1,6 @@
 [gd_scene format=2]
 
-[node name="Node2D" type="Node2D"]
+[node name="Pad" type="CanvasLayer"]
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false

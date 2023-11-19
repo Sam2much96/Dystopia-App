@@ -1,14 +1,12 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Controls.gd" type="Script" id=1]
+[ext_resource path="res://scenes/UI & misc/Help.tscn" type="PackedScene" id=2]
 [ext_resource path="res://fonts/scroll_bar_theme.tres" type="Theme" id=3]
 [ext_resource path="res://scenes/Comics/chapter 4/Cover 2.webp" type="Texture" id=4]
 [ext_resource path="res://scenes/UI & misc/generic_joystick_ui_selector.gd" type="Script" id=6]
-[ext_resource path="res://scenes/UI & misc/controls_illustration.gd" type="Script" id=7]
 [ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=8]
 [ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=14]
-
-[sub_resource type="StreamTexture" id=2]
 
 [sub_resource type="Theme" id=1]
 
@@ -44,7 +42,6 @@ margin_bottom = 1185.0
 color = Color( 1, 1, 1, 0.611765 )
 
 [node name="Help popup" type="Popup" parent="."]
-visible = true
 margin_right = 1285.0
 margin_bottom = 741.0
 script = ExtResource( 14 )
@@ -52,27 +49,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="ColorRect" parent="Help popup"]
-margin_right = 40.0
-margin_bottom = 40.0
-rect_scale = Vector2( 32.5201, 18.9355 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="controls" type="TextureRect" parent="Help popup"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 11.0
-margin_top = 60.0
-margin_right = 11.0
-margin_bottom = -118.0
-texture = SubResource( 2 )
-expand = true
-script = ExtResource( 7 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Control" parent="Help popup" instance=ExtResource( 2 )]
 
 [node name="CheckButton" type="CheckButton" parent="."]
 visible = false

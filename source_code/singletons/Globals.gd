@@ -328,6 +328,10 @@ class Functions extends Reference:
 		if not Dialogs.language.empty():
 			save_dict.languague = Dialogs.language
 		
+		# Control Settings
+		# Vibration
+		save_dict.vibrate = GlobalInput.vibrate
+		
 		save_game.store_line(to_json(save_dict))
 		save_game.close()
 		print ("saved gameplay")
@@ -416,6 +420,8 @@ class Functions extends Reference:
 		if save_dict.has("languague"):
 			Dialogs.language = save_dict.languague
 
+		if save_dict.has("vibrate"):
+			GlobalInput.vibrate = save_dict.vibrate
 
 		if save_dict.has("music"):
 			print_debug(bool(save_dict.music)) # For Debug Purposes Only

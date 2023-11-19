@@ -41,7 +41,7 @@ var _frame_counter : int = 0
 var pressed : bool = false
 
 # Vibration Settings
-export (bool) var vibrate
+export (bool) var vibrate = true
 
 
 
@@ -210,7 +210,7 @@ func parse_input( action : String, _pressed : bool):
 
 func vibrate(duration_ms : int, os : String):
 	# Nested if?
-	if Globals.os == "Android" : #or "iOS" or "HTML5":
+	if Globals.os == "Android" && vibrate : #or "iOS" or "HTML5":
 		#if vibrate:
 			# Shoud Connect to Controls so it can be turned on/off
 			

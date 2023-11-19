@@ -3,15 +3,21 @@
 # Released under MIT License
 # *************************************************
 # Game Control settings
-# 
+#
+# It controls gameplay global settings and stores those values to
+# local device as user's preferred settings, preloaded on runtime
+# ************************************************* 
 # To-Do:
 # (1) Finish D-pad to Joystick button change illustration 
 # (2) Add Swipe Gestures on/off controls
 # (3) Include a GitHub Login, to encourage Players to Inspect the Code Base
+# *************************************************
 #
 # Bugs:
 # (1) This scene resets presaved player settings
 #
+# *************************************************
+
 extends Control
 
 class_name GameControls
@@ -216,7 +222,7 @@ func _on_Github_pressed():
 
 func _on_vibration_toggled(button_pressed):
 	# Toggle Vibrations on/off for mobile devices
-	# TO Do: Implement Saving Vibration settings
+	# TO Do: Implement Saving Vibration settings (Done)
 	if button_pressed:
 		GlobalInput.vibrate = false
 		vibration.set_text("off")

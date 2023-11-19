@@ -421,7 +421,7 @@ class Functions extends Reference:
 			Dialogs.language = save_dict.languague
 
 		if save_dict.has("vibrate"):
-			GlobalInput.vibrate = save_dict.vibrate
+			GlobalInput.vibrate = bool(save_dict.vibrate)
 
 		if save_dict.has("music"):
 			print_debug(bool(save_dict.music)) # For Debug Purposes Only

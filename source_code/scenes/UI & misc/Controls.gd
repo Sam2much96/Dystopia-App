@@ -224,6 +224,6 @@ func _on_vibration_toggled(button_pressed):
 	# Toggle Vibrations on/off for mobile devices
 	# TO Do: Implement Saving Vibration settings (Done)
 	if button_pressed:
-		GlobalInput.vibrate = false
-		vibration.set_text("off")
+		GlobalInput.vibrate = !GlobalInput.vibrate
+		vibration.set_text(str(GlobalInput.vibrate))
 	else: pass

@@ -88,7 +88,7 @@ func Mobile():
 	_state = MOBILE
 	
 	# Set Font
-	Dialogs.set_font(mobile_help, 44, "", 2)
+	Dialogs.set_font(mobile_help, 75, "", 2)
 	
 	
 	_mobile_home.show()

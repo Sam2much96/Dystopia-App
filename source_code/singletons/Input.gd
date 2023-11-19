@@ -36,7 +36,7 @@ INTERRACT, DIALOGUE
 var _state : int 
 
 # Frame Counter
-var _frame_counter : int = 0
+#var _frame_counter : int = 0
 
 var pressed : bool = false
 
@@ -185,17 +185,17 @@ func _input(event):
 
 
 
-func _process(delta : float):
+#func _process(delta : float):
+	# Depreciated for Runtime Optimization on Mobiles
 	
+#	_frame_counter += round(delta)
 	
-	_frame_counter += round(delta)
-	
-	if _frame_counter > 500:
-		_frame_counter = 0
-	
-	# Input Calculation on Every 24th frame 
-	if _frame_counter % 24 == 0:
-		pass # DO nothing for now
+#	if _frame_counter > 500:
+#		_frame_counter = 0
+#	
+#	# Input Calculation on Every 24th frame 
+#	if _frame_counter % 24 == 0:
+#		pass # DO nothing for now
 
 
 

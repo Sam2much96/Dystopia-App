@@ -180,9 +180,9 @@ func _input(event):
 func _process(delta):
 	
 	# Dwpreciated for Global Input Singleton
-	#if prev_inputs.size() >= 10: # Stores only 2 input values max
-	#	prev_inputs.erase(prev_inputs.pop_front()) # Removes the first values
-	#	# Remove values that already exist
+	if prev_inputs.size() >= 10: # Stores only 2 input values max
+		prev_inputs.erase(prev_inputs.pop_front()) # Removes the first values
+		# Remove values that already exist
 	
 	"Debug Input Actions"
 	var debug = false
@@ -192,102 +192,103 @@ func _process(delta):
 	
 
 ###################Input Action State Machine#####################################
-	match state:
-		MOVE_UP: #improve your state machine
-			if joystick_circle.is_pressed() == true:
-				#release()
-				__input.action = 'move_up'
-				__input.pressed =true
-				__input.strength = abs(y)
-				#Input.parse_input_event(__input) # The bug is coming from this line of code duplicates
-				parse_input_function(__input)
-				
-				the_action = __input.action 
-				start_debug()
-				#state = 0
-				the_action = __input.action
-				return the_action
-				#print(__input.as_text()) #for debugging release
-			
-				return state
-		MOVE_DOWN:
-			if joystick_circle.is_pressed() == true:
-				#release()
-				__input.action = 'move_down'
-				__input.pressed =true
-				__input.strength = abs(y)
-				#Input.parse_input_event(__input) # The bug is coming from this line of code duplicates
-				
-				parse_input_function(__input)
-				
-				the_action = __input.action
-				start_debug()
-				#state = 1
-				the_action = __input.action
-				#return the_action
-				#print(__input.as_text()) #for debugging release
-
-		MOVE_RIGHT:
-			if joystick_circle.is_pressed() == true:
-				#release()
-				__input.action = 'move_right'
-				__input.pressed =true
-				__input.strength = abs(x)
-				#Input.parse_input_event(__input) # The bug is coming from this line of code duplicates
-				
-				parse_input_function(__input)
-				
-				the_action = __input.action
-				start_debug()
-				#state = 2
-				the_action = __input.action
-				return the_action
-				#print(__input.as_text()) #for debugging release
-				#reset()
-
-		MOVE_LEFT:
-			if joystick_circle.is_pressed() == true:
-				#release()
-				__input.action = 'move_left'
-				__input.pressed = true
-				__input.strength = abs(x)
-				#Input.parse_input_event(__input) # WHy Multiple separate input parse?
-				parse_input_function(__input)
-				#start_debug() # For Debug PUrposes only
-				#state = 3
-				the_action = __input.action
-				return the_action
-				#print(__input.as_text()) #for debugging release
-				#reset()
-
-		NULL:
-			return
-		RELEASE: #this is buggy it introduces a stuck button bug
-			release() 
-			if joystick_circle.is_pressed()!= true:
-				release()
-			if the_action != null && joystick_circle.is_pressed() == true: #write two inputs at the same time error code #THeres a stuc button bug
-				#print(the_action) #two actions stacking introduces bug
-				if __input.is_action_pressed(the_action) == true: #if my action pressed is true
-					if __input.get_action_strength(the_action) != 0:
-						__input.pressed =false #stuck button bug
-						__input.strength = 0
-						#reset() # The code breaks here
-						#print('The current action',the_action) #for debug purposes only
-						#Input.parse_input_event(__input) # The bug is coming from this line of code duplicates
-						
-						parse_input_function(__input)
-						
-						print ('1111') # For Debug purposes only
-					if __input.get_action_strength(the_action) == 0:
-						release()
-				#Input.action_release(the_action)#; update()
-				release_the_action(the_action)
-					#state = 4
-					#stop_debug()
+	if self.visible: # Performance Optimizer
+		match state:
+			MOVE_UP: #improve your state machine
+				if joystick_circle.is_pressed() == true:
+					#release()
+					__input.action = 'move_up'
+					__input.pressed =true
+					__input.strength = abs(y)
+					#Input.parse_input_event(__input) # The bug is coming from this line of code duplicates
+					parse_input_function(__input)
 					
-				return the_action
-	##############################################################################
+					the_action = __input.action 
+					start_debug()
+					#state = 0
+					the_action = __input.action
+					return the_action
+					#print(__input.as_text()) #for debugging release
+				
+					return state
+			MOVE_DOWN:
+				if joystick_circle.is_pressed() == true:
+					#release()
+					__input.action = 'move_down'
+					__input.pressed =true
+					__input.strength = abs(y)
+					#Input.parse_input_event(__input) # The bug is coming from this line of code duplicates
+					
+					parse_input_function(__input)
+					
+					the_action = __input.action
+					start_debug()
+					#state = 1
+					the_action = __input.action
+					#return the_action
+					#print(__input.as_text()) #for debugging release
+
+			MOVE_RIGHT:
+				if joystick_circle.is_pressed() == true:
+					#release()
+					__input.action = 'move_right'
+					__input.pressed =true
+					__input.strength = abs(x)
+					#Input.parse_input_event(__input) # The bug is coming from this line of code duplicates
+					
+					parse_input_function(__input)
+					
+					the_action = __input.action
+					start_debug()
+					#state = 2
+					the_action = __input.action
+					return the_action
+					#print(__input.as_text()) #for debugging release
+					#reset()
+
+			MOVE_LEFT:
+				if joystick_circle.is_pressed() == true:
+					#release()
+					__input.action = 'move_left'
+					__input.pressed = true
+					__input.strength = abs(x)
+					#Input.parse_input_event(__input) # WHy Multiple separate input parse?
+					parse_input_function(__input)
+					#start_debug() # For Debug PUrposes only
+					#state = 3
+					the_action = __input.action
+					return the_action
+					#print(__input.as_text()) #for debugging release
+					#reset()
+
+			NULL:
+				return
+			RELEASE: #this is buggy it introduces a stuck button bug
+				release() 
+				if joystick_circle.is_pressed()!= true:
+					release()
+				if the_action != null && joystick_circle.is_pressed() == true: #write two inputs at the same time error code #THeres a stuc button bug
+					#print(the_action) #two actions stacking introduces bug
+					if __input.is_action_pressed(the_action) == true: #if my action pressed is true
+						if __input.get_action_strength(the_action) != 0:
+							__input.pressed =false #stuck button bug
+							__input.strength = 0
+							#reset() # The code breaks here
+							#print('The current action',the_action) #for debug purposes only
+							#Input.parse_input_event(__input) # The bug is coming from this line of code duplicates
+							
+							parse_input_function(__input)
+							
+							print ('1111') # For Debug purposes only
+						if __input.get_action_strength(the_action) == 0:
+							release()
+					#Input.action_release(the_action)#; update()
+					release_the_action(the_action)
+						#state = 4
+						#stop_debug()
+						
+					return the_action
+		##############################################################################
 
 
 	if touchInsideJoystick == false:

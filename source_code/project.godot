@@ -285,6 +285,11 @@ _global_script_classes=[ {
 "path": "res://scenes/props/signpost.gd"
 }, {
 "base": "Node",
+"class": "Simulationv1",
+"language": "GDScript",
+"path": "res://singletons/Simulation.gd"
+}, {
+"base": "Node",
 "class": "StateMachine",
 "language": "GDScript",
 "path": "res://scenes/characters/State Machine.gd"
@@ -500,6 +505,7 @@ _global_script_class_icons={
 "Scent": "",
 "Server": "",
 "SignPost": "",
+"Simulationv1": "",
 "StateMachine": "",
 "Stats": "",
 "StatusText": "",
@@ -558,15 +564,15 @@ Globals="*res://singletons/Globals.gd"
 Music="*res://singletons/Music.tscn"
 Networking="*res://singletons/Networking.tscn"
 Comics_v6="*res://singletons/Comics.v6.gd"
-AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
 GlobalAnimation="*res://singletons/GlobalAnimationPlayer.tscn"
-Wallet="*res://scenes/Wallet/Wallet.gd"
-FPSGraphOverlay="*res://addons/fps_graph_overlay/FPSGraphOverlay.tscn"
 DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
-Gdunzip="*res://addons/gdunzip/gdunzip.gd"
+Wallet="*res://scenes/Wallet/Wallet.gd"
 Utils="*res://singletons/Utils.gd"
+AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
+FPSGraphOverlay="*res://addons/fps_graph_overlay/FPSGraphOverlay.tscn"
 SyncManager="*res://addons/godot-rollback-netcode/SyncManager.gd"
 GlobalInput="*res://singletons/Input.tscn"
+Simulation="*res://singletons/Simulation.gd"
 
 [debug]
 

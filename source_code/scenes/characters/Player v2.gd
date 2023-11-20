@@ -721,12 +721,13 @@ func _physics_process(delta):
 		#should ideally set server player position to peer's position
 		# But getting positional data is somewhat buggy
 
-
+# Refactored to A Simulation Singleton on Nov 20, 23
 # COnnetcs to a Player Input Signal from the Networking Singleton
 # Simulates player position on Kinematic body 2d
-func poop(id : String):
+#func poop(id : String):
 
-	"Server Simulation Logic"
+#	"Server Simulation Logic"
+	# Refactored to A Simulation Singleton on Nov 20, 23
 	# Merges Server Player Info to Server Player Info with Peer ID's
 	# Trying to get updated positinal data from data packed
 	# SHould Ideally be called i the Player Networking script
@@ -734,7 +735,7 @@ func poop(id : String):
 
 	# SHould instead be a physics process method
 	
-	if Networking.player_info["peer id"].has(id):
+#	if Networking.player_info["peer id"].has(id):
 			
 			
 
@@ -743,10 +744,10 @@ func poop(id : String):
 			
 		# should ideally be called in a process method
 		# SHould implement position translations using the Networking frame buffer
-		set_position(Vector2(float(Networking.player_info["peer id"][id]["position"]["x"]), float(Networking.player_info["peer id"][id]["position"]["y"])))
+#		set_position(Vector2(float(Networking.player_info["peer id"][id]["position"]["x"]), float(Networking.player_info["peer id"][id]["position"]["y"])))
 		
 		# facing
-		self.facing = Networking.player_info["peer id"][id]["facing"]
+#		self.facing = Networking.player_info["peer id"][id]["facing"]
 		
 		# State
 		
@@ -756,7 +757,7 @@ func poop(id : String):
 		
 		# BroadCast Update to all Network Peers
 		# 
-		Networking.broadcast_world_positions()
+#		Networking.broadcast_world_positions()
 
 
 

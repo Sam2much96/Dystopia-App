@@ -41,14 +41,17 @@ func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PoolByteArray
 	
 	#"Compression/Uncompression"
 	var unziped_file : PoolByteArray
-	var loaded = Gdunzip.load(FILE)
+	# Singleton GDUNzip is Depreciated
+	#var loaded = Gdunzip.load(FILE)
+	
+	var loaded = gdunzip.load(FILE)
 	if loaded:
 		
-		print ("Zip File Data : ",Gdunzip.files) # for debug purposes only
+		print ("Zip File Data : ",gdunzip.files) # for debug purposes only
 		
-		print ("Files: ",Gdunzip.files.keys().size()) # For Debug purposes only
+		print ("Files: ",gdunzip.files.keys().size()) # For Debug purposes only
 		
-		print ("First File: ",Gdunzip.files.keys().front()) # For Debug purposes only 
+		print ("First File: ",gdunzip.files.keys().front()) # For Debug purposes only 
 		
 
 
@@ -59,7 +62,7 @@ func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PoolByteArray
 		
 		"Debugs Zip Files"
 		
-		for f in Gdunzip.files.values():
+		for f in gdunzip.files.values():
 			print('File name: ' + f['file_name'])
 
 			
@@ -70,7 +73,7 @@ func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PoolByteArray
 			"Checks if Zipped File is present at file path" 
 			if not FileCheck1.file_exists(Uncompressd_rooot_dir + f['file_name']):
 				# save the file's uncompressed Pool Byte Array
-				unziped_file = Gdunzip.uncompress(f["file_name"])
+				unziped_file = gdunzip.uncompress(f["file_name"])
 
 				#Uncompresses files locally
 				print("saving", f["file_name"], "Locally", unziped_file.size(), "to: ", concat)

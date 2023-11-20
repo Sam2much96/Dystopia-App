@@ -659,6 +659,7 @@ func _end_game():
 
 "Multiplayer NetCode Functions"
 
+# Depreciated code, use GLobals.Functions.dict2byte for optimized data conversion
 func array2poolByte( data_from : Array) -> PoolByteArray: 
 	#	if frame_counter % 6_000 == 0:
 	RawData = var2bytes([to_json(data_from)])
@@ -740,7 +741,8 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 			#emit_signal("PlayerInput", id_as_string) # Buggy Signal
 			
 			"Simulates Player Posititional Data "
-			player.poop(id_as_string)
+			#player.poop(id_as_string)
+			Simulation.poop(id_as_string, player)
 			
 			#print ("O: ", player_info["peer id"][id_as_string]["position"]) # works # for debug purposes only
 			

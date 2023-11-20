@@ -26,7 +26,7 @@ enum {SIMULATING, NON_SIMULATING}
 # Refactored to A Simulation Singleton on Nov 20, 23
 # COnnetcs to a Player Input Signal from the Networking Singleton
 # Simulates player position on Kinematic body 2d
-func poop(id : String):
+func poop(id : String, player : Player_v2_networking):
 
 	"Server Simulation Logic"
 	# Refactored to A Simulation Singleton on Nov 20, 23
@@ -46,7 +46,7 @@ func poop(id : String):
 			
 		# should ideally be called in a process method
 		# SHould implement position translations using the Networking frame buffer
-		set_position(Vector2(float(Networking.player_info["peer id"][id]["position"]["x"]), float(Networking.player_info["peer id"][id]["position"]["y"])))
+		player.set_position(Vector2(float(Networking.player_info["peer id"][id]["position"]["x"]), float(Networking.player_info["peer id"][id]["position"]["y"])))
 		
 		# facing
 		self.facing = Networking.player_info["peer id"][id]["facing"]

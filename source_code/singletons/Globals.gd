@@ -453,7 +453,7 @@ class Functions extends Reference:
 		#		Music._ready()
 		pass
 
-	
+	# Move to Utils singleton
 	static func scroll(direction : bool , visible : bool, _scroller : ScrollContainer)-> void:
 		# DOCS : https://godotengine.org/qa/92054/how-programmatically-scroll-horizontal-list-texturerects
 		# using a boolean because it allows for only two options in it's data structure
@@ -471,7 +471,11 @@ class Functions extends Reference:
 			_scroller.scroll_vertical -= 20 * scroll_constant  #* delta
 
 			#print (scroller.scroll_vertical )#= scroll_constant  * delta
-
+	
+	static func dict2bytes(dict :Dictionary) -> int:
+		# Convert Dictionary json to raw bytes 
+		
+		return 0
 
 
 func turn_off_processing(toggle): # to improve game speed and turn off idle processsing

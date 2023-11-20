@@ -19,7 +19,7 @@
 #
 # To Do:
 # (1) Too much Detection going on
-# (2) 
+# (2) Player  Networking Update should attach frame id to player positional data
 # (3) Implement tokenized player asset
 # (4) Play animation remotely (works)
 # (5) Player Camera Hierarchy bug
@@ -133,7 +133,7 @@ func _ready():
 	# Works
 	Networking.player_info["peer id"][peer_id] = {
 		"node": [],
-		"position": {"x":0, "y": 0 }, 
+		"position": {"x":0, "y": 0 }, # Extend to Include Simulation Frame ID Data
 		"hitpoints" : 3,
 		"facing": "",
 		"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal

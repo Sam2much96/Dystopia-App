@@ -21,7 +21,8 @@ class_name Simulationv1
 
 enum {SIMULATING, NON_SIMULATING}
 
-
+# Frame ID
+onready var frame_id : int = get_tree().get_frame()
 
 # Refactored to A Simulation Singleton on Nov 20, 23
 # COnnetcs to a Player Input Signal from the Networking Singleton
@@ -61,6 +62,8 @@ func poop(id : String, player : Player_v2_networking):
 		# 
 		Networking.broadcast_world_positions()
 
+func _ready():
+	print_debug("Frame ID debug: ",frame_id)
 
 func _process(delta):
 	pass

@@ -69,15 +69,19 @@ func _ready():
 	print_debug("Frame ID debug: ",frame_id)
 
 func _process(delta : float):
-	frame_counter += 1
 	
-	if (frame_counter) % 12 == 0: # every 12th frame
-		frame_id = get_tree().get_frame() # Get the current frame id
-		#print_debug(frame_id)
-	
-	# Reset Frame Counter TO Conserver Memory
-	if frame_counter >= 1000:
-		frame_counter = 0
+	# Physics Simulation Only happens when Player is Online
+	if Networking.GamePlay == Networking.ONLINE:
+		
+		frame_counter += 1
+		
+		if (frame_counter) % 12 == 0: # every 12th frame
+			frame_id = get_tree().get_frame() # Get the current frame id
+			#print_debug(frame_id)
+		
+		# Reset Frame Counter TO Conserver Memory
+		if frame_counter >= 1000:
+			frame_counter = 0
 
 func _physics_process(delta):
 	pass

@@ -31,10 +31,10 @@ signal enabled
 onready var scroller : ScrollContainer = $ScrollContainer # Depreciated
 
 #Quest Parent Node Pointer
-onready var _quest_parent : VBoxContainer = $TabContainer/Inventory/ScrollContainer3/VBoxContainer
+onready var _inventory_parent : VBoxContainer = $TabContainer/Inventory/ScrollContainer3/VBoxContainer
 
 # Inventory Parent Node
-onready var _inventory_parent : Label = $TabContainer/Inventory/ScrollContainer3/VBoxContainer/Title2
+onready var _inventory_parent_label : Label = $TabContainer/Inventory/ScrollContainer3/VBoxContainer/Title2
 
 # Inventroy Parent Button
 onready var _inventory_button : Button = $TabContainer/Inventory/ScrollContainer3/VBoxContainer/Inventory
@@ -58,8 +58,7 @@ func _ready():
 	get_tree().set_auto_accept_quit(false)
 	hide()
 	
-	# Disables Stats Panel to fix stuck input but
-	enabled = false
+
 
 
 func _input(event):
@@ -129,7 +128,7 @@ func _update_quest_listing():
 
 func _update_inventory_button_cache() -> bool:
 	# save all UI stats Nodes to Array pointer
-	for nodes in _quest_parent.get_children():
+	for nodes in _inventory_parent.get_children():
 		if not _stats_buttons.has(nodes):
 			_stats_buttons.append(nodes)
 			return true
@@ -190,7 +189,7 @@ func _update_inventory_listing():
 					
 					
 					#create new button object anbd or remove exisiting buttons if they exist
-					_quest_parent.add_child_below_node(_inventory_button, new_item_button)
+					_inventory_parent.add_child_below_node(_inventory_button, new_item_button)
 					
 					# connect signal
 					
@@ -201,6 +200,11 @@ func _update_inventory_listing():
 					new_item_button.text = text
 					new_item_button.name = str(item)
 					
+					# connect button to inventory/ placeholder method
+					#
+					new_item_button.connect("pressed", Inventory, "placeholder",[item]) # button presses 
+					
+					# Create a pointer to Inventory ui buttons
 					_stats_buttons.append(new_item_button)
 					#print_debug("Inventory Stats Debug: ", _stats_buttons) # For Debug Purposes only
 			else : pass

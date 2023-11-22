@@ -123,7 +123,7 @@ func _input(event):
 	# Node Individual Input Processes were depreciated in favor of GlobalInput Singleton
 	pass
 
-func _process(delta: float):
+func _process(delta):
 		# Raises up a Frame Counter
 	frame_counter += 1
 	
@@ -132,7 +132,7 @@ func _process(delta: float):
 	if frame_counter % 60 == 0:
 	#####this updates the player's node to a globals variable
 		Globals._player_state = state
-	if frame_counter >= 100:
+	if frame_counter >= 1000:
 		frame_counter = 0
 
 	

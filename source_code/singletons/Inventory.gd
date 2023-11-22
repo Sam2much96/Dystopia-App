@@ -73,3 +73,12 @@ func remove_item(type:String, amount:int) -> bool:
 "RETURNS A DUPLICATE OF THE INVENTORY DICTIONARY"
 func list() -> Dictionary:
 	return inventory.duplicate()
+
+
+"""
+STATS UI
+"""
+func  placeholder(item):
+	print_debug("Inventory button pressed", item)
+	# Testing Inventory UI
+	remove_item(item,1)

@@ -11,7 +11,7 @@
 #
 # TO-DO:
 # 
-# (1) Scrolling Inbentory Menu (Done)
+# (1) Scrolling Inbentory Menu refactor
 # (2) Should AutoScale to Screen Display size using Global screen calculation functions
 # (3) Inventory Items Should be more Accessible
 # (4) Implement Character Customization UI (1/2)
@@ -40,8 +40,16 @@ onready var _inventory_parent : Label = $TabContainer/Inventory/ScrollContainer3
 onready var _inventory_button : Button = $TabContainer/Inventory/ScrollContainer3/VBoxContainer/Inventory
 
 
+onready var _coin_label : Label = $TabContainer/Wallet/Algos
+onready var _quest_label : Label = $TabContainer/Quests/ScrollContainer2/VBoxContainer/Quests
+
 # Array  pointer containing all QUest parent childeren
 onready var _stats_buttons : Array = []
+
+
+enum {ENABLED, DISABLED, NULL}
+
+var _state : int = DISABLED
 
 func _ready():
 	self.get_child(0)
@@ -55,49 +63,56 @@ func _ready():
 
 
 func _input(event):
+	if event.is_action_pressed("pause")  && enabled == false:
+		_state = ENABLED
+		Music.play_track(Music.ui_sfx[0])
+		return _state
+	if event.is_action_pressed("pause") && enabled == true:
+		_state = DISABLED
+		Music.play_track(Music.ui_sfx[1])
+		return _state
+
+func _process(delta):
+	# Refactoring Input Function for global Input singleton
+	
 	"""
 	UPDATES STATUS HUD ON PAUSE 
 	"""
-	if event.is_action_pressed("pause")  && enabled == false: #
-		emit_signal("not_enabled")
-		enabled = true
-		visible = enabled
-		
-		# _update_inventory_button_cache()
-		
-		Music.play_track(Music.ui_sfx[0])
-		get_tree().paused = enabled
-		
-		
-		
-		#TouchScreenHUD.status(Globals._TouchScreenHUD) #GameHUD already calls this method
-		
-
-		return enabled
-		pass
-	if event.is_action_pressed("pause") && enabled == true:
-		enabled = false
-		emit_signal('enabled')
-		visible = enabled
-		Music.play_track(Music.ui_sfx[1])
-		hide()
-		get_tree().paused = false
-		#print (enabled)
-		return enabled
-
-	"Mobile HUD Controller"
-	if enabled && is_instance_valid(Globals._TouchScreenHUD):
-		Globals._TouchScreenHUD.status()
-		"Grab Focus ?"
-		#grab_focus()
-		_update_quest_listing()
-		_update_inventory_listing()
-		_update_wallet_stats()
-
+	
+	match _state:
+		ENABLED:
+			enabled = true
+			visible = enabled
+			
+			#Music.play_track(Music.ui_sfx[0])
+			get_tree().paused = enabled
+			
+			"Mobile HUD Controller"
+			if is_instance_valid(Globals._TouchScreenHUD):
+				Globals._TouchScreenHUD.status()
+				"Grab Focus ?"
+				#grab_focus()
+				_update_quest_listing()
+				_update_inventory_listing()
+				_update_wallet_stats()
+			return
+		DISABLED:
+			enabled = false
+			emit_signal('enabled')
+			visible = enabled
+			#Music.play_track(Music.ui_sfx[1])
+			hide()
+			get_tree().paused = false
+			#print (enabled)
+			#return enabled
+			_state = NULL
+		NULL:
+			return 0
+	
 
 
 func _update_wallet_stats(): #Updates killcount and Algos
-	$TabContainer/Wallet/Algos.text = 'mAlgos: ' + str (Globals.algos)
+	_coin_label.text = 'mAlgos: ' + str (Globals.algos)
 
 
 func _update_quest_listing():
@@ -109,7 +124,7 @@ func _update_quest_listing():
 	for quest in Quest.list(Quest.STATUS.FAILED):
 		text += "  %s\n" % quest
 	
-	$TabContainer/Quests/ScrollContainer2/VBoxContainer/Quests.text = text
+	_quest_label.text = text
 	pass
 
 func _update_inventory_button_cache() -> bool:
@@ -124,6 +139,8 @@ func _update_inventory_button_cache() -> bool:
 
 
 func _update_inventory_listing():
+	"Inventory UI Logic"
+	
 	# Updates the Inventroy Button with the Items the Player holds
 	# Note: As the Number of Items grow, inventory might require a more encompassing method && UI
 	var text : String = ""
@@ -159,7 +176,6 @@ func _update_inventory_listing():
 				# Bugs: 
 				# (1) Only Uses the first item in t he inventory dictionary sometimes
 				# (2) Duplicates the number of items everytime (2/3)
-				# (3) REGEX code concatonates Inventory item names together (fixed)
 				# (4) Items of same type repeat themselves
 				# (5) Doesnt Reflect Item Current Count
 				

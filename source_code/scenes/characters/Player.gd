@@ -140,16 +140,16 @@ func _process(delta: float):
 	
 	# Facing State Machine
 	# 
-	if GlobalInput._state == GlobalInput.LEFT: #if Input.is_action_pressed("move_left"):
+	if Input.is_action_pressed("move_left"):
 		
 		facing = LEFT
-	if GlobalInput._state == GlobalInput.RIGHT: #if Input.is_action_pressed("move_right"):
+	if Input.is_action_pressed("move_right"):
 		
 		facing = RIGHT
-	if GlobalInput._state == GlobalInput.UP:#if Input.is_action_pressed("move_up"):
+	if Input.is_action_pressed("move_up"):
 		
 		facing = UP
-	if GlobalInput._state == GlobalInput.DOWN:#if Input.is_action_pressed("move_down"):
+	if Input.is_action_pressed("move_down"):
 		
 		facing = DOWN
 

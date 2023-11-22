@@ -102,7 +102,7 @@ func release(): #pass it a variable
 func _input(event):
 	if event is InputEventScreenDrag and self.visible == true :
 		
-		
+		joystick = self
 		#print(str((event.get_relative())))  #for debug purposes only
 		the_event = event
 		

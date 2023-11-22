@@ -59,6 +59,9 @@ var _Comics = Comics_v6 #$Comics
 var _Stats : PanelContainer 
 
 
+# Mobile Joystick
+var joystick 
+
 func _input(event):
 	# Player Input
 	# Implement Player Objects Movement State Machine Simplified
@@ -219,7 +222,7 @@ func vibrate(duration_ms : int, os : String):
 	# Nested if?
 	if Globals.os == "Android" && vibrate : #or "iOS" or "HTML5":
 		
-		if Globals.direction_control == "classic": # Fixes Mobile joystick spamm vibration bug
+		if joystick == null :# Fixes Mobile joystick spamm vibration bug
 			# Shoud Connect to Controls so it can be turned on/off
 			
 			# Vibration on Mobile Devices

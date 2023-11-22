@@ -22,6 +22,7 @@
 # (5) Add a color changer setting function
 # (6) Disable the joystick conrol function use hidden analogue instead
 # (7) Input event is not consumed (fixed)
+# (8) Mobile joystick spamm vibration bug
 # *************************************************
 # To-Do :
 # (1) It is possible to change the Joystick's color and use that as a player hint
@@ -63,7 +64,9 @@ export var state = RELEASE
 # Depreciated in favor of Global Input
 var prev_inputs = [] # An aray to store the last two joystick inputs
 
-func _ready():
+func _enter_tree():
+	
+	#svibrate = false
 	pass
 
 # Removes all unhandleled event from the node
@@ -89,12 +92,17 @@ func release(): #pass it a variable
 		
 		release_the_action(__input.action)
 		state = RELEASE
+		
+		#vibrate = true
+		
 		return state
 
 
 
 func _input(event):
 	if event is InputEventScreenDrag and self.visible == true :
+		
+		
 		#print(str((event.get_relative())))  #for debug purposes only
 		the_event = event
 		

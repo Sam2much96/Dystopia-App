@@ -13,13 +13,20 @@
 # *************************************************
 # TO-DO:
 #
-# (1) Should implement Vibrations for haptic feedback (None)
+# (1) Should implement Vibrations for haptic feedback (1/2)
 # (2) Implement Input Lag (Delay) For Multiplayer Gameplay
 # *************************************************
 # Notes:
 # (1) Vibration is a Battery & Performance hog
 # (2) Vibration is currently only implemented on Android, porting would require custom libraries
 # *************************************************
+# Bugs:
+# (1) Fix Joystick v2 vibration spams
+#
+# *************************************************
+
+
+
 extends Control
 
 class_name Input_Buffer
@@ -211,11 +218,12 @@ func parse_input( action : String, _pressed : bool):
 func vibrate(duration_ms : int, os : String):
 	# Nested if?
 	if Globals.os == "Android" && vibrate : #or "iOS" or "HTML5":
-		#if vibrate:
+		
+		if Globals.direction_control == "classic": # Fixes Mobile joystick spamm vibration bug
 			# Shoud Connect to Controls so it can be turned on/off
 			
 			# Vibration on Mobile Devices
-		Input.vibrate_handheld(duration_ms)
+			Input.vibrate_handheld(duration_ms)
 
 
 func roll_direction_calculation()-> Vector2:

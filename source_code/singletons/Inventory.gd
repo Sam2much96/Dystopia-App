@@ -32,6 +32,10 @@ signal item_changed(action, type, amount)
 
 var inventory : Dictionary = {}
 
+# Create Pointers to Stats and Quests HUD
+var _stats_ui : Stats 
+
+
 """
 CHECKS IF THE INVENTROY HAS AN ITEM
 """

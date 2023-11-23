@@ -17,6 +17,7 @@
 # (4) Implement Character Customization UI (1/2)
 # (5) Implement Tabbed VIew (Done)
 # (6) Implement Tab Icons
+# (7) Item Button should ideally be low poly texture buttons
 
 # *************************************************
 
@@ -44,6 +45,7 @@ onready var _coin_label : Label = $TabContainer/Wallet/Algos
 onready var _quest_label : Label = $TabContainer/Quests/ScrollContainer2/VBoxContainer/Quests
 
 # Array  pointer containing all QUest parent childeren
+# Should be a dictionary
 onready var _stats_buttons : Array = []
 
 
@@ -58,6 +60,8 @@ func _ready():
 	get_tree().set_auto_accept_quit(false)
 	hide()
 	
+	# Make self global 
+	Inventory._stats_ui = self
 
 
 
@@ -71,7 +75,7 @@ func _input(event):
 		Music.play_track(Music.ui_sfx[1])
 		return _state
 
-func _process(delta):
+func _process(_delta):
 	# Refactoring Input Function for global Input singleton
 	
 	"""
@@ -127,10 +131,17 @@ func _update_quest_listing():
 	pass
 
 func _update_inventory_button_cache() -> bool:
-	# save all UI stats Nodes to Array pointer
-	for nodes in _inventory_parent.get_children():
-		if not _stats_buttons.has(nodes):
-			_stats_buttons.append(nodes)
+	# 
+	# What does this code bloc do?
+	# Code Bloc is meant to update a pointer containing all Inventory items buttons and their related ammount
+	# This pointer is used to optimize a psudo-sorting algorithm needed for the Stats UI 
+	# To create inventroy items as buttons
+	# Ideally these buttons should be a texture reat with a number ount labeel, but that'll be for a later refactor
+	for _nodes in _inventory_parent.get_children():
+		if not _stats_buttons.has(_nodes):
+			_stats_buttons.append(_nodes)
+			print_debug(_stats_buttons)
+			print_debug(_inventory_parent)
 			return true
 		else: 
 			return false
@@ -148,7 +159,7 @@ func _update_inventory_listing():
 	
 	#print_debug("Inventory Size Debug : ", _inventory_size) # For Debug Purposes only
 	
-	_update_inventory_button_cache() # Bugg Functions
+	_update_inventory_button_cache() # Buggy Functions
 	
 	# add COnditional for if quest parent has inventory item to avoid dupliucation bug
 	# it'll compate an array of the button names to check if it is already created
@@ -200,7 +211,7 @@ func _update_inventory_listing():
 					new_item_button.text = text
 					new_item_button.name = str(item)
 					
-					# connect button to inventory/ placeholder method
+					# connect button to inventory singleton method
 					#
 					new_item_button.connect("pressed", Inventory, "placeholder",[item]) # button presses 
 					
@@ -209,7 +220,8 @@ func _update_inventory_listing():
 					#print_debug("Inventory Stats Debug: ", _stats_buttons) # For Debug Purposes only
 			else : pass
 
-
+func _update_inventory_ui_count():
+	pass
 
 func _notification(what):  #Triggered when the Min Game Loop is exited
 	if (what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST):

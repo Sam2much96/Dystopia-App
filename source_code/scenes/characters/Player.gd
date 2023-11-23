@@ -140,16 +140,16 @@ func _process(delta):
 	
 	# Facing State Machine
 	# 
-	if Input.is_action_pressed("move_left"):
+	if Input.is_action_pressed("move_left") or GlobalInput._state == GlobalInput.LEFT:
 		
 		facing = LEFT
-	if Input.is_action_pressed("move_right"):
+	if Input.is_action_pressed("move_right") or GlobalInput._state == GlobalInput.RIGHT:
 		
 		facing = RIGHT
-	if Input.is_action_pressed("move_up"):
+	if Input.is_action_pressed("move_up") or GlobalInput._state == GlobalInput.UP:
 		
 		facing = UP
-	if Input.is_action_pressed("move_down"):
+	if Input.is_action_pressed("move_down") or GlobalInput._state == GlobalInput.DOWN:
 		
 		facing = DOWN
 
@@ -185,7 +185,12 @@ func _physics_process(_delta):
 						Input.is_action_pressed("move_down") or
 						Input.is_action_pressed("move_left") or
 						Input.is_action_pressed("move_right") or
-						Input.is_action_pressed("move_up")
+						Input.is_action_pressed("move_up") or
+						
+						GlobalInput._state == GlobalInput.UP or
+						GlobalInput._state == GlobalInput.DOWN or
+						GlobalInput._state == GlobalInput.LEFT or
+						GlobalInput._state == GlobalInput.RIGHT
 					):
 						state = STATE_WALKING
 				if Input.is_action_just_pressed("attack"):

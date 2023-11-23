@@ -78,12 +78,7 @@ func _ready():
 	"Scales for Mobile UI"
 	# Disabling for debuggin
 	
-	print_debug("Global Screen Orientatin", Globals.screenOrientation)# For Debug Purposes only
-	
-	#Quick Fix for Upscaing
-	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
-		upscale()
-	
+
 	
 	'Hides the Menu once the scene tree is ready'
 	
@@ -247,6 +242,13 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 #Handles Displaying the menu
 func _menu_showing(): #Broken funtions #rewrite with state machine
 	enabled = true 
+	
+	print_debug("Global Screen Orientatin", Globals.screenOrientation)# For Debug Purposes only
+	
+	#Quick Fix for Upscaing
+	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
+		upscale()
+	
 	
 	show()
 

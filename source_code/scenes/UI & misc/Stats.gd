@@ -150,6 +150,7 @@ func _update_inventory_button_cache() -> bool:
 
 func _update_inventory_listing():
 	"Inventory UI Logic"
+	# Refactoring?
 	
 	# Updates the Inventroy Button with the Items the Player holds
 	# Note: As the Number of Items grow, inventory might require a more encompassing method && UI
@@ -220,8 +221,6 @@ func _update_inventory_listing():
 					#print_debug("Inventory Stats Debug: ", _stats_buttons) # For Debug Purposes only
 			else : pass
 
-func _update_inventory_ui_count():
-	pass
 
 func _notification(what):  #Triggered when the Min Game Loop is exited
 	if (what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST):

@@ -40,7 +40,7 @@ INTERRACT, DIALOGUE
 }
 
 # State Machine
-var _state : int 
+export (int) var _state  
 
 # Frame Counter
 #var _frame_counter : int = 0

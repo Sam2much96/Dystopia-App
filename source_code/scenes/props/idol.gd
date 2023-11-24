@@ -25,7 +25,7 @@ this triggers an autosave spawnpoint feature one within its kinematic body 2d
 """
 
 
-var _debug : debug = Engine.get_singleton('Debug')
+onready var _debug : debug = get_node("/root/Debug")
 
 func _connect_signals() -> void:
 	
@@ -47,11 +47,15 @@ func _ready():
 	if _debug == null:
 		if is_instance_valid(get_tree().get_root().get_node("/root/Debug")) :
 			_debug = get_tree().get_root().get_node("/root/Debug")
-		#print_debug("Error: ",(_debug == OK))
+		
+	
+	# Redundancy Code
 	if _debug == null:
-		if Engine.has_singleton('Debug'):
-			#var Debug = Engine.get_singleton('Debug')
-			_debug = Engine.get_singleton('Debug')
+		#if Engine.has_singleton('Debug'):
+		#	#var Debug = Engine.get_singleton('Debug')
+		#	_debug = Engine.get_singleton('Debug')
+		#	_debug = Debug
+		push_error("Debug SIngleton is not present is code base")
 
 	print_debug("Debugger Instance:", _debug)
 

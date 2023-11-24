@@ -1299,7 +1299,7 @@ position = Vector2( 6.30249, -86.9744 )
 current = true
 zoom = Vector2( 1.8, 1.8 )
 
-[node name="hurtbox" type="Area2D" parent="."]
+[node name="hurtbox" type="Area2D" parent="." groups=["player_hurtbox"]]
 collision_mask = 32
 __meta__ = {
 "_editor_description_": ""

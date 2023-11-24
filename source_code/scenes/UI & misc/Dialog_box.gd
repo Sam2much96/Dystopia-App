@@ -64,8 +64,8 @@ func hide_dialogue(): #Hides the Dialogue box
 
 
 func _input(event):
-	if event.is_action_pressed("interact"):
-	#if GlobalInput._state == GlobalInput.INTERRACT:
+	if (event.is_action_pressed("interact") or
+	GlobalInput._state == GlobalInput.INTERRACT ):
 		
 		"Animation State Machine"
 		

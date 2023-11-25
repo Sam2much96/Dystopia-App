@@ -62,7 +62,7 @@ var avail_thread = 0
 
 # State Machine Variables
 enum {START_DEBUG, STOP_DEBUG}
-var _state_ = STOP_DEBUG
+var _state_ = START_DEBUG
 
 # Debug panel cannot be more than 1
 var debug_panels_cr8ted = [] # append the debug pannel to this array to stop double instance bug

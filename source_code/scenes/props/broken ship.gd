@@ -33,24 +33,23 @@ export (bool) var emitting_smoke
 onready var _smoke_fx = $smoke_fx
 onready var _smoke_fx_2 = $smoke_fx2
 #toggles comics placeholder visible on player contact
-func _on_Area2D_body_entered(body):
-	if body is Player : 
-		#print ("dfahsdoshgoashgaoghsfogh")# Works # For Testing Purposes, Delete Later.
-		emitting_smoke == true
-		
-		
-		
-		"""
-		Turns Smoke emitting on/ off 
-		"""
-		# it saves cpu performance
+func _on_Area2D_body_entered(body : Player):
+
+	emitting_smoke == true
+	
+	
+	
+	"""
+	Turns Smoke emitting on/ off 
+	"""
+	# it saves cpu performance
 
 		# Via A class + statemachine combo
 		# 2 turns it off 1 turns it on
-		_smoke_fx._emit(true) # Emits smoke Programmatically
-		_smoke_fx_2._emit(true) # Emits smoke Programmatically
+	_smoke_fx._emit(true) # Emits smoke Programmatically
+	_smoke_fx_2._emit(true) # Emits smoke Programmatically
 		
-		print_debug ("Player Near Spaceship. Is Smoke Emitting? :",_smoke_fx._state_controller) #not working
+	print_debug ("Player Near Spaceship. Is Smoke Emitting? :",_smoke_fx._state_controller) #not working
 		
 		
 
@@ -68,15 +67,13 @@ func show_scene_comic() -> void:
 
 
 
-func _on_Area2D_body_exited(body): 
-	if body is Player:
+func _on_Area2D_body_exited(body : Player): 
+	#if body is Player:
 		#print ('Called From Broken Ship>>>>sdbasjgbasgbasigbasgubs') # Works # For debug purposes only
-		emitting_smoke == false
+	emitting_smoke == false
 
 		# it saves cpu performance
-		_smoke_fx._emit(false) # Stops smoke Emits Programmatically
-		_smoke_fx_2._emit(false) # Stops smoke Emits Programmatically
+	_smoke_fx._emit(false) # Stops smoke Emits Programmatically
+	_smoke_fx_2._emit(false) # Stops smoke Emits Programmatically
 
 
-#func _process(_delta):
-#	pass

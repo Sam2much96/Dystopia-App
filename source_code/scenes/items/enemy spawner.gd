@@ -47,6 +47,10 @@ var idol = Idol
 var savepoint = idol.new()
 
 func _ready():
+	# connect signals
+	
+	
+	
 	# IT shouldn't call Randomize
 	
 	#randomize()
@@ -83,7 +87,7 @@ func finished_spawning() -> bool:
 	
 	
 " SPAWN STARTER/ PLAYER DETECTOR"
-func _on_Area2D_body_exited(body):
+func _on_Area2D_body_exited(body : Player):
 	pass
 
 # tEMPLATE FOR iMPLEMENTING A SPAWNING cOOLDOWN WITH tIMER
@@ -99,15 +103,13 @@ func _on_COOL_DOWN_timeout():
 			queue_free()
 
 # Triggers a Spawn When Player Body Enters the Collision
-func _on_Area2D_body_entered(body):
-	if body is Player:
-		print_debug("Player Leaves Enemy Spawn Range")
-		#SPAWNNING = true
-		
-		spawn_enemy()
-		
-		# Saves Using A Savepoint Class
-		savepoint._save(body)
+func _on_Area2D_body_entered(body : Player):
+	
+	print_debug("Player Leaves Enemy Spawn Range")
+	spawn_enemy()
+	
+	# Saves Using A Savepoint Class
+	savepoint._save(body)
 
 
 

@@ -121,23 +121,6 @@ func _ready():
 
 func _input(event):
 	# Node Individual Input Processes were depreciated in favor of GlobalInput Singleton
-	pass
-
-func _process(delta):
-		# Raises up a Frame Counter
-	frame_counter += 1
-	
-	# Checks the Spawning Boolean Every 30th Frame
-	# Called #very 60th Frame
-	if frame_counter % 60 == 0:
-	#####this updates the player's node to a globals variable
-		Globals._player_state = state
-	if frame_counter >= 1000:
-		frame_counter = 0
-
-	
-	#print ('Current scene:',Globals.curr_scene, 'Current level',Globals.current_level) #for debug purposes only
-	
 	# Facing State Machine
 	# 
 	if Input.is_action_pressed("move_left") or GlobalInput._state == GlobalInput.LEFT:
@@ -152,6 +135,18 @@ func _process(delta):
 	if Input.is_action_pressed("move_down") or GlobalInput._state == GlobalInput.DOWN:
 		
 		facing = DOWN
+
+func _process(delta):
+		# Raises up a Frame Counter
+	frame_counter += 1
+	
+	# Checks the Spawning Boolean Every 30th Frame
+	# Called #very 60th Frame
+	if frame_counter % 60 == 0:
+	#####this updates the player's node to a globals variable
+		Globals._player_state = state
+	if frame_counter >= 1000:
+		frame_counter = 0
 
 
 	# Facing State machine

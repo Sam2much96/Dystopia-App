@@ -58,7 +58,7 @@ onready var player_camera = $camera #the player's camera
 onready var timer = $ScentTimer
 onready var animation = $anims
 var timeout: bool = false
-var frame_counter : int = 0
+#var frame_counter : int = 0
 
 
 # Helper Booleans
@@ -138,18 +138,22 @@ func _input(event):
 
 func _process(delta):
 		# Raises up a Frame Counter
-	frame_counter += 1
+	#frame_counter += 1
 	
 	# Checks the Spawning Boolean Every 30th Frame
 	# Called #very 60th Frame
-	if frame_counter % 60 == 0:
+	if Simulation.frame_counter % 60 == 0:
 	#####this updates the player's node to a globals variable
 		Globals._player_state = state
-	if frame_counter >= 1000:
-		frame_counter = 0
+#	if frame_counter >= 1000:
+#		frame_counter = 0
 
 
-	# Facing State machine
+
+
+func _physics_process(_delta):
+	
+		# Facing State machine
 	match facing:
 		UP:
 			_facing = "up"
@@ -159,10 +163,6 @@ func _process(delta):
 			_facing = "left"
 		RIGHT:
 			_facing = "right"
-
-func _physics_process(_delta):
-	
-	
 	
 	
 	

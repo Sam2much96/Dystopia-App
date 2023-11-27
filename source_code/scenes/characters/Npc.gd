@@ -28,7 +28,7 @@ which should be an instance of Quest.gd it'll become a quest giver and show what
 text Quest.process() returns
 """
 
-var active = false
+export (bool)var active
 
 export(String) var character_name = "Nameless NPC"
 export(Array, String, MULTILINE) var dialogs = ["..."]
@@ -48,56 +48,58 @@ onready var _AI : Llama2API = $AI
 var frame_counter : int = 0
 
 func _ready():
-	randomize()
-	
-	# Adds a Kinematic Body for Move and SLide
-	#self.add_child(Kinematic_Body)
-	
-	if not npc.is_connected("body_entered", self, "_on_NPC_body_entered"):
-		# warning-ignore:return_value_discarded
-		npc.connect("body_entered", self, "_on_NPC_body_entered")
+	if active:
+		randomize()
+		
+		# Adds a Kinematic Body for Move and SLide
+		#self.add_child(Kinematic_Body)
+		
+		if not npc.is_connected("body_entered", self, "_on_NPC_body_entered"):
+			# warning-ignore:return_value_discarded
+			npc.connect("body_entered", self, "_on_NPC_body_entered")
 
-	if not npc.is_connected("body_exited", self, "_on_NPC_body_exited"):
-		# warning-ignore:return_value_discarded
-		npc.connect("body_exited", self, "_on_NPC_body_exited")
+		if not npc.is_connected("body_exited", self, "_on_NPC_body_exited"):
+			# warning-ignore:return_value_discarded
+			npc.connect("body_exited", self, "_on_NPC_body_exited")
 
 	#print_debug(_AI.name)
 
 
 func _process(delta : float):
 	
-	frame_counter += 1
-	
-	# stops interger overflow from frame counter variable 
-	if frame_counter >= 1000: frame_counter = 0 # Reset frame counter
-	
-	# calculated every 5th frame
-	if frame_counter % 5 == 0:
+	if active:
+		frame_counter += 1
 		
-		if active && __body != null:
-		 
+		# stops interger overflow from frame counter variable 
+		if frame_counter >= 1000: frame_counter = 0 # Reset frame counter
 		
-		# Triggers Body Movement away from Player Object
-		#if  :
+		# calculated every 5th frame
+		if frame_counter % 5 == 0:
 			
-			# Move away from Player
-			# Works
-			# TO DO: Implement Behaviour in animal sprites
-			#move_and_slide( -Behaviour.FollowPlayer(self, __body))
-			#print (get_tree().get_nodes_in_group('player').pop_front())
+			if __body != null:
+			 
 			
-			# Follow Player
-			#move_and_slide( Behaviour.FollowPlayer(self, __body))
-			
-			pass
-	
-	# Fetched Durrent Dialouge from AI Prompy
-	if frame_counter % 10 == 0 && _AI != null &&_AI.output != "":
-		if not dialogs.has(_AI.output):
-			current_dialog = 0
-			dialogs[current_dialog] =_AI.output
-			#print_debug(dialogs[current_dialog])
-		else : pass
+			# Triggers Body Movement away from Player Object
+			#if  :
+				
+				# Move away from Player
+				# Works
+				# TO DO: Implement Behaviour in animal sprites
+				#move_and_slide( -Behaviour.FollowPlayer(self, __body))
+				#print (get_tree().get_nodes_in_group('player').pop_front())
+				
+				# Follow Player
+				#move_and_slide( Behaviour.FollowPlayer(self, __body))
+				
+				pass
+		
+		# Fetched Durrent Dialouge from AI Prompy
+		if frame_counter % 10 == 0 && _AI != null &&_AI.output != "":
+			if not dialogs.has(_AI.output):
+				current_dialog = 0
+				dialogs[current_dialog] =_AI.output
+				#print_debug(dialogs[current_dialog])
+			else : pass
 
 
 func _input(event):

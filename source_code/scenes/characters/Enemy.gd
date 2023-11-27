@@ -24,7 +24,7 @@
 # (2) Navigation Agent for better Navigation
 # (3) Static Memory optimization
 # (4) Enemy Can Either Be Hard Intermediate or Easy
-
+# (4) Uses an Enemy Object pool connected to Utils singleton
 
 extends KinematicBody2D
 
@@ -60,7 +60,7 @@ onready var player # = get_tree().get_nodes_in_group('player')  #reference to pl
 onready var raycast : RayCast2D = $enemy_eyesight/pointer/RayCast2D
 onready var pointer : Node2D = $enemy_eyesight/pointer
 onready var navigation_agent : NavigationAgent2D = $NavigationAgent2D
-onready var frame_counter : int = 0
+#onready var frame_counter : int = 0
 
 """
  the  MOB AI script works on the assumption there will
@@ -120,11 +120,11 @@ func _ready():
 
 
 
-func _process(delta : float):
+func _process(delta):
 	#debug() #turn off when not debugging
 	
 	# Raises up a Frame Counter
-	frame_counter += 1
+	#frame_counter += 1
 	
 	# set processor's rate as a correlation of the enemy type
 	if enemy_type == "Easy":
@@ -145,7 +145,7 @@ func _process(delta : float):
 	# Checks the Conditional Every 30th Frame
 	# Called every selected framerate. 30th Frame for slower processing
 	# LOGIC: frame counter is a modulous of the selected frame rate
-	if frame_counter % selected_frame_rate == 0:
+	if Simulation.frame_counter % selected_frame_rate == 0:
 		
 		"FACE THE PLAYER, IF HE'S VISIBLE"
 		if player != null: 
@@ -163,8 +163,8 @@ func _process(delta : float):
 
 
 	# Reset Frame Counter TO Conserver Memory
-	if frame_counter >= 1000:
-		frame_counter = 0
+#	if frame_counter >= 1000:
+#		frame_counter = 0
 
 func _physics_process(delta):
 	
@@ -369,8 +369,8 @@ func turn_processing(toggle : String):
 
 func debug()-> void:
 	# Debugs AI variables to the Console log
-	if frame_counter % IDIOT_FRAME_RATE == 0:
-		print ("State: ",state,"/ Distance to player " ,enemy_distance_to_player, "/ Enemy Type",enemy_type)
+	if Simulation.frame_counter % IDIOT_FRAME_RATE == 0:
+		print_debug ("State: ",state,"/ Distance to player " ,enemy_distance_to_player, "/ Enemy Type",enemy_type)
 
 func _exit_tree():
 	# Delete self pointer from Global object pool 

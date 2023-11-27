@@ -428,7 +428,7 @@ func _input(event):
 	#SwipeLocked = false
 	#can_drag = true
 
-func _process(_delta):
+func _process(delta):
 	
 	#print (str(SwipeLocked) + str(can_drag) + str(Networking.Timeout)) # SwipeLockked is Buggy # For Debug purposes only
 	
@@ -482,7 +482,7 @@ func _process(_delta):
 		_loaded_comics = false 
 
 
-	_state = SET_FRAME # for debug purposes , disable later
+	#_state = SET_FRAME # for debug purposes , disable later
 
 
 	"""Updates the Comic Debug to a global debug singleton"""

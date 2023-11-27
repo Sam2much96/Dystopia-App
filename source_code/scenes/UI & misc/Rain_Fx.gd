@@ -30,27 +30,10 @@ const Long_lifetime : int = 6
 const Short_lifetime : int = 3
 
 
-
-
 # Add other Parameters to Automatically trigger the rain on and off
-func _process(_delta):
-	
-	# Programmatically controls the Rain FX using the GLobal Game Framerate to OPtimize for perfomance
-	# Using the time node. set to 500 for 8.3 mins
-	
-	
-	if enable == true && int (Debug.FPS_debug()) >= MINUMUM_FPS:
-		rain_particles.emitting = true
-		#print ('Emitting Rain Particles') #-introducees a bug
-		
-	if enable == false:
-		rain_particles.emitting = false
+func _process(delta):
 	
 	"Performance Saver"
-	
-	if  enable == true && int (Debug.FPS_debug()) < MINUMUM_FPS:
-		rain_particles.emitting = false
-
 	"Performance Optimizations"
 	# Particle Optimization for Differing Screen Orientations
 	
@@ -58,6 +41,25 @@ func _process(_delta):
 		rain_particles.lifetime = Short_lifetime
 	if Globals.screenOrientation == Globals.SCREEN_VERTICAL:
 		rain_particles.lifetime = Long_lifetime
+
+
+ 
+	if Simulation.frame_counter % 60 == 0: # RUn these calculations on the 60th frame
+	
+	# Programmatically controls the Rain FX using the GLobal Game Framerate to OPtimize for perfomance
+	# Using the time node. set to 500 for 8.3 mins
+	
+	
+		if enable == true && int (Debug.FPS_debug()) >= MINUMUM_FPS:
+			rain_particles.emitting = true
+			#print ('Emitting Rain Particles') #-introducees a bug
+			
+		if enable == false:
+			rain_particles.emitting = false
+	
+		
+		if  enable == true && int (Debug.FPS_debug()) < MINUMUM_FPS:
+			rain_particles.emitting = false
 
 
 

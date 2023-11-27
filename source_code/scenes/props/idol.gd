@@ -59,14 +59,16 @@ func _ready():
 
 	print_debug("Debugger Instance:", _debug)
 
-func _save(body):
+func _save(body : Player):
 	#if body is Player:
 		
 		# Debugger
 		#var _debug = get_tree().get_root().get_node("/root/Debug")
-		if _debug != null: 
-			_debug.Autosave_debug = str(' Autosaving player position:', (body.position) )
-		
+	if _debug != null: 
+		_debug.Autosave_debug = str(' Autosaving player position:', (body.position) )
+	
+	
+	if body != null:
 		Globals.spawn_x = body.position.x #saves the player's position to spawnpoint
 		Globals.spawn_y = body.position.y
 		Globals.player_hitpoints = body.hitpoints
@@ -82,7 +84,6 @@ func _save(body):
 			null,
 			""
 			)
-
 
 func _reset_autosave_debugger() -> void:
 	#if body is Player:

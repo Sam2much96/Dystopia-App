@@ -1,25 +1,15 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=15 format=2]
 
-[ext_resource path="res://scenes/items/Item.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/props/Pond.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/Map & Environment/Tree_Tilemap_1.tres" type="TileSet" id=3]
-[ext_resource path="res://scenes/items/extra life.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/Shaders/Reflection.shader" type="Shader" id=5]
+[ext_resource path="res://scenes/props/Pond.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/props/Mushroom.tscn" type="PackedScene" id=6]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/house.webp" type="Texture" id=7]
-[ext_resource path="res://scenes/props/Temple exterior.tscn" type="PackedScene" id=8]
-[ext_resource path="res://scenes/props/broken ship.tscn" type="PackedScene" id=9]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/grass.webp" type="Texture" id=10]
-[ext_resource path="res://scenes/props/Mushroom_2.tscn" type="PackedScene" id=12]
-[ext_resource path="res://scenes/props/Grass.tscn" type="PackedScene" id=14]
-[ext_resource path="res://scenes/levels/VisibilityOptimizer.gd" type="Script" id=15]
 [ext_resource path="res://scenes/UI & misc/Exit.gd" type="Script" id=16]
 [ext_resource path="res://scenes/props/idol.tscn" type="PackedScene" id=17]
 [ext_resource path="res://scenes/props/BoulderSmall.tscn" type="PackedScene" id=19]
 [ext_resource path="res://scenes/props/Boulder Big.tscn" type="PackedScene" id=21]
 [ext_resource path="res://scenes/props/Dune big.tscn" type="PackedScene" id=23]
 [ext_resource path="res://scenes/props/Dune small.tscn" type="PackedScene" id=24]
-[ext_resource path="res://scenes/props/flowers.tscn" type="PackedScene" id=25]
 [ext_resource path="res://scenes/props/stone walkway.tscn" type="PackedScene" id=26]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/desert dunes tex.webp" type="Texture" id=28]
 
@@ -30,21 +20,20 @@ height = 885.177
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 237.908, 160.863 )
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = ExtResource( 5 )
-shader_param/amount = 0.368
-
-[sub_resource type="ShaderMaterial" id=3]
-shader = ExtResource( 5 )
-shader_param/amount = null
-
 [node name="Outside" type="Node2D"]
+
+[node name="Boundary" type="StaticBody2D" parent="."]
+position = Vector2( 208.024, -128.355 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Boundary"]
+polygon = PoolVector2Array( -2763.35, -1683.33, -2713.91, 5305.44, 8212.13, 5103.86, 8131.49, -1669.48, 3595.33, -1362.43, 3487.7, -3649.66, 10429.6, -3463.61, 10409.4, -4088.53, 2922.62, -4241.65, 2976.44, -878.069, 6905.1, -743.525, 7446.1, 4458.78, -2209.94, 4418.46, -2250.2, -1113.16, 2196.08, -931.886, 2196.08, -5156.55, 10510.9, -5210.37, 10484, -5802.36, 1523.37, -5802.36, 1484.45, -1583.55 )
 
 [node name="Dune textures" type="YSort" parent="."]
 position = Vector2( 1600.61, 2690.46 )
 scale = Vector2( 0.5, 0.5 )
 
 [node name="Dune_Tex" type="Control" parent="Dune textures"]
+visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 
@@ -193,18 +182,6 @@ scale = Vector2( 1.88, 1.88 )
 [node name="level" type="YSort" parent="."]
 position = Vector2( 208.024, -128.355 )
 
-[node name="Temple" parent="level" instance=ExtResource( 8 )]
-position = Vector2( 1278.5, 974.105 )
-scale = Vector2( 1.32349, 1.32349 )
-
-[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="level/Temple"]
-position = Vector2( -196.379, -243.818 )
-scale = Vector2( 31.3906, 30.8854 )
-script = ExtResource( 15 )
-
-[node name="temple spawnpoint" type="Position2D" parent="level/Temple" groups=["spawnpoints"]]
-position = Vector2( -188.706, 30.601 )
-
 [node name="House" type="StaticBody2D" parent="level"]
 position = Vector2( 1160, 2504 )
 scale = Vector2( 0.455064, 0.455064 )
@@ -220,27 +197,16 @@ rotation = 1.56317
 shape = SubResource( 1 )
 
 [node name="Exit" type="Area2D" parent="level/House"]
+monitorable = false
 script = ExtResource( 16 )
-to_scene = "res://scenes/levels/DuneProcedural.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="level/House/Exit"]
 position = Vector2( 227.908, 150.863 )
 shape = SubResource( 4 )
 
-[node name="broken ship" parent="level" instance=ExtResource( 9 )]
-position = Vector2( 1346.73, 2212.05 )
-scale = Vector2( 1.07355, 1.07355 )
-
-[node name="extra life" parent="level/broken ship" instance=ExtResource( 4 )]
-position = Vector2( 911.587, 574.353 )
-
 [node name="idols" type="YSort" parent="level"]
 position = Vector2( 166.022, 1384.49 )
 scale = Vector2( 1.29149, 1.29149 )
-
-[node name="idol2" parent="level/idols" instance=ExtResource( 17 )]
-position = Vector2( 1436.47, 1803.58 )
-scale = Vector2( 1, 1 )
 
 [node name="idol3" parent="level/idols" instance=ExtResource( 17 )]
 position = Vector2( 3543.1, -152.112 )
@@ -278,394 +244,28 @@ position = Vector2( 454.1, -399.92 )
 [node name="Items" type="YSort" parent="level"]
 position = Vector2( 1032.97, 1956.3 )
 
-[node name="Item" parent="level/Items" instance=ExtResource( 1 )]
-
-[node name="Item2" parent="level/Items" instance=ExtResource( 1 )]
-position = Vector2( 201.99, -245.7 )
-item_type = "Magic Sword"
-
-[node name="Item3" parent="level/Items" instance=ExtResource( 1 )]
-position = Vector2( -453.627, -319.57 )
-item_type = "Coso"
-amount = 3
-
-[node name="Item5" parent="level/Items" instance=ExtResource( 1 )]
-position = Vector2( 1805.79, -64.8101 )
-item_type = "Magic Sword"
-
-[node name="Item4" parent="level/Items" instance=ExtResource( 1 )]
-position = Vector2( 1540.5, -116.06 )
-item_type = "Coso"
-amount = 3
-
-[node name="Item9" parent="level/Items" instance=ExtResource( 1 )]
-position = Vector2( 1878.15, 455.22 )
-
-[node name="Item8" parent="level/Items" instance=ExtResource( 1 )]
-position = Vector2( 2080.13, 209.52 )
-item_type = "Magic Sword"
-
-[node name="extra life" parent="level/Items" instance=ExtResource( 4 )]
-position = Vector2( 1516.29, 305.655 )
-
-[node name="extra life2" parent="level/Items" instance=ExtResource( 4 )]
-position = Vector2( 1791.98, 287.675 )
-
-[node name="extra life" parent="level" instance=ExtResource( 4 )]
-position = Vector2( 1055.72, 2688.73 )
-scale = Vector2( 0.907799, 1.14418 )
-
 [node name="Ponds" type="YSort" parent="level"]
 
-[node name="Pond" parent="level/Ponds" instance=ExtResource( 2 )]
-material = SubResource( 2 )
-position = Vector2( 3751.76, 3080.52 )
+[node name="pond" parent="level/Ponds" instance=ExtResource( 1 )]
+enabled = true
 
-[node name="Pond_2" parent="level/Ponds" instance=ExtResource( 2 )]
-material = SubResource( 3 )
-position = Vector2( 4015.46, 575.35 )
+[node name="pond2" parent="level/Ponds" instance=ExtResource( 1 )]
+position = Vector2( 3643.88, 455.485 )
+enabled = true
 
-[node name="Outside" type="Node" parent="."]
+[node name="pond3" parent="level/Ponds" instance=ExtResource( 1 )]
+position = Vector2( 2732.91, 2828.8 )
+enabled = true
 
-[node name="flowers and grass" type="YSort" parent="Outside"]
-position = Vector2( 1580.01, 2636.3 )
+[node name="flowers and grass" type="YSort" parent="level"]
+position = Vector2( 1371.99, 2764.66 )
 scale = Vector2( 0.5, 0.5 )
 
-[node name="grass" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( -1236.52, -509.06 )
-z_index = -1
-
-[node name="grass6" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 307.48, -517.06 )
-z_index = -1
-
-[node name="grass7" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 467.48, -677.06 )
-
-[node name="grass8" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 3974.78, 743.08 )
-z_index = -1
-
-[node name="grass4" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( -1005.73, -896.305 )
-z_index = -1
-
-[node name="grass2" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( -1194.57, -749.617 )
-
-[node name="grass3" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( -1456.31, -239.334 )
-z_index = 1
-
-[node name="grass5" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( -960.31, -1183.33 )
-z_index = 1
-
-[node name="flowers" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 4096.78, 405.08 )
-
-[node name="flowers2" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 3883.61, -1666.12 )
-
-[node name="flowers3" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( -4590.81, -1294.54 )
-
-[node name="flowers4" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( -4494.92, -1138.71 )
-
-[node name="flowers5" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( -4255.19, -934.943 )
-
-[node name="grass9" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 4454.78, 345.08 )
-z_index = -1
-
-[node name="grass10" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 4682.78, 167.08 )
-z_index = -1
-
-[node name="grass11" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 4798.66, -1972.23 )
-z_index = -1
-
-[node name="grass12" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 4536.92, -1461.95 )
-z_index = -1
-
-[node name="grass13" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 5124.78, -3990.92 )
-z_index = -1
-
-[node name="grass14" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 5296.62, -2178.21 )
-z_index = -1
-
-[node name="grass15" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 4812.78, -4022.92 )
-z_index = -1
-
-[node name="grass16" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 5116.82, -1746.7 )
-z_index = -1
-
-[node name="grass17" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 5020.93, -1435.05 )
-z_index = -1
-
-[node name="grass18" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 6280.78, -4478.92 )
-z_index = -1
-
-[node name="grass19" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 6110.78, -4144.92 )
-z_index = -1
-
-[node name="grass20" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 5800.05, -1998.41 )
-z_index = -1
-
-[node name="grass21" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 5496.78, -4006.92 )
-z_index = -1
-
-[node name="grass22" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 5212.71, -1039.49 )
-z_index = -1
-
-[node name="grass23" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 5274.78, 31.08 )
-z_index = -1
-
-[node name="grass24" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 4958.44, -1183.58 )
-z_index = -1
-
-[node name="grass25" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 5822.78, 605.08 )
-z_index = -1
-
-[node name="grass26" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 5570.78, 873.08 )
-z_index = -1
-
-[node name="grass27" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 5822.97, -844.552 )
-z_index = -1
-
-[node name="grass28" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 5218.78, 1043.08 )
-z_index = -1
-
-[node name="grass29" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 5006.78, 1195.08 )
-z_index = -1
-
-[node name="grass30" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 6323.04, -1420.9 )
-z_index = -1
-
-[node name="grass31" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 6424.74, -2031.15 )
-z_index = -1
-
-[node name="grass32" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 5782.78, -3930.92 )
-z_index = -1
-
-[node name="grass33" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 6619.69, -1454.8 )
-z_index = -1
-
-[node name="grass34" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 5814.5, -505.523 )
-z_index = -1
-
-[node name="grass35" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 6339.21, -882.245 )
-z_index = -1
-
-[node name="grass36" parent="Outside/flowers and grass" instance=ExtResource( 14 )]
-position = Vector2( 4920.78, 53.0798 )
-z_index = -1
-
-[node name="flowers9" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 10152.5, -3344.22 )
-
-[node name="flowers14" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 6116.2, -2133.33 )
-
-[node name="flowers15" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 6842.73, -2039.15 )
-
-[node name="flowers16" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 5362.75, -828.258 )
-
-[node name="flowers17" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 5443.48, -599.534 )
-
-[node name="flowers18" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 4945.67, -828.258 )
-
-[node name="flowers19" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 5604.93, -357.356 )
-
-[node name="flowers20" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 5685.66, -155.541 )
-
-[node name="flowers21" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 5779.84, 73.1831 )
-
-[node name="flowers22" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 5699.11, 261.544 )
-
-[node name="flowers23" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 6344.92, -2254.42 )
-
-[node name="flowers10" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 9876.84, -2888.74 )
-
-[node name="flowers11" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 1402.42, -2517.16 )
-
-[node name="flowers12" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 1498.31, -2361.33 )
-
-[node name="flowers13" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 1738.04, -2157.56 )
-
-[node name="flowers6" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( -1702.08, -1042.82 )
-
-[node name="flowers7" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( -2205.51, -2013.72 )
-
-[node name="flowers8" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 1970.45, -7510.88 )
-
-[node name="flowers24" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 2152.45, -7508.88 )
-
-[node name="flowers25" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 2328.45, -7500.88 )
-
-[node name="flowers26" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 2494.45, -7500.88 )
-
-[node name="flowers27" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 2660.45, -7500.88 )
-
-[node name="flowers28" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 2838.45, -7492.88 )
-
-[node name="flowers29" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 3022.45, -7502.88 )
-
-[node name="flowers30" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 3238.45, -7508.88 )
-
-[node name="flowers31" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 3244.45, -7700.88 )
-
-[node name="flowers32" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 2984.45, -7710.88 )
-
-[node name="flowers33" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 2758.45, -7722.88 )
-
-[node name="flowers34" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 2574.45, -7716.88 )
-
-[node name="flowers35" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 2342.45, -7718.88 )
-
-[node name="flowers36" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 2130.45, -7724.88 )
-
-[node name="flowers37" parent="Outside/flowers and grass" instance=ExtResource( 25 )]
-position = Vector2( 1986.45, -7724.88 )
-
-[node name="mushroom" parent="Outside/flowers and grass" instance=ExtResource( 6 )]
+[node name="mushroom" parent="level/flowers and grass" instance=ExtResource( 6 )]
 position = Vector2( 5886.78, -3506.92 )
 
-[node name="mushroom7" parent="Outside/flowers and grass" instance=ExtResource( 6 )]
-position = Vector2( 3294.78, -9558.92 )
-
-[node name="mushroom8" parent="Outside/flowers and grass" instance=ExtResource( 6 )]
-position = Vector2( 2014.78, -9590.92 )
-
-[node name="mushroom2" parent="Outside/flowers and grass" instance=ExtResource( 6 )]
-position = Vector2( 8246.68, -2828.8 )
-
-[node name="mushroom5" parent="Outside/flowers and grass" instance=ExtResource( 6 )]
-position = Vector2( 4637.3, 1686.7 )
-
-[node name="mushroom3" parent="Outside/flowers and grass" instance=ExtResource( 12 )]
-position = Vector2( 6185.01, -671.241 )
-
-[node name="mushroom4" parent="Outside/flowers and grass" instance=ExtResource( 12 )]
-position = Vector2( 8390.52, -479.458 )
-
-[node name="mushroom6" parent="Outside/flowers and grass" instance=ExtResource( 12 )]
-position = Vector2( 2177.41, -8296.46 )
-
-[node name="mushroom9" parent="Outside/flowers and grass" instance=ExtResource( 12 )]
-position = Vector2( -6849.22, -7278.92 )
-
-[node name="Tall_grass" type="TextureRect" parent="Outside/flowers and grass"]
+[node name="Tall_grass" type="TextureRect" parent="level/flowers and grass"]
 light_mask = 2
 margin_right = 40.0
 margin_bottom = 40.0
 texture = ExtResource( 10 )
-
-[node name="Tall_grass2" type="TextureRect" parent="Outside/flowers and grass"]
-margin_left = 3982.78
-margin_top = -2034.92
-margin_right = 4338.78
-margin_bottom = -1343.92
-texture = ExtResource( 10 )
-
-[node name="Tall_grass3" type="TextureRect" parent="Outside/flowers and grass"]
-margin_left = 800.78
-margin_top = -4404.92
-margin_right = 1156.78
-margin_bottom = -3713.92
-texture = ExtResource( 10 )
-
-[node name="Tall_grass4" type="TextureRect" parent="Outside/flowers and grass"]
-margin_left = -6055.22
-margin_top = -4254.92
-margin_right = -5699.22
-margin_bottom = -3563.92
-texture = ExtResource( 10 )
-
-[node name="Tall_grass5" type="TextureRect" parent="Outside/flowers and grass"]
-margin_left = 7142.78
-margin_top = -4424.92
-margin_right = 7498.78
-margin_bottom = -3733.92
-texture = ExtResource( 10 )
-
-[node name="Tall_grass6" type="TextureRect" parent="Outside/flowers and grass"]
-margin_left = 5286.78
-margin_top = -7492.92
-margin_right = 5642.78
-margin_bottom = -6801.92
-texture = ExtResource( 10 )
-
-[node name="Tall_grass7" type="TextureRect" parent="Outside/flowers and grass"]
-margin_left = 2686.78
-margin_top = -7800.92
-margin_right = 3042.78
-margin_bottom = -7109.92
-texture = ExtResource( 10 )
-
-[node name="Trees_TileMap" type="TileMap" parent="."]
-position = Vector2( -65606, 2364 )
-scale = Vector2( 10, 10 )
-tile_set = ExtResource( 3 )
-cell_size = Vector2( 85, 85 )
-cell_quadrant_size = 30
-cell_tile_origin = 1
-centered_textures = true
-format = 1
-tile_data = PoolIntArray( -720817, 0, 0, -720816, 0, 0, -720815, 0, 0, -720814, 0, 0, -720813, 0, 0, -720812, 0, 0, -720811, 0, 0, -720810, 0, 0, -720809, 0, 0, -655282, 0, 0, -655281, 0, 0, -655280, 0, 0, -655279, 0, 0, -655278, 0, 0, -655277, 0, 0, -655276, 0, 0, -655275, 0, 0, -655274, 0, 0, -655273, 0, 0, -655272, 0, 0, -655271, 0, 0, -589746, 0, 0, -589745, 0, 0, -524210, 0, 0, -524209, 0, 0, -524207, 0, 0, -524206, 0, 0, -524205, 0, 0, -524204, 0, 0, -524203, 0, 0, -524202, 0, 0, -524201, 0, 0, -524200, 0, 0, -524199, 0, 0, -458674, 0, 0, -458673, 0, 0, -458671, 0, 0, -458670, 0, 0, -393143, 0, 0, -393142, 0, 0, -393141, 0, 0, -393140, 0, 0, -393139, 0, 0, -393138, 0, 0, -393137, 0, 0, -393135, 0, 0, -393134, 0, 0, -393133, 0, 0, -393132, 0, 0, -393131, 0, 0, -393130, 0, 0, -327607, 0, 0, -327606, 0, 0, -327605, 0, 0, -327604, 0, 0, -327603, 0, 0, -327602, 0, 0, -327601, 0, 0, -327599, 0, 0, -327598, 0, 0, -327597, 0, 0, -327596, 0, 0, -327595, 0, 0, -327594, 0, 0, -327593, 0, 0, -262071, 0, 0, -262070, 0, 0, -262058, 0, 0, -262057, 0, 0, -196535, 0, 0, -196534, 0, 0, -196522, 0, 0, -196521, 0, 0, -130999, 0, 0, -130998, 0, 0, -130986, 0, 0, -130985, 0, 0, -65463, 0, 0, -65462, 0, 0, -65450, 0, 0, -65449, 0, 0, 73, 0, 0, 74, 0, 0, 86, 0, 0, 87, 0, 0, 65609, 0, 0, 65610, 0, 0, 65622, 0, 0, 65623, 0, 0, 131145, 0, 0, 131146, 0, 0, 131147, 0, 0, 131148, 0, 0, 131149, 0, 0, 131150, 0, 0, 131151, 0, 0, 131152, 0, 0, 131153, 0, 0, 131154, 0, 0, 131155, 0, 0, 131156, 0, 0, 131157, 0, 0, 131158, 0, 0, 131159, 0, 0, 196681, 0, 0, 196682, 0, 0, 196683, 0, 0, 196684, 0, 0, 196685, 0, 0, 196686, 0, 0, 196687, 0, 0, 196688, 0, 0, 196689, 0, 0, 196690, 0, 0, 196691, 0, 0, 196692, 0, 0, 196693, 0, 0, 196694, 0, 0, 196695, 0, 0 )

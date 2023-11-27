@@ -12,6 +12,7 @@
 #(1) Implement State Machine to goggle between different Screen orientations using global orientation state
 #(2) Implement Mobile Gyroscope 
 # (3) Fix UI misalignment
+# (4) Refactor into state machines
 #Bugs
 #(1) Ingame menu bug (fixed)
 # (2) Multiple State can be active at the same time Bug
@@ -35,7 +36,7 @@ onready var _Comics = Comics_v6 #$Comics
 onready var _Stats : PanelContainer = $Stats
 
 
-var frame_counter  : int = 0
+#var frame_counter  : int = 0
 
 func _ready():
 	
@@ -56,17 +57,17 @@ func _on_dialog_ended():
 	TouchInterface.reset()
 
 
-func _input(event):
-	pass
+#func _input(event):
+#	pass
 
-func _process(delta: float):
+func _process(delta):
 	" UI logic" # 
 	
-	frame_counter += round(delta)
+	#frame_counter += round(delta)
 	
 	# Reset frame counter to prevent memory leaks
-	if frame_counter > 500:
-		frame_counter = 0
+	#if frame_counter > 500:
+	#	frame_counter = 0
 	
 	" UI Animation"
 	# Controls the Touch interface state machine from the player's input 

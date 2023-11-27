@@ -179,7 +179,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Joystick circle.gd"
 }, {
-"base": "Input_Buffer",
+"base": "Control",
 "class": "JoystickV2",
 "language": "GDScript",
 "path": "res://scenes/UI & misc/joystick v2.gd"
@@ -435,11 +435,6 @@ _global_script_classes=[ {
 "path": "res://scenes/UI & misc/smoke_FX.gd"
 }, {
 "base": "Control",
-"class": "starfield",
-"language": "GDScript",
-"path": "res://scenes/multiplayer/effects/starfield.gd"
-}, {
-"base": "Control",
 "class": "wallet",
 "language": "GDScript",
 "path": "res://scenes/Wallet/Wallet.gd"
@@ -535,7 +530,6 @@ _global_script_class_icons={
 "projectile": "",
 "quest": "",
 "smoke_fx": "",
-"starfield": "",
 "wallet": "",
 "wallet_controller": ""
 }
@@ -572,7 +566,7 @@ AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
 FPSGraphOverlay="*res://addons/fps_graph_overlay/FPSGraphOverlay.tscn"
 SyncManager="*res://addons/godot-rollback-netcode/SyncManager.gd"
 GlobalInput="*res://singletons/Input.tscn"
-Simulation="*res://singletons/Simulation.gd"
+Simulation="*res://singletons/Simulation.tscn"
 
 [debug]
 
@@ -587,7 +581,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/algodot/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/algodot/plugin.cfg", "res://addons/godot-rollback-netcode/plugin.cfg" )
 
 [gdnative]
 

@@ -220,6 +220,7 @@ amount = 50000
 
 [node name="sprite" type="Sprite" parent="."]
 material = SubResource( 7 )
+scale = Vector2( 1.144, 0.872 )
 texture = ExtResource( 3 )
 offset = Vector2( 0.36261, -19.2809 )
 
@@ -239,3 +240,5 @@ anims/collected = SubResource( 2 )
 anims/idle = SubResource( 6 )
 anims/reset = SubResource( 3 )
 anims/spawn = SubResource( 4 )
+
+[node name="Timer" type="Timer" parent="."]

@@ -8,14 +8,14 @@
 # (1) Spawns 12 enemies and turns off once the ememy count is at 3
 # (2) Plays a flames animation once Enemy node is bieng instanced
 # (3) Should Extend Idol Code base And Store Player's Body
+# (4) Auto-Delete as a performance optimizer
+# (5) Only Spawns if Player is nearby, so as to optimize for performance
 
 # To Do:
 #(1) Spawn different enemy types
 # (2) Expand code's functionaliy
-	# -(a) Only Spawns if Player is nearby, so as to optimize for performance (Done)
 # *************************************************
-# Bugs
-# (1) Becomes a performance hog is constantly active in scene. Shold Auto Delete
+# Bugs :
 #
 #
 # *************************************************
@@ -43,13 +43,23 @@ var frame_counter : int = 0
 var SPAWNNING : bool = false
 export(int) var spawn_count 
 
+onready var area : Area2D = $Area2D
+
 var idol = Idol
 var savepoint = idol.new()
 
 func _ready():
 	# connect signals
+	area.connect("area_entered", self, "_on_Area2D_body_entered")
+	area.connect("area_exited", self, "_on_Area2D_body_exited")
 	
+	# Debug Signal Connections
 	
+	if not (
+	area.is_connected("area_entered", self, "_on_Area2D_body_entered") and
+	area.is_connected("area_exited", self, "_on_Area2D_body_exited") 
+	):
+		push_error("Debug Enemy Spawner Signals")
 	
 	# IT shouldn't call Randomize
 	
@@ -87,7 +97,7 @@ func finished_spawning() -> bool:
 	
 	
 " SPAWN STARTER/ PLAYER DETECTOR"
-func _on_Area2D_body_exited(body : Player):
+func _on_Area2D_body_exited(body):
 	pass
 
 # tEMPLATE FOR iMPLEMENTING A SPAWNING cOOLDOWN WITH tIMER
@@ -104,11 +114,14 @@ func _on_COOL_DOWN_timeout():
 
 # Triggers a Spawn When Player Body Enters the Collision
 func _on_Area2D_body_entered(body : Player):
-	
+	#if body is Player:
+		
 	print_debug("Player Leaves Enemy Spawn Range")
 	spawn_enemy()
 	
 	# Saves Using A Savepoint Class
+	#
+	#
 	savepoint._save(body)
 
 

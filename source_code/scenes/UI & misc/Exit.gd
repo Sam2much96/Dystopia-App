@@ -29,55 +29,52 @@ export(String) var spawnpoint = ""
 func _ready():
 	# warning-ignore:return_value_discarded
 	connect("body_entered", self, "_on_body_entered")
-	#my code #trying to fix spawnpoint bug
-	#if to_scene == Globals.prev_scene :
-	#	spawnpoint = Globals.prev_scene_spawnpoint 
-#		print ('syncing current spawnpoint to prev spawnpoint')
-func _on_body_entered(body):
-	if body is Player:
-		Globals.current_level = to_scene
-		Globals.spawn_x = body.position.x+ 200 
-		Globals.spawn_y = body.position.y +200
-		Globals.player_hitpoints = body.hitpoints
+	
+func _on_body_entered(body : Player):
+	#if body is Player:
+	Globals.current_level = to_scene
+	Globals.spawn_x = body.position.x+ 200 
+	Globals.spawn_y = body.position.y +200
+	Globals.player_hitpoints = body.hitpoints
+	
+	
+	Globals.Functions.save_game(
+		[body], 
+		body.hitpoints, 
+		(body.position.x+ 200), 
+		(body.position.y +200), 
+		to_scene, 
+		"", 
+		Globals.kill_count, 
+		"", 
+		null, 
+		""
+		) 
 		
 		
-		Globals.Functions.save_game(
-			[body], 
-			body.hitpoints, 
-			(body.position.x+ 200), 
-			(body.position.y +200), 
-			to_scene, 
-			"", 
-			Globals.kill_count, 
-			"", 
-			null, 
-			""
-			) 
-		
-		
-		if  to_scene == "":
-			push_error("Error changing scenes: to_scene has no assigned scene")
-			return false
+	if  to_scene == "":
+		push_error("Error changing scenes: to_scene has no assigned scene")
+		return false
 		#Globals.prev_scene_spawnpoint = $spawnpoint.position 
 
 		"Loads Large Scene"
 		
-		Globals.Functions.change_scene_to(Globals.Functions.LoadLargeScene(
-		to_scene, 
-		Globals.scene_resource, 
-		Globals._o, 
-		Globals.scene_loader, 
-		Globals.loading_resource, 
-		Globals.a, 
-		Globals.b, 
-		Globals.progress
-		), get_tree())
-		
-		
-		Music.play_track(Music.ui_sfx[0]) #plays ui sfx in a loop
+	Globals.Functions.change_scene_to(Globals.Functions.LoadLargeScene(
+	to_scene, 
+	Globals.scene_resource, 
+	Globals._o, 
+	Globals.scene_loader, 
+	Globals.loading_resource, 
+	Globals.a, 
+	Globals.b, 
+	Globals.progress
+	), get_tree())
+	
+	
+	Music.play_track(Music.ui_sfx[0]) #plays ui sfx in a loop
 		
 		
 		# Old Scene Transition
-		if get_tree().change_scene(to_scene) != OK:
-			push_error("Error changing scene")
-	pass
+	if get_tree().change_scene(to_scene) != OK:
+		push_error("Error changing scene")
+

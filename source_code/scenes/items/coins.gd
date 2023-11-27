@@ -25,21 +25,28 @@ export(int) var amount #microalgos
 var status
 
 onready var anims : AnimationPlayer = $anims
+onready var timer : Timer = $Timer
 
 onready var sub_nodes : Array = [anims]
 
 func _ready():
+	# COnnect Signals
 	
 	connect("body_entered", self, "_on_Item_body_entered")
+	timer.connect("timeout", self, "_on_timer_timeout")
+	
 	
 	anims.play("spawn")
 	
-	#yield(get_tree().create_timer(2),"timeout")
+	#yield(get_tree().create_timer(2),"timeout") # yield timer?
 	
-	anims.play("idle")
+	
 	
 
-func _on_Item_body_entered(body : Player): 
+func _on_timer_timeout():
+	anims.play("idle")
+
+func _on_Item_body_entered(body : Player):
 	if amount != null:
 		call_deferred("disconnect", "body_entered", self, "_on_Item_body_entered")
 		#Inventory.add_item(item_type, amount)
@@ -61,7 +68,7 @@ func _on_Item_body_entered(body : Player):
 		# Update Global Algos with 0.005 MIcroAlgos
 		Globals.algos += 5000
 		
-	pass
+	else :pass
 
 
 func _exit_tree():

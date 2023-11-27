@@ -34,7 +34,8 @@ onready var _smoke_fx = $smoke_fx
 onready var _smoke_fx_2 = $smoke_fx2
 #toggles comics placeholder visible on player contact
 func _on_Area2D_body_entered(body : Player):
-
+	
+	
 	emitting_smoke == true
 	
 	

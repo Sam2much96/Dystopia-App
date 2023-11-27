@@ -142,23 +142,24 @@ func _ready():
 	else: direction_buttons = [joystick, joystick2]
 
 	"Touch UI Visibility"
-	# Disabling for Debug
+	
 	hide_self(Globals.os, Globals.screenOrientation, _Hide_touch_interface, self)
 
 	"Auto sets the controller button"
 	reset()
-
 	calculate_button_positional_data()
-	
+	ScreenCalculationLogic()
+
 	"Display Screen Calculations"
 	Utils.Screen.display_calculations(get_tree().get_root(), Utils)
 
 	dimensions = calculate_length_breadth(buttons_positional_data)
 	dimensional_diff = dimensions - Globals.center_of_viewport 
-	print_debug("HUD Dimensions:", dimensions) # Breath of the wild lmao
-	print_debug("Dimension difference: ",dimensional_diff )
+	
+	#For debug purposes only
+	#print_debug("HUD Dimensions:", dimensions) # Breath of the wild lmao
+	#print_debug("Dimension difference: ",dimensional_diff )
 
-	#touch_interface_debug()
 
 
 
@@ -343,7 +344,7 @@ func RepositionButtonsHUD()-> void:
 	
 
 
-func _process(_delta):
+func _process(delta):
 
 	
 	
@@ -401,10 +402,6 @@ func _process(_delta):
 
 			pass
 		STATS:
-			#state = 'status'
-			#emit_signal('status')
-			#if _Hide_touch_interface == false :
-				#print_debug("Status")
 			hide_buttons()
 			
 			stats.show()
@@ -412,24 +409,15 @@ func _process(_delta):
 		
 			#pass
 		COMICS:
-			#if _Hide_touch_interface== false: 
-			#hide_buttons()
-			
 			Anim.play("COMICS")
-				#emit_signal('comics')
 			
-		
-			pass
-		RESET: #$ Too many ifs conditions #simplify state?
-			#if _Hide_touch_interface == false :
-					
+		RESET: 
 			"shows all the UI options"
 			show_action_buttons()
 			
 			show_direction_buttons()
 
 
-	ScreenCalculationLogic()
 
 func hide_buttons() :
 	# Beware:  Hide Buttons FUnctions Clashes with UI Animation NOde player. The Animation node player Takes priority and canels 

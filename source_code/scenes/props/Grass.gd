@@ -3,7 +3,7 @@
 # Released under MIT License
 # *************************************************
 # Grass
-# Grass Objects Within the Scene Tree
+# SHared COnde Between Grass/Flower Objects Within the Scene Tree
 # Features:
 # Uses List comparison to detect and Destroy self when colliding 
 # with pre-saved area name
@@ -12,7 +12,7 @@
 #(1) Make translucient
 #(2) Should only run shader once interracting with either player or enemy (optimization)
 # (3) Optimize Ram 
-		# Lots of Detection going on in this node from every collision object
+		# Lots of Detection going on in this node from every collision object (1/2)
 		# Fix: Implement Layers and Layer masks
 # (4) Fix all duplicate Code
 # (5) Add and Remove shade object programmatically
@@ -28,7 +28,7 @@ onready var nodeName : String = self.get_name()
 onready var timer : Node = $Timer
 onready var anim : Node = $AnimationPlayer
 
-#List of objects that can destroy this node
+#List of Aread 2D groups that can destroy this node
 
 var list: Array = ["player_sword", "enemy_sword"] 
 
@@ -71,6 +71,7 @@ func destroy()-> void:
 	anim.play("destroy")
 	#yield(get_tree().create_timer(0.3), "timeout") # use timer instead
 	set_timer(0.3)
+	queue_free()
 	Music.play_track(Music.grass_sfx[0])
 
 
@@ -82,8 +83,8 @@ func set_timer(time: int)->void:
 
 
 
-func _queue_free()->void: #STACK OVERFLOW BUG
-	queue_free()
+#func _queue_free()->void: #STACK OVERFLOW BUG
+#	queue_free()
 
 
 
@@ -94,6 +95,8 @@ func _on_flowers_area_entered(area):
 
 
 func update_collision_list( area : String)-> void:
+	
+	
 	if not similar_names.has(area):
 		similar_names.append(area)
 	elif similar_names.has(area):

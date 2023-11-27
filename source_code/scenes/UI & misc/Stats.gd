@@ -25,7 +25,7 @@ extends PanelContainer
 
 class_name Stats
 
-export (bool) var enabled = false
+export (bool) var enabled
 signal not_enabled
 signal enabled
 
@@ -81,36 +81,37 @@ func _process(_delta):
 	"""
 	UPDATES STATUS HUD ON PAUSE 
 	"""
-	
-	match _state:
-		ENABLED:
-			enabled = true
-			visible = enabled
-			
-			#Music.play_track(Music.ui_sfx[0])
-			get_tree().paused = enabled
-			
-			"Mobile HUD Controller"
-			if is_instance_valid(Globals._TouchScreenHUD):
-				Globals._TouchScreenHUD.status()
-				"Grab Focus ?"
-				#grab_focus()
-				_update_quest_listing()
-				_update_inventory_listing()
-				_update_wallet_stats()
-			return
-		DISABLED:
-			enabled = false
-			emit_signal('enabled')
-			visible = enabled
-			#Music.play_track(Music.ui_sfx[1])
-			hide()
-			get_tree().paused = false
-			#print (enabled)
-			#return enabled
-			_state = NULL
-		NULL:
-			return 0
+	if enabled:
+		
+		match _state:
+			ENABLED:
+				enabled = true
+				visible = enabled
+				
+				#Music.play_track(Music.ui_sfx[0])
+				get_tree().paused = enabled
+				
+				"Mobile HUD Controller"
+				if is_instance_valid(Globals._TouchScreenHUD):
+					Globals._TouchScreenHUD.status()
+					"Grab Focus ?"
+					#grab_focus()
+					_update_quest_listing()
+					_update_inventory_listing()
+					_update_wallet_stats()
+				return
+			DISABLED:
+				enabled = false
+				emit_signal('enabled')
+				visible = enabled
+				#Music.play_track(Music.ui_sfx[1])
+				hide()
+				get_tree().paused = false
+				#print (enabled)
+				#return enabled
+				_state = NULL
+			NULL:
+				return 0
 	
 
 

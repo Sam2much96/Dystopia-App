@@ -113,11 +113,13 @@ func hide_signpost():
 
 
 # Detect Player
-func _on_signpost_body_entered(body : Player):
-	
-	activate(true)
-	print(" Player Body Entered ")
-	print_debug ('player near signpost: ', Globals.near_interractible_objects)
+func _on_signpost_body_entered(body):
+	if not body is Player:
+		pass
+	if body is Player:
+		activate(true)
+		print(" Player Body Entered ")
+		print_debug ('player near signpost: ', Globals.near_interractible_objects)
 
 func _on_player_area_entered(area):
 	if area.is_in_group("player_hurtbox"):
@@ -138,9 +140,13 @@ func _on_dialog_ended():
 	print("signpost dialogue ended")
 	#activate(false)
 
-func _on_signpost_body_exited(body : Player):
-	activate(false)
-	print_debug ('player near signpost: ', Globals.near_interractible_objects)
+func _on_signpost_body_exited(body):
+	if not body is Player:
+		pass
+	
+	if body is Player:
+		activate(false)
+		print_debug ('player near signpost: ', Globals.near_interractible_objects)
 	
 
 

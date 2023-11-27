@@ -21,6 +21,9 @@ extends Node
 
 class_name debug
 
+export (bool) var enabled = true
+
+
 var error_splash_page : PackedScene = load ('res://New game code and features/Error splash page for crashes.tscn')
 
 
@@ -41,8 +44,7 @@ var misc_label
 var globals_label
 var ads_label
 var avail_thread_label
-#class_name Debug
-export (bool) var enabled = true
+#
 
 var Autosave_debug ='' 
 var Music_debug 
@@ -96,54 +98,56 @@ func _input(event):
 
 func _process(delta : float):
 
-	frame_counter += 1
-
-	if frame_counter >= 1000:
+	if enabled:
 		
-		#Reset Counter
-		frame_counter = 0
-
-	if frame_counter % 60 == 0:
-
-		" DEBUG STATE MACHINE " #Disabling to Debug
-		match _state_:
-			START_DEBUG: # works
-				#start_debug_v1() # creates multiple instances bug
-				Music_debug ='Music debug:' + str(Music.music_debug)
-				Player_debug ='Player debug:'+ str(Globals.player) + 'Spawn point:' + str(Globals.spawnpoint) + 'Current level: ' + str(Globals.current_level) 
+		frame_counter += 1
+		
+		if frame_counter >= 1000:
 			
-				#it uses the ram_mb funtion to convert bytes to mb
-				Ram_debug= ('Ram Used :'+ ((_ram_debug())) + 'mb') 
-				FPS_debug = 'FPS: '+ str(Engine.get_frames_per_second())
-				Enemy_debug = 'Enemy debug:' + str('Killcount:' , Globals.kill_count)
-				Autosave_debug = Autosave_debug
+			#Reset Counter
+			frame_counter = 0
 
-				Network_debug =  str(Networking.debug )
-				misc_debug = str(misc_debug) #+ str("/")  + _new_debug('new debugs are run in this function: ')
-				Globals_debug='Direction type' + '/'+ str(Globals.direction_control)
-				avail_thread = str('Available threads: ',int (OS.get_processor_count())) 
+		if frame_counter % 2 == 0:
 
+			" DEBUG STATE MACHINE " #Disabling to Debug
+			match _state_:
+				START_DEBUG: # works
+					#start_debug_v1() # creates multiple instances bug
+					Music_debug ='Music debug:' + str(Music.music_debug)
+					Player_debug ='Player debug:'+ str(Globals.player) + 'Spawn point:' + str(Globals.spawnpoint) + 'Current level: ' + str(Globals.current_level) 
 				
-				
-				return show_debug_v1() #causes the double instance bug
-			STOP_DEBUG:
-				if not debug_panel == null:
-					if is_instance_valid(debug_panel): debug_panel.queue_free()
+					#it uses the ram_mb funtion to convert bytes to mb
+					Ram_debug= ('Ram Used :'+ ((_ram_debug())) + 'mb') 
+					FPS_debug = 'FPS: '+ str(Engine.get_frames_per_second())
+					Enemy_debug = 'Enemy debug:' + str('Killcount:' , Globals.kill_count)
+					Autosave_debug = Autosave_debug
+
+					Network_debug =  str(Networking.debug )
+					misc_debug = str(misc_debug) #+ str("/")  + _new_debug('new debugs are run in this function: ')
+					Globals_debug='Direction type' + '/'+ str(Globals.direction_control)
+					avail_thread = str('Available threads: ',int (OS.get_processor_count())) 
+
 					
-					debug_panel = null # Null instance bug from the debug panel
-					enabled = false
-					Music_debug = null
-					Player_debug = null
-					Ram_debug= null
-					FPS_debug= null
-					Enemy_debug= null
-					Network_debug = null
-					misc_debug = null
-					avail_thread = null
-					enabled = false
-					return
-				if debug_panel == null:
-					return
+					
+					return show_debug_v1() #causes the double instance bug
+				STOP_DEBUG:
+					if not debug_panel == null:
+						if is_instance_valid(debug_panel): debug_panel.queue_free()
+						
+						debug_panel = null # Null instance bug from the debug panel
+						enabled = false
+						Music_debug = null
+						Player_debug = null
+						Ram_debug= null
+						FPS_debug= null
+						Enemy_debug= null
+						Network_debug = null
+						misc_debug = null
+						avail_thread = null
+						enabled = false
+						return
+					if debug_panel == null:
+						return
 	
 
 

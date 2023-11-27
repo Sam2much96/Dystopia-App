@@ -25,13 +25,22 @@ func _ready():
 	# Connect Signals
 	connect("screen_entered",self,"show")
 	connect("screen_exited",self,"hide")
-	
-	pass
+
+	# Hide when first entering scene 
+	Parent.hide()
+	Parent.visible = false
 
 
 func hide():
+	#print(Parent, "left screen hiding", Parent) # For Debug Purposes only
+	
+	# Hide Parend
 	Parent.hide()
-
+	
+	# HIde Parent Visibility
+	Parent.visible = false
 
 func show():
+	#print(Parent, "entered screen, showing", Parent) # For Debug Purposes only
 	Parent.show()
+	Parent.visible = true

@@ -16,15 +16,26 @@ class_name item
 export(String) var item_type = "Generic Item"
 export(int) var amount = 1
 
+onready var anims : AnimationPlayer = $anims
+
+onready var sub_nodes : Array = [self, anims]
+
 func _ready():
 	connect("body_entered", self, "_on_Item_body_entered")
 	pass
 
 func _on_Item_body_entered(body):
 	if body is Player:
+
 		call_deferred("disconnect", "body_entered", self, "_on_Item_body_entered")
 		# Adds Items to the Inventory Singleton
 		Inventory.add_item(item_type, amount)
-		$anims.play("collected")
+		anims.play("collected")
 		Music.play_track("res://sounds/item_collected.ogg") # Plays sound via singleton
-	pass
+		
+		queue_free()
+	else : pass
+
+
+func _exit_tree():
+	Utils.MemoryManagement.queue_free_array(sub_nodes)

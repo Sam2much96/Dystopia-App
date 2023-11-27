@@ -52,8 +52,10 @@ func _ready():
 
 
 
-func _process(_delta):
-	update()
+func _process(delta):
+	if self.visible:
+		update()
+	else : pass
 
 func _draw():
 	if circle_size != null:

@@ -205,7 +205,7 @@ func _process(delta : float):
 	
 	#if is_network_master(): #creates a bug on the Cluent device
 		# Raises up a Frame Counter
-	frame_counter += delta
+	#frame_counter += delta
 		
 
 		
@@ -220,8 +220,8 @@ func _process(delta : float):
 
 	
 	# Resets Frame Counter
-	if frame_counter >= 6_000:
-		frame_counter = 0
+	#if frame_counter >= 6_000:
+	#	frame_counter = 0
 
 	
 	"Clears the Frame Buffer"

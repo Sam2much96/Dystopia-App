@@ -9,6 +9,7 @@
 # Features:
 # (1) Shares Game Code With the Networking, Player& Enemy scripts
 # (2) Optimizes Enemy Mob Physics and Processess into a single Script with threads
+# (3) Global Frame counter
 # *************************************************
 # Bugs:
 #
@@ -25,7 +26,7 @@ enum {SIMULATING, NON_SIMULATING}
 onready var frame_id : int 
 
 # Frame Counter
-onready var frame_counter : int = 0
+export (int) var frame_counter = 0
 
 
 # Placeholder variables ported from another multiplayer template
@@ -71,23 +72,30 @@ func poop(id : String, player : Player_v2_networking ):
 		Networking.broadcast_world_positions()
 
 func _ready():
-	print_debug("Frame ID debug: ",frame_id)
+	#print_debug("Frame ID debug: ",frame_id)
+	pass
 
-func _process(delta : float):
+func _process(delta):
+	
+	frame_counter += 1
+	
+	
+		# Reset Frame Counter TO Conserver Memory
+	if frame_counter >= 1000:
+			frame_counter = 0
+
 	
 	# Physics Simulation Only happens when Player is Online
 	if Networking.GamePlay == Networking.ONLINE:
 		
-		frame_counter += 1
+
 		
 		# Gets the Frame ID of this client on every 12th frame
 		if (frame_counter) % 12 == 0: # every 12th frame
 			frame_id = get_tree().get_frame() # Get the current frame id
 			#print_debug(frame_id)
 		
-		# Reset Frame Counter TO Conserver Memory
-		if frame_counter >= 1000:
-			frame_counter = 0
+
 
 func _physics_process(delta):
 

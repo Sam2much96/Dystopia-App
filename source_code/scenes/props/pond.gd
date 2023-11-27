@@ -19,6 +19,8 @@ extends Area2D
 
 class_name Pond
 
+export (bool) var enabled
+
 onready var puddle_fx = $Puddle_FX
 
 enum {STATE_ACTIVE, STATE_IDLE}
@@ -36,13 +38,12 @@ onready var maxlength : float = $CollisionShape2D.shape.radius
 #Frame Rate COunter
 var frame_counter : int = 0
 
-func _on_pond_body_entered(body): #Low level program, would not execute
-	if body is Player: 
-		
-		
-
-		
-		
+func _on_pond_body_entered(body : Player): #Low level program, would not execute
+	#if body is Player: 
+	
+	
+	if body != null:
+		 
 		'Include Code Here for Puddle Fx to follow player and instance multiple times'
 		#puddle_fx.duplicate(3)
 		body_pos = body.position
@@ -55,10 +56,10 @@ func _on_pond_body_entered(body): #Low level program, would not execute
 		
 		
 		#print ('Pond FX Debug: ',"body pos ", body_pos , 'final pos',final_pos, 'Pond Fx Position: ', puddle_pos)
-		
+			
 		#puddle_fx.show()
 		state= STATE_ACTIVE
-		
+			
 
 func clamp_fx():
 	################################################################# 
@@ -71,30 +72,30 @@ func clamp_fx():
 
 
 func _process(delta):
-
-	frame_counter += 1
-	
-	if frame_counter > 600:
-		frame_counter = 0
+	if enabled:
+		frame_counter += 1
 		
-	
-	# Procesed every 30th frame
-	if frame_counter % 5 == 0:
+		if frame_counter > 600:
+			frame_counter = 0
+			
+		
+		# Procesed every 30th frame
+		if frame_counter % 5 == 0:
 
-		## PROCESS STATES
-		match state:
-			STATE_ACTIVE:
-				#puddle_fx.ripple() #needs new ripple animation
-				
-				
-				
-				puddle_fx.change_position(final_pos)
-				clamp_fx() #works
-				
-				puddle_fx.splash()
-				pass
-			STATE_IDLE:
-				puddle_fx.change_position(Vector2(0, 0))
+			## PROCESS STATES
+			match state:
+				STATE_ACTIVE:
+					#puddle_fx.ripple() #needs new ripple animation
+					
+					
+					
+					puddle_fx.change_position(final_pos)
+					clamp_fx() #works
+					
+					puddle_fx.splash()
+					pass
+				STATE_IDLE:
+					puddle_fx.change_position(Vector2(0, 0))
 
 
 func _on_pond_body_exited(body):

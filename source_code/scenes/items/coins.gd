@@ -68,6 +68,8 @@ func _on_Item_body_entered(body : Player): # Priority Process
 		# Update Global Algos with 0.005 MIcroAlgos
 		Globals.algos += 5000
 		
+		self.queue_free()
+		
 	else :pass
 
 

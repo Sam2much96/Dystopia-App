@@ -16,7 +16,7 @@
 #(1) using animation player resets the Joystick/D-pad optionality
 
 # TO DO:
-# (1) Fix the joystick code  (fixed)
+# (1) Fix the joystick code  (1/2)
 # (2) Update the interract state to be usable
 # (3) Hidetouch interface / Touch interface reset bug (workaround) CLicking other buttons on the touch UI resets this bug on touch UI
 #(4) Edit Documentation to be neater (Online documetation)
@@ -42,7 +42,7 @@ onready var _debug = get_tree().get_root().get_node("/root/Debug")
 #State Machine
 enum { MENU, INTERRACT, ATTACK, STATS, COMICS, RESET }
 
-export var _state_controller = RESET
+export (int) var _state_controller = STATS
 export (String, 'analogue', 'direction') var _control
 var _Debug_Run : bool = false
 
@@ -101,11 +101,10 @@ onready var direction_buttons : Array
 
 # debug COunter counts how many times a mehtod has been called
 var counter : int = 0
-func _enter_tree():
-	"Global Pointer"
-	Globals._TouchScreenHUD = self
+#func _enter_tree():
+	#"Global Pointer" # DEepreciated in favor of GlobalInput Singleton
+	#Globals._TouchScreenHUD = self
 
-	print_debug("Global Direction COntrols : ",Globals.direction_control)
 
 func _ready():
  
@@ -159,20 +158,11 @@ func _ready():
 	#For debug purposes only
 	#print_debug("HUD Dimensions:", dimensions) # Breath of the wild lmao
 	#print_debug("Dimension difference: ",dimensional_diff )
+	print_debug("Global Direction COntrols : ",Globals.direction_control)
 
 
 
 
-func _input(event):
-	
-	
-	"Actions Triggered by Global Input Keys"
-	if event.is_action_pressed("pause"):
-		_state_controller = STATS
-	if event.is_action_pressed("comics"):
-		_state_controller = COMICS
-	if event.is_action_pressed("interact"):
-		_state_controller = INTERRACT
 
 static func hide_self(operating_sys: String, screenOrientation : int, _Hide_touch_interface : bool, _node : TouchScreenHUD) -> void:
 	#toggles touch interface visibility depending on the os and screen orientation (Pc or Mobiles)
@@ -279,7 +269,7 @@ func ScreenCalculationLogic():
 	
 	# *************************************************
 	"Touch Screen UI"
-	#hvliyilycic
+	#
 	# Features
 	# (1) Uses a Global Screen Orienation variable
 	# (2) Uses an Animation Player to Set Node Position
@@ -344,9 +334,77 @@ func RepositionButtonsHUD()-> void:
 	
 
 
-func _process(delta):
-
+func _input(event):
+	" UI logic" # 
 	
+	# State Machine Logic
+	" UI Animation"
+	# Controls the Touch interface state machine from the player's input 
+	# Refactored
+	# Processed every frame?
+	
+	# nested If Statements?
+	
+	"Touch Interface State Machine?"
+	if GlobalInput._state == GlobalInput.COMICS or Input.is_action_just_pressed("comics"):
+		if Comics_v6.enabled == true:
+			
+			if _state_controller != COMICS : # and _Comics.loaded_comics == true:
+				comics()
+			
+		if not Comics_v6.enabled : #or _Comics.loaded_comics == false:
+			reset()
+	if GlobalInput._state == GlobalInput.PAUSE or Input.is_action_just_pressed("pause"):
+		if GlobalInput._Stats.enabled == true : # GLobal Pointer to Stats HUD
+			status() #calls a display function int the touch interface scene
+			
+	if GlobalInput._state == GlobalInput.MENU or Input.is_action_just_pressed('menu'):
+		if GlobalInput.menu.enabled :
+			
+			menu()
+		if not GlobalInput.menu.enabled:
+			reset()
+	if GlobalInput._state == GlobalInput.ATTACK or Input.is_action_just_pressed('attack'):
+		if _state_controller != ATTACK:
+			attack()
+			
+			# Uses Networking Timer to Reset Touch Interface
+			# Use Local TImer Instead
+			Networking.start_check(3)
+	if GlobalInput._state == GlobalInput.COMICS or Input.is_action_just_pressed('comics'):
+		if GlobalInput._Comics.enabled :
+			comics()
+	else : 
+		reset()
+	
+	'Interract UI'
+	# Disabled for Debugging
+	#
+	# Hard connects to all interractible objects connected via the global variable
+	#if Globals.near_interractible_objects == true : #&& Input.is_action_just_pressed("interact"):
+		#TouchInterface.status()
+	#	print_debug("Player near Interractible Object", Globals.near_interractible_objects)
+	#elif Globals.near_interractible_objects == null or false:
+	#	# if Input.is_action_just_pressed("interact") : return TouchInterface.reset()
+	#	#return TouchInterface.reset()
+	#	print_debug("PLayer Left Interactibe object")
+
+	# *************************************************
+
+
+	if Input.is_action_pressed("pause"):
+		_state_controller = STATS
+	if Input.is_action_pressed("comics"):
+		_state_controller = COMICS
+	if Input.is_action_pressed("interact"):
+		_state_controller = INTERRACT
+
+
+
+func _process(delta):
+	
+
+
 	
 	#write a rule that Joystick and Dpad cannot be visible at the same time
 	
@@ -359,37 +417,26 @@ func _process(delta):
 	match _state_controller:
 		MENU:
 			
-			#if _Hide_touch_interface == false: #include analogue controls
-			
-			#Anim.play("MENU")
 			hide_buttons()
-				
+			
 			menu.show()
-				
-			#pass
 			
 		INTERRACT:
 			#The interract state should only show when it's close to an interactible object 
 			#if _Hide_touch_interface == false:
-					
+			
 			hide_buttons()
 			
 			menu.show()
 			_interract.show()
-				#return
 				
-			#pass
 		ATTACK:
-		
-			#if _Hide_touch_interface == false:
+			
 			emit_signal('attack')
 		
 			hide_buttons()
 			
-			#stats.hide()
 			menu.show()
-			#_interract.hide()
-			#comics.hide()
 			slash.show()
 			roll.show()
 			if _control == 'analogue':
@@ -399,18 +446,12 @@ func _process(delta):
 			if _control == 'direction':
 				joystick_parent.hide()
 				D_pad.show()
-
-			pass
 		STATS:
 			hide_buttons()
 			
 			stats.show()
-			#Anim.play("STATUS")
-		
-			#pass
 		COMICS:
 			Anim.play("COMICS")
-			
 		RESET: 
 			"shows all the UI options"
 			show_action_buttons()

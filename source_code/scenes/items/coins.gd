@@ -46,7 +46,7 @@ func _ready():
 func _on_timer_timeout():
 	anims.play("idle")
 
-func _on_Item_body_entered(body : Player):
+func _on_Item_body_entered(body : Player): # Priority Process
 	if amount != null:
 		call_deferred("disconnect", "body_entered", self, "_on_Item_body_entered")
 		#Inventory.add_item(item_type, amount)

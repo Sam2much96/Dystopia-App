@@ -19,6 +19,10 @@
 #
 #
 # *************************************************
+# Notes :
+# (1) Adding (body : Player) autommatically makes that process a priority call, else body remains as a deferred call
+#
+# *************************************************
 
 extends Position2D
 
@@ -113,11 +117,11 @@ func _on_COOL_DOWN_timeout():
 			queue_free()
 
 # Triggers a Spawn When Player Body Enters the Collision
-func _on_Area2D_body_entered(body : Player):
-	#if body is Player:
+func _on_Area2D_body_entered(body):
+	if body is Player:
 		
-	print_debug("Player Leaves Enemy Spawn Range")
-	spawn_enemy()
+		print_debug("Player Enters Enemy Spawn Range")
+		spawn_enemy()
 	
 	# Saves Using A Savepoint Class
 	#

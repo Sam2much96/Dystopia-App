@@ -140,9 +140,6 @@ var wallet_state  #wallet state global variabe
 
 
 
-"Ingame HUD"
-# Mobiles
-var _TouchScreenHUD : TouchScreenHUD
 
 
 "Tilemap"

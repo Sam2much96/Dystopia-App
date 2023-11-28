@@ -180,6 +180,7 @@ rotation = 3.05619
 scale = Vector2( 1.88, 1.88 )
 
 [node name="level" type="YSort" parent="."]
+visible = false
 position = Vector2( 208.024, -128.355 )
 
 [node name="House" type="StaticBody2D" parent="level"]

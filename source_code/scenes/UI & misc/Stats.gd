@@ -8,14 +8,14 @@
 # currenty updates quests, Killcount and Algos
 # Features
 # (1) Parses Quest Data from Singleton
-#
+# (2) Controls Touch HUD
 # TO-DO:
 # 
-# (1) Scrolling Inbentory Menu refactor
+# (1) Scrolling Inbentory Menu refactor (Utils.gd)
 # (2) Should AutoScale to Screen Display size using Global screen calculation functions
 # (3) Inventory Items Should be more Accessible
 # (4) Implement Character Customization UI (1/2)
-# (5) Implement Tabbed VIew (Done)
+# (5) 
 # (6) Implement Tab Icons
 # (7) Item Button should ideally be low poly texture buttons
 
@@ -44,14 +44,18 @@ onready var _inventory_button : Button = $TabContainer/Inventory/ScrollContainer
 onready var _coin_label : Label = $TabContainer/Wallet/Algos
 onready var _quest_label : Label = $TabContainer/Quests/ScrollContainer2/VBoxContainer/Quests
 
+
+# Pointer to GLobal Touch HUD
+
 # Array  pointer containing all QUest parent childeren
 # Should be a dictionary
 onready var _stats_buttons : Array = []
 
 
+
 enum {ENABLED, DISABLED, NULL}
 
-var _state : int = DISABLED
+export (int) var _state = DISABLED
 
 func _ready():
 	self.get_child(0)
@@ -66,53 +70,48 @@ func _ready():
 
 
 func _input(event):
+	
+	 #Toggles menu visibility on/off
+	#if !enabled && event.is_action_pressed("pause") or GlobalInput._state == GlobalInput.PAUSE :# 
+	#	print("dfhhsghsdgh") # works
+	#	if _state == DISABLED:
+	#		#print ("sjnsoni0ij")
+	#		_state = ENABLED
+	#		#set_focus_mode(Control.FOCUS_CLICK)
+	#		Music.play_track(Music.ui_sfx[0])
+	#		print ("Stats State: ", _state) #For debug purposes only
+	#		
+	#		return _state
+	#if enabled && event.is_action_pressed("pause") or GlobalInput._state == GlobalInput.PAUSE :
+	#	print("skgn[gfi[0ij[i]]]")
+	#	if _state == ENABLED:
+	#		_state = DISABLED
+	#		Music.play_track(Music.ui_sfx[1])
+	#		print ("Stats State: ", _state) #For debug purposes only
+	#		#Globals.Screen.debug_screen_properties()# Debug Screen Settingd
+	#		
+	
+	# Enable / DIsable Logic is Buggy
 	if event.is_action_pressed("pause")  && enabled == false:
-		_state = ENABLED
+		print("enable")
+		enabled = true
+		_enable()
+	#	#_state = ENABLED
 		Music.play_track(Music.ui_sfx[0])
-		return _state
+		return enabled # _state
 	if event.is_action_pressed("pause") && enabled == true:
-		_state = DISABLED
+		enabled = false
+		_disable()
+	#	#_state = DISABLED
+		print("disable")
 		Music.play_track(Music.ui_sfx[1])
-		return _state
+		return enabled #_state
+#
 
-func _process(_delta):
-	# Refactoring Input Function for global Input singleton
-	
-	"""
-	UPDATES STATUS HUD ON PAUSE 
-	"""
-	if enabled:
-		
-		match _state:
-			ENABLED:
-				enabled = true
-				visible = enabled
-				
-				#Music.play_track(Music.ui_sfx[0])
-				get_tree().paused = enabled
-				
-				"Mobile HUD Controller"
-				if is_instance_valid(Globals._TouchScreenHUD):
-					Globals._TouchScreenHUD.status()
-					"Grab Focus ?"
-					#grab_focus()
-					_update_quest_listing()
-					_update_inventory_listing()
-					_update_wallet_stats()
-				return
-			DISABLED:
-				enabled = false
-				emit_signal('enabled')
-				visible = enabled
-				#Music.play_track(Music.ui_sfx[1])
-				hide()
-				get_tree().paused = false
-				#print (enabled)
-				#return enabled
-				_state = NULL
-			NULL:
-				return 0
-	
+# Depreciated State Machine
+#func _process(delta):
+#	pass
+
 
 
 func _update_wallet_stats(): #Updates killcount and Algos
@@ -234,19 +233,47 @@ func _on_status_showing():
 	#_update_inventory_button_cache() #  Depreciated Buggy NFT
 	
 	#resets Mobile Touch HUD
-	Globals._TouchScreenHUD.reset()
+	GlobalInput.TouchInterface.status()
 	
-	#print_debug("TC hidden:",TouchInterface._Hide_touch_interface, " SC: ", TouchInterface._state_controller) # Touch Interface Debug
+	print_debug("TC Status:",GlobalInput.TouchInterface._Hide_touch_interface, " SC: ", GlobalInput.TouchInterface._state_controller) # Touch Interface Debug
 	print_debug('status hidden') #for debug purposes
 
 func _on_status_hidden():
 	# shows status UI only
-	Globals._TouchScreenHUD.status()
-	#print_debug("TC hidden:",TouchInterface._Hide_touch_interface, " SC: ", TouchInterface._state_controller) # Touch Interface Debug
+	GlobalInput.TouchInterface.status()
+	print_debug("TC hidden:",GlobalInput.TouchInterface._Hide_touch_interface, " SC: ", GlobalInput.TouchInterface._state_controller) # Touch Interface Debug
 	print_debug('status showing')
 
 
 
-func equip():
+func equip(_item):
 	# Placeholder method for Triggering an Equip method on the Player Script of an Inventroy Oject 
 	pass
+
+
+func _enable():
+	enabled = true
+	visible = enabled
+	emit_signal('enabled')
+	Music.play_track(Music.ui_sfx[0])
+	get_tree().paused = enabled
+	
+	"Mobile HUD Controller"
+	if is_instance_valid(GlobalInput.TouchInterface):
+		print_debug("Touch HUD Instance valid")
+		GlobalInput.TouchInterface.status()
+		#"Grab Focus ?"
+		#grab_focus()
+		_update_quest_listing()
+		_update_inventory_listing()
+		_update_wallet_stats()
+	print(self.name, "disabled") # For debug purposes only
+
+func _disable():
+	enabled = false
+	visible = enabled
+	emit_signal("not_enabled")
+	Music.play_track(Music.ui_sfx[1])
+	hide()
+	get_tree().paused = false
+	print (self.name, "enabled") # For debug purposes only

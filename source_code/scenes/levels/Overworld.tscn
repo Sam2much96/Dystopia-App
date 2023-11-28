@@ -95,15 +95,18 @@ position = Vector2( 3227.29, 527.001 )
 
 [node name="enemy_spawner" parent="." instance=ExtResource( 3 )]
 position = Vector2( 2579.53, 1086.12 )
+enabled = false
 _hitpoints = 3
 spawn_count = 5
 
 [node name="enemy_spawner2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 6833.48, -4887.52 )
+enabled = false
 _hitpoints = 3
 spawn_count = 5
 
 [node name="enemy_spawner3" parent="." instance=ExtResource( 3 )]
 position = Vector2( 17739.9, -4751.76 )
+enabled = false
 _hitpoints = 3
 spawn_count = 5

@@ -52,12 +52,18 @@ export (bool) var vibrate = true
 
 
 
-# Game HUD
-var menu : Container 
-var TouchInterface : Node2D 
+# Game HUD : pointers updated from game hud
+# Each of these Objects Use/ REquire Player input
+# Having them always in memory is a good thing
+# *************************************************
+var menu : Game_Menu
+var TouchInterface : TouchScreenHUD
 var _Comics = Comics_v6 #$Comics
 var _Stats : PanelContainer 
 
+#"Ingame HUD"
+## Mobiles
+#var _TouchScreenHUD : TouchScreenHUD
 
 # Mobile Joystick
 var joystick 

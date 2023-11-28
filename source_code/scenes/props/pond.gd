@@ -38,11 +38,11 @@ onready var maxlength : float = $CollisionShape2D.shape.radius
 #Frame Rate COunter
 var frame_counter : int = 0
 
-func _on_pond_body_entered(body : Player): #Low level program, would not execute
+func _on_pond_body_entered(body): #Low level program, would not execute
 	#if body is Player: 
+	print(body)
 	
-	
-	if body != null:
+	if body is Player:
 		 
 		'Include Code Here for Puddle Fx to follow player and instance multiple times'
 		#puddle_fx.duplicate(3)

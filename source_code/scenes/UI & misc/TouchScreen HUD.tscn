@@ -627,7 +627,6 @@ margin_bottom = 311.573
 
 [node name="stats" type="TouchScreenButton" parent="Control/InterractButtons"]
 pause_mode = 2
-visible = false
 position = Vector2( 1110.48, 29.2283 )
 normal = ExtResource( 13 )
 bitmask = ExtResource( 3 )
@@ -644,7 +643,6 @@ action = "comics"
 visibility_mode = 1
 
 [node name="interact" type="TouchScreenButton" parent="Control/InterractButtons"]
-visible = false
 position = Vector2( 1073.75, 245.527 )
 normal = ExtResource( 11 )
 bitmask = ExtResource( 3 )
@@ -680,7 +678,6 @@ action = "roll"
 visibility_mode = 1
 
 [node name="D-pad" type="Control" parent="."]
-visible = false
 anchor_bottom = 1.0
 margin_left = 175.42
 margin_top = 425.286

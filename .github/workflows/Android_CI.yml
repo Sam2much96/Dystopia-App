@@ -1,7 +1,7 @@
 name: Android CI
 
 env:
-  GODOT_VERSION: 3.5.3
+  GODOT_VERSION: 3.5.2
   EXPORT_NAME: source_code
 
 
@@ -47,7 +47,7 @@ jobs:
   container:
     runs-on: ubuntu-22.04
     container:
-      image: barichello/godot-ci:3.5.3
+      image: barichello/godot-ci:3.5.2
     steps:
       - name: Dependencies
         run: |

@@ -16,6 +16,7 @@
 #(1) using animation player resets the Joystick/D-pad optionality
 
 # TO DO:
+# (0) _on_comics_showing() is not working
 # (1) Fix the joystick code  (1/2)
 # (2) Update the interract state to be usable
 # (3) Hidetouch interface / Touch interface reset bug (workaround) CLicking other buttons on the touch UI resets this bug on touch UI
@@ -27,6 +28,7 @@
 #	#	# (b) Variables available : Globals.os, Globals.screen Orientation, Globals.screenSize,Globals.viewport_size, GLobals.center_of_viewport
 #		#(c) set grouped buttons positioning programmatically
 # (8) ReWrite Logic Using Animation Player Nodes to fix Stuck Button Bug
+# (9) State machine is not optimized at all (processor hog)
 # *************************************************
 
 
@@ -140,9 +142,12 @@ func _ready():
 		# Default Direction Button should be Analgue
 	else: direction_buttons = [joystick, joystick2]
 
+	print_debug(direction_buttons, Globals.direction_control)
+
 	"Touch UI Visibility"
 	
-	hide_self(Globals.os, Globals.screenOrientation, _Hide_touch_interface, self)
+	# Disabling for debugging
+	#hide_self(Globals.os, Globals.screenOrientation, _Hide_touch_interface, self)
 
 	"Auto sets the controller button"
 	reset()
@@ -220,7 +225,7 @@ func attack(): #used by ui scene when attack is clicked
 
 func calculate_button_positional_data()-> void:
 
-	
+	# Rewrite as Static function under utils screen class
 # *************************************************
 	# BUTTONS POSITIONAL DATA 
 	menu_position = menu.position
@@ -451,6 +456,7 @@ func _process(delta):
 			
 			stats.show()
 		COMICS:
+			kj;kn;k
 			Anim.play("COMICS")
 		RESET: 
 			"shows all the UI options"
@@ -478,13 +484,17 @@ func hide_buttons() :
 	D_pad.hide()
 
 func show_action_buttons()-> void:
+	# SHows the Action buttons recursively
+	
 	for j in action_buttons:
 		if j != null:
 			j.show()
 
 func show_direction_buttons()-> void:
-	#print_debug("Direction Buttons : ",direction_buttons)
-	#print_debug("Direction COntrols : ",Globals.direction_control)
+	# Buggy
+	# Shows direction Body
+	print_debug("Direction Buttons : ",direction_buttons)
+	print_debug("Direction COntrols : ",Globals.direction_control)
 	
 	for j in direction_buttons:
 		j.show()
@@ -492,6 +502,7 @@ func show_direction_buttons()-> void:
 
 func _on_comics_showing(): # Doesnt Work
 	print_debug("Comics SHowing")
+	
 	comics() 
 
 

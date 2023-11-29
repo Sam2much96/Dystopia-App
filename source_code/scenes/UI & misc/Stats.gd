@@ -119,6 +119,8 @@ func _update_wallet_stats(): #Updates killcount and Algos
 
 
 func _update_quest_listing():
+	
+	
 	var text = ""
 	text += "Started:\n"
 	for quest in Quest.list(Quest.STATUS.STARTED):
@@ -128,7 +130,7 @@ func _update_quest_listing():
 		text += "  %s\n" % quest
 	
 	_quest_label.text = text
-	pass
+	#pass
 
 func _update_inventory_button_cache() -> bool:
 	# 
@@ -264,6 +266,7 @@ func _enable():
 		GlobalInput.TouchInterface.status()
 		#"Grab Focus ?"
 		#grab_focus()
+		asasfghafhd
 		_update_quest_listing()
 		_update_inventory_listing()
 		_update_wallet_stats()

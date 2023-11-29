@@ -1,5 +1,10 @@
 name: "Linux godot-ci export"
-on: push
+
+on:
+  push:
+    branches: [ v2.0.1 ]
+  pull_request:
+    branches: [ v2.0.1 ]
 
 env:
   GODOT_VERSION: 3.3.4

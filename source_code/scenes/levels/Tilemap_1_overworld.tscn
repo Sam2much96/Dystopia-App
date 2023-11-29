@@ -1,6 +1,5 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://scenes/props/Pond.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/props/Mushroom.tscn" type="PackedScene" id=6]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/house.webp" type="Texture" id=7]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/grass.webp" type="Texture" id=10]
@@ -180,7 +179,6 @@ rotation = 3.05619
 scale = Vector2( 1.88, 1.88 )
 
 [node name="level" type="YSort" parent="."]
-visible = false
 position = Vector2( 208.024, -128.355 )
 
 [node name="House" type="StaticBody2D" parent="level"]
@@ -246,17 +244,6 @@ position = Vector2( 454.1, -399.92 )
 position = Vector2( 1032.97, 1956.3 )
 
 [node name="Ponds" type="YSort" parent="level"]
-
-[node name="pond" parent="level/Ponds" instance=ExtResource( 1 )]
-enabled = true
-
-[node name="pond2" parent="level/Ponds" instance=ExtResource( 1 )]
-position = Vector2( 3643.88, 455.485 )
-enabled = true
-
-[node name="pond3" parent="level/Ponds" instance=ExtResource( 1 )]
-position = Vector2( 2732.91, 2828.8 )
-enabled = true
 
 [node name="flowers and grass" type="YSort" parent="level"]
 position = Vector2( 1371.99, 2764.66 )

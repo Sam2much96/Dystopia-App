@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/levels/Tilemap_1_overworld.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/levels/ForestTilemap.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/items/enemy spawner.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/props/Pond.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/levels/buildings.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/levels/VisibilityOptimizer.gd" type="Script" id=9]
@@ -49,8 +50,8 @@ script = ExtResource( 9 )
 tile_data = PoolIntArray( -786331, 0, 0, -720817, 0, 0, -720816, 0, 0, -720815, 0, 0, -720814, 0, 0, -720813, 0, 0, -720812, 0, 0, -720811, 0, 0, -720810, 0, 0, -720809, 0, 0, -655282, 0, 0, -655281, 0, 0, -655280, 0, 0, -655279, 0, 0, -655278, 0, 0, -655277, 0, 0, -655276, 0, 0, -655275, 0, 0, -655274, 0, 0, -655273, 0, 0, -655272, 0, 0, -655271, 0, 0, -589746, 0, 0, -589745, 0, 0, -524210, 0, 0, -524209, 0, 0, -524207, 0, 0, -524206, 0, 0, -524205, 0, 0, -524204, 0, 0, -524203, 0, 0, -524202, 0, 0, -524201, 0, 0, -524200, 0, 0, -524199, 0, 0, -458674, 0, 0, -458673, 0, 0, -458671, 0, 0, -458670, 0, 0, -458668, 0, 0, -458667, 0, 0, -458666, 0, 0, -458665, 0, 0, -458664, 0, 0, -458663, 0, 0, -393138, 0, 0, -393137, 0, 0, -393135, 0, 0, -393134, 0, 0, -393130, 0, 0, -393129, 0, 0, -327602, 0, 0, -327601, 0, 0, -327599, 0, 0, -327598, 0, 0, -327597, 0, 0, -327594, 0, 0, -327593, 0, 0 )
 
 [node name="VisibilityNotifier2D5" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap4"]
-position = Vector2( 7145.02, -620.061 )
-scale = Vector2( 40.4266, 22.9868 )
+position = Vector2( 7109.06, -539.752 )
+scale = Vector2( 46.6596, 31.0177 )
 script = ExtResource( 9 )
 
 [node name="Trees_TileMap5" parent="YSort" instance=ExtResource( 2 )]
@@ -98,11 +99,19 @@ _hitpoints = 3
 spawn_count = 5
 
 [node name="enemy_spawner2" parent="." instance=ExtResource( 3 )]
+visible = false
 position = Vector2( 6833.48, -4887.52 )
+enabled = false
 _hitpoints = 3
 spawn_count = 5
 
 [node name="enemy_spawner3" parent="." instance=ExtResource( 3 )]
+visible = false
 position = Vector2( 17739.9, -4751.76 )
+enabled = false
 _hitpoints = 3
 spawn_count = 5
+
+[node name="pond" parent="." instance=ExtResource( 4 )]
+position = Vector2( 3618.82, 440.005 )
+enabled = true

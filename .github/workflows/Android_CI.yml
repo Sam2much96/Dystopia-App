@@ -10,9 +10,9 @@ env:
 # android push can only be used once per day without errors
 on:
   push:
-    branches: [ master ]
+    branches: [ v2.0.1 ]
   pull_request:
-    branches: [ master ]
+    branches: [ v2.0.1 ]
 
 jobs:
   Android_Push:

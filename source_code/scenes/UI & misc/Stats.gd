@@ -119,7 +119,7 @@ func _update_wallet_stats(): #Updates killcount and Algos
 
 
 func _update_quest_listing():
-	
+	# DOcument and refactor
 	
 	var text = ""
 	text += "Started:\n"

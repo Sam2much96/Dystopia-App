@@ -456,8 +456,11 @@ func _process(delta):
 			
 			stats.show()
 		COMICS:
-			kj;kn;k
-			Anim.play("COMICS")
+			#kj;kn;k
+			#Anim.play("COMICS")
+			hide_buttons()
+			comics.show()
+		
 		RESET: 
 			"shows all the UI options"
 			show_action_buttons()

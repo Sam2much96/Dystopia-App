@@ -454,6 +454,8 @@ class Behaviour extends Reference:
 					#var enemy_distance_to_player = abs(position.distance_to(player.position )) # Calculates the enemy distance to playrer
 					enemy_distance_to_player = abs(_position.distance_to(player_pos )) # Calculates the enemy distance to playrer
 					
+					print_debug(enemy_distance_to_player) # Make into a separate function
+					
 					#print (enemy_distance_to_player) # For debug purposes only
 					if enemy_distance_to_player < 80: #uses enemy distance to auto attack
 						state = STATE_ATTACK

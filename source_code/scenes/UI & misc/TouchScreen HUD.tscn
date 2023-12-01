@@ -602,7 +602,6 @@ tracks/6/keys = {
 [node name="TouchInterface" type="Node2D"]
 modulate = Color( 1, 1, 1, 0.698039 )
 script = ExtResource( 4 )
-_control = "direction"
 
 [node name="menu" type="TouchScreenButton" parent="."]
 modulate = Color( 0, 0, 0, 1 )
@@ -678,6 +677,7 @@ action = "roll"
 visibility_mode = 1
 
 [node name="D-pad" type="Control" parent="."]
+visible = false
 anchor_bottom = 1.0
 margin_left = 175.42
 margin_top = 425.286

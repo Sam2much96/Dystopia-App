@@ -20,6 +20,7 @@
 extends Node
 
 
+class_name Storage
 
 """
 Minimal inventory system implementation. 
@@ -33,7 +34,7 @@ signal item_changed(action, type, amount)
 var inventory : Dictionary = {}
 
 # Create Pointers to Stats and Quests HUD
-var _stats_ui : Stats 
+var _stats_ui #: Stats 
 
 
 """

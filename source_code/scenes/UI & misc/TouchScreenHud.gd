@@ -45,7 +45,7 @@ onready var _debug = get_tree().get_root().get_node("/root/Debug")
 enum { MENU, INTERRACT, ATTACK, STATS, COMICS, RESET }
 
 export (int) var _state_controller = STATS
-export (String, 'analogue', 'direction') var _control
+export (String, 'modern', 'classic') var _control # Dupli9cate of Globals._controller_type
 var _Debug_Run : bool = false
 
 
@@ -106,6 +106,10 @@ var counter : int = 0
 #func _enter_tree():
 	#"Global Pointer" # DEepreciated in favor of GlobalInput Singleton
 	#Globals._TouchScreenHUD = self
+
+# Helper booleans for Stopping Loop Processing
+var _action_button_showing : bool
+var _direction_button_showing : bool
 
 
 func _ready():
@@ -292,9 +296,9 @@ func ScreenCalculationLogic():
 	#'Changes the button Layout depending on the screen orientation for Mobile UI'
 	#implement joystick and D-pad variations
 	
-	if Globals.screenOrientation == 1 && _control == 'direction': #works
+	if Globals.screenOrientation == 1 && _control == Globals._controller_type[2]: #worksif _action_button_showing == false
 		Anim.play("SCREEN_VERTICAL_1");
-	if Globals.screenOrientation == 1 && _control == 'analogue': #works
+	if Globals.screenOrientation == 1 && _control == Globals._controller_type[1]: #works
 		Anim.play("SCREEN_VERTICAL_2");
 	##If screen Is Horizontal, it would be PC UI, making this code obsolete
 	elif Globals.screenOrientation == 0:
@@ -444,11 +448,11 @@ func _process(delta):
 			menu.show()
 			slash.show()
 			roll.show()
-			if _control == 'analogue':
+			if _control == Globals._controller_type[1]: # modern
 				D_pad.hide()
 				joystick_parent.show()
 				
-			if _control == 'direction':
+			if _control == Globals._controller_type[2]: # classic
 				joystick_parent.hide()
 				D_pad.show()
 		STATS:
@@ -477,6 +481,11 @@ func hide_buttons() :
 	#print_debug('Global Controller;',Globals.direction_control)
 	#print_debug("DIRECTION BUTTONS ", direction_buttons)
 	
+	# Reset Helper Booleans
+	_action_button_showing = false
+	_direction_button_showing = false
+	
+	
 	for i in direction_buttons :
 		#if i.visible() :
 		i.hide()
@@ -486,22 +495,37 @@ func hide_buttons() :
 	# hackky bug fix for D-pad UI showing Bug
 	D_pad.hide()
 
-func show_action_buttons()-> void:
+
+
+func show_action_buttons() :
 	# SHows the Action buttons recursively
 	
-	for j in action_buttons:
-		if j != null:
-			j.show()
+	if _action_button_showing == false:
+		for j in action_buttons:
+			if j != null:
+				j.show()
+		_action_button_showing = true
+		return _action_button_showing
+	if _action_button_showing:
+		pass
 
-func show_direction_buttons()-> void:
-	# Buggy
-	# Shows direction Body
-	print_debug("Direction Buttons : ",direction_buttons)
-	print_debug("Direction COntrols : ",Globals.direction_control)
+
+func show_direction_buttons():
+	# 
+	# Shows direction Button
 	
-	for j in direction_buttons:
-		j.show()
-
+	if _direction_button_showing == false:
+		
+		print_debug("Direction Buttons : ",direction_buttons)
+		print_debug("Direction COntrols : ",Globals.direction_control)
+		
+		for j in direction_buttons:
+			j.show()
+		_direction_button_showing = true
+		return _direction_button_showing
+	
+	if _direction_button_showing == true:
+		pass
 
 func _on_comics_showing(): # Doesnt Work
 	print_debug("Comics SHowing")

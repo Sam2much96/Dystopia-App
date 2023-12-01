@@ -44,6 +44,8 @@ onready var _inventory_button : Button = $TabContainer/Inventory/ScrollContainer
 onready var _coin_label : Label = $TabContainer/Wallet/Algos
 onready var _quest_label : Label = $TabContainer/Quests/ScrollContainer2/VBoxContainer/Quests
 
+# Pointer to Inventory Singleton
+onready var _inventory : Storage = get_tree().get_root().get_node("/root/Inventory")
 
 # Pointer to GLobal Touch HUD
 
@@ -65,7 +67,7 @@ func _ready():
 	hide()
 	
 	# Make self global 
-	Inventory._stats_ui = self
+	_inventory._stats_ui = self
 
 
 
@@ -132,7 +134,7 @@ func _update_quest_listing():
 	_quest_label.text = text
 	#pass
 
-func _update_inventory_button_cache() -> bool:
+func _update_inventory_button_cache() -> bool: # REmove this code bloc
 	# 
 	# What does this code bloc do?
 	# Code Bloc is meant to update a pointer containing all Inventory items buttons and their related ammount
@@ -157,7 +159,7 @@ func _update_inventory_listing():
 	# Updates the Inventroy Button with the Items the Player holds
 	# Note: As the Number of Items grow, inventory might require a more encompassing method && UI
 	var text : String = ""
-	var inventory : Dictionary = Inventory.list()
+	var inventory : Dictionary = _inventory.list()
 	var _inventory_size : int = inventory.size()
 	
 	#print_debug("Inventory Size Debug : ", _inventory_size) # For Debug Purposes only
@@ -216,7 +218,7 @@ func _update_inventory_listing():
 					
 					# connect button to inventory singleton method
 					#
-					new_item_button.connect("pressed", Inventory, "placeholder",[item]) # button presses 
+					new_item_button.connect("pressed", _inventory, "placeholder",[item]) # button presses 
 					
 					# Create a pointer to Inventory ui buttons
 					_stats_buttons.append(new_item_button)
@@ -266,9 +268,9 @@ func _enable():
 		GlobalInput.TouchInterface.status()
 		#"Grab Focus ?"
 		#grab_focus()
-		asasfghafhd
+		#asasfghafhd
 		_update_quest_listing()
-		_update_inventory_listing()
+		_update_inventory_listing() # Refactor
 		_update_wallet_stats()
 	print(self.name, "disabled") # For debug purposes only
 

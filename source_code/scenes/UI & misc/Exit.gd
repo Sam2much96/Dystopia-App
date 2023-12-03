@@ -30,28 +30,28 @@ func _ready():
 	# warning-ignore:return_value_discarded
 	connect("body_entered", self, "_on_body_entered")
 	
-func _on_body_entered(body : Player):
-	#if body is Player:
-	Globals.current_level = to_scene
-	Globals.spawn_x = body.position.x+ 200 
-	Globals.spawn_y = body.position.y +200
-	Globals.player_hitpoints = body.hitpoints
-	
-	
-	Globals.Functions.save_game(
-		[body], 
-		body.hitpoints, 
-		(body.position.x+ 200), 
-		(body.position.y +200), 
-		to_scene, 
-		"", 
-		Globals.kill_count, 
-		"", 
-		null, 
-		""
-		) 
+func _on_body_entered(body):
+	if body is Player:
+		Globals.current_level = to_scene
+		Globals.spawn_x = body.position.x+ 200 
+		Globals.spawn_y = body.position.y +200
+		Globals.player_hitpoints = body.hitpoints
 		
 		
+		Utils.Functions.save_game(
+			[body], 
+			body.hitpoints, 
+			(body.position.x+ 200), 
+			(body.position.y +200), 
+			to_scene, 
+			"", 
+			Globals.kill_count, 
+			"", 
+			null, 
+			""
+			) 
+			
+			
 	if  to_scene == "":
 		push_error("Error changing scenes: to_scene has no assigned scene")
 		return false
@@ -59,7 +59,7 @@ func _on_body_entered(body : Player):
 
 		"Loads Large Scene"
 		
-	Globals.Functions.change_scene_to(Globals.Functions.LoadLargeScene(
+	Utils.Functions.change_scene_to(Globals.Functions.LoadLargeScene(
 	to_scene, 
 	Globals.scene_resource, 
 	Globals._o, 

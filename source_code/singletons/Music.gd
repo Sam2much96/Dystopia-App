@@ -256,7 +256,7 @@ func _ready():
 	#thread.start(self, "_thread_function", null, 2)
 	
 	"load on/off music settings"
-	Globals.Functions.load_game(true, Globals)
+	Utils.Functions.load_game(true, Globals)
 	
 
 

@@ -11,8 +11,8 @@
 # To Do:
 #(1) Document
 # 
-# Bugs 
-# (1) Double Areads
+# Bugs : 
+# 
 # *************************************************
 
 extends Area2D
@@ -59,7 +59,7 @@ func _ready():
 
 	print_debug("Debugger Instance:", _debug)
 
-func _save(body : Player):
+func _save(body):
 	#if body is Player:
 		
 		# Debugger
@@ -68,11 +68,11 @@ func _save(body : Player):
 		_debug.Autosave_debug = str(' Autosaving player position:', (body.position) )
 	
 	
-	if body != null:
+	if body is Player:
 		Globals.spawn_x = body.position.x #saves the player's position to spawnpoint
 		Globals.spawn_y = body.position.y
 		Globals.player_hitpoints = body.hitpoints
-		Globals.Functions.save_game(
+		Utils.Functions.save_game(
 			[body], 
 			body.hitpoints, 
 			body.position.x, 

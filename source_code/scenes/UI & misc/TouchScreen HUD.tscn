@@ -242,6 +242,23 @@ tracks/3/keys = {
 "update": 0,
 "values": [ true ]
 }
+tracks/4/type = "method"
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.1, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "show_action_buttons"
+}, {
+"args": [  ],
+"method": "show_direction_buttons"
+} ]
+}
 
 [sub_resource type="Animation" id=3]
 resource_name = "SCREEN_HORIZONTAL"
@@ -619,10 +636,10 @@ __meta__ = {
 [node name="InterractButtons" type="Control" parent="Control"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -203.463
-margin_top = -23.4271
-margin_right = -37.463
-margin_bottom = 311.573
+margin_left = -220.205
+margin_top = -19.3816
+margin_right = -54.205
+margin_bottom = 315.618
 
 [node name="stats" type="TouchScreenButton" parent="Control/InterractButtons"]
 pause_mode = 2
@@ -653,10 +670,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -190.419
-margin_top = -13.7044
-margin_right = -190.419
-margin_bottom = -13.7044
+margin_left = -149.076
+margin_top = 999.425
+margin_right = -149.076
+margin_bottom = 999.425
 
 [node name="slash" type="TouchScreenButton" parent="Control/ActionButtons"]
 position = Vector2( 1014.57, 361.592 )
@@ -677,12 +694,11 @@ action = "roll"
 visibility_mode = 1
 
 [node name="D-pad" type="Control" parent="."]
-visible = false
 anchor_bottom = 1.0
-margin_left = 175.42
-margin_top = 425.286
-margin_right = 175.42
-margin_bottom = 425.286
+margin_left = 173.633
+margin_top = 1469.94
+margin_right = 173.633
+margin_bottom = 1469.94
 __meta__ = {
 "_edit_use_anchors_": true
 }
@@ -727,12 +743,11 @@ action = "move_down"
 visibility_mode = 1
 
 [node name="Joystick" type="Control" parent="."]
-visible = false
 anchor_bottom = 1.0
-margin_left = 203.651
-margin_top = 467.955
-margin_right = 243.651
-margin_bottom = 507.955
+margin_left = 163.651
+margin_top = 1566.8
+margin_right = 203.651
+margin_bottom = 1606.8
 mouse_filter = 1
 script = ExtResource( 5 )
 

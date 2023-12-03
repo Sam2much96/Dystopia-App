@@ -84,11 +84,13 @@ func _ready():
 	
 	menu_state =  HIDDEN
 	
-	if Globals.Functions.load_game(true, Globals) and continue_game != null:
+	"Continue Button Disable"#?
+	if Utils.Functions.load_game(true, Globals) and continue_game != null:
 		continue_game.disabled = false 
+		
 	else:
 		continue_game.disabled = true
-
+	print_debug("Continue Disabled",continue_game.disabled)
 
 
 func _process(delta):
@@ -150,11 +152,11 @@ func _input(event): #Toggles menu visibility on/off
 	if Comics_v6._state == Comics_v6.SWIPE_RIGHT:
 		
 		# Scroll Down
-		Globals.Functions.scroll(false, true,scroller)
+		Utils.Screen.scroll(false, true,scroller)
 	elif Comics_v6._state == Comics_v6.SWIPE_DOWN:
 		
 		# Scroll Up
-		Globals.Functions.scroll(true, true,scroller)
+		Utils.Screen.scroll(true, true,scroller)
 		
 	else: pass
 
@@ -162,12 +164,12 @@ func _input(event): #Toggles menu visibility on/off
 func _on_continue_pressed():
 	# Buggy
 	Music.play_track(Music.ui_sfx[0])
-	Globals.Functions.load_game(false, Globals)
+	#Utils.Functions.load_game(false, Globals)
 	if Globals.current_level != null:
 		
 		"Loads Large Scene"
 		
-		Globals.Functions.change_scene_to(Globals.Functions.LoadLargeScene(
+		Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
 		Globals.current_level, 
 		Globals.scene_resource, 
 		Globals._o, 
@@ -193,7 +195,7 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 		#Globals._to_load = Globals.current_level
 		"Loads Large Scene"
 		
-		Globals.Functions.change_scene_to(Globals.Functions.LoadLargeScene(
+		Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
 		Globals.current_level, 
 		Globals.scene_resource, 
 		Globals._o, 
@@ -219,7 +221,7 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 		#prev_scene_spawnpoint,
 		#direction_control,
 		#Music_on_settings
-		if Globals.Functions.save_game(
+		if Utils.Functions.save_game(
 			[], 
 			0, 
 			0, 
@@ -277,11 +279,11 @@ func _menu_pause_and_play(boolean): #pass it a boolean to custom pause and play
 func _on_comics_pressed():
 	print_debug ('comics pressed')
 	Music.play_track(Music.ui_sfx[0])
-	Globals.Functions.change_scene_to(Globals.comics___2, get_tree())
+	Utils.Functions.change_scene_to(Globals.comics___2, get_tree())
 
 func _on_controls_pressed():
 	Music.play_track(Music.ui_sfx[0])
-	Globals.Functions.change_scene_to(Globals.controls, get_tree())
+	Utils.Functions.change_scene_to(Globals.controls, get_tree())
 
 
 func _on_quit_pressed():
@@ -291,7 +293,7 @@ func _on_quit_pressed():
 	else:
 		Music.play_track(Music.ui_sfx[1])
 		#Globals.memory_leak_management()
-		Globals.Functions.change_scene_to(Globals.title_screen, get_tree())
+		Utils.Functions.change_scene_to(Globals.title_screen, get_tree())
 
 
 
@@ -311,7 +313,7 @@ func _exit_tree():
 
 func _on_Shop_pressed():
 	Music.play_track(Music.ui_sfx[0])
-	Globals.Functions.change_scene_to(shop, get_tree())
+	Utils.Functions.change_scene_to(shop, get_tree())
 
 func _hide_some_menu_options():
 	#if Engine.has_singleton ('Debug'):
@@ -339,7 +341,7 @@ func _on_wallet_pressed():
 
 func _on_practice_pressed(): # turn off in release build
 	Globals.current_level = 'res://scenes/levels/Testing Scene 2.tscn' #breaks the Globals.current_level script
-	Globals.Functions.change_scene_to(Globals.Functions.LoadLargeScene(
+	Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
 		Globals.current_level, 
 		Globals.scene_resource, 
 		Globals._o, 

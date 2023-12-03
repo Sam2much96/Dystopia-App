@@ -134,6 +134,303 @@ class MemoryManagement extends Reference :
 	static func memory_leak_management(from : Node):
 		return from.print_stray_nodes() 
 
+
+"Functions Class"
+
+class Functions extends Reference:
+	# Shared Functions Class
+	
+
+	
+	static func dict2bytes(dict :Dictionary) -> int:
+		# Convert Dictionary json to raw bytes 
+		
+		return 0
+
+	
+	
+	static func change_scene_to(scene : PackedScene, tree : SceneTree): #Loads scenes faster?
+		
+		#if scene is PackedScene: 
+			if scene != null: 
+				return tree.change_scene_to(scene)  
+
+			else: return (print (typeof(scene) ,"is not supported in this function"))
+	
+	'Resource Loader FOr Large Scenes'
+	static func LoadLargeScene(
+		_to_load : String, 
+		scene_resource : PackedScene, 
+		_o : ResourceInteractiveLoader, 
+		scene_loader : ResourceLoader, 
+		loading_resource : bool, 
+		a: int , 
+		b : int, 
+		progress: float
+		) -> PackedScene:
+		
+		if _to_load != "" && scene_resource == null:
+			var time_max = 50000 #sets an estimate maximum time to load scene
+			var t = OS.get_ticks_msec()
+			
+			#scene_loader.load_interactive(_r) 
+			
+			_o= (scene_loader.load_interactive(_to_load)) #function returns a resourceInteractiveLoader
+
+			scene_loader.load_interactive(_to_load) #function returns a resourceInteractiveLoader
+			
+		
+			print (" Loader Debug Outer loop >>> Inner Loop")
+			while OS.get_ticks_msec() < (t + time_max) && _o != null: 
+
+				var err = _o.poll()
+				#loading_resource = true
+				
+				print ("_q: ",scene_resource," _r: ",_to_load," Error: ",str(err),"Loop Debug") #Debugger
+				
+				
+				
+				if err == ERR_FILE_EOF: # Finished Loading #Works
+					loading_resource = false
+					
+					scene_resource = (_o.get_resource()) 
+					print (scene_resource , "Resource Loaded")
+					#Functions.change_scene_to(scene_resource, get_tree()) # auto changes the scene
+					#turn_off_processing("off") #introduces bugs
+					
+					break
+					#return _q
+				elif err == OK: #works
+					a = _o.get_stage()
+					b = _o.get_stage_count() 
+					progress = (b/a) 
+					print (a, "/",b,'/',"Progress: ", progress) #progress Debug?
+				else: # Error during loading
+					push_error("Problems loading Scene.  Debug Gloabls scene loader")
+					print (str(progress) + "% " + str (_to_load))
+					
+					break
+		if scene_resource != null: # 
+			return scene_resource
+
+		return scene_resource
+
+
+
+	"""
+	Really simple save file implementation. Just saving some variables to a dictionary
+	"""
+	# Can Save individual parameters by setting other parameters to Null
+	#
+	#
+	static func save_game(
+		player: Array, 
+		player_hitpoints : int, 
+		spawn_x : int, 
+		spawn_y : int, 
+		current_level : String, 
+		os : String, 
+		kill_count : int, 
+		prev_scene : String, 
+		prev_scene_spawnpoint,
+		direction_control : String
+		)-> bool: 
+		
+		print ("-------Saving Game -------")
+		var save_dict : Dictionary = {}
+		var save_game = File.new()
+		save_game.open("user://savegeme.save", File.WRITE_READ)
+		if !player.empty():
+			save_dict.player = player #saves the player node 
+		if spawn_x != 0:
+			save_dict.spawn_x = spawn_x
+		if spawn_y != 0:
+			save_dict.spawn_y =spawn_y
+		if not current_level.empty() :
+			save_dict.current_level = current_level
+		
+		# Inventory List is saved individually
+		if !Inventory.list().empty():
+			save_dict.inventory = Inventory.list()
+		if !Quest.get_quest_list().empty():
+			save_dict.quests = Quest.get_quest_list()
+		if not os.empty():
+			save_dict.os = os
+		if kill_count != 0 :
+			save_dict.kill_count = kill_count
+		#save_dict.currency = Suds #should load from encrypted wallet.cfg
+		
+		# For preserving scene changing information
+		if not prev_scene.empty() :
+			save_dict.prev_scene = prev_scene
+			
+		if prev_scene_spawnpoint != null: # Depreciate in favor of a singular spawpoint variable
+			save_dict.prev_scene_spawnpoint = prev_scene_spawnpoint
+		
+		if player_hitpoints != 0:
+			save_dict.player_hitpoints = player_hitpoints
+		if not direction_control.empty():
+			save_dict.direction_control = direction_control
+		
+		#Music on settings is a boolean converted to int
+		if Music != null : 
+			save_dict.music = int(Music.music_on) #add other variables to save
+		
+		# Language is saved independently
+		if not Dialogs.language.empty():
+			save_dict.languague = Dialogs.language
+		
+		# Control Settings
+		# Vibration
+		save_dict.vibrate = GlobalInput.vibrate
+		
+		save_game.store_line(to_json(save_dict))
+		save_game.close()
+		print ("saved gameplay")
+		return true
+
+	"""
+	If check_only is true it will only check for a valid save file and return true or false without
+	restoring any data
+	"""
+	static func load_game(check_only : bool, GlobalScript) -> bool:
+		check_only = false
+		print ("-------Loading Game -------")
+		var save_game = File.new()
+		
+		
+		if not save_game.file_exists("user://savegeme.save"):
+			return false
+		save_game.open("user://savegeme.save", File.READ)
+		var save_dict = parse_json(save_game.get_line())
+		if typeof(save_dict) != TYPE_DICTIONARY:
+			return false
+		if not check_only:
+			_restore_data(save_dict, GlobalScript)
+		
+		save_game.close()
+		return true
+
+	"""
+	Restores data from the JSON dictionary inside the save files
+	"""
+	static func _restore_data(save_dict : Dictionary, GlobalScript ):
+		
+		"Quest Loader"
+		
+		if save_dict.has('quests'):
+			# JSON numbers are always parsed as floats. In this case we need to turn them into ints
+			for key in save_dict.quests:
+				save_dict.quests[key] = int(save_dict.quests[key])
+			Quest.quest_list = save_dict.quests
+		
+		"Inventory Loader"
+		
+		if save_dict.has('inventory'):
+			# JSON numbers are always parsed as floats. In this case we need to turn them into ints
+			for key in save_dict.inventory:
+				save_dict.inventory[key] = int(save_dict.inventory[key])
+			Inventory.inventory = save_dict.inventory
+		
+		'OS loader'
+		
+		if save_dict.has('os'):
+			GlobalScript.os = save_dict.os
+		
+		'Player'
+		if save_dict.has('player'):
+			GlobalScript.player = save_dict.player
+			
+		if save_dict.has("kill_count"):
+			GlobalScript.kill_count = save_dict.kill_count  
+			
+		
+		if save_dict.has('player_hitpoints'):
+			GlobalScript.player_hitpoints = int(save_dict.player_hitpoints)
+		
+		'Player Object Spawn Position'
+		if save_dict.has('spawn_x'):
+			GlobalScript.spawn_x = save_dict.spawn_x 
+			GlobalScript.spawn_y = save_dict.spawn_y
+		
+		'Saves Player Spawn Point'
+		if save_dict.has('current_level'):
+			GlobalScript.current_level = save_dict.current_level
+		
+		 
+		"Scene Loader"
+		if save_dict.has('prev_scene'):
+			# Presumably a bugfix for scene changing
+			GlobalScript.prev_scene =save_dict.prev_scene 
+			GlobalScript.prev_scene_spawnpoint = save_dict.prev_scene_spawnpoint 
+		
+		'Control Settings'
+		# Direction controller
+		if save_dict.has('direction_control') && str(save_dict.direction_control) != 'Null':
+			GlobalScript.direction_control = str(save_dict.direction_control)
+		
+		if save_dict.has("languague"):
+			Dialogs.language = save_dict.languague
+
+		if save_dict.has("vibrate"):
+			GlobalInput.vibrate = bool(save_dict.vibrate)
+
+		if save_dict.has("music"):
+			print_debug(bool(save_dict.music)) # For Debug Purposes Only
+			Music.music_on = bool(save_dict.music)
+
+		
+		######################################################
+		print_debug("Loaded gameplay")
+
+	# Loads Singular User Data from local storage
+	# Version 2 of Load_game function
+	# Should allow for loading individual variables from Local
+	static func load_user_data( data: String ):
+		print ("-------Fast Loading User Data -------")
+		var save_game = File.new()
+		
+		if not save_game.file_exists("user://savegeme.save"):
+			return false
+		save_game.open("user://savegeme.save", File.READ)
+		var save_dict = parse_json(save_game.get_line())
+		if typeof(save_dict) != TYPE_DICTIONARY:
+			return false
+
+		if save_dict.has(data):
+			if data == 'languague':
+				Dialogs.language = save_dict.languague
+		#	if data == "Music_on_settings":
+		#		Music.Music_on_settings = save_dict.Music_on_settings
+		#		Music._ready()
+		pass
+
+
+
+
+	static func calculate_length_breadth(point_positions: Array) -> Vector2:
+		# Calculates the Length and Breadth of a 2Dimensional Vector
+		
+		var min_x = float('inf')
+		var max_x = -float('inf')
+		var min_y = float('inf')
+		var max_y = -float('inf')
+
+		# Find the minimum and maximum x and y coordinates
+		for point in point_positions:
+			min_x = min(min_x, point.x)
+			max_x = max(max_x, point.x)
+			min_y = min(min_y, point.y)
+			max_y = max(max_y, point.y)
+
+		# Calculate the length and breadth
+		var length = max_x - min_x
+		var breadth = max_y - min_y
+
+		return Vector2(length, breadth)
+ 
+
+
 "Screen Class "
 class Screen extends Reference :
 	var screenOrientation : int
@@ -236,10 +533,95 @@ class Screen extends Reference :
 
 			#print (scroller.scroll_vertical )#= scroll_constant  * delta
 	
-	static func dict2bytes(dict :Dictionary) -> int:
-		# Convert Dictionary json to raw bytes 
+	
+	static func calculate_button_positional_data(menu, _interract,stats, roll, slash, comics, joystick, D_pad)-> Array:
+		# Returns an Array containing the position of all Touch HUD items
+		# Only Used in Mobile devices for adjusting TOuchscreen HUD
+		# Rewrite as Static function under utils screen class (Done)
+	# *************************************************
+		var buttons_positional_data : Array = []
 		
-		return 0
+		# Create Variabls
+		
+		
+		var menu_position : Vector2
+		var _interract_position : Vector2
+		var stats_position : Vector2
+		var roll_position : Vector2
+		var slash_position : Vector2
+		var comics_position : Vector2
+		var joystick_position : Vector2
+		var D_pad_position : Vector2
+		
+		
+		# BUTTONS POSITIONAL DATA 
+		menu_position = menu.position
+		_interract_position = _interract.position
+		stats_position = stats.position
+		roll_position = roll.position
+		slash_position = slash.position
+		comics_position = comics.position
+		joystick_position = joystick.position
+		D_pad_position = D_pad.get_rect().position
+
+		buttons_positional_data = [
+			menu_position,
+			stats_position,
+			comics_position,
+			_interract_position,
+			slash_position,
+			roll_position,
+			
+			#joystick_position, # Joystick Positional data is buggy in debugg
+			D_pad_position,
+			menu_position
+		]
+		return buttons_positional_data
+	
+	
+	static func _adjust_touchHUD_length(Anim : AnimationPlayer):
+		
+		# *************************************************
+		"Touch Screen UI"
+		#
+		# Features
+		# (1) Uses a Global Screen Orienation variable
+		# (2) Uses an Animation Player to Set Node Position
+		#
+		# Bugs
+		# (1) Disaligns on Different Mobile Devices
+		# To Do
+		# (1) Implement Globals Screnn Class Calculations
+		# (2) Use Scene Display Calculations to Fix Misalignment Bug on Mobile Devices 
+		# (3) Implement Calculations in the Animation Player
+		# *************************************************
+		
+		
+		
+		#'Changes the button Layout depending on the screen orientation for Mobile UI'
+		#implement joystick and D-pad variations
+		
+		if Globals.screenOrientation == 1 && Globals.direction_control == Globals._controller_type[2]: #worksif _action_button_showing == false
+			Anim.play("SCREEN_VERTICAL_1");
+		if Globals.screenOrientation == 1 && Globals.direction_control == Globals._controller_type[1]: #works
+			Anim.play("SCREEN_VERTICAL_2");
+		##If screen Is Horizontal, it would be PC UI, making this code obsolete
+		elif Globals.screenOrientation == 0:
+			Anim.play("SCREEN_HORIZONTAL");
+		else: pass
+	
+	
+	# Deprecoated
+	static func resize_window(x : int,y : int): #resizes the game window
+		Globals.screenSize = Vector2(x,y);
+		return OS.set_window_size(Vector2(x,y));
+
+	# Convert bytes to Megabytes
+	static func _ram_convert(bytes) :
+		if bytes >= int(1):
+			var _mb = String(round(float(bytes) / 1_048_576))
+			return _mb
+
 
 
 class procedural extends Reference:

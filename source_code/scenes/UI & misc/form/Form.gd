@@ -58,7 +58,7 @@ func _ready():
 	dialgue_box.hide_dialogue()
 
 	# Load Users Prefered DIalogue 
-	Globals.Functions.load_user_data('languague')
+	Utils.Functions.load_user_data('languague')
 	
 	
 	# Load Users Prefered DIalogue 

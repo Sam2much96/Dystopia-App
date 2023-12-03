@@ -33,6 +33,7 @@
 
 
 extends Node2D
+#extends Input_Buffer
 
 class_name TouchScreenHUD
 
@@ -42,9 +43,9 @@ var _Hide_touch_interface : bool
 onready var _debug = get_tree().get_root().get_node("/root/Debug")
 
 #State Machine
-enum { MENU, INTERRACT, ATTACK, STATS, COMICS, RESET }
+enum { _MENU, _INTERRACT, _ATTACK, _STATS, _COMICS, _RESET }
 
-export (int) var _state_controller = STATS
+export (int) var _state_controller = _STATS
 export (String, 'modern', 'classic') var _control # Dupli9cate of Globals._controller_type
 var _Debug_Run : bool = false
 
@@ -57,14 +58,14 @@ signal comics
 signal reset
 
 
-var menu : TouchScreenButton 
+var _menu : TouchScreenButton 
 var _interract : TouchScreenButton 
 var stats : TouchScreenButton
 var roll : TouchScreenButton 
 var slash  : TouchScreenButton 
 
 var comics : TouchScreenButton 
-var joystick : TouchScreenButton 
+var _joystick : TouchScreenButton 
 var joystick2 : TouchScreenButton 
 var D_pad : Control 
 
@@ -73,14 +74,6 @@ var Anim : AnimationPlayer
 
 
 
-var menu_position : Vector2
-var _interract_position : Vector2
-var stats_position : Vector2
-var roll_position : Vector2
-var slash_position : Vector2
-var comics_position : Vector2
-var joystick_position : Vector2
-var D_pad_position : Vector2
 
 'UI control Parents'
 var interract_buttons : Control
@@ -113,15 +106,21 @@ var _direction_button_showing : bool
 
 
 func _ready():
- 
+	
+	# Make Global Pointer
+	if GlobalInput.TouchInterface == null:
+		GlobalInput.TouchInterface = self
+	
+	print_debug( " Global Touch HUD: ", GlobalInput.TouchInterface)
 
-	menu = $menu
+
+	_menu = $menu
 	_interract = $Control/InterractButtons/interact
 	stats = $Control/InterractButtons/stats
 	roll = $Control/ActionButtons/roll
 	slash = $Control/ActionButtons/slash
 	comics = $Control/InterractButtons/comics
-	joystick = $Joystick/joystick_circle
+	_joystick = $Joystick/joystick_circle
 	joystick2 = $Joystick/joystick_circle2
 	 
 	Anim = $AnimationPlayer
@@ -134,40 +133,61 @@ func _ready():
 	interract_buttons = $Control/InterractButtons
 
 	"Set Button Arraqys for easy on/off"
-	action_buttons = [menu ,stats,_interract,roll, slash,comics]
+	action_buttons = [
+		_menu ,
+		stats,
+		_interract,
+		roll, 
+		slash,
+		comics
+		]
 	
 	# 
 	
 	if str(Globals.direction_control )== "classic" :
 		direction_buttons = [D_pad]
 	elif str(Globals.direction_control) == "modern" :
-		direction_buttons = [joystick, joystick2]
+		direction_buttons = [ _joystick, joystick2]
 		
 		# Default Direction Button should be Analgue
-	else: direction_buttons = [joystick, joystick2]
+	else: direction_buttons = [ _joystick, joystick2]
 
 	print_debug(direction_buttons, Globals.direction_control)
 
 	"Touch UI Visibility"
 	
 	# Disabling for debugging
-	#hide_self(Globals.os, Globals.screenOrientation, _Hide_touch_interface, self)
+	hide_self(Globals.os, Globals.screenOrientation, _Hide_touch_interface, self)
 
 	"Auto sets the controller button"
 	reset()
-	calculate_button_positional_data()
-	ScreenCalculationLogic()
+	Utils.Screen.calculate_button_positional_data(
+		_menu, 
+		_interract,
+		stats, 
+		roll, 
+		slash, 
+		comics, 
+		_joystick, 
+		D_pad
+		)
+	
+
+	Utils.Screen._adjust_touchHUD_length(Anim)
 
 	"Display Screen Calculations"
 	Utils.Screen.display_calculations(get_tree().get_root(), Utils)
-
-	dimensions = calculate_length_breadth(buttons_positional_data)
+	
+	# Calculates the Length and Breadth of All Touchscreen HUD buttons
+	dimensions = Utils.Functions.calculate_length_breadth(buttons_positional_data)
+	
+	# calculates a dimensional difference between the center of the vuewport aand the Button onscreen positions 
 	dimensional_diff = dimensions - Globals.center_of_viewport 
 	
 	#For debug purposes only
 	#print_debug("HUD Dimensions:", dimensions) # Breath of the wild lmao
 	#print_debug("Dimension difference: ",dimensional_diff )
-	print_debug("Global Direction COntrols : ",Globals.direction_control)
+	print_debug("Global Direction COntrols : ",Globals.direction_control, "/",dimensions, "/",dimensional_diff)
 
 
 
@@ -187,7 +207,7 @@ static func hide_self(operating_sys: String, screenOrientation : int, _Hide_touc
 THE STATE MACHINE CALLS WITH FUNCTIONS
 """
 func reset():  #resets node visibility statuses
-	_state_controller = RESET
+	_state_controller = _RESET
 	return _state_controller 
 
 #Enumerate each of the following states
@@ -199,16 +219,16 @@ func status():  #used by ui scene when status is clicked
 
 
 func comics():  #used by ui scene when comics is clicked
-	_state_controller = COMICS
+	_state_controller = _COMICS
 	return _state_controller 
 
 
 func menu(): #used by ui scene when menu is clicked
-	_state_controller = MENU
+	_state_controller = _MENU
 	return _state_controller 
 
 func interract(): #used by ui scene when interract is clicked
-	_state_controller = INTERRACT
+	_state_controller = _INTERRACT
 	
 	# Note: 
 	# Duplicate of State Machine Commands
@@ -216,94 +236,18 @@ func interract(): #used by ui scene when interract is clicked
 	# This might be due to the Scene Tree Pause that
 	# Is triggered by certain Game HUD Modules
 	hide_buttons()
-	menu.show()
+	_menu.show()
 	_interract.show()
 	#return _state_controller  
 
 
 func attack(): #used by ui scene when attack is clicked 
-	_state_controller = ATTACK
+	_state_controller = _ATTACK
 	return _state_controller 
 
 
 
-func calculate_button_positional_data()-> void:
 
-	# Rewrite as Static function under utils screen class
-# *************************************************
-	# BUTTONS POSITIONAL DATA 
-	menu_position = menu.position
-	_interract_position = _interract.position
-	stats_position = stats.position
-	roll_position = roll.position
-	slash_position = slash.position
-	comics_position = comics.position
-	joystick_position = joystick.position
-	D_pad_position = D_pad.get_rect().position
-
-	buttons_positional_data = [
-		menu_position,
-		stats_position,
-		comics_position,
-		_interract_position,
-		slash_position,
-		roll_position,
-		
-		#joystick_position, # Joystick Positional data is buggy in debugg
-		D_pad_position,
-		menu_position
-	]
-
-func calculate_length_breadth(point_positions: Array) -> Vector2:
-	var min_x = float('inf')
-	var max_x = -float('inf')
-	var min_y = float('inf')
-	var max_y = -float('inf')
-
-	# Find the minimum and maximum x and y coordinates
-	for point in point_positions:
-		min_x = min(min_x, point.x)
-		max_x = max(max_x, point.x)
-		min_y = min(min_y, point.y)
-		max_y = max(max_y, point.y)
-
-	# Calculate the length and breadth
-	var length = max_x - min_x
-	var breadth = max_y - min_y
-
-	return Vector2(length, breadth)
-
-
-func ScreenCalculationLogic():
-	
-	# *************************************************
-	"Touch Screen UI"
-	#
-	# Features
-	# (1) Uses a Global Screen Orienation variable
-	# (2) Uses an Animation Player to Set Node Position
-	#
-	# Bugs
-	# (1) Disaligns on Different Mobile Devices
-	# To Do
-	# (1) Implement Globals Screnn Class Calculations
-	# (2) Use Scene Display Calculations to Fix Misalignment Bug on Mobile Devices 
-	# (3) Implement Calculations in the Animation Player
-	# *************************************************
-	
-	
-	
-	#'Changes the button Layout depending on the screen orientation for Mobile UI'
-	#implement joystick and D-pad variations
-	
-	if Globals.screenOrientation == 1 && _control == Globals._controller_type[2]: #worksif _action_button_showing == false
-		Anim.play("SCREEN_VERTICAL_1");
-	if Globals.screenOrientation == 1 && _control == Globals._controller_type[1]: #works
-		Anim.play("SCREEN_VERTICAL_2");
-	##If screen Is Horizontal, it would be PC UI, making this code obsolete
-	elif Globals.screenOrientation == 0:
-		Anim.play("SCREEN_HORIZONTAL");
-	else: pass;
 
 
 # Handles Debugging Variables from the touch interface system
@@ -336,10 +280,10 @@ func set_controller(_control):
 		#return
 	
 
-func RepositionButtonsHUD()-> void:
-	#pass
-	action_interract_buttons.set_position(action_interract_buttons.get_position() + dimensional_diff)
-	interract_buttons.set_position(action_interract_buttons.get_position() + dimensional_diff)
+#func _RepositionButtonsHUD()-> void:
+#	#pass
+#	action_interract_buttons.set_position(action_interract_buttons.get_position() + dimensional_diff)
+#	interract_buttons.set_position(action_interract_buttons.get_position() + dimensional_diff)
 	
 
 
@@ -355,10 +299,12 @@ func _input(event):
 	# nested If Statements?
 	
 	"Touch Interface State Machine?"
+	
+	# Duplicate of Input.gd GLobal Input SIngleton
 	if GlobalInput._state == GlobalInput.COMICS or Input.is_action_just_pressed("comics"):
 		if Comics_v6.enabled == true:
 			
-			if _state_controller != COMICS : # and _Comics.loaded_comics == true:
+			if _state_controller != _COMICS : # and _Comics.loaded_comics == true:
 				comics()
 			
 		if not Comics_v6.enabled : #or _Comics.loaded_comics == false:
@@ -374,7 +320,7 @@ func _input(event):
 		if not GlobalInput.menu.enabled:
 			reset()
 	if GlobalInput._state == GlobalInput.ATTACK or Input.is_action_just_pressed('attack'):
-		if _state_controller != ATTACK:
+		if _state_controller != _ATTACK:
 			attack()
 			
 			# Uses Networking Timer to Reset Touch Interface
@@ -402,11 +348,11 @@ func _input(event):
 
 
 	if Input.is_action_pressed("pause"):
-		_state_controller = STATS
+		_state_controller = _STATS
 	if Input.is_action_pressed("comics"):
-		_state_controller = COMICS
+		_state_controller = _COMICS
 	if Input.is_action_pressed("interact"):
-		_state_controller = INTERRACT
+		_state_controller = _INTERRACT
 
 
 
@@ -424,28 +370,28 @@ func _process(delta):
 
 		# calls to state machine work
 	match _state_controller:
-		MENU:
+		_MENU:
 			
 			hide_buttons()
 			
-			menu.show()
+			_menu.show()
 			
-		INTERRACT:
+		_INTERRACT:
 			#The interract state should only show when it's close to an interactible object 
 			#if _Hide_touch_interface == false:
 			
 			hide_buttons()
 			
-			menu.show()
+			_menu.show()
 			_interract.show()
 				
-		ATTACK:
+		_ATTACK:
 			
 			emit_signal('attack')
 		
 			hide_buttons()
 			
-			menu.show()
+			_menu.show()
 			slash.show()
 			roll.show()
 			if _control == Globals._controller_type[1]: # modern
@@ -455,17 +401,17 @@ func _process(delta):
 			if _control == Globals._controller_type[2]: # classic
 				joystick_parent.hide()
 				D_pad.show()
-		STATS:
+		_STATS:
 			hide_buttons()
 			
 			stats.show()
-		COMICS:
+		_COMICS:
 			#kj;kn;k
 			#Anim.play("COMICS")
 			hide_buttons()
 			comics.show()
 		
-		RESET: 
+		_RESET: 
 			"shows all the UI options"
 			show_action_buttons()
 			
@@ -514,18 +460,19 @@ func show_direction_buttons():
 	# 
 	# Shows direction Button
 	
-	if _direction_button_showing == false:
+	#if _direction_button_showing == false:
 		
-		print_debug("Direction Buttons : ",direction_buttons)
-		print_debug("Direction COntrols : ",Globals.direction_control)
+	#	print_debug("Direction Buttons : ",direction_buttons)
+	#	print_debug("Direction COntrols : ",Globals.direction_control)
 		
-		for j in direction_buttons:
-			j.show()
-		_direction_button_showing = true
-		return _direction_button_showing
+	for j in direction_buttons:
+		j.show()
+	_direction_button_showing = true
 	
-	if _direction_button_showing == true:
-		pass
+	return _direction_button_showing
+	
+	#if _direction_button_showing == true:
+	#	pass
 
 func _on_comics_showing(): # Doesnt Work
 	print_debug("Comics SHowing")

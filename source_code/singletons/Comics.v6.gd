@@ -1093,7 +1093,7 @@ class Functions extends Reference:
 
 		
 		
-		var err : PackedScene = Globals.Functions.LoadLargeScene(
+		var err : PackedScene = Utils.Functions.LoadLargeScene(
 					current_comics, 
 					Globals.scene_resource, 
 					Globals._o, 

@@ -166,11 +166,11 @@ func _on_Direction_controls_toggled(button_pressed):
 	if button_pressed:
 		#'direction'
 		Globals.direction_control = Globals._controller_type[1]
-		$ScrollContainer/VBoxContainer/Direction_controls.set_text(Globals.direction_control)
+		Change_Controller_type.set_text(Globals.direction_control)
 	else:
 		#'analogue'
 		Globals.direction_control = Globals._controller_type[2]
-		$ScrollContainer/VBoxContainer/Direction_controls.set_text(Globals.direction_control)
+		Change_Controller_type.set_text(Globals.direction_control)
 
 
 
@@ -191,7 +191,7 @@ func manual_translate()-> void:
 func _exit_tree():
 	
 	"Saves Player's PreferedConfiguration"
-	Globals.Functions.save_game(
+	Utils.Functions.save_game(
 		[],
 		0,
 		0, 

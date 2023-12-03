@@ -33,9 +33,13 @@ func _ready():
 	Dialogs.set_font(nodes, 42, "", 4)
 	hide()
 	
+	# Make GLobal
+	GlobalInput._Status_text = self
+	
 	# Connects to Both Quest and Item Singleton
-	Quest.connect("quest_changed", self, "_questlog_updated")
-	Inventory.connect("item_changed", self, "_inventory_updated")
+	# Refactored to Game HUD Parent
+	#Quest.connect("quest_changed", self, "_questlog_updated")
+	#Inventory.connect("item_changed", self, "_inventory_updated")
 
 
 # Quests

@@ -146,8 +146,8 @@ var wallet_state  #wallet state global variabe
 var tile_map : TileMap
 
 func _ready():
-	print_debug('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
-	print_debug("Despawn Fx:", despawn_fx)
+	#print_debug('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
+	#print_debug("Despawn Fx:", despawn_fx)
 
 
 	player.append( get_tree().get_nodes_in_group('player') )#gets all player nodes in the scene
@@ -163,7 +163,8 @@ func _ready():
 
 func update_curr_scene() -> void:
 	curr_scene= get_tree().get_current_scene().get_name() 
-	print_debug ("current scene is: ", curr_scene)
+	
+	#print_debug ("current scene is: ", curr_scene)
 
 
 func _go_to_title():

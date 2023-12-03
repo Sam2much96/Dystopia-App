@@ -87,4 +87,4 @@ func  placeholder(item):
 	print_debug("Inventory button pressed", item)
 	# Testing Inventory UI
 	remove_item(item,1)
-	_stats_ui._update_inventory_listing()
+	_stats_ui._update_inventory_listing() #Dowsnt work

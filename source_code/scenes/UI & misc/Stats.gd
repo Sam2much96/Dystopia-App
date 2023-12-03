@@ -44,7 +44,7 @@ onready var _inventory_button : Button = $TabContainer/Inventory/ScrollContainer
 onready var _coin_label : Label = $TabContainer/Wallet/Algos
 onready var _quest_label : Label = $TabContainer/Quests/ScrollContainer2/VBoxContainer/Quests
 
-# Pointer to Inventory Singleton
+# Backup Pointer to Inventory Singleton
 onready var _inventory : Storage = get_tree().get_root().get_node("/root/Inventory")
 
 # Pointer to GLobal Touch HUD
@@ -68,7 +68,7 @@ func _ready():
 	
 	# Make self global 
 	_inventory._stats_ui = self
-
+	GlobalInput._Stats = self
 
 
 func _input(event):

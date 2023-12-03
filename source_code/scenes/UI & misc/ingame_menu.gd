@@ -84,6 +84,10 @@ func _ready():
 	
 	menu_state =  HIDDEN
 	
+	
+	# Make Global
+	GlobalInput.menu = self
+	
 	"Continue Button Disable"#?
 	if Utils.Functions.load_game(true, Globals) and continue_game != null:
 		continue_game.disabled = false 

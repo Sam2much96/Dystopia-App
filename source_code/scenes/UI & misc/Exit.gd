@@ -22,7 +22,7 @@ class_name Exit
 Add this to any area2d and it will send the player to the indicated scene and spawnpoint
 """
 
-export(String, FILE, "*.tscn") var to_scene = ""
+export(String, FILE, "*.tscn") var to_scene
 export(String) var spawnpoint = ""
 
 # Called when the node enters the scene tree for the first time.
@@ -59,7 +59,7 @@ func _on_body_entered(body):
 
 		"Loads Large Scene"
 		
-	Utils.Functions.change_scene_to(Globals.Functions.LoadLargeScene(
+	Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
 	to_scene, 
 	Globals.scene_resource, 
 	Globals._o, 

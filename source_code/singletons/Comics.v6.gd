@@ -1420,7 +1420,8 @@ class Extensions extends AnimatedSprite:
 			
 			# Upscale on Mobile Devices
 			self.set_scale(Vector2(1.3,1.3))
-		print_debug("Extension Script Initialized" + str(Comics_v6.comics_sprite) )
+		
+		#print_debug("Extension Script Initialized" + str(Comics_v6.comics_sprite) )
 
 
 # It Uses a camera 2d to simulate guided view. Should not be used when running the game

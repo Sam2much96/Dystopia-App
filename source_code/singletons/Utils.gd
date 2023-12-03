@@ -155,7 +155,7 @@ class Functions extends Reference:
 			if scene != null: 
 				return tree.change_scene_to(scene)  
 
-			else: return (print (typeof(scene) ,"is not supported in this function"))
+			else: print_debug (scene," ", typeof(scene) ,"is not supported in this function")
 	
 	'Resource Loader FOr Large Scenes'
 	static func LoadLargeScene(
@@ -510,9 +510,10 @@ class Screen extends Reference :
 		
 		
 		GlobalScript.center_of_viewport = GlobalScript.calc_center_of_rectangle(GlobalScript.viewport_size)
+		
 		# Prints out the Current Viewport Size
-		print_debug("Viewport Size: ", GlobalScript.viewport_size ) # for debug purposes only
-		print_debug ("Center of Viewprt: ", GlobalScript.center_of_viewport ) # for debug purposes onlys
+		#print_debug("Viewport Size: ", GlobalScript.viewport_size ,"/","Center of Viewprt: ", GlobalScript.center_of_viewport ) # for debug purposes only
+		
 	
 	
 	static func scroll(direction : bool , visible : bool, _scroller : ScrollContainer)-> void:

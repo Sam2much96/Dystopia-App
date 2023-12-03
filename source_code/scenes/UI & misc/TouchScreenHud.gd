@@ -111,7 +111,7 @@ func _ready():
 	if GlobalInput.TouchInterface == null:
 		GlobalInput.TouchInterface = self
 	
-	print_debug( " Global Touch HUD: ", GlobalInput.TouchInterface)
+	#print_debug( " Global Touch HUD: ", GlobalInput.TouchInterface)
 
 
 	_menu = $menu
@@ -152,7 +152,7 @@ func _ready():
 		# Default Direction Button should be Analgue
 	else: direction_buttons = [ _joystick, joystick2]
 
-	print_debug(direction_buttons, Globals.direction_control)
+	#print_debug(direction_buttons, Globals.direction_control)
 
 	"Touch UI Visibility"
 	
@@ -187,7 +187,8 @@ func _ready():
 	#For debug purposes only
 	#print_debug("HUD Dimensions:", dimensions) # Breath of the wild lmao
 	#print_debug("Dimension difference: ",dimensional_diff )
-	print_debug("Global Direction COntrols : ",Globals.direction_control, "/",dimensions, "/",dimensional_diff)
+	
+	#print_debug("Global Direction COntrols : ",Globals.direction_control, "/",dimensions, "/",dimensional_diff)
 
 
 
@@ -198,7 +199,7 @@ static func hide_self(operating_sys: String, screenOrientation : int, _Hide_touc
 	if operating_sys != 'Android' && screenOrientation == 0 :
 		_Hide_touch_interface = true
 		_node.hide()
-		print('Hiding touch interface for ', Globals.os)
+		#print_debug('Hiding touch interface for ', Globals.os)
 
 
 

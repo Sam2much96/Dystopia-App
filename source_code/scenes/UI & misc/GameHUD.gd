@@ -35,25 +35,32 @@ extends CanvasLayer
 class_name GameHUD
 
 
-onready var menu : Game_Menu = $"Menu "
-onready var TouchInterface : TouchScreenHUD =  $TouchInterface
-onready var _Comics = Comics_v6 #$Comics
-onready var _Stats : PanelContainer = $Stats
+#onready var menu : Game_Menu = $"Menu "
+#onready var TouchInterface : TouchScreenHUD =  $TouchInterface
+#onready var _Comics = Comics_v6 #$Comics
+#onready var _Stats : PanelContainer = $Stats
+#onready var _Status_text : StatusText = $Status_text
 
+#enum {RESET, INTERRACT, STATUS, COMICS}
 
-enum {RESET, INTERRACT, STATUS, COMICS}
+#func _enter_tree():
+	
+
+#func _process(delta):
+#	pass
 
 func _ready():
 	
+	connect_signals()
+	
 	"Update Global Input SIngletons Pointers"
 	# Global Pointers
-	GlobalInput.menu = menu
-	GlobalInput.TouchInterface  = TouchInterface
-	GlobalInput._Comics = _Comics
-	GlobalInput._Stats = _Stats
+#	GlobalInput.menu = menu
+#	GlobalInput.TouchInterface  = TouchInterface
+#	GlobalInput._Comics = _Comics
+#	GlobalInput._Stats = _Stats
+#
 
-	
-	connect_signals()
 
 func _on_dialog_started():
 	GlobalInput.TouchInterface.interract()
@@ -66,8 +73,9 @@ func _on_dialog_ended():
 
 func connect_signals()-> bool:
 	# Connects signals from to State Methods on Different Paths
-	# # Require Debugging`and More Documentation
+	# # Require Debugging`and More Documentation (Done)
 	# 
+
 	# Dialogues to GameHUD
 	if not Dialogs.is_connected("dialog_started", self, "_on_dialog_started"):
 		Dialogs.connect("dialog_started", self, "_on_dialog_started")
@@ -75,34 +83,65 @@ func connect_signals()-> bool:
 	if not Dialogs.is_connected("dialog_ended", self, "_on_dialog_ended"):
 		Dialogs.connect("dialog_ended", self, "_on_dialog_ended")
 	
+	# Status Text to Quest
+	
+	# Connects to Both Quest and Item Singleton
+	if not Quest.is_connected("quest_changed", StatusText, "_questlog_updated"):
+		Quest.connect("quest_changed", StatusText, "_questlog_updated")
+	
+	# Inventory to Status Text
+	if not Inventory.is_connected("item_changed", StatusText, "_inventory_updated"):
+		Inventory.connect("item_changed", StatusText, "_inventory_updated")
+
+	
+	
 	# Stats
-	if not _Stats.is_connected("not_enabled",_Stats, '_on_status_hidden'):
-		_Stats.connect("not_enabled",_Stats, '_on_status_hidden')
+	if not GlobalInput._Stats.is_connected("not_enabled",GlobalInput._Stats, '_on_status_hidden'):
+		GlobalInput._Stats.connect("not_enabled",GlobalInput._Stats, '_on_status_hidden')
 	
 	# Stats to Stats
-	if not _Stats.connect('enabled',_Stats,'_on_status_showing'):
-		_Stats.connect('enabled',_Stats,'_on_status_showing')
+	if not GlobalInput._Stats.is_connected('enabled',GlobalInput._Stats,'_on_status_showing'):
+		GlobalInput._Stats.connect('enabled',GlobalInput._Stats,'_on_status_showing')
 	
 	# Comics to Touch Interface
-	if not _Comics.connect( 'comics_showing', TouchInterface, '_on_comics_showing'  ):
-		 _Comics.connect( 'comics_showing', TouchInterface, '_on_comics_showing'  )
+	if not GlobalInput._Comics.is_connected( 'comics_showing', GlobalInput.TouchInterface, '_on_comics_showing'  ):
+		 GlobalInput._Comics.connect( 'comics_showing', GlobalInput.TouchInterface, '_on_comics_showing'  )
 	
 	# COmics to Touch Interface
-	if not _Comics.connect( 'comics_hidden', TouchInterface, '_on_comics_hidden'  ):
-		 _Comics.connect( 'comics_hidden', TouchInterface, '_on_comics_hidden'  )
+	if not GlobalInput._Comics.is_connected( 'comics_hidden', GlobalInput.TouchInterface, '_on_comics_hidden'  ):
+		 GlobalInput._Comics.connect( 'comics_hidden', GlobalInput.TouchInterface, '_on_comics_hidden'  )
 	
 	# Menu to Touch Interface
-	if not menu.is_connected("menu_showing", TouchInterface, "menu"): #works
-		menu.connect("menu_showing", TouchInterface, "menu")
+	if not GlobalInput.menu.is_connected("menu_showing", GlobalInput.TouchInterface, "menu"): #works
+		GlobalInput.menu.connect("menu_showing", GlobalInput.TouchInterface, "menu")
 	
-	if not menu.is_connected("menu_hidden", TouchInterface, 'reset'):
-		menu.connect("menu_hidden", TouchInterface, "reset")
+	if not GlobalInput.menu.is_connected("menu_hidden", GlobalInput.TouchInterface, 'reset'):
+		GlobalInput.menu.connect("menu_hidden", GlobalInput.TouchInterface, "reset")
 	
 	
 	# Networking TImer to Touch Interface
 	# Resets Using Networking timer
-	if not Networking.timer.is_connected("timeout", TouchInterface, "reset") :
-		Networking.timer.connect("timeout", TouchInterface, "reset")
+	if not Networking.timer.is_connected("timeout", GlobalInput.TouchInterface, "reset") :
+		Networking.timer.connect("timeout", GlobalInput.TouchInterface, "reset")
+	
+	
+	if not (Dialogs.is_connected("dialog_started", self, "_on_dialog_started") and
+	Dialogs.is_connected("dialog_ended", self, "_on_dialog_ended") and
+	Quest.is_connected("quest_changed", GlobalInput.StatusText, "_questlog_updated") and
+	Inventory.is_connected("item_changed", GlobalInput.StatusText, "_inventory_updated") and
+	GlobalInput._Stats.is_connected("not_enabled",GlobalInput._Stats, '_on_status_hidden') and
+	GlobalInput._Stats.is_connected('enabled',GlobalInput._Stats,'_on_status_showing') and
+	GlobalInput._Comics.is_connected( 'comics_showing', GlobalInput.TouchInterface, '_on_comics_showing'  ) and
+	GlobalInput._Comics.is_connected( 'comics_hidden', GlobalInput.TouchInterface, '_on_comics_hidden'  ) and
+	GlobalInput.menu.is_connected("menu_showing", GlobalInput.TouchInterface, "menu") and
+	Networking.timer.is_connected("timeout", GlobalInput.TouchInterface, "reset")
+	):
+		print("Debug Game HUD Signals")
+	
+	
+	#print("sgjoaopfgias0giawerg0ihjsgfokafghio")
+	
+	
 	return true
 
 func disconnect_signals()-> bool:
@@ -114,28 +153,28 @@ func disconnect_signals()-> bool:
 	if Dialogs.is_connected("dialog_ended", self, "_on_dialog_ended"):
 		Dialogs.disconnect("dialog_ended", self, "_on_dialog_ended")
 	
-	if _Stats.is_connected("not_enabled",self, '_on_status_hidden'):
-		_Stats.disconnect("not_enabled",self, '_on_status_hidden')
+	if GlobalInput._Stats.is_connected("not_enabled",self, '_on_status_hidden'):
+		GlobalInput._Stats.disconnect("not_enabled",self, '_on_status_hidden')
 	
-	if _Stats.connect('enabled',self,'_on_status_showing'):
-		_Stats.disconnect('enabled',self,'_on_status_showing')
+	if GlobalInput._Stats.connect('enabled',self,'_on_status_showing'):
+		GlobalInput._Stats.disconnect('enabled',self,'_on_status_showing')
 	
-	if _Comics.connect( 'freed_comics', TouchInterface, '_on_comics_hidden'  ):
-		 _Comics.disconnect( 'freed_comics', TouchInterface, '_on_comics_hidden'  )
+	if GlobalInput._Comics.connect( 'freed_comics', GlobalInput.TouchInterface, '_on_comics_hidden'  ):
+		 GlobalInput._Comics.disconnect( 'freed_comics', GlobalInput.TouchInterface, '_on_comics_hidden'  )
 
-	if _Comics.connect( 'freed_comics', TouchInterface, '_on_comics_showing'  ):
-		 _Comics.disconnect( 'freed_comics', TouchInterface, '_on_comics_showing'  )
+	if GlobalInput._Comics.connect( 'freed_comics', GlobalInput.TouchInterface, '_on_comics_showing'  ):
+		 GlobalInput._Comics.disconnect( 'freed_comics', GlobalInput.TouchInterface, '_on_comics_showing'  )
 	
-	if menu.is_connected("menu_showing", TouchInterface, "menu"): #works
-		menu.disconnect("menu_showing", TouchInterface, "menu")
+	if GlobalInput.menu.is_connected("menu_showing", GlobalInput.TouchInterface, "menu"): #works
+		GlobalInput.menu.disconnect("menu_showing", GlobalInput.TouchInterface, "menu")
 	
-	if menu.is_connected("menu_hidden", TouchInterface, 'reset'):
-		menu.disconnect("menu_hidden", TouchInterface, "reset")
+	if GlobalInput.menu.is_connected("menu_hidden", GlobalInput.TouchInterface, 'reset'):
+		GlobalInput.menu.disconnect("menu_hidden", GlobalInput.TouchInterface, "reset")
 	
 	
 	# Resets Using Networking timer
-	if Networking.timer.is_connected("timeout", TouchInterface, "reset") :
-		Networking.timer.disconnect("timeout", TouchInterface, "reset")
+	if Networking.timer.is_connected("timeout", GlobalInput.TouchInterface, "reset") :
+		Networking.timer.disconnect("timeout", GlobalInput.TouchInterface, "reset")
 	return true
 
 

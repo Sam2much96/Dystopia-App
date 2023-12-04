@@ -14,6 +14,7 @@
 
 # Goals:
 # (1) It makes the player work harder
+# (2) It makes the Player follow goals that improve the game state
 # *************************************************
 
 extends Position2D

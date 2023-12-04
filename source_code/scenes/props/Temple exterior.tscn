@@ -54,6 +54,7 @@ polygon = PoolVector2Array( -4.4583, 2.4222, -4.84117, -2.95716, -1.08447, -2.81
 [node name="to_inside" type="Area2D" parent="."]
 position = Vector2( -183.317, 86.8525 )
 scale = Vector2( 0.95818, 1.51276 )
+monitorable = false
 script = ExtResource( 2 )
 to_scene = "res://scenes/levels/Temple interior.tscn"
 

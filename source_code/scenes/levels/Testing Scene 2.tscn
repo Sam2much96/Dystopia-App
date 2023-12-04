@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scenes/UI & misc/TouchScreen HUD.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/items/coins.tscn" type="PackedScene" id=2]
@@ -13,6 +13,8 @@
 [ext_resource path="res://scenes/items/enemy spawner.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/props/signpost.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/props/Grass.tscn" type="PackedScene" id=14]
+[ext_resource path="res://scenes/props/flowers.tscn" type="PackedScene" id=15]
 
 [node name="Node2D" type="Node2D"]
 
@@ -63,3 +65,10 @@ enemy_type = "Easy"
 spawn_count = 15
 
 [node name="Player" parent="." instance=ExtResource( 13 )]
+
+[node name="flowers" parent="." instance=ExtResource( 15 )]
+position = Vector2( 197.99, 25.4558 )
+scale = Vector2( 1.34899, 1.34899 )
+monitorable = false
+
+[node name="grass" parent="." instance=ExtResource( 14 )]

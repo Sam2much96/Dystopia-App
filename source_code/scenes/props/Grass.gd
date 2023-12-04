@@ -5,17 +5,22 @@
 # Grass
 # SHared COnde Between Grass/Flower Objects Within the Scene Tree
 # Features:
-# Uses List comparison to detect and Destroy self when colliding 
-# with pre-saved area name
+# 
+# (1) Uses List comparison to detect and Destroy self when colliding with pre-saved area name
+# (2) Implements Item Spawner Spawn method when destroyed
+# (3) Code Base is factored into an Aniamation State Machine form factor
+# (4) Shares code base and scene structure with Flowers.tscn and Grasses.tscn
 
 # To Do:
-#(1) Make translucient
+#(0) Refactor codebase into Animation Player implementation (1.3)
+#(1) Make translucient (Done)
 #(2) Should only run shader once interracting with either player or enemy (optimization)
-# (3) Optimize Ram 
-		# Lots of Detection going on in this node from every collision object (1/2)
-		# Fix: Implement Layers and Layer masks
-# (4) Fix all duplicate Code
-# (5) Add and Remove shade object programmatically
+# (3) Optimize Ram for Mobile and PC(1/2)
+		# Lots of Detection going on in this node from every collision object (2/2)
+		# Fix: Implement Layers and Layer masks (Not Needed)
+# (4) Fix all duplicate Code (Done)
+# (5) Animation States for Optiimization
+# (6) Mobile Optimization & Debugging
 # *************************************************
 
 extends Area2D
@@ -28,6 +33,8 @@ onready var nodeName : String = self.get_name()
 onready var timer : Node = $Timer
 onready var anim : Node = $AnimationPlayer
 
+onready var item_spawner :itemSpawner = $itemSpawner
+
 #List of Aread 2D groups that can destroy this node
 
 var list: Array = ["player_sword", "enemy_sword"] 
@@ -35,13 +42,23 @@ var list: Array = ["player_sword", "enemy_sword"]
 var similar_names : Array = [] #list comparer
 
 func _ready():
-	anim.play("idle",-1,1.0,0.0) 
-	connect("body_entered", self, "_on_grass_area_entered")
+	#anim.play("idle",-1,1.0,0.0) 
+	
+	# Connect Signls
+	connect("area_entered", self, "_on_grass_area_entered")
+	connect("area_entered", self, "_on_flowers_area_entered")
+	
+	# Debug Signals
+	
+	print_debug(
+		is_connected("area_entered", self, "_on_grass_area_entered"),
+		is_connected("area_entered", self, "_on_flowers_area_entered")
+		)
 	
 	timer.connect("timeout", self, "_queue_free")
-	#var sfx = load (Music.grass_sfx[0])
-#jhcjhccilyc
-
+	
+	
+	
 """Destroys the Grass when it's Attacked by Either Player or Enemy Sword collision"""
 
 #************TO MUCH DETECTION**************#
@@ -57,7 +74,17 @@ func _on_grass_area_entered(area):
 func _destroy_if (area: Array)-> void: # Works
 	for p in area:
 		if list.has(p):
-			destroy()
+			anim.play("destroy")
+			
+			
+			Music.play_track(Music.grass_sfx[0])
+			#queue_free()
+			
+			# Spawn Item If able to
+			#if is_instance_valid(item_spawner):
+				#item_spawner.spawn()
+			
+			#destroy()
 			debug_grass(p) # for debug purposes only
 
 func idle()-> void:
@@ -67,12 +94,13 @@ func move()-> void:
 	anim.play("move")
 
 'Destroy animation and sound'
-func destroy()-> void:
-	anim.play("destroy")
-	#yield(get_tree().create_timer(0.3), "timeout") # use timer instead
-	set_timer(0.3)
-	queue_free()
-	Music.play_track(Music.grass_sfx[0])
+#func destroy()-> void:
+#	#anim.play("destroy")
+#	#yield(get_tree().create_timer(0.3), "timeout") # use timer instead
+#	#set_timer(0.3)
+#	
+#	#Music.play_track(Music.grass_sfx[0])
+#	#queue_free()
 
 
 func set_timer(time: int)->void:
@@ -89,8 +117,7 @@ func set_timer(time: int)->void:
 
 
 func _on_flowers_area_entered(area):
-	update_collision_list(area.name)
-
+	update_collision_list(area.name) 
 	_destroy_if(similar_names)
 
 
@@ -103,6 +130,11 @@ func update_collision_list( area : String)-> void:
 		pass
 
 func debug_grass( area_name : String)-> void: 
-	print_debug (area_name+' cuts ' + nodeName)
-	print (similar_names) #list of all objects grass and flower nodes collide with
+	print_debug (area_name+' cuts ' + nodeName, "/",similar_names)
+	#print (similar_names) #list of all objects grass and flower nodes collide with
+
+
+func _auto_delete():
+	# An Autodelete method called in the Destroy Animation as an animated function
+	self.queue_free()
 

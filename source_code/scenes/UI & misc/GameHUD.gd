@@ -52,6 +52,6 @@ func _ready():
 	pass
 
 
-func _exit_tree():
+#func _exit_tree():
 	# Memory Management
-	Utils.MemoryManagement.queue_free_array(children)
+	#Utils.MemoryManagement.queue_free_array(children)

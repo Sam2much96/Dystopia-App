@@ -537,9 +537,11 @@ static func save_file_(body: PoolByteArray, Save_path: String, file_size: int ) 
 func _on_Timer2_timeout():
 	print ('check timer stopped')
 	Timeout = true
-	Comics_v6.SwipeLocked = false#!Comics_v6.SwipeLocked
+
 	emit_signal("Timeout")
 	stop_check()
+	if is_instance_valid(Comics_v6): # Error Catcher
+		Comics_v6.SwipeLocked = false#!Comics_v6.SwipeLocked
 
 """
 MULTIPLAYER SIGNALS

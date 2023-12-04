@@ -76,6 +76,5 @@ monitorable = false
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
 polygon = PoolVector2Array( -435.132, -397.866, -2632.43, -438.184, -2662.67, 418.563, -425.053, 438.721, -404.894, 3069.44, 401.455, 3039.2, 411.535, 428.642, 2679.39, 458.88, 2649.15, -357.549, 401.455, -418.025, 401.455, -2272.63, -435.132, -2272.63 )
 
-[connection signal="timeout" from="COOL_DOWN" to="." method="_on_COOL_DOWN_timeout"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]

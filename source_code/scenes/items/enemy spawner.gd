@@ -105,7 +105,7 @@ func _on_Area2D_body_exited(body):
 	pass
 
 # tEMPLATE FOR iMPLEMENTING A SPAWNING cOOLDOWN WITH tIMER
-func _on_COOL_DOWN_timeout():
+func _on_COOL_DOWN_timeout(): # Disabled for performance optimization
 		# Reset 
 		frame_counter = 0
 		savepoint._reset_autosave_debugger()

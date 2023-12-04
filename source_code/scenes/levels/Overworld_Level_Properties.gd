@@ -8,9 +8,10 @@
 #(3) It should be able to iterate through all it's sub nodes, read ,preserve their states for sending in < 20 bytes
 
 # Bugs:
+#
 # (1) Frame rate Drop from 60 fps to 5 fps. because of too much Collision objects in the scene (3/3)
-
-
+#
+#
 # *************************************************
 
 extends Node

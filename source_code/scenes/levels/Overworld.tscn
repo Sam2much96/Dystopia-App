@@ -99,16 +99,12 @@ _hitpoints = 3
 spawn_count = 5
 
 [node name="enemy_spawner2" parent="." instance=ExtResource( 3 )]
-visible = false
 position = Vector2( 6833.48, -4887.52 )
-enabled = false
 _hitpoints = 3
 spawn_count = 5
 
 [node name="enemy_spawner3" parent="." instance=ExtResource( 3 )]
-visible = false
 position = Vector2( 17739.9, -4751.76 )
-enabled = false
 _hitpoints = 3
 spawn_count = 5
 

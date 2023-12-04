@@ -76,12 +76,6 @@ navpoly = SubResource( 1 )
 
 [node name="Outside" parent="." instance=ExtResource( 1 )]
 
-[node name="Exit2" parent="Outside" instance=ExtResource( 6 )]
-position = Vector2( 1441.77, 2508.39 )
-rotation = 1.49234
-scale = Vector2( 0.272016, 2.98953 )
-monitoring = false
-
 [node name="Outside City" parent="." instance=ExtResource( 5 )]
 position = Vector2( 12571.8, -3727.55 )
 __meta__ = {
@@ -108,13 +102,13 @@ position = Vector2( 3227.29, 527.001 )
 
 [node name="enemy_spawner" parent="." instance=ExtResource( 3 )]
 position = Vector2( 2579.53, 1086.12 )
-_hitpoints = 3
+_hitpoints = 1
 enemy_type = "Easy"
 spawn_count = 5
 
 [node name="enemy_spawner2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 6833.48, -4887.52 )
-_hitpoints = 3
+_hitpoints = 2
 enemy_type = "Intermediate"
 spawn_count = 5
 

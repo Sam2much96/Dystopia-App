@@ -40,7 +40,8 @@ func _process(delta):
 	if Globals.screenOrientation == Globals.SCREEN_HORIZONTAL:
 		rain_particles.lifetime = Short_lifetime
 	if Globals.screenOrientation == Globals.SCREEN_VERTICAL:
-		rain_particles.lifetime = Long_lifetime
+		#rain_particles.lifetime = Long_lifetime
+		rain_particles.lifetime = Short_lifetime
 
 
  

@@ -368,7 +368,7 @@ func clear():# triggers an autodelete in music track nodes
 	music_track = ''
 	print_debug('Music cleared')
 	self.music_on = false
-	Globals.Functions.save_game(
+	Utils.Functions.save_game(
 		[], 
 		0, 
 		0, 

@@ -222,12 +222,15 @@ func _ready():
 	Comics_v6.connect( 'comics_showing', self, '_on_comics_hidden'  )
 
 	# Menu to Touch Interface
+	# Quick Hacky Fiz
+	if is_instance_valid(menu2): # Error Catcher 1
+		menu2.connect("menu_showing", self, "menu") 
+		menu2.connect("menu_hidden", self, "reset")
 	
-	
-	menu2.connect("menu_showing", self, "menu") 
-	menu2.connect("menu_hidden", self, "reset")
-	
-	
+	# REdundancy code
+	if not is_instance_valid(menu2):
+		menu3.connect("menu_showing", self, "menu") 
+		menu3.connect("menu_hidden", self, "reset")
 	# Networking TImer to Touch Interface
 	# Resets Using Networking timer
 	Networking.timer.connect("timeout", self, "reset") 
@@ -241,8 +244,8 @@ func _ready():
 		Dialogs.is_connected("dialog_ended", self, "reset"),
 		Comics_v6.is_connected( 'comics_showing', self, '_on_comics_showing'),
 		Comics_v6.is_connected( 'comics_showing', self, '_on_comics_hidden'  ),
-		menu2.is_connected("menu_showing", self, "menu"), 
-		menu2.is_connected("menu_hidden", self, "reset"),
+		menu3.is_connected("menu_showing", self, "menu"), 
+		menu3.is_connected("menu_hidden", self, "reset"),
 		Networking.timer.is_connected("timeout", self, "reset") 
 		)
 

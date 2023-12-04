@@ -58,7 +58,8 @@ position = Vector2( -130, 461 )
 position = Vector2( -11, 617 )
 
 [node name="enemy_spawner" parent="." instance=ExtResource( 11 )]
-enabled = false
-spawn_count = 1
+_hitpoints = 1
+enemy_type = "Easy"
+spawn_count = 15
 
 [node name="Player" parent="." instance=ExtResource( 13 )]

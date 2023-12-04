@@ -60,8 +60,8 @@ var menu : Game_Menu
 var TouchInterface : TouchScreenHUD
 var _Comics = Comics_v6 #$Comics
 
-onready var _Stats : Stats
-onready var _Status_text : StatusText 
+var _Stats : Stats
+var _Status_text : StatusText 
 
 
 #"Ingame HUD"

@@ -60,10 +60,21 @@ enum {ENABLED, DISABLED, NULL}
 export (int) var _state = DISABLED
 
 func _ready():
-	self.get_child(0)
+	# Connect signals to self?
+	
+	self.connect("not_enabled",self, '_on_status_hidden')
+	self.connect('enabled',self,'_on_status_showing')
+	
+	
+	# Debug Signal Connections
+	
+	print_debug(self.is_connected("not_enabled",self, '_on_status_hidden'), self.is_connected('enabled',self,'_on_status_showing'))
+	
+	
+	#self.get_child(0)
 	
 	#Globals.save_game() # Depreciated
-	get_tree().set_auto_accept_quit(false)
+	#get_tree().set_auto_accept_quit(false)
 	hide()
 	
 	# Make self global 

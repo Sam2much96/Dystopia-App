@@ -68,6 +68,8 @@ onready var scroller : ScrollContainer= get_node("MarginContainer/ScrollContaine
 
 onready var MenuButtons : Array = [comics,new_game, continue_game, _multiplayer, anime,practice, wallet_,controls, quit]
 
+func _enter_tree():
+	GlobalInput.menu = self
 
 func _ready():
 	

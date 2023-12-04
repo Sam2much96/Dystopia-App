@@ -65,6 +65,9 @@ func add_item(type:String, amount:int) -> bool:
 REMOVES ITEMS FROM THE INVENTORY DICTIONARY
 """
 func remove_item(type:String, amount:int) -> bool:
+	# Refactor remove item to connect to Stats amd Update properly
+	
+	
 	if inventory.has(type) and inventory[type] >= amount:
 		inventory[type] -= amount
 		if inventory[type] == 0:
@@ -85,6 +88,9 @@ STATS UI
 """
 func  placeholder(item):
 	print_debug("Inventory button pressed", item)
+	Music.play_track("res://sounds/item_collected.ogg")
+	
 	# Testing Inventory UI
 	remove_item(item,1)
-	_stats_ui._update_inventory_listing() #Dowsnt work
+	
+	#_stats_ui._update_inventory_listing() #Dowsnt work

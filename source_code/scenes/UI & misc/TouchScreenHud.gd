@@ -12,7 +12,11 @@
 # Emits it's state as a signal
 #Touch OS enables or Disables the touch interface depending on if a touch screen is present and the Globals.os. _Hide_touch_interface boolean variable
 # uses Globals.screenOrientation to change the button arrangements for mobiles
-# Bugs
+#
+# (3) Connects signals from Dialogues and COmics SIngletons
+#
+#
+# Bugs :
 #(1) using animation player resets the Joystick/D-pad optionality
 
 # TO DO:
@@ -41,6 +45,16 @@ var _Hide_touch_interface : bool
 
 #Debug
 onready var _debug = get_tree().get_root().get_node("/root/Debug")
+
+
+# Pointer to Parent
+onready var parent = get_parent()
+
+# Pointer to menu node from Parent
+onready var menu2 = parent.get_child(4)
+
+# Pointer to Global Menu Pointer
+onready var menu3 = GlobalInput.menu
 
 #State Machine
 enum { _MENU, _INTERRACT, _ATTACK, _STATS, _COMICS, _RESET }
@@ -105,11 +119,13 @@ var _action_button_showing : bool
 var _direction_button_showing : bool
 
 
-func _ready():
-	
+func _enter_tree():
 	# Make Global Pointer
 	if GlobalInput.TouchInterface == null:
 		GlobalInput.TouchInterface = self
+
+func _ready():
+	
 	
 	#print_debug( " Global Touch HUD: ", GlobalInput.TouchInterface)
 
@@ -189,9 +205,46 @@ func _ready():
 	#print_debug("Dimension difference: ",dimensional_diff )
 	
 	#print_debug("Global Direction COntrols : ",Globals.direction_control, "/",dimensions, "/",dimensional_diff)
+	
+	
+	# Debug Required Pointers
+	#print_debug(parent, menu2, menu3)
+	
+	"Mobile Specific Signals"
+	
+	# COnnect signals from dialogue
+	# DIalogues to self
+	Dialogs.connect("dialog_started", self, "interract")
+	Dialogs.connect("dialog_ended", self, "reset")
+
+	# Comics to Touch Interface
+	Comics_v6.connect( 'comics_showing', self, '_on_comics_showing')
+	Comics_v6.connect( 'comics_showing', self, '_on_comics_hidden'  )
+
+	# Menu to Touch Interface
+	
+	
+	menu2.connect("menu_showing", self, "menu") 
+	menu2.connect("menu_hidden", self, "reset")
+	
+	
+	# Networking TImer to Touch Interface
+	# Resets Using Networking timer
+	Networking.timer.connect("timeout", self, "reset") 
 
 
 
+	# Debug SIgnals
+	
+	print_debug(
+		Dialogs.is_connected("dialog_started", self, "interract"),
+		Dialogs.is_connected("dialog_ended", self, "reset"),
+		Comics_v6.is_connected( 'comics_showing', self, '_on_comics_showing'),
+		Comics_v6.is_connected( 'comics_showing', self, '_on_comics_hidden'  ),
+		menu2.is_connected("menu_showing", self, "menu"), 
+		menu2.is_connected("menu_hidden", self, "reset"),
+		Networking.timer.is_connected("timeout", self, "reset") 
+		)
 
 
 static func hide_self(operating_sys: String, screenOrientation : int, _Hide_touch_interface : bool, _node : TouchScreenHUD) -> void:

@@ -4,6 +4,9 @@
 # *************************************************
 # Status Text
 # Shows Updats on the Player's Status Changes
+# Features:
+# (1) Connects to methods on the Quest and Inventory singletons
+
 # Bugs:
 # (1) Doesn't Display Text
 # (2) Display Doesn't Adapt for Mobile Screens and PC Screen s
@@ -28,13 +31,27 @@ var messages : Array = []
 
 var nodes : Array = [self]
 
+func _enter_tree():
+	# Make GLobal
+	GlobalInput._Status_text = self
+
+
 func _ready():
+	
+	# connect Signals
+	# Connects to Both Quest and Item Singleton
+	Quest.connect("quest_changed", self, "_questlog_updated")
+	
+	# Inventory to Status Text
+	Inventory.connect("item_changed", self, "_inventory_updated")
+	
+	#Debug Signals
+	print_debug(Inventory.is_connected("item_changed", self, "_inventory_updated"), Quest.is_connected("quest_changed", self, "_questlog_updated"))
+	
 	
 	Dialogs.set_font(nodes, 42, "", 4)
 	hide()
 	
-	# Make GLobal
-	GlobalInput._Status_text = self
 	
 	# Connects to Both Quest and Item Singleton
 	# Refactored to Game HUD Parent

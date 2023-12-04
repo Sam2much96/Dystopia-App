@@ -1169,7 +1169,6 @@ height = 67.6021
 position = Vector2( 585.638, 309.087 )
 scale = Vector2( 0.84, 0.84 )
 script = ExtResource( 1 )
-enemy_type = "Easy"
 hitpoints = 1
 
 [node name="sprite" type="Sprite" parent="."]

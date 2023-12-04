@@ -35,14 +35,13 @@ position = Vector2( 5654, 2807.64 )
 scale = Vector2( 0.87822, 0.87822 )
 
 [node name="Exit" type="Area2D" parent="."]
-position = Vector2( 128, -2560 )
-scale = Vector2( 0.913953, 1.63395 )
+monitorable = false
 script = ExtResource( 2 )
 to_scene = "res://scenes/levels/Overworld.tscn"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Exit"]
-position = Vector2( 700, 700 )
-scale = Vector2( 1.35306, 1.35306 )
+position = Vector2( 767.767, -1416.24 )
+scale = Vector2( 1.23663, 2.21083 )
 polygon = PoolVector2Array( -5810.94, -5196.13, -5810.94, 5133.63, 7931.87, 4892, 7841.26, -5286.74, -4995.43, -5165.92, -4995.43, -4290.01, 7086.16, -4501.44, 7176.77, 4106.69, -4965.23, 4529.55, -5146.45, -4018.17 )
 
 [node name="enemy_spawner" parent="." instance=ExtResource( 3 )]

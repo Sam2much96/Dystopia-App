@@ -7,12 +7,10 @@
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/items/enemy spawner.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/levels/Exit.tscn" type="PackedScene" id=8]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 185.002, 17.9888 )
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 149.617, 26.4993 )
 
 [node name="Node2D" type="Node2D"]
 position = Vector2( -732.552, 33.2977 )
@@ -48,33 +46,30 @@ polygon = PoolVector2Array( 622.068, 556.937, 624.171, 568.709, 626.273, 712.503
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingWalls"]
 position = Vector2( 523.599, -17.6434 )
-scale = Vector2( 1, 1 )
 shape = SubResource( 2 )
 
 [node name="enemy_spawner" parent="." instance=ExtResource( 7 )]
 position = Vector2( 572.066, 181.879 )
 scale = Vector2( 0.403226, 0.403226 )
 _hitpoints = 3
+enemy_type = "Hard"
 spawn_count = 7
 
-[node name="Exit" type="Area2D" parent="."]
-script = ExtResource( 4 )
-to_scene = "res://scenes/levels/Building3.tscn"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
-position = Vector2( 516.042, 21.8387 )
-shape = SubResource( 1 )
-
-[node name="Exit2" type="Area2D" parent="."]
-position = Vector2( -11.9865, 869.018 )
-script = ExtResource( 4 )
-to_scene = "res://scenes/levels/Overworld.tscn"
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Exit2"]
-polygon = PoolVector2Array( 164.817, -917.425, 147.399, 29.7084, 937.924, 26.5336, 931.575, -1052.9, 166.447, -1046.55, 163.133, -925.283, 202.419, -924.721, 204.545, -1017.98, 906.176, -1027.5, 899.827, -11.564, 182.843, -13.1085, 204.103, -918.548 )
-
 [node name="Player" parent="." instance=ExtResource( 5 )]
-position = Vector2( 512.159, 749.961 )
+position = Vector2( 374.058, 769.142 )
 scale = Vector2( 0.199171, 0.199171 )
 
 [node name="GameHUD" parent="." instance=ExtResource( 6 )]
+
+[node name="Exit" type="Area2D" parent="."]
+monitorable = false
+script = ExtResource( 4 )
+to_scene = "res://scenes/levels/Overworld.tscn"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Exit"]
+polygon = PoolVector2Array( -127.146, -622.885, -81.1637, 1216.39, 1373.01, 1250.88, 1413.25, -674.614, -12.1908, -657.371, -12.1908, -571.155, 1298.29, -571.155, 1223.57, 1095.69, 22.2954, 1078.44, -0.695312, -473.444 )
+
+[node name="Exit2" parent="." instance=ExtResource( 8 )]
+position = Vector2( 494.495, 43.3502 )
+scale = Vector2( 2.34632, 0.210622 )
+to_scene = "res://scenes/levels/Building3.tscn"

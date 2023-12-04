@@ -31,11 +31,12 @@ class_name enemy_spawner
 
 export (bool) var enabled 
 export (int) var _hitpoints 
+export (String, 'Easy', "Intermediate", "Hard") var enemy_type
 export (PackedScene) var enemy_spawn_1
 
 
-onready var position_in_area = self.position #origin point
-onready var anim = $AnimationPlayer
+onready var position_in_area : Vector2 = self.position #origin point
+onready var anim : AnimationPlayer = $AnimationPlayer
 onready var cool_down: Timer = $COOL_DOWN
 #var enemy = load('res://scenes/characters/Bandits.tscn') 
 
@@ -85,6 +86,7 @@ func spawn_enemy() -> void:
 			
 			# set Enemy Spawn Parameters
 			spawn.hitpoints = _hitpoints
+			spawn.enemy_type = enemy_type
 			
 			anim.play("spawning")
 			spawn.position = position_in_area

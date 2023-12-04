@@ -107,7 +107,10 @@ func _ready():
 	facing = Behaviour.randomize_facing(facing,["left", "right", "up", "down"])
 	
 	
-	enemy_type = Behaviour.randomize_enemy_type(['Easy', "Intermediate", "Hard"]) #Calls A Global Function
+	
+	# Redundancy Code
+	if enemy_type == "" or null: # If enemy behaviour isn't preset
+		enemy_type = Behaviour.randomize_enemy_type(['Easy', "Intermediate", "Hard"]) #Calls A Global Function
 	#print(enemy_type) #disabling to debug
 	
 	#if player != null:

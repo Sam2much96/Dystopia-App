@@ -1,9 +1,8 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/props/Mushroom.tscn" type="PackedScene" id=6]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/house.webp" type="Texture" id=7]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/grass.webp" type="Texture" id=10]
-[ext_resource path="res://scenes/UI & misc/Exit.gd" type="Script" id=16]
 [ext_resource path="res://scenes/props/idol.tscn" type="PackedScene" id=17]
 [ext_resource path="res://scenes/props/BoulderSmall.tscn" type="PackedScene" id=19]
 [ext_resource path="res://scenes/props/Boulder Big.tscn" type="PackedScene" id=21]
@@ -15,9 +14,6 @@
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 261.431
 height = 885.177
-
-[sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 237.908, 160.863 )
 
 [node name="Outside" type="Node2D"]
 
@@ -194,14 +190,6 @@ texture = ExtResource( 7 )
 position = Vector2( -102.287, -31.1055 )
 rotation = 1.56317
 shape = SubResource( 1 )
-
-[node name="Exit" type="Area2D" parent="level/House"]
-monitorable = false
-script = ExtResource( 16 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="level/House/Exit"]
-position = Vector2( 227.908, 150.863 )
-shape = SubResource( 4 )
 
 [node name="idols" type="YSort" parent="level"]
 position = Vector2( 166.022, 1384.49 )

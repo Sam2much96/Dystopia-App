@@ -9,6 +9,7 @@
 # Features
 # (1) Parses Quest Data from Singleton
 # (2) Controls Touch HUD
+# (3) Connects Inventory Buttons to inventory singleton on line 215
 # TO-DO:
 # 
 # (1) Scrolling Inbentory Menu refactor (Utils.gd)
@@ -68,7 +69,10 @@ func _ready():
 	
 	# Debug Signal Connections
 	
-	print_debug(self.is_connected("not_enabled",self, '_on_status_hidden'), self.is_connected('enabled',self,'_on_status_showing'))
+	print_debug(
+		self.is_connected("not_enabled",self, '_on_status_hidden'), 
+		self.is_connected('enabled',self,'_on_status_showing')
+		)
 	
 	
 	#self.get_child(0)
@@ -78,31 +82,11 @@ func _ready():
 	hide()
 	
 	# Make self global 
-	_inventory._stats_ui = self
+	#_inventory._stats_ui = self
 	GlobalInput._Stats = self
 
 
 func _input(event):
-	
-	 #Toggles menu visibility on/off
-	#if !enabled && event.is_action_pressed("pause") or GlobalInput._state == GlobalInput.PAUSE :# 
-	#	print("dfhhsghsdgh") # works
-	#	if _state == DISABLED:
-	#		#print ("sjnsoni0ij")
-	#		_state = ENABLED
-	#		#set_focus_mode(Control.FOCUS_CLICK)
-	#		Music.play_track(Music.ui_sfx[0])
-	#		print ("Stats State: ", _state) #For debug purposes only
-	#		
-	#		return _state
-	#if enabled && event.is_action_pressed("pause") or GlobalInput._state == GlobalInput.PAUSE :
-	#	print("skgn[gfi[0ij[i]]]")
-	#	if _state == ENABLED:
-	#		_state = DISABLED
-	#		Music.play_track(Music.ui_sfx[1])
-	#		print ("Stats State: ", _state) #For debug purposes only
-	#		#Globals.Screen.debug_screen_properties()# Debug Screen Settingd
-	#		
 	
 	# Enable / DIsable Logic is Buggy
 	if event.is_action_pressed("pause")  && enabled == false:
@@ -229,7 +213,7 @@ func _update_inventory_listing():
 					
 					# connect button to inventory singleton method
 					#
-					new_item_button.connect("pressed", _inventory, "placeholder",[item]) # button presses 
+					new_item_button.connect("pressed", _inventory, "remove_item",[item, 1]) # button presses 
 					
 					# Create a pointer to Inventory ui buttons
 					_stats_buttons.append(new_item_button)

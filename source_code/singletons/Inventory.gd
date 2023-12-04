@@ -66,7 +66,9 @@ REMOVES ITEMS FROM THE INVENTORY DICTIONARY
 """
 func remove_item(type:String, amount:int) -> bool:
 	# Refactor remove item to connect to Stats amd Update properly
+	print_debug("Inventory button pressed", type, amount)
 	
+	Music.play_track("res://sounds/item_collected.ogg")
 	
 	if inventory.has(type) and inventory[type] >= amount:
 		inventory[type] -= amount
@@ -87,8 +89,7 @@ func list() -> Dictionary:
 STATS UI
 """
 func  placeholder(item):
-	print_debug("Inventory button pressed", item)
-	Music.play_track("res://sounds/item_collected.ogg")
+
 	
 	# Testing Inventory UI
 	remove_item(item,1)

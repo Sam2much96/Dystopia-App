@@ -43,10 +43,14 @@ func _ready():
 	Quest.connect("quest_changed", self, "_questlog_updated")
 	
 	# Inventory to Status Text
+	# Item changed signals contain parameters
 	Inventory.connect("item_changed", self, "_inventory_updated")
 	
 	#Debug Signals
-	print_debug(Inventory.is_connected("item_changed", self, "_inventory_updated"), Quest.is_connected("quest_changed", self, "_questlog_updated"))
+	print_debug(
+		Inventory.is_connected("item_changed", self, "_inventory_updated"), 
+		Quest.is_connected("quest_changed", self, "_questlog_updated")
+		)
 	
 	
 	Dialogs.set_font(nodes, 42, "", 4)

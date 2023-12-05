@@ -27,14 +27,15 @@ theme = ExtResource( 4 )
 scroll_horizontal_enabled = false
 
 [node name="HSeparator" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
-margin_right = 268.0
-margin_bottom = 626.0
+margin_right = 243.0
+margin_bottom = 416.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="comics" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-margin_right = 268.0
+visible = false
+margin_right = 243.0
 margin_bottom = 66.0
 focus_next = NodePath("../new game")
 focus_previous = NodePath("../quit")
@@ -43,9 +44,8 @@ text = "comics"
 flat = true
 
 [node name="new game" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-margin_top = 70.0
-margin_right = 268.0
-margin_bottom = 136.0
+margin_right = 243.0
+margin_bottom = 66.0
 focus_next = NodePath("../continue")
 focus_previous = NodePath("../comics")
 mouse_filter = 1
@@ -54,6 +54,7 @@ text = "new game"
 flat = true
 
 [node name="continue" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
+visible = false
 margin_top = 140.0
 margin_right = 268.0
 margin_bottom = 206.0
@@ -64,9 +65,10 @@ text = "continue"
 flat = true
 
 [node name="multiplayer" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-margin_top = 210.0
+visible = false
+margin_top = 140.0
 margin_right = 268.0
-margin_bottom = 276.0
+margin_bottom = 206.0
 focus_next = NodePath("../anime")
 focus_previous = NodePath("../continue")
 theme = ExtResource( 1 )
@@ -75,9 +77,9 @@ text = "Multiplayer"
 flat = true
 
 [node name="anime" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-margin_top = 280.0
-margin_right = 268.0
-margin_bottom = 346.0
+margin_top = 70.0
+margin_right = 243.0
+margin_bottom = 136.0
 focus_next = NodePath("../multiplayer")
 focus_previous = NodePath("../practice")
 theme = ExtResource( 1 )
@@ -85,9 +87,9 @@ text = "anime"
 flat = true
 
 [node name="practice" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-margin_top = 350.0
-margin_right = 268.0
-margin_bottom = 416.0
+margin_top = 140.0
+margin_right = 243.0
+margin_bottom = 206.0
 focus_next = NodePath("../wallet")
 focus_previous = NodePath("../anime")
 theme = ExtResource( 1 )
@@ -95,9 +97,9 @@ text = "practice"
 flat = true
 
 [node name="wallet" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-margin_top = 420.0
-margin_right = 268.0
-margin_bottom = 486.0
+margin_top = 210.0
+margin_right = 243.0
+margin_bottom = 276.0
 focus_next = NodePath("../controls")
 focus_previous = NodePath("../practice")
 theme = ExtResource( 1 )
@@ -106,9 +108,9 @@ text = "Wallet"
 flat = true
 
 [node name="controls" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-margin_top = 490.0
-margin_right = 268.0
-margin_bottom = 556.0
+margin_top = 280.0
+margin_right = 243.0
+margin_bottom = 346.0
 focus_next = NodePath("../quit")
 focus_previous = NodePath("../wallet")
 theme = ExtResource( 1 )
@@ -117,9 +119,9 @@ text = "Controls"
 flat = true
 
 [node name="quit" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-margin_top = 560.0
-margin_right = 268.0
-margin_bottom = 626.0
+margin_top = 350.0
+margin_right = 243.0
+margin_bottom = 416.0
 focus_neighbour_top = NodePath("../controls")
 focus_next = NodePath("../comics")
 focus_previous = NodePath("../controls")

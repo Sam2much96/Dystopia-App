@@ -74,11 +74,25 @@ scale = Vector2( 11.5949, 25.8366 )
 script = ExtResource( 9 )
 
 [node name="grass" parent="YSort" instance=ExtResource( 8 )]
-position = Vector2( 3775.08, -322.615 )
+position = Vector2( 3639.47, -407.372 )
+scale = Vector2( 4.19165, 4.19165 )
+
+[node name="grass2" parent="YSort" instance=ExtResource( 8 )]
+position = Vector2( 10196.5, -4811.97 )
 scale = Vector2( 4.19165, 4.19165 )
 
 [node name="flowers" parent="YSort" instance=ExtResource( 10 )]
 position = Vector2( 2854.35, -447.652 )
+scale = Vector2( 4.59821, 4.59821 )
+monitorable = false
+
+[node name="flowers2" parent="YSort" instance=ExtResource( 10 )]
+position = Vector2( 2913.68, -1083.33 )
+scale = Vector2( 4.59821, 4.59821 )
+monitorable = false
+
+[node name="flowers3" parent="YSort" instance=ExtResource( 10 )]
+position = Vector2( 10625.3, -4447.36 )
 scale = Vector2( 4.59821, 4.59821 )
 monitorable = false
 

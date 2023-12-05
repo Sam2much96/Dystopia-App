@@ -349,7 +349,7 @@ func play(stream: String):
 		print_debug('Stream:',stream)
 		print_debug('Music Track',music_track)
 	
-	Globals.Functions.save_game(
+	Utils.Functions.save_game(
 		[], 
 		0, 
 		0, 

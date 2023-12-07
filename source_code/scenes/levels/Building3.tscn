@@ -41,4 +41,3 @@ scale = Vector2( 8.56712, 0.674645 )
 to_scene = "res://scenes/levels/Building1.tscn"
 
 [node name="GameHUD" parent="." instance=ExtResource( 6 )]
-visible = false

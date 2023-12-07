@@ -73,6 +73,6 @@ to_scene = "res://scenes/levels/Overworld.tscn"
 polygon = PoolVector2Array( -127.146, -622.885, -81.1637, 1216.39, 1373.01, 1250.88, 1413.25, -674.614, -12.1908, -657.371, -12.1908, -571.155, 1298.29, -571.155, 1223.57, 1095.69, 22.2954, 1078.44, -0.695312, -473.444 )
 
 [node name="Exit2" parent="." instance=ExtResource( 8 )]
-position = Vector2( 494.495, 43.3502 )
-scale = Vector2( 2.34632, 0.210622 )
+position = Vector2( 517.512, 44.3092 )
+scale = Vector2( 1.95922, 0.186747 )
 to_scene = "res://scenes/levels/Building3.tscn"

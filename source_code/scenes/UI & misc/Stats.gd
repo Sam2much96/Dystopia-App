@@ -32,8 +32,9 @@ signal enabled
 
 onready var scroller : ScrollContainer = $ScrollContainer # Depreciated
 
-#Quest Parent Node Pointer
-onready var _inventory_parent : VBoxContainer = $TabContainer/Inventory/ScrollContainer3/VBoxContainer
+# Quest Parent Node Pointer
+# Vbox Containter Containing all Inventory Items as children
+onready var _inventory_parent : VBoxContainer = $TabContainer/Inventory/ScrollContainer3/VBoxContainer 
 
 # Inventory Parent Node
 onready var _inventory_parent_label : Label = $TabContainer/Inventory/ScrollContainer3/VBoxContainer/Title2
@@ -54,7 +55,7 @@ onready var _inventory : Storage = get_tree().get_root().get_node("/root/Invento
 # Should be a dictionary
 onready var _stats_buttons : Array = []
 
-
+var regex = RegEx.new()
 
 enum {ENABLED, DISABLED, NULL}
 
@@ -82,9 +83,11 @@ func _ready():
 	hide()
 	
 	# Make self global 
-	#_inventory._stats_ui = self
+	Inventory._stats_ui = self
 	GlobalInput._Stats = self
-
+	
+	#Regex for Inventory Update
+	regex.compile("(\\d+)")
 
 func _input(event):
 	
@@ -129,22 +132,34 @@ func _update_quest_listing():
 	_quest_label.text = text
 	#pass
 
-func _update_inventory_button_cache() -> bool: # REmove this code bloc
+# Connects to Inventory.remove item -> Stats.gd
+func _update_inventory_button_cache(item : String, amount : int) : # COde Bloc Called from inventroy singleton remove_item() method
 	# 
 	# What does this code bloc do?
 	# Code Bloc is meant to update a pointer containing all Inventory items buttons and their related ammount
 	# This pointer is used to optimize a psudo-sorting algorithm needed for the Stats UI 
 	# To create inventroy items as buttons
 	# Ideally these buttons should be a texture reat with a number ount labeel, but that'll be for a later refactor
-	for _nodes in _inventory_parent.get_children():
-		if not _stats_buttons.has(_nodes):
-			_stats_buttons.append(_nodes)
-			print_debug(_stats_buttons)
-			print_debug(_inventory_parent)
-			return true
-		else: 
-			return false
-	return false
+	
+	var result
+	
+	for i in _inventory_parent.get_children(): # Nested Bloc?
+		if i is Label:
+			pass
+		if i is Button:
+			
+			# look for the particular Inventory Button 
+			if i.name == item:
+			
+				# Returns the item count for each Inventory Item
+				result = regex.search(i.text)
+			
+				if result:
+					#print_debug(i.text) # for debug purposes only
+					
+					i.set_text("%s x %s\n" % [i.name, int(result.get_string()) - amount])
+				
+				#print_debug("%s x %s\n" % [i.name, result.get_string()]) # for debug purposes only
 
 
 func _update_inventory_listing():
@@ -158,8 +173,6 @@ func _update_inventory_listing():
 	var _inventory_size : int = inventory.size()
 	
 	#print_debug("Inventory Size Debug : ", _inventory_size) # For Debug Purposes only
-	
-	_update_inventory_button_cache() # Buggy Functions
 	
 	# add COnditional for if quest parent has inventory item to avoid dupliucation bug
 	# it'll compate an array of the button names to check if it is already created

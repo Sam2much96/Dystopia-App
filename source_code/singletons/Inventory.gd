@@ -68,10 +68,15 @@ func remove_item(type:String, amount:int) -> bool:
 	# Refactor remove item to connect to Stats amd Update properly
 	print_debug("Inventory button pressed", type, amount)
 	
+	
+	
 	Music.play_track("res://sounds/item_collected.ogg")
 	
 	if inventory.has(type) and inventory[type] >= amount:
 		inventory[type] -= amount
+		
+		_stats_ui._update_inventory_button_cache(type, amount) # Testing Functions
+		
 		if inventory[type] == 0:
 			inventory.erase(type)
 		emit_signal("item_changed", "removed", type, amount)
@@ -85,13 +90,13 @@ func list() -> Dictionary:
 	return inventory.duplicate()
 
 
-"""
-STATS UI
-"""
-func  placeholder(item):
+#"""
+#STATS UI
+#"""
+#func  placeholder(item):
 
 	
 	# Testing Inventory UI
-	remove_item(item,1)
+	#remove_item(item,1)
 	
 	#_stats_ui._update_inventory_listing() #Dowsnt work

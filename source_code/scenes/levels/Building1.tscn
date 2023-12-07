@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/building1.webp" type="Texture" id=1]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/buildingbush.webp" type="Texture" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/items/enemy spawner.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/levels/Exit.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=9]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 185.002, 17.9888 )
@@ -49,11 +50,13 @@ position = Vector2( 523.599, -17.6434 )
 shape = SubResource( 2 )
 
 [node name="enemy_spawner" parent="." instance=ExtResource( 7 )]
-position = Vector2( 572.066, 181.879 )
-scale = Vector2( 0.403226, 0.403226 )
+position = Vector2( 521.402, 173.801 )
+scale = Vector2( 0.261164, 0.261164 )
+enabled = true
 _hitpoints = 3
 enemy_type = "Hard"
-spawn_count = 7
+enemy_spawn_1 = ExtResource( 9 )
+spawn_count = 2
 
 [node name="Player" parent="." instance=ExtResource( 5 )]
 position = Vector2( 374.058, 769.142 )

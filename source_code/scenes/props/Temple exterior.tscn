@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/temple exterior 3d WEBP.webp" type="Texture" id=1]
-[ext_resource path="res://scenes/UI & misc/Exit.gd" type="Script" id=2]
 [ext_resource path="res://scenes/props/Temple exterior.gd" type="Script" id=3]
 
 [sub_resource type="SegmentShape2D" id=7]
@@ -11,9 +10,6 @@ b = Vector2( 68, -96 )
 [sub_resource type="SegmentShape2D" id=8]
 a = Vector2( 675.55, -162.932 )
 b = Vector2( 691.106, -114.849 )
-
-[sub_resource type="RectangleShape2D" id=12]
-extents = Vector2( 50.7669, 42.5125 )
 
 [node name="Temple" type="StaticBody2D"]
 z_index = 1
@@ -50,18 +46,3 @@ position = Vector2( -179.205, -153.215 )
 rotation = 3.12257
 scale = Vector2( 57.5651, 57.5651 )
 polygon = PoolVector2Array( -4.4583, 2.4222, -4.84117, -2.95716, -1.08447, -2.81197, -0.753106, -2.43678, 0.794546, -2.42281, 1.20139, -2.82156, 5.2322, -2.81437, 4.22868, 2.44349, 1.50767, 4.82419, -1.61095, 4.76974 )
-
-[node name="to_inside" type="Area2D" parent="."]
-position = Vector2( -183.317, 86.8525 )
-scale = Vector2( 0.95818, 1.51276 )
-monitorable = false
-script = ExtResource( 2 )
-to_scene = "res://scenes/levels/Temple interior.tscn"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="to_inside"]
-position = Vector2( 5.73036, -62.5924 )
-shape = SubResource( 12 )
-
-[node name="spawnpoint" type="Position2D" parent="to_inside"]
-position = Vector2( 4.16339, 46.0806 )
-scale = Vector2( 1.04365, 0.661043 )

@@ -3,35 +3,33 @@
 # Released under MIT License
 # *************************************************
 # THe Player Script
+#
 # Features
 # (1) THe world's camera
 # (2) Player hitboxes
 # (3) It's a class and stores variables to the UI, Globals singleton, PlayersSave Files, and the Debug SIngleton
 # (4) Extend input from Global Input Singleton
+# *************************************************
 # To Do:
-#(1) Update Documentation
+#(1) Update Documentation (Done)
 # (2) Implement Networking Calls (done in v2)
 # (3) State blocked is unimplemented
 # (4) State Hurt Should Implement Blood Spawning FX not Process
 # (5) Implement State Emote for Dancing with New Dancing (Emote) Animation
+# (6) Implement Fight Camera
+# (7) Implement Item Equip From Inventory.gd
 # *************************************************
 
 extends KinematicBody2D
 
 class_name Player
 
-# To Do: 
-"""
-This implements a very rudimentary state machine. There are better implementations
-in the AssetLib if you want to make something more complex. Also it shares code with Enemy.gd
-and probably both should extend some parent script
-"""
-
 
 
 export(int) var WALK_SPEED = 350 # pixels per second
 export(int) var ROLL_SPEED = 1000 # pixels per second
 export(int) var GRAVITY = 0 # For Platforming Levels
+export(int) var ATTACK = 1 # For Item Equip
 export(int) var hitpoints = 3
 
 export var linear_vel = Vector2()
@@ -46,7 +44,12 @@ export(String, "up", "down", "left", "right") var _facing = "down" # used as a p
 var anim : String = ""
 var new_anim : String= ""
 
-enum { STATE_BLOCKED, STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE_DIE, STATE_HURT }
+enum { 
+	STATE_BLOCKED, STATE_IDLE, STATE_WALKING, 
+	STATE_ATTACK, STATE_ROLL, STATE_DIE, 
+	STATE_HURT 
+	}
+
 enum { UP, DOWN, LEFT, RIGHT}
 
 export var state = STATE_IDLE
@@ -151,7 +154,7 @@ func _process(delta):
 
 
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	
 		# Facing State machine
 	match facing:

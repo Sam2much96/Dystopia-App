@@ -33,9 +33,38 @@ export (int) var frame_counter = 0
 var SIMULATING_1: bool = false
 var v : Vector2
 var world_radius : int
+
+export (Dictionary) var player_info = {
+		"node": [],
+		"position": {"x":0, "y": 0 }, # Extend to Include Simulation Frame ID Data
+		"frames": [frame_id], #frame data
+		"input buffer": GlobalInput.input_buffer,
+		"hitpoints" : 3,
+		"facing": "",
+		"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
+		"roll dir": [],
+		"destroyed": false,
+		"updates": [],  # Stores Present Update ID Across All Clients
+		"wallet addr": [],#{Networking.cfg_player_name : Globals.address},
+		"asset id": {},
+		"smart contract": [], # Arrays As it will only be one Smart COntract
+		"kill Count": 0,
+		"inventory": {},
+		"velocity":0,
+		"rotation":0,
+		"firing":false,
+		"current_angle": 0,
+		"rewspawn_time":1000,
+		"hash" : ""
+		
+		}
+
+
 # Refactored to A Simulation Singleton on Nov 20, 23
 # COnnetcs to a Player Input Signal from the Networking Singleton
 # Simulates player position on Kinematic body 2d
+#
+# SHould Implement Input Buffer into simulation Logic
 func poop(id : String, player : Player_v2_networking ):
 
 	"Server Simulation Logic"

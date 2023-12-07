@@ -20,12 +20,12 @@ class_name TempleExterior
 export(String, FILE, "*.tscn") var to_scene = "res://scenes/levels/Temple interior.tscn"
 export(String) var spawnpoint = ''
 
-func _ready():
-	$to_inside.to_scene = to_scene
-	$to_inside.spawnpoint = spawnpoint
+#func _ready():
+	#$to_inside.to_scene = to_scene
+	#$to_inside.spawnpoint = spawnpoint
 	
-	Globals.prev_scene = get_tree().get_current_scene().get_name() #saves current scene as pervious scene
-	Globals.prev_scene_spawnpoint =$to_inside/spawnpoint.position #updates your position and saves
+	#Globals.prev_scene = get_tree().get_current_scene().get_name() #saves current scene as pervious scene
+	#Globals.prev_scene_spawnpoint =$to_inside/spawnpoint.position #updates your position and saves
 	# depreciated methods
 	#Globals.save_game()
 	#Globals.spawnpoint = Globals.spawnpoint #i dunno what this does but lets see what happens

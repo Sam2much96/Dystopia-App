@@ -585,7 +585,7 @@ func _player_connected(_id : int):
 	
 	Globals.current_level = "res://scenes/levels/Testing Scene.tscn"
 	# Someone connected, start the game!
-	var Map : PackedScene = Globals.Functions.LoadLargeScene(
+	var Map : PackedScene = Utils.Functions.LoadLargeScene(
 		Globals.current_level, 
 		Globals.scene_resource, 
 		Globals._o, 
@@ -710,9 +710,12 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 			
 			# Registers the Player Peer ID Locally & Create Frame Buffer
 			if not player_info["peer id"].has(id_as_string):
+				
+				# Refactor Using Simulation.gd
 				player_info["peer id"][id_as_string] = {
 				"node": [],
 				"position": i["peer id"][id_as_string]["position"], # updated positional data, 
+				"frames": i["frames"], #frame data
 				"hitpoints" : 3,
 				"facing": key,
 				"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
@@ -829,7 +832,7 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 		
 		#print("I: ",i) # for debug purposes only
 		
-		print (player_info["peer id"].keys()) #for debug purposes only
+		print_debug (player_info["peer id"].keys(), player_info["frames"]) #for debug purposes only
 		
 		
 		# Update Local Peer Data from peer Update

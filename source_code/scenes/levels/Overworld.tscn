@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scenes/levels/Tilemap_1_overworld.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/levels/ForestTilemap.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scenes/props/Grass.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/levels/VisibilityOptimizer.gd" type="Script" id=9]
 [ext_resource path="res://scenes/props/flowers.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/props/Temple exterior.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=15]
 [ext_resource path="res://scenes/UI & misc/Rain_Fx.tscn" type="PackedScene" id=26]
 [ext_resource path="res://scenes/levels/Overworld_Level_Properties.gd" type="Script" id=28]
@@ -97,9 +98,21 @@ scale = Vector2( 4.59821, 4.59821 )
 monitorable = false
 
 [node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="."]
+visible = false
 navpoly = SubResource( 1 )
 
 [node name="Outside" parent="." instance=ExtResource( 1 )]
+position = Vector2( -53.8173, -83.4771 )
+
+[node name="Temple" parent="Outside" instance=ExtResource( 11 )]
+position = Vector2( 576.354, 821.203 )
+scale = Vector2( 1.975, 1.975 )
+
+[node name="Exit_2" parent="Outside" instance=ExtResource( 6 )]
+position = Vector2( 224.493, 863.441 )
+rotation = 3.09728
+scale = Vector2( 1.61925, 2.04034 )
+to_scene = "res://scenes/levels/Temple interior.tscn"
 
 [node name="Outside City" parent="." instance=ExtResource( 5 )]
 position = Vector2( 12571.8, -3727.55 )
@@ -126,7 +139,7 @@ to_scene = "res://scenes/levels/Building1.tscn"
 position = Vector2( 3227.29, 527.001 )
 
 [node name="enemy_spawner" parent="." instance=ExtResource( 3 )]
-position = Vector2( 2579.53, 1086.12 )
+position = Vector2( 2522.96, 656.199 )
 _hitpoints = 1
 enemy_type = "Easy"
 spawn_count = 5

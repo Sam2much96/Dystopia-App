@@ -9,7 +9,7 @@
 # 
 #
 # Bugs
-# (1) FX doesnt center on player. FIx with RestaVectores
+# (1) FX doesnt center on player. FIx with RestaVectores ( Done)
 # *************************************************
 
 extends Node2D

@@ -121,8 +121,8 @@ var _direction_button_showing : bool
 
 func _enter_tree():
 	# Make Global Pointer
-	if GlobalInput.TouchInterface == null:
-		GlobalInput.TouchInterface = self
+	#if GlobalInput.TouchInterface == null:
+	GlobalInput.TouchInterface = self
 
 func _ready():
 	

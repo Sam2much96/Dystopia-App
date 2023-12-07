@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/items/enemy spawner.gd" type="Script" id=1]
 [ext_resource path="res://resources/FX/flame_fx_webp.webp" type="Texture" id=2]
-[ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=3]
 
 [sub_resource type="Animation" id=1]
 resource_name = "normal"
@@ -49,9 +48,6 @@ tracks/1/keys = {
 
 [node name="enemy_spawner" type="Position2D"]
 script = ExtResource( 1 )
-enabled = true
-enemy_spawn_1 = ExtResource( 3 )
-spawn_count = -1
 
 [node name="COOL_DOWN" type="Timer" parent="."]
 wait_time = 20.0

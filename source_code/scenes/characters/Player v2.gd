@@ -129,30 +129,10 @@ func _ready():
 	print_debug("Peer ID: ", peer_id)
 
 	# Create A Frame Buffer for Player Information
+	# From Simulaton
 	# Update Networking Player Info With Player Info
 	# Works
-	Networking.player_info["peer id"][peer_id] = {
-		"node": [],
-		"position": {"x":0, "y": 0 }, # Extend to Include Simulation Frame ID Data
-		"hitpoints" : 3,
-		"facing": "",
-		"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
-		"roll dir": [],
-		"destroyed": false,
-		"updates": [],  # Stores Present Update ID Across All Clients
-		"wallet addr": {Networking.cfg_player_name : Globals.address},
-		"asset id": {},
-		"smart contract": [], # Arrays As it will only be one Smart COntract
-		"kill Count": 0,
-		"inventory": {},
-		"velocity":0,
-		"rotation":0,
-		"firing":false,
-		"current_angle": 0,
-		"rewspawn_time":1000,
-		"hash" : ""
-		
-		}
+	Networking.player_info["peer id"][peer_id] = Simulation.player_info
 		
 	Networking.player_info["peer id"][peer_id] ["node"].append(self)
 	

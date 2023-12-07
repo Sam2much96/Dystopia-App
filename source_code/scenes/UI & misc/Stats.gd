@@ -135,10 +135,10 @@ func _update_quest_listing():
 # Connects to Inventory.remove item -> Stats.gd
 func _update_inventory_button_cache(item : String, amount : int) : # COde Bloc Called from inventroy singleton remove_item() method
 	# 
-	# What does this code bloc do?
+	# 
 	# Code Bloc is meant to update a pointer containing all Inventory items buttons and their related ammount
-	# This pointer is used to optimize a psudo-sorting algorithm needed for the Stats UI 
-	# To create inventroy items as buttons
+	# This Code Bloc is used to optimize a psudo-sorting algorithm needed for the Stats UI 
+	# 
 	# Ideally these buttons should be a texture reat with a number ount labeel, but that'll be for a later refactor
 	
 	var result

@@ -5,23 +5,26 @@
 # Comics V6
 # This is a plugin containing the comics bool page logic
 # A comic book module for Godot game engine.
-# I implemented A touch input manager here
-# *************************************************
-# Features
+# All Swipe Detection Logic are implemented in the Inputs sections
+# **************************************************************************************************
+#
+# Features:
+#
 #(1) Loads, Zooms and Drags Comic Pages
 #(2) Uses New multitouch gestures by implementing a touch input manager
 #(3) Decentralized Storage IPFS module (1/2)
 #(4) Swipe Gestures as Global Events (done)
 #(5) Uses Networking Timer as await parameters for changing Panel
-
+# **************************************************************************************************
 #
 # To DO:
+#
 # (0) Organize code for better readability (done)
 #(1) connect this script with  the dialogue singleton for translation and wordbubble fx co-ordination
 #(2) Update Logic to be used by Texture React nodes NFT
 # (3) Add more parameters to the drag() function to be reusable in other scripts (done)
 # (4) Copy NFT storage codes to save downloaded comic chapters locally. It'll optimize file sizes
-# (5) Implement State Machine (on It)
+# (5) Implement State Machine (1/4)
 # (6) Implement Extendible (NFT) drag and Drop (Done)
 		# Implemeny godot-rust-ipfs cat for steamlined downloads
 # (7) Implement Page state and Pages state 
@@ -29,21 +32,26 @@
 # (9) Dystopia App Swipe Gestures Using Swipe Detection
 # (10) Each page Should Have Zoom and Position Data Separate from Other Pages
 # (11) Use Polygon 2d instead of Animated sprite for comics pages
-# *************************************************
+# (12) Use Networking Timer as Regression code for Swipe End Position Detection
+# (13) Use Line2D as debug state to Debug Swipe Direction 
+# **************************************************************************************************
+#
 # Bugs:
+#
 # (1) it has a wierd updatable bug that's visible in the debug panel
 # (2) Center Page is buggy because Callibration is off Screen Center
 # (3) Drag and Drop across small distances is buggy (fixed)
 # (4) Set frame state is buggy when combine with swipe gestures (fixed)
 # (5) Callibration is off for Swipe Gestures
 # (6) Bug on Line 1408
-# *************************************************
+# (7) Buggy / Unimplemented State Machine
+# **************************************************************************************************
 
 
 
 extends Control
 
-
+class_name ComicsSingleton
 
 signal comics_showing
 signal loaded_comics 
@@ -182,7 +190,9 @@ const SWIPE_AWAIT = 1.9
 onready var _debug_= get_tree().get_root().get_node("/root/Debug")
 onready var cmx_root : Control = get_tree().get_nodes_in_group("Cmx_Root").pop_front()
 
-var _e : Timer = Timer.new()
+# Timer Needed for Detecting Swipe Stopped Directions
+#var _e : Timer = Timer.new() # Use Manual Timer
+onready var _e : Timer = $Timer# Use Manual Timer
 
 func _ready():
 	
@@ -198,8 +208,11 @@ func _ready():
 	
 	"Load ingame Comics"
 	# Works but Comics node has underlying bugs that need fixingx
-	# Not Working!
-	if Globals.curr_scene == "Outside" && _loaded_comics == false && comics_sprite == null:
+	# Loads GamePlay Comics from GameHUD Comics Instance
+	if (Globals.curr_scene == "Outside" && 
+	_loaded_comics == false && 
+	comics_sprite == null
+	):
 		print ("-----Loading GamePlay Comics-----")
 		comics_sprite =  Functions.load_comics(
 			comics[8], 
@@ -213,17 +226,19 @@ func _ready():
 			comics_placeholder
 			)
 
+		# Show Comics
 		Functions.show_comics(
 			comics_sprite, 
 			cmx_root, 
 			self
 		)
 		
+		# Boolean Checker
 		_loaded_comics =true
 		return _loaded_comics
 	
 	
-		
+	
 	
 	enabled = false
 	#target = Vector2() duplicate code 
@@ -234,6 +249,8 @@ func _ready():
 	# Make Timer Accessible to Swipe Class
 	Swipe._init_(_e)
 	
+	# Connect signals
+	# Signals are connected manually
 
 	
 	# Create HTTP Request Nodes
@@ -258,10 +275,14 @@ func _input(event):
 	
 	#print (event.is_action_pressed("next_panel") )
 	#print (SwipeLocked)
-	if event.is_action_pressed("reset"): # for reseting Comics FIlecheckers
-		_ready()
 	
-	if event.is_action_pressed("next_panel") && comics_sprite != null : # && enabled : #button controls
+	
+	#if event.is_action_pressed("reset"): # for reseting Comics FIlecheckers
+	#	_ready() # Depreciated
+	
+	# Button Controls
+	
+	if event.is_action_pressed("next_panel") && comics_sprite != null : # && enabled : 
 		" If Not on Comics Last Page"
 		if LastPage == false:
 			current_frame = next_panel(comics_sprite)
@@ -337,9 +358,9 @@ func _input(event):
 
 	# Handle Touch
 	"""
-	CONTROLS THE TOUCH INPPUT FOR THE COMICS NODE
+	TOUCH INPUT
 	"""
-	
+	# buggy
 	
 	
 	
@@ -406,6 +427,7 @@ func _input(event):
 	
 	#print("_state Debug: ",_state) #for debug purposes only
 	" Zoom 2"
+	# works
 	if event is InputEventScreenTouch :
 		
 		target =  event.get_position()
@@ -591,6 +613,9 @@ func _process(delta):
 			pass
 
 
+func _on_Timer_timeout():
+	
+	Swipe._on_Timer_timeout()
 
 func close_comic()-> void:
 	comics_sprite.queue_free() 
@@ -795,11 +820,17 @@ class Local extends Reference:
 
 
 
-class Swipe extends Reference:
-	# Bugs
+class Swipe : #extends Reference:
+	
+	
+	# Bugs:
+	
 	# (1) Print Overflow
 	# (2) Coflates Swipe and Touch Input simultaneously
 	# (3) Cannot be turned off 
+	# (4) Buggy Calibration on PC
+	# (5) Rewrite Class Methods into static functions for better readability
+	# (6) Update Documentation
 	
 	#**********Swipe Detection Direction Calculation Parameters************#
 	const swipe_start_position : Vector2 = Vector2()
@@ -819,16 +850,19 @@ class Swipe extends Reference:
 			# Add Swipe Detection Timer to Scene Tree
 			Comics_v6._comics_root.call_deferred('add_child',_e)
 
+			#Comics_v6.timer = _e # No Need
 
-	func _on_Timer_timeout():
+			# Connect Signals
+			
+	static func _on_Timer_timeout():
 		#if self.visible : # Only Swipe Detect once visible
-		emit_signal('swiped_canceled', swipe_start_position)
-		print ('on timer timeout: ',swipe_start_position) #for debug purposes delete later
+		Comics_v6.emit_signal('swiped_canceled', swipe_start_position)
+		print_debug ('on timer timeout: ',swipe_start_position) #for debug purposes delete later
 
 
-	func connect_signals(_c : Timer, _e : Timer)-> bool:
-			return bool(_c.connect('Timeout',_e,_on_Timer_timeout())) #connect timer to node with code
-#			return true
+	#func connect_signals(_c : Timer, _e : Timer)-> bool:
+	#		return bool(_c.connect('Timeout',_e,_on_Timer_timeout())) #connect timer to node with code
+#	#		return true
 
 	
 	#Buggy swipe direction
@@ -1472,11 +1506,11 @@ static func load_local_image_texture_from_global(node : TextureRect, _local_imag
 button connections 
 """
 	
-static func mouse_entered():
-	print(111111)
+#static func mouse_entered():
+#	print(111111)
 
-static func mouse_exited():
-	print(2222)
+#static func mouse_exited():
+#	print(2222)
 
 
 

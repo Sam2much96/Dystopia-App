@@ -38,8 +38,7 @@ The game menu script.
 """
 
 enum { SHOWING, HIDDEN, LOADING}
-#func _enter_tree():
-	#hide()
+
 export (String) var menu_state
 
 
@@ -63,10 +62,9 @@ onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit"
 # Auto Scroll with Swipe Gestures
 onready var scroller : ScrollContainer= get_node("MarginContainer/ScrollContainer")
 
-
-
-
 onready var MenuButtons : Array = [comics,new_game, continue_game, _multiplayer, anime,practice, wallet_,controls, quit]
+
+var counter : int = 0 # Stopis ooverflow of Upscaling Method
 
 func _enter_tree():
 	GlobalInput.menu = self
@@ -249,21 +247,23 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 
 #Handles Displaying the menu
 func _menu_showing(): #Broken funtions #rewrite with state machine
+	"Menu Logic"
+	
+	
 	enabled = true 
 	
-	print_debug("Global Screen Orientatin", Globals.screenOrientation)# For Debug Purposes only
+	if counter < 2: # Stops overflow of Menu Logic freeing up the main thread for oher core tasks
+		"UPSCALING"
+		print_debug("Global Screen Orientatin", Globals.screenOrientation)# For Debug Purposes only
+		
+		#Quick Fix for Upscaing
+		if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
+			upscale()
+		emit_signal("menu_showing")
+		counter += 1
 	
-	#Quick Fix for Upscaing
-	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
-		upscale()
 	
-	
-	show()
-
-	#set_focus_mode(2)
-	
-	emit_signal("menu_showing")
-	return
+	return show()
 
 #Handles Hiding the menu
 func _menu_not_showing():

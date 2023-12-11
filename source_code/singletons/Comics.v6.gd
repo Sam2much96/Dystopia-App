@@ -17,7 +17,7 @@
 #(5) Uses Networking Timer as await parameters for changing Panel
 # **************************************************************************************************
 #
-# To DO:
+# To-Do:
 #
 # (0) Organize code for better readability (done)
 #(1) connect this script with  the dialogue singleton for translation and wordbubble fx co-ordination
@@ -34,6 +34,9 @@
 # (11) Use Polygon 2d instead of Animated sprite for comics pages
 # (12) Use Networking Timer as Regression code for Swipe End Position Detection
 # (13) Use Line2D as debug state to Debug Swipe Direction 
+# (14) Connect to Global Input Singleton
+# (15) Add FileChecks to comics scenes as regression checks called via Wallet Singleton functions
+# (16) Should SHow Swipe Paths
 # **************************************************************************************************
 #
 # Bugs:
@@ -1241,7 +1244,13 @@ class Functions extends Reference:
 
 
 	#******************************Drag 1 is Buggy , v2 works Best**********************#
-	static func drag(_target : Vector2, _position : Vector2, _body :  KinematicBody2D, center : Vector2, target_memory_x : Array, target_memory_y: Array)-> void: #pass this method some parmeters
+	static func drag(_target : Vector2, 
+	_position : Vector2, 
+	_body :  KinematicBody2D, 
+	center : Vector2, 
+	target_memory_x : Array, 
+	target_memory_y: Array
+	)-> void: 
 		#add more parameters
 	# Input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases 
 		print ("-----------Dragging------------")
@@ -1259,14 +1268,6 @@ class Functions extends Reference:
 		#for large size drags
 		if abs(_position.distance_to(_target)) > 200: #if its far...
 			##use suma vectores function for vector maths
-			#_body.move_and_slide(center) #move and slide to center
-			#print (111111111111111)
-			#print (_body.position, "////", center)# for debug purposes only
-			
-			
-			#_body.position = center
-				
-			#_body.position =  $Position2D.position# center
 			
 			_body.move_and_slide(center)
 			#print ('moving to center') #for debug purposes only
@@ -1351,15 +1352,6 @@ class Functions extends Reference:
 						
 						#moves to a predicted presaved axis
 						_body.move_and_slide(adjusted_target)
-						#_body.move_and_slide()
-					
-
-				#code base is too long to debug. Simplify
-				# Bugs out
-				# Disabling for debugging
-				#if not abs(target_memory_y[int(target_memory_y.size()) - 2] - x) && abs(target_memory_x[int(target_memory_x.size()) - 2] - x) > 3 :
-				
-				#	_body.move_and_slide(_target)
 
 
 
@@ -1481,9 +1473,6 @@ func _on_Rotate_pressed():#Page Rotation #Rewrite this function as a module
 			comics_placeholder.set_position ( center)
 
 
-
-
-
 static func load_local_image_texture_from_global(node : TextureRect, _local_image_path: String, expand: bool, stretch_mode: int)-> void:
 	#print ("NFT debug: ", NFT) #for debug purposes only
 	var texture = ImageTexture.new()
@@ -1505,49 +1494,22 @@ static func load_local_image_texture_from_global(node : TextureRect, _local_imag
 """
 button connections 
 """
-	
-#static func mouse_entered():
-#	print(111111)
-
-#static func mouse_exited():
-#	print(2222)
-
 
 
 func _on_chap_1_pressed():
 	print ("loading chapter 1")
+	_load_comics(1)
 	
-	# works
-	# Make Comic a global object
-	comics_sprite =  Functions.load_comics(
-		comics[1], 
-		memory,
-		get_tree(),
-		enabled, 
-		can_drag, 
-		zoom,
-		current_frame, 
-		Kinematic_2d, 
-		comics_placeholder
-		)
-
-	Functions.show_comics(
-		comics_sprite, 
-		cmx_root, 
-		self
-		)
 
 func _on_chap_2_pressed(): #Simplify this function
 	print ("loading chapter 2")
 	# works
-	Functions.show_comics(Functions.load_comics(comics[2], memory,get_tree(),enabled, can_drag, zoom,current_frame, Kinematic_2d, comics_placeholder), cmx_root, self)
-
+	_load_comics(2)
 
 func _on_chap_3_pressed(): #Simplify this function
 	print ("loading chapter 3")
 	# works
-	Functions.show_comics(Functions.load_comics(comics[3], memory,get_tree(),enabled, can_drag, zoom,current_frame, Kinematic_2d, comics_placeholder), cmx_root, self)
-
+	_load_comics(3)
 
 
 
@@ -1555,34 +1517,37 @@ func _on_chap_4_pressed():
 	print ("loading chapter 4")
 	
 	# works
-	Functions.show_comics(Functions.load_comics(comics[4], memory,get_tree(),enabled, can_drag, zoom,current_frame, Kinematic_2d, comics_placeholder), cmx_root, self)
-
+	_load_comics(4)
 
 
 func _on_chap_5_pressed():
 	print ("loading chapter 5")
 	# works
-	Functions.show_comics(Functions.load_comics(comics[5], memory,get_tree(),enabled, can_drag, zoom,current_frame, Kinematic_2d, comics_placeholder), cmx_root, self)
-
+	_load_comics(5)
 
 
 func _on_chap_6_pressed():
 	print ("loading chapter 6")
 	# works
-	Functions.show_comics(Functions.load_comics(comics[6], memory,get_tree(),enabled, can_drag, zoom,current_frame, Kinematic_2d, comics_placeholder), cmx_root, self)
-
+	_load_comics(6)
 
 func _on_chap_7_pressed():
 	print ("loading chapter 7")
 	# works
-	Functions.show_comics(Functions.load_comics(comics[7], memory,get_tree(),enabled, can_drag, zoom,current_frame, Kinematic_2d, comics_placeholder), cmx_root, self)
+	_load_comics(7)
 
+	# Polymorphic synamic code for loading Conics Sprite via Static functions
+func _load_comics(chapter_no : int):
+	Functions.show_comics(
+		Functions.load_comics(comics[chapter_no], 
+		memory,get_tree(),
+		enabled, 
+		can_drag, 
+		zoom,current_frame, 
+		Kinematic_2d, 
+		comics_placeholder
+		), cmx_root, self)
 
-#func create_comics_directory(path_to : String)-> void:
-## Creates a Comics folder.
-#	if not FileDirectory. dir_exists(path_to):
-#		FileDirectory.make_dir(path_to)
-#	else: return 
 
 func connect_signals()-> bool: #connects all required signals in the parent node
 	

@@ -37,6 +37,7 @@
 # (14) Connect to Global Input Singleton
 # (15) Add FileChecks to comics scenes as regression checks called via Wallet Singleton functions
 # (16) Should SHow Swipe Paths
+# (17) Comics Singleton is now a global object
 # **************************************************************************************************
 #
 # Bugs:

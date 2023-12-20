@@ -149,14 +149,15 @@ func _on_skip_pressed():
 
 
 
-func Video_Stream(stream, os: String): #This code works
+static func Video_Stream(stream : VideoStreamTheora , os: String, video_parent : Control, videoplayer : VideoPlayer): #This code works
 	#Use Position 2d node for Viewport Calibrations
 	
 	if os == "Android":
 		videoplayer.expand = false
 		
 		#True Center of Screen
-		self.set_position(Vector2(-(Globals.center_of_viewport.x),300))
+		# b uggy 
+		video_parent.set_position(Vector2(-(Globals.center_of_viewport.x),300))
 		#videoplayer.set_position($Position2D.position) #Video Player Position: (-1334.26001, 412.127014)
 
 		
@@ -175,7 +176,8 @@ func Video_Stream(stream, os: String): #This code works
 		videoplayer.visible = true
 		videoplayer.set_stream(stream) 
 		videoplayer.play() 
-		cinematic_on= true
+		
+		#cinematic_on= true
 		
 
 
@@ -215,8 +217,8 @@ func play_opening_cinematic():
 	#vid_stream = Globals.cinematics #ResourceLoader.load_interactive(cinematic [0])
 	
 	#videoplayer.expand = true
-	
-	Video_Stream(Globals.cinematics, Globals.os)
+	#stream : VideoStreamTheora , os: String, video_parent : Control, videoplayer : VideoPlayer
+	Video_Stream(Globals.cinematics, Globals.os, self, videoplayer)
 	
 	return Music.play_track(Music.wind_sfx[0])
 
@@ -348,7 +350,7 @@ func stream_yt_video():
 	# Play Downloaded Video file
 	var stream := VideoStreamWebm.new()
 	stream.set_file(cinematic["Test"])
-	Video_Stream(stream, Globals.os)
+	#Video_Stream(stream, Globals.os, self, videoplayer)
 
 func _on_watch_anime_pressed():
 	# Get Animated Pilot Ep

@@ -49,6 +49,7 @@
 # (5) Callibration is off for Swipe Gestures
 # (6) Bug on Line 1408
 # (7) Buggy / Unimplemented State Machine
+# (8) Does not Save Proper Swiper Start Position thus breaking the Positional Calibration when ending detection
 # **************************************************************************************************
 
 
@@ -129,13 +130,12 @@ var can_drag : bool = false
 var zoom : bool = false
 var comics_placeholder : Control = Control.new()
 
-#onready var animation = $AnimationPlayer 
 var buttons
 
 var Kinematic_2d :  KinematicBody2D = KinematicBody2D.new()  #the kinematic 2d node for drag and drop
 #onready var camera2d = $Kinematic_2D/placeholder/Camera2D 
 var _position : Vector2 
-var center : Vector2
+var center : Vector2 # should be used in a center comics method
 var target =Vector2(0,0) 
 onready var origin : Vector2 = get_viewport_rect().size/2#set origin point to the center of the viewport
 
@@ -173,21 +173,19 @@ var SwipeSpeed : Vector2
 
 
 
-"Rewriting As a Fininte State Machine"
-
-enum {START_SWIPE, END_SWIPE, DOWNLOAD_IMAGE, NEXT_PANEL, 
-PREV_PANEL, DRAG, LOAD, ZOOM ,SET_FRAME,IDLE ,SWIPE_UP,
-SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT, NOT_SWIPING, ERROR
-} 
+#"Rewriting As a Fininte State Machine"
+# Unimplemented State Machine
+#enum {START_SWIPE, END_SWIPE, DOWNLOAD_IMAGE, NEXT_PANEL, 
+#PREV_PANEL, DRAG, LOAD, ZOOM ,SET_FRAME,IDLE ,SWIPE_UP,
+#SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT, NOT_SWIPING, ERROR
+#} 
 
 # Swipe Direction Enum (Struct)
 #enum { } 
-export (String, 'Up', "Down", "Left", "Right", "Idle") var direction_var ="Idle"
-#var direction_var : String = "idle"
 
-#var dir_var = NOT_SWIPING
+#export (String, 'Up', "Down", "Left", "Right", "Idle") var direction_var ="Idle"
 
-var _state = IDLE
+#var _state = IDLE
 
 const SWIPE_AWAIT = 1.9
 
@@ -195,7 +193,7 @@ onready var _debug_= get_tree().get_root().get_node("/root/Debug")
 onready var cmx_root : Control = get_tree().get_nodes_in_group("Cmx_Root").pop_front()
 
 # Timer Needed for Detecting Swipe Stopped Directions
-#var _e : Timer = Timer.new() # Use Manual Timer
+
 onready var _e : Timer = $Timer# Use Manual Timer
 
 func _ready():
@@ -211,13 +209,13 @@ func _ready():
 	
 	
 	"Load ingame Comics"
-	# Works but Comics node has underlying bugs that need fixingx
+	# 
 	# Loads GamePlay Comics from GameHUD Comics Instance
-	if (Globals.curr_scene == "Outside" && 
+	if (Globals.curr_scene == "Overworld" && 
 	_loaded_comics == false && 
 	comics_sprite == null
 	):
-		print ("-----Loading GamePlay Comics-----")
+		print_debug("-----Loading GamePlay Comics-----")
 		comics_sprite =  Functions.load_comics(
 			comics[8], 
 			memory,
@@ -254,9 +252,12 @@ func _ready():
 	Swipe._init_(_e)
 	
 	# Connect signals
+	_e.connect("timeout",self, "_on_Timer_timeout")
 	# Signals are connected manually
-
-	
+	# Redundancy Code
+	if not _e.is_connected("timeout",self, "_on_Timer_timeout"):
+		push_error("Swipe Timer Signals Are Disconnected")
+		
 	# Create HTTP Request Nodes
 	# Only create & use these nodes it Dowloading content
 	
@@ -374,10 +375,7 @@ func _input(event):
 	# Switched between True and False
 	if event is InputEventScreenDrag : 
 		if comics_sprite != null : 
-		#print (current_comics) # for debug purposes only
-			#can_drag = true
 			Functions.drag_v2(comics_sprite,event.get_position())
-			#Functions.drag(event.position, event.position, Kinematic_2d,center, target_memory_x, target_memory_y)
 
 
 	"Global Swipe Detection"
@@ -409,15 +407,15 @@ func _input(event):
 			
 			
 			"Detect Swipe State"
-			_state = Swipe._end_detection(
+			Swipe._end_detection(
 				event.position, 
 				Vector2(0,0), 
-				direction_var,
-				_state, 
+				#direction_var,
+				#_state, 
 				_e, 
 				swipe_target_memory_x, 
 				swipe_target_memory_y, 
-				Swipe.swipe_start_position, 
+				event.position, #Swipe.swipe_start_position, 
 				swipe_parameters,  
 				x1,
 				x2,
@@ -520,105 +518,11 @@ func _process(delta):
 				' Zoom: ',zoom, 'cp: ', 'cs: ', comics_sprite
 				)
 
-	"Unused State Machine implementation"
-	match _state:
-		SWIPE_UP:
-			direction_var = "Up"
-			# Play Animation
-			#return GlobalAnimation.get_child(0).play("SWIPE_UP")
-		SWIPE_DOWN:
-			
-			direction_var = "Down"
-			
-			pass
-		SWIPE_LEFT:
-			direction_var = "Left"
-			# Play Animation
-			#GlobalAnimation.get_child(0).play("SWIPE_LEFT")
-			#return prev_panel()  
-			#return GlobalAnimation.get_child(0).queue("RESET")  
-			
-			#pass
-		SWIPE_RIGHT:
-			
-			direction_var ="Right"
-			
-			# Play Animation
-			#GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
-			#return next_panel()
-			#return GlobalAnimation.get_child(0).queue("RESET")
-		ERROR:
-			pass
-		IDLE:
-			pass
-		START_SWIPE:
-			pass
-		END_SWIPE:
-			pass
-		DOWNLOAD_IMAGE:
-			
-			" Downloads Comics "
-			#Runs Directory and File Checks for Comic Nodes & Images
-			
-			# Check if comics folder exists locally
-			#if not FileDirectory.dir_exists(comic_dir):
-			#	"Creates Comics Directory if it doesn't exist"
-			#	create_comics_directory(comic_dir)
-			
-			# Creates Comic Chapter Paths
-			#if not FileDirectory.dir_exists(Local.comics_local_path[1]):
-			#	create_comics_directory(Local.comics_local_path[1])
-			#	pass
-			
-			if !Networking.good_internet && !Networking.Timeout:
-				Networking._check_if_device_is_online(Swipe.q)
-				Networking.start_check(4)
-			
-			# If local Comics Doesnt exist
-			
-			if not FileCheck1.file_exists(Local.comics_["Chap1 Panel"])  && Networking.good_internet:
-				#GKHGHGHKGK
-				# download Comics from IPFS using Networking Gateway
-				"IPFS Downloads"
-				
-				# Downloads Comic scenes and Imgs from IPFS
-				#Networking.url = comics_[0]
-				
-				#comics_IPFS
-				Networking. _connect_to_ipfs_gateway(false,Online.comics_IPFS[1], Networking.gateway[2], Swipe.q2) # Downloads Spritesheet  
-				Networking. _connect_to_ipfs_gateway(false,Online.comics_IPFS[3], Networking.gateway[2], Swipe.q3)  # Downloads Scene
-			#	return
-			# Check if image is available for chapter 1
-			if FileCheck1.file_exists(Local.comics_["Chap1 Panel"]) :
-				# load the Comic if it's available
-				print ("Comic is Available Locally. Loading....Placeholder")
-				pass
-			
-			# If not, download spritesheet from IPFS
-			
-			
-			# check if CHapter 1 scene exists
-			
-			# Check if chapter 1 Comics and Scene are available
-			
-			# load chapter 1 scene from local memory if all are true
-			
-		NEXT_PANEL:
-			pass
-		PREV_PANEL:
-			pass
-		DRAG:
-			pass
-		LOAD:
-			
-			
-			#return Functions.load_comics(current_chapter)
-			
-			pass
-
 
 func _on_Timer_timeout():
-	
+	"""
+	Triggers A Timer Lag between Swipe Input and Swipe Registration
+	"""
 	Swipe._on_Timer_timeout()
 
 func close_comic()-> void:
@@ -635,7 +539,12 @@ func close_comic()-> void:
 func next_panel(comics_sprite : AnimatedSprite) -> int:
 	
 # Works
-	if !can_drag && !SwipeLocked && Input.is_action_pressed("next_panel") && comics_sprite != null: #&& !Timemout:
+	if (
+		!can_drag && 
+		!SwipeLocked && 
+		Input.is_action_pressed("next_panel") && 
+		comics_sprite != null
+	): 
 	#if comics_sprite != null && !Timemout:
 		
 		#Networking.start_check(1)
@@ -792,7 +701,53 @@ class Online extends Reference:
 		if body.empty():
 			push_error("Problem downloading Image ")
 
-
+	static func download_comics(FileCheck1 : File):
+		
+#			" Downloads Comics "
+#			#Runs Directory and File Checks for Comic Nodes & Images
+#			
+#			# Check if comics folder exists locally
+#			#if not FileDirectory.dir_exists(comic_dir):
+#			#	"Creates Comics Directory if it doesn't exist"
+#			#	create_comics_directory(comic_dir)
+			
+			# Creates Comic Chapter Paths
+			#if not FileDirectory.dir_exists(Local.comics_local_path[1]):
+			#	create_comics_directory(Local.comics_local_path[1])
+			#	pass
+			
+			if !Networking.good_internet && !Networking.Timeout:
+				Networking._check_if_device_is_online(Swipe.q)
+				Networking.start_check(4)
+			
+			# If local Comics Doesnt exist
+			
+			if not FileCheck1.file_exists(Local.comics_["Chap1 Panel"])  && Networking.good_internet:
+				#GKHGHGHKGK
+				# download Comics from IPFS using Networking Gateway
+				"IPFS Downloads"
+				
+				# Downloads Comic scenes and Imgs from IPFS
+				#Networking.url = comics_[0]
+				
+				#comics_IPFS
+				Networking. _connect_to_ipfs_gateway(false,Online.comics_IPFS[1], Networking.gateway[2], Swipe.q2) # Downloads Spritesheet  
+				Networking. _connect_to_ipfs_gateway(false,Online.comics_IPFS[3], Networking.gateway[2], Swipe.q3)  # Downloads Scene
+			#	return
+			# Check if image is available for chapter 1
+			if FileCheck1.file_exists(Local.comics_["Chap1 Panel"]) :
+				# load the Comic if it's available
+				print ("Comic is Available Locally. Loading....Placeholder")
+				pass
+			
+			# If not, download spritesheet from IPFS
+			
+			
+			# check if CHapter 1 scene exists
+			
+			# Check if chapter 1 Comics and Scene are available
+			
+			# load chapter 1 scene from local memory if all are true
 
 class Local extends Reference:
 
@@ -832,7 +787,8 @@ class Swipe : #extends Reference:
 	# (1) Print Overflow
 	# (2) Coflates Swipe and Touch Input simultaneously
 	# (3) Cannot be turned off 
-	# (4) Buggy Calibration on PC
+	# (4) Buggy Calibration (1/2)
+	#	# - Adding Calibration Debug by using a line2d node + Touch Interface doces 
 	# (5) Rewrite Class Methods into static functions for better readability
 	# (6) Update Documentation
 	
@@ -842,21 +798,20 @@ class Swipe : #extends Reference:
 	const MAX_DIAGONAL_SLOPE : float = 1.3
 
 	" Swipe Direction Detection"
-	#var _e = Timer.new()
+	# Configures Swipe Timer settings
 	static func _init_(_e : Timer): # Not tested yet
 			
 			#for swipe detection
-			_e.one_shot = true
-			_e.wait_time = 0.5
+			_e.one_shot = false
+			_e.wait_time = 3
 			_e.name = str ('swipe detection timer')
 			
 			
 			# Add Swipe Detection Timer to Scene Tree
+			
 			Comics_v6._comics_root.call_deferred('add_child',_e)
 
-			#Comics_v6.timer = _e # No Need
-
-			# Connect Signals
+			
 			
 	static func _on_Timer_timeout():
 		#if self.visible : # Only Swipe Detect once visible
@@ -877,6 +832,7 @@ class Swipe : #extends Reference:
 		swipe_target_memory_y.clear()
 
 
+	# Bug: Does not Save Proper Swiper Start Position thus breaking the Positional Calibration when ending detection
 	static func _start_detection(
 		_position : Vector2, 
 		enabled: bool, 
@@ -897,16 +853,17 @@ class Swipe : #extends Reference:
 			
 			
 			_e.start()
-			print_debug ('started swipe detection ') #for debug purposes delete later
+			#print_debug ('started swipe detection ') #for debug purposes delete later
 	
 	
-	"Only Two Swipe Directions Are Currently Implemented"
-	# Contains a Calibration Bug
+	"Only Two Swipe Directions Are Currently Implemented" # (fixing)
+	# Contains a Calibration Bug (fixing)
+	# Swipe start position is buggy
 	static func _end_detection(
 		__position : Vector2, 
 		direction : Vector2, 
-		direction_var : String, 
-		_state : int, 
+		#direction_var : String, 
+		#_state : int, 
 		_e : Timer, 
 		swipe_target_memory_x : Array, 
 		swipe_target_memory_y : Array, 
@@ -924,21 +881,30 @@ class Swipe : #extends Reference:
 		SWIPE CALIBRATOR
 		
 		"""
-			
-		if round(direction.x) == -1: # Doesnt work
-			print('left swipe 1') #for debug purposes
+		# Requires Refactoring , Better Calibration, Proper Documentation
+		
+		#print_debug(direction,
+		#__position,
+		#swipe_start_position # swipe start position is buggy
+		#)
+		
+		"Calibration Logic"
+		
+		#if round(direction.x) == -1: # Doesnt work
+		#	print('left swipe 1') #for debug purposes
 
 			
-			# Play Animation
-			GlobalAnimation.get_child(0).play("SWIPE_LEFT")
-			return GlobalAnimation.get_child(0).queue("RESET")
-			
-			
+		#	# Play Animation
+		#	GlobalAnimation.get_child(0).play("SWIPE_LEFT")
+		#	return GlobalAnimation.get_child(0).queue("RESET")
+		
+		# Horizontal Calculation
+		
 		if round(direction.x) == 1: # works
-			print('left swipe 1') #for debug purposes
+			print_debug('left swipe 1') #for debug purposes
 			
 
-			direction_var = "Left"
+			#direction_var = "Left"
 			
 			
 			
@@ -950,7 +916,7 @@ class Swipe : #extends Reference:
 			next_panel()
 
 
-			return _state
+			return 0
 		
 		"Up and Down"
 		
@@ -959,7 +925,7 @@ class Swipe : #extends Reference:
 			print (" recalibrating to right swipe")
 			#next_panel()
 			
-			direction_var = "Right"
+			#direction_var = "Right"
 			
 			
 			# Play Animation
@@ -972,7 +938,7 @@ class Swipe : #extends Reference:
 			
 			#if Globals.curr_scene == "Comics____2":
 			
-			return _state
+			return 0
 		
 		if -sign(direction.y)  > swipe_parameters: # Doesnt work
 			print('up swipe 1') #for debug purposes
@@ -992,14 +958,20 @@ class Swipe : #extends Reference:
 		_e.stop()
 		
 		#Works
-		if swipe_target_memory_x.size() && swipe_target_memory_y.size() >= 3 && swipe_target_memory_x.pop_back() != null:
+		if (
+			swipe_target_memory_x.size() >= 3 && 
+			swipe_target_memory_y.size() >= 3  
+			#swipe_target_memory_x.pop_back() != null
+			
+			):
+			
 			x1 = swipe_target_memory_x.pop_front()
 			x2  = swipe_target_memory_x.pop_back()
 			
 			y1 = swipe_target_memory_y.pop_front()
 			y2  = swipe_target_memory_y.pop_back()
 			
-			#print ("Swipe Detection Debug: ",x1,"/",x2,"/",y1,"/",y2,"/", swipe_target_memory_x.size()) #For Debug purposes only 
+			#print_debug ("Swipe Detection Debug: ",x1,"/",x2,"/",y1,"/",y2,"/", swipe_target_memory_x.size()) #For Debug purposes only 
 			
 			#separate x & y position calculations for x and y swipes
 			#
@@ -1008,7 +980,7 @@ class Swipe : #extends Reference:
 				
 				#calculate averages got x and y
 				
-				var x_average: int = Globals.calc_average(swipe_target_memory_x)
+				var x_average: int = Utils.calc_average(swipe_target_memory_x)
 				
 				print_debug ("X average: ",x_average)
 				print (x1, "/",x2)
@@ -1022,7 +994,7 @@ class Swipe : #extends Reference:
 			
 			"Vertical Swipe"
 			if y1 && y2 != null && swipe_target_memory_y.size() > 2:
-				var y_average: int = Globals.calc_average(swipe_target_memory_y)
+				var y_average: int = Utils.calc_average(swipe_target_memory_y)
 				
 				#print ("Y average: ",y_average) #*********For Debug purposes only
 				#print (y1, "/",y2) #*********For Debug purposes only
@@ -1041,15 +1013,13 @@ class Swipe : #extends Reference:
 				return
 			if abs (direction.x) > abs(direction.y):
 				
-				print ('Direction on X: ', direction.x, "/", direction.y) #horizontal swipe debug purposs
+				print_debug ('Direction on X: ', direction.x, "/", direction.y) #horizontal swipe debug purposs
 			if -sign(direction.x) < Swipe.swipe_parameters:
-				print('left swipe') #for debug purposes
+				print_debug('left swipe') #for debug purposes
 				
-				if Globals.curr_scene == "Comics____2":
-					_state = SWIPE_LEFT
 			
 			if -sign(direction.x) > Swipe.swipe_parameters:
-				print('right swipe') #for debug purposes
+				print_debug('right swipe') #for debug purposes
 				
 				# Play Animation
 				return GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
@@ -1065,7 +1035,7 @@ class Swipe : #extends Reference:
 			if -sign(direction.y) < -Swipe.swipe_parameters:
 				print('up swipe 2') #for debug purposes
 				
-				direction_var = "Up"
+				#direction_var = "Up"
 				
 				
 				# Play Animation

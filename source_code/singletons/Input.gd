@@ -178,18 +178,18 @@ func _input(event):
 	#'AutoScroller'
 	# Implemented but Requires Proper Swipe Gesture Callibration
 	# 
-
-	if Comics_v6._state == Comics_v6.SWIPE_RIGHT:
+	# Depreciated State Machibne
+	#if Comics_v6._state == Comics_v6.SWIPE_RIGHT:
 		
 		
 		# Scroll Down
 		#Game_Menu.scroll(false, true,scroller)
-		pass
-	if Comics_v6._state == Comics_v6.SWIPE_DOWN:
+	#	pass
+	#if Comics_v6._state == Comics_v6.SWIPE_DOWN:
 		
 		# Scroll Up
 		#Game_Menu.scroll(true, true,scroller)
-		pass
+	#	pass
 
 	if input_buffer.empty() == true && pressed:
 		input_buffer.append(_state)

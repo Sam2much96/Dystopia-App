@@ -15,7 +15,7 @@
 
 #Bugs 
 # (1) Buggy on Screen Orientation Rotation
-# (2) Implements Swipe Gestures for Auto Scroll (fixed)
+# (2) Implements Swipe Gestures for Auto Scroll using refactores swipe detection
 # (3) Spagetti code 
 # (5) Should implemente Touch Input without emulation
 # *************************************************
@@ -151,18 +151,18 @@ func _input(event): #Toggles menu visibility on/off
 	# Connects to Global Comics Swipe Feature
 	#'AutoScroller'
 	# Implemented but Requires Proper Swipe Gesture Callibration
-	# 
+	# Depreciated until Swipe Gestures is refactored
 
-	if Comics_v6._state == Comics_v6.SWIPE_RIGHT:
+	#if Comics_v6._state == Comics_v6.SWIPE_RIGHT:
 		
-		# Scroll Down
-		Utils.Screen.scroll(false, true,scroller)
-	elif Comics_v6._state == Comics_v6.SWIPE_DOWN:
-		
+	#	# Scroll Down
+	#	Utils.Screen.scroll(false, true,scroller)
+	#elif Comics_v6._state == Comics_v6.SWIPE_DOWN:
+	#	
 		# Scroll Up
-		Utils.Screen.scroll(true, true,scroller)
+	#	Utils.Screen.scroll(true, true,scroller)
 		
-	else: pass
+	#else: pass
 
 
 func _on_continue_pressed():

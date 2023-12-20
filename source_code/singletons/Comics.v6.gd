@@ -194,7 +194,8 @@ onready var cmx_root : Control = get_tree().get_nodes_in_group("Cmx_Root").pop_f
 
 # Timer Needed for Detecting Swipe Stopped Directions
 
-onready var _e : Timer = $Timer# Use Manual Timer
+#onready var _e : Timer = $Timer# Use Manual Timer
+onready var _e : Timer = Timer.new()
 
 func _ready():
 	
@@ -207,37 +208,6 @@ func _ready():
 	
 	
 	
-	
-	"Load ingame Comics"
-	# 
-	# Loads GamePlay Comics from GameHUD Comics Instance
-	if (Globals.curr_scene == "Overworld" && 
-	_loaded_comics == false && 
-	comics_sprite == null
-	):
-		print_debug("-----Loading GamePlay Comics-----")
-		comics_sprite =  Functions.load_comics(
-			comics[8], 
-			memory,
-			get_tree(),
-			enabled, 
-			can_drag, 
-			zoom,
-			current_frame, 
-			Kinematic_2d, 
-			comics_placeholder
-			)
-
-		# Show Comics
-		Functions.show_comics(
-			comics_sprite, 
-			cmx_root, 
-			self
-		)
-		
-		# Boolean Checker
-		_loaded_comics =true
-		return _loaded_comics
 	
 	
 	
@@ -410,12 +380,10 @@ func _input(event):
 			Swipe._end_detection(
 				event.position, 
 				Vector2(0,0), 
-				#direction_var,
-				#_state, 
 				_e, 
 				swipe_target_memory_x, 
 				swipe_target_memory_y, 
-				event.position, #Swipe.swipe_start_position, 
+				Swipe.swipe_start_position, 
 				swipe_parameters,  
 				x1,
 				x2,
@@ -801,6 +769,10 @@ class Swipe : #extends Reference:
 	# Configures Swipe Timer settings
 	static func _init_(_e : Timer): # Not tested yet
 			
+			# Redundancy Code
+			if _e == null: # Error Catcher
+				_e = Timer.new()
+			
 			#for swipe detection
 			_e.one_shot = false
 			_e.wait_time = 3
@@ -1083,7 +1055,8 @@ class Functions extends Reference:
 	
 	static func show_comics (comics_chap : Node, cmx_root : Control, comic_main  )-> Control:
 		comic_main.emit_signal("loaded_comics")
-		comic_main.add_child(comics_chap)
+		#comic_main.add_child(comics_chap)
+		comic_main.call_deferred("add_child", comics_chap)
 		comic_main._loaded_comics = true
 		return cmx_root
 	

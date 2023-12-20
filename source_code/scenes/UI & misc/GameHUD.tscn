@@ -4,8 +4,8 @@
 [ext_resource path="res://scenes/UI & misc/Stats.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/UI & misc/StatusText.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/UI & misc/Healthbar.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/UI & misc/OverworldComics.gd" type="Script" id=5]
 [ext_resource path="res://scenes/UI & misc/ingame_menu.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/UI & misc/Comics.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/UI & misc/TouchScreen HUD.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/UI & misc/GameHUD.gd" type="Script" id=9]
 
@@ -28,16 +28,15 @@ margin_bottom = 265.0
 [node name="Healthbar" parent="." instance=ExtResource( 4 )]
 margin_right = 14.0
 
+[node name="Comics" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 5 )
+
 [node name="Menu " parent="." instance=ExtResource( 6 )]
 margin_left = 54.6968
 margin_top = 65.2761
 margin_right = 1236.7
 margin_bottom = 664.276
-
-[node name="Comics" parent="." instance=ExtResource( 7 )]
-margin_left = -20.0
-margin_top = 44.0
-margin_right = -20.0
-margin_bottom = 44.0
 
 [node name="TouchInterface" parent="." instance=ExtResource( 8 )]

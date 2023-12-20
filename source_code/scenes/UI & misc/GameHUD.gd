@@ -41,6 +41,7 @@ onready var _Comics = Comics_v6 #$Comics
 onready var _Stats : Stats = $Stats
 onready var _Status_text : StatusText = $Status_text
 
+onready var ingame_comics_placeholer = $Comics
 #enum {RESET, INTERRACT, STATUS, COMICS}
 
 onready var children : Array = [menu, TouchInterface,_Comics, _Stats, _Status_text]
@@ -49,7 +50,8 @@ onready var children : Array = [menu, TouchInterface,_Comics, _Stats, _Status_te
 #	pass
 
 func _ready():
-	pass
+	# make self Global
+	GlobalInput.gameHUD = self
 
 
 #func _exit_tree():

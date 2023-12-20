@@ -64,6 +64,7 @@ var _Stats : Stats
 var _Status_text : StatusText 
 
 
+var gameHUD : GameHUD
 #"Ingame HUD"
 ## Mobiles
 #var _TouchScreenHUD : TouchScreenHUD

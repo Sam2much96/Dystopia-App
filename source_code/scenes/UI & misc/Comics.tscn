@@ -82,5 +82,9 @@ script = SubResource( 7 )
 [node name="Timer" type="Timer" parent="."]
 wait_time = 3.0
 
+[node name="Line2D" type="Line2D" parent="."]
+position = Vector2( 506.03, 260.142 )
+default_color = Color( 0.698039, 0.270588, 0.670588, 1 )
+
 [connection signal="pressed" from="UI/Zoom" to="." method="_on_Zoom_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

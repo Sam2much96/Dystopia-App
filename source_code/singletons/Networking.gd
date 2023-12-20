@@ -240,6 +240,10 @@ func start_check(time: int):
 	#
 	check_timer.start()
 
+
+func start_check_v2(wait_time : int):
+	yield(get_tree().create_timer(wait_time),"timeout")
+
 # Check http unsecured Url connection
 # fix multiple check bug
 static func _check_connection(url, request_node: HTTPRequest): 

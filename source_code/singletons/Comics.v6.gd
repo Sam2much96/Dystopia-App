@@ -392,8 +392,9 @@ func _input(event):
 				Swipe.MAX_DIAGONAL_SLOPE
 				)
 	
-	
-	
+			"Visualize swipe"
+			#print_debug(event.position,Vector2(y1,y2))
+			Swipe._visualize_swipe([event.position,Swipe.swipe_start_position], $Line2D, get_tree())
 	
 	#print("_state Debug: ",_state) #for debug purposes only
 	" Zoom 2"
@@ -862,18 +863,14 @@ class Swipe : #extends Reference:
 		
 		"Calibration Logic"
 		
-		#if round(direction.x) == -1: # Doesnt work
-		#	print('left swipe 1') #for debug purposes
+		if round(direction.x) == -1: # Doesnt work
+			print('left swipe 1') #for debug purposes
 
-			
-		#	# Play Animation
-		#	GlobalAnimation.get_child(0).play("SWIPE_LEFT")
-		#	return GlobalAnimation.get_child(0).queue("RESET")
 		
 		# Horizontal Calculation
 		
 		if round(direction.x) == 1: # works
-			print_debug('left swipe 1') #for debug purposes
+			print_debug('left swipe 2') #for debug purposes
 			
 
 			#direction_var = "Left"
@@ -1030,6 +1027,18 @@ class Swipe : #extends Reference:
 			Swipe.clear_memory( swipe_target_memory_x, swipe_target_memory_y)
 
 		else: return
+
+	"Visualises swipe data onsreen for Easier Swipe Debugging and Caliberation"
+	static func _visualize_swipe(swipe_positional_data : Array , LineDebug : Line2D, tree : SceneTree): # works
+		if (LineDebug != null && Debug.enabled):
+			for i in swipe_positional_data:
+				LineDebug.add_point(i)
+			
+			# clear LineDebug after end detection
+			yield(tree.create_timer(2.5),"timeout")
+			
+			LineDebug.clear_points()
+			
 
 
 	static func next_panel():

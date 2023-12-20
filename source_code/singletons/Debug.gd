@@ -21,7 +21,7 @@ extends Node
 
 class_name debug
 
-export (bool) var enabled = true
+export (bool) var enabled 
 
 
 var error_splash_page : PackedScene = load ('res://New game code and features/Error splash page for crashes.tscn')

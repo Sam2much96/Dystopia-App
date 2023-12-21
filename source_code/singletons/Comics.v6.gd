@@ -334,7 +334,7 @@ func _input(event):
 	"Global Swipe Detection"
 	# Uses Swipe Speed to trigger swipe detection and registration 
 	# 
-	if (event is InputEventScreenDrag && SwipeCounter == 0 ): #kinda works, for NFT Drag & Drop
+	if (event is InputEventScreenDrag && SwipeCounter < 2 ): 
 		
 		# Debug the screen drag event
 		#print_debug("index/",event.get_index(), "/speed: ", event.get_speed())

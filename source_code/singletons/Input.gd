@@ -174,6 +174,10 @@ func _input(event):
 	if Input.is_action_just_released("pause"):
 		_state = RESET
 
+
+
+
+
 	"Auto Scroller"
 	# Connects to Global Comics Swipe Feature and Game Menu Scroller function
 	#'AutoScroller'
@@ -203,19 +207,6 @@ func _input(event):
 		#	print(input_buffer, _state, input_buffer.pop_front())
 			input_buffer.clear()
 
-
-
-#func _process(delta : float):
-	# Depreciated for Runtime Optimization on Mobiles
-	
-#	_frame_counter += round(delta)
-	
-#	if _frame_counter > 500:
-#		_frame_counter = 0
-#	
-#	# Input Calculation on Every 24th frame 
-#	if _frame_counter % 24 == 0:
-#		pass # DO nothing for now
 
 
 

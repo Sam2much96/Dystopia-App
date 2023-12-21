@@ -38,18 +38,19 @@
 # (15) Add FileChecks to comics scenes as regression checks called via Wallet Singleton functions
 # (16) Should SHow Swipe Paths
 # (17) Comics Singleton is now a global object
+# (18) Implement Global COmics as Title Screen Art
 # **************************************************************************************************
 #
 # Bugs:
 #
 # (1) it has a wierd updatable bug that's visible in the debug panel
-# (2) Center Page is buggy because Callibration is off Screen Center
+# (2) Center Page is buggy because Callibration is off Screen Center 
 # (3) Drag and Drop across small distances is buggy (fixed)
 # (4) Set frame state is buggy when combine with swipe gestures (fixed)
-# (5) Callibration is off for Swipe Gestures
-# (6) Bug on Line 1408
-# (7) Buggy / Unimplemented State Machine
-# (8) Does not Save Proper Swiper Start Position thus breaking the Positional Calibration when ending detection
+# (5) Callibration is buggy for Swipe Detection and Registration (1/2)
+# (6) unimplemented feature on Line 1408
+# (7) 
+# (8) 
 # **************************************************************************************************
 
 
@@ -168,7 +169,7 @@ var y1 : float = 0
 var y2 : float = 0
 #export(float,0.5,1.5) var MAX_DIAGONAL_SLOPE  = 1.3
 var SwipeSpeed : Vector2
-
+var SwipeCounter : int = 0 # for limiting swipe detection.registration
 
 
 
@@ -187,7 +188,7 @@ var SwipeSpeed : Vector2
 
 #var _state = IDLE
 
-const SWIPE_AWAIT = 1.9
+const SWIPE_AWAIT = 0.4
 
 onready var _debug_= get_tree().get_root().get_node("/root/Debug")
 onready var cmx_root : Control = get_tree().get_nodes_in_group("Cmx_Root").pop_front()
@@ -313,25 +314,8 @@ func _input(event):
 		pass
 
 
-	"Handles Multitouch Gesture"
-	#Documentation: https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/wiki
-	# Use Global Animation Player to play Swipe Gesture Actions
-	# Export Animation Resource File from AlgoWallet App
-	# Load Animation As resource file
-	#if event is InputEventScreenTwist:
-	#	print ("Input: Screen Twist / Action: Rotate")
-	
-	# Zoom in/out Gesture
-	#if event is InputEventScreenPinch :
-	#	print ("Input: Screen Pinch / Action: Zoom In/Out")
-	
-	# Zoom in/out gesture
-	#if event is InputEventMultiScreenTap :
-	#	print ("Input: Screen Tap / Action: Zoom in/OUt")
 
 
-
-	# Handle Touch
 	"""
 	TOUCH INPUT
 	"""
@@ -343,19 +327,19 @@ func _input(event):
 	# Can only drag is Swipe Locked
 	# SwipeLocked is buggy
 	# Switched between True and False
-	if event is InputEventScreenDrag : 
-		if comics_sprite != null : 
+	if (event is InputEventScreenDrag && comics_sprite != null) : 
 			Functions.drag_v2(comics_sprite,event.get_position())
 
 
 	"Global Swipe Detection"
-	# Should Ideally be in COmics script. Requires rewrite for better structure
-	# The current implementation is a fast hack
-	if event is InputEventScreenDrag && !SwipeLocked : #kinda works, for NFT Drag & Drop
+	# Uses Swipe Speed to trigger swipe detection and registration 
+	# 
+	if (event is InputEventScreenDrag && SwipeCounter == 0 ): #kinda works, for NFT Drag & Drop
 		
 		# Debug the screen drag event
 		#print_debug("index/",event.get_index(), "/speed: ", event.get_speed())
 		
+		# Checks for Swipe Speed
 		SwipeSpeed = event.get_speed()
 		if abs(SwipeSpeed.x) > 1000 or abs(SwipeSpeed.y) > 1000: 
 		
@@ -363,22 +347,32 @@ func _input(event):
 		# A Timer for disabling Swipe Action Temporarily
 			Networking.start_check(SWIPE_AWAIT)
 			
+			
 			# should save event positions to an array and 
 			# run calculations using the first and last array positions
 			# Swipe position detector implemented it as state controller changer
 			#
+			# Saves Initial Input event to AN Array and Starts a timer
+			# swipe registration is buggy
 			Swipe._start_detection(
-				event.position,
-				true,
+				event.get_position(),
 				_e, 
 				swipe_target_memory_x, 
 				swipe_target_memory_y
 				)
+			# Debug initial Swipe Detection
 			
+			#print_debug("1: ", swipe_target_memory_x, swipe_target_memory_y)
+			
+			# create a timer
+			# TImer time should be a constant
+			#yield(get_tree().create_timer(SWIPE_AWAIT), "timeout")
 			
 			"Detect Swipe State"
+			# Registers the Swipe End Position
+			# should be called in a timeout method instead of input
 			Swipe._end_detection(
-				event.position, 
+				event.get_position(), 
 				Vector2(0,0), 
 				_e, 
 				swipe_target_memory_x, 
@@ -393,9 +387,17 @@ func _input(event):
 				)
 	
 			"Visualize swipe"
-			#print_debug(event.position,Vector2(y1,y2))
-			Swipe._visualize_swipe([event.position,Swipe.swipe_start_position], $Line2D, get_tree())
-	
+			#print_debug(event.position)
+			
+			#print_debug("2: ", swipe_target_memory_x, swipe_target_memory_y)
+			#Swipe._visualize_swipe([event.position,Swipe.swipe_start_position], $Line2D, get_tree())
+			
+			#visualises the last swipe position and the initial swipe position
+			Swipe._visualize_swipe([event.position, Vector2(swipe_target_memory_x[0],swipe_target_memory_y[0])], $Line2D, get_tree())
+			
+			SwipeCounter += 1 # stops multiple swipe registrations
+
+	#ewefrwe
 	#print("_state Debug: ",_state) #for debug purposes only
 	" Zoom 2"
 	# works
@@ -490,9 +492,12 @@ func _process(delta):
 
 func _on_Timer_timeout():
 	"""
-	Triggers A Timer Lag between Swipe Input and Swipe Registration
+	Triggers A Timer Lag between Swipe Input and Swipe Registration.
+	Resets SwipeCounter
 	"""
 	Swipe._on_Timer_timeout()
+	SwipeCounter = 0
+
 
 func close_comic()-> void:
 	comics_sprite.queue_free() 
@@ -789,7 +794,8 @@ class Swipe : #extends Reference:
 	static func _on_Timer_timeout():
 		#if self.visible : # Only Swipe Detect once visible
 		Comics_v6.emit_signal('swiped_canceled', swipe_start_position)
-		print_debug ('on timer timeout: ',swipe_start_position) #for debug purposes delete later
+		Comics_v6.SwipeCounter = 0 # reset swipe counter
+		print_debug ('on timer timeout: ', Comics_v6.SwipeCounter) #for debug purposes delete later
 
 
 	#func connect_signals(_c : Timer, _e : Timer)-> bool:
@@ -808,7 +814,7 @@ class Swipe : #extends Reference:
 	# Bug: Does not Save Proper Swiper Start Position thus breaking the Positional Calibration when ending detection
 	static func _start_detection(
 		_position : Vector2, 
-		enabled: bool, 
+		#enabled: bool, 
 		_e : Timer ,
 		swipe_target_memory_x : Array, 
 		swipe_target_memory_y : Array 
@@ -817,24 +823,26 @@ class Swipe : #extends Reference:
 		#use current scene to trigger cinematic
 		#Globals.update_curr_scene() # depreciated
 		
-		if enabled == true:
+		#if enabled == true:
 			#swipe_start_position = _position
-			if not swipe_target_memory_x.has(_position.x): 
-				swipe_target_memory_x.append(_position.x)
-			if not swipe_target_memory_y.has(_position.y):
-				swipe_target_memory_y.append(_position.y)
 			
+		"Saves Initial Swipe Position to Memory"
+		if not swipe_target_memory_x.has(_position.x): 
+			swipe_target_memory_x.append(_position.x)
+		if not swipe_target_memory_y.has(_position.y):
+			swipe_target_memory_y.append(_position.y)
 			
-			_e.start()
-			#print_debug ('started swipe detection ') #for debug purposes delete later
+		"Start a timer"
+		_e.start()
+		#print_debug ('started swipe detection :', "/", "x: ", swipe_target_memory_x, "y: ", swipe_target_memory_y ) #for debug purposes delete later
 	
 	
 	"Only Two Swipe Directions Are Currently Implemented" # (fixing)
 	# Contains a Calibration Bug (fixing)
 	# Swipe start position is buggy
 	static func _end_detection(
-		__position : Vector2, 
-		direction : Vector2, 
+		final_position : Vector2, 
+		direction : Vector2, # a memory location for storing direction calculation 
 		#direction_var : String, 
 		#_state : int, 
 		_e : Timer, 
@@ -849,17 +857,13 @@ class Swipe : #extends Reference:
 		MAX_DIAGONAL_SLOPE
 		):
 	
-		direction = (__position - swipe_start_position).normalized()
+		direction = (final_position - swipe_start_position).normalized()
 		"""
 		SWIPE CALIBRATOR
 		
 		"""
 		# Requires Refactoring , Better Calibration, Proper Documentation
-		
-		#print_debug(direction,
-		#__position,
-		#swipe_start_position # swipe start position is buggy
-		#)
+		# calibration logic is fixed (1/2)
 		
 		"Calibration Logic"
 		
@@ -890,15 +894,15 @@ class Swipe : #extends Reference:
 		"Up and Down"
 		
 		if -sign(direction.y) < -swipe_parameters: # works
-			print('down swipe 1 = wrong calibration error ') #for debug purposes
-			print (" recalibrating to right swipe")
+			print('down swipe 1 ') #for debug purposes
+			
 			#next_panel()
 			
 			#direction_var = "Right"
 			
 			
 			# Play Animation
-			GlobalAnimation.get_child(0).play("SWIPE_RIGHT")
+			GlobalAnimation.get_child(0).play("SWIPE_DOWN")
 			
 			# next panel
 			
@@ -920,10 +924,10 @@ class Swipe : #extends Reference:
 		
 		# Saves swipe direction details to memory
 		# It'll improve start position - end position calculation
-		if not swipe_target_memory_x.has(__position.x) && __position.x != null: 
-			swipe_target_memory_x.append(__position.x)
-		if not swipe_target_memory_y.has(__position.y) && __position.y != null:
-			swipe_target_memory_y.append(__position.y)
+		if not swipe_target_memory_x.has(final_position.x) && final_position.x != null: 
+			swipe_target_memory_x.append(final_position.x)
+		if not swipe_target_memory_y.has(final_position.y) && final_position.y != null:
+			swipe_target_memory_y.append(final_position.y)
 		_e.stop()
 		
 		#Works
@@ -957,7 +961,7 @@ class Swipe : #extends Reference:
 				
 				print_debug ("direction x: ",direction.x)
 				
-				print_debug ('end detection: ','direction: ',direction ,'position',__position, "max diag slope", MAX_DIAGONAL_SLOPE) #for debug purposes only
+				print_debug ('end detection: ','direction: ',direction ,'position',final_position, "max diag slope", MAX_DIAGONAL_SLOPE) #for debug purposes only
 				#print ("X: ",swipe_target_memory_x)#*********For Debug purposes only
 				#print ("Y: ",swipe_target_memory_x)#*********For Debug purposes only
 			
@@ -1028,7 +1032,10 @@ class Swipe : #extends Reference:
 
 		else: return
 
-	"Visualises swipe data onsreen for Easier Swipe Debugging and Caliberation"
+	"""
+	Visualises swipe data onsreen for Easier 
+	Swipe Debugging and Caliberation
+	"""
 	static func _visualize_swipe(swipe_positional_data : Array , LineDebug : Line2D, tree : SceneTree): # works
 		if (LineDebug != null && Debug.enabled):
 			for i in swipe_positional_data:

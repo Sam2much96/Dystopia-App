@@ -157,7 +157,9 @@ static func Video_Stream(stream : VideoStreamTheora , os: String, video_parent :
 		
 		#True Center of Screen
 		# b uggy 
-		video_parent.set_position(Vector2(-(Globals.center_of_viewport.x),300))
+		#video_parent.set_position(Vector2(-(Globals.center_of_viewport.x),300))
+		video_parent.set_position(Vector2(0,0))
+		
 		#videoplayer.set_position($Position2D.position) #Video Player Position: (-1334.26001, 412.127014)
 
 		

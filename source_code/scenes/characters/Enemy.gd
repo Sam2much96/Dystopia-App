@@ -49,23 +49,24 @@ const FAST_FRAME_RATE = 5
 
 var selected_frame_rate : int
 
+"Enemy Movement & Path Finding"
+
 var velocity = Vector2.ZERO #the movement vector
+var target_speed = Vector2() # used for walking State calculation
 var m=0;  #distance variable
 
 var run_speed : int = 100   #mob runspeeed
 
 var enemy_distance_to_player : float # used to calculate how closely the enemy should follow the layer
 
-onready var player # = get_tree().get_nodes_in_group('player')  #reference to player
+onready var player #= get_tree().get_nodes_in_group('player')[0]  #reference to player
 onready var raycast : RayCast2D = $enemy_eyesight/pointer/RayCast2D
 onready var pointer : Node2D = $enemy_eyesight/pointer
-onready var navigation_agent : NavigationAgent2D = $NavigationAgent2D
+onready var navi : NavigationAgent2D = $NavigationAgent2D
+onready var path : Line2D = $Line2D
 #onready var frame_counter : int = 0
 
-"""
- the  MOB AI script works on the assumption there will
- be only one player type
-"""
+onready var pos_data : Array = []
 
 
 export(int) var WALK_SPEED = 350
@@ -78,6 +79,8 @@ export(int) var hitpoints = 3 #enemy life
 
 
 var linear_vel = Vector2.ZERO
+var enemy_direction = Vector2(0,0)
+	
 export(String, "up", "down", "left", "right") var facing = "down"
 
 var anim = ""
@@ -86,7 +89,7 @@ var new_anim = ""
 enum { STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE_DIE, STATE_HURT, STATE_MOB, STATE_PROJECTILE} # state machine needs expansion
 
 
-var state = STATE_MOB #mob state is broken, needs to cast to raycast 2d
+var state = STATE_MOB #Fixed
 var center
 
 "Enemy FX"
@@ -114,17 +117,29 @@ func _ready():
 	#print(enemy_type) #disabling to debug
 	
 	#if player != null:
-	#var enemy_direction = Vector2(0,0)
+	#
+	# Depreciated for debugging/refactoring
+	#Behaviour.update_facing(self.position, Vector2(0,0), Vector2(0,0), pointer, facing, Vector2(0,0))#for debug purposes only
 	
-	Behaviour.update_facing(self.position, Vector2(0,0), Vector2(0,0), pointer, facing, Vector2(0,0))#for debug purposes only
-	
-	state = STATE_WALKING#for debug purposes only
+	#state = STATE_WALKING#for debug purposes only
 	
 
 
 
 func _process(delta):
 	#debug() #turn off when not debugging
+	
+	# Debug MOb Calculation
+	#print_debug(abs(linear_vel.x),"/",abs(linear_vel.y))
+	
+	#if player != null:
+	
+	"Proximity Attack Logic"
+	# buggy
+	# use behavoiural logic instead
+	#if abs(linear_vel.x) && abs(linear_vel.y) <= 8 and player != null: # Player is in clo9se proximity
+	#	state = STATE_ATTACK
+	#else : state = STATE_IDLE # change to state walk for random enemy parterns
 	
 	# Raises up a Frame Counter
 	#frame_counter += 1
@@ -143,6 +158,17 @@ func _process(delta):
 	if Debug.FPS_debug() < 15:
 		selected_frame_rate = IDIOT_FRAME_RATE
 	
+	"Enemy Process Logic"
+	if player != null: 
+			
+		facing = Behaviour.update_facing(self.position, player.position, player, pointer, facing, Vector2(0,0))
+
+
+		"Enemy Behaviour Logic"
+		# Creates predictable enemy behaviour depending on certain parameters
+		state = Behaviour.behaviour_logic(hitpoints, raycast, player, player.position, self.position , self, enemy_type, state, enemy_distance_to_player)
+
+
 
 	
 	# Checks the Conditional Every 30th Frame
@@ -150,15 +176,8 @@ func _process(delta):
 	# LOGIC: frame counter is a modulous of the selected frame rate
 	if Simulation.frame_counter % selected_frame_rate == 0:
 		
-		"FACE THE PLAYER, IF HE'S VISIBLE"
-		if player != null: 
-			facing = Behaviour.update_facing(self.position, player.position, player, pointer, facing, Vector2(0,0))
 
-
-			"Enemy Behaviour Logic"
-
-			state = Behaviour.behaviour_logic(hitpoints, raycast, player, player.position, self.position , self, enemy_type, state, enemy_distance_to_player)
-
+			pass
 
 	if hitpoints <= 0: # Dies if hitpoint is zero
 		state = STATE_DIE
@@ -177,38 +196,37 @@ func _physics_process(delta):
 		STATE_IDLE:
 			new_anim = "idle_" + facing
 		STATE_WALKING:
-			linear_vel = move_and_slide(linear_vel)
-			var target_speed = Vector2()
-
-			if facing == "down":
-				target_speed += Vector2.DOWN
-			if facing == "left":
-				target_speed += Vector2.LEFT
-			if facing == "right":
-				target_speed += Vector2.RIGHT
-			if facing == "up":
-				target_speed += Vector2.UP
+			# Features:
+			# (1) Enemy Walks to a randomized Position
+			# To Do:
+			# (1) Implement Navigation Server/ Obstacles in walking state 
+			#state = Behaviour.randomize_state(state)
+			#facing = Behaviour.randomize_facing(facing,["left", "right", "up", "down"])
 			
-			target_speed *= WALK_SPEED
+			# # Set Navigation to Navigation server
+			# replace with randomized walking sequence on ready
+			#target_speed *= WALK_SPEED
+			linear_vel = move_and_slide(Vector2(100,100)) # move and slide to a random direction
+			
 			linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
 			
-			new_anim = ""
-			if abs(linear_vel.x) > abs(linear_vel.y):
-				if linear_vel.x < 0:
-					facing = "left"
-				if linear_vel.x > 0:
-					facing = "right"
-			if abs(linear_vel.y) > abs(linear_vel.x):
-				if linear_vel.y < 0:
-					facing = "up"
-				if linear_vel.y > 0:
-					facing = "down"
+			# implement Navigation 2d server
+			Behaviour.enemy_navigation(navi, linear_vel, self.position, path, pos_data, 1)
 			
 			if linear_vel != Vector2.ZERO:
 				new_anim = "walk_" + facing
+				#print_debug("walk_" + facing)
 			else:
 				state = STATE_IDLE
 			pass
+			
+			
+			
+			#linear_vel = position.direction_to(linear_vel) * WALK_SPEED
+			#move_and_slide(linear_vel)
+			#navi.set_velocity(linear_vel_)
+			
+			
 		STATE_ATTACK:
 			new_anim = "slash_" + facing
 			pass
@@ -232,31 +250,64 @@ func _physics_process(delta):
 		STATE_HURT:
 			new_anim = "hurt"
 		STATE_MOB: # Calculates enemy Mob ai to player
-			 # create a behavioural tree using raycast 2d
-			player =get_tree().get_nodes_in_group('player').pop_front() # Incase there are more than 1 players
-			var target = player.position  
 			
-			# update assumed distance to use both x and y co-ordinate planes and update outside mob state
-			var assumed_distance = ((raycast.get_collision_point()).y) # An assumed distance using raycast collision point
-			enemy_distance_to_player = abs(position.distance_to(target)) # Calculates the enemy distance to playrer
+			
+			"""
+			 the  MOB AI script works on the assumption there will
+			 be only one player type visible at any given time
+			"""
 
-			"Enemy Distance to Player Can Be used to create Behavioral Trees"
-
-			if enemy_distance_to_player < assumed_distance : # compares the real distance to an assumed distance
-				print ('player near me: True (', enemy_distance_to_player,')' ,' state: ', state) #for debug purposes only
-			# Enemy distance is always greater than asumed distance
-			if enemy_distance_to_player >  assumed_distance  : # compares the real distance to an assumed distance
-				print ('player near me: False (', enemy_distance_to_player,')' ,' state: ', state) #for debug purposes only
-				#goto_idle() 
-				#state = STATE_ATTACK
+			"Enemy Navigation"
+			# Duplicate of Walking State
+			if player != null:
+				#print_debug(Functions.calculate_center(player.position, self.position))
+				linear_vel = Functions.calculate_center(player.position, self.position)
 				
-			if raycast.is_colliding() :
-				print (" Player is colliding with Raycast")
-				print ("Raycast collides with body at point ", str(raycast.get_collision_point()))
-				state = STATE_ATTACK
+				Behaviour.enemy_navigation(navi, linear_vel, self.position, path, pos_data, 2)
+				
+				#print_debug(pos_data, navi.get_final_location())
+				
+				linear_vel = move_and_slide(linear_vel) # updates enemy movement
+				
+				# theres a process method for this
+				#facing = Behaviour.update_facing(self.position, player.position, player, pointer,facing, target_speed)
+				
+				
+				#print_debug(target_speed) #target_speed?
+
+				target_speed *= WALK_SPEED
+				
+				linear_vel = linear_vel.linear_interpolate(target_speed, 0.9) # linear interpolate?
 			
-			if not raycast.is_colliding() :
-				return
+			if player == null:
+				# walk to a predetermined location
+				state = STATE_WALKING
+			
+			# reset animation name pointer
+			new_anim = ""
+			#uses the linear velocity to use an algorithm to decide the facing animation for walk state
+			if linear_vel != Vector2.ZERO:
+				new_anim = "walk_" + facing
+				
+				# debug new anim
+				#print_debug("walk_" + facing) # works
+				
+				
+				
+				
+			else:
+				print_debug("Linear Velocity :" ,linear_vel)
+				state = STATE_IDLE
+			
+			# Depreciated
+			# create a behavioural tree using raycast 2d
+			
+			#player =get_tree().get_nodes_in_group('player').pop_front() # Incase there are more than 1 players
+			#var target = player.position  
+			
+			#if not raycast.is_colliding() :
+			#	return
+			pass
 		
 		STATE_PROJECTILE:
 			shoot()
@@ -324,20 +375,32 @@ func _on_enemy_eyesight_body_entered(body)-> void:
 		player = body
 		raycast.set_enabled(true)
 		run_speed = 300 #increase run speed if player is seen
+		
+		
+		# Disabbling for Refactoring
+		#Behaviour.enemy_navigation(navi, body.position, path, pos_data)
 		state = STATE_MOB
-		print_debug('player seen', 'State: ', state)
-		print_debug ("Enemy Type:", enemy_type) # for debug purposes
-		#update_facing()
+		
+		#print_debug('player seen', 'State: ', state)
+		#print_debug ("Enemy Type:", enemy_type) # for debug purposes
+
+
 
 func _on_enemy_eyesight_body_exited(body)-> void:
 	#help detect the player when he leaves
 	if body is Player:
 		
 		run_speed = 150
+		
+		# Turn off Raycast detection
 		raycast.set_enabled(false) 
 		player = null
-		print ('player hidden, Turning of Raycast Detection')
-		state = Behaviour.randomize_state(state)
+		#state = STATE_WALKING
+		
+		#print ('player hidden, Turning of Raycast Detection')
+		
+		# Disabling for Refactoring
+		#state = Behaviour.randomize_state(state)
 		
 
 
@@ -406,7 +469,11 @@ class Behaviour extends Reference:
 		randomize()
 	
 	# body is self
-	static func update_facing(body_position : Vector2, player_position : Vector2, player , pointer, _facing : String, enemy_direction: Vector2)-> String: # Updates the Enemy to face the Player
+	static func update_facing(body_position : Vector2, player_position : Vector2, player , pointer, _facing : String, enemy_direction: Vector2)-> String:
+		""" 
+		Updates the Enemy to face the Player
+		returns a string "facing"
+		"""
 
 		if player != null: #handles enemy facing player
 			
@@ -437,28 +504,39 @@ class Behaviour extends Reference:
 			pass
 
 
-	static func enemy_navigation(navigation_agent : NavigationAgent2D, position : Vector2): 
-		var move_direction = position.direction_to(navigation_agent.get_next_location())
-		var linear_vel
-		navigation_agent.set_velocity(linear_vel)
-	
+	static func enemy_navigation(navi : NavigationAgent2D, target_pos : Vector2, curr_pos : Vector2, line : Line2D, pos_data : Array, type: int): 
+		# refactored Navigation agent
+		navi.set_target_location(target_pos) # target location is the player position
+		
+		
+		if Debug.enabled and type == 2: # Debug Navigation path
+			line.add_point(navi.get_final_location())
+			#line.points = [navi.get_final_location(), curr_pos]
+			pos_data.append(line.points)
+
+		if Debug.enabled and type == 1:
+			line.points = [navi.get_final_location(), curr_pos]
+			#line.points = navi.get_nav_path()
+
 	static func behaviour_logic(hitpoints: int, raycast : RayCast2D, player : Player, player_pos , _position,_enemy, enemy_type : String, state, enemy_distance_to_player):
 		
 		"Enemy Behaviour Logic"
-		# Provides Randomized enemy behaviour
+		# Provides Predetermined enemy behaviour
 		if not hitpoints == 0:
 			if raycast.is_enabled() == true:
 				"Enemy Envcounters Player Node"
 				
+				# Calculates Distance to Player
 				if raycast.is_colliding() && player != null:
 					var center = Functions.calculate_center(player.position, _position) #calculates distance to plaer
 					_enemy.move_and_slide(center) # moves to player
-					state = STATE_WALKING
+					state = STATE_MOB
 					#var enemy_distance_to_player = abs(position.distance_to(player.position )) # Calculates the enemy distance to playrer
 					enemy_distance_to_player = abs(_position.distance_to(player_pos )) # Calculates the enemy distance to playrer
 					
-					print_debug(enemy_distance_to_player) # Make into a separate function
-					
+					#print_debug(enemy_distance_to_player) # Make into a separate function
+					# 
+					# Attack Player when in range
 					#print (enemy_distance_to_player) # For debug purposes only
 					if enemy_distance_to_player < 80: #uses enemy distance to auto attack
 						state = STATE_ATTACK
@@ -471,11 +549,11 @@ class Behaviour extends Reference:
 							
 						# TO DO: Implement Shoot State FOr ENemy AI
 						if enemy_type == "Easy":
-							state = STATE_WALKING
+							state = STATE_MOB
 							return state
 						if enemy_type == "Intermediate":
 							#state = STATE_PROJECTILE
-							state = STATE_WALKING
+							state = STATE_MOB
 							return state
 						else: return
 		if raycast.is_enabled() == false && player != null:

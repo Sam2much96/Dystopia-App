@@ -50,10 +50,10 @@ func _ready():
 	
 	# Debug Signals
 	
-	print_debug(
-		is_connected("area_entered", self, "_on_grass_area_entered"),
-		is_connected("area_entered", self, "_on_flowers_area_entered")
-		)
+	#print_debug(
+	#	is_connected("area_entered", self, "_on_grass_area_entered"),
+	#	is_connected("area_entered", self, "_on_flowers_area_entered")
+	#	)
 	
 	timer.connect("timeout", self, "_queue_free")
 	

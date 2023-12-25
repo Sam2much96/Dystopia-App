@@ -238,16 +238,16 @@ func _ready():
 
 
 	# Debug SIgnals
-	
-	print_debug(
-		Dialogs.is_connected("dialog_started", self, "interract"),
-		Dialogs.is_connected("dialog_ended", self, "reset"),
-		Comics_v6.is_connected( 'comics_showing', self, '_on_comics_showing'),
-		Comics_v6.is_connected( 'comics_showing', self, '_on_comics_hidden'  ),
-		menu3.is_connected("menu_showing", self, "menu"), 
-		menu3.is_connected("menu_hidden", self, "reset"),
-		Networking.timer.is_connected("timeout", self, "reset") 
-		)
+	# Convert to Unit Tests instead
+	#print_debug(
+	#	Dialogs.is_connected("dialog_started", self, "interract"),
+	#	Dialogs.is_connected("dialog_ended", self, "reset"),
+	#	Comics_v6.is_connected( 'comics_showing', self, '_on_comics_showing'),
+	#	Comics_v6.is_connected( 'comics_showing', self, '_on_comics_hidden'  ),
+	#	menu3.is_connected("menu_showing", self, "menu"), 
+	#	menu3.is_connected("menu_hidden", self, "reset"),
+	#	Networking.timer.is_connected("timeout", self, "reset") 
+	#	)
 
 
 static func hide_self(operating_sys: String, screenOrientation : int, _Hide_touch_interface : bool, _node : TouchScreenHUD) -> void:

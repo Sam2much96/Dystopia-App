@@ -70,10 +70,10 @@ func _ready():
 	
 	# Debug Signal Connections
 	
-	print_debug(
-		self.is_connected("not_enabled",self, '_on_status_hidden'), 
-		self.is_connected('enabled',self,'_on_status_showing')
-		)
+	#print_debug(
+	#	self.is_connected("not_enabled",self, '_on_status_hidden'), 
+	#	self.is_connected('enabled',self,'_on_status_showing')
+	#	)
 	
 	
 	#self.get_child(0)

@@ -134,6 +134,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://New game code and features/google_play_games_services.gd"
 }, {
+"base": "Reference",
+"class": "GutHookScript",
+"language": "GDScript",
+"path": "res://addons/gut/hook_script.gd"
+}, {
+"base": "Node",
+"class": "GutTest",
+"language": "GDScript",
+"path": "res://addons/gut/test.gd"
+}, {
 "base": "HBoxContainer",
 "class": "Healthbar",
 "language": "GDScript",
@@ -480,6 +490,8 @@ _global_script_class_icons={
 "Game_Menu": "",
 "GistItem": "",
 "GooglePlay": "",
+"GutHookScript": "",
+"GutTest": "",
 "Healthbar": "res://resources/misc/Pixel Heart 32x32.png",
 "Help": "",
 "Highscores": "",
@@ -593,7 +605,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/algodot/plugin.cfg", "res://addons/godot-rollback-netcode/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/algodot/plugin.cfg", "res://addons/godot-rollback-netcode/plugin.cfg", "res://addons/gut/plugin.cfg" )
 
 [gdnative]
 

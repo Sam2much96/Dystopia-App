@@ -80,7 +80,9 @@ export(int) var hitpoints = 3 #enemy life
 
 var linear_vel = Vector2.ZERO
 var enemy_direction = Vector2(0,0)
-	
+var random_walk_direction : Vector2 = Vector2(100,100)
+
+
 export(String, "up", "down", "left", "right") var facing = "down"
 
 var anim = ""
@@ -99,6 +101,7 @@ var blood
 func _enter_tree():
 	# Create A Global reference to self
 	Utils.EnemyObjPool.append(self)
+	randomize()
 
 
 func _ready():
@@ -106,8 +109,6 @@ func _ready():
 	
 	raycast.set_enabled(false) 
 	
-	state = Behaviour.randomize_state(state)
-	facing = Behaviour.randomize_facing(facing,["left", "right", "up", "down"])
 	
 	
 	
@@ -158,17 +159,29 @@ func _process(delta):
 	if Debug.FPS_debug() < 15:
 		selected_frame_rate = IDIOT_FRAME_RATE
 	
-	"Enemy Process Logic"
+	"""
+	ENEMY PROCESS LOGIC
+	"""
+	# Handles Players Processing like facing and Behavioural Patterns
+	
+	# if player is visible
 	if player != null: 
 			
 		facing = Behaviour.update_facing(self.position, player.position, player, pointer, facing, Vector2(0,0))
 
 
-		"Enemy Behaviour Logic"
+		"Enemy Behaviour Logic 1"
 		# Creates predictable enemy behaviour depending on certain parameters
 		state = Behaviour.behaviour_logic(hitpoints, raycast, player, player.position, self.position , self, enemy_type, state, enemy_distance_to_player)
-
-
+		
+	if player == null:
+		facing = Behaviour.update_facing(self.position, random_walk_direction, null, pointer, facing, Vector2(0,0))
+		
+		
+		"Enemy Behaviour Logic 2"
+		# Creates predictable enemy behaviour depending on certain parameters
+		#state = Behaviour.behaviour_logic(hitpoints, raycast, player, player.position, self.position , self, enemy_type, state, enemy_distance_to_player)
+		state = STATE_WALKING
 
 	
 	# Checks the Conditional Every 30th Frame
@@ -200,15 +213,18 @@ func _physics_process(delta):
 			# (1) Enemy Walks to a randomized Position
 			# To Do:
 			# (1) Implement Navigation Server/ Obstacles in walking state 
+			# (2) Implement collision detection with walls
+			# 
 			#state = Behaviour.randomize_state(state)
 			#facing = Behaviour.randomize_facing(facing,["left", "right", "up", "down"])
 			
 			# # Set Navigation to Navigation server
 			# replace with randomized walking sequence on ready
-			#target_speed *= WALK_SPEED
-			linear_vel = move_and_slide(Vector2(100,100)) # move and slide to a random direction
 			
+			linear_vel = move_and_slide((global_position- random_walk_direction).normalized() * WALK_SPEED) # move and slide to a random direction
+			#target_speed *= WALK_SPEED # This line of code breaks Mob state
 			linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
+			
 			
 			# implement Navigation 2d server
 			Behaviour.enemy_navigation(navi, linear_vel, self.position, path, pos_data, 1)
@@ -302,11 +318,7 @@ func _physics_process(delta):
 			# Depreciated
 			# create a behavioural tree using raycast 2d
 			
-			#player =get_tree().get_nodes_in_group('player').pop_front() # Incase there are more than 1 players
-			#var target = player.position  
 			
-			#if not raycast.is_colliding() :
-			#	return
 			pass
 		
 		STATE_PROJECTILE:
@@ -321,6 +333,18 @@ func _physics_process(delta):
 func goto_idle():
 	state = STATE_IDLE
 
+func _randomize_self():
+	# Creates Randomized Enemy Behaviour
+	state = Behaviour.randomize_state(state)
+	facing = Behaviour.randomize_facing(facing,["left", "right", "up", "down"])
+
+func _get_player():
+	#
+	# Gets the Player Object in the Scene Tree if Player unavailable 
+	#
+	#
+	if player == null:
+		player =get_tree().get_nodes_in_group('player').pop_front() # Incase there are more than 1 players
 
 
 # Hurt Box collission is closest to the body's collision
@@ -328,7 +352,7 @@ func _on_hurtbox_area_entered(area):
 	if not state == STATE_DIE && area.name == "player_sword": #if it's not dead and it's hit by the player"s sword collisssion
 		hitpoints -= 1
 		Music.play_sfx(Music.hit_sfx) # Plays sfx from the Music singleton
-		#print ("enemy hitpoint: "+ str(hitpoints))# for debug purposes only
+		#print_debug ("enemy hitpoint: "+ str(hitpoints))# for debug purposes only
 		var pushback_direction = (global_position - area.global_position).normalized()
 		move_and_slide( pushback_direction *   rand_range(2000,10000)) # Flies back at a random distance
 		state = STATE_HURT
@@ -465,17 +489,14 @@ class Behaviour extends Reference:
 	
 	"""
 	
-	func _ready():
-		randomize()
-	
 	# body is self
 	static func update_facing(body_position : Vector2, player_position : Vector2, player , pointer, _facing : String, enemy_direction: Vector2)-> String:
 		""" 
 		Updates the Enemy to face the Player
 		returns a string "facing"
 		"""
-
-		if player != null: #handles enemy facing player
+		#handles enemy facing player
+		if player != null: 
 			
 			enemy_direction= (body_position.direction_to(player_position))
 			
@@ -500,8 +521,23 @@ class Behaviour extends Reference:
 			#UP: X= 0, Y= -1   [X>Y]
 		return _facing
 		
+		# handles enemy facing a target location
 		if player == null:
-			pass
+			enemy_direction= (body_position.direction_to(player_position))
+			
+			Utils.rotate_pointer(Vector2((enemy_direction.x), (enemy_direction.y)), pointer) # Rotates a Racast 2d to face the Enemy
+			
+			var X = round(enemy_direction.x) ; var Y =round (enemy_direction.y)
+			if X == 0 and Y == 1:
+				_facing = 'down'
+			if X == 1 and Y == 0:
+				_facing = 'right'
+			if X == -1 and Y == 0:
+				_facing = 'left'
+			if X == 0 and Y == -1:
+				_facing = 'up'
+			
+			return _facing
 
 
 	static func enemy_navigation(navi : NavigationAgent2D, target_pos : Vector2, curr_pos : Vector2, line : Line2D, pos_data : Array, type: int): 
@@ -516,12 +552,15 @@ class Behaviour extends Reference:
 
 		if Debug.enabled and type == 1:
 			line.points = [navi.get_final_location(), curr_pos]
-			#line.points = navi.get_nav_path()
+
 
 	static func behaviour_logic(hitpoints: int, raycast : RayCast2D, player : Player, player_pos , _position,_enemy, enemy_type : String, state, enemy_distance_to_player):
 		
 		"Enemy Behaviour Logic"
 		# Provides Predetermined enemy behaviour
+		# Runs as a Process
+		# Uses State Machine in Physics Process 
+		# Expand to Add More Functionalities
 		if not hitpoints == 0:
 			if raycast.is_enabled() == true:
 				"Enemy Envcounters Player Node"
@@ -531,13 +570,14 @@ class Behaviour extends Reference:
 					var center = Functions.calculate_center(player.position, _position) #calculates distance to plaer
 					_enemy.move_and_slide(center) # moves to player
 					state = STATE_MOB
-					#var enemy_distance_to_player = abs(position.distance_to(player.position )) # Calculates the enemy distance to playrer
+					# # Calculates the enemy distance to playrer
 					enemy_distance_to_player = abs(_position.distance_to(player_pos )) # Calculates the enemy distance to playrer
 					
-					#print_debug(enemy_distance_to_player) # Make into a separate function
+					#print_debug(enemy_distance_to_player) #
 					# 
 					# Attack Player when in range
-					#print (enemy_distance_to_player) # For debug purposes only
+					#
+					# Nested If's?
 					if enemy_distance_to_player < 80: #uses enemy distance to auto attack
 						state = STATE_ATTACK
 						return state 
@@ -556,7 +596,16 @@ class Behaviour extends Reference:
 							state = STATE_MOB
 							return state
 						else: return
+		
+		# If Raycast Detecting and Player is Available
+		# The chances of this is very low except in Multiplayer Gameply
 		if raycast.is_enabled() == false && player != null:
+			#use state changer timer to turn off processing
+			push_error ('Debug Enenmy Behaviour Check')
+		
+		# If Raycast Detecting and Player is not Available
+		# The chances of this is very low except in Multiplayer Gameply
+		if raycast.is_enabled() == false && player == null:
 			#use state changer timer to turn off processing
 			push_error ('Debug Enenmy Behaviour Check')
 

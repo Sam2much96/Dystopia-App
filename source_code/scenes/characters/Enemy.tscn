@@ -1254,6 +1254,8 @@ scale = Vector2( 44.2683, 43.0897 )
 script = ExtResource( 7 )
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 42.14
+path_max_distance = 10.0
 avoidance_enabled = true
 
 [node name="Line2D" type="Line2D" parent="."]

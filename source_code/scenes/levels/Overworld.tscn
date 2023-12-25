@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scenes/levels/Tilemap_1_overworld.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/levels/ForestTilemap.tscn" type="PackedScene" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://scenes/props/flowers.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/props/Temple exterior.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/items/extra life.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=15]
 [ext_resource path="res://scenes/UI & misc/Rain_Fx.tscn" type="PackedScene" id=26]
 [ext_resource path="res://scenes/levels/Overworld_Level_Properties.gd" type="Script" id=28]
@@ -151,6 +152,7 @@ spawn_count = 5
 
 [node name="enemy_spawner4" parent="." instance=ExtResource( 3 )]
 position = Vector2( 5516.38, 2138.66 )
+enabled = true
 _hitpoints = 1
 enemy_type = "Easy"
 enemy_spawn_1 = ExtResource( 12 )
@@ -158,6 +160,7 @@ spawn_count = 5
 
 [node name="enemy_spawner5" parent="." instance=ExtResource( 3 )]
 position = Vector2( -213.881, 1682.51 )
+enabled = true
 _hitpoints = 1
 enemy_type = "Easy"
 enemy_spawn_1 = ExtResource( 12 )
@@ -165,6 +168,7 @@ spawn_count = 5
 
 [node name="enemy_spawner2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 6833.48, -4887.52 )
+enabled = true
 _hitpoints = 2
 enemy_type = "Intermediate"
 enemy_spawn_1 = ExtResource( 12 )
@@ -172,6 +176,7 @@ spawn_count = 5
 
 [node name="enemy_spawner3" parent="." instance=ExtResource( 3 )]
 position = Vector2( 17739.9, -4751.76 )
+enabled = true
 _hitpoints = 3
 enemy_type = "Hard"
 enemy_spawn_1 = ExtResource( 12 )
@@ -180,3 +185,6 @@ spawn_count = 5
 [node name="pond" parent="." instance=ExtResource( 4 )]
 position = Vector2( 3618.82, 440.005 )
 enabled = true
+
+[node name="extra life" parent="." instance=ExtResource( 13 )]
+position = Vector2( 3235.65, 822.261 )

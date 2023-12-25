@@ -53,7 +53,9 @@ onready var curr_scene : String = ""
 onready var os: String = OS.get_name()
 onready var kill_count : int = 0 #update to load from savefile
 
-var player : Array = []
+# 
+var players : Array = [] # All Players
+var player : Player # My Player
 
 #var _p # Player placeholder
 var player_hitpoints : int
@@ -148,12 +150,8 @@ var tile_map : TileMap
 func _ready():
 	#print_debug('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	#print_debug("Despawn Fx:", despawn_fx)
-
-
-	player.append( get_tree().get_nodes_in_group('player') )#gets all player nodes in the scene
-	 #it shows deleted object once player is despawns.
-	if player.empty() == true: #error catcher 1            
-		player.clear()
+	
+	
 	
 	
 	#Set White Background

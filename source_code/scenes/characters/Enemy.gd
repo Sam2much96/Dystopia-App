@@ -3,28 +3,37 @@
 # Released under MIT License
 # *************************************************
 #
+# Enemy AI State Machine
+#
 # This is the enemy mob AI machine
 # information used by the Enemy mob.
 # it uses a Finite state machine, with a mob state for attacking
 # It also includes signals for when the player is enters and exits the enemy's collision
-# To Add
-#(1) Different enemy behaviours and classes (Done)
-#Bugs 
-
+#
+# To Add :
+#(1)
+#
+# Bugs : 
+#
 # (1) Enemy AI lacks ability to throw Projectiles (Done)
 # (2) Enemy AI lacks projectile implementation
 # (3) Too much Physics procesing (Done) 
-# (4) Navigation AI (1/2)
+# (4) Navigation AI (2/3)
 # (5) Stop Enemy Collision with Enemy bug
 # (6) Refactor Facing to use enumerations, not strings
+#
 
 # *************************************************
 # Features
 # (1) Raycast 2d for precision 
 # (2) Navigation Agent for better Navigation
 # (3) Static Memory optimization
-# (4) Enemy Can Either Be Hard Intermediate or Easy
-# (4) Uses an Enemy Object pool connected to Utils singleton
+# (4) Randomized Enemy Behaviour
+# (5) Preprogrammed Behaviour Logic for differnent Environment
+# (6) Uses an Enemy Object pool connected to Utils singleton
+# (7) Enemy Pathfinding Visual Debugging
+# (8) Spawn Randomized Items Upon Despawn
+
 
 extends KinematicBody2D
 
@@ -207,15 +216,25 @@ func _physics_process(delta):
 			# To Do:
 			# (1) Implement Navigation Server/ Obstacles in walking state 
 			# (2) Implement collision detection with walls
-			# 
-			#state = Behaviour.randomize_state(state)
-			#facing = Behaviour.randomize_facing(facing,["left", "right", "up", "down"])
-			
+			#
 			# # Set Navigation to Navigation server
 			# replace with randomized walking sequence on ready
 			
-			linear_vel = move_and_slide((global_position- random_walk_direction).normalized() * WALK_SPEED) # move and slide to a random direction
-			#target_speed *= WALK_SPEED # This line of code breaks Mob state
+			#print_debug(facing, random_walk_direction)
+			#afafaf
+			# uses facing to determine enemy random walk directiom
+			if facing == "up":
+				random_walk_direction =Vector2(0,-100)#target_speed.y = -1
+			if facing == "down":
+				random_walk_direction =Vector2(0,100)
+			if facing == "left":
+				random_walk_direction =Vector2(-100,0)
+			if facing == "right":
+				random_walk_direction =Vector2(100,0)
+			
+			#linear_vel = move_and_slide((global_position- random_walk_direction).normalized() * WALK_SPEED) # move and slide to a random direction
+			linear_vel = move_and_slide((random_walk_direction).normalized() * WALK_SPEED) # move and slide to a random direction
+			
 			linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
 			
 			
@@ -308,10 +327,6 @@ func _physics_process(delta):
 				print_debug("Linear Velocity :" ,linear_vel)
 				state = STATE_IDLE
 			
-			# Depreciated
-			# create a behavioural tree using raycast 2d
-			
-			
 			pass
 		
 		STATE_PROJECTILE:
@@ -337,14 +352,15 @@ func _randomize_self(enemy_type : String):
 		enemy_type = Behaviour.randomize_enemy_type(['Easy', "Intermediate", "Hard"])
 
 
-func _get_player():
+func _get_player() -> Player :
 	#
 	# Gets the Player Object in the Scene Tree if Player unavailable 
+	#rwfwdgfdg
 	#
-	#
+	#rgfefgefg
 	if player == null:
 		player =get_tree().get_nodes_in_group('player').pop_front() # Incase there are more than 1 players
-
+	return player
 
 # Hurt Box collission is closest to the body's collision
 func _on_hurtbox_area_entered(area):

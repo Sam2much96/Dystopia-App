@@ -81,14 +81,16 @@ func _on_Comics_freed_comics():
 		child.show()
 
 "Button controls back"
+# Hacky Close COmics fix for Comics refactor
+
 func _on_Back_button_pressed():
 	if loaded_comics == false or Globals.comics != null: #&& Globals.comics.enabled == false :
 		Globals._go_to_title()
-	if loaded_comics == true:
+	#if loaded_comics == true:
 		#$"/root/Dialogs".show_dialog('Finish Comics First ', 'Admin')
 		
 		#$"/root/Dialogs".dialog_box.hide()
-		return Comics_v6.close_comic()
+		Comics_v6.close_comic()
 		
 
 

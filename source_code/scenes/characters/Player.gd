@@ -18,6 +18,7 @@
 # (5) Implement State Emote for Dancing with New Dancing (Emote) Animation
 # (6) Implement Fight Camera
 # (7) Implement Item Equip From Inventory.gd
+# (8) Player Attack is unimplemented
 # *************************************************
 
 extends KinematicBody2D
@@ -72,7 +73,7 @@ func _enter_tree():
 	#if Globals.player_hitpoints != null:
 	#	hitpoints = Globals.player_hitpoints #Updates player health across scenes
 
-	Globals.player.append(self)  #saves player to the Global player variable
+	Globals.players.append(self)  #saves player to the Global player variable
 	
 	'Makes Player Hitpoint a Global Variable'
 	Globals.player_hitpoints = hitpoints

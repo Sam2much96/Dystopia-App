@@ -500,8 +500,10 @@ func _on_Timer_timeout():
 
 
 func close_comic()-> void:
+	print_debug("Closing COmic")
 	comics_sprite.queue_free() 
-	#comics_placeholder = null
+	comics_placeholder.queue_free()
+	Kinematic_2d.queue_free()
 	enabled = false 
 	_loaded_comics = false #working buggy
 	current_frame = -2 # working buggy

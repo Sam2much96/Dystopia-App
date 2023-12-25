@@ -34,67 +34,85 @@ var EnemyObjPool : Array = [] #Stores shared pointer to enemy Mob instances
 # Reads Data from a Zip File
 # Has a problem with saving Text files
 # Has a problem with Large files (Decompression is really slow)
-func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PoolByteArray:
-	# Instance the gdunzip script
-	var gdunzip = load('res://addons/gdunzip/gdunzip.gd').new()
-	var FileCheck1 = File.new()
+
+class Zip extends Reference:
+	func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PoolByteArray:
+		# Instance the gdunzip script
+		var gdunzip = load('res://addons/gdunzip/gdunzip.gd').new()
+		var FileCheck1 = File.new()
+		
+		#"Compression/Uncompression"
+		var unziped_file : PoolByteArray
+		# Singleton GDUNzip is Depreciated
+		#var loaded = Gdunzip.load(FILE)
+		
+		var loaded = gdunzip.load(FILE)
+		if loaded:
+			
+			print ("Zip File Data : ",gdunzip.files) # for debug purposes only
+			
+			print ("Files: ",gdunzip.files.keys().size()) # For Debug purposes only
+			
+			print ("First File: ",gdunzip.files.keys().front()) # For Debug purposes only 
+			
+
+
+			
+			# Returns an Uncompressed PoolByteArray
+			# If string files contains excess characters, it would return an invalid utf-8 string
+			# Only parses Zip files and decompresses the First Value 
+			
+			"Debugs Zip Files"
+			
+			for f in gdunzip.files.values():
+				print('File name: ' + f['file_name'])
+
+				
+				
+				
+				var concat : String = Uncompressd_rooot_dir+f['file_name']
+				
+				"Checks if Zipped File is present at file path" 
+				if not FileCheck1.file_exists(Uncompressd_rooot_dir + f['file_name']):
+					# save the file's uncompressed Pool Byte Array
+					unziped_file = gdunzip.uncompress(f["file_name"])
+
+					#Uncompresses files locally
+					print("saving", f["file_name"], "Locally", unziped_file.size(), "to: ", concat)
+				#for t in gdunzip.files.keys():
+				#	print ("Type of " + f['file_name'] + " ",typeof(gdunzip.get_compressed(t))) # for debug purposes only
+				
+					Networking.save_file_(unziped_file, concat, int(f['uncompressed_size']))
+
+
+				# "compression_method" will be either -1 for uncompressed data, or
+				# File.COMPRESSION_DEFLATE for deflate streams
+				print('Compression method: ' + str(f['compression_method']))
+
+				print('Compressed size: ' + str(f['compressed_size']))
+
+				print('Uncompressed size: ' + str(f['uncompressed_size']))
+
+
+
+class Player_utils extends Reference:
 	
-	#"Compression/Uncompression"
-	var unziped_file : PoolByteArray
-	# Singleton GDUNzip is Depreciated
-	#var loaded = Gdunzip.load(FILE)
 	
-	var loaded = gdunzip.load(FILE)
-	if loaded:
-		
-		print ("Zip File Data : ",gdunzip.files) # for debug purposes only
-		
-		print ("Files: ",gdunzip.files.keys().size()) # For Debug purposes only
-		
-		print ("First File: ",gdunzip.files.keys().front()) # For Debug purposes only 
-		
-
-
-		
-		# Returns an Uncompressed PoolByteArray
-		# If string files contains excess characters, it would return an invalid utf-8 string
-		# Only parses Zip files and decompresses the First Value 
-		
-		"Debugs Zip Files"
-		
-		for f in gdunzip.files.values():
-			print('File name: ' + f['file_name'])
-
-			
-			
-			
-			var concat : String = Uncompressd_rooot_dir+f['file_name']
-			
-			"Checks if Zipped File is present at file path" 
-			if not FileCheck1.file_exists(Uncompressd_rooot_dir + f['file_name']):
-				# save the file's uncompressed Pool Byte Array
-				unziped_file = gdunzip.uncompress(f["file_name"])
-
-				#Uncompresses files locally
-				print("saving", f["file_name"], "Locally", unziped_file.size(), "to: ", concat)
-			#for t in gdunzip.files.keys():
-			#	print ("Type of " + f['file_name'] + " ",typeof(gdunzip.get_compressed(t))) # for debug purposes only
-			
-				Networking.save_file_(unziped_file, concat, int(f['uncompressed_size']))
-
-
-			# "compression_method" will be either -1 for uncompressed data, or
-			# File.COMPRESSION_DEFLATE for deflate streams
-			print('Compression method: ' + str(f['compression_method']))
-
-			print('Compressed size: ' + str(f['compressed_size']))
-
-			print('Uncompressed size: ' + str(f['uncompressed_size']))
-
-
-
-
-
+	
+	func _get_player(scene_tree : SceneTree) :
+	#
+	# Gets the Player Object in the Scene Tree if Player unavailable 
+	#	
+	# Rewrite into a separate function
+		Globals.players.append( scene_tree.get_nodes_in_group('player') )#gets all player nodes in the scene
+	 #it shows deleted object once player is despawns.
+		if Globals.players.empty() == true: #error catcher 1            
+			Globals.players.clear()
+		#
+		if Globals.player == null:
+			Globals.player = Globals.players[0] # Incase there are more than 1 players
+		return Globals.player
+		pass
 
 # Calculates the center of a Rectangle
 func calc_center_of_rectangle(rect : Vector2) -> Vector2:
@@ -624,7 +642,7 @@ class Screen extends Reference :
 			return _mb
 
 
-
+"Procedural Generation"
 class procedural extends Reference:
 	static func genereate(simplex_noise : OpenSimplexNoise, 
 	world_seed : String, 

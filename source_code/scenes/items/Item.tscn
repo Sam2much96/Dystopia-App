@@ -142,6 +142,7 @@ tracks/3/keys = {
 
 [node name="Item" type="Area2D" groups=["items"]]
 script = ExtResource( 2 )
+item_type = "Generic Item"
 
 [node name="sprite" type="Sprite" parent="."]
 visible = false

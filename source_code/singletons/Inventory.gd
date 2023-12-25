@@ -71,6 +71,7 @@ func remove_item(type:String, amount:int) -> bool:
 	
 	
 	Music.play_track("res://sounds/item_collected.ogg")
+	var player = get_tree().get_nodes_in_group("player")[0] 
 	
 	if inventory.has(type) and inventory[type] >= amount:
 		inventory[type] -= amount
@@ -80,6 +81,25 @@ func remove_item(type:String, amount:int) -> bool:
 		if inventory[type] == 0:
 			inventory.erase(type)
 		emit_signal("item_changed", "removed", type, amount)
+		
+		"Logic Implementation for Diffenent Item Types"
+		
+		if type == "health potion":
+		
+			#print("aksdfjabnfo;giSHip")
+			
+			# Update player object body
+			player.hitpoints += 1
+			
+			# emit signal
+			player.emit_signal("health_changed", player.hitpoints)
+		
+		if type == "Generic Item":
+			# increases player speed and attack power
+			player.WALK_SPEED =550
+			player.ROLL_SPEED = 1500
+			player.ATTACK = 2
+			
 		return true
 	else:
 		return false

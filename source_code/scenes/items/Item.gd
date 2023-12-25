@@ -5,8 +5,10 @@
 # Generic Item Spawner
 # Spawns Item Objects of various amounts Within the Scene Tree
 # Its in the items group and saves iteslf to the Inventory Singleton
+# Item Use Logic is in the Logic Singleton
+#
 # To Do:
-#(1) Play Pickup sound with Music Singleton to reduce Performance labour
+#(1) 
 # *************************************************
 
 extends Area2D

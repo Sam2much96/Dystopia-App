@@ -228,6 +228,8 @@ func vibrate(duration_ms : int, os : String):
 			
 			# Vibration on Mobile Devices
 			Input.vibrate_handheld(duration_ms)
+			# 2 seconds wait time before next vibratino
+			Networking.start_check_v2(2)
 
 
 func roll_direction_calculation()-> Vector2:

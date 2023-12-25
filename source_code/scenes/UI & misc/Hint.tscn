@@ -23,11 +23,11 @@ rect_scale = Vector2( 0.988701, 0.988701 )
 script = ExtResource( 10 )
 
 [node name="Sprite" type="TextureRect" parent="."]
-margin_left = 58.6627
-margin_top = -58.6628
-margin_right = 2538.66
-margin_bottom = 2586.34
-rect_scale = Vector2( 0.243563, 0.243563 )
+margin_left = 63.9772
+margin_top = -26.7795
+margin_right = 2543.97
+margin_bottom = 2618.22
+rect_scale = Vector2( 0.552251, 0.552251 )
 texture = ExtResource( 3 )
 
 [node name="Label" type="Label" parent="."]

@@ -113,18 +113,12 @@ func _ready():
 	
 	
 	# Redundancy Code
-	if enemy_type == "" or null: # If enemy behaviour isn't preset
-		enemy_type = Behaviour.randomize_enemy_type(['Easy', "Intermediate", "Hard"]) #Calls A Global Function
-	#print(enemy_type) #disabling to debug
+	_randomize_self(enemy_type)
 	
-	#if player != null:
-	#
-	# Depreciated for debugging/refactoring
-	#Behaviour.update_facing(self.position, Vector2(0,0), Vector2(0,0), pointer, facing, Vector2(0,0))#for debug purposes only
+	#if enemy_type == "" or null: # If enemy behaviour isn't preset
+	#	enemy_type = Behaviour.randomize_enemy_type(['Easy', "Intermediate", "Hard"]) #Calls A Global Function
 	
-	#state = STATE_WALKING#for debug purposes only
-	
-
+	#print_debug(enemy_type) 
 
 
 func _process(delta):
@@ -187,10 +181,9 @@ func _process(delta):
 	# Checks the Conditional Every 30th Frame
 	# Called every selected framerate. 30th Frame for slower processing
 	# LOGIC: frame counter is a modulous of the selected frame rate
-	if Simulation.frame_counter % selected_frame_rate == 0:
-		
-
-			pass
+	# Depreciated to free up the Main Thread Process from repeated checks
+	#if Simulation.get_frame_counter() > 0 &&  Simulation.get_frame_counter() % selected_frame_rate == 0:
+	#	pass
 
 	if hitpoints <= 0: # Dies if hitpoint is zero
 		state = STATE_DIE
@@ -333,10 +326,16 @@ func _physics_process(delta):
 func goto_idle():
 	state = STATE_IDLE
 
-func _randomize_self():
+func _randomize_self(enemy_type : String):
 	# Creates Randomized Enemy Behaviour
+	
 	state = Behaviour.randomize_state(state)
 	facing = Behaviour.randomize_facing(facing,["left", "right", "up", "down"])
+	
+	# Acts as redundancy code for preset and randomized enemy type
+	if enemy_type == "":
+		enemy_type = Behaviour.randomize_enemy_type(['Easy', "Intermediate", "Hard"])
+
 
 func _get_player():
 	#

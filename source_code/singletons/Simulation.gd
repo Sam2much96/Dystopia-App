@@ -305,3 +305,7 @@ class projectiles:
 
 static func set_position(x : Vector2):
 	pass
+
+
+func get_frame_counter()-> int:
+	return frame_counter 

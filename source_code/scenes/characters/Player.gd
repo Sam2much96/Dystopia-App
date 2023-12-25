@@ -32,6 +32,7 @@ export(int) var ROLL_SPEED = 1000 # pixels per second
 export(int) var GRAVITY = 0 # For Platforming Levels
 export(int) var ATTACK = 1 # For Item Equip
 export(int) var hitpoints = 3
+export(int) var pushback = 5000
 
 export var linear_vel = Vector2()
 export var roll_direction = Vector2.DOWN
@@ -315,7 +316,7 @@ func _on_hurtbox_area_entered(area):
 		hitpoints -= 1
 		emit_signal("health_changed", hitpoints)
 		var pushback_direction = (global_position - area.global_position).normalized()
-		move_and_slide( pushback_direction * 5000)
+		move_and_slide( pushback_direction * pushback)
 		state = STATE_HURT
 		var blood = Globals.blood_fx.instance()
 		blood.global_position = global_position

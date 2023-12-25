@@ -99,7 +99,11 @@ func remove_item(type:String, amount:int) -> bool:
 			player.WALK_SPEED =550
 			player.ROLL_SPEED = 1500
 			player.ATTACK = 2
-			
+		
+		if type == "Magic Sword":
+			# increase pushback impact, increases chances of double attack
+			player.pushback = 8000
+		
 		return true
 	else:
 		return false

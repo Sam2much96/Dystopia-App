@@ -133,7 +133,7 @@ var comics_placeholder : Control = Control.new()
 
 var buttons
 
-var Kinematic_2d :  KinematicBody2D = KinematicBody2D.new()  #the kinematic 2d node for drag and drop
+onready var Kinematic_2d :  KinematicBody2D = KinematicBody2D.new()
 #onready var camera2d = $Kinematic_2D/placeholder/Camera2D 
 var _position : Vector2 
 var center : Vector2 # should be used in a center comics method
@@ -206,7 +206,7 @@ func _ready():
 	# Update current scene 
 	Globals.update_curr_scene()
 	
-	
+	#Kinematic_2d = KinematicBody2D.new()  #the kinematic 2d node for drag and drop
 	
 	
 	
@@ -258,12 +258,18 @@ func _input(event):
 	
 	# Button Controls
 	
-	if event.is_action_pressed("next_panel") && comics_sprite != null : # && enabled : 
+	if event.is_action_pressed("next_panel") && comics_sprite != null : 
+		# Buggy
 		" If Not on Comics Last Page"
-		if LastPage == false:
-			current_frame = next_panel(comics_sprite)
-		elif LastPage == true:
+		#print_debug(111111)
+		#if LastPage == false:
+		current_frame = next_panel(comics_sprite)
+		if LastPage == true:
 			#comics_placeholder.queue_free()
+			print_debug("Last Page", LastPage)
+			
+			# reset current frame
+			current_frame = -1
 			pass
 	
 	if event.is_action_pressed("prev_panel") :
@@ -430,6 +436,10 @@ func _process(delta):
 	#" Auto Swipe Locks whenever Networking Timer is used"
 			# Lock Swipe for 4 secofs
 
+	" Kinematics 2D Error catcher"
+	if not is_instance_valid(Kinematic_2d):
+		Kinematic_2d= KinematicBody2D.new() 
+
 	"Limits memory usage for Drag and Drop bug fixer"
 	#optimize code
 	if target_memory_x.size() > 30:
@@ -439,6 +449,7 @@ func _process(delta):
 
 
 	# ReWrite to Use State machine
+	# Rewrite as Godot Unit Tests
 	# AUtimatically sets the Loaded comic boolean?
 	if current_comics != null:
 		_loaded_comics = true
@@ -495,18 +506,20 @@ func _on_Timer_timeout():
 	Triggers A Timer Lag between Swipe Input and Swipe Registration.
 	Resets SwipeCounter
 	"""
+	# Reset Swipe Locked
+	SwipeLocked = false
 	Swipe._on_Timer_timeout()
 	SwipeCounter = 0
 
 
 func close_comic()-> void:
 	print_debug("Closing COmic")
-	comics_sprite.queue_free() 
-	comics_placeholder.queue_free()
-	Kinematic_2d.queue_free()
+	#comics_sprite.hide() 
+	comics_placeholder.hide()
+	#Kinematic_2d.hide()
 	enabled = false 
 	_loaded_comics = false #working buggy
-	current_frame = -2 # working buggy
+	current_frame = 0 # working buggy
 	emit_signal("freed_comics")
 
 'sets comic page to center of screen'
@@ -533,15 +546,24 @@ func next_panel(comics_sprite : AnimatedSprite) -> int:
 		
 		#print (current_frame)
 		#current_frame = next_frame
+		
+		# Stops a swipe overflow for comic pages
 		SwipeLocked = true
 		
 		# Centers Comic page
 		#comics_sprite.set_position(Comics_v6.origin)
 			#center_page()
 		#	return int(current_frame) 
-	" Play SFX "
-	if Music.music_on == true:
-		Music.play_sfx(Music.comic_sfx)
+	
+	else :
+		push_error("Waiting for swipe lock to timeout"+ str(can_drag)+ str(SwipeLocked) + str(comics_sprite))
+		#print_debug(!can_drag, !SwipeLocked, comics_sprite)
+	
+	
+	# Disabled for debugging
+	#" Play SFX "
+	#if Music.music_on == true:
+	#	Music.play_sfx(Music.comic_sfx)
 		
 
 	return current_frame
@@ -898,7 +920,7 @@ class Swipe : #extends Reference:
 		if -sign(direction.y) < -swipe_parameters: # works
 			print('down swipe 1 ') #for debug purposes
 			
-			#next_panel()
+			next_panel()
 			
 			#direction_var = "Right"
 			
@@ -908,7 +930,7 @@ class Swipe : #extends Reference:
 			
 			# next panel
 			
-			prev_panel()
+			#prev_panel()
 
 			
 			#if Globals.curr_scene == "Comics____2":
@@ -917,7 +939,7 @@ class Swipe : #extends Reference:
 		
 		if -sign(direction.y)  > swipe_parameters: # Doesnt work
 			print('up swipe 1') #for debug purposes
-			#prev_panel()
+			prev_panel()
 			
 			
 			# Play Animation
@@ -1011,7 +1033,7 @@ class Swipe : #extends Reference:
 				print('up swipe 2') #for debug purposes
 				
 				#direction_var = "Up"
-				
+				prev_panel()
 				
 				# Play Animation
 				return GlobalAnimation.get_child(0).play("SWIPE_UP")
@@ -1022,6 +1044,8 @@ class Swipe : #extends Reference:
 				
 			if -sign(direction.y)  > swipe_parameters:
 				print('down swipe 2') #for debug purposes
+				
+				next_panel()
 				
 				# Play Animation
 				return GlobalAnimation.get_child(0).play("SWIPE_DOWN")

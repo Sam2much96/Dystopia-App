@@ -32,21 +32,39 @@ onready var menu : TouchScreenButton = $menu
 #onready var notifications : Popup = $Notification2
 onready var logo : TextureRect = $logo
 onready var _ad_placeholder : Appodeal = $Appodeal
+onready var _comic_placehlder : Control = $Control
 onready var _menu = $"Menu "
-onready var title_nodes : Array = [art1, art2,menu,logo,_ad_placeholder,_menu]
+onready var title_nodes : Array = [art1, art2,menu,logo,_ad_placeholder,_menu, _comic_placehlder]
 
 #res://scenes/UI & misc/controls_illustration.gd
 
 func _ready():
 	
+	# Seed Random Number
+	randomize()
+	
 	# TItle Screen Art
+	# Spawn A Random Page In a Random COmic Chapter
+	Comics_v6.Functions.load_comics(
+		Comics_v6.comics[int(round(rand_range(1,7)))], 
+		[],
+		get_tree(), 
+		true, 
+		true, 
+		true , 
+		5, 
+		Comics_v6.Kinematic_2d, 
+		_comic_placehlder
+		)
+		
+		
 	# Controls_illustratins.gd has texture positional bug
-		if Globals.screenOrientation == 1:
-			art1.show()
-			art2.hide()
-		if Globals.screenOrientation == 0:
-			art1.hide()
-			art2.show()
+	#if Globals.screenOrientation == 1:
+	#	art1.show()
+	#	art2.hide()
+	#if Globals.screenOrientation == 0:
+	#	art1.hide()
+	#	art2.show()
 
 
 

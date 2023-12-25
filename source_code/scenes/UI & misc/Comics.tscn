@@ -80,7 +80,7 @@ position = Vector2( -436.65, -249.813 )
 script = SubResource( 7 )
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 0.5
 
 [node name="Line2D" type="Line2D" parent="."]
 position = Vector2( 506.03, 260.142 )

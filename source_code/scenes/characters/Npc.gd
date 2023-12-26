@@ -89,7 +89,7 @@ func _process(delta : float):
 				#print (get_tree().get_nodes_in_group('player').pop_front())
 				
 				# Follow Player
-				#move_and_slide( Behaviour.FollowPlayer(self, __body))
+				move_and_slide( Behaviour.FollowPlayer(self, __body))
 				
 				pass
 		

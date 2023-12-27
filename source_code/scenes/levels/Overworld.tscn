@@ -138,6 +138,7 @@ to_scene = "res://scenes/levels/Building1.tscn"
 
 [node name="Player" parent="." instance=ExtResource( 7 )]
 position = Vector2( 3227.29, 527.001 )
+scale = Vector2( 1.16168, 1.16168 )
 
 [node name="Enemy" parent="." instance=ExtResource( 12 )]
 position = Vector2( 2792.15, 705.99 )

@@ -19,7 +19,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ads/admob-lib/admob.gd"
 }, {
-"base": "Node",
+"base": "",
 "class": "Algod",
 "language": "NativeScript",
 "path": "res://addons/algodot/gdnative/algod.gdns"
@@ -34,7 +34,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ads/Appodeal/Appodeal.gd"
 }, {
-"base": "Node",
+"base": "",
 "class": "AsyncExecutorDriver",
 "language": "NativeScript",
 "path": "res://addons/algodot/gdnative/async_executor.gdns"

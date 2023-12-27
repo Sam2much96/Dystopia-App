@@ -6,13 +6,6 @@
 [ext_resource path="res://scenes/Shaders/DirectionalBlur.shader" type="Shader" id=4]
 [ext_resource path="res://scenes/Shaders/Impact.tscn" type="PackedScene" id=5]
 
-[sub_resource type="ShaderMaterial" id=1]
-shader = ExtResource( 4 )
-shader_param/angle_degrees = 10.0
-shader_param/Samples = 25
-shader_param/strength = 0.0
-shader_param/noise = ExtResource( 3 )
-
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 35.8589
 
@@ -536,6 +529,13 @@ tracks/7/keys = {
 "update": 1,
 "values": [ null ]
 }
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 4 )
+shader_param/angle_degrees = 10.0
+shader_param/Samples = 25
+shader_param/strength = 0.0
+shader_param/noise = ExtResource( 3 )
 
 [sub_resource type="Animation" id=10]
 length = 0.7
@@ -1252,13 +1252,11 @@ __meta__ = {
 }
 
 [node name="sprite" type="Sprite" parent="."]
-modulate = Color( 0, 0, 0, 1 )
-material = SubResource( 1 )
 position = Vector2( 6.30249, -86.9744 )
 texture = ExtResource( 2 )
 hframes = 9
 vframes = 8
-frame = 66
+frame = 31
 
 [node name="hitbox" type="CollisionShape2D" parent="."]
 position = Vector2( -0.882385, -27.9806 )
@@ -1268,6 +1266,7 @@ shape = SubResource( 2 )
 [node name="player_sword" type="Area2D" parent="."]
 position = Vector2( 6.30249, -86.9744 )
 collision_layer = 32
+monitorable = false
 
 [node name="slash" type="CollisionPolygon2D" parent="player_sword"]
 position = Vector2( -15.5219, -3.42419 )

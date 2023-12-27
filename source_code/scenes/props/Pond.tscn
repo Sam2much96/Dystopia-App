@@ -32,6 +32,7 @@ shape = SubResource( 3 )
 
 [node name="Puddle_FX" parent="." instance=ExtResource( 2 )]
 position = Vector2( -14, -20 )
+scale = Vector2( 1.90247, 1.90247 )
 
 [connection signal="body_entered" from="." to="." method="_on_pond_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_pond_body_exited"]

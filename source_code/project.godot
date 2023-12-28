@@ -19,7 +19,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ads/admob-lib/admob.gd"
 }, {
-"base": "",
+"base": "Node",
 "class": "Algod",
 "language": "NativeScript",
 "path": "res://addons/algodot/gdnative/algod.gdns"
@@ -34,7 +34,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ads/Appodeal/Appodeal.gd"
 }, {
-"base": "",
+"base": "Node",
 "class": "AsyncExecutorDriver",
 "language": "NativeScript",
 "path": "res://addons/algodot/gdnative/async_executor.gdns"
@@ -108,6 +108,11 @@ _global_script_classes=[ {
 "class": "Exit",
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Exit.gd"
+}, {
+"base": "Camera2D",
+"class": "FightCam",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/Fight Cam.gd"
 }, {
 "base": "Control",
 "class": "GameControls",
@@ -485,6 +490,7 @@ _global_script_class_icons={
 "DialogBox": "",
 "Enemy": "",
 "Exit": "",
+"FightCam": "",
 "GameControls": "",
 "GameHUD": "",
 "Game_Menu": "",

@@ -108,6 +108,10 @@ class Behaviour extends Reference:
 			if Globals.curr_scene == 'HouseInside':
 				pass
 
+
+		
+
+
 func _ready():
 
 
@@ -258,6 +262,10 @@ func _physics_process(delta):
 				new_anim = "die"
 			STATE_HURT:
 				new_anim = "hurt"
+				
+				# FX works better in script
+				Globals.player_cam.shake()
+				
 		
 		## UPDATE ANIMATION
 		if new_anim != anim:
@@ -329,12 +337,13 @@ func _on_hurtbox_area_entered(area):
 			Music.play_track(Music.nokia_soundpack[27])
 	pass
 
+
+func shake(): # Shaky Cam FX
+	Globals.player_cam.shake()
+
 func start_timer(time: float):
 	timer.start(time)
 
 
 
 
-func _on_ScentTimer_timeout()-> void:
-	timeout = true
-	#print ('timer debug 2: ', timeout) #works

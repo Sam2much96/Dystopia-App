@@ -515,7 +515,8 @@ class Screen extends Reference :
 	static func calculateViewportSize( t : CanvasItem ) -> Vector2 :
 		return t.get_viewport_rect().size
 
-	
+
+
 	static func display_calculations( display, GlobalScript):
 		'Screen Display Calculations'
 		if display is CanvasItem:

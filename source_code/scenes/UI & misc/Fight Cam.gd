@@ -10,6 +10,9 @@
 
 extends Camera2D
 
+class_name FightCam
+
+
 # Multi - Target Camera
 export var move_speed = 0.5 # camera position lerp speed
 export var zoom_speed = 0.25 # camera zoom lerp speed
@@ -29,13 +32,17 @@ export var max_offset = Vector2(100, 75)  # Maximum hor/ver shake in pixels.
 export var max_roll = 0.1  # Maximum rotation in radians (use sparingly).
 export (NodePath) var target  # Assign the node this camera will follow.
 
-var trauma = 0.0  # Current shake strength.
+export(float)var trauma = 0.0  # Current shake strength.
 var trauma_power = 2  # Trauma exponent. Use [2, 3].
 
-onready var noise = OpenSimplexNoise.new()
+onready var noise = OpenSimplexNoise.new() # Use procedural generation class code
 var noise_y = 0
 
 func _ready():
+	
+	
+	# Make GLobal
+	Globals.player_cam = self
 	
 	# seed random number generator
 	randomize()

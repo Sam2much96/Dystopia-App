@@ -288,6 +288,9 @@ func _physics_process(delta):
 			"Enemy Navigation"
 			# Duplicate of Walking State
 			if player != null:
+				
+				
+				
 				#print_debug(Functions.calculate_center(player.position, self.position))
 				linear_vel = Functions.calculate_center(player.position, self.position)
 				
@@ -414,6 +417,11 @@ func _on_enemy_eyesight_body_entered(body)-> void:
 		player = body
 		raycast.set_enabled(true)
 		run_speed = 300 #increase run speed if player is seen
+		
+		# set up fight cam
+		# buggy
+		#Globals.player_cam.add_target(self)
+		#Globals.player_cam.add_target(player)
 		
 		
 		# Disabbling for Refactoring
@@ -593,10 +601,11 @@ class Behaviour extends Reference:
 					# Attack Player when in range
 					#
 					# Nested If's?
-					if enemy_distance_to_player < 80: #uses enemy distance to auto attack
+					#print_debug(enemy_distance_to_player) # uses sprite size directly in calculations
+					if enemy_distance_to_player < 81: #uses enemy distance to auto attack
 						state = STATE_ATTACK
 						return state 
-					if enemy_distance_to_player > 80:
+					if enemy_distance_to_player > 81:
 						#shoot() #Disabling for now
 						if enemy_type == "Hard":
 							state = STATE_ROLL

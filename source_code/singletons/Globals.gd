@@ -57,6 +57,9 @@ onready var kill_count : int = 0 #update to load from savefile
 var players : Array = [] # All Players
 var player : Player # My Player
 
+# Player cam
+var player_cam : FightCam
+
 #var _p # Player placeholder
 var player_hitpoints : int
 var enemy = null

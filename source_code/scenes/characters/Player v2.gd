@@ -108,6 +108,9 @@ var SIMULATING_1 : bool = false
 var v : Vector2 = Vector2.ZERO
 
 func _ready():
+	# continue  game debug/programming
+	print_debug("Continue Programming on Line 288. SImulatuion -> Networking -> Playerv2 ")
+	
 	#Globals.update_curr_scene()
 	#if Globals.player_hitpoints != null:
 	#	hitpoints = Globals.player_hitpoints #Updates player health across scenes
@@ -280,6 +283,11 @@ func _input(event):
 			Networking.player_info["peer id"][peer_id]["input"] = GlobalInput._get_input_buffer() 
 			
 			#print_debug(Networking.player_info["peer id"][peer_id]["frames"])
+			
+			
+			# Update state Machine
+			
+			# Update Inventory
 			
 			
 			

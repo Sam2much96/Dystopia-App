@@ -65,7 +65,7 @@ export (Dictionary) var player_info = {
 # Simulates player position on Kinematic body 2d
 #
 # SHould Implement Input Buffer into simulation Logic
-func poop(id : String, player : Player_v2_networking ):
+func simulate(id : String, player : Player_v2_networking ):
 
 	"Server Simulation Logic"
 	# Refactored to A Simulation Singleton on Nov 20, 23
@@ -88,7 +88,7 @@ func poop(id : String, player : Player_v2_networking ):
 		player.set_position(Vector2(float(Networking.player_info["peer id"][id]["position"]["x"]), float(Networking.player_info["peer id"][id]["position"]["y"])))
 		
 		# facing
-		self.facing = Networking.player_info["peer id"][id]["facing"]
+		player.facing = Networking.player_info["peer id"][id]["facing"]
 		
 		# State
 		

@@ -50,14 +50,39 @@ var check_timer
 var debug = ''
 var WORLD_SIZE : int = 40000.0
 
+"Player Info"
+#
 # should store Non-threathening Crypto and Multiplayerinfo too
 # Data Integrity can be checked using hash
 # Stores Data FOr Synchronizing Player Data Among Multiple Peers
-# SHould be converted to Json before sent over Network
+# Should be converted to Json before sent over Network
+# Organize player Info for each client peer id. It should synchronize game states across player network mesh
 var player_info : Dictionary = {
-	"peer id": {},
-	"hash": [] # Arrays because hash data is discarded eventually
+	"peer id": { 0 : { # server peer id
+		"node": [],
+		"position": [], # updated positional data, 
+		"frames": [], #frame data
+		"hitpoints" : 3,
+		"facing": "",
+		"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
+		"roll dir": [],
+		"destroyed": int(false), # boolean converted to integer for smaller packet size
+		"updates": [],  # Stores Present Update ID Across All Clients
+		"wallet addr": {}, # wallet Address and ID
+		"asset id": {},
+		"smart contract": [], # Arrays As it will only be one Smart COntract
+		"kill Count": 0,
+		"inventory": {}, # symchronizes
+		"velocity":[],
+		"rotation":[],
+		"firing":false,
+		"current_angle": 0,
+		"rewspawn_time":1000,
+	}},
+	
+	"hash" : [] # Arrays because hash data is discarded eventually
 	} 
+
 
 var peer_id : int
 var last_update = -1
@@ -684,13 +709,15 @@ func poolByte2Array(data_from: PoolByteArray) -> Array:
 """
 REGISTERS PLAYER INPUT AND RELEASES
 """
-
+# Debugs Player Data
 # Also updates the server object with player data from respective peers
 remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray):
 	# Remote Calls Player Input From Client Peer for each client peer
 	# Should Connect to Physics Process Simulation Logic
 	# Bug: Player positional data is not sent properly (Fixed)
 
+
+	"Server Debug"
 	if is_network_master():
 		#print("Player Input Registered ",str (poolByte2Array(player_data)), "from ", id ) # player data returns array
 		
@@ -704,13 +731,14 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 				#Returns a String. Converting to Dictionary
 				
 		#	RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
-				
+			
 			
 			# Bug : Nerging Dictionaries may be overwrite positional data? 
 			# Fix : Set Overwrite to true for duplicate keys
 			
 			
 			#print ("I: ", i["peer id"][var2str(id)]["position"]) # works # for debug purposes only
+			print ("I: ", i) # works # for debug purposes only
 			
 			# Registers the Player Peer ID Locally & Create Frame Buffer
 			if not player_info["peer id"].has(id_as_string):
@@ -719,7 +747,7 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 				player_info["peer id"][id_as_string] = {
 				"node": [],
 				"position": i["peer id"][id_as_string]["position"], # updated positional data, 
-				"frames": i["frames"], #frame data
+				"frames": [], #i["frames"], #frame data
 				"hitpoints" : 3,
 				"facing": key,
 				"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
@@ -751,7 +779,7 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 			
 			"Simulates Player Posititional Data "
 			#player.poop(id_as_string)
-			Simulation.poop(id_as_string, player)
+			Simulation.simulate(id_as_string, player)
 			
 			#print ("O: ", player_info["peer id"][id_as_string]["position"]) # works # for debug purposes only
 			
@@ -802,7 +830,7 @@ PLAYER UPDATE
 
 remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
-	print (" Packet Recieved, Size (Bytes): ", updates.size()) # for debug purposes only
+	print_debug (" Packet Recieved, Size (Bytes): ", updates.size()) # for debug purposes only
 	
 	#Error Catcher 1
 	# Unreliable packets can be sent in wrong order, we only work with the latest
@@ -814,12 +842,15 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	# parse data as array
 	#RawData = bytes2var(updates) #Warning: Can also contain code for remote execution; potential security flaw
 	
+
+	
 	var id_as_string : String = var2str(peer_id) 
 	
 	# Maintain an Updated Timeline so older packets are discarded
 #	last_update = update_id
 	
 	#print("Data Packets:", str(RawData)) # Works
+	
 	
 	
 	for i in poolByte2Array(updates):
@@ -834,10 +865,11 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 		# Merges Server Player Info to Local Player Info with Peer ID's
 		#player_info["peer id"].merge(RawJson.get_result()["peer id"])
 		
-		#print("I: ",i) # for debug purposes only
+		print("I: ",i) # for debug purposes only
 		
-		print_debug (player_info["peer id"].keys(), player_info["frames"]) #for debug purposes only
-		
+		# Debug All Connected Players Peer ID
+		#print_debug ("All Players: ",player_info["peer id"].keys()) #for debug purposes only
+		#print_debug(player_info["peer id"])
 		
 		# Update Local Peer Data from peer Update
 		# Simplify this code bloc

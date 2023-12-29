@@ -15,7 +15,9 @@
 # (2) Updates a Player Info Networkig Dictionary and Shares this as Data packets with a Networking peer
 #		as pool byte arrays
 # (3) Shares code with Player.gd script
-#
+# (4) Sends player Data via Metworking.player input
+# (5) Updates client peers via Networking.player_update
+
 #
 # To Do:
 # (1) Too much Detection going on
@@ -122,7 +124,28 @@ func _ready():
 	# Load Unique Player ID
 	peer_id = int(get_tree().get_network_unique_id())
 	
-	Networking.player_info["peer id"] = {peer_id : {}}
+	# Save Player Details
+	
+	Networking.player_info["peer id"] = {peer_id : {
+		"node": [],
+		"position": [], # updated positional data, 
+		"frames": [], #frame data
+		"hitpoints" : 3,
+		"facing": "",
+		"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
+		"roll dir": [],
+		"destroyed": int(false), # boolean converted to integer for smaller packet size
+		"updates": [],  # Stores Present Update ID Across All Clients
+		"wallet addr": {}, # wallet Address and ID
+		"asset id": {},
+		"smart contract": [], # Arrays As it will only be one Smart COntract
+		"kill Count": 0,
+		"inventory": {}, # symchronizes
+		"velocity":[],
+		"rotation":[],
+		"firing":false,
+		"current_angle": 0,
+		"rewspawn_time":1000,}}
 	
 	print_debug("Networking Peer ID: ",Networking.player_info["peer id"])
 	
@@ -247,6 +270,11 @@ func _input(event):
 			# Update Positional Data
 			Networking.player_info["peer id"][peer_id]["position"]["x"] = self.position.x
 			Networking.player_info["peer id"][peer_id]["position"]["y"] = self.position.y
+			
+			# update frame Data
+			Networking.player_info["peer id"][peer_id]["frames"] = Simulation.get_frame_counter()
+			
+			print_debug(Networking.player_info["peer id"][peer_id]["frames"])
 			
 			# Update Player Info Data as poolbyte
 			Networking.RawData = Networking.array2poolByte([Networking.player_info])

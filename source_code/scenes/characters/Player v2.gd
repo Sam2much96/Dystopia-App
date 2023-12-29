@@ -130,6 +130,7 @@ func _ready():
 		"node": [],
 		"position": [], # updated positional data, 
 		"frames": [], #frame data
+		"input": [], # input buffer for client prediction
 		"hitpoints" : 3,
 		"facing": "",
 		"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
@@ -274,14 +275,20 @@ func _input(event):
 			# update frame Data
 			Networking.player_info["peer id"][peer_id]["frames"] = Simulation.get_frame_counter()
 			
-			print_debug(Networking.player_info["peer id"][peer_id]["frames"])
+			
+			# update Input buffer
+			Networking.player_info["peer id"][peer_id]["input"] = GlobalInput._get_input_buffer() 
+			
+			#print_debug(Networking.player_info["peer id"][peer_id]["frames"])
+			
+			
 			
 			# Update Player Info Data as poolbyte
 			Networking.RawData = Networking.array2poolByte([Networking.player_info])
 			
 			# One KB Per Input is too Large. Please optimize to 20 Bytes Maz
 			# Only send changed innformation rather than entire merged dictionary
-			print_debug(Networking.player_info["peer id"][peer_id]["facing"], "/", "Size (Bytes) : ", Networking.RawData.size())
+			print_debug("Size (Bytes) : ", Networking.RawData.size())
 			
 			
 			#print("Largest Peer ID: ",Networking.peer_ids[0], "No: ", Networking.peer_ids.size() ) # for debug purposes only

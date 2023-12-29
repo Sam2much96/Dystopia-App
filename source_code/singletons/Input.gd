@@ -235,3 +235,8 @@ func vibrate(duration_ms : int, os : String):
 func roll_direction_calculation()-> Vector2:
 	var calc = Vector2(- int( Input.is_action_pressed("move_left") ) + int( Input.is_action_pressed("move_right") ), -int( Input.is_action_pressed("move_up") ) + int( Input.is_action_pressed("move_down") )).normalized()
 	return calc
+
+
+# Returns an Input Buffer for simulations calculations
+func _get_input_buffer() -> Array:
+	return input_buffer

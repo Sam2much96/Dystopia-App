@@ -62,6 +62,7 @@ var player_info : Dictionary = {
 		"node": [],
 		"position": [], # updated positional data, 
 		"frames": [], #frame data
+		"input": [], #input buffer
 		"hitpoints" : 3,
 		"facing": "",
 		"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
@@ -748,6 +749,7 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 				"node": [],
 				"position": i["peer id"][id_as_string]["position"], # updated positional data, 
 				"frames": [], #i["frames"], #frame data
+				"input" : [],
 				"hitpoints" : 3,
 				"facing": key,
 				"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal

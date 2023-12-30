@@ -57,23 +57,23 @@ var WORLD_SIZE : int = 40000.0
 # Stores Data FOr Synchronizing Player Data Among Multiple Peers
 # Should be converted to Json before sent over Network
 # Organize player Info for each client peer id. It should synchronize game states across player network mesh
-var player_info : Dictionary = {
+onready var player_info : Dictionary = {
 	"peer id": { 0 : { # server peer id
-		"position": [], # updated positional data, 
-		"frames": [], #frame data
+		"position": {"x": 0, "y":0}, # updated positional data, 
+		"frames": 0, #frame data
 		"input": [], #input buffer
 		"hitpoints" : 3,
-		"facing": "",
+		"facing": 0,
 		"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
 		"roll dir": [],
-		"destroyed": int(false), # boolean converted to integer for smaller packet size
-		"updates": 0,  # Stores Present Update ID Across All Clients
-		"wallet addr": {}, # wallet Address and ID
+		"destroyed": 0, # boolean converted to integer for smaller packet size
+		"updates": 0,  # Stores Present Update ID Across All Clients #
+		"wallet addr": [Wallet.address], # wallet Address and ID
 		"asset id": {},
-		"smart contract": [], # Arrays As it will only be one Smart COntract
+		"smart contract": [Wallet.smart_contract_addr, Wallet._app_id, Wallet._app_args], # Arrays As it will only be one Smart COntract
 		"kill Count": 0,
 		"inventory": Inventory.list(), # symchronizes Inventory Item
-		"velocity":[],
+		"velocity":{"x": 0, "y": 0},
 		"rotation":[],
 		#"firing":false,
 		"current_angle": 0,
@@ -700,12 +700,15 @@ func array2poolByte( data_from : Array) -> PoolByteArray:
 	return PoolByteArray(RawData)
 
 func poolByte2Array(data_from: PoolByteArray) -> Array:
-	RawData = bytes2var(data_from)
-	# Iterate through raw data
-	for i in RawData:
-		#Returns a String. Converting to Dictionary
-		
-		RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
+	if data_from.size() > 5:
+		RawData = bytes2var(data_from, true)
+		# Iterate through raw data
+		for i in RawData:
+			#Returns a String. Converting to Dictionary
+			
+			RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
+	else: 
+		push_error("Error calling built-in function 'bytes2var': Not enough bytes for decoding bytes, or invalid format.")
 	return RawJson.get_result()
 
 
@@ -714,7 +717,7 @@ REGISTERS PLAYER INPUT AND RELEASES
 """
 # Debugs Player Data
 # Also updates the server object with player data from respective peers
-remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray):
+remote func pi(id : int,player_data : PoolByteArray):
 	# Remote Calls Player Input From Client Peer for each client peer
 	# Should Connect to Physics Process Simulation Logic
 	# Bug: Player positional data is not sent properly (Fixed)
@@ -730,9 +733,18 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 	if is_network_master():
 		#print("Player Input Registered ",str (poolByte2Array(player_data)), "from ", id ) # player data returns array
 		
+		
+		
+		# update Update ID
+		#last_update = update_id
+		
+		
 		print_debug("Packet Size (Bytes): ", player_data.size())
 		
 		#print(player_info) # for debug purposes only
+		
+		
+		
 		
 		id_as_string = var2str(id) 
 		
@@ -747,30 +759,52 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 			
 			
 			#print ("I: ", i["peer id"][var2str(id)]["position"]) # works # for debug purposes only
-			print ("I: ", i) # works # for debug purposes only
+			#print ("I: ", i) # works # for debug purposes only
 			
-			# Registers the Player Peer ID Locally & Create Frame Buffer
+			"Data to debug"
+			
+			#Position
+			print_debug("Positional Data: ",i["peer id"][id_as_string]["position"])
+			
+			# Velocity
+			print_debug("Positional Data: ",i["peer id"][id_as_string]["velocity"])
+			
+			
+			# Input Buffer
+			print_debug("Input Buffer: ",i["peer id"][id_as_string]["input"])
+			
+			# Facing
+			print_debug("Facing: ",i["peer id"][id_as_string]["facing"])
+			
+			# Update ID
+			print_debug("Update ID: ",i["peer id"][id_as_string]["updates"])
+			
+			# Frame Data
+			print_debug("Frame: ",i["peer id"][id_as_string]["frames"], "/", "Server Frame :", Simulation.get_frame_counter())
+			
+			
+			# Registers the Player Connected Peer ID Locally & Create Frame Buffer
 			if not player_info["peer id"].has(id_as_string):
 				
 				# Refactor Using Simulation.gd
 				player_info["peer id"][id_as_string] = {
 				"position": i["peer id"][id_as_string]["position"], # updated positional data, 
-				"frames": [], #i["frames"], #frame data
+				"frames": 0, #frame data
 				"input" : [],
 				"hitpoints" : 3,
-				"facing": key,
+				"facing": 0,
 				"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
 				"roll dir": [],
-				"destroyed": bool(i["peer id"][id_as_string]["destroyed"]),
-				"updates": [],  # Stores Present Update ID Across All Clients
-				"wallet addr": {},
+				"destroyed": 0,
+				"updates": 0,  # Stores Present Update ID Across All Clients # Depreciated
+				"wallet addr": [0],
 				"asset id": {},
 				"smart contract": [], # Arrays As it will only be one Smart COntract
 				"kill Count": 0,
 				"inventory": {},
-				"velocity":0,
+				"velocity":{"x": 0, "y": 0},
 				"rotation":0,
-				"firing":false,
+				"firing":0,
 				"current_angle": 0,
 				"rewspawn_time":1000,
 				"hash" : ""
@@ -794,7 +828,7 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 			
 			# Debug Positional Data
 			# Facing Data
-			print ("O: ", player_info["peer id"][id_as_string]["facing"], i["peer id"][id_as_string]["facing"]) # works # for debug purposes only
+			#print ("O: ", player_info["peer id"][id_as_string]["facing"], i["peer id"][id_as_string]["facing"]) # works # for debug purposes only
 
 			
 			

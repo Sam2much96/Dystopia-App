@@ -128,19 +128,19 @@ func _ready():
 	peer_id = int(get_tree().get_network_unique_id())
 	
 	# Save Player Details
-	
+	#CLient Peer Details
 	Networking.player_info["peer id"] = {peer_id : {
-		"position": [], # updated positional data, 
-		"frames": [], #frame data
+		"position": {"x": 0, "y":0}, # updated positional data, 
+		"frames": 0, #frame data
 		"input": [], # input buffer for client prediction
 		"hitpoints" : 3,
-		"facing": "",
-		"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
+		"facing": self._facing,
+		"state" :self.state, # AN array of state s for Roll Back Networking Prediction would be ideal
 		"roll dir": [],
 		"destroyed": int(false), # boolean converted to integer for smaller packet size
-		"updates": update_id,  # Stores Present Update ID Across All Clients
+		"updates": update_id,  # Stores Present Update ID Across All Clients 
 		"wallet addr": {}, # wallet Address and ID
-		"asset id": {},
+		"asset id": 0,
 		"smart contract": [], # Arrays As it will only be one Smart COntract
 		"kill Count": 0,
 		"inventory": {}, # symchronizes
@@ -265,7 +265,10 @@ func _input(event):
 # CLIENT SIDE CODE
 	if not is_network_master():
 		if Input.is_action_just_pressed("move_up"):
-			#
+			# Update update ID to prevent wrong packet order 
+			
+			update_id += 1
+			
 			# Updates player Info to Server Object for Broadcasting
 			
 			Networking.player_info["peer id"][peer_id]["facing"] = self.facing
@@ -275,8 +278,12 @@ func _input(event):
 			Networking.player_info["peer id"][peer_id]["position"]["x"] = self.position.x
 			Networking.player_info["peer id"][peer_id]["position"]["y"] = self.position.y
 			
+			# update Update ID
+			
 			# update frame Data
 			Networking.player_info["peer id"][peer_id]["frames"] = Simulation.get_frame_counter()
+			
+			Networking.player_info["peer id"][peer_id]["updates"] = self.update_id
 			
 			
 			# update Input buffer
@@ -316,7 +323,7 @@ func _input(event):
 			
 			
 			"Updates Player Input Data Across Client/Server Peers"
-			Networking.rpc_unreliable_id(1, "pi", peer_id, "up", true, Networking.RawData) # Packet Loss Error
+			Networking.rpc_unreliable_id(1, "pi", peer_id, Networking.RawData) # Packet Loss Error
 			
 		# Move Down
 		if Input.is_action_just_pressed("move_down"):
@@ -329,7 +336,7 @@ func _input(event):
 			
 			
 			"Updates Player Input Data Across Client/Server Peers"
-			Networking.rpc_unreliable_id(1, "pi", peer_id, "up", true, Networking.RawData) # Packet Loss Error
+			Networking.rpc_unreliable_id(1, "pi", peer_id, Networking.RawData) # Packet Loss Error
 		
 		# Move Left
 		if Input.is_action_just_pressed("move_left"):
@@ -341,7 +348,7 @@ func _input(event):
 			
 			
 			"Updates Player Input Data Across Client/Server Peers"
-			Networking.rpc_unreliable_id(1, "pi", peer_id, "up", true, Networking.RawData) # Packet Loss Error
+			Networking.rpc_unreliable_id(1, "pi", peer_id, Networking.RawData) # Packet Loss Error
 			
 		# Move RIght
 		if Input.is_action_just_pressed("move_right"):
@@ -352,7 +359,7 @@ func _input(event):
 			
 			
 			"Updates Player Input Data Across Client/Server Peers"
-			Networking.rpc_unreliable_id(1, "pi", peer_id, "up", true, Networking.RawData) # Packet Loss Error
+			Networking.rpc_unreliable_id(1, "pi", peer_id, Networking.RawData) # Packet Loss Error
 			
 		# Attack
 		if Input.is_action_just_pressed("attack"):
@@ -367,7 +374,7 @@ func _input(event):
 
 			
 			"Updates Player Input Data Across Client/Server Peers"
-			Networking.rpc_unreliable_id(1, "pi", peer_id, "up", true, Networking.RawData) # Packet Loss Error
+			Networking.rpc_unreliable_id(1, "pi", peer_id, Networking.RawData) # Packet Loss Error
 		
 		# Roll
 		if Input.is_action_just_pressed("roll"):
@@ -380,7 +387,7 @@ func _input(event):
 			
 			
 			"Updates Player Input Data Across Client/Server Peers"
-			Networking.rpc_unreliable_id(1, "pi", peer_id, "up", true, Networking.RawData) # Packet Loss Error
+			Networking.rpc_unreliable_id(1, "pi", peer_id, Networking.RawData) # Packet Loss Error
 
 
 

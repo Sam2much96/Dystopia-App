@@ -89,7 +89,7 @@ var Player_account_temp: Array =[]
 #************Wallet variables**************#
 
 var amount : int
-var address : String
+export (String) var address #: String
 var mnemonic : String
 
 var recievers_addr : String = '' #for transactions

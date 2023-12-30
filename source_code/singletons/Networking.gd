@@ -59,7 +59,6 @@ var WORLD_SIZE : int = 40000.0
 # Organize player Info for each client peer id. It should synchronize game states across player network mesh
 var player_info : Dictionary = {
 	"peer id": { 0 : { # server peer id
-		"node": [],
 		"position": [], # updated positional data, 
 		"frames": [], #frame data
 		"input": [], #input buffer
@@ -68,15 +67,15 @@ var player_info : Dictionary = {
 		"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
 		"roll dir": [],
 		"destroyed": int(false), # boolean converted to integer for smaller packet size
-		"updates": [],  # Stores Present Update ID Across All Clients
+		"updates": 0,  # Stores Present Update ID Across All Clients
 		"wallet addr": {}, # wallet Address and ID
 		"asset id": {},
 		"smart contract": [], # Arrays As it will only be one Smart COntract
 		"kill Count": 0,
-		"inventory": {}, # symchronizes
+		"inventory": Inventory.list(), # symchronizes Inventory Item
 		"velocity":[],
 		"rotation":[],
-		"firing":false,
+		#"firing":false,
 		"current_angle": 0,
 		"rewspawn_time":1000,
 	}},
@@ -694,6 +693,9 @@ func _end_game():
 # Depreciated code, use GLobals.Functions.dict2byte for optimized data conversion
 func array2poolByte( data_from : Array) -> PoolByteArray: 
 	#	if frame_counter % 6_000 == 0:
+	# To Do:
+	# (1) update to check for data continuity
+	# (2) Implement Algorithm to reduce Data size to < 1000 bytes 
 	RawData = var2bytes([to_json(data_from)])
 	return PoolByteArray(RawData)
 
@@ -718,7 +720,13 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 	# Bug: Player positional data is not sent properly (Fixed)
 
 
-	"Server Debug"
+	"Server Logic"
+	# (1) Server receives player input from CLinet Peers
+	# (2) Server authenticates data packet
+	# (3) Server updates its records
+	# (4) Server Performs simulation
+	# (5) Server Broadcasts data to all client peers to replicate SImulation
+	# (6) Server Measures states Synchronizations across all CLient Peers
 	if is_network_master():
 		#print("Player Input Registered ",str (poolByte2Array(player_data)), "from ", id ) # player data returns array
 		
@@ -746,7 +754,6 @@ remote func pi(id : int, key: String, pressed: bool, player_data : PoolByteArray
 				
 				# Refactor Using Simulation.gd
 				player_info["peer id"][id_as_string] = {
-				"node": [],
 				"position": i["peer id"][id_as_string]["position"], # updated positional data, 
 				"frames": [], #i["frames"], #frame data
 				"input" : [],

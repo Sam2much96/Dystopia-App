@@ -28,11 +28,11 @@ margin_bottom = 40.0
 
 [node name="TextureRect" type="TextureRect" parent="."]
 show_behind_parent = true
-margin_left = 304.168
-margin_top = 76.8273
-margin_right = 3449.17
-margin_bottom = 4215.83
-rect_scale = Vector2( 0.199005, 0.199005 )
+margin_left = 290.82
+margin_top = 12.755
+margin_right = 3435.82
+margin_bottom = 4151.76
+rect_scale = Vector2( 0.271483, 0.271483 )
 texture = ExtResource( 8 )
 
 [node name="TextureRect2" type="TextureRect" parent="."]

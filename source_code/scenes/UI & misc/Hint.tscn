@@ -38,7 +38,7 @@ margin_bottom = 223.696
 custom_colors/font_color = Color( 0.882353, 0.882353, 0.882353, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "Dystopia App
-V2.0.1.7j
+V2.0.1.7l
 "
 align = 1
 autowrap = true
@@ -57,7 +57,7 @@ margin_top = 7.64708
 margin_right = 615.047
 margin_bottom = 70.6471
 theme = ExtResource( 4 )
-text = "NEW UPDATES : Happy New Year"
+text = "NEW UPDATES : Shaky  Cam  FX"
 align = 1
 
 [node name="Label4" type="Label" parent="."]

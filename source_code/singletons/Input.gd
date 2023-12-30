@@ -198,15 +198,17 @@ func _input(event):
 
 	if input_buffer.empty() == true && pressed:
 		input_buffer.append(_state)
+		return
 	
 	if not input_buffer.empty() && int(input_buffer[input_buffer.size()-1]) != _state:
 		input_buffer.append(_state)
+		return
 
 	# Prevent Memory Leak/ Stack Overflow error 
 	if input_buffer.size() > 12:
 		#	print(input_buffer, _state, input_buffer.pop_front())
 			input_buffer.clear()
-
+			return
 
 
 

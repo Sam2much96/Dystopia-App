@@ -130,7 +130,6 @@ func _ready():
 	# Save Player Details
 	
 	Networking.player_info["peer id"] = {peer_id : {
-		"node": [],
 		"position": [], # updated positional data, 
 		"frames": [], #frame data
 		"input": [], # input buffer for client prediction
@@ -139,7 +138,7 @@ func _ready():
 		"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
 		"roll dir": [],
 		"destroyed": int(false), # boolean converted to integer for smaller packet size
-		"updates": [],  # Stores Present Update ID Across All Clients
+		"updates": update_id,  # Stores Present Update ID Across All Clients
 		"wallet addr": {}, # wallet Address and ID
 		"asset id": {},
 		"smart contract": [], # Arrays As it will only be one Smart COntract
@@ -147,7 +146,7 @@ func _ready():
 		"inventory": {}, # symchronizes
 		"velocity":[],
 		"rotation":[],
-		"firing":false,
+		#"firing":false, # not needed
 		"current_angle": 0,
 		"rewspawn_time":1000,}}
 	
@@ -161,7 +160,8 @@ func _ready():
 	# Works
 	Networking.player_info["peer id"][peer_id] = Simulation.player_info
 		
-	Networking.player_info["peer id"][peer_id] ["node"].append(self)
+	
+	#Networking.player_info["peer id"][peer_id] ["node"].append(self)# NOt Needed
 	
 	Networking.player = self
 	
@@ -280,7 +280,7 @@ func _input(event):
 			
 			
 			# update Input buffer
-			Networking.player_info["peer id"][peer_id]["input"] = GlobalInput._get_input_buffer() 
+			Networking.player_info["peer id"][peer_id]["input"] = GlobalInput.input_buffer 
 			
 			#print_debug(Networking.player_info["peer id"][peer_id]["frames"])
 			
@@ -293,6 +293,10 @@ func _input(event):
 			
 			# Update Player Info Data as poolbyte
 			Networking.RawData = Networking.array2poolByte([Networking.player_info])
+			
+			# Debug Raw data
+			# Shows Data as Raw Poolbyte array
+			#print_debug("Raw Data: ", Networking.RawData)
 			
 			# One KB Per Input is too Large. Please optimize to 20 Bytes Maz
 			# Only send changed innformation rather than entire merged dictionary
@@ -307,7 +311,7 @@ func _input(event):
 			# Code Logic : Cal0l Player Inputs function via remote calls sending the following parameters
 			#id, key, pressed
 			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
-			Networking.player_info["peer id"][peer_id]["facing"] = facing
+			#Networking.player_info["peer id"][peer_id]["facing"] = facing
 			
 			
 			

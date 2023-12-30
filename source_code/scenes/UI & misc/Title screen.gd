@@ -45,26 +45,27 @@ func _ready():
 	
 	# TItle Screen Art
 	# Spawn A Random Page In a Random COmic Chapter
-	Comics_v6.Functions.load_comics(
-		Comics_v6.comics[int(round(rand_range(1,7)))], 
-		[],
-		get_tree(), 
-		true, 
-		true, 
-		true , 
-		5, 
-		Comics_v6.Kinematic_2d, 
-		_comic_placehlder
-		)
+	# 
+	#Comics_v6.Functions.load_comics(
+	#	Comics_v6.comics[int(round(rand_range(1,7)))], 
+	#	[],
+	#	get_tree(), 
+	#	true, 
+	#	true, 
+	#	true , 
+	#	5, 
+	#	Comics_v6.Kinematic_2d, 
+	#	_comic_placehlder
+	#	)
 		
 		
 	# Controls_illustratins.gd has texture positional bug
-	#if Globals.screenOrientation == 1:
-	#	art1.show()
-	#	art2.hide()
-	#if Globals.screenOrientation == 0:
-	#	art1.hide()
-	#	art2.show()
+	if Globals.screenOrientation == 1:
+		art1.show()
+		art2.hide()
+	if Globals.screenOrientation == 0:
+		art1.hide()
+		art2.show()
 
 
 

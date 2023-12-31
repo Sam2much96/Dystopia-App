@@ -37,30 +37,31 @@ var SIMULATING_1: bool = false
 var v : Vector2
 var world_radius : int
 
-export (Dictionary) var player_info = {
-		"node": [],
-		"position": {"x":0, "y": 0 }, # Extend to Include Simulation Frame ID Data
-		"frames": [frame_id], #frame data
-		"input buffer": GlobalInput.input_buffer,
-		"hitpoints" : 3,
-		"facing": "",
-		"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
-		"roll dir": {"x": 0, "y": 0},
-		"destroyed": 0,
-		"updates": [],  # Stores Present Update ID Across All Clients
-		"wallet addr": [],#{Networking.cfg_player_name : Globals.address},
-		"asset id": {},
-		"smart contract": [], # Arrays As it will only be one Smart COntract
-		"kill Count": 0,
-		"inventory": {},
+export (Dictionary) var player_info : Dictionary = {
+	"peer id": { 0 : { # server peer id
+		"position": {"x": 0, "y":0}, # updated positional data, 
 		"velocity":{"x": 0, "y": 0},
+		"frames": 0, #frame data
+		"input": [], #input buffer
+		"hitpoints" : 3,
+		"facing": 0,
+		"state" : 0, # AN array of state s for Roll Back Networking Prediction would be ideal
+		"roll dir": {"x": 0, "y": 0},
+		"destroyed": 0, # boolean converted to integer for smaller packet size
+		"updates": 0,  # Stores Present Update ID Across All Clients #
+		"wallet addr": 0,#[Wallet.address], # wallet Address and ID
+		"asset id": {},
+		"smart contract": 0,#[Wallet.smart_contract_addr, Wallet._app_id, Wallet._app_args], # Arrays As it will only be one Smart COntract
+		"kill Count": 0,
+		"inventory": Inventory.list(), # symchronizes Inventory Item
 		"rotation":0,
-		"firing":0,
+		#"firing":false,
 		"current_angle": 0,
 		"rewspawn_time":1000,
-		"hash" : ""
-		
-		}
+	}},
+	
+	"hash" : "" # Arrays because hash data is discarded eventually
+	} 
 
 
 # Refactored to A Simulation Singleton on Nov 20, 23
@@ -79,7 +80,7 @@ func simulate(id : String, player : Player_v2_networking ):
 
 	# SHould instead be a physics process method
 	
-	if Networking.player_info["peer id"].has(id):
+	if Simulation.player_info["peer id"].has(id):
 			
 			
 
@@ -90,13 +91,13 @@ func simulate(id : String, player : Player_v2_networking ):
 		# SHould implement position translations using the Networking frame buffer
 		#player.move_and_slide(Vector2(float(Networking.player_info["peer id"][id]["velocity"]["x"]),float(Networking.player_info["peer id"][id]["velocity"]["y"]))
 		# Data packet Lost
-		player.move_and_slide(Vector2(float(Networking.player_info["peer id"][id]["velocity"]["x"]), float(Networking.player_info["peer id"][id]["velocity"]["y"])))
+		player.move_and_slide(Vector2(float(Simulation.player_info["peer id"][id]["velocity"]["x"]), float(Simulation.player_info["peer id"][id]["velocity"]["y"])))
 		
 		
-		player.set_position(Vector2(float(Networking.player_info["peer id"][id]["position"]["x"]), float(Networking.player_info["peer id"][id]["position"]["y"])))
+		player.set_position(Vector2(float(Simulation.player_info["peer id"][id]["position"]["x"]), float(Simulation.player_info["peer id"][id]["position"]["y"])))
 		
 		# facing
-		player.facing = Networking.player_info["peer id"][id]["facing"]
+		player.facing = Simulation.player_info["peer id"][id]["facing"]
 		
 		# State
 		
@@ -310,6 +311,46 @@ class projectiles:
 		
 	
 
+"Player Info"
+#
+# should store Non-threathening Crypto and Multiplayerinfo too
+# Data Integrity can be checked using hash
+# Stores Data FOr Synchronizing Player Data Among Multiple Peers
+# Should be converted to Json before sent over Network
+# Organize player Info for each client peer id. It should synchronize game states across player network mesh
+func register_player(id : int)-> Dictionary:
+	# To Do:
+	# (1) Optimize Dictionary size to Max 1000 bytes
+	# (2) Implewment Data Optimization for  Data packet (gdunzip/zip)
+	var player_info : Dictionary = {
+		"peer id": { id : { # server peer id
+		"position": {"x": 0, "y":0}, # updated positional data, 
+		"velocity":{"x": 0, "y": 0},
+		"frames": 0, #frame data
+		"input": 0, #input buffer
+		"hitpoints" : 3,
+		"facing": 0,
+		"state" : 0, # AN array of state s for Roll Back Networking Prediction would be ideal
+		"roll dir": {"x": 0, "y": 0},
+		"destroyed": 0, # boolean converted to integer for smaller packet size
+		"updates": 0,  # Stores Present Update ID Across All Clients #
+		"wallet addr": 0,#[Wallet.address], # wallet Address and ID
+		"asset id": 0,
+		"smart contract": 0,#[Wallet.smart_contract_addr, Wallet._app_id, Wallet._app_args], # Arrays As it will only be one Smart COntract
+		"kill Count": 0,
+		"inventory": 0, # symchronizes Inventory Item
+		"rotation":0,
+		#"firing":false,
+		"current_angle": 0,
+		"rewspawn_time":1000,
+	}},
+	
+	"hash" : "" # Arrays because hash data is discarded eventually
+	} 
+	return player_info
+
+func get_all_player_ids()-> Array:
+	return Simulation.player_info["peer id"].keys()
 
 static func set_position(x : Vector2):
 	pass

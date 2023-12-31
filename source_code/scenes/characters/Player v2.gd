@@ -122,35 +122,35 @@ func _ready():
 
 	'Makes Player Hitpoint a Global Variable'
 	#Globals.player_hitpoints = hitpoints
-
+	
 
 	# Load Unique Player ID
 	peer_id = int(get_tree().get_network_unique_id())
 	
 	# Save Player Details
-	#CLient Peer Details
-	Networking.player_info["peer id"] = {peer_id : {
+	#CLient Peer Details Locally
+	Simulation.player_info["peer id"][peer_id] = {
 		"position": {"x": 0, "y":0}, # updated positional data, 
+		"velocity":{"x": 0, "y": 0},
 		"frames": 0, #frame data
-		"input": [], # input buffer for client prediction
+		"input": 0, #input buffer
 		"hitpoints" : 3,
-		"facing": self._facing,
-		"state" :self.state, # AN array of state s for Roll Back Networking Prediction would be ideal
-		"roll dir": [],
+		"facing": 0,
+		"state" : 0, # AN array of state s for Roll Back Networking Prediction would be ideal
+		"roll dir": {"x": 0, "y": 0},
 		"destroyed": 0, # boolean converted to integer for smaller packet size
-		"updates": update_id,  # Stores Present Update ID Across All Clients 
-		"wallet addr": {}, # wallet Address and ID
+		"updates": 0,  # Stores Present Update ID Across All Clients #
+		"wallet addr": 0,#[Wallet.address], # wallet Address and ID
 		"asset id": 0,
-		"smart contract": [], # Arrays As it will only be one Smart COntract
+		"smart contract": 0,#[Wallet.smart_contract_addr, Wallet._app_id, Wallet._app_args], # Arrays As it will only be one Smart COntract
 		"kill Count": 0,
-		"inventory": {}, # symchronizes
-		"velocity":[],
-		"rotation":[],
-		#"firing":false, # not needed
+		"inventory": 0, # symchronizes Inventory Item
+		"rotation":0,
+		#"firing":false,
 		"current_angle": 0,
-		"respawn_time":1000,}}
+		"rewspawn_time":1000,}
 	
-	print_debug("Networking Peer ID: ",Networking.player_info["peer id"])
+	print_debug("Networking Peer ID: ", Simulation.get_all_player_ids())
 	
 	print_debug("Peer ID: ", peer_id)
 
@@ -158,14 +158,14 @@ func _ready():
 	# From Simulaton
 	# Update Networking Player Info With Player Info
 	# Works
-	Networking.player_info["peer id"][peer_id] = Simulation.player_info
+	#Networking.player_info["peer id"][peer_id] = Simulation.player_info
 		
 	
 	#Networking.player_info["peer id"][peer_id] ["node"].append(self)# NOt Needed
 	
 	Networking.player = self
 	
-	print_debug("Initial Player Info Debug: ",Networking.player_info)
+	print_debug("Initial Player Info Debug: ",Simulation.player_info)
 	
 	#detect if networking connection
 	camera._set_current(true) 
@@ -178,9 +178,9 @@ func _ready():
 		
 
 	# Error Catcher 2
-	if Networking.player_info["peer id"].empty():
-		Networking.player_info["peer id"] = {peer_id : {}}
-		print_debug(Networking.player_info["peer id"])# For Debug Purposes ONly
+	if Simulation.player_info["peer id"].empty():
+		Simulation.player_info["peer id"] = {peer_id : {}}
+		print_debug(Simulation.player_info["peer id"])# For Debug Purposes ONly
 
 
 	" Connects to the Dialogue System"
@@ -194,10 +194,11 @@ func _ready():
 
 
 	# Connect SIgnals
-	
+	# (1) Networking Singleton to SImulation SIngleton
 	if is_network_master():
-		Networking.connect("PlayerInput", self,"poop", [peer_id])
-		print_debug(Networking.is_connected("PlayerInput", self,"poop"))
+		
+		Networking.connect("pi", Simulation,"simulate", [peer_id, self])
+		print_debug("Simulation signal is connected: ",Networking.is_connected("pi", Simulation,"simulate"))
 
 
 func _process(delta : float):
@@ -267,43 +268,13 @@ func _input(event):
 		if Input.is_action_just_pressed("move_up"):
 			# Update update ID to prevent wrong packet order 
 			
-			update_id += 1
-			
 			# Updates player Info to Server Object for Broadcasting
-			
-			Networking.player_info["peer id"][peer_id]["facing"] = self.facing
-			#print(Networking.peer_ids) # for debug purposes only
-			
-			# Update Positional Data
-			Networking.player_info["peer id"][peer_id]["position"]["x"] = self.position.x
-			Networking.player_info["peer id"][peer_id]["position"]["y"] = self.position.y
-			
-			# Update Velocity
-			Networking.player_info["peer id"][peer_id]["velocity"]["x"] = self.linear_vel.x
-			Networking.player_info["peer id"][peer_id]["velocity"]["y"] = self.linear_vel.y
-			
-			# update Update ID
-			
-			# update frame Data
-			Networking.player_info["peer id"][peer_id]["frames"] = Simulation.get_frame_counter()
-			
-			Networking.player_info["peer id"][peer_id]["updates"] = self.update_id
-			
-			
-			# update Input buffer
-			Networking.player_info["peer id"][peer_id]["input"] = GlobalInput.input_buffer 
-			
-			#print_debug(Networking.player_info["peer id"][peer_id]["frames"])
-			
-			
-			# Update state Machine
-			
-			# Update Inventory
+			update_player_info()
 			
 			
 			
 			# Update Player Info Data as poolbyte
-			Networking.RawData = Networking.array2poolByte([Networking.player_info])
+			#Networking.RawData = Networking.array2poolByte([Networking.player_info])
 			
 			# Debug Raw data
 			# Shows Data as Raw Poolbyte array
@@ -318,22 +289,13 @@ func _input(event):
 			
 			
 		if Input.is_action_just_released("move_up"):
-		
-			# Code Logic : Cal0l Player Inputs function via remote calls sending the following parameters
-			#id, key, pressed
-			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",false)
-			#Networking.player_info["peer id"][peer_id]["facing"] = facing
-			
-			
 			
 			"Updates Player Input Data Across Client/Server Peers"
 			Networking.rpc_unreliable_id(1, "pi", peer_id, Networking.RawData) # Packet Loss Error
 			
 		# Move Down
 		if Input.is_action_just_pressed("move_down"):
-			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",true)
-			
-			Networking.player_info["peer id"][peer_id]["facing"] = facing
+			update_player_info()
 			
 		if Input.is_action_just_released("move_down"):
 			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"right",false)
@@ -344,21 +306,17 @@ func _input(event):
 		
 		# Move Left
 		if Input.is_action_just_pressed("move_left"):
-			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"up",true)
+			update_player_info()
 			
-			
-			Networking.player_info["peer id"][peer_id]["facing"] = facing
 		if Input.is_action_just_released("move_left"):
-			
 			
 			"Updates Player Input Data Across Client/Server Peers"
 			Networking.rpc_unreliable_id(1, "pi", peer_id, Networking.RawData) # Packet Loss Error
 			
 		# Move RIght
 		if Input.is_action_just_pressed("move_right"):
+			update_player_info()
 			
-			Networking.player_info["peer id"][peer_id]["facing"] = facing
-			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"down",true)
 		if Input.is_action_just_released("move_right"):
 			
 			
@@ -368,27 +326,19 @@ func _input(event):
 		# Attack
 		if Input.is_action_just_pressed("attack"):
 			
-			
-			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
-			Networking.player_info["peer id"][peer_id]["state"].append(state)
+			update_player_info()
 			
 		if Input.is_action_just_released("attack"):
-			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
-			Networking.player_info["peer id"][peer_id]["state"].append(state)
-
 			
 			"Updates Player Input Data Across Client/Server Peers"
 			Networking.rpc_unreliable_id(1, "pi", peer_id, Networking.RawData) # Packet Loss Error
 		
 		# Roll
 		if Input.is_action_just_pressed("roll"):
-			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",true)
-			Networking.player_info["peer id"][peer_id]["state"].append(state)
+			
+			update_player_info()
 			
 		if Input.is_action_just_released("roll"):
-			#rpc_id(1,"player_input",get_tree().get_network_unique_id(),"fire",false)
-			Networking.player_info["peer id"][peer_id]["state"].append(state)
-			
 			
 			"Updates Player Input Data Across Client/Server Peers"
 			Networking.rpc_unreliable_id(1, "pi", peer_id, Networking.RawData) # Packet Loss Error
@@ -426,7 +376,7 @@ func _physics_process(delta):
 						
 						# Updates State to Global Dictionary
 						# RPC calls to client peer
-						Networking.player_info["peer id"][peer_id]["state"].append(state)
+						#Networking.player_info["peer id"][peer_id]["state"].append(state)
 						
 						
 
@@ -435,7 +385,7 @@ func _physics_process(delta):
 					state = STATE_ATTACK
 					
 					#rpc calls to server
-					Networking.player_info["peer id"][peer_id]["state"].append(state)
+					#Networking.player_info["peer id"][peer_id]["state"].append(state)
 
 					
 				if Input.is_action_just_pressed("roll"):
@@ -448,7 +398,7 @@ func _physics_process(delta):
 					
 					
 					#asfafaf
-					Networking.player_info["peer id"][peer_id]["roll direction"].append(roll_direction)
+					#Networking.player_info["peer id"][peer_id]["roll direction"].append(roll_direction)
 
 
 					# Update Facing
@@ -574,7 +524,7 @@ func _physics_process(delta):
 		
 		#print(Networking.player_info["peer id"][Networking.peer_ids[0]]["position"])
 		#print(Networking.player_info["peer id"].keys()) # works
-		if Networking.player_info["peer id"].keys().size() > 1:
+		if Simulation.player_info["peer id"].keys().size() > 1:
 			#print(Networking.player_info["peer id"].keys()[1] ,": ",Networking.player_info["peer id"][Networking.player_info["peer id"].keys()[1]]["position"] ,"/", Networking.player_info["peer id"][Networking.player_info["peer id"].keys()[0]]["position"])
 			pass
 		
@@ -707,11 +657,55 @@ remote func player_joined(id : int, info):
 	#node_players.add_child(node_player)
 
 
+func update_player_info():
+	update_id += 1
+	
+	# Updates player Info to Server Object for Broadcasting
+	
+	Simulation.player_info["peer id"][peer_id]["facing"] = self.facing
+	#print(Networking.peer_ids) # for debug purposes only
+	
+	# Update Positional Data
+	Simulation.player_info["peer id"][peer_id]["position"]["x"] = self.position.x
+	Simulation.player_info["peer id"][peer_id]["position"]["y"] = self.position.y
+	
+	# Update Velocity
+	Simulation.player_info["peer id"][peer_id]["velocity"]["x"] = self.linear_vel.x
+	Simulation.player_info["peer id"][peer_id]["velocity"]["y"] = self.linear_vel.y
+	
+	# update Update ID
+	
+	# update frame Data
+	Simulation.player_info["peer id"][peer_id]["frames"] = Simulation.get_frame_counter()
+	
+	Simulation.player_info["peer id"][peer_id]["updates"] = self.update_id
+	
+	
+	# update Input buffer
+	Simulation.player_info["peer id"][peer_id]["input"] = GlobalInput.input_buffer 
+	
+	#print_debug(Networking.player_info["peer id"][peer_id]["frames"])
+	
+	
+	# Update state Machine
+	
+	# Update Inventory
+	
+	
+	
+	# Update Player Info Data as poolbyte
+	Networking.RawData = Networking.array2poolByte([Simulation.player_info])
+	
+	#print_debug(Networking.RawData) # for debug purposes only
+
+
+
+
 remote func player_leaving(id : int):
 	print("Callback: player_leaving(" + str(id)+")")
 	Dialogs.dialog_box.show_dialog("Player leaving: " + Networking.player_info[id].name, "Admin")
-	Networking.player_info[id].node.queue_free()
-	Networking.player_info.erase(id)
+	Simulation.player_info[id].node.queue_free()
+	Simulation.player_info.erase(id)
 
 
 
@@ -878,3 +872,4 @@ class server2 extends Reference:
 		for peer_id in Networking.player_info:
 			#rpc_id(peer_id, "fire_weapon", id, Networking.player_info[id].position, weapon_angle)
 			pass
+ 

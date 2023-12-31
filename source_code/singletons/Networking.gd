@@ -50,38 +50,8 @@ var check_timer
 var debug = ''
 var WORLD_SIZE : int = 40000.0
 
-"Player Info"
-#
-# should store Non-threathening Crypto and Multiplayerinfo too
-# Data Integrity can be checked using hash
-# Stores Data FOr Synchronizing Player Data Among Multiple Peers
-# Should be converted to Json before sent over Network
-# Organize player Info for each client peer id. It should synchronize game states across player network mesh
-onready var player_info : Dictionary = {
-	"peer id": { 0 : { # server peer id
-		"position": {"x": 0, "y":0}, # updated positional data, 
-		"frames": 0, #frame data
-		"input": [], #input buffer
-		"hitpoints" : 3,
-		"facing": 0,
-		"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
-		"roll dir": [],
-		"destroyed": 0, # boolean converted to integer for smaller packet size
-		"updates": 0,  # Stores Present Update ID Across All Clients #
-		"wallet addr": [Wallet.address], # wallet Address and ID
-		"asset id": {},
-		"smart contract": [Wallet.smart_contract_addr, Wallet._app_id, Wallet._app_args], # Arrays As it will only be one Smart COntract
-		"kill Count": 0,
-		"inventory": Inventory.list(), # symchronizes Inventory Item
-		"velocity":{"x": 0, "y": 0},
-		"rotation":[],
-		#"firing":false,
-		"current_angle": 0,
-		"rewspawn_time":1000,
-	}},
-	
-	"hash" : [] # Arrays because hash data is discarded eventually
-	} 
+
+
 
 
 var peer_id : int
@@ -595,8 +565,9 @@ func _player_connected(_id : int):
 	# Calls Player Logic in the Lobby Class
 	# Method is called with the Noe's Unique ID
 	# Idenftifying the player. This ID Should Be Saved
-	
-	Networking.player_info["peer id"] = {_id : {}}
+	print_debug("Registering Player ID", _id)
+	#Simulation.player_info["peer id"] = {_id : {}}
+	# Player ID is registered by the player script
 	
 	peer_id = _id
 	#OS.set_window_title('Client' + str(_id))
@@ -706,11 +677,12 @@ func poolByte2Array(data_from: PoolByteArray) -> Array:
 		for i in RawData:
 			#Returns a String. Converting to Dictionary
 			
-			RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
+			RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary
+		return RawJson.get_result()
+ 
 	else: 
 		push_error("Error calling built-in function 'bytes2var': Not enough bytes for decoding bytes, or invalid format.")
-	return RawJson.get_result()
-
+		return [] # returns an empty array
 
 """
 REGISTERS PLAYER INPUT AND RELEASES
@@ -749,73 +721,76 @@ remote func pi(id : int,player_data : PoolByteArray):
 		id_as_string = var2str(id) 
 		
 		for i in poolByte2Array(player_data):
-				#Returns a String. Converting to Dictionary
+			
+			if i != null:
+					#Returns a String. Converting to Dictionary
+					
+			#	RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
 				
-		#	RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
-			
-			
-			# Bug : Nerging Dictionaries may be overwrite positional data? 
-			# Fix : Set Overwrite to true for duplicate keys
-			
-			
-			#print ("I: ", i["peer id"][var2str(id)]["position"]) # works # for debug purposes only
-			#print ("I: ", i) # works # for debug purposes only
-			
-			"Data to debug"
-			
-			#Position
-			print_debug("Positional Data: ",i["peer id"][id_as_string]["position"])
-			
-			# Velocity
-			print_debug("Positional Data: ",i["peer id"][id_as_string]["velocity"])
-			
-			
-			# Input Buffer
-			print_debug("Input Buffer: ",i["peer id"][id_as_string]["input"])
-			
-			# Facing
-			print_debug("Facing: ",i["peer id"][id_as_string]["facing"])
-			
-			# Update ID
-			print_debug("Update ID: ",i["peer id"][id_as_string]["updates"])
-			
-			# Frame Data
-			print_debug("Frame: ",i["peer id"][id_as_string]["frames"], "/", "Server Frame :", Simulation.get_frame_counter())
-			
-			
-			# Registers the Player Connected Peer ID Locally if not registered
-			if not player_info["peer id"].has(id_as_string):
 				
-				# Refactor Using Simulation.gd
-				player_info["peer id"][id_as_string] = {
-				"position": i["peer id"][id_as_string]["position"], # updated positional data, 
-				"frames": 0, #frame data
-				"input" : [],
-				"hitpoints" : 3,
-				"facing": 0,
-				"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
-				"roll dir": [],
-				"destroyed": 0,
-				"updates": 0,  # Stores Present Update ID Across All Clients # Depreciated
-				"wallet addr": [0],
-				"asset id": {},
-				"smart contract": [], # Arrays As it will only be one Smart COntract
-				"kill Count": 0,
-				"inventory": {},
-				"velocity":{"x": 0, "y": 0},
-				"rotation":0,
-				"firing":0,
-				"current_angle": 0,
-				"rewspawn_time":1000,
-				"hash" : ""
+				# Bug : Nerging Dictionaries may be overwrite positional data? 
+				# Fix : Set Overwrite to true for duplicate keys
 				
-				}
+				
+				#print ("I: ", i["peer id"][var2str(id)]["position"]) # works # for debug purposes only
+				#print ("I: ", i) # works # for debug purposes only
+				
+				"Data to debug"
+				
+				#Position
+				print_debug("Positional Data: ",i["peer id"][id_as_string]["position"])
+				
+				# Velocity
+				print_debug("Positional Data: ",i["peer id"][id_as_string]["velocity"])
+				
+				
+				# Input Buffer
+				print_debug("Input Buffer: ",i["peer id"][id_as_string]["input"])
+				
+				# Facing
+				print_debug("Facing: ",i["peer id"][id_as_string]["facing"])
+				
+				# Update ID
+				print_debug("Update ID: ",i["peer id"][id_as_string]["updates"])
+				
+				# Frame Data
+				print_debug("Frame: ",i["peer id"][id_as_string]["frames"], "/", "Server Frame :", Simulation.get_frame_counter())
+				
+					
+				# Registers the Player Connected Peer ID Locally if not registered
+				if not Simulation.player_info["peer id"].has(id_as_string):
+					
+					# Register New Player Info
+					
+					Simulation.player_info["peer id"][id_as_string] = {
+					"position": i["peer id"][id_as_string]["position"], # updated positional data, 
+					"frames": 0, #frame data
+					"input" : [],
+					"hitpoints" : 3,
+					"facing": 0,
+					"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
+					"roll dir": [],
+					"destroyed": 0,
+					"updates": 0,  # Stores Present Update ID Across All Clients # Depreciated
+					"wallet addr": [0],
+					"asset id": {},
+					"smart contract": [], # Arrays As it will only be one Smart COntract
+					"kill Count": 0,
+					"inventory": {},
+					"velocity":{"x": 0, "y": 0},
+					"rotation":0,
+					"firing":0,
+					"current_angle": 0,
+					"rewspawn_time":1000,
+					"hash" : ""
+					
+					}
 				
 				
 			"Player Variables"
 			# Positional Data
-			print("Updating Player Information for peer ",Networking.id_as_string, " from " ,Networking.player_info["peer id"][Networking.id_as_string]["position"], " to " , i["peer id"][Networking.id_as_string]["position"])
-			player_info["peer id"][id_as_string]["position"] = i["peer id"][id_as_string]["position"] #WORKS
+			print_debug("Updating Player Information for peer ",id_as_string, " from " ,Simulation.player_info["peer id"][id_as_string]["position"], " to " , i["peer id"][id_as_string]["position"])
+			Simulation.player_info["peer id"][id_as_string]["position"] = i["peer id"][id_as_string]["position"] #WORKS
 			
 			# Emit Signal
 			#emit_signal("PlayerInput", id_as_string) # Buggy Signal
@@ -824,21 +799,7 @@ remote func pi(id : int,player_data : PoolByteArray):
 			#player.poop(id_as_string)
 			Simulation.simulate(id_as_string, player)
 			
-			#print ("O: ", player_info["peer id"][id_as_string]["position"]) # works # for debug purposes only
-			
-			# Debug Positional Data
-			# Facing Data
-			#print ("O: ", player_info["peer id"][id_as_string]["facing"], i["peer id"][id_as_string]["facing"]) # works # for debug purposes only
 
-			
-			
-
-			
-		#print("Remote: player_input(" + str(id)+","+key+","+str(pressed)+")" , RawJson.get_result()["peer id"][])
-		#print(player_info)
-		#print(player_info["peer id"].keys())
-		#print(peer_ids)
-		
 			#Requires Debugging
 			#if key == "left":
 			#	Networking.player_info[id].facing = key
@@ -873,7 +834,7 @@ PLAYER UPDATE
 
 remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
-	print_debug (" Packet Recieved, Size (Bytes): ", updates.size()) # for debug purposes only
+	print_debug (" Player Update Packet Recieved, Size (Bytes): ", updates.size()) # for debug purposes only
 	
 	#Error Catcher 1
 	# Unreliable packets can be sent in wrong order, we only work with the latest
@@ -917,14 +878,14 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 		# Update Local Peer Data from peer Update
 		# Simplify this code bloc
 		#if player_info["peer id"].keys().size() > 1:
-		player_info["peer id"][player_info["peer id"].keys().pop_back()]["position"] = i["peer id"][id_as_string]["position"]
+		Simulation.player_info["peer id"][Simulation.get_all_player_ids().pop_back()]["position"] = i["peer id"][id_as_string]["position"]
 		
 		#print(player_info["peer id"].size()) # FOr debug purposes only
 	
 	#print ("Peer ID's: ",player_info["peer id"].keys()) # Peer ID's of the Connected CLient Peers with Respective Player info dictionaries
 	
 	# only works on client peer
-	peer_ids = player_info["peer id"].keys()
+	peer_ids = Simulation.get_all_player_ids()
 	#print(player_info) # for debug purposes only
 	
 	# Peer ID's 1 needs to be emulated
@@ -955,6 +916,8 @@ PING
 """
 
 func ping() -> Array:
+	# For Debug Purposes Only
+	
 	var output = []
 	OS.execute('ping', ['-w', '3', 'godotengine.org'], true, output) 
 	for line in output:
@@ -975,13 +938,14 @@ remote func broadcast_world_positions():
 	if is_network_master():
 		
 		# Ping
-		ping()
+		
+		#ping()
 		
 		
 		# First, Convert Player Info Dictionary to Pool Byte Array
 		
 		
-		rpc_unreliable_id(peer_id, "pu", peer_id, update_id, array2poolByte([player_info])) # pu call is buggy cuz of peer id error
+		rpc_unreliable_id(peer_id, "pu", peer_id, update_id, array2poolByte([Simulation.player_info])) # pu call is buggy cuz of peer id error
 	
 	#	for i in player_info["peer id"]:
 	#		print (i.keys())

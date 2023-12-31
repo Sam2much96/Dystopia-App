@@ -783,7 +783,7 @@ remote func pi(id : int,player_data : PoolByteArray):
 			print_debug("Frame: ",i["peer id"][id_as_string]["frames"], "/", "Server Frame :", Simulation.get_frame_counter())
 			
 			
-			# Registers the Player Connected Peer ID Locally & Create Frame Buffer
+			# Registers the Player Connected Peer ID Locally if not registered
 			if not player_info["peer id"].has(id_as_string):
 				
 				# Refactor Using Simulation.gd

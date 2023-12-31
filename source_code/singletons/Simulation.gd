@@ -45,17 +45,17 @@ export (Dictionary) var player_info = {
 		"hitpoints" : 3,
 		"facing": "",
 		"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
-		"roll dir": [],
-		"destroyed": false,
+		"roll dir": {"x": 0, "y": 0},
+		"destroyed": 0,
 		"updates": [],  # Stores Present Update ID Across All Clients
 		"wallet addr": [],#{Networking.cfg_player_name : Globals.address},
 		"asset id": {},
 		"smart contract": [], # Arrays As it will only be one Smart COntract
 		"kill Count": 0,
 		"inventory": {},
-		"velocity":0,
+		"velocity":{"x": 0, "y": 0},
 		"rotation":0,
-		"firing":false,
+		"firing":0,
 		"current_angle": 0,
 		"rewspawn_time":1000,
 		"hash" : ""
@@ -88,6 +88,11 @@ func simulate(id : String, player : Player_v2_networking ):
 			
 		# should ideally be called in a process method
 		# SHould implement position translations using the Networking frame buffer
+		#player.move_and_slide(Vector2(float(Networking.player_info["peer id"][id]["velocity"]["x"]),float(Networking.player_info["peer id"][id]["velocity"]["y"]))
+		# Data packet Lost
+		player.move_and_slide(Vector2(float(Networking.player_info["peer id"][id]["velocity"]["x"]), float(Networking.player_info["peer id"][id]["velocity"]["y"])))
+		
+		
 		player.set_position(Vector2(float(Networking.player_info["peer id"][id]["position"]["x"]), float(Networking.player_info["peer id"][id]["position"]["y"])))
 		
 		# facing

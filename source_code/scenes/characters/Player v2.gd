@@ -137,7 +137,7 @@ func _ready():
 		"facing": self._facing,
 		"state" :self.state, # AN array of state s for Roll Back Networking Prediction would be ideal
 		"roll dir": [],
-		"destroyed": int(false), # boolean converted to integer for smaller packet size
+		"destroyed": 0, # boolean converted to integer for smaller packet size
 		"updates": update_id,  # Stores Present Update ID Across All Clients 
 		"wallet addr": {}, # wallet Address and ID
 		"asset id": 0,
@@ -148,7 +148,7 @@ func _ready():
 		"rotation":[],
 		#"firing":false, # not needed
 		"current_angle": 0,
-		"rewspawn_time":1000,}}
+		"respawn_time":1000,}}
 	
 	print_debug("Networking Peer ID: ",Networking.player_info["peer id"])
 	
@@ -277,6 +277,10 @@ func _input(event):
 			# Update Positional Data
 			Networking.player_info["peer id"][peer_id]["position"]["x"] = self.position.x
 			Networking.player_info["peer id"][peer_id]["position"]["y"] = self.position.y
+			
+			# Update Velocity
+			Networking.player_info["peer id"][peer_id]["velocity"]["x"] = self.linear_vel.x
+			Networking.player_info["peer id"][peer_id]["velocity"]["y"] = self.linear_vel.y
 			
 			# update Update ID
 			

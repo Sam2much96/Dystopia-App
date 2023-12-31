@@ -11,8 +11,8 @@
 # It also includes signals for when the player is enters and exits the enemy's collision
 #
 # To Add :
-#(1)
-#
+#(1) Refactor Enemy Logic to SImulations singleton, making sure no to depreciate current inmplementation
+# (2) Implement boids algorithm as enemy behaviour
 # Bugs : 
 #
 # (1) Enemy AI lacks ability to throw Projectiles (Done)

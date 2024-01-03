@@ -1320,6 +1320,7 @@ __meta__ = {
 wait_time = 0.1
 
 [node name="Impact" parent="." instance=ExtResource( 5 )]
+visible = false
 position = Vector2( 20.7633, -48.054 )
 
 [connection signal="area_entered" from="hurtbox" to="." method="_on_hurtbox_area_entered"]

@@ -37,6 +37,9 @@ onready var _menu = $"Menu "
 onready var title_nodes : Array = [art1, art2,menu,logo,_ad_placeholder,_menu, _comic_placehlder]
 
 #res://scenes/UI & misc/controls_illustration.gd
+# 3D in 2D
+onready var viewport = $Viewport
+onready var _tex = $Sprite
 
 func _ready():
 	
@@ -57,8 +60,9 @@ func _ready():
 	#	Comics_v6.Kinematic_2d, 
 	#	_comic_placehlder
 	#	)
-		
-		
+	
+	_tex.set_texture(viewport.get_texture())
+	
 	# Controls_illustratins.gd has texture positional bug
 	if Globals.screenOrientation == 1:
 		art1.show()

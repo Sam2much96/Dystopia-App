@@ -732,6 +732,7 @@ translations=PoolStringArray( "res://Translation/Translation_1.en_US.translation
 
 [rendering]
 
+quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
 
 [tiled_importer]

@@ -66,10 +66,10 @@ func _ready():
 	# Controls_illustratins.gd has texture positional bug
 	if Globals.screenOrientation == 1:
 		art1.show()
-		art2.hide()
+		#art2.hide()
 	if Globals.screenOrientation == 0:
 		art1.hide()
-		art2.show()
+		#art2.show()
 
 
 

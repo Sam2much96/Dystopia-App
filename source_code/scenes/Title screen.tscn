@@ -53,6 +53,7 @@ rect_scale = Vector2( 4.7295, 4.35369 )
 texture = ExtResource( 9 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
+visible = false
 show_behind_parent = true
 material = SubResource( 8 )
 margin_left = 247.808

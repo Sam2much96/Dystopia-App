@@ -9,6 +9,7 @@
 # (2) Player hitboxes
 # (3) It's a class and stores variables to the UI, Globals singleton, PlayersSave Files, and the Debug SIngleton
 # (4) Extend input from Global Input Singleton
+# (5) FOr Top Dwon View
 # *************************************************
 # To Do:
 #(1) Update Documentation (Done)

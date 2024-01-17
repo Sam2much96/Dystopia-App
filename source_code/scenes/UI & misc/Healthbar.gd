@@ -11,10 +11,14 @@
 #(1) Implement procedural animation for Healthbar
 # (2) Implement Heart Empty UI animation using a Max Health Constant
 # (3) Implement Peer ID for Netwworked Multiplayer
+# (4) Implement Empty Heart Animation
+# (5) Implement Heart Box Scaling For Mobile Devices
 # *************************************************
 # Bugs:
 # 
-# (1) Currently Only Works in Local Player not Networked Multiplayer
+# (1) Currently Only Works in Local Player not Networked Multiplayer (fixed)
+# (2) Does'nt scale well on Mobile Devices
+# (3) Requires Reimplementation and Animation Player (Full Refactor)
 # *************************************************
 extends HBoxContainer
 
@@ -23,14 +27,14 @@ class_name Healthbar, 'res://resources/misc/Pixel Heart 32x32.png'
 """
 Connects to the player node and shows a health bar in the form of hearts
 """
-
+export (int) var SIZE
 
 var player : Player 
 var networkPlayer : Player_v2_networking
 var player_group : Array = []
 
 var heart_instance : PackedScene = preload("res://scenes/UI & misc/Heart.tscn")
-const MAX_HEALTH = 23
+const MAX_HEALTH = 23 # Max Health Constant
 var initial_health : int 
 
 # Disabling until ready to Implement
@@ -44,23 +48,35 @@ Connects to the player node and shows a health bar in the form of hearts
 func _ready():
 	# Try to get the player node. If null wait till next frame, rinse, repeat.
 	while (player == null):
+		
+		# use a global function instead
 		player_group = get_tree().get_nodes_in_group("player")
+		# Too much Nested Ifs?
 		if not player_group.empty():
 			for i in player_group:
 				if i is Player:
 					player = i #player = player_group.pop_front()
 					initial_health = player.hitpoints
+					
+					#print_debug(111111) #works
 				if i is Player_v2_networking: pass 
 		else:
+			
+			# Emitted befor Node._process()
 			yield(get_tree(), "idle_frame")
 	
+	
+	# Connect Signals to Player Object
 	player.connect("health_changed", self, "_on_health_changed")
-	_on_health_changed(player.hitpoints)
-	pass # Replace with function body.
+	
+	# Debug SIgnals
+	print_debug(player.is_connected("health_changed", self, "_on_health_changed"))
+	
 
 	
-	# Initialization For Networked Player
-	# Using Network Player Info Packed
+	# Set Hitpoint to Player Object Hitpoints
+	_on_health_changed(player.hitpoints)
+
 
 # Should Implement a New Constant for Max Health
 func _on_health_changed(new_hp : int):
@@ -69,29 +85,14 @@ func _on_health_changed(new_hp : int):
 	for child in get_children():
 		child.queue_free() #removes life
 	
-	# Creates New Heart Instate From Updatesd HP
-	for i in new_hp:
-		var heart = heart_instance.instance()
-		call_deferred('add_child',heart) #adds more life
-		#add_child(heart) 
-	
-
-
-	
-func _on_health_changedV2(new_hp : int):
-	# Remove existing heart nodes
-	for child in get_children():
-		child.queue_free()
-	
-	initial_health = new_hp
-	# Add heart or empty heart nodes based on hitpoints
-	for i in range(new_hp):
-		#var heart_instance
-		if i < initial_health:
+	if not new_hp > MAX_HEALTH:
+		# Creates New Heart Instate From Updatesd HP
+		# inefficient code
+		for i in new_hp:
+			
+			#print_debug(22222)
 			var heart = heart_instance.instance()
-			pass
-		if i > initial_health:
-			pass
-		else:
-			var heart = heart_empty.instance()
-			call_deferred("add_child", heart)
+			#heart.set_size(Vector2(SIZE, SIZE))
+			self.call_deferred('add_child',heart) #adds more life bars
+			
+

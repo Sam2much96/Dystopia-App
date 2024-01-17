@@ -52,11 +52,12 @@ const cinematic : Dictionary = {
 
 
 "Youtube Urls as a Dictionary Parameters"
+# Depreciated
 const youtube : Dictionary = {
-	"Test":'https://youtube.com/shorts/YCwou4oX12I?feature=share', # Testing
-	"Ep1":'https://youtu.be/oJY1rIxC4kk', # Ep 1
-	"FightScene": 'https://youtu.be/uzDzAuJVHcI', # Behind the Scenes
-	"Animatic": 'https://youtu.be/EAL8Mu2-f7Q' # Animatic
+	"Test":'', # Testing
+	"Ep1":'', # Ep 1
+	"FightScene": '', # Behind the Scenes
+	"Animatic": '' # Animatic
 	}
 
 var videoplayer : VideoPlayer

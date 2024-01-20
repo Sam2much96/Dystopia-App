@@ -2,10 +2,11 @@
 # godot3-Dystopia-game by INhumanity_arts
 # Released under MIT License
 # *************************************************
-# Grass
-# SHared COnde Between Grass/Flower Objects Within the Scene Tree
-# Features:
+# Player v3
+# Platforming Player Script
 #
+# Features:
+# (1) Implements Platforming Code for Player Object
 #
 # *************************************************
 
@@ -18,6 +19,13 @@ export (int) var jump_speed = -1800
 export (int) var gravity = 4000
 
 var velocity = Vector2.ZERO
+
+# State Machine for Platform Player
+enum {STATE_BLOCKED, STATE_IDLE, STATE_WALKING, 
+	STATE_ATTACK, STATE_ROLL, STATE_DIE, 
+	STATE_HURT 
+}
+
 
 func _input(event):
 	velocity.x = 0

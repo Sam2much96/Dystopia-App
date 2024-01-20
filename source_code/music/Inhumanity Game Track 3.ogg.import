@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Inhumanity Game Track 3.ogg-91a68cf5799d935432aa8feedb644482.oggstr"
+
+[deps]
+
+source_file="res://music/Inhumanity Game Track 3.ogg"
+dest_files=[ "res://.import/Inhumanity Game Track 3.ogg-91a68cf5799d935432aa8feedb644482.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

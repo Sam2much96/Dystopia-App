@@ -38,8 +38,9 @@ func _ready():
 	
 	anims.play("spawn")
 	
-	#yield(get_tree().create_timer(2),"timeout") # yield timer?
+	Networking.start_check_v2(2)
 	
+	anims.play("idle")
 	
 	
 

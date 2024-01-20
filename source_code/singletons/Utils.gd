@@ -394,7 +394,7 @@ class Functions extends Reference:
 			GlobalInput.vibrate = bool(save_dict.vibrate)
 
 		if save_dict.has("music"):
-			print_debug(bool(save_dict.music)) # For Debug Purposes Only
+			print_debug("Mus: ",bool(save_dict.music)) # For Debug Purposes Only
 			Music.music_on = bool(save_dict.music)
 
 		

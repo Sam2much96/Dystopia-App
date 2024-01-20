@@ -8,6 +8,5 @@ margin_right = 33.0
 margin_bottom = 28.0
 rect_scale = Vector2( 8.18016, 8.00303 )
 texture = ExtResource( 1 )
-expand = true
-stretch_mode = 2
+stretch_mode = 4
 script = ExtResource( 2 )

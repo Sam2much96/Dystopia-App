@@ -8,12 +8,12 @@
 # 
 
 # Features:
-# A State Machine for the touch interface to hint the player and not clutter the ui
-# Emits it's state as a signal
-#Touch OS enables or Disables the touch interface depending on if a touch screen is present and the Globals.os. _Hide_touch_interface boolean variable
-# uses Globals.screenOrientation to change the button arrangements for mobiles
+# (1) A State Machine for the touch interface to hint the player and not clutter the ui
+# (2) Emits it's state as a signal
+# (3) Touch OS enables or Disables the touch interface depending on if a touch screen is present and the Globals.os. _Hide_touch_interface boolean variable
+# (4) uses Globals.screenOrientation to change the button arrangements for mobiles
+# (5) Connects to signals from Dialogues and COmics SIngletons
 #
-# (3) Connects signals from Dialogues and COmics SIngletons
 #
 #
 # Bugs :
@@ -239,15 +239,23 @@ func _ready():
 
 	# Debug SIgnals
 	# Convert to Unit Tests instead
-	#print_debug(
-	#	Dialogs.is_connected("dialog_started", self, "interract"),
-	#	Dialogs.is_connected("dialog_ended", self, "reset"),
-	#	Comics_v6.is_connected( 'comics_showing', self, '_on_comics_showing'),
-	#	Comics_v6.is_connected( 'comics_showing', self, '_on_comics_hidden'  ),
-	#	menu3.is_connected("menu_showing", self, "menu"), 
-	#	menu3.is_connected("menu_hidden", self, "reset"),
-	#	Networking.timer.is_connected("timeout", self, "reset") 
-	#	)
+	if not (Dialogs.is_connected("dialog_started", self, "interract") &&
+		Dialogs.is_connected("dialog_ended", self, "reset") &&
+		Comics_v6.is_connected( 'comics_showing', self, '_on_comics_showing') &&
+		Comics_v6.is_connected( 'comics_showing', self, '_on_comics_hidden'  ) &&
+		menu3.is_connected("menu_showing", self, "menu") &&
+		menu3.is_connected("menu_hidden", self, "reset") &&
+		Networking.timer.is_connected("timeout", self, "reset")) == true:
+
+		print_debug(
+			Dialogs.is_connected("dialog_started", self, "interract"),
+			Dialogs.is_connected("dialog_ended", self, "reset"),
+			Comics_v6.is_connected( 'comics_showing', self, '_on_comics_showing'),
+			Comics_v6.is_connected( 'comics_showing', self, '_on_comics_hidden'  ),
+			menu3.is_connected("menu_showing", self, "menu"), 
+			menu3.is_connected("menu_hidden", self, "reset"),
+			Networking.timer.is_connected("timeout", self, "reset") 
+			)
 
 
 static func hide_self(operating_sys: String, screenOrientation : int, _Hide_touch_interface : bool, _node : TouchScreenHUD) -> void:
@@ -285,6 +293,7 @@ func menu(): #used by ui scene when menu is clicked
 	return _state_controller 
 
 func interract(): #used by ui scene when interract is clicked
+	print_debug("interract")
 	_state_controller = _INTERRACT
 	
 	# Note: 

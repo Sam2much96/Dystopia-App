@@ -30,6 +30,13 @@ margin_bottom = 2618.22
 rect_scale = Vector2( 0.552251, 0.552251 )
 texture = ExtResource( 3 )
 
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = 107.0
+margin_top = 8.0
+margin_right = 596.0
+margin_bottom = 67.0
+color = Color( 0.0784314, 0.0784314, 0.0784314, 1 )
+
 [node name="Label" type="Label" parent="."]
 margin_left = 108.77
 margin_top = 73.6963
@@ -38,7 +45,7 @@ margin_bottom = 223.696
 custom_colors/font_color = Color( 0.882353, 0.882353, 0.882353, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "Dystopia App
-V2.0.1.7l
+V2.0.1.7M
 "
 align = 1
 autowrap = true
@@ -57,7 +64,7 @@ margin_top = 7.64708
 margin_right = 615.047
 margin_bottom = 70.6471
 theme = ExtResource( 4 )
-text = "NEW UPDATES : Shaky  Cam  FX"
+text = "NEW  UPDATES :Generic  Update"
 align = 1
 
 [node name="Label4" type="Label" parent="."]

@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/characters/PlatformPlayer.gd" type="Script" id=2]
+
+[sub_resource type="SegmentShape2D" id=1]
+a = Vector2( 5.63474, -125.04 )
+b = Vector2( -4.43626, 386.673 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 242.552, 309.087 )
+script = ExtResource( 2 )
+speed = 1200
+jump_speed = -1800
+gravity = 4000
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 176.48, 394.348 )
+rotation = -1.62093
+scale = Vector2( 3.72, 1 )
+shape = SubResource( 1 )

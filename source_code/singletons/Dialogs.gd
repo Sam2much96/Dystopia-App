@@ -67,6 +67,18 @@ var font_pack : Dictionary = {
 
 var custom_font = DynamicFont.new()
 
+# Hints
+# To Do: Implement Multiple Translations for Hint System using Spreadsheets
+var hints : Dictionary = {0: " Use Your Inventory Items For Easier Progression",
+1: "Control Game Settings in Control Settings",
+2: "Press & Hold Direction Button to Move",
+3: "Press Slash Button To Attack",
+4: "Press Dash Button to Dash",
+5: "Use Generic Item For More Speed",
+6: "Turn Off Vibration In the Control Settings"
+}
+
+
 func show_dialog(text:String, speaker:String):
 	if is_instance_valid(dialog_box): # If an instance of dialogue box hasn't been deleted from memory?
 		dialog_box.show_dialog(text, speaker)

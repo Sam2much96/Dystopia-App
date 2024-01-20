@@ -52,7 +52,8 @@ var default_playlist : Dictionary ={
 	2:"res://music/chike san afro 1.ogg",
 	3:"res://music/chike san afro 2.ogg",
 	4:"res://music/chike san afro 3.ogg",
-	5:"res://music/Spooky-Chike-san song.ogg"
+	5: "res://music/Inhumanity Game Track 3.ogg",
+	6:"res://music/Spooky-Chike-san song.ogg"
 }
 
 # Files Hosted on AWS S3 Bucket
@@ -270,12 +271,12 @@ func _ready():
 		if Music_Available_Locally:
 			# SHuffle the Entire Playlist
 			#randomize() #randomizes shuffle code seed
-			shuffle(playlist_one) #disabled for debugging
+			shuffle(playlist_one, music_track) #disabled for debugging
 		
 		"Default Music"
 		if !Music_Available_Locally:
 			# Shuffle Default Playlist
-			shuffle(default_playlist)
+			shuffle(default_playlist, music_track)
 		
 		_music = music_track.get_file()
 		play(music_track) #Not needed for release
@@ -306,9 +307,9 @@ func _process(delta):
 	"""
 	if Music_streamer != null:
 		if Music_streamer.stream != null and int(Music_streamer.get_playback_position())==int(Music_streamer.get_stream().get_length()):
-			print ('autoshuffle')
+			print_debug ('autoshuffle')
 			if Music_Available_Locally && music_on:
-				shuffle(playlist_one) 
+				shuffle(playlist_one, music_track) 
 				play(music_track)
 				
 
@@ -412,7 +413,7 @@ func _notification(what : int):
 		AudioServer.set_bus_mute(music_bus, false)
 		AudioServer.set_bus_mute(music_bus_2, false)
 		
-		shuffle(playlist_one)
+		shuffle(playlist_one, music_track)
 		play(music_track)
 		
 
@@ -420,9 +421,10 @@ func _notification(what : int):
 """
 MUSIC SHUFFLE
 """
-func shuffle (playlist : Dictionary):
-	music_track = ''
-	track = int(rand_range(-1,playlist.size())) #selects a random track number
+# Shuffles A Dictionary, Returns a string
+static func shuffle (playlist : Dictionary, music_track : String) -> String:
+	#var music_track = ''
+	var track = int(rand_range(-1,playlist.size())) #selects a random track number
 	music_track = playlist[track]
 	return music_track
 
@@ -437,7 +439,7 @@ func _on_A_finished(): #This  signals when the music has finished and autoshuffl
 
 func play_sfx(list): #a separate bus channel for sfx using dictionary playlist
 	if sfx_on== true:
-		shuffle(list)
+		shuffle(list, music_track)
 		
 		C.stream = load(music_track)
 		C.play()

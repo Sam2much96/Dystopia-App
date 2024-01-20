@@ -4,7 +4,7 @@
 # *************************************************
 # Features:
 # An interractible environment object
-# Disabled for performance optimization
+# SHows Random Hints to Player
 
 # To Do:
 # SHould connect to a signal from UI to trigger the UI once player is nearby
@@ -32,12 +32,12 @@ export(String) var dialogue = ""
 
 
 
-enum {SHOWING, HIDING}
-
-export (int) var state_ = HIDING
 
 var frame_counter : int = 0
 
+
+
+export (bool) var HINT #= false # Boolean conditional for hint system
 export (bool) var triggered #= false # Boolean conditional for controlling signpost activation
 func _ready():
 	
@@ -70,41 +70,16 @@ func _ready():
 		
 			push_error("Debug Connected Signals")
 
-func _process(delta):
-	
-	if enabled:
-		
-		frame_counter += 1
-		
-		# Frame counter
-		if frame_counter  > 1000:
-			frame_counter = 0
-		
-		
-		if frame_counter % 1 ==0 : # Every frame
-		
-			# SIgnpost State Machine
-			match state_:
-				SHOWING:
-					show_signpost()
-
-					state_ = HIDING
-				HIDING:
-					#triggered = true
-					#Dialogs.dialog_box.hide_dialogue()
-					#shown = false
-					if (GlobalInput._state == GlobalInput.INTERRACT or
-					Input.is_action_pressed("interact")
-					):
-						#triggered = false
-						state_ = SHOWING
-
 
 func show_signpost():
-	if interract && Globals.near_interractible_objects:
-		print("showing signpost")
+	#if interract && Globals.near_interractible_objects:
+	print_debug("showing signpost")
+	
+	if HINT:
+		# Shows Random Hints
+		return Dialogs.dialog_box.show_dialog(Music.shuffle(Dialogs.hints, dialogue), 'Player')
+	elif not HINT:
 		Dialogs.dialog_box.show_dialog(str(dialogue), 'Player')
-		activate(false)
 
 
 func hide_signpost():
@@ -117,41 +92,30 @@ func _on_signpost_body_entered(body):
 	if not body is Player:
 		pass
 	if body is Player:
-		activate(true)
+		show_signpost()
+		#activate(true)
 		print(" Player Body Entered ")
 		print_debug ('player near signpost: ', Globals.near_interractible_objects)
-
-func _on_player_area_entered(area):
-	if area.is_in_group("player_hurtbox"):
-		print (" Player Entered Area ")
-		activate(true)
 
 func _on_player_area_exited(area):
 	if area.is_in_group("player_hurtbox"):
 		print(" Player Exited Area ")
-		activate(false)
+		#activate(false)
 
 
 func _on_dialog_started():
-	print("signpost dialogue started")
+	print_debug("signpost dialogue started")
 
 
 func _on_dialog_ended():
-	print("signpost dialogue ended")
+	print_debug("signpost dialogue ended")
 	#activate(false)
 
 func _on_signpost_body_exited(body):
 	if not body is Player:
-		pass
+		return
 	
 	if body is Player:
-		activate(false)
 		print_debug ('player near signpost: ', Globals.near_interractible_objects)
 	
 
-
-# One FUnction to Trigger and Un trigger Signpost state
-func activate (state_ : bool) :
-	Globals.near_interractible_objects = state_
-	triggered = state_
-	interract = state_

@@ -76,8 +76,11 @@ func show_signpost():
 	print_debug("showing signpost")
 	
 	if HINT:
-		# Shows Random Hints
-		return Dialogs.dialog_box.show_dialog(Music.shuffle(Dialogs.hints, dialogue), 'Player')
+		# Shows Random Hints using a Dictionary shuffle algorithm
+		# Translates them to the User's Language
+		return Dialogs.dialog_box.show_dialog(
+			Dialogs.translate_to(Music.shuffle(Dialogs.hints, dialogue), Dialogs.language), 'Player'
+			)
 	elif not HINT:
 		Dialogs.dialog_box.show_dialog(str(dialogue), 'Player')
 

@@ -45,7 +45,7 @@ margin_bottom = 223.696
 custom_colors/font_color = Color( 0.882353, 0.882353, 0.882353, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "Dystopia App
-V2.0.1.7M
+V2.0.1.7P
 "
 align = 1
 autowrap = true
@@ -56,7 +56,7 @@ margin_top = 461.566
 margin_right = 604.419
 margin_bottom = 504.566
 theme = ExtResource( 4 )
-text = "Better Enemy A.I."
+text = "New  Music!!!"
 
 [node name="Label3" type="Label" parent="."]
 margin_left = 96.0473
@@ -68,12 +68,12 @@ text = "NEW  UPDATES :Generic  Update"
 align = 1
 
 [node name="Label4" type="Label" parent="."]
-margin_left = 130.886
-margin_top = 472.206
-margin_right = 216.886
-margin_bottom = 517.206
+margin_left = 120.772
+margin_top = 464.115
+margin_right = 206.772
+margin_bottom = 509.115
 theme = ExtResource( 13 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Dec 24, 2093"
+text = "Jan 24, 2094"
 autowrap = true
 uppercase = true

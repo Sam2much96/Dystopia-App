@@ -2,20 +2,20 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Pop up menu.png-65d294aae128ef6439b85716a3e27855.stex"
+path="res://.import/Pop up menu.webp-b2fe43ac0c4f3d539ff8b575931ec6e8.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/Buttons/Pop up menu.png"
-dest_files=[ "res://.import/Pop up menu.png-65d294aae128ef6439b85716a3e27855.stex" ]
+source_file="res://resources/Buttons/Pop up menu.webp"
+dest_files=[ "res://.import/Pop up menu.webp-b2fe43ac0c4f3d539ff8b575931ec6e8.stex" ]
 
 [params]
 
-compress/mode=1
-compress/lossy_quality=0.3
+compress/mode=0
+compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
@@ -31,5 +31,5 @@ process/invert_color=false
 process/normal_map_invert_y=false
 stream=false
 size_limit=0
-detect_3d=false
+detect_3d=true
 svg/scale=1.0

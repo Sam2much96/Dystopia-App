@@ -58,7 +58,7 @@ var default_playlist : Dictionary ={
 
 # Files Hosted on AWS S3 Bucket
 # file checker should loop through playlist
-var playlist_one : Dictionary = {
+var local_playlist_one : Dictionary = {
 	0:'res://music/310-world-map-loop.ogg', 
 	1:'user://Music/Dystopia-App/source_code/music/chike san afro 1.ogg',
 	2:'user://Music/Dystopia-App/source_code/music/chike san afro 2.ogg',
@@ -203,7 +203,7 @@ var FileCheck1=File.new() # checks Music Files
 var FileCheck=File.new() # checks Music Files
 var FileDirectory=Directory.new() #checks Music Irectory
 
-var Music_Available_Locally : bool = false
+var Music_Available_Locally : bool = true
 var Music_Zip_Available_Locally : bool = false
 
 
@@ -236,18 +236,20 @@ func _ready():
 	if not wallet.Functions.check_local_wallet_directory(FileDirectory, "user://Music/Dystopia-App/source_code/music"):
 		FileDirectory.make_dir_recursive("user://Music/Dystopia-App/source_code/music")
 	
-	"Logic CHecks the Playlist If Music file is available locally"
-	for i in playlist_one.values():
-		#print (i) # FOr debug purpose only
-		if not FileCheck4.file_exists(i):
-			Music_Available_Locally = false
-		# Downloal zip file
-	
-	"Logic Checks if Music Zip file is available locally"
-	if not FileCheck1.file_exists("user://Music/music.zip"):
-		requests.request(musicAWS3_URL.get('zip'), headers,false, HTTPClient.METHOD_GET)
-	if FileCheck1.file_exists("user://Music/music.zip"):
-		Music_Zip_Available_Locally = true
+#	"Logic CHecks the Playlist If Music file is available locally"
+#	# Depreciated Code
+#	#
+#	for i in playlist_one.values():
+#		#print (i) # FOr debug purpose only
+#		if not FileCheck4.file_exists(i):
+#			Music_Available_Locally = false
+#		# Downloal zip file
+#	
+#	"Logic Checks if Music Zip file is available locally"
+#	if not FileCheck1.file_exists("user://Music/music.zip"):
+#		requests.request(musicAWS3_URL.get('zip'), headers,false, HTTPClient.METHOD_GET)
+#	if FileCheck1.file_exists("user://Music/music.zip"):
+#		Music_Zip_Available_Locally = true
 	
 	
 	"Unzip Music files in a thread"
@@ -268,17 +270,23 @@ func _ready():
 	"Music Player Logic"
 	if music_on == true:
 		randomize()
-		if Music_Available_Locally:
+		
+		# Logic Cycles Between Playing A Default Musci Playlist or a Downloaded One
+		#
+		#if Music_Available_Locally:
 			# SHuffle the Entire Playlist
 			#randomize() #randomizes shuffle code seed
-			shuffle(playlist_one, music_track) #disabled for debugging
+		#	shuffle(playlist_one, music_track) #disabled for debugging
 		
 		"Default Music"
-		if !Music_Available_Locally:
+		#if Music_Available_Locally:
 			# Shuffle Default Playlist
-			shuffle(default_playlist, music_track)
+			#shuffle(default_playlist, music_track)
+		music_track = shuffle(default_playlist)
 		
-		_music = music_track.get_file()
+		#_music = music_track.get_file()
+		# Debug Music Track
+		print_debug("Mus Track Debug: ",music_track)
 		play(music_track) #Not needed for release
 		
 		
@@ -308,8 +316,8 @@ func _process(delta):
 	if Music_streamer != null:
 		if Music_streamer.stream != null and int(Music_streamer.get_playback_position())==int(Music_streamer.get_stream().get_length()):
 			print_debug ('autoshuffle')
-			if Music_Available_Locally && music_on:
-				shuffle(playlist_one, music_track) 
+			if music_on: #Music_Available_Locally && music_on:
+				music_track = shuffle(default_playlist) 
 				play(music_track)
 				
 
@@ -413,7 +421,8 @@ func _notification(what : int):
 		AudioServer.set_bus_mute(music_bus, false)
 		AudioServer.set_bus_mute(music_bus_2, false)
 		
-		shuffle(playlist_one, music_track)
+		music_track = shuffle(default_playlist)
+		print_debug("Mus Debug 3: ", music_track)
 		play(music_track)
 		
 
@@ -422,11 +431,16 @@ func _notification(what : int):
 MUSIC SHUFFLE
 """
 # Shuffles A Dictionary, Returns a string
-static func shuffle (playlist : Dictionary, music_track : String) -> String:
-	#var music_track = ''
+static func shuffle (playlist : Dictionary) -> String:
+	# Debug SHuffled Items 
+	#print_debug("shuffling" ,playlist)
+	
+	#music_track = ''
 	var track = int(rand_range(-1,playlist.size())) #selects a random track number
-	music_track = playlist[track]
-	return music_track
+	
+	
+	print_debug("selected Mus After Shuffle: ",playlist[track])
+	return playlist[track]
 
 
 
@@ -438,8 +452,9 @@ func _on_A_finished(): #This  signals when the music has finished and autoshuffl
 	#print (_n)
 
 func play_sfx(list): #a separate bus channel for sfx using dictionary playlist
+	# what is list?
 	if sfx_on== true:
-		shuffle(list, music_track)
+		shuffle(list) 
 		
 		C.stream = load(music_track)
 		C.play()

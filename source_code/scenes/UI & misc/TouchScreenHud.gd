@@ -19,6 +19,7 @@
 # Bugs :
 #(1) using animation player resets the Joystick/D-pad optionality
 
+
 # TO DO:
 # (0) _on_comics_showing() is not working
 # (1) Fix the joystick code  (1/2)

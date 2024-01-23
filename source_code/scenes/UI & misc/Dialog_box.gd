@@ -17,6 +17,7 @@
 #
 # To DO:
 # (1) Implement Decision Tree
+# (2) Should Collect Screen Orientation as a parameter
 # *************************************************
 
 extends TextureRect

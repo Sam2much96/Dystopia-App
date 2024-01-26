@@ -14,6 +14,7 @@
 # (2) Displays A buggy Dialog Box is Outside Level (fixed)
 # (3) Doesnt't Trigger UI changes in Touch HUD
 # (4) Dialogue ended signal is being fored non-stop ( Dialogue ended is buggy)
+# (5) Replace Player with Global Name by modifying forms.gd
 # *************************************************
 
 
@@ -83,7 +84,7 @@ func show_signpost():
 			Dialogs.translate_to( dialogue, Dialogs.language), 'Player'
 			)
 	elif not HINT:
-		Dialogs.dialog_box.show_dialog(str(dialogue), 'Player')
+		Dialogs.dialog_box.show_dialog(Dialogs.translate_to(dialogue, Dialogs.language), 'Player')
 
 
 func hide_signpost():
@@ -98,7 +99,7 @@ func _on_signpost_body_entered(body):
 	if body is Player:
 		show_signpost()
 		#activate(true)
-		print(" Player Body Entered ")
+		#print(" Player Body Entered ")
 		print_debug ('player near signpost: ', Globals.near_interractible_objects)
 
 func _on_player_area_exited(area):
@@ -112,8 +113,9 @@ func _on_dialog_started():
 
 
 func _on_dialog_ended():
-	print_debug("signpost dialogue ended")
+	#print_debug("signpost dialogue ended")
 	#activate(false)
+	pass
 
 func _on_signpost_body_exited(body):
 	if not body is Player:

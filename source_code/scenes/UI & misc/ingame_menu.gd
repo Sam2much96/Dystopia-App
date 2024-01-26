@@ -8,6 +8,7 @@
 #(1) Impement State Machine (done)
 # (2) Scales for mobile UI (done)
 # (3) Translations
+# (4) Sets Global Screen Orientation
 # *************************************************
 
 # To-Do
@@ -66,8 +67,8 @@ onready var MenuButtons : Array = [comics,new_game, continue_game, _multiplayer,
 
 var counter : int = 0 # Stopis ooverflow of Upscaling Method
 
-func _enter_tree():
-	GlobalInput.menu = self
+#func _enter_tree(): # Duplicate?
+#	GlobalInput.menu = self
 
 func _ready():
 	
@@ -125,8 +126,7 @@ func _input(event): #Toggles menu visibility on/off
 			#print ("Menu State: ",menu_state) #For debug purposes only
 			#Globals.Screen.debug_screen_properties()# Debug Screen Settingd
 			
-			" Checks Device orentation"
-			Utils.Screen.Orientation(Globals)
+			
 			
 			return menu_state
 		if menu_state== SHOWING:

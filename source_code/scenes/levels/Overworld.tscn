@@ -194,4 +194,15 @@ position = Vector2( 3235.65, 822.261 )
 [node name="signpost" parent="." instance=ExtResource( 14 )]
 position = Vector2( 3429.35, 145.337 )
 enabled = true
+dialogue = "dir3"
 HINT = true
+
+[node name="signpost2" parent="." instance=ExtResource( 14 )]
+position = Vector2( 209.981, 2199.49 )
+enabled = true
+dialogue = "dir1"
+
+[node name="signpost3" parent="." instance=ExtResource( 14 )]
+position = Vector2( 2793.21, -4823.67 )
+enabled = true
+dialogue = "East : Abbi City / South: Ukwani Desert"

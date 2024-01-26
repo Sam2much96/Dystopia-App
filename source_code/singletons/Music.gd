@@ -451,14 +451,14 @@ func _on_A_finished(): #This  signals when the music has finished and autoshuffl
 	#play(music_track)
 	#print (_n)
 
-func play_sfx(list): #a separate bus channel for sfx using dictionary playlist
-	# what is list?
+func play_sfx(list : Dictionary): #a separate bus channel for sfx using dictionary playlist
+	# 
 	if sfx_on== true:
-		shuffle(list) 
+		var sfx : String = shuffle(list) 
 		
-		C.stream = load(music_track)
+		C.stream = load(sfx)
 		C.play()
-		sfx_streamer = str ('playing sfx: ',music_track.get_file())
+		sfx_streamer = str ('playing sfx: ',sfx.get_file())
 		yield(get_tree().create_timer(0.8), "timeout")
 		C.stop()
 

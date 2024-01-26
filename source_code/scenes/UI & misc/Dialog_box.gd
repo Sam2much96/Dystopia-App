@@ -7,7 +7,8 @@
 # Features:
 # (1) Is a class
 # (2) Plays an animation that shows text via the dialogue singletom
-#
+# (3) Fetches Global Screen Orientation calculated from cinematics class and uses it for Self Positioning
+
 # Bugs:
 #(1) Broken Alignment with long texts
 #(2) Broken Alignment on Mobiles with Horizontal UI
@@ -46,17 +47,32 @@ var lines_to_skip : int = 0
 func _ready():
 	Dialogs.dialog_box = self
 	hide()
-	
+	# Self position Dialogue Box using Screen Orientation Calculation
+	self_set_position()
 
 
-func show_dialog(new_text, speaker):
+func show_dialog(new_text : String, speaker : String):
+	# SHows Dialog Box Programmatically
+	# To Do: Add Screen orientation as a parameter
 	emit_signal("dialog_started")
 	dialog_text.text = new_text
 	character_text.text = speaker
 	lines_to_skip = 0
 	dialog_text.lines_skipped = lines_to_skip
+	
 	anims.play("appear")
 	emit_signal("dialog_ended")
+	
+
+func self_set_position():
+	# Debug Screen Orientation for Dialogue box positioning
+	#Quick Fix for Upscaing/ Positioning On Mobile
+	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
+		anims.play("MOBILE")
+	if Globals.screenOrientation == 0: #SCREEN_VERTICAL is 0
+		anims.play("PC")
+	
+
 
 func hide_dialogue(): #Hides the Dialogue box
 	anims.play("disappear")

@@ -13,15 +13,19 @@ extends Control
 #(1) It Plays an 'Opening Cinematic' which is also used as a loading progress.
 #(2) Can download and locally store video streams off the internet
 	#- Feature is implemented on PC, partially implemented on mobiles
+# (3) Sets Global Screen Orientation
+# ********************************************************************
 # Bugs:
 #(1) Breaks on Mobile devices. Debug 
 #(2) Lack of Documentation.
 #(3)  
+# *************************************************
 # TO DO:
 #(1) Update Documentation
 # (2) Reorganise code into classes (Done)
 # (3) Fix video Positionig on multiple devices
 # (4) Guidebook SHould Use HTML Parser
+# *************************************************
 
 class_name cinematic
 
@@ -75,6 +79,14 @@ CINEMATICS
 
 
 func _ready(): #create a video player function
+
+	"""
+	SCREEN ORIENTATION ALGORITHM
+	"""
+	# (1) Checks Device  Screen orentation
+	# (2) Sets the Global Script for Screen Orientation
+	Utils.Screen.Orientation(Globals)
+
 	#use current scene to trigger cinematic
 	Globals.update_curr_scene()
 	

@@ -36,10 +36,11 @@ func _exit_tree():
 	self.remove_autoload_singleton("IconLoaderGithub")
 	self.remove_autoload_singleton("RestHandler")
 	self.remove_autoload_singleton("UserData")
-	get_editor_interface().get_editor_viewport().remove_child(GitHubDoc)
 	
 	# Check if Instance is valid before Deleting
 	if is_instance_valid(GitHubDoc):
+		get_editor_interface().get_editor_viewport().remove_child(GitHubDoc)
+	
 		GitHubDoc.queue_free()
 
 func has_main_screen():

@@ -160,7 +160,9 @@ __meta__ = {
 
 [node name="Dialog_box" parent="." instance=ExtResource( 5 )]
 visible = false
+margin_top = 388.529
 margin_right = 3092.0
+margin_bottom = 562.53
 
 [node name="Timer" type="Timer" parent="."]
 

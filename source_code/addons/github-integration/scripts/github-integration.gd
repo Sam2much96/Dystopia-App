@@ -18,22 +18,28 @@ var IconLoaderGithub = preload("res://addons/github-integration/scripts/IconLoad
 var GitHubDoc
 
 func _enter_tree():
-		self.add_autoload_singleton("PluginSettings","res://addons/github-integration/scripts/PluginSettings.gd")
-		self.add_autoload_singleton("IconLoaderGithub","res://addons/github-integration/scripts/IconLoaderGithub.gd")
-		self.add_autoload_singleton("UserData","res://addons/github-integration/scripts/user_data.gd")
-		self.add_autoload_singleton("RestHandler","res://addons/github-integration/scenes/RestHandler.tscn")
-		doc = load("res://addons/github-integration/scenes/GitHub.tscn")
-		GitHubDoc = doc.instance()
-		get_editor_interface().get_editor_viewport().add_child(GitHubDoc)
-		GitHubDoc.hide()
+	# Add Required Singletons for Github Plugin
+	self.add_autoload_singleton("PluginSettings","res://addons/github-integration/scripts/PluginSettings.gd")
+	self.add_autoload_singleton("IconLoaderGithub","res://addons/github-integration/scripts/IconLoaderGithub.gd")
+	self.add_autoload_singleton("UserData","res://addons/github-integration/scripts/user_data.gd")
+	self.add_autoload_singleton("RestHandler","res://addons/github-integration/scenes/RestHandler.tscn")
+	
+	# Instance Github Login Scene
+	doc = load("res://addons/github-integration/scenes/GitHub.tscn")
+	GitHubDoc = doc.instance()
+	get_editor_interface().get_editor_viewport().add_child(GitHubDoc)
+	GitHubDoc.hide()
 
 
 func _exit_tree():
-		self.remove_autoload_singleton("PluginSettings")
-		self.remove_autoload_singleton("IconLoaderGithub")
-		self.remove_autoload_singleton("RestHandler")
-		self.remove_autoload_singleton("UserData")
-		get_editor_interface().get_editor_viewport().remove_child(GitHubDoc)
+	self.remove_autoload_singleton("PluginSettings")
+	self.remove_autoload_singleton("IconLoaderGithub")
+	self.remove_autoload_singleton("RestHandler")
+	self.remove_autoload_singleton("UserData")
+	get_editor_interface().get_editor_viewport().remove_child(GitHubDoc)
+	
+	# Check if Instance is valid before Deleting
+	if is_instance_valid(GitHubDoc):
 		GitHubDoc.queue_free()
 
 func has_main_screen():

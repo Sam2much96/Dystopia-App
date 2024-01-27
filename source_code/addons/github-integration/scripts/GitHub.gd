@@ -33,6 +33,8 @@ onready var Notifications : Control = $Notifications
 var user_avatar : ImageTexture = ImageTexture.new()
 var user_img = Image.new()
 
+# Github ICONS
+# Disabling Temporarily for debug
 var connection_status : Array = [
 	IconLoaderGithub.load_icon_from_name("searchconnection"),
 	IconLoaderGithub.load_icon_from_name("noconnection"),
@@ -75,6 +77,7 @@ func _ready():
 	load_config()
 	Version.text = "v "+plugin_version
 	
+	# Sets Run Time Icon for Github
 	ConnectionIcon.set_texture(connection_status[0])
 	ConnectionIcon.use_parent_material = false
 	ConnectionIcon.material.set("shader_param/speed", 3)

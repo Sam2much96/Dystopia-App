@@ -674,29 +674,31 @@ class procedural extends Reference:
 					
 					# generataes a tilemap
 					_set_autotile(x, y, tile_map)
-		
-		tile_map.update_dirty_quadrants()
+		if is_instance_valid(tile_map):
+			tile_map.update_dirty_quadrants()
 
 
 	# Sets the scenes autotile programmatically
 	# Uses the Tilemap's set cell method & the x and y auto tile co-ordinates
 	static func _set_autotile(x : int, y : int, tile_map : TileMap) -> void :
-		tile_map.set_cell(
-			x,
-			y, 
-			tile_map.get_tileset().get_tiles_ids()[0], # Tile ID, the first one 
-			false, # Completeley ignore the next three arguments
-			false, 
-			false, 
-			tile_map.get_cell_autotile_coord(x, y ) # co-ordinate of the TileSet
-		)
-		
-		tile_map.update_bitmask_area(Vector2(x, y)) # so the engine knows where to configure the autotiling
+		if is_instance_valid(tile_map):
+			tile_map.set_cell(
+				x,
+				y, 
+				tile_map.get_tileset().get_tiles_ids()[0], # Tile ID, the first one 
+				false, # Completeley ignore the next three arguments
+				false, 
+				false, 
+				tile_map.get_cell_autotile_coord(x, y ) # co-ordinate of the TileSet
+			)
+			
+			tile_map.update_bitmask_area(Vector2(x, y)) # so the engine knows where to configure the autotiling
 
 	static func clear(tile_map : TileMap):
-		# Completely clearts the current tilemap
-		tile_map.clear()
-
+		if is_instance_valid(tile_map):
+			# Completely clearts the current tilemap
+			tile_map.clear()
+		else: push_error("TileMap Error: TIlemap not found")
 
 'Delete Files'
 func delete_local_file(path_to_file: String) -> void:

@@ -1,3 +1,17 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Top Dowe Player Code
+# SHared COnde Between Player Objects Within the Scene Tree
+# Features:
+#
+# (1) Top Down Player Controls
+#
+# To Do:
+# (1) Refactor Player animation Logic into core Player class
+# *************************************************
+
 extends Player
 
 
@@ -37,7 +51,7 @@ func _process(delta):
 
 func _physics_process(delta):
 	
-		# Facing State machine
+		# Facing State machine for Top Down player
 	match facing:
 		UP:
 			_facing = "up"

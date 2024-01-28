@@ -96,8 +96,8 @@ func remove_item(type:String, amount:int) -> bool:
 		
 		if type == "Generic Item":
 			# increases player speed and attack power
-			player.WALK_SPEED =550
-			player.ROLL_SPEED = 1500
+			player.WALK_SPEED += 250
+			player.ROLL_SPEED += 400
 			player.ATTACK = 2
 		
 		if type == "Magic Sword":

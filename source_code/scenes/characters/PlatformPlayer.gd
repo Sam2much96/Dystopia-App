@@ -7,11 +7,12 @@
 #
 # Features:
 # (1) Implements Platforming Code for Player Object
-#
+# (2) x4 Air Jumps
 #
 # To DO:
 # (1) Wall Jumps
-#
+# (2) Implement Player Animations
+# (3) Implement Facing
 # *************************************************
 
 extends Player
@@ -38,10 +39,23 @@ func _input(event):
 	# Left & Right
 	if Input.is_action_pressed("move_right"):
 		velocity.x += speed
+		
+		animation.play("walk_right")
+		
 	if Input.is_action_pressed("move_left"):
 		velocity.x -= speed
+		animation.play("walk_left")
+
 
 func _physics_process(delta):
+	
+	# Facing State machine for Platforming player
+	#	LEFT: 
+	#		_facing = "left"
+	#	RIGHT:
+	#		_facing = "right"
+
+	
 	# Gravity
 	velocity.y += gravity * delta
 	
@@ -62,6 +76,8 @@ func _physics_process(delta):
 			
 				# increase airjump counter
 				air_jump_counter += 1
+				
+				animation.play("roll")
 	# Ledge Grab
 	if Input.is_action_just_pressed("move_up"):
 		if not is_on_floor():

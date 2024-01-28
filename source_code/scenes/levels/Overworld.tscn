@@ -116,6 +116,12 @@ rotation = 3.09728
 scale = Vector2( 1.61925, 2.04034 )
 to_scene = "res://scenes/levels/Temple interior.tscn"
 
+[node name="Exit_3" parent="Outside" instance=ExtResource( 6 )]
+position = Vector2( 1446.37, 2628.38 )
+rotation = 3.09728
+scale = Vector2( 1.61925, 2.04034 )
+to_scene = "res://scenes/levels/DuneProcedural.tscn"
+
 [node name="Outside City" parent="." instance=ExtResource( 5 )]
 position = Vector2( 12571.8, -3727.55 )
 __meta__ = {
@@ -140,6 +146,8 @@ to_scene = "res://scenes/levels/Building1.tscn"
 [node name="Player" parent="." instance=ExtResource( 7 )]
 position = Vector2( 3227.29, 527.001 )
 scale = Vector2( 1.16168, 1.16168 )
+WALK_SPEED = 500
+ROLL_SPEED = 1200
 
 [node name="Enemy" parent="." instance=ExtResource( 12 )]
 position = Vector2( 2792.15, 705.99 )

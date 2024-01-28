@@ -18,9 +18,9 @@
 # (4) State Hurt Should Implement Blood Spawning FX not Process
 # (5) Implement State Emote for Dancing with New Dancing (Emote) Animation
 # (6) Implement Fight Camera (Done)
-# (7) Implement Item Equip From Inventory.gd
+# (7) Implement Item Equip Animation From Inventory.gd
 # (8) Player Attack is unimplemented
-# (9) Separate into 2 Separate Core Classes with inheritances. A COre Player class and a Top DOwn Player Class 
+# (9) Separate into 2 Separate Core Classes with inheritances. A COre Player class and a Top DOwn Player Class (Done) 
 # *************************************************
 
 extends KinematicBody2D

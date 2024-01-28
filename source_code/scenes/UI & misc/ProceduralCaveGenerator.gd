@@ -12,6 +12,8 @@
 # (1) Stuck Collision Bug with Enemy Collision     (Fixed with faster draw calls)
 # (2) Stuck Collision Bug with Item Objects
 # (3) Doesn't preserve tilemap data. Respawning results in massive time lag 
+# (4) Uses Too Much Static Memory, refactor to use more dynamic memory
+# (5) Optimize auto tile tilesheet
 # *************************************************
 
 extends Node

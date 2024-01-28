@@ -250,11 +250,16 @@ _global_script_classes=[ {
 "path": "res://scenes/characters/Player.gd"
 }, {
 "base": "Player",
+"class": "Player_v1_TopDown",
+"language": "GDScript",
+"path": "res://scenes/characters/TopDownPlayer.gd"
+}, {
+"base": "Player",
 "class": "Player_v2_networking",
 "language": "GDScript",
 "path": "res://scenes/characters/Player v2.gd"
 }, {
-"base": "KinematicBody2D",
+"base": "Player",
 "class": "Player_v3_Platformer",
 "language": "GDScript",
 "path": "res://scenes/characters/PlatformPlayer.gd"
@@ -528,6 +533,7 @@ _global_script_class_icons={
 "NetworkTimer": "",
 "OnlineLeaderboard": "",
 "Player": "",
+"Player_v1_TopDown": "",
 "Player_v2_networking": "",
 "Player_v3_Platformer": "",
 "Pond": "",

@@ -308,8 +308,30 @@ class projectiles:
 				node_projectile.set_position(projectile_os - trustp)
 				node_projectile.set_linear_velocity(-trustp * Networking.PROJECTILE_SPEED)
 				projectiles.erase(projectile)
-		
-	
+
+
+
+class Behaviour extends Reference:
+
+	"""
+	Autospawn Code
+	"""
+	 # Buggy:
+	 # Produces Stuck Collision on Player Bug 
+	static func AutoSpawn(body):
+			# Move the player to the corresponding spawnpoint, if any and connect to the dialog system
+		if Globals.spawnpoint is Vector2 and Globals.spawnpoint != null: #auto spawn code
+			if Globals.curr_scene == 'Outside' :
+				if Globals.current_level != null:
+					body.position = Globals.spawnpoint
+					print ('auto spawn')
+			if Globals.curr_scene == 'HouseInside':
+				pass
+
+
+
+
+
 
 "Player Info"
 #

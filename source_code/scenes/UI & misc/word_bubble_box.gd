@@ -263,7 +263,7 @@ func _process(_delta):
 
 	
 	# Synchronizes  Page Data with Comics 
-	Page = Comics_v6.current_page
+	Page = Comics_v6.current_frame
 	
 	# Toggles word bubble visibility on/off using Page Data
 	# Disabling for Debugging

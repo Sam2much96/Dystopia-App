@@ -196,6 +196,21 @@ func set_font(nodes:  Array, size : int, prefered_font_pack : String, OutlineSiz
 			if i is Label:
 				i.add_font_override('font', Dialogs.custom_font)
 
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Parser
+# Shared COnde Between Dialogues and Comic Objects Within the Scene Tree
+# *************************************************
+# Features:
+#
+# (1) Uses a Line Index to Fetch Dialgue Lines
+# (2)
+
+# To DO:
+# (1) Should Take Dialogues.languague as a type parameter
+
 class Parser extends Reference :
 	
 	"""
@@ -208,7 +223,8 @@ class Parser extends Reference :
 
 
 	# Parses a Script file and returns a line
-
+	#
+	#
 	static func parse_script(line_to_return : int, _script : String ) -> String: #Places Dialogue in wordbubbles with Dialogue singleton-aid
 		#Parse gd script
 		var _f = File.new()

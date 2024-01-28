@@ -17,9 +17,10 @@
 # (3) State blocked is unimplemented
 # (4) State Hurt Should Implement Blood Spawning FX not Process
 # (5) Implement State Emote for Dancing with New Dancing (Emote) Animation
-# (6) Implement Fight Camera
+# (6) Implement Fight Camera (Done)
 # (7) Implement Item Equip From Inventory.gd
 # (8) Player Attack is unimplemented
+# (9) Separate into 2 Separate Core Classes with inheritances. A COre Player class and a Top DOwn Player Class 
 # *************************************************
 
 extends KinematicBody2D
@@ -92,27 +93,6 @@ func _enter_tree():
 
 
 
-class Behaviour extends Reference:
-
-	"""
-	Autospawn Code
-	"""
-	 # Buggy:
-	 # Produces Stuck Collision on Player Bug 
-	static func AutoSpawn(body):
-			# Move the player to the corresponding spawnpoint, if any and connect to the dialog system
-		if Globals.spawnpoint is Vector2 and Globals.spawnpoint != null: #auto spawn code
-			if Globals.curr_scene == 'Outside' :
-				if Globals.current_level != null:
-					body.position = Globals.spawnpoint
-					print ('auto spawn')
-			if Globals.curr_scene == 'HouseInside':
-				pass
-
-
-		
-
-
 func _ready():
 
 
@@ -128,152 +108,6 @@ func _ready():
 		printerr("Error connecting to dialog system")
 	
 	pass
-
-func _input(event):
-	# Node Individual Input Processes were depreciated in favor of GlobalInput Singleton
-	# Facing State Machine
-	# 
-	if Input.is_action_pressed("move_left") or GlobalInput._state == GlobalInput.LEFT:
-		
-		facing = LEFT
-	if Input.is_action_pressed("move_right") or GlobalInput._state == GlobalInput.RIGHT:
-		
-		facing = RIGHT
-	if Input.is_action_pressed("move_up") or GlobalInput._state == GlobalInput.UP:
-		
-		facing = UP
-	if Input.is_action_pressed("move_down") or GlobalInput._state == GlobalInput.DOWN:
-		
-		facing = DOWN
-
-func _process(delta):
-		# Raises up a Frame Counter
-	#frame_counter += 1
-	
-	# Checks the Spawning Boolean Every 30th Frame
-	# Called #very 60th Frame
-	if Simulation.frame_counter % 60 == 0:
-	#####this updates the player's node to a globals variable
-		Globals._player_state = state
-#	if frame_counter >= 1000:
-#		frame_counter = 0
-
-
-
-
-func _physics_process(delta):
-	
-		# Facing State machine
-	match facing:
-		UP:
-			_facing = "up"
-		DOWN:
-			_facing = "down"
-		LEFT: 
-			_facing = "left"
-		RIGHT:
-			_facing = "right"
-	
-	
-	
-	##LOCALLY PROCESS STATES
-	# State Machine physics shouldn't be processed by the server
-	
-	if not server_player: 
-		
-		match state:
-			STATE_BLOCKED:
-				new_anim = "idle_" + _facing
-				
-			STATE_IDLE:
-				if (
-						Input.is_action_pressed("move_down") or
-						Input.is_action_pressed("move_left") or
-						Input.is_action_pressed("move_right") or
-						Input.is_action_pressed("move_up") or
-						
-						GlobalInput._state == GlobalInput.UP or
-						GlobalInput._state == GlobalInput.DOWN or
-						GlobalInput._state == GlobalInput.LEFT or
-						GlobalInput._state == GlobalInput.RIGHT
-					):
-						state = STATE_WALKING
-				if Input.is_action_just_pressed("attack"):
-					state = STATE_ATTACK
-				if Input.is_action_just_pressed("roll"):
-					state = STATE_ROLL
-					
-					# Roll DIrection Calcualatin
-					roll_direction = GlobalInput.roll_direction_calculation()
-					
-					#_update_facing()
-				
-				new_anim = "idle_" + _facing
-			
-			STATE_WALKING:
-				if Input.is_action_just_pressed("attack"):
-					state = STATE_ATTACK
-				if Input.is_action_just_pressed("roll"):
-					state = STATE_ROLL
-				
-				linear_vel = move_and_slide(linear_vel)
-				
-				#print('Player linear velocity: ', linear_vel) #for debug purposes only
-				
-				var target_speed = Vector2()
-				
-				if Input.is_action_pressed("move_down"):
-					target_speed += Vector2.DOWN
-				if Input.is_action_pressed("move_left"):
-					target_speed += Vector2.LEFT
-				if Input.is_action_pressed("move_right"):
-					target_speed += Vector2.RIGHT
-				if Input.is_action_pressed("move_up"):
-					target_speed += Vector2.UP
-				
-				target_speed *= WALK_SPEED
-				#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
-				linear_vel = target_speed
-				roll_direction = linear_vel.normalized()
-				
-				#_update_facing()
-				
-				if linear_vel.length() > 5:
-					new_anim = "walk_" + _facing
-				else:
-					goto_idle()
-				
-			STATE_ATTACK:
-				new_anim = "slash_" + _facing
-				
-			STATE_ROLL:
-				if roll_direction == Vector2.ZERO:
-					state = STATE_IDLE
-				else:
-					linear_vel = move_and_slide(linear_vel)
-					var target_speed = Vector2()
-					target_speed = roll_direction
-					target_speed *= ROLL_SPEED
-					#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
-					linear_vel = target_speed
-					new_anim = "roll"
-					if Input.is_action_just_pressed("attack"): #punch and slide funtionality
-						state = STATE_ATTACK
-			STATE_DIE:
-				new_anim = "die"
-			STATE_HURT:
-				new_anim = "hurt"
-				
-				# FX works better in script
-				Globals.player_cam.shake()
-				
-		
-		## UPDATE ANIMATION
-		if new_anim != anim:
-			anim = new_anim
-			
-			animation.play(anim)
-		pass
 
 
 func _on_dialog_started():
@@ -320,23 +154,6 @@ func respawn()-> void:
 		Globals.change_scene_to(Globals.scene_resource)
 	else: get_tree().reload_current_scene()
 
-func _on_hurtbox_area_entered(area):
-	if state != STATE_DIE and area.is_in_group("enemy_weapons"):
-		hitpoints -= 1
-		emit_signal("health_changed", hitpoints)
-		var pushback_direction = (global_position - area.global_position).normalized()
-		move_and_slide( pushback_direction * pushback)
-		state = STATE_HURT
-		var blood = Globals.blood_fx.instance()
-		blood.global_position = global_position
-		get_parent().add_child(blood)
-		
-		Music.play_track(Music.nokia_soundpack[20])
-		
-		if hitpoints <= 0:
-			state = STATE_DIE
-			Music.play_track(Music.nokia_soundpack[27])
-	pass
 
 
 func shake(): # Shaky Cam FX

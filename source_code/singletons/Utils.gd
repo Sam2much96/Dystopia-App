@@ -447,7 +447,13 @@ class Functions extends Reference:
 
 		return Vector2(length, breadth)
  
-
+	static func edge_length(point_data: PoolVector2Array) -> Vector2:
+	# Caclulates the Edge Length of a 4 Point Structure
+	# Calculates the distance between 2 points
+	# Source : https://stackoverflow.com/questions/7475004/calculate-width-and-height-from-4-points-of-a-polygon
+		var width = sqrt(pow(point_data[1].x - point_data[0].x, 2) + pow( point_data[1].y - point_data[0].y,2)) 
+		var height = sqrt(pow(point_data[2].x - point_data[1].x, 2) + pow( point_data[2].y - point_data[1].y,2)) 
+		return Vector2(width, height)
 
 "Screen Class "
 class Screen extends Reference :
@@ -645,6 +651,9 @@ class Screen extends Reference :
 
 "Procedural Generation"
 class procedural extends Reference:
+	# Bug: Maxes Out Static Memory, Refactoring to use dynamic memeory instead
+	#
+	
 	static func genereate(simplex_noise : OpenSimplexNoise, 
 	world_seed : String, 
 	noise_octaves : int, 

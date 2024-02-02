@@ -274,7 +274,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/items/extra life.gd"
 }, {
-"base": "Node",
+"base": "Line2D",
 "class": "ProceduralGeneration",
 "language": "GDScript",
 "path": "res://scenes/UI & misc/ProceduralCaveGenerator.gd"

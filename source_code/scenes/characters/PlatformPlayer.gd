@@ -24,7 +24,7 @@ export (int) var jump_speed = -1800
 export (int) var gravity = 4000
 
 # For Jumping Mechanics
-const max_air_jumps : int = 3
+const max_air_jumps : int = 6
 var air_jump_counter : int = 0
 
 var velocity = Vector2.ZERO

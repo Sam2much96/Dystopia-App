@@ -26,7 +26,7 @@
 # *************************************************
 # To-Do :
 # (1) It is possible to change the Joystick's color and use that as a player hint
-#
+# (2) Refactor State Machine to remove multiple runs and stuck states
 # *************************************************
 
 
@@ -85,7 +85,7 @@ func release(): #pass it a variable
 		#Input.action_release(__input.action)
 		
 		release_the_action(__input.action)
-		state = RELEASE
+		state = RELEASE	
 		
 		#vibrate = true
 		
@@ -94,6 +94,10 @@ func release(): #pass it a variable
 
 
 func _input(event):
+	
+	if not self.visible:
+		return
+	
 	if event is InputEventScreenDrag and self.visible == true :
 		
 		GlobalInput.joystick = self
@@ -181,6 +185,9 @@ func _input(event):
 # UnOptimized Code Bloc?
 func _process(delta):
 	
+	if not self.visible:
+		return
+	
 	if self.visible:
 		
 		# Dwpreciated for Global Input Singleton
@@ -196,6 +203,16 @@ func _process(delta):
 		
 
 	###################Input Action State Machine#####################################
+	# *************************************************
+	# godot3-Dystopia-game by INhumanity_arts
+	# Released under MIT License
+	# *************************************************
+	# Joystick State Machine
+	# Controls the Joystick Object every frame
+	# Bugs:
+	# (1) Stuck state : Statemachine does not allow switing states per frame  
+	# (2) Bad Code requires refactoring to fix multiple returns and Export variables
+	# *************************************************
 		if self.visible: # Performance Optimizer
 			match state:
 				MOVE_UP: #improve your state machine

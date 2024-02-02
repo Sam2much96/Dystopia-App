@@ -16,10 +16,13 @@ cell_size = Vector2( 16, 16 )
 show_collision = true
 centered_textures = true
 format = 1
-tile_data = PoolIntArray( -393214, 0, 0, -393213, 0, 327681, -327678, 0, 262144, -327677, 0, 131074, 196620, 0, 0 )
+tile_data = PoolIntArray( -393214, 0, 0, -393213, 0, 327681, -327678, 0, 262144, -327677, 0, 131074, 196620, 0, 0, 4391335, 0, 0 )
 script = ExtResource( 5 )
 
 [node name="CaveGenerator" parent="." instance=ExtResource( 10 )]
+position = Vector2( 431.744, 189.562 )
+points = PoolVector2Array( 4025.91, 1106.61, -2263.62, 1086.45, -2610.32, 5956.16, 4524.92, 6032.27, 3963.02, 1213.47 )
+width = 30.0
 enabled = true
 map_width = 700
 map_height = 700
@@ -31,7 +34,7 @@ noise_lacunarity = 0.05
 noise_threshold = 0.05
 
 [node name="Player" parent="CaveGenerator" instance=ExtResource( 1 )]
-position = Vector2( 201.204, 309.087 )
+position = Vector2( 315.94, -9728.72 )
 scale = Vector2( 1.1107, 1.1107 )
 script = ExtResource( 6 )
 speed = 1200
@@ -49,3 +52,5 @@ scale = Vector2( 1.23663, 2.21083 )
 polygon = PoolVector2Array( -5810.94, -5196.13, -5810.94, 5133.63, 7931.87, 4892, 7841.26, -5286.74, -4995.43, -5165.92, -4995.43, -4290.01, 7086.16, -4501.44, 7176.77, 4106.69, -4965.23, 4529.55, -5146.45, -4018.17 )
 
 [node name="GameHUD" parent="." instance=ExtResource( 4 )]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]

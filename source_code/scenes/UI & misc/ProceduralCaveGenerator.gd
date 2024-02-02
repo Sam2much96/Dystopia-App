@@ -9,14 +9,15 @@
 # 
 # *************************************************
 # Bugs:
-# (1) Stuck Collision Bug with Enemy Collision     (Fixed with faster draw calls)
+# (1) Stuck Collision Bug with Enemy Collision     (Fixed with faster draw calls & Sidescrollinh Player)
 # (2) Stuck Collision Bug with Item Objects
 # (3) Doesn't preserve tilemap data. Respawning results in massive time lag 
 # (4) Uses Too Much Static Memory, refactor to use more dynamic memory
 # (5) Optimize auto tile tilesheet
+# (6) Maxes out Static Memory, requires refactor for dynamic memory optimization
 # *************************************************
 
-extends Node
+extends Line2D
 # Procedurally generated tilemap creator
 
 class_name ProceduralGeneration
@@ -47,17 +48,55 @@ var simplex_noise : OpenSimplexNoise = OpenSimplexNoise.new()
 # Generated Bool
 export(bool) var generated 
 
+# Cave Gen Dimensions
+var map__width : int 
+var map__height : int 
+var map_dimensions : Vector2
+var point_data : PoolVector2Array
+
+# Random World Seed Generator
+
+var word_seeds : Dictionary = {0:"Pleasse Give me a good result nitori olorun",
+1: "trying this muther fuccing shuffle randomiser, lool"}
+
 func _enter_tree()-> void:
+	
+	# Get Cave generator dimensions as points
+	point_data = self.get_points()
+	
+	# More Acurate Algorithm
+	map_dimensions = Utils.Functions.calculate_length_breadth(point_data)
+	
+	
+	#map_dimensions = Utils.Functions.edge_length(point_data)
+	
+	map__width = map_dimensions.x/10
+	map__height = map_dimensions.y/10
+	
+	# Debug Point data
+	# poolVector Array
+	#print_debug(point_data)
+	
+	# point 1
+	#print(point_data[0])
+	#print(point_data[1])
+	#print(point_data[2])
+	#print(point_data[3])
+	
+	#Calculations
+	#print_debug(map_dimensions)
+
+func _ready():
 	
 	if enabled:
 		
-		if tile_map == null && Globals.tile_map == null:
+		if tile_map == null :#&& Globals.tile_map == null:
 			# Gets the Parent Tilemap Node
 			tile_map = get_parent() as TileMap
 			
 			
 			# Make GLobal
-			Globals.tile_map = tile_map
+			#Globals.tile_map = tile_map
 		
 		
 		clear()
@@ -65,32 +104,36 @@ func _enter_tree()-> void:
 
 
 func redraw(value = null) -> void:
-	if tile_map == null && Globals.tile_map == null:
+	if tile_map == null :#&& Globals.tile_map == null:
 		return
 	
 	clear()
 	generate()
 
 func clear() -> void:
-	Utils.procedural.clear(Globals.tile_map)
+	Utils.procedural.clear(tile_map)
 
 func generate() :
-	
+	# Calculated Generator Dimensions
+	# For debug purposes only
+	print_debug(" Cave Gen Dimensions:", map__width, "/", map__height, "//", map_dimensions)
+
 	if !generated : # conditional prevents auto dungeon regeneration bug
+		
 		
 		# generate a seed using a string and the hash of that string
 		#simplex_noise.seed = world_seed.hash()
 		
 		Utils.procedural.genereate(simplex_noise,
-		world_seed,
+		Music.shuffle(word_seeds), # Random World Seed Generator #world_seed,
 		noise_octaves,
 		noise_period,
 		noise_persistence,
 		noise_lacunarity,
 		noise_threshold,
-		map_height,
-		map_width,
-		Globals.tile_map
+		map__height,
+		map__width,
+		tile_map
 		)
 		
 		
@@ -98,4 +141,11 @@ func generate() :
 		generated = true
 		
 	if generated: pass
-	
+
+
+
+
+
+
+func _exit_tree():
+	clear()

@@ -439,7 +439,7 @@ static func shuffle (playlist : Dictionary) -> String:
 	var track = int(rand_range(-1,playlist.size())) #selects a random track number
 	
 	
-	print_debug("selected Mus After Shuffle: ",playlist[track])
+	print_debug("selected Item After Shuffle: ",playlist[track])
 	return playlist[track]
 
 

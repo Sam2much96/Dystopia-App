@@ -147,8 +147,9 @@ var wallet_state  #wallet state global variabe
 
 
 
-"Tilemap"
-var tile_map : TileMap
+#"Tilemap"
+# Depreciated
+#var tile_map : TileMap
 
 func _ready():
 	#print_debug('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes

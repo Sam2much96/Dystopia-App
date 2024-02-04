@@ -114,6 +114,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Fight Cam.gd"
 }, {
+"base": "Camera",
+"class": "FreeLookCamera",
+"language": "GDScript",
+"path": "res://scenes/characters/3DPlayer.gd"
+}, {
 "base": "Control",
 "class": "GameControls",
 "language": "GDScript",
@@ -506,6 +511,7 @@ _global_script_class_icons={
 "Enemy": "",
 "Exit": "",
 "FightCam": "",
+"FreeLookCamera": "",
 "GameControls": "",
 "GameHUD": "",
 "Game_Menu": "",

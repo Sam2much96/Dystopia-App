@@ -10,6 +10,8 @@
 # (1) Parses Quest Data from Singleton
 # (2) Controls Touch HUD
 # (3) Connects Inventory Buttons to inventory singleton on line 215
+#
+# *************************************************
 # TO-DO:
 # 
 # (1) Scrolling Inbentory Menu refactor (Utils.gd)
@@ -17,9 +19,14 @@
 # (3) Inventory Items Should be more Accessible
 # (4) Implement Character Customization UI (1/2)
 # (5) 
-# (6) Implement Tab Icons
+# (6) Implement Tab Icons with code (1/2)
+#		-(a) Done with TabIcon Subclass
 # (7) Item Button should ideally be low poly texture buttons
-
+#
+# *************************************************
+# Bugs:
+# (1) Regex For Inventroy Update is buggy
+# 
 # *************************************************
 
 extends PanelContainer
@@ -30,7 +37,11 @@ export (bool) var enabled
 signal not_enabled
 signal enabled
 
-onready var scroller : ScrollContainer = $ScrollContainer # Depreciated
+
+# Pointers to Tab Containers for icon implementation
+onready var tab_container : TabContainer = $TabContainer
+
+#onready var scroller : ScrollContainer = $ScrollContainer # Depreciated
 
 # Quest Parent Node Pointer
 # Vbox Containter Containing all Inventory Items as children
@@ -55,7 +66,8 @@ onready var _inventory : Storage = get_tree().get_root().get_node("/root/Invento
 # Should be a dictionary
 onready var _stats_buttons : Array = []
 
-var regex = RegEx.new()
+# For Inventory Update
+var regex : RegEx = RegEx.new()
 
 enum {ENABLED, DISABLED, NULL}
 
@@ -67,13 +79,6 @@ func _ready():
 	self.connect("not_enabled",self, '_on_status_hidden')
 	self.connect('enabled',self,'_on_status_showing')
 	
-	
-	# Debug Signal Connections
-	
-	#print_debug(
-	#	self.is_connected("not_enabled",self, '_on_status_hidden'), 
-	#	self.is_connected('enabled',self,'_on_status_showing')
-	#	)
 	
 	
 	#self.get_child(0)
@@ -88,6 +93,18 @@ func _ready():
 	
 	#Regex for Inventory Update
 	regex.compile("(\\d+)")
+	
+	# Set Tab Icons via SUbclass Script
+	tab_container.set_script(TabIcons)
+	
+	# Debug Signal Connections
+	
+	#print_debug(
+	#	self.is_connected("not_enabled",self, '_on_status_hidden'), 
+	#	self.is_connected('enabled',self,'_on_status_showing')
+	#	)
+	
+
 
 func _input(event):
 	
@@ -290,3 +307,14 @@ func _disable():
 	hide()
 	get_tree().paused = false
 	print (self.name, "enabled") # For debug purposes only
+
+
+
+class TabIcons extends TabContainer:
+	func _ready():
+		# Should recursively set tab icons for Tab container child node
+		print_debug("Setting Tab Icons: Unfinished Code Implementation")
+		var q = Texture.new()
+		self.set_tab_icon(0,q) # Sets index 0 tab icon to an empty texture
+		pass
+		

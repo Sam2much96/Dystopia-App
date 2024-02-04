@@ -9,8 +9,10 @@
 #
 # Features:
 #
+# *************************************************
 # To Do:
 # (1) Refactor to use player controls
+# (2) Refactor to use Camera Shake fx to simulate player movement
 
 class_name FreeLookCamera extends Camera
 

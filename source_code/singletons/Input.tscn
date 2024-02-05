@@ -4,4 +4,3 @@
 
 [node name="GlobalInputSingleton" type="Control"]
 script = ExtResource( 1 )
-vibrate = true

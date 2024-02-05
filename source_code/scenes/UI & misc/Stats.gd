@@ -45,17 +45,17 @@ onready var tab_container : TabContainer = $TabContainer
 
 # Quest Parent Node Pointer
 # Vbox Containter Containing all Inventory Items as children
-onready var _inventory_parent : VBoxContainer = $TabContainer/Inventory/ScrollContainer3/VBoxContainer 
+onready var _inventory_parent : VBoxContainer = $"TabContainer/3/ScrollContainer3/VBoxContainer" 
 
 # Inventory Parent Node
-onready var _inventory_parent_label : Label = $TabContainer/Inventory/ScrollContainer3/VBoxContainer/Title2
+onready var _inventory_parent_label : Label = $"TabContainer/3/ScrollContainer3/VBoxContainer/Title2"
 
 # Inventroy Parent Button
-onready var _inventory_button : Button = $TabContainer/Inventory/ScrollContainer3/VBoxContainer/Inventory
+onready var _inventory_button : Button = $"TabContainer/3/ScrollContainer3/VBoxContainer/Inventory"
 
 
-onready var _coin_label : Label = $TabContainer/Wallet/Algos
-onready var _quest_label : Label = $TabContainer/Quests/ScrollContainer2/VBoxContainer/Quests
+onready var _coin_label : Label = $"TabContainer/1/VBoxContainer/Algos"
+onready var _quest_label : Label = $"TabContainer/2/ScrollContainer2/VBoxContainer/Quests"
 
 # Backup Pointer to Inventory Singleton
 onready var _inventory : Storage = get_tree().get_root().get_node("/root/Inventory")
@@ -261,14 +261,16 @@ func _on_status_showing():
 	# upadate inventory button lising
 	#_update_inventory_button_cache() #  Depreciated Buggy NFT
 	
+	
 	#resets Mobile Touch HUD
-	GlobalInput.TouchInterface.status()
+	GlobalInput.TouchInterface.reset()
 	
 	print_debug("TC Status:",GlobalInput.TouchInterface._Hide_touch_interface, " SC: ", GlobalInput.TouchInterface._state_controller) # Touch Interface Debug
 	print_debug('status hidden') #for debug purposes
 
 func _on_status_hidden():
 	# shows status UI only
+	# Buggy Method Triggers Status state on Mobile Devices
 	GlobalInput.TouchInterface.status()
 	print_debug("TC hidden:",GlobalInput.TouchInterface._Hide_touch_interface, " SC: ", GlobalInput.TouchInterface._state_controller) # Touch Interface Debug
 	print_debug('status showing')
@@ -309,12 +311,3 @@ func _disable():
 	print (self.name, "enabled") # For debug purposes only
 
 
-
-class TabIcons extends TabContainer:
-	func _ready():
-		# Should recursively set tab icons for Tab container child node
-		print_debug("Setting Tab Icons: Unfinished Code Implementation")
-		var q = Texture.new()
-		self.set_tab_icon(0,q) # Sets index 0 tab icon to an empty texture
-		pass
-		

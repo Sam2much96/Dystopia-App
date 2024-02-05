@@ -47,10 +47,13 @@ func _input(event):
 	# Refactor input to use Dpad instead
 	push_error(" Refactor 3D camera input for D-pad and Mobile Devices")
 	# Receives mouse motion
+	# mouse motion
 	if event is InputEventMouseMotion:
 		_mouse_position = event.relative
 	
 	# Receives mouse button input
+	# mouse state machine
+	# mouse button
 	if event is InputEventMouseButton:
 		match event.button_index:
 			BUTTON_RIGHT: # Only allows rotation if right click down
@@ -61,28 +64,34 @@ func _input(event):
 				_vel_multiplier = clamp(_vel_multiplier / 1.1, 0.2, 20)
 
 	# Receives key input
+	# keyboard state machine
+	# refactor to us GLobal Input Singleton code
 	if event is InputEventKey:
 		match event.scancode:
-			KEY_W:
+			KEY_W: # move up
 				_w = event.pressed
-			KEY_S:
+			KEY_S: # move down
 				_s = event.pressed
-			KEY_A:
+			KEY_A: # move left
 				_a = event.pressed
-			KEY_D:
+			KEY_D: # move right
 				_d = event.pressed
-			KEY_Q:
+			KEY_Q: # float up
 				_q = event.pressed
-			KEY_E:
+			KEY_E: # float down
 				_e = event.pressed
-			KEY_SHIFT:
+			KEY_SHIFT: # increase mmovement speed
 				_shift = event.pressed
-			KEY_ALT:
+			KEY_ALT: # increase movement speed
 				_alt = event.pressed
 
 # Updates mouselook and movement every frame
 func _process(delta):
+	
+	#Update Camera look
 	_update_mouselook()
+	
+	# Update Camera movment
 	_update_movement(delta)
 
 # Updates camera movement
@@ -98,6 +107,7 @@ func _update_movement(delta):
 		+ _velocity.normalized() * _deceleration * _vel_multiplier * delta
 	
 	# Compute modifiers' speed multiplier
+	# speed multiplier using the alt and shift keys 
 	var speed_multi = 1
 	if _shift: speed_multi *= SHIFT_MULTIPLIER
 	if _alt: speed_multi *= ALT_MULTIPLIER
@@ -117,10 +127,12 @@ func _update_movement(delta):
 # Updates mouse look 
 func _update_mouselook():
 	# Only rotates mouse if the mouse is captured
+	#
+	# Camer Rotation COnditional
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		_mouse_position *= sensitivity
-		var yaw = _mouse_position.x
-		var pitch = _mouse_position.y
+		var yaw : float = _mouse_position.x
+		var pitch : float = _mouse_position.y
 		_mouse_position = Vector2(0, 0)
 		
 		# Prevents looking up/down too far

@@ -34,6 +34,8 @@ var _deceleration = -10
 var _vel_multiplier = 4
 
 # Keyboard state
+# Movement body states
+# used in camera movement calculations
 var _w = false
 var _s = false
 var _a = false
@@ -42,10 +44,10 @@ var _q = false
 var _e = false
 var _shift = false
 var _alt = false
-
+#
 func _input(event):
 	# Refactor input to use Dpad instead
-	push_error(" Refactor 3D camera input for D-pad and Mobile Devices")
+	#push_error(" Refactor 3D camera input for D-pad and Mobile Devices")
 	# Receives mouse motion
 	# mouse motion
 	if event is InputEventMouseMotion:
@@ -66,25 +68,43 @@ func _input(event):
 	# Receives key input
 	# keyboard state machine
 	# refactor to us GLobal Input Singleton code
-	if event is InputEventKey:
-		match event.scancode:
-			KEY_W: # move up
-				_w = event.pressed
-			KEY_S: # move down
-				_s = event.pressed
-			KEY_A: # move left
-				_a = event.pressed
-			KEY_D: # move right
-				_d = event.pressed
-			KEY_Q: # float up
-				_q = event.pressed
-			KEY_E: # float down
-				_e = event.pressed
-			KEY_SHIFT: # increase mmovement speed
-				_shift = event.pressed
-			KEY_ALT: # increase movement speed
-				_alt = event.pressed
+#	if event is InputEventKey:
+#		match event.scancode:
+#			KEY_W: # move up
+#				_w = event.pressed
+#			KEY_S: # move down
+##				_s = event.pressed
+#			KEY_A: # move left
+#				_a = event.pressed
+#			KEY_D: # move right
+#				_d = event.pressed
+#			KEY_Q: # float up
+#				_q = event.pressed
+#			KEY_E: # float down
+#				_e = event.pressed
+#			KEY_SHIFT: # increase mmovement speed
+#				_shift = event.pressed
+#			KEY_ALT: # increase movement speed
+#				_alt = event.pressed
 
+	if Input.is_action_pressed("move_down"):
+		_s = event.pressed
+		return
+	if Input.is_action_pressed("move_up"):
+		_w = event.pressed
+		return
+	if Input.is_action_pressed("move_left"):
+		_a = event.pressed
+		return
+	if Input.is_action_pressed("move_right"):
+		_d = event.pressed
+		return
+
+#			KEY_SHIFT: # increase mmovement speed
+#				_shift = event.pressed
+#			KEY_ALT: # increase movement speed
+#				_alt = event.pressed
+#
 # Updates mouselook and movement every frame
 func _process(delta):
 	
@@ -97,9 +117,14 @@ func _process(delta):
 # Updates camera movement
 func _update_movement(delta):
 	# Computes desired direction from key states
+	# uses an algorithm to convert input events to Vector3 co-ordinates
 	_direction = Vector3(_d as float - _a as float, 
 						 _e as float - _q as float,
 						 _s as float - _w as float)
+	
+	
+	# Debug Direciton
+	#print_debug(_direction)
 	
 	# Computes the change in velocity due to desired direction and "drag"
 	# The "drag" is a constant acceleration on the camera to bring it's velocity to 0

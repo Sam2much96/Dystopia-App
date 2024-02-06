@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Title screen.gd" type="Script" id=1]
 [ext_resource path="res://resources/title animation/Dystopia Logo webp.webp" type="Texture" id=2]
@@ -10,9 +10,6 @@
 [ext_resource path="res://resources/illustrations/Game_Cover Art WEBP.webp" type="Texture" id=8]
 [ext_resource path="res://icon.png" type="Texture" id=9]
 [ext_resource path="res://ads/Appodeal/Appodeal.tscn" type="PackedScene" id=12]
-
-[sub_resource type="CanvasItemMaterial" id=8]
-blend_mode = 3
 
 [sub_resource type="ShaderMaterial" id=7]
 
@@ -53,9 +50,6 @@ rect_scale = Vector2( 4.7295, 4.35369 )
 texture = ExtResource( 9 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
-visible = false
-show_behind_parent = true
-material = SubResource( 8 )
 margin_left = 247.808
 margin_top = 32.8409
 margin_right = 3392.81

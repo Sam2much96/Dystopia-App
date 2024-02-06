@@ -44,10 +44,20 @@ var maxlength
 
 onready var __input =InputEventAction.new()
 
-var x
-var y
+# The Joystick Direction as A Vector 2
+export (int) var x
+export (int) var y
 
-onready var the_action
+# Custom Button Mapping
+export(bool) var custom_mapping = false
+
+export(String) var up = ""
+export(String) var down = ""
+export(String) var left = ""
+export(String) var right = ""
+
+
+onready var the_action : String
 
 onready var the_event
 
@@ -91,7 +101,14 @@ func release(): #pass it a variable
 		
 		return state
 
-
+func _ready():
+	# Check That Custom Button Mapping is Available
+	if custom_mapping == true:
+		if (up &&
+		down &&
+		left &&
+		right).is_empty():
+			push_error(" CUstom Button Mapping cannot be empty once enabled")
 
 func _input(event):
 	
@@ -225,6 +242,7 @@ func _process(delta):
 						parse_input_function(__input)
 						
 						the_action = __input.action 
+						print_debug(the_action, typeof(the_action))
 						start_debug()
 						#state = 0
 						the_action = __input.action

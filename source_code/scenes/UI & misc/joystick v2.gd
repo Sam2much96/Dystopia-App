@@ -102,13 +102,20 @@ func release(): #pass it a variable
 		return state
 
 func _ready():
+	"""
+	ERROR CHECKERS
+	"""
 	# Check That Custom Button Mapping is Available
 	if custom_mapping == true:
-		if (up &&
-		down &&
-		left &&
-		right).is_empty():
+		if (up.empty() or
+		down.empty() or
+		left.empty() or
+		right.empty()):
 			push_error(" CUstom Button Mapping cannot be empty once enabled")
+
+	" Disable Swipe Detection"
+	Comics_v6.SwipeLocked = true
+
 
 func _input(event):
 	
@@ -235,14 +242,16 @@ func _process(delta):
 				MOVE_UP: #improve your state machine
 					if joystick_circle.is_pressed() == true:
 						#release()
-						__input.action = 'move_up'
+						__input.action = up
 						__input.pressed =true
+						
+						# Converts negative values to positive
 						__input.strength = abs(y)
 						#Input.parse_input_event(__input) # The bug is coming from this line of code duplicates
 						parse_input_function(__input)
 						
 						the_action = __input.action 
-						print_debug(the_action, typeof(the_action))
+						
 						start_debug()
 						#state = 0
 						the_action = __input.action
@@ -253,8 +262,10 @@ func _process(delta):
 				MOVE_DOWN:
 					if joystick_circle.is_pressed() == true:
 						#release()
-						__input.action = 'move_down'
+						__input.action = down
 						__input.pressed =true
+						
+						# Converts negative values to positive
 						__input.strength = abs(y)
 						#Input.parse_input_event(__input) # The bug is coming from this line of code duplicates
 						
@@ -269,8 +280,8 @@ func _process(delta):
 
 				MOVE_RIGHT:
 					if joystick_circle.is_pressed() == true:
-						#release()
-						__input.action = 'move_right'
+						
+						__input.action = right
 						__input.pressed =true
 						__input.strength = abs(x)
 						#Input.parse_input_event(__input) # The bug is coming from this line of code duplicates
@@ -288,7 +299,7 @@ func _process(delta):
 				MOVE_LEFT:
 					if joystick_circle.is_pressed() == true:
 						#release()
-						__input.action = 'move_left'
+						__input.action = left
 						__input.pressed = true
 						__input.strength = abs(x)
 						#Input.parse_input_event(__input) # WHy Multiple separate input parse?
@@ -318,7 +329,7 @@ func _process(delta):
 								
 								parse_input_function(__input)
 								
-								print ('1111') # For Debug purposes only
+								print_debug ('1111') # For Debug purposes only
 							if __input.get_action_strength(the_action) == 0:
 								release()
 						#Input.action_release(the_action)#; update()
@@ -328,6 +339,8 @@ func _process(delta):
 							
 						return the_action
 			##############################################################################
+			
+			#print_debug(the_action, typeof(the_action)) # for debug purposes only
 
 
 		if touchInsideJoystick == false:
@@ -335,37 +348,28 @@ func _process(delta):
 			state = RELEASE
 
 		" Fixes stuck action function : Error catcher 3"
-		if (__input.action)== "move_left" or "move_right" or "move_up" or "move_down":
-			if bool(__input.pressed) == false :
-				if (x)== 0 && (y) == (0): # The bug occurs at this logic
-				# Attempt to reset the stuck action
-					#print ("Fix Stuck Joystick Bug- Logic Broken here, Fix written below")
-					#print("attempting to fix Joystick Bug: ", str (__input.action), str(__input.strength))
-					#print (__input.as_text()) #for debugging release
-					#print(prev_inputs)
-					# How to fix bug
-					# create an array of max 2, store all input actions in it. Once this code bloc is triggered
-					# parse the first action as input to reset the joystick
-					#release()
-					#release_the_action(__input.action) # Doesnt work
-					#state = RELEASE
-					" Fixes Stuck input bug"
-					
-					for _i in prev_inputs: 
-						__input.action = _i #uses a for loop to release all previous inputs
-					
-						__input.strength = 0
-						__input.pressed = false
-						#release_the_action(__input)
-						return parse_input_function(__input)
-						#return #state = NULL
-					
-				else: return
-				if bool(__input.pressed) == true:
-					return
-				if (x)!= 0 or (y) != (0):
-					return
-				return state
+		#if (__input.action)== "move_left" or "move_right" or "move_up" or "move_down":
+		#	if bool(__input.pressed) == false :
+		if (x)== 0 && (y) == (0): 
+			" Fixes Stuck input bug"
+			#
+			# By Loopiing through the last 10 input sand releasing them
+			#
+			for _i in prev_inputs: 
+				__input.action = _i #uses a for loop to release all previous inputs
+			
+				__input.strength = 0
+				__input.pressed = false
+				#release_the_action(__input)
+				return parse_input_function(__input)
+				#return #state = NULL
+			
+		else: return
+		#if bool(__input.pressed) == true:
+		#			return
+		#		if (x)!= 0 or (y) != (0):
+		#			return
+		#		return state
 			
 
 
@@ -382,9 +386,11 @@ func start_debug():
 			'Joypad Debug')+ '/'+'x ' +str(x) + ',' +'y ' +str(y) + ' state: '+str (state) + '/'+' Touch inside Joystick:'+ str(touchInsideJoystick)+ '/'+ 'Input Action: '+str(__input.action + 'Pressed: '+ str(__input.pressed) +'/'# + str(the_event)
 			)
 	#print (joystick_debug) #disable when not debugging
-		if Engine.has_singleton('Debug'):
-			var Debug = Engine.get_singleton('Debug')
-			Debug.misc_debug = joystick_debug
+		var _debug = get_node("/root/Debug")
+		
+		if _debug.enabled:
+			#
+			_debug.misc_debug = joystick_debug
 		#print(__input.as_text(), the_event) #for debugging release
 	else:
 		stop_debug()
@@ -392,11 +398,9 @@ func start_debug():
 
 
 func stop_debug():
-	if Engine.has_singleton('Debug'):
-		var Debug = Engine.get_singleton('Debug')
-		Debug.misc_debug = joystick_debug
-		joystick_debug = str ('')
-		Debug.misc_debug = joystick_debug
+	var _debug = get_node("/root/Debug")
+	joystick_debug = str ('')
+	_debug.misc_debug = joystick_debug
 
 
 
@@ -417,8 +421,6 @@ func release_the_action(event):
 
 # Checks if any input action is pressed and returns a boolean
 func check_if_any_Input_action_is_pressed()-> bool:
-	if (__input.action) != null: # For debug Purposes only
-		#print (__input.action)
-		return true
-	else : return false
+	return __input.action.empty() # For debug Purposes only
+	
 

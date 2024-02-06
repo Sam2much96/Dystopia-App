@@ -68,13 +68,13 @@ signal swiped_canceled(start_position)
 #export(float,1.0,1.5) var MAX_DIAGONAL_SLOPE =1.3  
 
 
-export var enabled : bool 
-export var LastPage : bool = false 
+export (bool) var enabled : bool 
+export (bool) var LastPage : bool = false 
 # Web 3 Activator for Downloading Content
-export var web3 : bool 
-export var _loaded_comics : bool = false
-export var SwipeLocked : bool 
-export var  current_frame : int   = 0 # Global Frame Variable
+export (bool) var web3 : bool 
+export (bool) var _loaded_comics : bool = false
+export (bool) var SwipeLocked  
+export (int) var  current_frame : int   = 0 # Global Frame Variable
 
 #Stores comics current page as a global variable 
 #export var current_page : int  = -2# Global page variable, same as above, but differentiating for testing
@@ -340,7 +340,7 @@ func _input(event):
 	"Global Swipe Detection"
 	# Uses Swipe Speed to trigger swipe detection and registration 
 	# 
-	if (event is InputEventScreenDrag && SwipeCounter < 2 ): 
+	if (event is InputEventScreenDrag && SwipeCounter < 2 && !SwipeLocked): 
 		
 		# Debug the screen drag event
 		#print_debug("index/",event.get_index(), "/speed: ", event.get_speed())

@@ -13,19 +13,6 @@
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 scroll_offset = Vector2( 1, 1 )
 
-[node name="Polygon2D" type="Polygon2D" parent="ParallaxBackground"]
-position = Vector2( -13.4541, -161.452 )
-color = Color( 0.611765, 0.611765, 0.611765, 0.631373 )
-polygon = PoolVector2Array( 14405.5, -1833.37, 5303.93, 689.195, 3970.52, 689.195, 3970.52, 397.113, 3259.36, 409.813, 3259.36, 676.496, 1939.55, 659.826, 1028.33, 515.732, 200.726, 654.555, -8129.11, -299.094, -8166.55, 17140.3, 14638.4, 17170.9 )
-vertex_colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0 )
-
-[node name="Polygon2D2" type="Polygon2D" parent="ParallaxBackground"]
-color = Color( 0.415686, 0.415686, 0.415686, 1 )
-invert_enable = true
-invert_border = 4752.2
-polygon = PoolVector2Array( 14726.2, -2036.96, 1198.93, -1392.81, -8259.96, -1901.35, -8118.08, 10936.9, 14372.2, 10784.7 )
-vertex_colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.384314, 0.384314, 0.384314, 1, 0.317647, 0.317647, 0.317647, 1 )
-
 [node name="Dunes_Procedural" type="TileMap" parent="."]
 self_modulate = Color( 0, 0, 0, 1 )
 position = Vector2( 566.286, 295.252 )

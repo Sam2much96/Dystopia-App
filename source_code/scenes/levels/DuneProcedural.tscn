@@ -8,7 +8,25 @@
 [ext_resource path="res://scenes/Map & Environment/Dune_Tileset.tres" type="TileSet" id=9]
 [ext_resource path="res://scenes/UI & misc/ProceduralCaveGenerator.tscn" type="PackedScene" id=10]
 
-[node name="Dunes_Procedural" type="TileMap"]
+[node name="Node2D" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+scroll_offset = Vector2( 1, 1 )
+
+[node name="Polygon2D" type="Polygon2D" parent="ParallaxBackground"]
+position = Vector2( -13.4541, -161.452 )
+color = Color( 0.611765, 0.611765, 0.611765, 0.631373 )
+polygon = PoolVector2Array( 14405.5, -1833.37, 5303.93, 689.195, 3970.52, 689.195, 3970.52, 397.113, 3259.36, 409.813, 3259.36, 676.496, 1939.55, 659.826, 1028.33, 515.732, 200.726, 654.555, -8129.11, -299.094, -8166.55, 17140.3, 14638.4, 17170.9 )
+vertex_colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="ParallaxBackground"]
+color = Color( 0.415686, 0.415686, 0.415686, 1 )
+invert_enable = true
+invert_border = 4752.2
+polygon = PoolVector2Array( 14726.2, -2036.96, 1198.93, -1392.81, -8259.96, -1901.35, -8118.08, 10936.9, 14372.2, 10784.7 )
+vertex_colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.384314, 0.384314, 0.384314, 1, 0.317647, 0.317647, 0.317647, 1 )
+
+[node name="Dunes_Procedural" type="TileMap" parent="."]
 self_modulate = Color( 0, 0, 0, 1 )
 position = Vector2( 566.286, 295.252 )
 tile_set = ExtResource( 9 )
@@ -19,10 +37,11 @@ format = 1
 tile_data = PoolIntArray( -393214, 0, 0, -393213, 0, 327681, -327678, 0, 262144, -327677, 0, 131074, 196620, 0, 0, 4391335, 0, 0 )
 script = ExtResource( 5 )
 
-[node name="CaveGenerator" parent="." instance=ExtResource( 10 )]
+[node name="CaveGenerator" parent="Dunes_Procedural" instance=ExtResource( 10 )]
 position = Vector2( 431.744, 189.562 )
-points = PoolVector2Array( 4025.91, 1106.61, -2263.62, 1086.45, -2610.32, 5956.16, 4524.92, 6032.27, 3963.02, 1213.47 )
+points = PoolVector2Array( 4025.91, 1106.61, -2263.62, 1086.45, -2446.97, 8814, 4199.75, 8668.07, 3963.02, 1213.47 )
 width = 30.0
+default_color = Color( 0.4, 0.501961, 1, 0 )
 enabled = true
 map_width = 700
 map_height = 700
@@ -33,7 +52,7 @@ noise_persistence = 0.01
 noise_lacunarity = 0.05
 noise_threshold = 0.05
 
-[node name="Player" parent="CaveGenerator" instance=ExtResource( 1 )]
+[node name="Player" parent="Dunes_Procedural/CaveGenerator" instance=ExtResource( 1 )]
 position = Vector2( 315.94, -9728.72 )
 scale = Vector2( 1.1107, 1.1107 )
 script = ExtResource( 6 )
@@ -41,16 +60,14 @@ speed = 1200
 jump_speed = -1800
 gravity = 4000
 
-[node name="Exit" type="Area2D" parent="."]
+[node name="Exit" type="Area2D" parent="Dunes_Procedural"]
 monitorable = false
 script = ExtResource( 2 )
 to_scene = "res://scenes/levels/Overworld.tscn"
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Exit"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Dunes_Procedural/Exit"]
 position = Vector2( 767.767, -1416.24 )
 scale = Vector2( 1.23663, 2.21083 )
 polygon = PoolVector2Array( -5810.94, -5196.13, -5810.94, 5133.63, 7931.87, 4892, 7841.26, -5286.74, -4995.43, -5165.92, -4995.43, -4290.01, 7086.16, -4501.44, 7176.77, 4106.69, -4965.23, 4529.55, -5146.45, -4018.17 )
 
-[node name="GameHUD" parent="." instance=ExtResource( 4 )]
-
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+[node name="GameHUD" parent="Dunes_Procedural" instance=ExtResource( 4 )]

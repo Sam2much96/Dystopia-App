@@ -57,14 +57,15 @@ func _input(event):
 	
 	# Mobile Screen Capture
 	# Screen Drag
-	if event is InputEventScreenDrag:
-		_mouse_position = event.relative
-		
-		# captures move input and Makes Mouse Invisible COnditionals
-		if event.pressed :
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		else:
-			Input.MOUSE_MODE_VISIBLE
+	# Doesnt work
+	#if event is InputEventScreenDrag:
+	#	_mouse_position = event.relative
+	#	
+	#	# captures move input and Makes Mouse Invisible COnditionals
+	#	if event.pressed :
+	#		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	#	else:
+	#		Input.MOUSE_MODE_VISIBLE
 
 	
 	# Receives mouse button input

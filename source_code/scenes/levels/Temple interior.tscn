@@ -121,6 +121,13 @@ extents = Vector2( 1236.59, 101.541 )
 [node name="HouseInside" type="Node"]
 script = ExtResource( 9 )
 
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -1678.0
+margin_top = -2916.0
+margin_right = 2142.0
+margin_bottom = 4159.0
+color = Color( 0.0196078, 0.0196078, 0.0196078, 1 )
+
 [node name="house_inside" type="Sprite" parent="."]
 position = Vector2( 190.174, -645.978 )
 scale = Vector2( 1.46223, 1.29992 )
@@ -204,13 +211,13 @@ spawn_count = 4
 [node name="Polygon2D" type="Polygon2D" parent="."]
 position = Vector2( 748.218, -1767.34 )
 scale = Vector2( 1.35126, 3.93491 )
-polygon = PoolVector2Array( -1626.6, 424.801, -1640.48, 782.316, 809.444, 801.972, 823.526, 400.624 )
-vertex_colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 0.831373, 0, 0, 0, 0.839216, 0, 0, 0, 0 )
+polygon = PoolVector2Array( -1628.68, 654.043, -1620.78, 789.735, 789.568, 795.163, 797.471, 635.046 )
+vertex_colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0 )
 
 [node name="GameHUD" parent="." instance=ExtResource( 7 )]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( -0.00202942, 139.625 )
+position = Vector2( -135.613, 326.091 )
 scale = Vector2( 2.19442, 4.52115 )
 
 [node name="Exit" type="Area2D" parent="."]

@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/levels/overworld model 3d.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/characters/3DPlayer.gd" type="Script" id=2]
 [ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=3]
 [ext_resource path="res://resources/3D/city_exterior.gltf" type="PackedScene" id=4]
+[ext_resource path="res://scenes/UI & misc/Exit3D.gd" type="Script" id=5]
 
 [sub_resource type="Environment" id=1]
 ambient_light_color = Color( 0.439216, 0.439216, 0.439216, 1 )
@@ -37,4 +38,20 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20.3178, 0, 0 )
 [node name="DirectionalLight" type="DirectionalLight" parent="WorldEnvironment"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.18124, 6.98328, 0 )
 
+[node name="Area" type="Area" parent="WorldEnvironment"]
+transform = Transform( 1, 0, 0, 0, 2.45492, 0, 0, 0, 18.2519, 15.1606, 0, 2.009 )
+script = ExtResource( 5 )
+to_scene = "res://scenes/levels/Building1.tscn"
+
+[node name="CollisionPolygon" type="CollisionPolygon" parent="WorldEnvironment/Area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.08679, 0.818834, -0.0901022 )
+polygon = PoolVector2Array( 11.5037, 3.15512, 11.5656, 0.161346, 15.216, 0.153553, 15.0923, 3.33855 )
+
 [node name="GameHUD" parent="." instance=ExtResource( 3 )]
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[connection signal="body_entered" from="WorldEnvironment/Area" to="WorldEnvironment/Area" method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="WorldEnvironment/Area" method="_on_Timer_timeout"]

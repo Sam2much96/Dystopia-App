@@ -49,8 +49,8 @@ emission_shape = 2
 emission_rect_extents = Vector2( 1, 1 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
-position = Vector2( 717.897, 432.481 )
-scale = Vector2( 28.4264, 21.352 )
+position = Vector2( 714.895, 418.974 )
+scale = Vector2( 70.1476, 52.1176 )
 script = ExtResource( 4 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]

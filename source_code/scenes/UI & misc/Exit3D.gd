@@ -1,3 +1,6 @@
+extends Area
+
+
 # *************************************************
 # godot3-Dystopia-game by INhumanity_arts
 # Released under MIT License
@@ -14,9 +17,9 @@
 # *************************************************
 
 
-extends Area2D
 
-class_name Exit
+
+class_name Exit3D
 
 """
 Add this to any area2d and it will send the player to the indicated scene and spawnpoint
@@ -31,7 +34,10 @@ func _ready():
 	connect("body_entered", self, "_on_body_entered")
 	
 func _on_body_entered(body):
-	if body is Player:
+	# Buggy not workinh
+	# Using timer node instead
+	if body is Camera:
+		print("11111111111")
 		Globals.current_level = to_scene
 		Globals.spawn_x = body.position.x+ 200 
 		Globals.spawn_y = body.position.y +200
@@ -52,29 +58,32 @@ func _on_body_entered(body):
 			) 
 			
 			
-	if  to_scene.empty():
+
+
+
+func _on_Timer_timeout():
+	if  to_scene == "":
 		push_error("Error changing scenes: to_scene has no assigned scene")
 		return false
 		#Globals.prev_scene_spawnpoint = $spawnpoint.position 
 
-		"Loads Large Scene"
-		
-		Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
-		to_scene, 
-		Globals.scene_resource, 
-		Globals._o, 
-		Globals.scene_loader, 
-		Globals.loading_resource, 
-		Globals.a, 
-		Globals.b, 
-		Globals.progress
-		), get_tree())
-		
+	"Loads Large Scene"
 	
-		Music.play_track(Music.ui_sfx[0]) #plays ui sfx in a loop
-		
+	Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
+	to_scene, 
+	Globals.scene_resource, 
+	Globals._o, 
+	Globals.scene_loader, 
+	Globals.loading_resource, 
+	Globals.a, 
+	Globals.b, 
+	Globals.progress
+	), get_tree())
+	
+	
+	Music.play_track(Music.ui_sfx[0]) #plays ui sfx in a loop
+	
 		
 		# Old Scene Transition
 	if get_tree().change_scene(to_scene) != OK:
 		push_error("Error changing scene")
-

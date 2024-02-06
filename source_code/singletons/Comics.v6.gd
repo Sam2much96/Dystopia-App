@@ -810,8 +810,8 @@ class Swipe : #extends Reference:
 			
 			
 			# Add Swipe Detection Timer to Scene Tree
-			
-			Comics_v6._comics_root.call_deferred('add_child',_e)
+			# Duplicate code
+			#Comics_v6._comics_root.call_deferred('add_child',_e)
 
 			
 			

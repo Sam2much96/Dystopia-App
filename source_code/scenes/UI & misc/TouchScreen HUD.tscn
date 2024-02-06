@@ -842,6 +842,11 @@ margin_right = 203.651
 margin_bottom = 1606.8
 mouse_filter = 1
 script = ExtResource( 5 )
+custom_mapping = true
+up = "move_up"
+down = "move_down"
+left = "move_left"
+right = "move_right"
 
 [node name="joystick_circle" parent="Joystick" instance=ExtResource( 1 )]
 visible = false

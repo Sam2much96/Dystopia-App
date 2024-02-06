@@ -113,14 +113,16 @@ func _ready():
 		right.empty()):
 			push_error(" CUstom Button Mapping cannot be empty once enabled")
 
-	" Disable Swipe Detection"
-	Comics_v6.SwipeLocked = true
-
 
 func _input(event):
 	
 	if not self.visible:
 		return
+	
+	
+	" Disable Swipe Detection"
+	Comics_v6.SwipeLocked = true
+	
 	
 	if event is InputEventScreenDrag and self.visible == true :
 		
@@ -219,10 +221,12 @@ func _process(delta):
 			prev_inputs.erase(prev_inputs.pop_front()) # Removes the first values
 			# Remove values that already exist
 		
-		"Debug Input Actions"
-		var debug = false
+		"""
+		DEBYG INPUT ACTIONS
+		"""
+		var debug_ = false
 		#print (state) # For debug purposes only 
-		if debug == true: # For Debug Purposes Only 
+		if debug_ == true: # For Debug Purposes Only 
 			print (x,y, check_if_any_Input_action_is_pressed(), str(__input.action), " Pressed:",str(__input.pressed)) # For debug Purposes only
 		
 
@@ -235,7 +239,7 @@ func _process(delta):
 	# Controls the Joystick Object every frame
 	# Bugs:
 	# (1) Stuck state : Statemachine does not allow switing states per frame  
-	# (2) Bad Code requires refactoring to fix multiple returns and Export variables
+	# (2) Bad Code requires refactoring to fix multiple returns and Export variables (1/2)
 	# *************************************************
 		if self.visible: # Performance Optimizer
 			match state:
@@ -258,7 +262,7 @@ func _process(delta):
 						return the_action
 						#print(__input.as_text()) #for debugging release
 					
-						return state
+						#return state
 				MOVE_DOWN:
 					if joystick_circle.is_pressed() == true:
 						#release()
@@ -275,7 +279,7 @@ func _process(delta):
 						start_debug()
 						#state = 1
 						the_action = __input.action
-						#return the_action
+						return the_action
 						#print(__input.as_text()) #for debugging release
 
 				MOVE_RIGHT:

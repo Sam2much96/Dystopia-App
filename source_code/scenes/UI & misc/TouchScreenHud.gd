@@ -219,8 +219,9 @@ func _ready():
 	Dialogs.connect("dialog_ended", self, "reset")
 
 	# Comics to Touch Interface
-	Comics_v6.connect( 'comics_showing', self, '_on_comics_showing')
-	Comics_v6.connect( 'comics_showing', self, '_on_comics_hidden'  )
+	if is_instance_valid(Comics_v6): # Buggy Singleton Instance
+		Comics_v6.connect( 'comics_showing', self, '_on_comics_showing')
+		Comics_v6.connect( 'comics_showing', self, '_on_comics_hidden'  )
 
 	# Menu to Touch Interface
 	# Quick Hacky Fiz
@@ -240,23 +241,25 @@ func _ready():
 
 	# Debug SIgnals
 	# Convert to Unit Tests instead
-	if not (Dialogs.is_connected("dialog_started", self, "interract") &&
-		Dialogs.is_connected("dialog_ended", self, "reset") &&
-		Comics_v6.is_connected( 'comics_showing', self, '_on_comics_showing') &&
-		Comics_v6.is_connected( 'comics_showing', self, '_on_comics_hidden'  ) &&
-		menu3.is_connected("menu_showing", self, "menu") &&
-		menu3.is_connected("menu_hidden", self, "reset") &&
-		Networking.timer.is_connected("timeout", self, "reset")) == true:
+	if is_instance_valid(Dialogs && Comics_v6 && menu3 && Networking):
+		if not (Dialogs.is_connected("dialog_started", self, "interract") &&
+			Dialogs.is_connected("dialog_ended", self, "reset") &&
+			Comics_v6.is_connected( 'comics_showing', self, '_on_comics_showing') &&
+			Comics_v6.is_connected( 'comics_showing', self, '_on_comics_hidden'  ) &&
+			menu3.is_connected("menu_showing", self, "menu") &&
+			menu3.is_connected("menu_hidden", self, "reset") &&
+			Networking.timer.is_connected("timeout", self, "reset")) == true:
 
-		print_debug(
-			Dialogs.is_connected("dialog_started", self, "interract"),
-			Dialogs.is_connected("dialog_ended", self, "reset"),
-			Comics_v6.is_connected( 'comics_showing', self, '_on_comics_showing'),
-			Comics_v6.is_connected( 'comics_showing', self, '_on_comics_hidden'  ),
-			menu3.is_connected("menu_showing", self, "menu"), 
-			menu3.is_connected("menu_hidden", self, "reset"),
-			Networking.timer.is_connected("timeout", self, "reset") 
-			)
+			# Debug Node Signal Connections
+			print_debug(
+				Dialogs.is_connected("dialog_started", self, "interract"),
+				Dialogs.is_connected("dialog_ended", self, "reset"),
+				Comics_v6.is_connected( 'comics_showing', self, '_on_comics_showing'),
+				Comics_v6.is_connected( 'comics_showing', self, '_on_comics_hidden'  ),
+				menu3.is_connected("menu_showing", self, "menu"), 
+				menu3.is_connected("menu_hidden", self, "reset"),
+				Networking.timer.is_connected("timeout", self, "reset") 
+				)
 
 
 static func hide_self(operating_sys: String, screenOrientation : int, _Hide_touch_interface : bool, _node : TouchScreenHUD) -> void:

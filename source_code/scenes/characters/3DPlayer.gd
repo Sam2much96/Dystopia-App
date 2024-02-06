@@ -52,6 +52,20 @@ func _input(event):
 	# mouse motion
 	if event is InputEventMouseMotion:
 		_mouse_position = event.relative
+		
+		#print_debug(_mouse_position)# for debug purposes only
+	
+	# Mobile Screen Capture
+	# Screen Drag
+	if event is InputEventScreenDrag:
+		_mouse_position = event.relative
+		
+		# captures move input and Makes Mouse Invisible COnditionals
+		if event.pressed :
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		else:
+			Input.MOUSE_MODE_VISIBLE
+
 	
 	# Receives mouse button input
 	# mouse state machine
@@ -59,7 +73,12 @@ func _input(event):
 	if event is InputEventMouseButton:
 		match event.button_index:
 			BUTTON_RIGHT: # Only allows rotation if right click down
-				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED if event.pressed else Input.MOUSE_MODE_VISIBLE)
+				
+				# captures move input and Makes Mouse Invisible COnditionals
+				if event.pressed :
+					Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+				else: Input.MOUSE_MODE_VISIBLE
+
 			BUTTON_WHEEL_UP: # Increases max velocity
 				_vel_multiplier = clamp(_vel_multiplier * 1.1, 0.2, 20)
 			BUTTON_WHEEL_DOWN: # Decereases max velocity
@@ -118,7 +137,7 @@ func _process(delta):
 func _update_movement(delta):
 	# Computes desired direction from key states
 	# uses an algorithm to convert input events to Vector3 co-ordinates
-	_direction = Vector3(_d as float - _a as float, 
+	_direction = Vector3(_d as float - _a as float, # Left or Rigth
 						 _e as float - _q as float,
 						 _s as float - _w as float)
 	

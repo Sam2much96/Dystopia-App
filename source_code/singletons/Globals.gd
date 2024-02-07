@@ -32,7 +32,7 @@ extends Node
 var pilot_ep 
 var VIDEO
 
-var cinematics = preload ('res://resources/title animation/title..ogv') #I free memory once this is used
+var cinematics : VideoStreamTheora #= preload ('res://resources/title animation/title..ogv') #I free memory once this is used # Depreciated
 var title_screen = load( 'res://scenes/Title screen.tscn')
 onready var form = load ('res://scenes/UI & misc/form/form.tscn')
 var controls = load ('res://scenes/UI & misc/Controls.tscn')

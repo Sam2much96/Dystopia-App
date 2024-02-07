@@ -29,7 +29,7 @@ size = Vector2( 300, 100 )
 own_world = true
 transparent_bg = true
 handle_input_locally = false
-msaa = 2
+msaa = 3
 usage = 3
 render_target_v_flip = true
 

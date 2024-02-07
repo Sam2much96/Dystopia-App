@@ -222,8 +222,8 @@ var _track : String
 
 func _ready():
 	
-	# Debug nodes
-	print_debug(my_nodes)
+	# Debug Music  nodes
+	#print_debug(my_nodes)
 	
 	# connect signals
 	requests.connect("request_completed", self , "_http_request_completed")
@@ -284,9 +284,10 @@ func _ready():
 			#shuffle(default_playlist, music_track)
 		music_track = shuffle(default_playlist)
 		
-		#_music = music_track.get_file()
+		
 		# Debug Music Track
-		print_debug("Mus Track Debug: ",music_track)
+		#print_debug("Mus Track Debug: ",music_track)
+		
 		play(music_track) #Not needed for release
 		
 		

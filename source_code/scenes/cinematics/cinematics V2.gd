@@ -208,32 +208,37 @@ func _on_Intro_animation_animation_finished(anim_name): #unused animation code
 
 "Exkibits diffenent behaviours depending on a  'One shot ' option"
 func _on_VideoPlayer_finished():
-	cinematic_on= false
-	
-	if Globals.curr_scene == 'Cinematics': #I use this bool to define two states
-		
-		
-		
-		Function._free_memory(Globals.cinematics)
-		#get_tree().change_scene_to(Globals.title_screen)
-		Globals._go_to_title()
+	_go_to_title()
 
 func _on_Timer_timeout():
 	push_error('Cinematic scene broken')
 	get_tree().change_scene_to(Globals.title_screen)
 	if Globals.curr_scene == 'Cinematics':
 		Function._free_memory(Globals.cinematics)
+	
 	#self.queue_free() #autodelete
 
+
+func _go_to_title():
+	cinematic_on= false
+	
+	if Globals.curr_scene == 'Cinematics': #I use this bool to define two states
+		
+		
+		
+		#get_tree().change_scene_to(Globals.title_screen)
+		Globals._go_to_title()
+	if is_instance_valid(Globals.cinematics):
+		# Free the Cinematics file from the Stack if loaded
+		
+		Function._free_memory(Globals.cinematics)
 
 func play_opening_cinematic():
 	#Plays the opening cinematic 
 	#loads resource into memory 
-	#vid_stream = Globals.cinematics #ResourceLoader.load_interactive(cinematic [0])
-	
-	#videoplayer.expand = true
-	#stream : VideoStreamTheora , os: String, video_parent : Control, videoplayer : VideoPlayer
-	Video_Stream(Globals.cinematics, Globals.os, self, videoplayer)
+	animation.play("opening_cinematic")
+	# Playes a video stream to the video player in the scenetree
+	#Video_Stream(Globals.cinematics, Globals.os, self, videoplayer)
 	
 	return Music.play_track(Music.wind_sfx[0])
 
@@ -782,3 +787,8 @@ func _on_watch_guidebook_pressed():
 
 
 
+
+
+func _on_animation_player_animation_finished(anim_name):
+	if anim_name ==  "opening_cinematic":
+		_go_to_title()

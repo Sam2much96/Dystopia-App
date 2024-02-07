@@ -14,9 +14,9 @@ process_priority = 1
 script = ExtResource( 9 )
 
 [node name="Dialog_box" parent="." instance=ExtResource( 1 )]
-margin_top = 388.529
-margin_right = 77.0
-margin_bottom = 562.529
+margin_top = 988.529
+margin_right = 1101.0
+margin_bottom = 1162.53
 
 [node name="Stats" parent="." instance=ExtResource( 2 )]
 

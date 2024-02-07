@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Stats.gd" type="Script" id=1]
 [ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://fonts/scroll_bar_theme.tres" type="Theme" id=5]
 [ext_resource path="res://scenes/UI & misc/StatsIcons.gd" type="Script" id=6]
 [ext_resource path="res://scenes/UI & misc/minimap.gd" type="Script" id=7]
+[ext_resource path="res://resources/Aarin/spritesheet_3.webp" type="Texture" id=8]
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.792157, 0.792157, 0.792157, 0.415686 )
@@ -202,6 +203,7 @@ text = "Item 1
 flat = true
 
 [node name="4" type="Tabs" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -210,6 +212,7 @@ margin_right = -4.0
 margin_bottom = -4.0
 
 [node name="Title2" type="Label" parent="TabContainer/4"]
+visible = false
 margin_left = -4.0
 margin_top = 268.0
 margin_right = 984.0
@@ -219,8 +222,16 @@ text = "Customization Placeholder"
 align = 1
 
 [node name="minimap" type="TextureRect" parent="TabContainer/4"]
-margin_left = 326.58
-margin_top = 115.153
-margin_right = 577.58
-margin_bottom = 363.153
+margin_left = 66.0711
+margin_top = 88.7241
+margin_right = 317.071
+margin_bottom = 336.724
 script = ExtResource( 7 )
+
+[node name="Sprite" type="Sprite" parent="TabContainer/4"]
+position = Vector2( 470.402, 279.698 )
+scale = Vector2( 2.07319, 2.07319 )
+texture = ExtResource( 8 )
+hframes = 9
+vframes = 8
+frame = 29

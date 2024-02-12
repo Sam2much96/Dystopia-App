@@ -121,7 +121,8 @@ func _input(event):
 	
 	
 	" Disable Swipe Detection"
-	Comics_v6.SwipeLocked = true
+	# depreciated
+	#Comics_v6.SwipeLocked = true
 	
 	
 	if event is InputEventScreenDrag and self.visible == true :

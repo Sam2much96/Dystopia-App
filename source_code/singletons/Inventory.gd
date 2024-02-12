@@ -110,26 +110,31 @@ func remove_item(type:String, amount:int) -> bool:
 			player.pushback = 8000
 		
 		if type == "Bomb":
-			var bomb_instance = bomb_explosion.instance(PackedScene.GEN_EDIT_STATE_MAIN_INHERITED)
+			var bomb_instance = bomb_explosion.instance()
+			
+			#if is_instance_valid(bomb_instance) : # Error Catcher 1
+			
 			# set bom instance position
 			bomb_instance.position = player.position
 			
+			player.get_parent().call_deferred("add_child",bomb_instance)
+			
 			print_debug("bomb debug: ",bomb_instance)
 			
-			
-			player.get_parent().call_deferred("add_child",bomb_instance)
-			#player.equip(type)
 		if type == "Arrow" and  inventory.has("Bow"):
 			
 			
-			var bullet_instance = bullet.instance(PackedScene.GEN_EDIT_STATE_MAIN_INHERITED)
-			print_debug("arrow instance : ", bullet_instance)
+			var bullet_instance = bullet.instance()
+			
+			
 			# rotate the projectile instance to player's facing direction
 			bullet_instance.position = player.position
 			
 			#player.add_child(bullet_instance)
 			player.get_parent().call_deferred("add_child",bullet_instance)
+			
 			bullet_instance.facing = player._facing 
+			print_debug("arrow instance : ", bullet_instance)
 			
 			#return
 		return true

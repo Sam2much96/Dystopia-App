@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/temple interior.webp" type="Texture" id=1]
 [ext_resource path="res://scenes/characters/Npc CHIEFPRIEST.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scenes/UI & misc/Quest.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/levels/Temple interior.gd" type="Script" id=9]
 [ext_resource path="res://scenes/items/enemy spawner.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/items/bow.tscn" type="PackedScene" id=11]
 
 [sub_resource type="Animation" id=3]
 length = 0.001
@@ -196,8 +197,12 @@ scale = Vector2( 0.82276, 0.82276 )
 
 [node name="Quest" parent="NPC" instance=ExtResource( 8 )]
 quest_name = "Go and Read the comics"
-initial_text = "You're a superb player. Go read the comics."
-pending_text = "You forgot? Go and Read the comics"
+required_item = "Bandit heads"
+required_amount = 50
+reward_item = "Bomb"
+reward_amount = 5
+initial_text = "You're a superb player. Go kill 50 of these bandit monsters for me"
+pending_text = "You forgot? Go and kill 50 Bands"
 
 [node name="enemy_spawner" parent="." instance=ExtResource( 10 )]
 position = Vector2( 158.174, -477.978 )
@@ -216,9 +221,8 @@ vertex_colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0 )
 
 [node name="GameHUD" parent="." instance=ExtResource( 7 )]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( -135.613, 326.091 )
-scale = Vector2( 2.19442, 4.52115 )
+[node name="Bow" parent="." instance=ExtResource( 11 )]
+position = Vector2( 107.635, -1796.15 )
 
 [node name="Exit" type="Area2D" parent="."]
 position = Vector2( 71.0469, -1148.09 )

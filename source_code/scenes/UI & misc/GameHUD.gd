@@ -17,6 +17,7 @@
 # (2) Implement Mobile Gyroscope in a process method
 # (3) Fix UI misalignment
 # (4) Refactor into state machines
+
 # *************************************************
 # Bugs :
 #(1) Ingame menu bug (fixed)

@@ -132,8 +132,17 @@ func _physics_process(delta):
 					goto_idle()
 				
 			STATE_ATTACK:
+				# Playe attack animation
+				
 				new_anim = "slash_" + _facing
 				
+				# Shoot Bullet Objects
+
+					#if item_equip == "bomb":
+						
+						#call_deferred("add_child",bomb_instance)
+					#	pass
+						
 			STATE_ROLL:
 				if roll_direction == Vector2.ZERO:
 					state = STATE_IDLE
@@ -180,3 +189,4 @@ func _on_hurtbox_area_entered(area):
 			state = STATE_DIE
 			Music.play_track(Music.nokia_soundpack[27])
 	pass
+

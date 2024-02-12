@@ -54,7 +54,7 @@ onready var _inventory_parent_label : Label = $"TabContainer/3/ScrollContainer3/
 onready var _inventory_button : Button = $"TabContainer/3/ScrollContainer3/VBoxContainer/Inventory"
 
 
-onready var _coin_label : Label = $"TabContainer/1/VBoxContainer/Algos"
+onready var _coin_label : Label = $"TabContainer/1/VBoxContainer/HBoxContainer/Algos"
 onready var _quest_label : Label = $"TabContainer/2/ScrollContainer2/VBoxContainer/Quests"
 
 # Backup Pointer to Inventory Singleton

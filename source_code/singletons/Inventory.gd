@@ -37,6 +37,11 @@ var inventory : Dictionary = {}
 var _stats_ui #: Stats 
 
 
+# Intanciable items
+onready var bullet : PackedScene = preload("res://scenes/items/Bullet.tscn")
+onready var bomb_explosion : PackedScene = preload("res://scenes/items/bombexplosion.tscn")
+
+
 """
 CHECKS IF THE INVENTROY HAS AN ITEM
 """
@@ -83,7 +88,7 @@ func remove_item(type:String, amount:int) -> bool:
 		emit_signal("item_changed", "removed", type, amount)
 		
 		"Logic Implementation for Diffenent Item Types"
-		
+		# Item Implementation
 		if type == "health potion":
 		
 			#print("aksdfjabnfo;giSHip")
@@ -104,6 +109,29 @@ func remove_item(type:String, amount:int) -> bool:
 			# increase pushback impact, increases chances of double attack
 			player.pushback = 8000
 		
+		if type == "Bomb":
+			var bomb_instance = bomb_explosion.instance(PackedScene.GEN_EDIT_STATE_MAIN_INHERITED)
+			# set bom instance position
+			bomb_instance.position = player.position
+			
+			print_debug("bomb debug: ",bomb_instance)
+			
+			
+			player.get_parent().call_deferred("add_child",bomb_instance)
+			#player.equip(type)
+		if type == "Arrow" and  inventory.has("Bow"):
+			
+			
+			var bullet_instance = bullet.instance(PackedScene.GEN_EDIT_STATE_MAIN_INHERITED)
+			print_debug("arrow instance : ", bullet_instance)
+			# rotate the projectile instance to player's facing direction
+			bullet_instance.position = player.position
+			
+			#player.add_child(bullet_instance)
+			player.get_parent().call_deferred("add_child",bullet_instance)
+			bullet_instance.facing = player._facing 
+			
+			#return
 		return true
 	else:
 		return false

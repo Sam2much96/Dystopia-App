@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Stats.gd" type="Script" id=1]
 [ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=2]
@@ -8,6 +8,9 @@
 [ext_resource path="res://scenes/UI & misc/StatsIcons.gd" type="Script" id=6]
 [ext_resource path="res://scenes/UI & misc/minimap.gd" type="Script" id=7]
 [ext_resource path="res://resources/Aarin/spritesheet_3.webp" type="Texture" id=8]
+[ext_resource path="res://resources/misc/compass.webp" type="Texture" id=9]
+[ext_resource path="res://resources/misc/rupees.webp" type="Texture" id=10]
+[ext_resource path="res://resources/misc/map ui 64x64.webp" type="Texture" id=11]
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.792157, 0.792157, 0.792157, 0.415686 )
@@ -54,6 +57,7 @@ custom_fonts/font = ExtResource( 3 )
 script = ExtResource( 6 )
 
 [node name="0" type="Tabs" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 74.0
@@ -102,19 +106,20 @@ margin_bottom = -4.0
 margin_right = 77.0
 margin_bottom = 224.0
 
-[node name="Title1" type="Label" parent="TabContainer/1/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="TabContainer/1/VBoxContainer"]
 margin_right = 77.0
-margin_bottom = 89.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 2 )
-text = "Wallet
-"
-align = 1
+margin_bottom = 32.0
+rect_scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 10 )
 
-[node name="Algos" type="Label" parent="TabContainer/1/VBoxContainer"]
-margin_top = 93.0
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/1/VBoxContainer"]
+margin_top = 36.0
 margin_right = 77.0
-margin_bottom = 224.0
+margin_bottom = 167.0
+
+[node name="Algos" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
+margin_right = 77.0
+margin_bottom = 131.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
@@ -203,7 +208,6 @@ text = "Item 1
 flat = true
 
 [node name="4" type="Tabs" parent="TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -211,27 +215,28 @@ margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
 
-[node name="Title2" type="Label" parent="TabContainer/4"]
-visible = false
-margin_left = -4.0
-margin_top = 268.0
-margin_right = 984.0
-margin_bottom = 311.0
-custom_fonts/font = ExtResource( 2 )
-text = "Customization Placeholder"
-align = 1
-
 [node name="minimap" type="TextureRect" parent="TabContainer/4"]
-margin_left = 66.0711
-margin_top = 88.7241
-margin_right = 317.071
-margin_bottom = 336.724
+modulate = Color( 1, 1, 1, 0.411765 )
+margin_left = 66.0
+margin_top = 89.0
+margin_right = 132.0
+margin_bottom = 153.0
+rect_scale = Vector2( 6, 6 )
+texture = ExtResource( 11 )
 script = ExtResource( 7 )
 
 [node name="Sprite" type="Sprite" parent="TabContainer/4"]
-position = Vector2( 470.402, 279.698 )
+position = Vector2( 804.157, 274.041 )
 scale = Vector2( 2.07319, 2.07319 )
 texture = ExtResource( 8 )
 hframes = 9
 vframes = 8
 frame = 29
+
+[node name="TextureRect" type="TextureRect" parent="TabContainer/4"]
+margin_left = 12.3471
+margin_top = 59.4905
+margin_right = 52.3471
+margin_bottom = 99.4905
+rect_scale = Vector2( 4, 4 )
+texture = ExtResource( 9 )

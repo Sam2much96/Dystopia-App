@@ -15,6 +15,7 @@
 #
 # (1) Should implement Vibrations for haptic feedback (1/2)
 # (2) Implement Input Lag (Delay) For Multiplayer Gameplay
+# (3)Create pointer to all nodes that connect and interract with game hud and Touchhud
 # *************************************************
 # Notes:
 # (1) Vibration is a Battery & Performance hog

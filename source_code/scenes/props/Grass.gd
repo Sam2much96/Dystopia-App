@@ -133,6 +133,10 @@ func debug_grass( area_name : String)-> void:
 	print_debug (area_name+' cuts ' + nodeName, "/",similar_names)
 	#print (similar_names) #list of all objects grass and flower nodes collide with
 
+func destroy():
+	# Exported Destroy FUnction for Scenetree Objects
+	anim.play("destroy")
+	Music.play_track(Music.grass_sfx[0])
 
 func _auto_delete():
 	# An Autodelete method called in the Destroy Animation as an animated function

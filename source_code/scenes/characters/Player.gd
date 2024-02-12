@@ -36,9 +36,10 @@ export(int) var ATTACK = 1 # For Item Equip
 export(int) var hitpoints = 3
 export(int) var pushback = 5000
 
-export var linear_vel = Vector2()
-export var roll_direction = Vector2.DOWN
+export (Vector2) var linear_vel = Vector2()
+export (Vector2) var roll_direction = Vector2.DOWN
 
+export(String) var item_equip = ""
 signal health_changed(current_hp)
 
 export(String, "up", "down", "left", "right") var _facing = "down" # used as a parameter for the player animation state machine
@@ -155,9 +156,34 @@ func respawn()-> void:
 	else: get_tree().reload_current_scene()
 
 
+func equip(type : String):
+	# Equips an item in the player class by setting a string variable
+	# as a parameter that alters the top down player state
+	# A Hacky Implementation of item equip logic
+	self.item_equip = type
 
 func shake(): # Shaky Cam FX
 	Globals.player_cam.shake()
+
+
+func hurt(from_position : Vector2):
+	# Duplicate of _on_hurtbox_area_entered
+	if state != STATE_DIE :
+		hitpoints -= 1
+		emit_signal("health_changed", hitpoints)
+		var pushback_direction = (global_position - from_position).normalized()
+		move_and_slide( pushback_direction * pushback)
+		state = STATE_HURT
+		var blood = Globals.blood_fx.instance()
+		blood.global_position = global_position
+		get_parent().add_child(blood)
+		
+		Music.play_track(Music.nokia_soundpack[20])
+		
+		if hitpoints <= 0:
+			state = STATE_DIE
+			Music.play_track(Music.nokia_soundpack[27])
+
 
 func start_timer(time: float):
 	timer.start(time)

@@ -15,8 +15,9 @@ script = ExtResource( 9 )
 
 [node name="Dialog_box" parent="." instance=ExtResource( 1 )]
 margin_top = 988.529
-margin_right = 1101.0
-margin_bottom = 1162.53
+margin_right = 1134.0
+margin_bottom = 1314.53
+stretch_mode = 1
 
 [node name="Stats" parent="." instance=ExtResource( 2 )]
 

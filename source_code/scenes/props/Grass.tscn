@@ -452,7 +452,6 @@ tracks/13/keys = {
 [node name="grass" type="Area2D"]
 scale = Vector2( 1.16146, 1.16146 )
 input_pickable = false
-monitorable = false
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]

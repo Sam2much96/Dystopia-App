@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://scenes/characters/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://resources/FX/pj.png" type="Texture" id=2]
@@ -7,6 +7,9 @@
 [ext_resource path="res://scenes/items/coins.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/items/extra life.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/levels/VisibilityOptimizer.gd" type="Script" id=7]
+[ext_resource path="res://scenes/items/ring.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/items/bomb.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/items/Arrow.tscn" type="PackedScene" id=10]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 35.8589
@@ -1220,10 +1223,11 @@ shape = SubResource( 18 )
 
 [node name="item_spawner" parent="." instance=ExtResource( 3 )]
 spawn_1 = ExtResource( 4 )
-spawn_2 = ExtResource( 5 )
+spawn_2 = ExtResource( 9 )
 spawn_3 = ExtResource( 6 )
+spawn_4 = ExtResource( 10 )
+spawn_5 = ExtResource( 8 )
 item_scene = ExtResource( 5 )
-item_type = "Bandit Head"
 random_spawn = true
 
 [node name="enemy_eyesight" type="Area2D" parent="."]

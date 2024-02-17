@@ -44,7 +44,6 @@ margin_top = 48.0
 rect_clip_content = true
 
 [node name="Repo" parent="." instance=ExtResource( 8 )]
-visible = false
 margin_top = 48.0
 
 [node name="Commit" parent="." instance=ExtResource( 5 )]
@@ -85,6 +84,7 @@ script = ExtResource( 11 )
 script = ExtResource( 13 )
 
 [node name="Menu " parent="." instance=ExtResource( 15 )]
+visible = false
 
 [node name="TouchScreenButton" type="TouchScreenButton" parent="."]
 position = Vector2( 11.2246, 40.4086 )

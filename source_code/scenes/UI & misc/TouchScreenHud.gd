@@ -47,7 +47,8 @@ var _Hide_touch_interface : bool
 #Debug
 onready var _debug = get_tree().get_root().get_node("/root/Debug")
 
-
+# Comics Singleton Pointer
+onready var _comics = get_tree().get_root().get_node("/root/Comics_v6")
 # Pointer to Parent
 onready var parent = get_parent()
 
@@ -219,9 +220,9 @@ func _ready():
 	Dialogs.connect("dialog_ended", self, "reset")
 
 	# Comics to Touch Interface
-	if is_instance_valid(Comics_v6): # Buggy Singleton Instance
-		Comics_v6.connect( 'comics_showing', self, '_on_comics_showing')
-		Comics_v6.connect( 'comics_showing', self, '_on_comics_hidden'  )
+	if is_instance_valid(_comics): # Buggy Singleton Instance
+		_comics.connect( 'comics_showing', self, '_on_comics_showing')
+		_comics.connect( 'comics_showing', self, '_on_comics_hidden'  )
 
 	# Menu to Touch Interface
 	# Quick Hacky Fiz
@@ -244,8 +245,8 @@ func _ready():
 	if is_instance_valid(Dialogs && Comics_v6 && menu3 && Networking):
 		if not (Dialogs.is_connected("dialog_started", self, "interract") &&
 			Dialogs.is_connected("dialog_ended", self, "reset") &&
-			Comics_v6.is_connected( 'comics_showing', self, '_on_comics_showing') &&
-			Comics_v6.is_connected( 'comics_showing', self, '_on_comics_hidden'  ) &&
+			_comics.is_connected( 'comics_showing', self, '_on_comics_showing') &&
+			_comics.is_connected( 'comics_showing', self, '_on_comics_hidden'  ) &&
 			menu3.is_connected("menu_showing", self, "menu") &&
 			menu3.is_connected("menu_hidden", self, "reset") &&
 			Networking.timer.is_connected("timeout", self, "reset")) == true:
@@ -254,8 +255,8 @@ func _ready():
 			print_debug(
 				Dialogs.is_connected("dialog_started", self, "interract"),
 				Dialogs.is_connected("dialog_ended", self, "reset"),
-				Comics_v6.is_connected( 'comics_showing', self, '_on_comics_showing'),
-				Comics_v6.is_connected( 'comics_showing', self, '_on_comics_hidden'  ),
+				_comics.is_connected( 'comics_showing', self, '_on_comics_showing'),
+				_comics.is_connected( 'comics_showing', self, '_on_comics_hidden'  ),
 				menu3.is_connected("menu_showing", self, "menu"), 
 				menu3.is_connected("menu_hidden", self, "reset"),
 				Networking.timer.is_connected("timeout", self, "reset") 
@@ -372,12 +373,12 @@ func _input(event):
 	
 	# Duplicate of Input.gd GLobal Input SIngleton
 	if GlobalInput._state == GlobalInput.COMICS or Input.is_action_just_pressed("comics"):
-		if Comics_v6.enabled == true:
+		if _comics.enabled == true:
 			
 			if _state_controller != _COMICS : # and _Comics.loaded_comics == true:
 				comics()
 			
-		if not Comics_v6.enabled : #or _Comics.loaded_comics == false:
+		if not _comics.enabled : #or _Comics.loaded_comics == false:
 			reset()
 	if GlobalInput._state == GlobalInput.PAUSE or Input.is_action_just_pressed("pause"):
 		if GlobalInput._Stats.enabled == true : # GLobal Pointer to Stats HUD

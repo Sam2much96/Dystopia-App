@@ -700,7 +700,8 @@ class UserData extends Node:
 	var gitlfs_request : String = ".git/info/lfs/objects/batch"
 
 	var plugin_version : String = "0.9.4"
-
+	
+	onready var PluginSettings_ = get_parent().get_node("PluginSettings")
 	func _ready():
 		var plugin_path = ProjectSettings.globalize_path("user://").replace("app_userdata/"+ProjectSettings.get_setting('application/config/name')+"/",PluginSettings.directory_name)+"/"
 
@@ -727,7 +728,7 @@ class UserData extends Node:
 				formatting.append(plugin_version)           #4
 				file.store_csv_line(formatting)
 				file.close()
-				if PluginSettings.debug:
+				if PluginSettings_.debug:
 						print("[GitHub Integration] >> ","saved user datas in user folder")
 		
 		

@@ -249,6 +249,7 @@ position = Vector2( -2.17523, -52.3351 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 10.8839, 8.27728 )
+scale = Vector2( 1.46039, 1.35361 )
 shape = SubResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]

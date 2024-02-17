@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://addons/github-integration/scripts/GitHub.gd" type="Script" id=1]
 [ext_resource path="res://addons/github-integration/resources/themes/GitHubTheme-Dark.tres" type="Theme" id=2]
@@ -10,6 +10,11 @@
 [ext_resource path="res://addons/github-integration/scenes/Repo.tscn" type="PackedScene" id=8]
 [ext_resource path="res://addons/github-integration/scenes/Gist.tscn" type="PackedScene" id=9]
 [ext_resource path="res://addons/github-integration/scenes/Notifications.tscn" type="PackedScene" id=10]
+[ext_resource path="res://addons/github-integration/scenes/RestHandler.gd" type="Script" id=11]
+[ext_resource path="res://addons/github-integration/scenes/UserData.gd" type="Script" id=12]
+[ext_resource path="res://addons/github-integration/scenes/PluginSettings.gd" type="Script" id=13]
+[ext_resource path="res://resources/Buttons/menu.png" type="Texture" id=14]
+[ext_resource path="res://scenes/UI & misc/ingame_menu.tscn" type="PackedScene" id=15]
 
 [node name="GitHub" type="Control"]
 anchor_right = 1.0
@@ -65,3 +70,24 @@ rect_clip_content = true
 visible = false
 margin_top = 48.0
 color = Color( 0, 0, 0, 0.627451 )
+
+[node name="UserData" type="Node" parent="."]
+script = ExtResource( 12 )
+
+[node name="RestHandler" type="Node" parent="."]
+script = ExtResource( 11 )
+
+[node name="Client" type="HTTPRequest" parent="RestHandler"]
+
+[node name="NotificationsClient" type="HTTPRequest" parent="RestHandler"]
+
+[node name="PluginSettings" type="Node" parent="."]
+script = ExtResource( 13 )
+
+[node name="Menu " parent="." instance=ExtResource( 15 )]
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="."]
+position = Vector2( 11.2246, 40.4086 )
+scale = Vector2( 0.607531, 0.607531 )
+normal = ExtResource( 14 )
+action = "menu"

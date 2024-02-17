@@ -1,4 +1,4 @@
-tool
+#tool
 extends Control
 
 signal signed()
@@ -25,6 +25,11 @@ var logfile : bool = false
 onready var Client : HTTPClient = HTTPClient.new()
 
 var userdata : bool = false
+#onready var Github_RestHandler_ = get_parent()
+
+# resthandlerpointer
+onready var RestHandler_ = get_parent().get_node("RestHandler")#$RestHandler
+onready var UserData_ = get_parent().get_node("UserData")#$RestHandler
 
 func connect_signals() -> void:
 	Mail.connect("text_changed", self, "_on_mail_changed")
@@ -37,10 +42,12 @@ func connect_signals() -> void:
 	DeletePopup.connect("confirmed",self,"_on_delete_confirm")
 	DeletePopup.connect("popup_hide", self, "close_popup")
 	
+	
+	
 	# Connections to the RestHandler
-	RestHandler.connect("request_failed", self, "_on_request_failed")
-	RestHandler.connect("user_requested", self, "_on_user_requested")
-	RestHandler.connect("user_avatar_requested", self, "_on_user_avatar_requested")
+	RestHandler_.connect("request_failed", self, "_on_request_failed")
+	RestHandler_.connect("user_requested", self, "_on_user_requested")
+	RestHandler_.connect("user_avatar_requested", self, "_on_user_avatar_requested")
 
 func _ready() -> void:
 	connect_signals()
@@ -56,7 +63,7 @@ func _on_userdata_ready():
 	userdata = true
 
 func check_user():
-	if UserData.user_exists():
+	if UserData_.user_exists():
 		logfile = true
 		LogfileIcon.show()
 		DeleteDataBtn.disabled = false
@@ -88,13 +95,13 @@ func sign_in() -> void:
 		if mail!="" and token!="":
 			get_parent().loading(true)
 			auth = Marshalls.utf8_to_base64(mail+":"+token)
-			RestHandler.request_user(token)
+			RestHandler_.request_user(token)
 		else:
 			get_parent().print_debug_message("Bad credentials - you need to insert your e-mail and token.", 1)
 	else:
 		# If there is a logfile
 		get_parent().loading(true)
-		UserData.load_user()
+		Github.UserData_.load_user()
 		emit_signal("signed")
 
 func _on_completed_loading():
@@ -103,7 +110,7 @@ func _on_completed_loading():
 
 func _on_request_failed(request_code : int, error_body : Dictionary) -> void:
 	match request_code:
-		RestHandler.REQUESTS.USER:
+		Github.RestHandler_.REQUESTS.USER:
 			set_process(false)
 			get_parent().loading(true)
 			Error.show()
@@ -114,11 +121,11 @@ func _on_request_failed(request_code : int, error_body : Dictionary) -> void:
 func _on_user_requested(user : Dictionary) -> void:
 	Error.hide()
 	user_data = user
-	RestHandler.request_user_avatar(user_data.avatar_url)
+	RestHandler_.request_user_avatar(user_data.avatar_url)
 
 func _on_user_avatar_requested(user_avatar : PoolByteArray) -> void:
 	get_parent().loading(true)
-	UserData.save(user_data, user_avatar, auth, token, mail) 
+	UserData_.save(user_data, user_avatar, auth, token, mail) 
 	emit_signal("signed")
 	DeleteDataBtn.set_disabled(false)
 
@@ -136,7 +143,7 @@ func _on_delete_confirm():
 	delete_user()
 
 func delete_user():
-	UserData.delete_user()
+	Github.UserData_.delete_user()
 	logfile = false
 	LogfileIcon.hide()
 	DeleteDataBtn.disabled = true

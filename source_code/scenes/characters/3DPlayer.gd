@@ -58,14 +58,6 @@ func _input(event):
 	# Mobile Screen Capture
 	# Screen Drag
 	# Doesnt work
-	#if event is InputEventScreenDrag:
-	#	_mouse_position = event.relative
-	#	
-	#	# captures move input and Makes Mouse Invisible COnditionals
-	#	if event.pressed :
-	#		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	#	else:
-	#		Input.MOUSE_MODE_VISIBLE
 
 	
 	# Receives mouse button input
@@ -88,36 +80,36 @@ func _input(event):
 	# Receives key input
 	# keyboard state machine
 	# refactor to us GLobal Input Singleton code
-#	if event is InputEventKey:
-#		match event.scancode:
-#			KEY_W: # move up
-#				_w = event.pressed
-#			KEY_S: # move down
-##				_s = event.pressed
-#			KEY_A: # move left
-#				_a = event.pressed
-#			KEY_D: # move right
-#				_d = event.pressed
-#			KEY_Q: # float up
-#				_q = event.pressed
-#			KEY_E: # float down
-#				_e = event.pressed
-#			KEY_SHIFT: # increase mmovement speed
-#				_shift = event.pressed
-#			KEY_ALT: # increase movement speed
-#				_alt = event.pressed
-
+#
+# Buggy
+# 3D Camenra movement implementation
 	if Input.is_action_pressed("move_down"):
-		_s = event.pressed
+		_s = true
 		return
+	if Input.is_action_just_released("move_up"):
+		_s = false
+		return
+	
 	if Input.is_action_pressed("move_up"):
-		_w = event.pressed
+		_w = true
 		return
+	if Input.is_action_just_released("move_up"):
+		_w = false
+		return
+	
 	if Input.is_action_pressed("move_left"):
-		_a = event.pressed
+		_a = true
 		return
+	if Input.is_action_just_released("move_left"):
+		_a = false
+		return
+	
+	
 	if Input.is_action_pressed("move_right"):
-		_d = event.pressed
+		_d = true
+		return
+	if Input.is_action_just_released("move_right"):
+		_d = false
 		return
 
 #			KEY_SHIFT: # increase mmovement speed

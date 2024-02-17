@@ -144,6 +144,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/github-integration/scripts/GistItem.gd"
 }, {
+"base": "Control",
+"class": "Github",
+"language": "GDScript",
+"path": "res://addons/github-integration/scripts/GitHub.gd"
+}, {
 "base": "Node",
 "class": "GooglePlay",
 "language": "GDScript",
@@ -527,6 +532,7 @@ _global_script_class_icons={
 "GameHUD": "",
 "Game_Menu": "",
 "GistItem": "",
+"Github": "",
 "GooglePlay": "",
 "GutHookScript": "",
 "GutTest": "",

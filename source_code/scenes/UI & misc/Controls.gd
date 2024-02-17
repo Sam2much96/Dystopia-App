@@ -30,7 +30,7 @@ Game Control settings
 var selector #for the menu cycle selector
 
 onready var back : Button = $ScrollContainer/VBoxContainer/back
-onready var music : Button = $ScrollContainer/VBoxContainer/music
+onready var music : Button = $ScrollContainer/VBoxContainer/HBoxContainer2/music
 onready var _debug : Button = $ScrollContainer/VBoxContainer/debug
 onready var Shuffle : Button =$ScrollContainer/VBoxContainer/shuffle
 onready var Change_Controller_type : Button = get_node("ScrollContainer/VBoxContainer/change controller")
@@ -44,9 +44,19 @@ onready var scroller : ScrollContainer= get_node("ScrollContainer")
 onready var _Help_hint : hint = get_node("Help popup")
 
 # vibration
-onready var vibration : Button = $ScrollContainer/VBoxContainer/vibration
+onready var vibration : Button = $ScrollContainer/VBoxContainer/HBoxContainer/vibration
 
-onready var ControlButtons : Array =  [back, music,_debug,Shuffle,Change_Controller_type, github, languague, help, vibration]
+onready var ControlButtons : Array =  [
+	back, 
+	music,
+	_debug,
+	Shuffle,
+	Change_Controller_type, 
+	github, 
+	languague, 
+	help, 
+	vibration
+	]
 
 
 

@@ -1,4 +1,4 @@
-tool
+#tool
 extends Control
 
 onready var discord : TextureButton = $datas/discord

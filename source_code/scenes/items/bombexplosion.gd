@@ -55,6 +55,9 @@ func hurt()-> void:
 	#self.queue_free()
 
 func shake():
+	# play SFx
+	Music.play_track(Music.grass_sfx[0])
+	
 	# shake fx
 	return Globals.player_cam.shake()
 

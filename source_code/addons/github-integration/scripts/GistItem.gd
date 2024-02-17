@@ -17,7 +17,7 @@ var _gist : Dictionary
 var _id : String
 
 func _ready():
-	Files.get_node("Icon").set_texture(IconLoaderGithub.load_icon_from_name("gists"))
+	Files.get_node("Icon").set_texture(Github.IconLoaderGithub.load_icon_from_name("gists"))
 
 func set_gist(gist : Dictionary):
 	_gist = gist
@@ -30,9 +30,9 @@ func set_gist(gist : Dictionary):
 	
 	var gist_icon : ImageTexture 
 	if gist.isPublic:
-		gist_icon = (IconLoaderGithub.load_icon_from_name("gists"))
+		gist_icon = (Github.IconLoaderGithub.load_icon_from_name("gists"))
 	else:
-		gist_icon = (IconLoaderGithub.load_icon_from_name("lock"))
+		gist_icon = (Github.IconLoaderGithub.load_icon_from_name("lock"))
 	if gist.isFork:
 		pass
 	Name.get_node("Icon").set_texture(gist_icon)
@@ -42,6 +42,7 @@ func deselect():
 
 func _on_GistItem_gui_input(event):
 	if event is InputEventMouseButton:
+		
 		if event.is_pressed() and event.button_index == 1:
 			BG.show()
 			emit_signal("gist_clicked", self)

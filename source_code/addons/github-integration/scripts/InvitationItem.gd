@@ -23,14 +23,19 @@ signal add_notifications(amount)
 signal invitation_accepted()
 signal invitation_declined()
 
+onready var RestHandler_ = get_parent().get_node("RestHandler")
+
 func _ready():
+	# debug Resthandler
+	print_debug("Rest Handler pointer Debug:", RestHandler_)
+	
 	user_lbl.connect("pressed", self, "_on_user_pressed")
 	repository_lbl.connect("pressed", self, "_on_repository_pressed")
 	client.connect("request_completed", self, "_on_request_completed")
 	accept_btn.connect("pressed", self, "_on_invite_accept")
 	decline_btn.connect("pressed", self, "_on_invite_decline")
-	RestHandler.connect("invitation_accepted", self, "_on_invitation_accepted")
-	RestHandler.connect("invitation_declined", self, "_on_invitation_declined")
+	RestHandler_.connect("invitation_accepted", self, "_on_invitation_accepted")
+	RestHandler_.connect("invitation_declined", self, "_on_invitation_declined")
 
 func load_invitation(invitation : Dictionary) -> void:
 	invitation_id = invitation.id
@@ -60,7 +65,7 @@ func _on_repository_pressed():
 	OS.shell_open(repository_url)
 
 func _on_invite_accept():
-	RestHandler.request_accept_invitation(invitation_id)
+	RestHandler_.request_accept_invitation(invitation_id)
 	decline_btn.hide()
 	accept_btn.hide()
 	set_result("Invitation accepted.")
@@ -68,7 +73,7 @@ func _on_invite_accept():
 	emit_signal("invitation_declined")
 
 func _on_invite_decline():
-	RestHandler.request_decline_invitation(invitation_id)
+	RestHandler_.request_decline_invitation(invitation_id)
 	decline_btn.hide()
 	accept_btn.hide()
 	set_result("Invitation declined.")

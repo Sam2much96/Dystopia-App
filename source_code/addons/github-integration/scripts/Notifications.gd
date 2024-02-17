@@ -1,4 +1,4 @@
-tool
+#tool
 extends Control
 
 var invitation_item_scene : PackedScene = preload("res://addons/github-integration/scenes/InvitationItem.tscn")
@@ -23,9 +23,14 @@ signal add_notifications(amount)
 var to_load_next : bool = false
 var notifications_tabs : Array = ["Invitations", "Settings"]
 
+# Plugin Settings
+onready var PluginSettings_ = get_parent().get_node("PluginSettings")
+onready var RestHandler_ = get_parent().get_node("RestHandler")
+
+
 func _ready():
-	if PluginSettings._loaded : pass
-	else: yield(PluginSettings,"ready")
+	if PluginSettings_._loaded : pass
+	else: yield(PluginSettings_,"ready")
 	load_settings()
 	_connect_signals()
 	load_notification_tabs()
@@ -35,8 +40,8 @@ func _ready():
 func _connect_signals() -> void:
 	timer.connect("timeout", self, "_on_timeout")
 	notification_tree.connect("item_selected", self, "_on_item_selected")
-	RestHandler.connect("notification_request_failed", self, "_on_notification_request_failed")
-	RestHandler.connect("invitations_list_requested", self, "_on_invitations_list_requested")
+	RestHandler_.connect("notification_request_failed", self, "_on_notification_request_failed")
+	RestHandler_.connect("invitations_list_requested", self, "_on_invitations_list_requested")
 	auto_update_notifications_chk.connect("toggled", self, "_on_auto_update_toggled")
 	auto_update_notifications_amount.connect("text_entered", self, "_on_auto_update_amount_entered")
 	debug_messages_chk.connect("toggled", self, "_on_debug_toggled")
@@ -49,17 +54,20 @@ func _connect_signals() -> void:
 	organization_member_check.connect("toggled", self, "_on_organization_member_check_pressed")
 
 func load_settings():
-	var auto_update_notifications : bool = PluginSettings.auto_update_notifications
-	var auto_update_timer : float = PluginSettings.auto_update_timer
-	var darkmode : bool = PluginSettings.darkmode
+	var auto_update_notifications : bool = PluginSettings_.auto_update_notifications
+	var auto_update_timer : float = PluginSettings_.auto_update_timer
+	
+	# Debug Load Settings
+	
+	var darkmode : bool = PluginSettings_.darkmode
 	set_auto_update_timer(auto_update_timer)
 	set_auto_update(auto_update_notifications)
 	auto_update_notifications_chk.set_pressed(auto_update_notifications)
 	auto_update_notifications_amount.set_text(str(auto_update_timer/60))
-	debug_messages_chk.set_pressed(PluginSettings.debug)
-	auto_login_chk.set_pressed(PluginSettings.auto_log)
+	debug_messages_chk.set_pressed(PluginSettings_.debug)
+	auto_login_chk.set_pressed(PluginSettings_.auto_log)
 	darkmode_chck.set_pressed(darkmode)
-	var owner_affiliations : Array = PluginSettings.owner_affiliations
+	var owner_affiliations : Array = PluginSettings_.owner_affiliations
 	load_owner_affiliations(owner_affiliations)
 
 func load_owner_affiliations(affiliations : Array):
@@ -69,7 +77,7 @@ func load_owner_affiliations(affiliations : Array):
 
 func _on_notification_request_failed(requesting : int, error_body : Dictionary):
 	match requesting:
-		RestHandler.REQUESTS.INVITATIONS_LIST:
+		Github.RestHandler_.REQUESTS.INVITATIONS_LIST:
 			get_parent().print_debug_message("ERROR: "+error_body.message, 1)
 
 func hide_notification_tab(tab : TreeItem) -> TreeItem:
@@ -108,11 +116,13 @@ func _on_timeout():
 	request_notifications()
 
 func request_notifications() -> void:
-	if not PluginSettings.auto_update_notifications: return
-	if UserData.USER == {} : return
+	if not PluginSettings_.auto_update_notifications: return
+	
+	# If user Data is Empty Dictionary
+	if Github.UserData_.USER == {} : return
 	get_parent().print_debug_message("loading notifications, please wait...")
 	emit_signal("add_notifications",-get_parent().Header.notifications)
-	RestHandler.request_invitations_list()
+	RestHandler_.request_invitations_list()
 
 func _on_invitations_list_requested(invitations_list : Array) -> void:
 	if invitations_list.size():
@@ -145,12 +155,12 @@ func _on_auto_update_amount_entered(amount_txt : String):
 
 # If the "debug" button is toggled
 func _on_debug_toggled(button_pressed : bool) -> void:
-	PluginSettings.set_debug(button_pressed)
+	PluginSettings_.set_debug(button_pressed)
 	get_parent().print_debug_message("Debug messages in output console: %s" % button_pressed)
 
 # If the "auto login" button is toggled
 func _on_autologin_toggled(button_pressed : bool) -> void:
-	PluginSettings.set_auto_log(button_pressed)
+	PluginSettings_.set_auto_log(button_pressed)
 	get_parent().print_debug_message("Auto Login at plugin startup: %s" % button_pressed)
 
 func _on_darkmode_toggled(toggled : bool):
@@ -159,11 +169,11 @@ func _on_darkmode_toggled(toggled : bool):
 
 func set_auto_update_timer(amount : float):
 	timer.set_wait_time(amount)
-	PluginSettings.set_auto_update_timer(amount)
+	PluginSettings_.set_auto_update_timer(amount)
 
 func set_auto_update(enabled : bool):
 	timer.start() if enabled else timer.stop()
-	PluginSettings.set_auto_update_notifications(enabled)
+	PluginSettings_.set_auto_update_notifications(enabled)
 
 func clear_invitations_list():
 	invitations = 0
@@ -196,34 +206,34 @@ func _on_reset_confirmed():
 	hide()
 	get_parent().logout()
 	get_parent().SignIn.delete_user()
-	PluginSettings.reset_plugin()
+	Github.PluginSettings_.reset_plugin()
 
 func _on_owner_check_pressed(toggled : bool):
 	if toggled: 
-		if not "OWNER" in PluginSettings.owner_affiliations: 
-			PluginSettings.owner_affiliations.append("OWNER")
+		if not "OWNER" in Github.PluginSettings_.owner_affiliations: 
+			PluginSettings_.owner_affiliations.append("OWNER")
 	else: 
-		if "OWNER" in PluginSettings.owner_affiliations: 
-			PluginSettings.owner_affiliations.erase("OWNER")
-	PluginSettings.set_owner_affiliations(PluginSettings.owner_affiliations)
+		if "OWNER" in PluginSettings_.owner_affiliations: 
+			PluginSettings_.owner_affiliations.erase("OWNER")
+	PluginSettings_.set_owner_affiliations(PluginSettings_.owner_affiliations)
 	get_parent().print_debug_message("repositories setting '%s': %s"%["OWNER",toggled])
 
 func _on_collaborator_check_pressed(toggled : bool):
 	if toggled: 
-		if not ("COLLABORATOR" in PluginSettings.owner_affiliations): 
-			PluginSettings.owner_affiliations.append("COLLABORATOR")
+		if not ("COLLABORATOR" in PluginSettings_.owner_affiliations): 
+			PluginSettings_.owner_affiliations.append("COLLABORATOR")
 	else: 
-		if "COLLABORATOR" in PluginSettings.owner_affiliations: 
-			PluginSettings.owner_affiliations.erase("COLLABORATOR")
-	PluginSettings.set_owner_affiliations(PluginSettings.owner_affiliations)
+		if "COLLABORATOR" in PluginSettings_.owner_affiliations: 
+			PluginSettings_.owner_affiliations.erase("COLLABORATOR")
+	PluginSettings_.set_owner_affiliations(Github.PluginSettings_.owner_affiliations)
 	get_parent().print_debug_message("repositories setting '%s': %s"%["COLLABORATOR",toggled])
 
 func _on_organization_member_check_pressed(toggled : bool):
 	if toggled: 
-		if not "ORGANIZATION_MEMBER" in PluginSettings.owner_affiliations: 
-			PluginSettings.owner_affiliations.append("ORGANIZATION_MEMBER")
+		if not "ORGANIZATION_MEMBER" in Github.PluginSettings_.owner_affiliations: 
+			PluginSettings_.owner_affiliations.append("ORGANIZATION_MEMBER")
 	else: 
-		if "ORGANIZATION_MEMBER" in PluginSettings.owner_affiliations: 
-			PluginSettings.owner_affiliations.erase("ORGANIZATION_MEMBER")
-	PluginSettings.set_owner_affiliations(PluginSettings.owner_affiliations)
+		if "ORGANIZATION_MEMBER" in Github.PluginSettings_.owner_affiliations: 
+			PluginSettings_.owner_affiliations.erase("ORGANIZATION_MEMBER")
+	PluginSettings_.set_owner_affiliations(PluginSettings_.owner_affiliations)
 	get_parent().print_debug_message("repositories setting '%s': %s"%["ORGANIZATION_MEMBER",toggled])

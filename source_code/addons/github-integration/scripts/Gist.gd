@@ -1,4 +1,4 @@
-tool
+#tool
 extends Control
 
 
@@ -40,6 +40,10 @@ signal gist_committed()
 signal gist_updated()
 signal gist_deleted()
 
+# RestHandler
+onready var RestHandler_ = get_parent().get_node("RestHandler")
+onready var UserData_ = get_parent().get_node("UserData")
+
 func _ready():
 	add_child(request)
 	connect_signals()
@@ -59,6 +63,9 @@ func set_darkmode(darkmode : bool):
 		set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme.tres"))
 
 func connect_signals():
+	#
+	# Connect Button Signals
+	#
 	request.connect("request_completed",self,"request_completed")
 	CloseBTN.connect("pressed",self,"close_editor")
 	List.connect("item_selected",self,"on_item_selected")
@@ -76,18 +83,18 @@ func connect_signals():
 	
 	Readonly.connect("toggled",self,"_on_Readonly_toggled")
 	
-	addfile_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("file-gray"))
-	deletefile_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("file_broken"))
+	addfile_btn.set_button_icon(Github.IconLoaderGithub.load_icon_from_name("file-gray"))
+	deletefile_btn.set_button_icon(Github.IconLoaderGithub.load_icon_from_name("file_broken"))
 	
-	RestHandler.connect("gist_created",self,"_on_gist_created")
-	RestHandler.connect("gist_updated", self, "_on_gist_updated")
-	RestHandler.connect("request_failed", self, "_on_request_failed")
+	RestHandler_.connect("gist_created",self,"_on_gist_created")
+	RestHandler_.connect("gist_updated", self, "_on_gist_updated")
+	RestHandler_.connect("request_failed", self, "_on_request_failed")
 
 func _on_request_failed(requesting : float , body : Dictionary):
 	match requesting:
-		RestHandler.REQUESTS.CREATE_GIST:
+		RestHandler_.REQUESTS.CREATE_GIST:
 			get_parent().prind_debug_message(body)
-		RestHandler.REQUESTS.UPDATE_GIST:
+		RestHandler_.REQUESTS.UPDATE_GIST:
 			get_parent().prind_debug_message(body)
 
 func request_completed(result, response_code, headers, body ):
@@ -117,7 +124,10 @@ func load_gist(gist_item : GistItem):
 	
 	for file in range(gist_item._files_amount):
 		
-		var file_item = List.add_item(gist_item._files[file].name,IconLoaderGithub.load_icon_from_name("gists-back"))
+		var file_item = List.add_item(
+			gist_item._files[file].name,
+			Github.IconLoaderGithub.load_icon_from_name("gists-back")
+			)
 		var this_index = List.get_item_count()-1
 		List.set_item_metadata(this_index, gist_item._files[file])
 		List.select(this_index)
@@ -152,12 +162,12 @@ func initialize_new_gist(privacy : bool , rootfile : String, description : Strin
 	delete_btn.hide()
 	GistDescription.show()
 	gist_mode = GIST_MODE.CREATING
-	commit_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("add-gray"))
+	commit_btn.set_button_icon(Github.IconLoaderGithub.load_icon_from_name("add-gray"))
 	self.privacy = privacy
 	self.description = description
 	self.rootfile = rootfile
 	GistDescription.set_text(description)
-	GistName.set_text("%s/%s" % [UserData.USER.login, rootfile])
+	GistName.set_text("%s/%s" % [Github.UserData.USER.login, rootfile])
 	ListBar.show()
 	commit_btn.show()
 	commit_btn.set_text("Commit Gist")
@@ -179,7 +189,7 @@ func on_addfile():
 	NewFileDialog.popup()
 
 func load_file(file_name : String, filecontent : String):
-	var file_item = List.add_item(file_name,IconLoaderGithub.load_icon_from_name("gists-back"))
+	var file_item = List.add_item(file_name,Github.IconLoaderGithub.load_icon_from_name("gists-back"))
 	var this_index = List.get_item_count()-1
 	
 	var metadata = { "text":filecontent, "name":file_name }
@@ -191,7 +201,7 @@ func load_file(file_name : String, filecontent : String):
 func add_new_file():
 	var item_filename = NewFileDialog.get_node("HBoxContainer2/filename").get_text()
 	NewFileDialog.get_node("HBoxContainer2/filename").set_text("")
-	var file_item = List.add_item(item_filename,IconLoaderGithub.load_icon_from_name("gists-back"))
+	var file_item = List.add_item(item_filename,Github.IconLoaderGithub.load_icon_from_name("gists-back"))
 	var this_index = List.get_item_count()-1
 	
 	var metadata = { "text":"", "name":item_filename }
@@ -213,13 +223,14 @@ func on_text_changed():
 		List.set_item_metadata(List.get_selected_items()[0],metadata)
 
 func _on_gist_created(body : Dictionary):
-	GistName.set_text(UserData.USER.login+"/"+body.files.values()[0].filename)
+	# Note: There should be a global static / cleaner way to concatate strings
+	GistName.set_text(UserData_.USER.login+"/"+body.files.values()[0].filename)
 	get_parent().print_debug_message("gist committed with success!")
 	get_parent().UserPanel.request_gists(REQUESTS.GIST)
 
 func _on_gist_updated(body : Dictionary):
 	get_parent().print_debug_message("gist updated with success!")
-	RestHandler.request_user_gists()
+	RestHandler_.request_user_gists()
 
 func _on_loaded_repositories() -> void:
 	get_parent().loading(false)
@@ -240,14 +251,20 @@ func on_commit():
 			"public": !privacy,
 			"files": files,
 		}
-		RestHandler.request_gist_commit(JSON.print(body))
+		Github.RestHandler_.request_gist_commit(
+			JSON.print(body)
+			)
 		get_parent().print_debug_message("committing new gist...")
 	elif gist_mode == GIST_MODE.EDITING:
 		var body : Dictionary = {
 			"description": description,
 			"files": files,
 		}
-		RestHandler.request_update_gist(gistid, JSON.print(body))
+		RestHandler_.request_update_gist(
+			gistid, 
+			JSON.print(body)
+			)
+		
 		get_parent().print_debug_message("updating this gist...")
 
 func _on_Readonly_toggled(button_pressed):
@@ -283,7 +300,7 @@ func _on_Readonly_toggled(button_pressed):
 
 func on_delete():
 	requesting = REQUESTS.DELETE
-	request.request("https://api.github.com/gists/"+gistid,UserData.header,false,HTTPClient.METHOD_DELETE)
+	request.request("https://api.github.com/gists/"+gistid,Github.UserData_.header,false,HTTPClient.METHOD_DELETE)
 	get_parent().print_debug_message("deleting this gist...")
 	yield(self,"gist_deleted")
 	close_editor()

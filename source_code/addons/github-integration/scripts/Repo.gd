@@ -11,7 +11,9 @@
 
 # -----------------------------------------------
 
-tool
+#
+# Errors
+# Rewrite to use local pointers once
 extends Control
 
 onready var repo_icon : TextureRect = $Repository/RepoInfos/RepoInfosContainer/repo_infos/repo_icon
@@ -88,6 +90,10 @@ var archive_extension : String = ""
 
 signal resource_deleted()
 
+onready var RestHandler_ = get_parent().get_node("RestHandler")
+onready var UserData_ = get_parent().get_node("UserData")
+
+
 func _ready():
 	_connect_signals()
 	delete_resource_btn.disabled = true
@@ -106,14 +112,14 @@ func _connect_signals() -> void:
 	AddCollaborator.connect("confirmed",self,"invite_collaborator")
 	
 #    RestHandler.connect("user_repository_requested",self, "_on_user_repository_requested")
-	RestHandler.connect("request_failed", self, "_on_request_failed")
-	RestHandler.connect("branch_contents_requested", self, "_on_branch_contents_requested")
-	RestHandler.connect("gitignore_requested", self, "_on_gitignore_requested")
-	RestHandler.connect("pull_branch_requested", self, "_on_pull_branch_requested")
-	RestHandler.connect("collaborator_requested", self, "_on_collaborator_requested")
-	RestHandler.connect("resource_delete_requested", self, "_on_delete_resource_requested")
-	RestHandler.connect("repository_delete_requested", self, "_on_repository_deleted")
-	RestHandler.connect("new_branch_requested", self, "_on_new_branch_created")
+	RestHandler_.connect("request_failed", self, "_on_request_failed")
+	RestHandler_.connect("branch_contents_requested", self, "_on_branch_contents_requested")
+	RestHandler_.connect("gitignore_requested", self, "_on_gitignore_requested")
+	RestHandler_.connect("pull_branch_requested", self, "_on_pull_branch_requested")
+	RestHandler_.connect("collaborator_requested", self, "_on_collaborator_requested")
+	RestHandler_.connect("resource_delete_requested", self, "_on_delete_resource_requested")
+	RestHandler_.connect("repository_delete_requested", self, "_on_repository_deleted")
+	RestHandler_.connect("new_branch_requested", self, "_on_new_branch_created")
 
 func set_darkmode(darkmode : bool):
 	if darkmode:
@@ -132,19 +138,19 @@ func set_darkmode(darkmode : bool):
 		contents_tree.set("custom_styles/bg_focus", load("res://addons/github-integration/resources/styles/ContentesBG-white.tres"))
 
 func load_icons(r : Dictionary):
-	repo_icon.set_texture(IconLoaderGithub.load_icon_from_name("repos"))
+	repo_icon.set_texture(Github.IconLoaderGithub.load_icon_from_name("repos"))
 	if r.isPrivate:
-			private_icon.set_texture(IconLoaderGithub.load_icon_from_name("lock"))
+			private_icon.set_texture(Github.IconLoaderGithub.load_icon_from_name("lock"))
 	if r.isFork:
-			forked_icon.set_texture(IconLoaderGithub.load_icon_from_name("forks"))
+			forked_icon.set_texture(Github.IconLoaderGithub.load_icon_from_name("forks"))
 #    watch_icon.set_texture(IconLoaderGithub.load_icon_from_name("watch"))
-	star_icon.set_texture(IconLoaderGithub.load_icon_from_name("stars"))
-	fork_icon.set_texture(IconLoaderGithub.load_icon_from_name("forks"))
-	reload_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("reload-gray"))
-	new_branch_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("add-gray"))
-	pull_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("download-gray"))
-	git_lfs.set_button_icon(IconLoaderGithub.load_icon_from_name("git_lfs-gray"))
-	add_collaborator_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("add-gray"))
+	star_icon.set_texture(Github.IconLoaderGithub.load_icon_from_name("stars"))
+	fork_icon.set_texture(Github.IconLoaderGithub.load_icon_from_name("forks"))
+	reload_btn.set_button_icon(Github.IconLoaderGithub.load_icon_from_name("reload-gray"))
+	new_branch_btn.set_button_icon(Github.IconLoaderGithub.load_icon_from_name("add-gray"))
+	pull_btn.set_button_icon(Github.IconLoaderGithub.load_icon_from_name("download-gray"))
+	git_lfs.set_button_icon(Github.IconLoaderGithub.load_icon_from_name("git_lfs-gray"))
+	add_collaborator_btn.set_button_icon(Github.IconLoaderGithub.load_icon_from_name("add-gray"))
 
 func open_repository(repository_item : PanelContainer) -> void:
 	_clear()
@@ -175,7 +181,7 @@ func open_repository(repository_item : PanelContainer) -> void:
 		current_branch = branches[0]
 		load_branches()
 		get_parent().print_debug_message("loading current branch contents, please wait...")
-		RestHandler.request_branch_contents(repository.name, repository.owner.login, current_branch)
+		RestHandler_.request_branch_contents(repository.name, repository.owner.login, current_branch)
 	else:
 		get_parent().print_debug_message("this repository is empty.")
 		get_parent().loading(false)
@@ -247,7 +253,7 @@ func delete_repo():
 
 func delete_repository():
 	get_parent().loading(true)
-	RestHandler.request_delete_repository(current_repo._repository.owner.login, current_repo._name)
+	RestHandler_.request_delete_repository(current_repo._repository.owner.login, current_repo._name)
 
 func _on_repository_deleted():
 	get_parent().print_debug_message("deleted repository...")
@@ -285,7 +291,7 @@ func request_delete_resource(path : String, item : TreeItem = null):
 				"sha": contents_tree.get_selected().get_metadata(0).sha,
 				"branch":current_branch.name
 				}
-	RestHandler.request_delete_resource(current_repo._repository.owner.login, current_repo._name, path, body)
+	RestHandler_.request_delete_resource(current_repo._repository.owner.login, current_repo._name, path, body)
 
 func _on_delete_resource_requested() -> void:
 	get_parent().print_debug_message("deleted selected resource")
@@ -302,11 +308,11 @@ func commit():
 
 func _on_request_failed(requesting : int, error_body : Dictionary) -> void:
 	match requesting:
-		RestHandler.REQUESTS.INVITE_COLLABORATOR:
+		RestHandler_.REQUESTS.INVITE_COLLABORATOR:
 			get_parent().print_debug_message("ERROR: %s" % error_body.errors[0].message, 1)
-		RestHandler.REQUESTS.DELETE_RESOURCE:
+		RestHandler_.REQUESTS.DELETE_RESOURCE:
 			get_parent().print_debug_message("ERROR: can't delete a folder!",1)
-		RestHandler.REQUESTS.NEW_BRANCH:
+		Github.RestHandler_.REQUESTS.NEW_BRANCH:
 			get_parent().print_debug_message("ERROR: %s" % error_body.errors[0].message, 1)
 	get_parent().loading(false)
 
@@ -321,7 +327,7 @@ func build_list():
 		var content_type = content.type
 		if content_type == "blob":
 			if content.path.get_file() == ".gitignore":
-				RestHandler.request_gitignore(current_repo._repository.owner.login, current_repo._repository.name, current_branch.name)
+				RestHandler_.request_gitignore(current_repo._repository.owner.login, current_repo._repository.name, current_branch.name)
 			else:
 				gitignore_file = {}
 			var file_dir = null
@@ -334,15 +340,15 @@ func build_list():
 			var icon
 			var extension = content_name.get_extension()
 			if extension == "gd":
-				icon = IconLoaderGithub.load_icon_from_name("script-gray")
+				icon = Github.IconLoaderGithub.load_icon_from_name("script-gray")
 			elif extension == "tscn":
-				icon = IconLoaderGithub.load_icon_from_name("scene-gray")
+				icon = Github.IconLoaderGithub.load_icon_from_name("scene-gray")
 			elif extension == "png":
-				icon = IconLoaderGithub.load_icon_from_name("image-gray")
+				icon = Github.IconLoaderGithub.load_icon_from_name("image-gray")
 			elif extension == "tres":
-				icon = IconLoaderGithub.load_icon_from_name("resource-gray")
+				icon = Github.IconLoaderGithub.load_icon_from_name("resource-gray")
 			else:
-				icon = IconLoaderGithub.load_icon_from_name("file-gray")
+				icon = Github.IconLoaderGithub.load_icon_from_name("file-gray")
 			item.set_icon(0,icon)
 			item.set_metadata(0,content)
 		elif content_type == "tree":
@@ -353,7 +359,7 @@ func build_list():
 							continue
 				var new_dir = contents_tree.create_item(dir_dir)
 				new_dir.set_text(0,content_name)
-				new_dir.set_icon(0,IconLoaderGithub.load_icon_from_name("dir-gray"))
+				new_dir.set_icon(0,Github.IconLoaderGithub.load_icon_from_name("dir-gray"))
 				new_dir.set_metadata(0,content)
 				directories.append(new_dir)
 				new_dir.set_collapsed(true)
@@ -364,7 +370,7 @@ func build_list():
 func _on_branch2_item_selected(ID : int):
 	get_parent().loading(true)
 	current_branch = branches_opt_btn.get_item_metadata(ID)
-	RestHandler.request_branch_contents(current_repo._name, current_repo._repository.owner.login, current_branch)
+	RestHandler_.request_branch_contents(current_repo._name, current_repo._repository.owner.login, current_branch)
 
 func _on_contents_item_activated():
 	delete_resource_btn.disabled = false
@@ -392,7 +398,7 @@ func on_newbranch_confirmed():
 			"ref": "refs/heads/"+new_branch_dialog.get_node("VBoxContainer/HBoxContainer/name").get_text(),
 			"sha": from_branch.get_item_metadata(from_branch.get_selected_id()).target.oid
 	}
-	RestHandler.request_create_new_branch(current_repo._repository.owner.login, current_repo._name, body)
+	RestHandler_.request_create_new_branch(current_repo._repository.owner.login, current_repo._name, body)
 	get_parent().print_debug_message("creating new branch...")
 
 func _on_new_branch_created() -> void:
@@ -405,9 +411,9 @@ func on_pull_pressed():
 func _on_reload_pressed():
 	get_parent().loading(true)
 	get_parent().print_debug_message("reloading all branches, please wait...")
-	RestHandler.request_user_repository("organization" if current_repo._repository.isInOrganization else "user",
+	RestHandler_.request_user_repository("organization" if current_repo._repository.isInOrganization else "user",
 	current_repo._repository.owner.login, current_repo._name)
-	_on_user_repository_requested(yield(RestHandler, "user_repository_requested"))
+	_on_user_repository_requested(yield(Github.RestHandler_, "user_repository_requested"))
 
 
 func _clear() -> void:
@@ -452,7 +458,7 @@ func _on_extension_choosing_confirmed():
 	zipfile.open_compressed(zip_filepath,File.WRITE,File.COMPRESSION_GZIP)
 	
 	zipfile.close()
-	RestHandler.request_pull_branch(zip_filepath, typeball_url, current_repo._repository.diskUsage)
+	RestHandler_.request_pull_branch(zip_filepath, typeball_url, current_repo._repository.diskUsage)
 	get_parent().loading(true)
 	get_parent().print_debug_message("pulling from selected branch, a "+archive_extension+" file will automatically be created at the end of the process in 'res://' ...")
 
@@ -465,14 +471,14 @@ func add_collaborator():
 	AddCollaborator.popup()
 
 func invite_collaborator():
-	var header : Array = UserData.header
+	var header : Array = Github.UserData_.header
 	header.append("Content-Length: 0")
 	var collaborator_name : String = CollaboratorName.text
 	var body : Dictionary = {
 			"permission" : CollaboratorPermission.get_item_text(CollaboratorPermission.get_selected_id()),
 		 }
 	if collaborator_name!="" and collaborator_name!=" ":
-		RestHandler.request_collaborator(current_repo._repository.owner.login, current_repo._name, collaborator_name, body)
+		RestHandler_.request_collaborator(current_repo._repository.owner.login, current_repo._name, collaborator_name, body)
 		get_parent().print_debug_message("inviting a user as collaborator...")
 	else:
 		get_parent().print_debug_message("you must use a valid username", 1)
@@ -482,7 +488,7 @@ func _on_collaborator_requested() -> void:
 
 
 func setup_git_lfs():
-	var path : String = UserData.directory+current_repo._name+"/"+current_branch.name+"/.gitattributes"
+	var path : String = UserData_.directory+current_repo._name+"/"+current_branch.name+"/.gitattributes"
 	var extensions : String = ""
 	if File.new().file_exists(path) :
 		get_parent().print_debug_message(".gitattributes file already set for this repository. You can overwrite it.")
@@ -540,7 +546,7 @@ func _on_setup_git_lfs_confirmed():
 func setup_gitlfs(extensions : Array):
 	var gitattributes = File.new()
 	var dir = Directory.new()
-	var directory : String = UserData.directory+current_repo._name+"/"+current_branch.name
+	var directory : String = Github.UserData_.directory+current_repo._name+"/"+current_branch.name
 	if not dir.dir_exists(directory):
 		dir.make_dir(directory)
 	gitattributes.open(directory+"/.gitattributes",File.WRITE_READ)

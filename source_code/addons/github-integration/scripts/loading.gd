@@ -1,17 +1,15 @@
-tool
 extends ColorRect
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 onready var Progress = $VBoxContainer/ProgressBar
 onready var Number = $VBoxContainer/Number
 onready var message : Label = $VBoxContainer/Message
-# Called when the node enters the scene tree for the first time.
+
+onready var RestHandler_ = get_parent().get_node("RestHandler")
+
 func _ready():
 	Progress.hide()
 	Number.hide()
-	RestHandler.loading = self
+	RestHandler_.loading = self
 
 func _on_loading_visibility_changed():
 	if visible:

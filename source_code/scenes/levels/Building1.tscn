@@ -20,16 +20,16 @@ scale = Vector2( 2.48, 2.48 )
 [node name="Textures" type="YSort" parent="."]
 
 [node name="TextureRect" type="TextureRect" parent="Textures"]
-margin_left = 125.475
-margin_top = -5.33935
-margin_right = 3645.48
-margin_bottom = 5045.66
-rect_scale = Vector2( 0.224973, 0.194409 )
+margin_left = 125.0
+margin_top = -5.0
+margin_right = 1103.0
+margin_bottom = 1398.0
+rect_scale = Vector2( 0.809099, 0.699178 )
 texture = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="Textures"]
-position = Vector2( 721.923, 338.123 )
-scale = Vector2( 0.326174, 0.326174 )
+position = Vector2( 723.536, 430.059 )
+scale = Vector2( 1.04812, 1.04812 )
 texture = ExtResource( 2 )
 
 [node name="Sprite2" type="Sprite" parent="Textures"]
@@ -50,8 +50,8 @@ position = Vector2( 523.599, -17.6434 )
 shape = SubResource( 2 )
 
 [node name="enemy_spawner" parent="." instance=ExtResource( 7 )]
-position = Vector2( 521.402, 173.801 )
-scale = Vector2( 0.261164, 0.261164 )
+position = Vector2( 513.79, 338.218 )
+scale = Vector2( 0.116003, 0.116003 )
 enabled = true
 _hitpoints = 3
 enemy_type = "Hard"

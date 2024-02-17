@@ -52,7 +52,7 @@ margin_bottom = 555.0
 columns = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Mobile/GridContainer"]
-margin_right = 256.0
+margin_right = 274.0
 margin_bottom = 87.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer"]
@@ -63,15 +63,15 @@ stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer"]
 margin_left = 91.0
-margin_top = 25.0
-margin_right = 256.0
-margin_bottom = 61.0
+margin_top = 23.0
+margin_right = 274.0
+margin_bottom = 63.0
 theme = ExtResource( 4 )
 text = "Rotate Page"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Mobile/GridContainer"]
-margin_left = 260.0
-margin_right = 531.0
+margin_left = 278.0
+margin_right = 562.0
 margin_bottom = 87.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer2"]
@@ -82,15 +82,15 @@ stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer2"]
 margin_left = 91.0
-margin_top = 25.0
-margin_right = 217.0
-margin_bottom = 61.0
+margin_top = 23.0
+margin_right = 231.0
+margin_bottom = 63.0
 theme = ExtResource( 4 )
 text = "Direction"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Mobile/GridContainer"]
 margin_top = 91.0
-margin_right = 256.0
+margin_right = 274.0
 margin_bottom = 194.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer3"]
@@ -101,16 +101,16 @@ stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer3"]
 margin_left = 38.0
-margin_top = 33.0
-margin_right = 108.0
-margin_bottom = 69.0
+margin_top = 31.0
+margin_right = 118.0
+margin_bottom = 71.0
 theme = ExtResource( 4 )
 text = "Lives"
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="Mobile/GridContainer"]
-margin_left = 260.0
+margin_left = 278.0
 margin_top = 91.0
-margin_right = 531.0
+margin_right = 562.0
 margin_bottom = 194.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer4"]
@@ -121,15 +121,15 @@ stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer4"]
 margin_left = 114.0
-margin_top = 33.0
-margin_right = 183.0
-margin_bottom = 69.0
+margin_top = 31.0
+margin_right = 190.0
+margin_bottom = 71.0
 theme = ExtResource( 4 )
 text = "Dash"
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="Mobile/GridContainer"]
 margin_top = 198.0
-margin_right = 256.0
+margin_right = 274.0
 margin_bottom = 301.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer5"]
@@ -140,16 +140,16 @@ stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer5"]
 margin_left = 114.0
-margin_top = 33.0
-margin_right = 204.0
-margin_bottom = 69.0
+margin_top = 31.0
+margin_right = 215.0
+margin_bottom = 71.0
 theme = ExtResource( 4 )
 text = "Attack"
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="Mobile/GridContainer"]
-margin_left = 260.0
+margin_left = 278.0
 margin_top = 198.0
-margin_right = 531.0
+margin_right = 562.0
 margin_bottom = 301.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer6"]
@@ -160,15 +160,15 @@ stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer6"]
 margin_left = 114.0
-margin_top = 33.0
-margin_right = 222.0
-margin_bottom = 69.0
+margin_top = 31.0
+margin_right = 235.0
+margin_bottom = 71.0
 theme = ExtResource( 4 )
 text = "Interact"
 
 [node name="HBoxContainer7" type="HBoxContainer" parent="Mobile/GridContainer"]
 margin_top = 305.0
-margin_right = 256.0
+margin_right = 274.0
 margin_bottom = 448.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer7"]
@@ -179,16 +179,16 @@ stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer7"]
 margin_left = 114.0
-margin_top = 53.0
-margin_right = 185.0
-margin_bottom = 89.0
+margin_top = 51.0
+margin_right = 194.0
+margin_bottom = 91.0
 theme = ExtResource( 4 )
 text = "Stats"
 
 [node name="HBoxContainer8" type="HBoxContainer" parent="Mobile/GridContainer"]
-margin_left = 260.0
+margin_left = 278.0
 margin_top = 305.0
-margin_right = 531.0
+margin_right = 562.0
 margin_bottom = 448.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer8"]
@@ -199,15 +199,15 @@ stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer8"]
 margin_left = 170.0
-margin_top = 53.0
-margin_right = 271.0
-margin_bottom = 89.0
+margin_top = 51.0
+margin_right = 284.0
+margin_bottom = 91.0
 theme = ExtResource( 4 )
 text = "Comics"
 
 [node name="HBoxContainer9" type="HBoxContainer" parent="Mobile/GridContainer"]
 margin_top = 452.0
-margin_right = 256.0
+margin_right = 274.0
 margin_bottom = 555.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer9"]
@@ -218,8 +218,8 @@ stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer9"]
 margin_left = 114.0
-margin_top = 33.0
-margin_right = 192.0
-margin_bottom = 69.0
+margin_top = 31.0
+margin_right = 201.0
+margin_bottom = 71.0
 theme = ExtResource( 4 )
 text = "Zoom"

@@ -12,7 +12,7 @@
 
 # -----------------------------------------------
 
-tool
+#tool
 extends Control
 
 
@@ -254,11 +254,11 @@ func _on_Button_pressed():
 func load_gitignore():
 		list_file_size.clear()
 		
-		var gitignore_filepath = UserData.directory+repo_selected.name+"/"+_branch.get_item_text(branch_idx)+"/"
+		var gitignore_filepath = Github.UserData_.directory+repo_selected.name+"/"+_branch.get_item_text(branch_idx)+"/"
 		
 		var dir = Directory.new()
 		if not dir.dir_exists(gitignore_filepath):
-				dir.open(UserData.directory)
+				dir.open(Github.UserData_.directory)
 				dir.make_dir_recursive(gitignore_filepath)
 				get_parent().print_debug_message("made directory in user folder for this .gitignore file, at %s"%gitignore_filepath)
 		
@@ -279,8 +279,8 @@ func load_gitignore():
 		files.push_front(gitignore_filepath+".gitignore")
 		
 		# load the gitattributes
-		if File.new().file_exists(UserData.directory+repo_selected.name+"/"+_branch.get_item_text(branch_idx)+"/.gitattributes"):
-				files.push_front(UserData.directory+repo_selected.name+"/"+_branch.get_item_text(branch_idx)+"/.gitattributes")
+		if File.new().file_exists(Github.UserData_.directory+repo_selected.name+"/"+_branch.get_item_text(branch_idx)+"/.gitattributes"):
+				files.push_front(Github.UserData_.directory+repo_selected.name+"/"+_branch.get_item_text(branch_idx)+"/.gitattributes")
 		
 		lfs.clear()
 		
@@ -312,13 +312,13 @@ func load_gitignore():
 
 func request_sha_latest_commit():
 		requesting = REQUESTS.LATEST_COMMIT
-		new_repo.request("https://api.github.com/repos/"+repo_selected.owner.login+"/"+repo_selected.name+"/git/refs/heads/"+_branch.get_item_text(branch_idx),UserData.header,false,HTTPClient.METHOD_GET,"")
+		new_repo.request("https://api.github.com/repos/"+repo_selected.owner.login+"/"+repo_selected.name+"/git/refs/heads/"+_branch.get_item_text(branch_idx),Github.UserData_.header,false,HTTPClient.METHOD_GET,"")
 		yield(self,"latest_commit")
 		request_base_tree()
 
 func request_base_tree():
 		requesting = REQUESTS.BASE_TREE
-		new_repo.request("https://api.github.com/repos/"+repo_selected.owner.login+"/"+repo_selected.name+"/git/commits/"+sha_latest_commit,UserData.header,false,HTTPClient.METHOD_GET,"")
+		new_repo.request("https://api.github.com/repos/"+repo_selected.owner.login+"/"+repo_selected.name+"/git/commits/"+sha_latest_commit,Github.UserData_.header,false,HTTPClient.METHOD_GET,"")
 		yield(self,"base_tree")
 		request_blobs()
 
@@ -346,7 +346,7 @@ func request_blobs():
 			}
 			
 			new_repo.request("https://api.github.com/repos/"+repo_selected.owner.login+"/"+repo_selected.name+"/git/blobs",
-			UserData.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
+			Github.UserData_.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
 			yield(self,"file_blobbed")
 		else:
 			get_parent().print_debug_message("pointing large file, please wait...")
@@ -405,7 +405,7 @@ func request_commit_tree():
 				"tree":tree
 				}
 		
-		new_repo.request("https://api.github.com/repos/"+repo_selected.owner.login+"/"+repo_selected.name+"/git/trees",UserData.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
+		new_repo.request("https://api.github.com/repos/"+repo_selected.owner.login+"/"+repo_selected.name+"/git/trees",Github.UserData_.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
 		yield(self,"new_tree")
 		request_new_commit()
 
@@ -418,7 +418,7 @@ func request_new_commit():
 				"message": message
 				}
 
-		new_repo.request("https://api.github.com/repos/"+repo_selected.owner.login+"/"+repo_selected.name+"/git/commits",UserData.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
+		new_repo.request("https://api.github.com/repos/"+repo_selected.owner.login+"/"+repo_selected.name+"/git/commits",Github.UserData_.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
 		yield(self,"new_commit")
 		request_push_commit()
 
@@ -427,20 +427,22 @@ func request_push_commit():
 		var bod = {
 				"sha": sha_new_commit
 				}
-		new_repo.request("https://api.github.com/repos/"+repo_selected.owner.login+"/"+repo_selected.name+"/git/refs/heads/"+_branch.get_item_text(branch_idx),UserData.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
+		new_repo.request("https://api.github.com/repos/"+repo_selected.owner.login+"/"+repo_selected.name+"/git/refs/heads/"+_branch.get_item_text(branch_idx),Github.UserData_.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
 		yield(self,"pushed")
+		
+		# URL Addresses to Girhub URL's
 		
 		if lfs.size() > 0:
 				requesting = REQUESTS.LFS
 				var body = {"operation": "upload","ref": {"name":"refs/heads/"+_branch.get_item_text(branch_idx)},"transfers": [ "basic" ],"objects": lfs}
-				new_repo.request("https://github.com/"+repo_selected.owner.login+"/"+repo_selected.name+UserData.gitlfs_request,UserData.gitlfs_header,false,HTTPClient.METHOD_POST,JSON.print(body))
+				new_repo.request("https://github.com/"+repo_selected.owner.login+"/"+repo_selected.name+Github.UserData_.gitlfs_request,Github.UserData_.gitlfs_header,false,HTTPClient.METHOD_POST,JSON.print(body))
 				yield(self,"lfs")
 		
 		if lfs.size() > 0:
 				requesting = REQUESTS.POST_LFS
 				get_parent().print_debug_message(lfs)
 				var body = { "transfer":"basic" , "objects":lfs}
-				new_repo.request("https://github.com/"+repo_selected.owner.login+"/"+repo_selected.name+UserData.gitlfs_request,UserData.gitlfs_header,false,HTTPClient.METHOD_PUT,JSON.print(body))
+				new_repo.request("https://github.com/"+repo_selected.owner.login+"/"+repo_selected.name+Github.UserData_.gitlfs_request,Github.UserData_.gitlfs_header,false,HTTPClient.METHOD_PUT,JSON.print(body))
 				yield(self,"lfs_push")
 		
 		empty_fileds()
@@ -524,7 +526,7 @@ func show_files(paths : PoolStringArray, isfile : bool = false , isdir : bool = 
 	for file in paths:
 		file = file.replace("///","//")
 		if isfile:
-			Uncommitted.add_item(file,IconLoaderGithub.load_icon_from_name("file-gray"))
+			Uncommitted.add_item(file,Github.IconLoaderGithub.load_icon_from_name("file-gray"))
 
 func on_removefile_pressed():
 	var filestoremove = Uncommitted.get_selected_items()

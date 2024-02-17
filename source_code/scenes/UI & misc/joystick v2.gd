@@ -10,7 +10,7 @@
 # On 16/04/22, i tried to write down the above pieces of code
 # *************************************************
 # Features :
-# (1) 
+# (1) Custom Button Mapping
 #
 # *************************************************
 # Bugs :

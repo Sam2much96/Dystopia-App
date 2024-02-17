@@ -83,10 +83,14 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="music" type="Button" parent="ScrollContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
 margin_top = 82.0
 margin_right = 352.0
 margin_bottom = 160.0
+
+[node name="music" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 236.0
+margin_bottom = 78.0
 custom_fonts/font = ExtResource( 8 )
 toggle_mode = true
 text = "music on/off"
@@ -95,6 +99,11 @@ __meta__ = {
 "_edit_use_anchors_": false,
 "_editor_description_": ""
 }
+
+[node name="CheckBox" type="CheckBox" parent="ScrollContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 240.0
+margin_right = 264.0
+margin_bottom = 78.0
 
 [node name="debug" type="Button" parent="ScrollContainer/VBoxContainer"]
 margin_top = 164.0
@@ -170,14 +179,23 @@ toggle_mode = true
 text = "Direction/controls"
 flat = true
 
-[node name="vibration" type="Button" parent="ScrollContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
 margin_top = 574.0
 margin_right = 352.0
 margin_bottom = 652.0
+
+[node name="vibration" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer"]
+margin_right = 185.0
+margin_bottom = 78.0
 custom_fonts/font = ExtResource( 8 )
 toggle_mode = true
 text = "vibration"
 flat = true
+
+[node name="CheckBox" type="CheckBox" parent="ScrollContainer/VBoxContainer/HBoxContainer"]
+margin_left = 189.0
+margin_right = 213.0
+margin_bottom = 78.0
 
 [node name="Nav docs" type="Button" parent="ScrollContainer/VBoxContainer"]
 visible = false
@@ -193,11 +211,11 @@ margin_bottom = 656.0
 toggle_mode = true
 
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/back" to="." method="_on_Button_pressed"]
-[connection signal="toggled" from="ScrollContainer/VBoxContainer/music" to="." method="_on_music_toggled"]
+[connection signal="toggled" from="ScrollContainer/VBoxContainer/HBoxContainer2/music" to="." method="_on_music_toggled"]
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/debug" to="." method="_on_Debug_toggled"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/languague" to="." method="_on_languague_pressed"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/shuffle" to="." method="_on_Shuffle_pressed"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/github" to="." method="_on_Github_pressed"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/help" to="." method="_on_Help_pressed"]
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/change controller" to="." method="_on_Direction_controls_toggled"]
-[connection signal="toggled" from="ScrollContainer/VBoxContainer/vibration" to="." method="_on_vibration_toggled"]
+[connection signal="toggled" from="ScrollContainer/VBoxContainer/HBoxContainer/vibration" to="." method="_on_vibration_toggled"]

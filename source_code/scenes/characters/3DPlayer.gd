@@ -14,13 +14,13 @@
 # (1) Refactor to use player controls
 # (2) Refactor to use Camera Shake fx to simulate player movement
 
-class_name FreeLookCamera extends Camera
+class_name FreeLookCamera extends Camera3D
 
 # Modifier keys' speed multiplier
 const SHIFT_MULTIPLIER = 2.5
 const ALT_MULTIPLIER = 1.0 / SHIFT_MULTIPLIER
 
-export(float, 0.0, 1.0) var sensitivity = 0.25
+@export var sensitivity = 0.25 # (float, 0.0, 1.0)
 
 # Mouse state
 var _mouse_position = Vector2(0.0, 0.0)
@@ -65,16 +65,16 @@ func _input(event):
 	# mouse button
 	if event is InputEventMouseButton:
 		match event.button_index:
-			BUTTON_RIGHT: # Only allows rotation if right click down
+			MOUSE_BUTTON_RIGHT: # Only allows rotation if right click down
 				
 				# captures move input and Makes Mouse Invisible COnditionals
 				if event.pressed :
 					Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 				else: Input.MOUSE_MODE_VISIBLE
 
-			BUTTON_WHEEL_UP: # Increases max velocity
+			MOUSE_BUTTON_WHEEL_UP: # Increases max velocity
 				_vel_multiplier = clamp(_vel_multiplier * 1.1, 0.2, 20)
-			BUTTON_WHEEL_DOWN: # Decereases max velocity
+			MOUSE_BUTTON_WHEEL_DOWN: # Decereases max velocity
 				_vel_multiplier = clamp(_vel_multiplier / 1.1, 0.2, 20)
 
 	# Receives key input
@@ -176,5 +176,5 @@ func _update_mouselook():
 		pitch = clamp(pitch, -90 - _total_pitch, 90 - _total_pitch)
 		_total_pitch += pitch
 	
-		rotate_y(deg2rad(-yaw))
-		rotate_object_local(Vector3(1,0,0), deg2rad(-pitch))
+		rotate_y(deg_to_rad(-yaw))
+		rotate_object_local(Vector3(1,0,0), deg_to_rad(-pitch))

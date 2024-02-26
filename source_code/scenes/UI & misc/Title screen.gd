@@ -25,22 +25,22 @@ The purpose of this code is to beautify the UI programmatically
 
 
 #changes Title Screen Art using Global Screen Orientation
-onready var art1 :  TextureRect = $TextureRect
-onready var art2 :  TextureRect = $TextureRect
-onready var art3 :  TextureRect = $Sprite
+@onready var art1 :  TextureRect = $TextureRect
+@onready var art2 :  TextureRect = $TextureRect
+@onready var art3 :  TextureRect = $Sprite2D
 
-onready var menu : TouchScreenButton = $menu
+@onready var menu : TouchScreenButton = $menu
 #onready var notifications : Popup = $Notification2
-onready var logo : TextureRect = $logo
-onready var _ad_placeholder : Appodeal = $Appodeal
-onready var _comic_placehlder : Control = $Control
-onready var _menu = $"Menu "
-onready var _viewport : Viewport = $Viewport
-onready var title_nodes : Array = [art1, art2, art3,_viewport,menu,logo,_ad_placeholder,_menu, _comic_placehlder]
+@onready var logo : TextureRect = $logo
+@onready var _ad_placeholder : Appodeal = $Appodeal
+@onready var _comic_placehlder : Control = $Control
+@onready var _menu = $"Menu "
+@onready var _viewport : SubViewport = $SubViewport
+@onready var title_nodes : Array = [art1, art2, art3,_viewport,menu,logo,_ad_placeholder,_menu, _comic_placehlder]
 
 #res://scenes/UI & misc/controls_illustration.gd
 # 3D in 2D
-onready var viewport = $Viewport
+@onready var viewport = $SubViewport
 #onready var _tex = $Sprite
 
 func _ready():

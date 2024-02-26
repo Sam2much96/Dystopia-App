@@ -35,14 +35,14 @@ var EnemyObjPool : Array = [] #Stores shared pointer to enemy Mob instances
 # Has a problem with saving Text files
 # Has a problem with Large files (Decompression is really slow)
 
-class Zip extends Reference:
-	func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PoolByteArray:
+class Zip extends RefCounted:
+	func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PackedByteArray:
 		# Instance the gdunzip script
 		var gdunzip = load('res://addons/gdunzip/gdunzip.gd').new()
-		var FileCheck1 = File.new()
+		var FileCheck1 = FileAccess
 		
 		#"Compression/Uncompression"
-		var unziped_file : PoolByteArray
+		var unziped_file : PackedByteArray
 		# Singleton GDUNzip is Depreciated
 		#var loaded = Gdunzip.load(FILE)
 		
@@ -95,7 +95,7 @@ class Zip extends Reference:
 
 
 
-class Player_utils extends Reference:
+class Player_utils extends RefCounted:
 	
 	
 	
@@ -105,8 +105,8 @@ class Player_utils extends Reference:
 	#	
 	# Rewrite into a separate function
 		Globals.players.append( scene_tree.get_nodes_in_group('player') )#gets all player nodes in the scene
-	 #it shows deleted object once player is despawns.
-		if Globals.players.empty() == true: #error catcher 1            
+		#it shows deleted object once player is despawns.
+		if Globals.players.is_empty() == true: #error catcher 1            
 			Globals.players.clear()
 		#
 		if Globals.player == null:
@@ -127,7 +127,7 @@ func randomize_enemy_type() -> String:
 
 
 "Memory Leak/ Orphaned Nodes Management System"
-class MemoryManagement extends Reference :
+class MemoryManagement extends RefCounted :
 	# To-Do: Method Should Implement a THread
 	
 	static func queue_free_children(node: Node) -> void:
@@ -149,13 +149,13 @@ class MemoryManagement extends Reference :
 				i.queue_free()
 
 	#prints all orphaned nodes in project
-	static func memory_leak_management(from : Node):
-		return from.print_stray_nodes() 
+	static func memory_leak_management(from : Node) -> void:
+		from.print_orphan_nodes() 
 
 
 "Functions Class"
 
-class Functions extends Reference:
+class Functions extends RefCounted:
 	# Shared Functions Class
 	
 
@@ -167,11 +167,11 @@ class Functions extends Reference:
 
 	
 	
-	static func change_scene_to(scene : PackedScene, tree : SceneTree): #Loads scenes faster?
+	static func change_scene_to_packed(scene : PackedScene, tree : SceneTree): #Loads scenes faster?
 		
 		#if scene is PackedScene: 
 			if scene != null: 
-				return tree.change_scene_to(scene)  
+				return tree.change_scene_to_packed(scene)  
 
 			else: print_debug (scene," ", typeof(scene) ,"is not supported in this function")
 	
@@ -179,7 +179,7 @@ class Functions extends Reference:
 	static func LoadLargeScene(
 		_to_load : String, 
 		scene_resource : PackedScene, 
-		_o : ResourceInteractiveLoader, 
+		_o : ResourceLoader, 
 		scene_loader : ResourceLoader, 
 		loading_resource : bool, 
 		a: int , 
@@ -189,17 +189,17 @@ class Functions extends Reference:
 		
 		if _to_load != "" && scene_resource == null:
 			var time_max = 50000 #sets an estimate maximum time to load scene
-			var t = OS.get_ticks_msec()
+			var t = Time.get_ticks_msec()
 			
 			#scene_loader.load_interactive(_r) 
 			
-			_o= (scene_loader.load_interactive(_to_load)) #function returns a resourceInteractiveLoader
+			_o= (scene_loader.load_threaded_request(_to_load)) #function returns a resourceInteractiveLoader
 
-			scene_loader.load_interactive(_to_load) #function returns a resourceInteractiveLoader
+			scene_loader.load_threaded_request(_to_load) #function returns a resourceInteractiveLoader
 			
 		
 			print (" Loader Debug Outer loop >>> Inner Loop")
-			while OS.get_ticks_msec() < (t + time_max) && _o != null: 
+			while Time.get_ticks_msec() < (t + time_max) && _o != null: 
 
 				var err = _o.poll()
 				#loading_resource = true
@@ -217,7 +217,6 @@ class Functions extends Reference:
 					#turn_off_processing("off") #introduces bugs
 					
 					break
-					#return _q
 				elif err == OK: #works
 					a = _o.get_stage()
 					b = _o.get_stage_count() 
@@ -256,30 +255,30 @@ class Functions extends Reference:
 		
 		print ("-------Saving Game -------")
 		var save_dict : Dictionary = {}
-		var save_game = File.new()
-		save_game.open("user://savegeme.save", File.WRITE_READ)
-		if !player.empty():
+		var save_game = FileAccess.open("user://savegeme.save", File.WRITE_READ)
+		
+		if !player.is_empty():
 			save_dict.player = player #saves the player node 
 		if spawn_x != 0:
 			save_dict.spawn_x = spawn_x
 		if spawn_y != 0:
 			save_dict.spawn_y =spawn_y
-		if not current_level.empty() :
+		if not current_level.is_empty() :
 			save_dict.current_level = current_level
 		
 		# Inventory List is saved individually
-		if !Inventory.list().empty():
+		if !Inventory.list().is_empty():
 			save_dict.inventory = Inventory.list()
-		if !Quest.get_quest_list().empty():
+		if !Quest.get_quest_list().is_empty():
 			save_dict.quests = Quest.get_quest_list()
-		if not os.empty():
+		if not os.is_empty():
 			save_dict.os = os
 		if kill_count != 0 :
 			save_dict.kill_count = kill_count
 		#save_dict.currency = Suds #should load from encrypted wallet.cfg
 		
 		# For preserving scene changing information
-		if not prev_scene.empty() :
+		if not prev_scene.is_empty() :
 			save_dict.prev_scene = prev_scene
 			
 		if prev_scene_spawnpoint != null: # Depreciate in favor of a singular spawpoint variable
@@ -287,7 +286,7 @@ class Functions extends Reference:
 		
 		if player_hitpoints != 0:
 			save_dict.player_hitpoints = player_hitpoints
-		if not direction_control.empty():
+		if not direction_control.is_empty():
 			save_dict.direction_control = direction_control
 		
 		#Music on settings is a boolean converted to int
@@ -295,14 +294,14 @@ class Functions extends Reference:
 			save_dict.music = int(Music.music_on) #add other variables to save
 		
 		# Language is saved independently
-		if not Dialogs.language.empty():
+		if not Dialogs.language.is_empty():
 			save_dict.languague = Dialogs.language
 		
 		# Control Settings
 		# Vibration
 		save_dict.vibrate = GlobalInput.vibrate
 		
-		save_game.store_line(to_json(save_dict))
+		save_game.store_line(JSON.new().stringify(save_dict))
 		save_game.close()
 		print ("saved gameplay")
 		return true
@@ -320,7 +319,9 @@ class Functions extends Reference:
 		if not save_game.file_exists("user://savegeme.save"):
 			return false
 		save_game.open("user://savegeme.save", File.READ)
-		var save_dict = parse_json(save_game.get_line())
+		var test_json_conv = JSON.new()
+		test_json_conv.parse(save_game.get_line())
+		var save_dict = test_json_conv.get_data()
 		if typeof(save_dict) != TYPE_DICTIONARY:
 			return false
 		if not check_only:
@@ -375,7 +376,7 @@ class Functions extends Reference:
 		if save_dict.has('current_level'):
 			GlobalScript.current_level = save_dict.current_level
 		
-		 
+ 
 		"Scene Loader"
 		if save_dict.has('prev_scene'):
 			# Presumably a bugfix for scene changing
@@ -411,7 +412,9 @@ class Functions extends Reference:
 		if not save_game.file_exists("user://savegeme.save"):
 			return false
 		save_game.open("user://savegeme.save", File.READ)
-		var save_dict = parse_json(save_game.get_line())
+		var test_json_conv = JSON.new()
+		test_json_conv.parse(save_game.get_line())
+		var save_dict = test_json_conv.get_data()
 		if typeof(save_dict) != TYPE_DICTIONARY:
 			return false
 
@@ -447,7 +450,7 @@ class Functions extends Reference:
 
 		return Vector2(length, breadth)
  
-	static func edge_length(point_data: PoolVector2Array) -> Vector2:
+	static func edge_length(point_data: PackedVector2Array) -> Vector2:
 	# Caclulates the Edge Length of a 4 Point Structure
 	# Calculates the distance between 2 points
 	# Source : https://stackoverflow.com/questions/7475004/calculate-width-and-height-from-4-points-of-a-polygon
@@ -456,18 +459,18 @@ class Functions extends Reference:
 		return Vector2(width, height)
 
 "Screen Class "
-class Screen extends Reference :
+class Screen extends RefCounted :
 	var screenOrientation : int
-	var screenOrientationSettings : int = OS.get_screen_orientation()
+	var screenOrientationSettings : int = DisplayServer.screen_get_orientation()
 	# Should Get Screen Size, Screen Scale and All screen properties
 	# Should Debug this data to the Debug Singleton
 	# Should only be called once
 	static func debug_screen_properties():
-		print ('OS Screen Orientation: ', OS.get_screen_orientation())
+		print ('OS Screen Orientation: ', DisplayServer.screen_get_orientation())
 		print('Global Screen Orientation: ',Globals.screenOrientation)
 		# match this variable to Global Screen Orientation
-		print ('Screen Size 1: ',OS.get_screen_size(-1)) #yes. This variable changes when screen rotates
-		print ('Screen Scale: ',OS.get_screen_scale())
+		print ('Screen Size 1: ',DisplayServer.screen_get_size(-1)) #yes. This variable changes when screen rotates
+		print ('Screen Scale: ',DisplayServer.screen_get_scale())
 		pass
 
 
@@ -476,7 +479,7 @@ class Screen extends Reference :
 		
 		
 		'Algorithm for Calculating Screen Orientation'
-		var screen : Vector2 =OS.get_screen_size(-1)
+		var screen : Vector2 =DisplayServer.screen_get_size(-1)
 		
 		
 		# screen orientation enum copied from Globals main
@@ -530,7 +533,7 @@ class Screen extends Reference :
 			GlobalScript.viewport_size = calculateViewportSize(display)
 			#Globals.center_of_viewport = Globals.calc_center_of_rectangle(Globals.viewport_size)
 			
-		if display is Viewport:
+		if display is SubViewport:
 			GlobalScript.viewport_size = display.size
 		
 		
@@ -640,7 +643,7 @@ class Screen extends Reference :
 	# Deprecoated
 	static func resize_window(x : int,y : int): #resizes the game window
 		Globals.screenSize = Vector2(x,y);
-		return OS.set_window_size(Vector2(x,y));
+		return get_window().set_size(Vector2(x,y));
 
 	# Convert bytes to Megabytes
 	static func _ram_convert(bytes) :
@@ -650,11 +653,11 @@ class Screen extends Reference :
 
 
 "Procedural Generation"
-class procedural extends Reference:
+class procedural extends RefCounted:
 	# Bug: Maxes Out Static Memory, Refactoring to use dynamic memeory instead
 	#
 	
-	static func genereate(simplex_noise : OpenSimplexNoise, 
+	static func genereate(simplex_noise : FastNoiseLite, 
 	world_seed : String, 
 	noise_octaves : int, 
 	noise_period : int, 
@@ -669,7 +672,7 @@ class procedural extends Reference:
 		simplex_noise.seed = world_seed.hash()
 		
 		# set simplex noise using Editor values
-		simplex_noise.octaves = noise_octaves
+		simplex_noise.fractal_octaves = noise_octaves
 		simplex_noise.period = noise_period
 		simplex_noise.persistence = noise_persistence
 		simplex_noise.lacunarity = noise_lacunarity
@@ -711,7 +714,7 @@ class procedural extends Reference:
 
 'Delete Files'
 func delete_local_file(path_to_file: String) -> void:
-	var dir = Directory.new()
+	var dir = DirAccess.open(path_to_file)
 	if dir.file_exists(path_to_file):
 		dir.remove(path_to_file)
 		dir.queue_free()
@@ -761,8 +764,8 @@ func calc_average(list: Array):
 # Global file checking method for DIrectory path and file name/type
 # Copied from Wallet's Implementation
 func check_files(path_to_dir: String, path_to_file : String)-> bool:
-	var FileCheck1=File.new() # checks wallet mnemonic
-	var FileDirectory=Directory.new() #deletes all theon reset
+	var FileCheck1=FileAccess # checks wallet mnemonic
+	var FileDirectory=DirAccess.open(path_to_dir) #deletes all theon reset
 	if FileDirectory.dir_exists(path_to_dir):
 		#print ("File Exists: ",FileCheck1.file_exists(path_to_file)) # For debug purposes only
 		return FileCheck1.file_exists(path_to_file)
@@ -774,7 +777,7 @@ func check_files(path_to_dir: String, path_to_file : String)-> bool:
 
 		# Updates the raycast to the Enemy"s Direction
 static func rotate_pointer(point_direction: Vector2, pointer) -> void:
-	var temp =rad2deg(atan2(point_direction.x, point_direction.y))
+	var temp =rad_to_deg(atan2(point_direction.x, point_direction.y))
 	pointer.rotation_degrees = temp
 
 

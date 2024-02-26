@@ -89,7 +89,7 @@ var Player_account_temp: Array =[]
 #************Wallet variables**************#
 
 var amount : int
-export (String) var address #: String
+@export (String) var address #: String
 var mnemonic : String
 
 var recievers_addr : String = '' #for transactions
@@ -99,7 +99,7 @@ var _asset_id :int = 0 # used for asset transactions
 var smart_contract_addr : String = ""
 var _app_id : int = 0
 var _app_args : String = ""
-var encoded_mnemonic : PoolByteArray
+var encoded_mnemonic : PackedByteArray
 var encrypted_mnemonic 
 
 var _wallet_algos: int
@@ -122,12 +122,12 @@ var UserData : Dictionary = {
 
 #************File Checkers*************#
 var FileCheck1=File.new() #checks account info
-var FileCheck2=File.new() #checks NFT metadata .json
+var FileCheck2=File.new() #checks NFT metadata super.json
 var FileCheck3=File.new()#checks local image storage
 var FileCheck4=File.new() # checks wallet mnemonic
 
 
-var FileDirectory=Directory.new() #deletes all theon reset
+var FileDirectory=DirAccess.new() #deletes all theon reset
 
 
 #***********Escrow*****************#
@@ -138,7 +138,7 @@ var WITHDRAW : bool = false
 var token_write_path : String = "user://wallet/account_info.token" #creating directory bugs out
 var token_dir : String = "user://wallet"
 
-export (String) var local_image_path ="user://wallet/img0.png" #Loads the image file path from a folder to prevent redownloads (depreciated)
+@export (String) var local_image_path ="user://wallet/img0.png" #Loads the image file path from a folder to prevent redownloads (depreciated)
 var local_image_file : String = "user://wallet/img0.png.png" 
 
 
@@ -149,7 +149,7 @@ var local_image_file : String = "user://wallet/img0.png.png"
 "State Machine"
 
 enum {NEW_ACCOUNT,CHECK_ACCOUNT, SHOW_ACCOUNT, IMPORT_ACCOUNT, TRANSACTIONS ,COLLECTIBLES, SMARTCONTRACTS, IDLE, PASSWORD, SHOW_MNEMONIC}
-export var state = IDLE
+@export var state = IDLE
 
 var wallet_check : int = 0
 var wallet_check_counter : int = 0
@@ -182,8 +182,8 @@ signal transaction
 
 #************ All Used Nodes in Wallet Scene**********************#
 #onready var timer = $Timer #depreciated
-onready var q = HTTPRequest.new()
-onready var q2 = HTTPRequest.new()
+@onready var q = HTTPRequest.new()
+@onready var q2 = HTTPRequest.new()
 
  
 var Algorand : Algodot
@@ -237,7 +237,7 @@ var smartcontract_ui_args_lineEdit : LineEdit
 #*****Collectible UI*******#
 var NFT : TextureRect
 var pfp : TextureRect
-var kinematic2d : KinematicBody2D  # for NFT dragNdrop
+var kinematic2d : CharacterBody2D  # for NFT dragNdrop
 var NFT_index_label : Label #Displays Asset Index
 var Asset_UI_index : Label
 var Asset_UI_amount : Label
@@ -373,7 +373,7 @@ func __ready():
 	" Shows Login UI"
 	
 	#if user first boots app
-	if OS.get_ticks_msec() < 10_000: 
+	if Time.get_ticks_msec() < 10_000: 
 		self.state_controller.select(6) #show password login
 
 
@@ -396,32 +396,32 @@ func __ready():
 #			return self.state_controller.select(3) # Return to Transaction UI
 
 	
-	txn_txn_valid_button.connect("pressed", self, "_on_txn_txn_valid_button_pressed")
+	txn_txn_valid_button.connect("pressed", Callable(self, "_on_txn_txn_valid_button_pressed"))
 
-	smartcontract_UI_button.connect("pressed", self, "_on_smart_contract_UI_button_pressed")
+	smartcontract_UI_button.connect("pressed", Callable(self, "_on_smart_contract_UI_button_pressed"))
 
 
-	password_Entered_Button.connect("pressed", self, "_on_password_entered_pressed")
+	password_Entered_Button.connect("pressed", Callable(self, "_on_password_entered_pressed"))
 
-	CreatAccountSuccessful_Proceed_home_button.connect("pressed", self, "_on_cr8_Acct_Successfull_Homebutton_pressed")
-	CreatAccountSuccessful_Copy_Mnemonic_button.connect("pressed", self, "_on_cr8_Acct_Successfull_CopySK_pressed" )
+	CreatAccountSuccessful_Proceed_home_button.connect("pressed", Callable(self, "_on_cr8_Acct_Successfull_Homebutton_pressed"))
+	CreatAccountSuccessful_Copy_Mnemonic_button.connect("pressed", Callable(self, "_on_cr8_Acct_Successfull_CopySK_pressed"))
 
 		
 		
 		
-	fund_Acct_Button.connect("pressed", self, "_on_fund_Acct_Button_pressed")
+	fund_Acct_Button.connect("pressed", Callable(self, "_on_fund_Acct_Button_pressed"))
 	
 #		if make_Payment_Button.pressed:
 #			self.state_controller.select(3)
-	_Create_Acct_button.connect("pressed", self,"_on_create_acc_button_pressed") # Null Button Error
-	imported_mnemonic_button.connect("pressed", self, "_on_mnemonic_pressed")
-	funding_success_close_button.connect("pressed", self, "on_funding_success_close")
+	_Create_Acct_button.connect("pressed", Callable(self, "_on_create_acc_button_pressed")) # Null Button Error
+	imported_mnemonic_button.connect("pressed", Callable(self, "_on_mnemonic_pressed"))
+	funding_success_close_button.connect("pressed", Callable(self, "on_funding_success_close"))
 
 
 
 #			#************PassWord UI**********#
 	for i in passward_UI_Buttons:
-		i.connect("pressed", self, "_on_pass_buttons_pressed")
+		i.connect("pressed", Callable(self, "_on_pass_buttons_pressed"))
 
 
 
@@ -536,7 +536,7 @@ func _process(delta):
 				print ("File directory" + token_dir + " doesn't exist") # for debug purposes only
 				
 				
-				"Creates Wallet Directory if it doesn't exist"
+				"Creates Wallet DirAccess if it doesn't exist"
 				
 				
 				create_wallet_directory()
@@ -587,7 +587,7 @@ func _process(delta):
 				if self.Algorand.algod == null:
 					self.Algorand.create_algod_node('TESTNET')
 				var status : bool
-				status= yield(self.Algorand.algod.health(), "completed")
+				status= await self.Algorand.algod.health().completed
 				
 				#print ("Status debug: ", status,' ',wallet_check_counter) #for debug purposes only
 				
@@ -798,7 +798,7 @@ func _process(delta):
 							self.Algorand.create_algod_node('TESTNET')
 							#var status
 						var status : bool
-						status= yield(self.Algorand.algod.health(), "completed")
+						status= await self.Algorand.algod.health().completed
 						
 						print ("Status debug: ", status,' ',wallet_check_counter)
 						
@@ -952,12 +952,12 @@ func run_wallet_checks()-> bool: # works
 	wallet_check_counter+= 1
 	#var status
 	var status : bool
-	status= yield(self.Algorand.algod.health(), "completed")
+	status= await self.Algorand.algod.health().completed
 	
 	print ("Status debug:" , status, wallet_check_counter,  "good internet:", Networking.good_internet)
 	
 	#calculates suggested parameters for all transactions
-	params = yield(self.Algorand.algod.suggested_transaction_params(), "completed") #works
+	params = await self.Algorand.algod.suggested_transaction_params().completed #works
 	
 	
 	if status:
@@ -984,7 +984,7 @@ func run_wallet_checks()-> bool: # works
 	'Fixes account token 0 bytes bug'
 	if FileDirectory.file_exists(token_write_path ):
 		FileCheck1.open(token_write_path ,File.READ)
-		if FileCheck1.get_len() == 0: #prevents a  0 bytes error
+		if FileCheck1.get_length() == 0: #prevents a  0 bytes error
 			FileCheck1.close()
 			FileDirectory.remove(token_write_path ) #use Globals delete function instead
 
@@ -1069,7 +1069,7 @@ func save_account_info( info : Dictionary, number: int)-> bool:
 		else: pass
 		
 		
-		FileCheck1.store_line(to_json(save_dict))
+		FileCheck1.store_line(JSON.new().stringify(save_dict))
 		FileCheck1.close()
 		
 		print ("saved account info 1")
@@ -1095,11 +1095,11 @@ func _http_request_completed(result, response_code, headers, body): #works with 
 	print (" headers 1: ", headers)#*************for debug purposes only
 	print (" response code 1: ", response_code) #for debug purposes only
 	
-	if not body.empty():
+	if not body.is_empty():
 		Networking.good_internet = true
 	
 	
-	if body.empty(): #returns an empty body
+	if body.is_empty(): #returns an empty body
 		push_error("Result Unsuccessful")
 		Networking.good_internet = false
 		#Networking.stop_check()
@@ -1111,7 +1111,7 @@ func _http_request_completed(result, response_code, headers, body): #works with 
 
 func _http_request_completed_2(result, response_code, headers, body): 
 	print (" response code 2: ", response_code) #for debug purposes only
-	if !body.empty() && !is_image_available_at_local_storage:
+	if !body.is_empty() && !is_image_available_at_local_storage:
 	
 	#if not is_image_available_at_local_storage: 
 		"Should Parse the NFT's meta-data to get the image ink"
@@ -1123,7 +1123,7 @@ func _http_request_completed_2(result, response_code, headers, body):
 		
 		#check if body is image type
 		set_image_(Networking.download_image_(body, local_image_path,q2)) #works
-	if body.empty():
+	if body.is_empty():
 		push_error("Problem downloading Image ")
 
 
@@ -1159,7 +1159,7 @@ func _on_reset():
 
 func create_wallet_directory()-> void:
 # Creates a Wallet folder.
-	print (" Creating Wallet Directory")
+	print (" Creating Wallet DirAccess")
 	if not FileDirectory. dir_exists(token_dir):
 		FileDirectory.make_dir(token_dir)
 	else: return 
@@ -1371,7 +1371,7 @@ func txn(): #runs presaved transactions once wallet is ready
 	if recievers_addr != '' && _amount >= 100_000:
 		print ('Transaction Debug: ',recievers_addr, '/','amount: ',_amount, '/', 'txn check', txn_check)
 		
-		yield(self.Algorand._send_txn_to_receiver_addr(params,mnemonic,recievers_addr, _amount), "completed")
+		await self.Algorand._send_txn_to_receiver_addr(params,mnemonic,recievers_addr, _amount).completed
 
 		#reset transaction details
 		recievers_addr = ''
@@ -1395,7 +1395,7 @@ func txn(): #runs presaved transactions once wallet is ready
 			print (' Asset Txn Debug: ',recievers_addr, '/','asset id: ',_asset_id, '/', 'txn check', txn_check)
 		
 			#can be used to send both NFT's and Tokens
-			yield(self.Algorand.transferAssets(params,mnemonic, recievers_addr,_asset_id, _amount), "completed")
+			await self.Algorand.transferAssets(params,mnemonic, recievers_addr,_asset_id, _amount).completed
 			
 			#reset transaction details
 			reset_transaction_parameters()
@@ -1418,7 +1418,7 @@ func txn(): #runs presaved transactions once wallet is ready
 			print (' Asset Txn Debug: ',recievers_addr, '/','asset id: ',_asset_id, '/', 'txn check', txn_check)
 			
 			#can be used to send both NFT's and Tokens
-			yield(self.Algorand.transferAssets(params,mnemonic, recievers_addr,_asset_id, _amount), "completed")
+			await self.Algorand.transferAssets(params,mnemonic, recievers_addr,_asset_id, _amount).completed
 			
 			#reset transaction details
 			reset_transaction_parameters()
@@ -1478,7 +1478,7 @@ func escrow_withdrawal(params):
 		
 		
 		# Async Method
-		var p : Dictionary = yield(self.Algorand.algod.construct_atc(params, UserData.get("address"), UserData.get("mnemonic") ,app_id, app_arg ), "completed")
+		var p : Dictionary = await self.Algorand.algod.construct_atc(params, UserData.get("address"), UserData.get("mnemonic") ,app_id, app_arg ).completed
 		
 		#Implement txid from reference in Algodot
 		#var txid = Algorand.algod.execute(t)]
@@ -1522,7 +1522,7 @@ func reset_transaction_parameters():
 #	pass
 
 "UI Methods as a Class"
-class Functions extends Reference:
+class Functions extends RefCounted:
 	# Requires logic to sort calling methods for Different node types
 	# Requires Memory Pointers to Wallet Scene Nodes
 	# Should loop through all UI elements
@@ -1564,30 +1564,30 @@ class Functions extends Reference:
 	static func connect_signals(q: HTTPRequest, q2: HTTPRequest, node) : #connects all required signals in the parent node
 		print ("Connect Networking Signls please")
 		#checks internet connectivity
-		if not q.is_connected("request_completed", node, "_http_request_completed"):
-			return q.connect("request_completed", node, "_http_request_completed")
+		if not q.is_connected("request_completed", Callable(node, "_http_request_completed")):
+			return q.connect("request_completed", Callable(node, "_http_request_completed"))
 			#return q.connect("request_completed", self, "_http_request_completed")
 
 		#checks Image downloader
-		if not q2.is_connected("request_completed", node, "_http_request_completed_2"):
-			return q2.connect("request_completed", node, "_http_request_completed_2")
+		if not q2.is_connected("request_completed", Callable(node, "_http_request_completed_2")):
+			return q2.connect("request_completed", Callable(node, "_http_request_completed_2"))
 
 	static func connect_signals_statecontroller(t: OptionButton, node ) -> bool :#fixes stuck input bug
 		print_debug ("Connect StateCOntroller Signls")
 		#checks internet connectivity
-		if not t.is_connected("button_up", node, "on_processing"):
-			t.connect("button_up", node, "on_processing")
-			return t.is_connected("button_up", node, "on_processing")
+		if not t.is_connected("button_up", Callable(node, "on_processing")):
+			t.connect("button_up", Callable(node, "on_processing"))
+			return t.is_connected("button_up", Callable(node, "on_processing"))
 
-		if not t.is_connected("button_down", node, "off_processing"):
-			t.connect("button_down", node, "off_processing")
-			return t.is_connected("button_down", node, "off_processing")
+		if not t.is_connected("button_down", Callable(node, "off_processing")):
+			t.connect("button_down", Callable(node, "off_processing"))
+			return t.is_connected("button_down", Callable(node, "off_processing"))
 
 		else : return false
 
 	static func debug_signal_connections(q : HTTPRequest, node)->void:
 		#debuggers
-		print("Networking Connected: ",q.is_connected("request_completed", node, "_http_request_completed"))
+		print("Networking Connected: ",q.is_connected("request_completed", Callable(node, "_http_request_completed")))
 		print ("please connect Networking Signals")
 
 
@@ -1601,7 +1601,7 @@ class Functions extends Reference:
 			Networking._check_if_device_is_online(q)
 
 
-	static func check_local_wallet_directory( FileDirectory : Directory, path : String)-> bool:
+	static func check_local_wallet_directory( FileDirectory : DirAccess, path : String)-> bool:
 		return FileDirectory. dir_exists(path)
 
 
@@ -1630,9 +1630,9 @@ class Functions extends Reference:
 		if load_from_local_wallet== false:
 			print ('loading account info from Algorand Blockchain')
 			
-			var account_info : Dictionary = (yield(Algorand._check_account_information(UserData.address, UserData.mnemonic, ""), "completed"))
+			var account_info : Dictionary = (await Algorand._check_account_information(UserData.address, UserData.mnemonic, "").completed)
 			
-			if not account_info.empty() :
+			if not account_info.is_empty() :
 				account_address.text   = account_info['address']
 				#ingame_algos.text = str(Globals.algos)
 				wallet_algos.text = account_info['amount']
@@ -1640,7 +1640,7 @@ class Functions extends Reference:
 
 
 "Encryption & Decryption Algorithms"
-class Encryption extends Reference:
+class Encryption extends RefCounted:
 	
 	#'Encryption and Decryption ALgorithms'
 	# cryptographically encrypt users mnemonic
@@ -1652,7 +1652,7 @@ class Encryption extends Reference:
 		return binary
 
 
-	static func convert_binary_to_string(binary : PoolByteArray)-> String:
+	static func convert_binary_to_string(binary : PackedByteArray)-> String:
 		var string : String
 		string =binary.get_string_from_utf8()
 		#print (string)# for debug purposes only
@@ -1661,9 +1661,9 @@ class Encryption extends Reference:
 
 "Wallet Functions"
 
-class Wallet extends Reference:
+class Wallet extends RefCounted:
 	
-	static func check_wallet_info(algod_node : Algod, UserData: Dictionary, account_info : Dictionary,FileDirectory : Directory, token_dir : String, wallet_script ) -> int: #works. Pass a variable check
+	static func check_wallet_info(algod_node : Algod, UserData: Dictionary, account_info : Dictionary,FileDirectory : DirAccess, token_dir : String, wallet_script ) -> int: #works. Pass a variable check
 		#check if wallet token exits
 		# check if Internet is OK
 		#THen checks wallet account information
@@ -1676,7 +1676,7 @@ class Wallet extends Reference:
 		# String Comparisons are 
 		if UserData.address && UserData.mnemonic != "" && Functions.check_local_wallet_directory(FileDirectory,token_dir) && Networking.good_internet : 
 			#print (Algorand.algod)
-			account_info = yield(algod_node.account_information(UserData.address), "completed")
+			account_info = await algod_node.account_information(UserData.address).completed
 			#account_info = self.Algorand.algod.account_information(address)
 			wallet_script.save_account_info(account_info, 0) #testing  
 			print ("acct info: ",account_info) #for debug purposes only 
@@ -1712,7 +1712,9 @@ class Wallet extends Reference:
 			
 		FileCheck.open(token_write_path, File.READ)
 		
-		var load_dict = parse_json(FileCheck.get_line())
+		var test_json_conv = JSON.new()
+		test_json_conv.parse(FileCheck.get_line())
+		var load_dict = test_json_conv.get_data()
 		if typeof(load_dict) != TYPE_DICTIONARY:
 			return empty
 		if not check_only:

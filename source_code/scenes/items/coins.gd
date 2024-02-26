@@ -18,22 +18,22 @@ class_name coins
 Coins
 """
 
-export(String) var item_type = "Coins"
-export(int) var amount #microalgos
+@export var item_type: String = "Coins"
+@export var amount: int #microalgos
 
 
 var status
 
-onready var anims : AnimationPlayer = $anims
-onready var timer : Timer = $Timer
+@onready var anims : AnimationPlayer = $anims
+@onready var timer : Timer = $Timer
 
-onready var sub_nodes : Array = [anims]
+@onready var sub_nodes : Array = [anims]
 
 func _ready():
 	# COnnect Signals
 	
-	connect("body_entered", self, "_on_Item_body_entered")
-	timer.connect("timeout", self, "_on_timer_timeout")
+	connect("body_entered", Callable(self, "_on_Item_body_entered"))
+	timer.connect("timeout", Callable(self, "_on_timer_timeout"))
 	
 	
 	anims.play("spawn")

@@ -24,20 +24,20 @@
 #
 # *************************************************
 
-extends Position2D
+extends Marker2D
 
 class_name enemy_spawner
 
 
-export (bool) var enabled 
-export (int) var _hitpoints 
-export (String, 'Easy', "Intermediate", "Hard") var enemy_type
-export (PackedScene) var enemy_spawn_1
+@export (bool) var enabled 
+@export (int) var _hitpoints 
+@export (String, 'Easy', "Intermediate", "Hard") var enemy_type
+@export (PackedScene) var enemy_spawn_1
 
 
-onready var position_in_area : Vector2 = self.position #origin point
-onready var anim : AnimationPlayer = $AnimationPlayer
-onready var cool_down: Timer = $COOL_DOWN
+@onready var position_in_area : Vector2 = self.position #origin point
+@onready var anim : AnimationPlayer = $AnimationPlayer
+@onready var cool_down: Timer = $COOL_DOWN
 #var enemy = load('res://scenes/characters/Bandits.tscn') 
 
 # Frame Counter
@@ -46,23 +46,23 @@ var frame_counter : int = 0
 
 # Boolean For Triggering Spawning
 var SPAWNNING : bool = false
-export(int) var spawn_count 
+@export var spawn_count: int 
 
-onready var area : Area2D = $Area2D
+@onready var area : Area2D = $Area2D
 
 var idol = Idol
 var savepoint = idol.new()
 
 func _ready():
 	# connect signals
-	area.connect("area_entered", self, "_on_Area2D_body_entered")
-	area.connect("area_exited", self, "_on_Area2D_body_exited")
+	area.connect("area_entered", Callable(self, "_on_Area2D_body_entered"))
+	area.connect("area_exited", Callable(self, "_on_Area2D_body_exited"))
 	
 	# Debug Signal Connections
 	
 	if not (
-	area.is_connected("area_entered", self, "_on_Area2D_body_entered") and
-	area.is_connected("area_exited", self, "_on_Area2D_body_exited") 
+	area.is_connected("area_entered", Callable(self, "_on_Area2D_body_entered")) and
+	area.is_connected("area_exited", Callable(self, "_on_Area2D_body_exited")) 
 	):
 		push_error("Debug Enemy Spawner Signals")
 	
@@ -82,7 +82,7 @@ func spawn_enemy() -> void:
 			spawn_count -= 1
 
 			#spawn an object in the position
-			var spawn = enemy_spawn_1.instance()
+			var spawn = enemy_spawn_1.instantiate()
 			
 			# set Enemy Spawn Parameters
 			spawn.hitpoints = _hitpoints

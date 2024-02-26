@@ -1,6 +1,6 @@
 [gd_scene load_steps=23 format=2]
 
-[ext_resource path="res://scenes/Comics/chapter 2/Chapter 2 The money heist.webp" type="Texture" id=1]
+[ext_resource path="res://scenes/Comics/chapter 2/Chapter 2 The money heist.webp" type="Texture2D" id=1]
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
@@ -110,7 +110,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[node name="chapter_2" type="AnimatedSprite" groups=["comics"]]
+[node name="chapter_2" type="AnimatedSprite2D" groups=["comics"]]
 position = Vector2( 274.291, 8.59684 )
 scale = Vector2( 0.55, 0.55 )
 frames = SubResource( 21 )

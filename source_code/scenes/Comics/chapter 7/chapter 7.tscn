@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://scenes/Comics/chapter 7/chapter_7_spritesheet_webp.webp" type="Texture" id=1]
+[ext_resource path="res://scenes/Comics/chapter 7/chapter_7_spritesheet_webp.webp" type="Texture2D" id=1]
 
 [sub_resource type="AtlasTexture" id=27]
 flags = 4
@@ -55,7 +55,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[node name="chapter 7" type="AnimatedSprite" groups=["comics"]]
+[node name="chapter 7" type="AnimatedSprite2D" groups=["comics"]]
 position = Vector2( -0.611298, -6.2771 )
 scale = Vector2( 1.00879, 1.00879 )
 frames = SubResource( 26 )

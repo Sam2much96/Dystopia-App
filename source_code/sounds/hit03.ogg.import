@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/hit03.ogg-fd2174bf7ac6c6ab51961caf67631da1.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://u2irl1kqpnal"
+path="res://.godot/imported/hit03.ogg-fd2174bf7ac6c6ab51961caf67631da1.oggvorbisstr"
 
 [deps]
 
 source_file="res://sounds/hit03.ogg"
-dest_files=[ "res://.import/hit03.ogg-fd2174bf7ac6c6ab51961caf67631da1.oggstr" ]
+dest_files=["res://.godot/imported/hit03.ogg-fd2174bf7ac6c6ab51961caf67631da1.oggvorbisstr"]
 
 [params]
 
 loop=true
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

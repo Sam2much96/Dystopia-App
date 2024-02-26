@@ -19,13 +19,13 @@ extends Area2D
 
 class_name Pond
 
-export (bool) var enabled
+@export (bool) var enabled
 
-onready var puddle_fx = $Puddle_FX
+@onready var puddle_fx = $Puddle_FX
 
 enum {STATE_ACTIVE, STATE_IDLE}
 
-export var state = STATE_IDLE
+@export var state = STATE_IDLE
 
 var x :float
 var y: float
@@ -33,7 +33,7 @@ var  body_pos
 var puddle_pos
 var final_pos
 
-onready var maxlength : float = $CollisionShape2D.shape.radius
+@onready var maxlength : float = $CollisionShape2D.shape.radius
 
 #Frame Rate COunter
 var frame_counter : int = 0

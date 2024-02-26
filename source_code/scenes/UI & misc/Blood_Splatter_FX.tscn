@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://resources/FX/Blood splatter fx 2.webp" type="Texture" id=1]
+[ext_resource path="res://resources/FX/Blood splatter fx 2.webp" type="Texture2D" id=1]
 [ext_resource path="res://scenes/UI & misc/Blood_Splatter_FX.gd" type="Script" id=2]
 
 [sub_resource type="CanvasItemMaterial" id=1]

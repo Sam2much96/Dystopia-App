@@ -19,7 +19,7 @@ class_name LikeButton
 #get a variable called total like numbers
 # map it to inspector
 
-export(int) var no_of_likes #Get this vatiabe from the networking singleton
+@export var no_of_likes: int #Get this vatiabe from the networking singleton
 
 func _ready():
 	like()

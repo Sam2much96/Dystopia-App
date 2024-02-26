@@ -16,21 +16,21 @@ extends Control
 
 class_name Github
 
-onready var VersionCheck : HTTPRequest = $VersionCheck
+@onready var VersionCheck : HTTPRequest = $VersionCheck
 
-onready var SignIn : Control = $SingIn
-onready var UserPanel : Control = $UserPanel
-onready var CommitRepo : Control = $Commit
-onready var Repo : Control = $Repo
-onready var Gist : Control = $Gist
-onready var Commit : Control = $Commit
-onready var LoadNode : Control = $loading
-onready var Version : Control = $Header/datas/version
-onready var ConnectionIcon : TextureRect = $Header/datas/connection
-onready var Header : Control = $Header
-onready var RestartConnection = Header.get_node("datas/restart_connection")
-onready var Menu : PopupMenu = $Header/datas/Menu.get_popup()
-onready var Notifications : Control = $Notifications
+@onready var SignIn : Control = $SingIn
+@onready var UserPanel : Control = $UserPanel
+@onready var CommitRepo : Control = $Commit
+@onready var Repo : Control = $Repo
+@onready var Gist : Control = $Gist
+@onready var Commit : Control = $Commit
+@onready var LoadNode : Control = $loading
+@onready var Version : Control = $Header/datas/version
+@onready var ConnectionIcon : TextureRect = $Header/datas/connection
+@onready var Header : Control = $Header
+@onready var RestartConnection = Header.get_node("datas/restart_connection")
+@onready var Menu : PopupMenu = $Header/datas/Menu.get_popup()
+@onready var Notifications : Control = $Notifications
 
 var user_avatar : ImageTexture = ImageTexture.new()
 var user_img = Image.new()
@@ -39,15 +39,15 @@ var user_img = Image.new()
 
 # Load Required Scripts as Reference Classes
 # Instance the Rest Handler Class
-onready var RestHandler = $RestHandler #RestHandler.new()
+@onready var RestHandler = $RestHandler #RestHandler.new()
 
 # Instance the User Data Class
-onready var UserData_ = $RestHandler #UserData.new()
+@onready var UserData_ = $RestHandler #UserData.new()
 
 # instance to Plugin Settings
-onready var PluginSettings_ = $PluginSettings #PluginSettings.new()
+@onready var PluginSettings_ = $PluginSettings #PluginSettings.new()
 
-class IconLoaderGithub extends Reference:
+class IconLoaderGithub extends RefCounted:
 # Loads Connection Icons 
 
 
@@ -57,7 +57,7 @@ class IconLoaderGithub extends Reference:
 			var texture = ImageTexture.new()
 			
 			file.open("res://addons/github-integration/icons.pngs/"+icon_name+".png.iconpng", File.READ)
-			var buffer = file.get_buffer(file.get_len())
+			var buffer = file.get_buffer(file.get_length())
 			file.close()
 			
 			image.load_png_from_buffer(buffer)
@@ -84,15 +84,15 @@ func load_config() -> void:
 		plugin_name = "[%s] >> " % config.get_value("plugin","name")
 
 func connect_signals() -> void:
-	Menu.connect("index_pressed", self, "menu_item_pressed")
-	RestartConnection.connect("pressed",self,"check_connection")
-	VersionCheck.connect("request_completed",self,"_on_version_check")
-	SignIn.connect("signed",self,"signed")
-	UserPanel.connect("completed_loading", SignIn, "_on_completed_loading")
-	UserPanel.connect("loaded_gists", Gist, "_on_loaded_repositories")
-	Header.connect("load_invitations", Notifications, "_on_load_invitations_list")
-	Header.notifications_btn.connect("pressed", Notifications, "_open_notifications")
-	Notifications.connect("add_notifications", Header, "_on_add_notifications")
+	Menu.connect("index_pressed", Callable(self, "menu_item_pressed"))
+	RestartConnection.connect("pressed", Callable(self, "check_connection"))
+	VersionCheck.connect("request_completed", Callable(self, "_on_version_check"))
+	SignIn.connect("signed", Callable(self, "signed"))
+	UserPanel.connect("completed_loading", Callable(SignIn, "_on_completed_loading"))
+	UserPanel.connect("loaded_gists", Callable(Gist, "_on_loaded_repositories"))
+	Header.connect("load_invitations", Callable(Notifications, "_on_load_invitations_list"))
+	Header.notifications_btn.connect("pressed", Callable(Notifications, "_open_notifications"))
+	Notifications.connect("add_notifications", Callable(Header, "_on_add_notifications"))
 
 func hide_nodes() -> void:
 	Repo.hide()
@@ -171,7 +171,7 @@ func signed() -> void:
 	UserPanel.load_panel()
 	set_avatar(UserData.AVATAR)
 	set_username(UserData.USER.login)
-	yield(UserPanel, "completed_loading")
+	await UserPanel.completed_loading
 	Notifications.request_notifications()
 
 # Print a debug message if the debug setting is set to "true", with a debug type from 0 to 2
@@ -240,7 +240,9 @@ func set_username(username : String) -> void:
 func _on_version_check(result, response_code, headers, body ) -> void:
 	if result == 0:
 		if response_code == 200:
-			var tags : Array = JSON.parse(body.get_string_from_utf8()).result
+			var test_json_conv = JSON.new()
+			test_json_conv.parse(body.get_string_from_utf8()).result
+			var tags : Array = test_json_conv.get_data()
 			var first_tag : Dictionary = tags[0] as Dictionary
 			if first_tag.name != ("v"+plugin_version):
 				print_debug_message("a new plugin version has been found, current version is %s and new version is %s" % [("v"+plugin_version), first_tag.name],1)
@@ -294,7 +296,7 @@ class RestHandler_ extends Node:
 		'gists':'{ user(login: "%s") { gists(first: %s, orderBy: {field: PUSHED_AT, direction: DESC}, privacy: ALL) { nodes { owner { login } id description resourcePath name stargazerCount isPublic isFork files { encodedName encoding extension name size text } } } } }',
 		'organizations_repositories':'organizations(first:10){nodes{repositories(first:100){nodes{diskUsage name owner { login } description url isFork isPrivate forkCount stargazerCount isInOrganization collaborators(affiliation: DIRECT, first: 100) { nodes {login name avatarUrl} } mentionableUsers(first: 100){ nodes{ login name avatarUrl } } defaultBranchRef { name } refs(refPrefix: "refs/heads/", first: 100){ nodes{ name target { ... on Commit { oid tree { oid } zipballUrl tarballUrl } } } } }}}}'
 	}
-	var header : PoolStringArray = ["Authorization: token "]
+	var header : PackedStringArray = ["Authorization: token "]
 	var api_endpoints : Dictionary = {
 		"github":"https://github.com/",
 		"user":"https://api.github.com/user",
@@ -326,8 +328,8 @@ class RestHandler_ extends Node:
 
 	# Called when the node enters the scene tree for the first time.
 	func _ready():
-		client.connect("request_completed",self,"_on_request_completed")
-		notifications_client.connect("request_completed",self,"_on_notification_request_completed")
+		client.connect("request_completed", Callable(self, "_on_request_completed"))
+		notifications_client.connect("request_completed", Callable(self, "_on_notification_request_completed"))
 		
 		
 
@@ -372,16 +374,20 @@ class RestHandler_ extends Node:
 
 	# Print the GraphQL query from a String to a JSON/String for GraphQL endpoint
 	func print_query(query : String) -> String:
-		return JSON.print( { "query":query } )
+		return JSON.stringify( { "query":query } )
 
 	# Parse the result body to a Dictionary with the requested parameter as the root
-	func parse_body_data(body : PoolByteArray) -> Dictionary:
-		return JSON.parse(body.get_string_from_utf8()).result.data
+	func parse_body_data(body : PackedByteArray) -> Dictionary:
+		var test_json_conv = JSON.new()
+		test_json_conv.parse(body.get_string_from_utf8()).result.data
+		return test_json_conv.get_data()
 
-	func parse_body(body : PoolByteArray) -> Dictionary:
-		return JSON.parse(body.get_string_from_utf8()).result
+	func parse_body(body : PackedByteArray) -> Dictionary:
+		var test_json_conv = JSON.new()
+		test_json_conv.parse(body.get_string_from_utf8()).result
+		return test_json_conv.get_data()
 
-	func _on_notification_request_completed(result: int, response_code: int, headers: PoolStringArray, body: PoolByteArray) -> void:
+	func _on_notification_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 		if result == 0:
 			match response_code:
 				200:
@@ -404,7 +410,7 @@ class RestHandler_ extends Node:
 				422:
 					emit_signal("notification_request_failed", notifications_requesting, parse_body(body))
 
-	func _on_request_completed(result: int, response_code: int, headers: PoolStringArray, body: PoolByteArray) -> void:
+	func _on_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	#	print(JSON.parse(body.get_string_from_utf8()).result)
 		if result == 0:
 			match response_code:
@@ -522,11 +528,11 @@ class RestHandler_ extends Node:
 
 	func request_collaborator(repository_owner : String, repository_name : String, collaborator_name : String, body : Dictionary) -> void:
 		requesting = REQUESTS.INVITE_COLLABORATOR
-		client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/collaborators/"+collaborator_name, UserData.header, true, HTTPClient.METHOD_PUT, JSON.print(body))
+		client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/collaborators/"+collaborator_name, UserData.header, true, HTTPClient.METHOD_PUT, JSON.stringify(body))
 
 	func request_delete_resource(repository_owner : String, repository_name : String, path : String, body : Dictionary) -> void:
 		requesting = REQUESTS.DELETE_RESOURCE
-		client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/contents/"+path, UserData.header, true, HTTPClient.METHOD_DELETE,JSON.print(body))
+		client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/contents/"+path, UserData.header, true, HTTPClient.METHOD_DELETE,JSON.stringify(body))
 
 	func request_delete_repository(repository_owner : String, repository_name : String) -> void:
 		requesting = REQUESTS.DELETE_REPOSITORY
@@ -534,7 +540,7 @@ class RestHandler_ extends Node:
 
 	func request_create_new_branch(repository_owner : String, repository_name : String, body : Dictionary) -> void:
 		requesting = REQUESTS.NEW_BRANCH
-		client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/git/refs",UserData.header, true, HTTPClient.METHOD_POST, JSON.print(body))
+		client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/git/refs",UserData.header, true, HTTPClient.METHOD_POST, JSON.stringify(body))
 
 	func request_invitations_list():
 		notifications_requesting = REQUESTS.INVITATIONS_LIST
@@ -566,7 +572,7 @@ class PluginSettings extends Node:
 	var _loaded : bool = false
 
 	func _check_plugin_path():
-		var dir = Directory.new()
+		var dir = DirAccess.new()
 		if not dir.dir_exists(plugin_path):
 			dir.make_dir(plugin_path)
 			if debug:
@@ -643,9 +649,9 @@ class PluginSettings extends Node:
 
 	func delete_all_files(path : String):
 		var directories = []
-		var dir : Directory = Directory.new()
+		var dir : DirAccess = DirAccess.new()
 		dir.open(path)
-		dir.list_dir_begin(true,false)
+		dir.list_dir_begin() # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 		var file = dir.get_next()
 		while (file != ""):
 			if dir.current_is_dir():
@@ -711,7 +717,7 @@ class UserData extends Node:
 		var file : File = File.new()
 		return (true if file.file_exists(directory+file_name) else false)
 
-	func save(user : Dictionary, avatar : PoolByteArray, auth : String, token : String, mail : String) -> void:
+	func save(user : Dictionary, avatar : PackedByteArray, auth : String, token : String, mail : String) -> void:
 		var file = File.new()
 		
 		if user!=null:
@@ -720,11 +726,11 @@ class UserData extends Node:
 				AUTH = auth
 				TOKEN = token
 				MAIL = mail
-				var formatting : PoolStringArray
+				var formatting : PackedStringArray
 				formatting.append(auth)                     #0
 				formatting.append(mail)                     #1
 				formatting.append(token)                    #2
-				formatting.append(JSON.print(user))         #3
+				formatting.append(JSON.stringify(user))         #3
 				formatting.append(plugin_version)           #4
 				file.store_csv_line(formatting)
 				file.close()
@@ -736,7 +742,7 @@ class UserData extends Node:
 		
 		header = ["Authorization: Token "+token]
 
-	func save_avatar(avatar : PoolByteArray):
+	func save_avatar(avatar : PackedByteArray):
 		var file : File = File.new()
 		if avatar == null:
 			return
@@ -769,9 +775,9 @@ class UserData extends Node:
 		else:
 			AVATAR = null
 
-	func load_user() -> PoolStringArray :
+	func load_user() -> PackedStringArray :
 		var file = File.new()
-		var content : PoolStringArray
+		var content : PackedStringArray
 		
 		if PluginSettings.debug:
 			print("[GitHub Integration] >> loading user profile, checking for existing logfile...")
@@ -785,7 +791,7 @@ class UserData extends Node:
 				if PluginSettings.debug:
 					printerr("[GitHub Integration] >> ","this log file belongs to an older version of this plugin and will not support the mail/password login deprecation, so it will be deleted. Please, insert your credentials again.")
 				file.close()
-				var dir = Directory.new()
+				var dir = DirAccess.new()
 				dir.remove(directory+file_name)
 				content = []
 				return content
@@ -793,7 +799,9 @@ class UserData extends Node:
 			AUTH = content[0]
 			MAIL = content[1]
 			TOKEN = content[2]
-			USER = JSON.parse(content[3]).result
+			var test_json_conv = JSON.new()
+			test_json_conv.parse(content[3]).result
+			USER = test_json_conv.get_data()
 			load_avatar()
 			
 			header = ["Authorization: Token "+TOKEN]
@@ -817,7 +825,7 @@ class UserData extends Node:
 		header = []
 
 	func delete_user():
-		var dir : Directory = Directory.new()
+		var dir : DirAccess = DirAccess.new()
 		dir.open(directory)
 		dir.remove(directory+file_name)
 		dir.remove(directory+avatar_name)

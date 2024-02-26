@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/book_flip.4.ogg-f2ceda0c2189ee5ffa7c061e3f393a39.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cq6vwdxr7aqax"
+path="res://.godot/imported/book_flip.4.ogg-f2ceda0c2189ee5ffa7c061e3f393a39.oggvorbisstr"
 
 [deps]
 
 source_file="res://sounds/book_flip.4.ogg"
-dest_files=[ "res://.import/book_flip.4.ogg-f2ceda0c2189ee5ffa7c061e3f393a39.oggstr" ]
+dest_files=["res://.godot/imported/book_flip.4.ogg-f2ceda0c2189ee5ffa7c061e3f393a39.oggvorbisstr"]
 
 [params]
 
 loop=true
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

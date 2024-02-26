@@ -27,7 +27,7 @@ class_name Healthbar, 'res://resources/misc/Pixel Heart 32x32.png'
 """
 Connects to the player node and shows a health bar in the form of hearts
 """
-export (int) var SIZE
+@export (int) var SIZE
 
 var player : Player 
 var networkPlayer : Player_v2_networking
@@ -52,7 +52,7 @@ func _ready():
 		# use a global function instead
 		player_group = get_tree().get_nodes_in_group("player")
 		# Too much Nested Ifs?
-		if not player_group.empty():
+		if not player_group.is_empty():
 			for i in player_group:
 				if i is Player:
 					player = i #player = player_group.pop_front()
@@ -63,14 +63,14 @@ func _ready():
 		else:
 			
 			# Emitted befor Node._process()
-			yield(get_tree(), "idle_frame")
+			await get_tree().idle_frame
 	
 	
 	# Connect Signals to Player Object
-	player.connect("health_changed", self, "_on_health_changed")
+	player.connect("health_changed", Callable(self, "_on_health_changed"))
 	
 	# Debug SIgnals
-	print_debug(player.is_connected("health_changed", self, "_on_health_changed"))
+	print_debug(player.is_connected("health_changed", Callable(self, "_on_health_changed")))
 	
 
 	
@@ -91,7 +91,7 @@ func _on_health_changed(new_hp : int):
 		for i in new_hp:
 			
 			#print_debug(22222)
-			var heart = heart_instance.instance()
+			var heart = heart_instance.instantiate()
 			#heart.set_size(Vector2(SIZE, SIZE))
 			self.call_deferred('add_child',heart) #adds more life bars
 			

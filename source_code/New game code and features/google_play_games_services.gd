@@ -97,7 +97,9 @@ func _on_achievement_info_load_failed(event_id: String):
 	pass
 
 func _on_achievement_info_loaded(achievements_json: String):
-	var achievements = parse_json(achievements_json)
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(achievements_json)
+	var achievements = test_json_conv.get_data()
 
 	# The returned JSON contains an array of achievement info items.
 	# Use the following keys to access the fields
@@ -154,7 +156,9 @@ func load_by_event_id(EVENT_ID: String):
 # If there is at least one event, following callback will be triggered:
 func _on_events_loaded(events_array):
 	# Parse received string json of events using parse_json
-	var available_events = parse_json(events_array)
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(events_array)
+	var available_events = test_json_conv.get_data()
 	# Iterate through the events_list to retrieve data for specific events
 	for event in available_events:
 		var event_id = event["id"] # you can get event id using 'id' key
@@ -177,7 +181,9 @@ func load_player_stats():
 
 # Callbacks:
 func _on_player_stats_loaded(stats):
-	var stats_dictionary: Dictionary = parse_json(stats)
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(stats)
+	var stats_dictionary: Dictionary = test_json_conv.get_data()
 	# Using below keys you can retrieve data about a player’s in-game activity
 	stats_dictionary["avg_session_length"] # Average session length
 	stats_dictionary["days_last_played"] # Days since last played
@@ -195,7 +201,9 @@ func load_player_info() -> void:
 
 # Callbacks:	
 func _on_player_info_loaded(info):
-	var info_dictionary: Dictionary = parse_json(info)
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(info)
+	var info_dictionary: Dictionary = test_json_conv.get_data()
 	# Using below keys you can retrieve player’s info
 	info_dictionary["display_name"]
 	info_dictionary["name"]
@@ -233,7 +241,7 @@ func save_game_snapshot()-> void: # Use actual player details from form
 		"height": 1.82,
 		"is_gamer": true
 	}
-	play_games_services.saveSnapshot("SNAPSHOT_NAME", to_json(data_to_save), "DESCRIPTION")
+	play_games_services.saveSnapshot("SNAPSHOT_NAME", JSON.new().stringify(data_to_save), "DESCRIPTION")
 
 # Callbacks:
 func _on_game_saved_success():
@@ -247,7 +255,9 @@ func load_game_snapshot( SNAPSHOT_NAME: String )-> void:
 
 # Callbacks:
 func _on_game_load_success(data):
-	var game_data: Dictionary = parse_json(data)
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(data)
+	var game_data: Dictionary = test_json_conv.get_data()
 	var name = game_data["name"]
 	var age = game_data["age"]
 	#...
@@ -273,7 +283,7 @@ func _on_create_new_snapshot(name):
 		"height": 1.82,
 		"is_gamer": true
 	}
-	play_games_services.save_snapshot(name, to_json(game_data_to_save), "DESCRIPTION")
+	play_games_services.save_snapshot(name, JSON.new().stringify(game_data_to_save), "DESCRIPTION")
 
 
 
@@ -287,26 +297,26 @@ func troubleshoot()-> void :
 
 func connect_signals()-> void:
 	  # Connect callbacks (Use only those that you need)
-	  play_games_services.connect("_on_sign_in_success", self, "_on_sign_in_success") # account_id: String
-	  play_games_services.connect("_on_sign_in_failed", self, "_on_sign_in_failed") # error_code: int
-	  play_games_services.connect("_on_sign_out_success", self, "_on_sign_out_success") # no params
-	  play_games_services.connect("_on_sign_out_failed", self, "_on_sign_out_failed") # no params
-	  play_games_services.connect("_on_achievement_unlocked", self, "_on_achievement_unlocked") # achievement: String
-	  play_games_services.connect("_on_achievement_unlocking_failed", self, "_on_achievement_unlocking_failed") # achievement: String
-	  play_games_services.connect("_on_achievement_revealed", self, "_on_achievement_revealed") # achievement: String
-	  play_games_services.connect("_on_achievement_revealing_failed", self, "_on_achievement_revealing_failed") # achievement: String
-	  play_games_services.connect("_on_achievement_incremented", self, "_on_achievement_incremented") # achievement: String
-	  play_games_services.connect("_on_achievement_incrementing_failed", self, "_on_achievement_incrementing_failed") # achievement: String
-	  play_games_services.connect("_on_achievement_info_loaded", self, "_on_achievement_info_loaded") # achievements_json : String
-	  play_games_services.connect("_on_achievement_info_load_failed", self, "_on_achievement_info_load_failed")
-	  play_games_services.connect("_on_leaderboard_score_submitted", self, "_on_leaderboard_score_submitted") # leaderboard_id: String
-	  play_games_services.connect("_on_leaderboard_score_submitting_failed", self, "_on_leaderboard_score_submitting_failed") # leaderboard_id: String
-	  play_games_services.connect("_on_game_saved_success", self, "_on_game_saved_success") # no params
-	  play_games_services.connect("_on_game_saved_fail", self, "_on_game_saved_fail") # no params
-	  play_games_services.connect("_on_game_load_success", self, "_on_game_load_success") # data: String
-	  play_games_services.connect("_on_game_load_fail", self, "_on_game_load_fail") # no params
-	  play_games_services.connect("_on_create_new_snapshot", self, "_on_create_new_snapshot") # name: String
-	  play_games_services.connect("_on_player_info_loaded", self, "_on_player_info_loaded")  # json_response: String
-	  play_games_services.connect("_on_player_info_loading_failed", self, "_on_player_info_loading_failed")
-	  play_games_services.connect("_on_player_stats_loaded", self, "_on_player_stats_loaded")  # json_response: String
-	  play_games_services.connect("_on_player_stats_loading_failed", self, "_on_player_stats_loading_failed")
+	  play_games_services.connect("_on_sign_in_success", Callable(self, "_on_sign_in_success")) # account_id: String
+	  play_games_services.connect("_on_sign_in_failed", Callable(self, "_on_sign_in_failed")) # error_code: int
+	  play_games_services.connect("_on_sign_out_success", Callable(self, "_on_sign_out_success")) # no params
+	  play_games_services.connect("_on_sign_out_failed", Callable(self, "_on_sign_out_failed")) # no params
+	  play_games_services.connect("_on_achievement_unlocked", Callable(self, "_on_achievement_unlocked")) # achievement: String
+	  play_games_services.connect("_on_achievement_unlocking_failed", Callable(self, "_on_achievement_unlocking_failed")) # achievement: String
+	  play_games_services.connect("_on_achievement_revealed", Callable(self, "_on_achievement_revealed")) # achievement: String
+	  play_games_services.connect("_on_achievement_revealing_failed", Callable(self, "_on_achievement_revealing_failed")) # achievement: String
+	  play_games_services.connect("_on_achievement_incremented", Callable(self, "_on_achievement_incremented")) # achievement: String
+	  play_games_services.connect("_on_achievement_incrementing_failed", Callable(self, "_on_achievement_incrementing_failed")) # achievement: String
+	  play_games_services.connect("_on_achievement_info_loaded", Callable(self, "_on_achievement_info_loaded")) # achievements_json : String
+	  play_games_services.connect("_on_achievement_info_load_failed", Callable(self, "_on_achievement_info_load_failed"))
+	  play_games_services.connect("_on_leaderboard_score_submitted", Callable(self, "_on_leaderboard_score_submitted")) # leaderboard_id: String
+	  play_games_services.connect("_on_leaderboard_score_submitting_failed", Callable(self, "_on_leaderboard_score_submitting_failed")) # leaderboard_id: String
+	  play_games_services.connect("_on_game_saved_success", Callable(self, "_on_game_saved_success")) # no params
+	  play_games_services.connect("_on_game_saved_fail", Callable(self, "_on_game_saved_fail")) # no params
+	  play_games_services.connect("_on_game_load_success", Callable(self, "_on_game_load_success")) # data: String
+	  play_games_services.connect("_on_game_load_fail", Callable(self, "_on_game_load_fail")) # no params
+	  play_games_services.connect("_on_create_new_snapshot", Callable(self, "_on_create_new_snapshot")) # name: String
+	  play_games_services.connect("_on_player_info_loaded", Callable(self, "_on_player_info_loaded"))  # json_response: String
+	  play_games_services.connect("_on_player_info_loading_failed", Callable(self, "_on_player_info_loading_failed"))
+	  play_games_services.connect("_on_player_stats_loaded", Callable(self, "_on_player_stats_loaded"))  # json_response: String
+	  play_games_services.connect("_on_player_stats_loading_failed", Callable(self, "_on_player_stats_loading_failed"))

@@ -13,10 +13,10 @@ extends StaticBody2D
 
 class_name Boulder_Big
 
-onready var _sprite : Sprite = $Sprite
-onready var _collision : CollisionPolygon2D = $CollisionPolygon2D
+@onready var _sprite : Sprite2D = $Sprite2D
+@onready var _collision : CollisionPolygon2D = $CollisionPolygon2D
 
-onready var pointer : Array = [_sprite, _collision]
+@onready var pointer : Array = [_sprite, _collision]
 
 func _exit_tree():
 	Utils.MemoryManagement.queue_free_array(pointer)

@@ -19,12 +19,12 @@ extends Node
 '''A Implementation Of Appodeals banner add in Godot '''
 
 # The SDK is broken as at Godot 3.4.3.rc. It compiles, but breaks like a bad bitch.
-export var ads_debug:String
+@export var ads_debug:String
 
 class_name Appodeal , "res://ads/Appodeal/appodeal_logo.png"
 
 #A parameter for the Ads functions
-export (bool) var precached
+@export (bool) var precached
 
 """
 INTERSTITIAL
@@ -123,14 +123,14 @@ signal non_skippable_video_expired()
 
 
 
-export (bool) var enabled
+@export (bool) var enabled
 var _how_many_times = 0
 var is_real
 var Ads
-export var banner_id:String = 'ca-app-pub-1198869974398081/1991292180'
+@export var banner_id:String = 'ca-app-pub-1198869974398081/1991292180'
 var appodeal
 
-export var key:String= "b14288f5b650ec9807ab324195ec819be92c7d4c0b1a65e8"
+@export var key:String= "b14288f5b650ec9807ab324195ec819be92c7d4c0b1a65e8"
 #var _t #A test variable to connect to Appodeal engine's singletons
 enum AdType {
   INTERSTITIAL = 1,
@@ -148,7 +148,7 @@ enum ShowStyle {
   NON_SKIPPABLE_VIDEO = 16,
 }
 
-export (String, '320x50', '728x90', 'SMARTBANNER' ) var banner_size 
+@export (String, '320x50', '728x90', 'SMARTBANNER' ) var banner_size 
 
 
 

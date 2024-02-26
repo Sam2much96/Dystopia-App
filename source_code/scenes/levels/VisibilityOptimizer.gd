@@ -14,17 +14,17 @@
 #
 
 
-extends VisibilityNotifier2D
+extends VisibleOnScreenNotifier2D
 
 
-onready var Parent = get_parent()
+@onready var Parent = get_parent()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
 	# Connect Signals
-	connect("screen_entered",self,"show")
-	connect("screen_exited",self,"hide")
+	connect("screen_entered", Callable(self, "show"))
+	connect("screen_exited", Callable(self, "hide"))
 
 	# Hide when first entering scene 
 	Parent.hide()

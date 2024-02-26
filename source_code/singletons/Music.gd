@@ -36,15 +36,15 @@ THERE ARE TWO FUNCTIONS FOR PLAYING MUSIC TRACKS AND MUSIC PLAYLISTS
 """
 extends Node
 #add more controls to this script, it breaks the singleton
-export (bool) var music_on 
-export (bool) var sfx_on
-export (int) var volume # volume controller code is not yet written
+@export (bool) var music_on 
+@export (bool) var sfx_on
+@export (int) var volume # volume controller code is not yet written
 
 
 # Music COntrol Settings
 #var Music_on_settings : int = 0
 
-export(String, FILE, "*.ogg") var music_track = ""
+@export var music_track = "" # (String, FILE, "*.ogg")
 
 var default_playlist : Dictionary ={
 	0:"res://music/310-world-map-loop.ogg",
@@ -164,32 +164,32 @@ Music singleton that handles crossfading when a new song starts
 and applies a low pass filter when the game is paused. Nothing too wise
 """
 var music_debug =''
-onready var current_track
+@onready var current_track
 
-onready var music_bus_2 = AudioServer.get_bus_index($B.bus)
-onready var music_bus = AudioServer.get_bus_index($A.bus)
+@onready var music_bus_2 = AudioServer.get_bus_index($B.bus)
+@onready var music_bus = AudioServer.get_bus_index($A.bus)
 
 
-onready var A : AudioStreamPlayer = $A
-onready var B : AudioStreamPlayer = $B
-onready var C : AudioStreamPlayer = $C
-onready var D : AudioStreamPlayer = $D 
+@onready var A : AudioStreamPlayer = $A
+@onready var B : AudioStreamPlayer = $B
+@onready var C : AudioStreamPlayer = $C
+@onready var D : AudioStreamPlayer = $D 
 
-onready var requests : HTTPRequest = $HTTPRequest
-onready var timer : Timer = $Timer
+@onready var requests : HTTPRequest = $HTTPRequest
+@onready var timer : Timer = $Timer
 
 
 var _music
-onready var Music_streamer : AudioStreamPlayer = get_node_or_null("A")  #Refrences the music player node
-onready var  Music_streamer_2  : AudioStreamPlayer=get_node_or_null("D")
-onready var sfx_streamer 
-onready var track
+@onready var Music_streamer : AudioStreamPlayer = get_node_or_null("A")  #Refrences the music player node
+@onready var  Music_streamer_2  : AudioStreamPlayer=get_node_or_null("D")
+@onready var sfx_streamer 
+@onready var track
 
 
-onready var transitions : AnimationPlayer = $anims
+@onready var transitions : AnimationPlayer = $anims
 
 # Pointers to Node for Memory Mgmt
-onready var my_nodes : Array = [Music_streamer,B,C,Music_streamer_2,transitions,requests]
+@onready var my_nodes : Array = [Music_streamer,B,C,Music_streamer_2,transitions,requests]
 
 
 # THis URL fetches a Zip file from an AWS s3 buzket
@@ -201,7 +201,7 @@ var FileCheck3=File.new() # checks Music Files
 var FileCheck2=File.new() # checks Music Files
 var FileCheck1=File.new() # checks Music Files
 var FileCheck=File.new() # checks Music Files
-var FileDirectory=Directory.new() #checks Music Irectory
+var FileDirectory=DirAccess.new() #checks Music Irectory
 
 var Music_Available_Locally : bool = true
 var Music_Zip_Available_Locally : bool = false
@@ -210,7 +210,7 @@ var Music_Zip_Available_Locally : bool = false
 var headers = ["Content-Type: application/zip"]
 
 
-onready var thread : Thread = Thread.new() 
+@onready var thread : Thread = Thread.new() 
 
 
 # Debug Variables
@@ -226,7 +226,7 @@ func _ready():
 	#print_debug(my_nodes)
 	
 	# connect signals
-	requests.connect("request_completed", self , "_http_request_completed")
+	requests.connect("request_completed", Callable(self, "_http_request_completed"))
 	
 	# Check if Local Music Directory exists & Makes directory
 	if not wallet.Functions.check_local_wallet_directory(FileDirectory,"user://Music") :
@@ -343,7 +343,7 @@ func _music_debug(): #Breaks
 func play(stream: String):
 	#kinda works
 	#it bugs out when the music track node is added to a scene
-	if stream != null or !stream.empty(): #null error
+	if stream != null or !stream.is_empty(): #null error
 		if current_track == "a":
 			B.stream = load(stream) #invalid funtion load, cannot convert arguement from nil to string
 			transitions.play("AtoB")
@@ -412,13 +412,13 @@ func _notification(what : int):
 		AudioServer.set_bus_volume_db(music_bus_2,-100)
 		
 
-	if what == NOTIFICATION_APP_PAUSED:
+	if what == NOTIFICATION_APPLICATION_PAUSED:
 		
 		AudioServer.set_bus_mute(music_bus, true)
 		AudioServer.set_bus_mute(music_bus_2, true)
 		
 		clear()
-	if what == NOTIFICATION_APP_RESUMED:
+	if what == NOTIFICATION_APPLICATION_RESUMED:
 		AudioServer.set_bus_mute(music_bus, false)
 		AudioServer.set_bus_mute(music_bus_2, false)
 		
@@ -437,7 +437,7 @@ static func shuffle (playlist : Dictionary) -> String:
 	#print_debug("shuffling" ,playlist)
 	
 	#music_track = ''
-	var track = int(rand_range(-1,playlist.size())) #selects a random track number
+	var track = int(randf_range(-1,playlist.size())) #selects a random track number
 	
 	
 	print_debug("selected Item After Shuffle: ",playlist[track])
@@ -460,7 +460,7 @@ func play_sfx(list : Dictionary): #a separate bus channel for sfx using dictiona
 		C.stream = load(sfx)
 		C.play()
 		sfx_streamer = str ('playing sfx: ',sfx.get_file())
-		yield(get_tree().create_timer(0.8), "timeout")
+		await get_tree().create_timer(0.8).timeout
 		C.stop()
 
 func play_track(_track : String): 
@@ -473,7 +473,7 @@ func play_track(_track : String):
 		D.set_stream ( load (_track)) #Children Scripts should not load the soundtracks
 		D.play(0.0)
 		sfx_streamer  = str('playing sfx: ',_track.get_file())
-		yield(get_tree().create_timer(0.8), "timeout")
+		await get_tree().create_timer(0.8).timeout
 		D.stop()
 
 
@@ -514,7 +514,7 @@ func _http_request_completed(result, response_code, headers, body):
 	
 	
 	if response_code == HTTPClient.RESPONSE_OK :
-		if not body.empty():
+		if not body.is_empty():
 			print ("Saving Music File")
 			var request_node = $HTTPRequest
 			
@@ -523,7 +523,7 @@ func _http_request_completed(result, response_code, headers, body):
 			# Restarts the Logic Loop
 			_ready()
 	
-	if body.empty(): #returns an empty body
+	if body.is_empty(): #returns an empty body
 		push_error("Result Unsuccessful")
 		#good_internet = false
 		#Networking.stop_check()

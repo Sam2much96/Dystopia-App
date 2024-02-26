@@ -1,4 +1,4 @@
-tool
+@tool
 extends HBoxContainer
 
 var _var_name := ''
@@ -26,8 +26,8 @@ func _on_var_value_text_changed(new_text: String) -> void:
 
 func update_variable(value: String) -> void:
     if value == null or value == '':
-        $var_value.modulate = Color.red
+        $var_value.modulate = Color.RED
         $var_value.text = ''
     else:
         $var_value.text = value
-        $var_value.modulate = Color.white
+        $var_value.modulate = Color.WHITE

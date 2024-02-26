@@ -8,10 +8,10 @@ radius = 50.0
 
 [node name="Joystick" type="Control"]
 anchor_bottom = 1.0
-margin_left = 200.0
-margin_top = 468.0
-margin_right = 320.0
-margin_bottom = -26.0
+offset_left = 200.0
+offset_top = 468.0
+offset_right = 320.0
+offset_bottom = -26.0
 mouse_filter = 1
 script = ExtResource( 2 )
 custom_mapping = true

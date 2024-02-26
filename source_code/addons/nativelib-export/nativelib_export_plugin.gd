@@ -1,13 +1,13 @@
-tool
+@tool
 extends EditorPlugin
 
 class NativeLibExportPlugin:
 	extends EditorExportPlugin
 
 	func _ios_add_bundles() -> void:
-		var dir = Directory.new()
+		var dir = DirAccess.new()
 		if dir.open('res://addons/nativelib-export/iOS') == OK:
-			dir.list_dir_begin()
+			dir.list_dir_begin() # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 			var file_name = dir.get_next()
 			while file_name != '':
 				if dir.current_is_dir() and file_name.ends_with('.bundle'):
@@ -19,9 +19,9 @@ class NativeLibExportPlugin:
 			print('Can not open iOS addon directory!')
 	
 	func _ios_add_installed_frameworks() -> void:
-		var dir = Directory.new()
+		var dir = DirAccess.new()
 		if dir.open('res://addons/nativelib-export/iOS') == OK:
-			dir.list_dir_begin()
+			dir.list_dir_begin() # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 			var file_name = dir.get_next()
 			while file_name != '':
 				if dir.current_is_dir() and (file_name.ends_with('.framework') or file_name.ends_with('.xcframework')):
@@ -44,9 +44,9 @@ class NativeLibExportPlugin:
 			print('Add standard framework: %s'%fr)
 	
 	func _ios_add_plist_content() -> void:
-		var dir = Directory.new()
+		var dir = DirAccess.new()
 		if dir.open('res://addons/nativelib-export/iOS') == OK:
-			dir.list_dir_begin()
+			dir.list_dir_begin() # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 			var file_name = dir.get_next()
 			while file_name != '':
 				if not dir.current_is_dir() and file_name.ends_with('.plist'):
@@ -67,9 +67,9 @@ class NativeLibExportPlugin:
 			print('Can not open iOS addon directory!')
 
 	func _process_hooks(hooks_path: String, args: Array) -> void:
-		var dir = Directory.new()
+		var dir = DirAccess.new()
 		if dir.open(hooks_path) == OK:
-			dir.list_dir_begin()
+			dir.list_dir_begin() # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 			var file_name = dir.get_next()
 			while file_name != '':
 				if not dir.current_is_dir() and file_name.ends_with('.gd'):
@@ -80,13 +80,13 @@ class NativeLibExportPlugin:
 			# ignore error
 			pass
 
-	func _process_start_hooks(features: PoolStringArray, debug: bool, path: String, flags: int) -> void:
+	func _process_start_hooks(features: PackedStringArray, debug: bool, path: String, flags: int) -> void:
 		_process_hooks('res://addons/nativelib-export/start_hook', [features, debug, path, flags])
 
 	func _process_end_hooks() -> void:
 		_process_hooks('res://addons/nativelib-export/end_hook', [])
 
-	func _export_begin(features: PoolStringArray, debug: bool, path: String, flags: int) -> void:
+	func _export_begin(features: PackedStringArray, debug: bool, path: String, flags: int) -> void:
 		_process_start_hooks(features, debug, path, flags)
 		if 'iOS' in features:
 			add_ios_linker_flags("-ObjC")

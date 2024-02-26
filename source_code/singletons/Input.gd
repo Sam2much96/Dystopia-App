@@ -33,7 +33,7 @@ extends Control
 class_name Input_Buffer
 
 # For Storing An Array of Input Data FOr Networking Multiplayer
-export (Array) var input_buffer = []
+@export (Array) var input_buffer = []
 
 enum {LEFT,RIGHT,UP,DOWN,ATTACK,ROLL,BLOCK, RESET, 
 COMICS, NEXTPANEL, PREVPANEL, DRAG, PAUSE, MENU, 
@@ -41,7 +41,7 @@ INTERRACT, DIALOGUE
 }
 
 # State Machine
-export (int) var _state  
+@export (int) var _state  
 
 # Frame Counter
 #var _frame_counter : int = 0
@@ -49,7 +49,7 @@ export (int) var _state
 var pressed : bool = false
 
 # Vibration Settings
-export (bool) var vibrate = true
+@export (bool) var vibrate = true
 
 
 
@@ -197,11 +197,11 @@ func _input(event):
 		#Game_Menu.scroll(true, true,scroller)
 	#	pass
 
-	if input_buffer.empty() == true && pressed:
+	if input_buffer.is_empty() == true && pressed:
 		input_buffer.append(_state)
 		return
 	
-	if not input_buffer.empty() && int(input_buffer[input_buffer.size()-1]) != _state:
+	if not input_buffer.is_empty() && int(input_buffer[input_buffer.size()-1]) != _state:
 		input_buffer.append(_state)
 		return
 
@@ -218,7 +218,7 @@ func parse_input( action : String, _pressed : bool):
 	
 	var a = InputEventAction.new()
 	a.action = action
-	a.pressed = _pressed
+	a.button_pressed = _pressed
 	Input.parse_input_event(a)
 
 

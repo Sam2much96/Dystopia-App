@@ -1,4 +1,4 @@
-tool
+@tool
 extends EditorPlugin
 
 
@@ -11,8 +11,8 @@ func _init():
 	_add_custom_editor_view()
 	
 	"Adds a Custom Tab for Documentations"
-	get_editor_interface().get_editor_viewport().add_child(_editor_view)
-	make_visible(false)
+	get_editor_interface().get_editor_main_screen().add_child(_editor_view)
+	_make_visible(false)
 
 func _enter_tree():
 
@@ -44,12 +44,12 @@ func _exit_tree():
 
 
 #***********For Builtin Documentation***********#
-func get_plugin_name()-> String:
+func _get_plugin_name()-> String:
 	return "Algodot"
 
 
 func _add_custom_editor_view(): 
-	_editor_view = preload("res://addons/algodot/Documentation/Scripts/DocumentationViewer.tscn").instance()
+	_editor_view = preload("res://addons/algodot/Documentation/Scripts/DocumentationViewer.tscn").instantiate()
 
 	
 
@@ -58,13 +58,13 @@ func _remove_custom_editor_view():
 	if _editor_view:
 		_editor_view.queue_free()
 
-func has_main_screen()-> bool:
+func _has_main_screen()-> bool:
 	return true
 
-func make_visible(visible: bool) -> void:
+func _make_visible(visible: bool) -> void:
 	if _editor_view:
 		_editor_view.visible=visible
 
-func get_plugin_icon()-> Texture:
-	return get_editor_interface().get_base_control().get_icon("Spatial", "EditorIcons")
+func _get_plugin_icon()-> Texture2D:
+	return get_editor_interface().get_base_control().get_icon("Node3D", "EditorIcons")
 

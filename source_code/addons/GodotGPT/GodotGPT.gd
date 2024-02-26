@@ -1,4 +1,4 @@
-tool
+@tool
 extends EditorPlugin
 
 
@@ -70,7 +70,7 @@ func add_panel():
 	button.set_position(Vector2(60, 90))
 	button.text = "Send Request"
 	#button.pressed.connect(send_request)
-	button.connect("pressed", self, "send_request")
+	button.connect("pressed", Callable(self, "send_request"))
 	vbox.add_child(button)
 	
 	#response_box = CodeEdit.new()
@@ -89,7 +89,7 @@ func add_panel():
 	copy_button.text = "EXPERIMENTAL +10: Run Selected snippet"
 	#copy_button.pressed.connect(copy_text)
 	
-	copy_button.connect("pressed", self, "copy_text")
+	copy_button.connect("pressed", Callable(self, "copy_text"))
 	
 	vbox.add_child(copy_button)
 	
@@ -201,7 +201,7 @@ func send_request():
 	var gptapi = ChatGPTAPI.new()
 	#gptapi.request_completed.connect(on_response)
 	
-	gptapi.connect("request_completed", self, "on_response")
+	gptapi.connect("request_completed", Callable(self, "on_response"))
 	
 	add_child(gptapi)
 	
@@ -212,7 +212,7 @@ func send_request():
 
 func on_response(result, response_code, headers, body) -> void:
 	if response_code == HTTPClient.RESPONSE_OK:
-		var response = str2var(body.get_string_from_utf8())
+		var response = str_to_var(body.get_string_from_utf8())
 		print_debug("response", response)
 		
 		var text = response["choices"][0]["text"].strip_edges()
@@ -226,7 +226,7 @@ func on_response(result, response_code, headers, body) -> void:
 	elif response_code == HTTPClient.STATUS_DISCONNECTED:
 		print_debug("not connected to server")
 	else:
-		var response = str2var(body.get_string_from_utf8())
+		var response = str_to_var(body.get_string_from_utf8())
 		print_debug("ERROR: " + str(response_code))
 		print_debug("response", response)
 		

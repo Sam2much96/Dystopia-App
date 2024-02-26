@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://fonts/Word_bubble_dialogue.tres" type="DynamicFont" id=1]
+[ext_resource path="res://fonts/Word_bubble_dialogue.tres" type="FontFile" id=1]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Control
@@ -17,18 +17,18 @@ var text_2 =\"\"\"
 		Internet and Try Again thank you 
 		\"\"\"
 
-onready var label = $Label
+@onready var label = $Label
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	label.set_text( text_2)
-	label.ALIGN_CENTER
+	label.ALIGNMENT_CENTER
 	
 	# Delete
 	queue_free()
 
 func _exit_tree():
-	yield(get_tree().create_timer(7), \"timeout\")
+	await get_tree().create_timer(7).timeout
 	get_tree().quit(0)
 "
 
@@ -38,19 +38,19 @@ anchor_bottom = 1.0
 script = SubResource( 1 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_right = 1281.0
-margin_bottom = 726.0
+offset_right = 1281.0
+offset_bottom = 726.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="."]
-margin_left = -9.0
-margin_top = 176.0
-margin_right = 1275.0
-margin_bottom = 891.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_fonts/font = ExtResource( 1 )
+offset_left = -9.0
+offset_top = 176.0
+offset_right = 1275.0
+offset_bottom = 891.0
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_fonts/font = ExtResource( 1 )
 text = "I'm Sorry the App Crashed
 :( , It'll send a bug report
 so i can debug and fix it.

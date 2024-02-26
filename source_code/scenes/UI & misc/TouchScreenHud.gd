@@ -45,24 +45,24 @@ class_name TouchScreenHUD
 var _Hide_touch_interface : bool
 
 #Debug
-onready var _debug = get_tree().get_root().get_node("/root/Debug")
+@onready var _debug = get_tree().get_root().get_node("/root/Debug")
 
 # Comics Singleton Pointer
-onready var _comics = get_tree().get_root().get_node("/root/Comics_v6")
+@onready var _comics = get_tree().get_root().get_node("/root/Comics_v6")
 # Pointer to Parent
-onready var parent = get_parent()
+@onready var parent = get_parent()
 
 # Pointer to menu node from Parent
-onready var menu2 = parent.get_child(4)
+@onready var menu2 = parent.get_child(4)
 
 # Pointer to Global Menu Pointer
-onready var menu3 = GlobalInput.menu
+@onready var menu3 = GlobalInput.menu
 
 #State Machine
 enum { _MENU, _INTERRACT, _ATTACK, _STATS, _COMICS, _RESET }
 
-export (int) var _state_controller = _STATS
-export (String, 'modern', 'classic') var _control # Dupli9cate of Globals._controller_type
+@export (int) var _state_controller = _STATS
+@export (String, 'modern', 'classic') var _control # Dupli9cate of Globals._controller_type
 var _Debug_Run : bool = false
 
 
@@ -103,11 +103,11 @@ var buttons_positional_data : Array
 
 var LineDebug : Line2D 
 
-onready var joystick_parent: Control = $Joystick
+@onready var joystick_parent: Control = $Joystick
 
 'UI button as arrays'
-onready var action_buttons : Array 
-onready var direction_buttons : Array 
+@onready var action_buttons : Array 
+@onready var direction_buttons : Array 
 
 
 # debug COunter counts how many times a mehtod has been called
@@ -216,50 +216,50 @@ func _ready():
 	
 	# COnnect signals from dialogue
 	# DIalogues to self
-	Dialogs.connect("dialog_started", self, "interract")
-	Dialogs.connect("dialog_ended", self, "reset")
+	Dialogs.connect("dialog_started", Callable(self, "interract"))
+	Dialogs.connect("dialog_ended", Callable(self, "reset"))
 
 	# Comics to Touch Interface
 	if is_instance_valid(_comics): # Buggy Singleton Instance
-		_comics.connect( 'comics_showing', self, '_on_comics_showing')
-		_comics.connect( 'comics_showing', self, '_on_comics_hidden'  )
+		_comics.connect('comics_showing', Callable(self, '_on_comics_showing'))
+		_comics.connect('comics_showing', Callable(self, '_on_comics_hidden'))
 
 	# Menu to Touch Interface
 	# Quick Hacky Fiz
 	if is_instance_valid(menu2): # Error Catcher 1
-		menu2.connect("menu_showing", self, "menu") 
-		menu2.connect("menu_hidden", self, "reset")
+		menu2.connect("menu_showing", Callable(self, "menu")) 
+		menu2.connect("menu_hidden", Callable(self, "reset"))
 	
 	# REdundancy code
 	if not is_instance_valid(menu2):
-		menu3.connect("menu_showing", self, "menu") 
-		menu3.connect("menu_hidden", self, "reset")
+		menu3.connect("menu_showing", Callable(self, "menu")) 
+		menu3.connect("menu_hidden", Callable(self, "reset"))
 	# Networking TImer to Touch Interface
 	# Resets Using Networking timer
-	Networking.timer.connect("timeout", self, "reset") 
+	Networking.timer.connect("timeout", Callable(self, "reset")) 
 
 
 
 	# Debug SIgnals
 	# Convert to Unit Tests instead
 	if is_instance_valid(Dialogs && Comics_v6 && menu3 && Networking):
-		if not (Dialogs.is_connected("dialog_started", self, "interract") &&
-			Dialogs.is_connected("dialog_ended", self, "reset") &&
-			_comics.is_connected( 'comics_showing', self, '_on_comics_showing') &&
-			_comics.is_connected( 'comics_showing', self, '_on_comics_hidden'  ) &&
-			menu3.is_connected("menu_showing", self, "menu") &&
-			menu3.is_connected("menu_hidden", self, "reset") &&
-			Networking.timer.is_connected("timeout", self, "reset")) == true:
+		if not (Dialogs.is_connected("dialog_started", Callable(self, "interract")) &&
+			Dialogs.is_connected("dialog_ended", Callable(self, "reset")) &&
+			_comics.is_connected('comics_showing', Callable(self, '_on_comics_showing')) &&
+			_comics.is_connected('comics_showing', Callable(self, '_on_comics_hidden')) &&
+			menu3.is_connected("menu_showing", Callable(self, "menu")) &&
+			menu3.is_connected("menu_hidden", Callable(self, "reset")) &&
+			Networking.timer.is_connected("timeout", Callable(self, "reset"))) == true:
 
 			# Debug Node Signal Connections
 			print_debug(
-				Dialogs.is_connected("dialog_started", self, "interract"),
-				Dialogs.is_connected("dialog_ended", self, "reset"),
-				_comics.is_connected( 'comics_showing', self, '_on_comics_showing'),
-				_comics.is_connected( 'comics_showing', self, '_on_comics_hidden'  ),
-				menu3.is_connected("menu_showing", self, "menu"), 
-				menu3.is_connected("menu_hidden", self, "reset"),
-				Networking.timer.is_connected("timeout", self, "reset") 
+				Dialogs.is_connected("dialog_started", Callable(self, "interract")),
+				Dialogs.is_connected("dialog_ended", Callable(self, "reset")),
+				_comics.is_connected('comics_showing', Callable(self, '_on_comics_showing')),
+				_comics.is_connected('comics_showing', Callable(self, '_on_comics_hidden')),
+				menu3.is_connected("menu_showing", Callable(self, "menu")), 
+				menu3.is_connected("menu_hidden", Callable(self, "reset")),
+				Networking.timer.is_connected("timeout", Callable(self, "reset")) 
 				)
 
 
@@ -345,7 +345,7 @@ func touch_interface_debug(): #Debug singleton is broken
 	#Changes D-pad Controls from control once the Touch Interface is ready
 	#placeholder method
 func set_controller(_control):
-	if Globals.direction_control.empty():
+	if Globals.direction_control.is_empty():
 		print("COntroller Type: :",Globals.direction_control)
 		_control == Globals.direction_control
 		#return

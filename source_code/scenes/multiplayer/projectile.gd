@@ -16,7 +16,7 @@ class_name projectile
 
 #reuse code for something usefull
 var total_delta = 0
-onready var node_root = get_node("/root/world")
+@onready var node_root = get_node("/root/world")
 
 # Destroy the projectile after 4 seconds
 func _process(delta):
@@ -29,7 +29,7 @@ func _process(delta):
 # Handle collision
 func _on_root_body_entered(body):
 	
-	if get_tree().is_network_server():
+	if get_tree().is_server():
 		# If you are the server, compute the damage and destroy the spaceship
 		# if it is damaged enough.
 		node_root.player_got_shot(body)

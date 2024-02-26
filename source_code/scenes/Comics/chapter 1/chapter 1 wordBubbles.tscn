@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://scenes/Comics/chapter 1/chap_1_comic_spritesheets_webp.webp" type="Texture" id=1]
+[ext_resource path="res://scenes/Comics/chapter 1/chap_1_comic_spritesheets_webp.webp" type="Texture2D" id=1]
 [ext_resource path="res://scenes/UI & misc/word_bubble_box.tscn" type="PackedScene" id=2]
 
 [sub_resource type="AtlasTexture" id=9]
@@ -56,14 +56,14 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[node name="chapter_1" type="AnimatedSprite" groups=["comics"]]
+[node name="chapter_1" type="AnimatedSprite2D" groups=["comics"]]
 position = Vector2( 502.606, 363.015 )
 scale = Vector2( 0.583035, 0.610446 )
 frames = SubResource( 8 )
 centered = false
 offset = Vector2( -428.761, -611.626 )
 
-[node name="Pg 1 Wordbubbles" type="YSort" parent="."]
+[node name="Pg 1 Wordbubbles" type="Node2D" parent="."]
 
 [node name="word bubble" parent="Pg 1 Wordbubbles" instance=ExtResource( 2 )]
 position = Vector2( -119.989, 52.8273 )
@@ -91,7 +91,7 @@ line_index = 37
 line_to_end = 39
 state = "Narration"
 
-[node name="Pg 2 Wordbubbles" type="YSort" parent="."]
+[node name="Pg 2 Wordbubbles" type="Node2D" parent="."]
 visible = false
 
 [node name="word bubble4" parent="Pg 2 Wordbubbles" instance=ExtResource( 2 )]
@@ -134,7 +134,7 @@ line_to_end = 59
 visible_on_page = 1
 state = "Narration"
 
-[node name="Pg 3 Wordbubbles" type="YSort" parent="."]
+[node name="Pg 3 Wordbubbles" type="Node2D" parent="."]
 visible = false
 position = Vector2( 1188.16, 1468.66 )
 scale = Vector2( 4.09136, 4.09136 )
@@ -175,7 +175,7 @@ line_to_end = 59
 visible_on_page = 2
 state = "Narration"
 
-[node name="Pg 4 Wordbubbles" type="YSort" parent="."]
+[node name="Pg 4 Wordbubbles" type="Node2D" parent="."]
 visible = false
 position = Vector2( 1188.16, 1468.66 )
 scale = Vector2( 4.09136, 4.09136 )
@@ -225,7 +225,7 @@ line_to_end = 59
 visible_on_page = 3
 state = "Narration"
 
-[node name="Pg 5 Wordbubbles" type="YSort" parent="."]
+[node name="Pg 5 Wordbubbles" type="Node2D" parent="."]
 visible = false
 position = Vector2( 1188.16, 1468.66 )
 scale = Vector2( 4.09136, 4.09136 )

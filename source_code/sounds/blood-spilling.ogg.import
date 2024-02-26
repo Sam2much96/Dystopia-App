@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/blood-spilling.ogg-5af527679d773d8a473cdae82b0d0255.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cuhba1eexodnu"
+path="res://.godot/imported/blood-spilling.ogg-5af527679d773d8a473cdae82b0d0255.oggvorbisstr"
 
 [deps]
 
 source_file="res://sounds/blood-spilling.ogg"
-dest_files=[ "res://.import/blood-spilling.ogg-5af527679d773d8a473cdae82b0d0255.oggstr" ]
+dest_files=["res://.godot/imported/blood-spilling.ogg-5af527679d773d8a473cdae82b0d0255.oggvorbisstr"]
 
 [params]
 
 loop=true
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

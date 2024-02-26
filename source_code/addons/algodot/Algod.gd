@@ -31,22 +31,22 @@ extends Node
 var algod: Algod
 
 class_name Algodot, 'res://addons/algodot/icon.png'
-export (String) var funder_mnemonic
+@export (String) var funder_mnemonic
 #export (String) var funder_address
 
 
 var params
 
 " For Testing purpose only. Should be encrypted in release build"
-export (String) var receivers_mnemonic
+@export (String) var receivers_mnemonic
 #export (String) var receivers_address
 
 
 
 #*************placeholder variables****************#
-export ( bool) var debug_txn   
+@export ( bool) var debug_txn   
 
-export (bool) var generate_new_account = false # generates a new account & Mnemonic for testing
+@export (bool) var generate_new_account = false # generates a new account & Mnemonic for testing
 var new_account: Array # new generated account Placeholder
 var transferred_assets: bool = false # Asset transfer boolean constructor
 
@@ -68,7 +68,7 @@ var status: bool
 #***********Node State Parameters************#
 
 var algod_node_count: int = 0 #stops multiple instance bug
-export (String, 'TESTNET', 'LOCALHOST', "MAINNET") var network_type
+@export (String, 'TESTNET', 'LOCALHOST', "MAINNET") var network_type
 
 'Prevents Algod nnode from reverting to default settings'
 func _enter_tree():
@@ -97,7 +97,7 @@ func create_algod_node(network_type: String):
 			var url = "https://testnet-api.algonode.cloud"
 			var token = ""
 			
-			var headers_ : PoolStringArray = ["User-Agent","DoYouLoveMe?"]
+			var headers_ : PackedStringArray = ["User-Agent","DoYouLoveMe?"]
 			algod.set_url(url)
 			algod.set_token(token)
 			#algod.set_headers(headers_)
@@ -118,9 +118,9 @@ func _run_debug_test():
 
 	" These are custom tests for the Script. Run to test that Script works"
 
-	status = status && yield(_test_algod_connection(), "completed") #works
-	status = status && yield(_send_transaction_to_receiver_addr(funder_mnemonic , receivers_mnemonic,1000000000000000), "completed") #works
-	status = status && yield(_send_asset_transfers_to_receivers_address(funder_mnemonic ,  receivers_mnemonic), "completed") #works
+	status = status && await _test_algod_connection().completed #works
+	status = status && await _send_transaction_to_receiver_addr(funder_mnemonic , receivers_mnemonic,1000000000000000).completed #works
+	status = status && await _send_asset_transfers_to_receivers_address(funder_mnemonic ,  receivers_mnemonic).completed #works
 		
 	if status:
 		print(" -- Test run completed successfully.")
@@ -133,7 +133,7 @@ func _run_debug_test():
 	get_tree().queue_delete(self)
 
 func _timeout( wait_time : int):
-	yield(get_tree().create_timer(wait_time), "timeout")
+	await get_tree().create_timer(wait_time).timeout
 	print(" -- Test run is taking too long.")
 	OS.exit_code = 1
 
@@ -143,7 +143,7 @@ func _timeout( wait_time : int):
 func _test_algod_connection(): # original Dev Github Action test
 	print(" -- _test_algod_connection")
 	
-	var status = yield(algod.health(), "completed") == OK
+	var status = await algod.health().completed == OK
 	
 	if !status:
 		printerr("   !! _test_algod_connection failed")
@@ -185,10 +185,10 @@ func _send_transaction_to_receiver_addr( _funder_mnemonic : String, _receivers_a
 	
 	#get suggested parameters
 	
-	params = yield(algod.suggested_transaction_params(), "completed")
+	params = await algod.suggested_transaction_params().completed
 	
 	#get initial address amount #depreciated. Use check account state instead
-	var _account_info: Dictionary=(yield(algod._check_account_information(_funder_address,_funder_mnemonic, ""), "completed"))
+	var _account_info: Dictionary=(await algod._check_account_information(_funder_address,_funder_mnemonic, "").completed)
 	
 	var initial_amount: int = _account_info["amount"] #depreciated. Use check account state instead
 	#create and sign transaction
@@ -198,14 +198,14 @@ func _send_transaction_to_receiver_addr( _funder_mnemonic : String, _receivers_a
 	stx = algod.sign_transaction(tx, _funder_mnemonic)
 	
 	#generating the transaction ID
-	txid = yield(algod.send_transaction(stx), "completed")
+	txid = await algod.send_transaction(stx).completed
 	
 	#wait for confirmation
 	print("waiting for confirmation")
-	wait = yield(algod.wait_for_transaction(txid), "completed")
+	wait = await algod.wait_for_transaction(txid).completed
 	
 	# getting the account infromation
-	var info = yield(algod.account_information(_receivers_address), "completed")
+	var info = await algod.account_information(_receivers_address).completed
 	
 	assert(info.amount == initial_amount + _amount) #depreciated. Use check account state instead
 	#verifying the receiver's account's algo holdings
@@ -236,7 +236,7 @@ func _send_txn_to_receiver_addr( params,_funder_mnemonic : String, _receivers_ad
 	#print ('Signed Txn Debug: ',stx) #for debug purposes only
 	
 	#returns the signed transactions
-	txid = yield(algod.send_transaction(stx), "completed")
+	txid = await algod.send_transaction(stx).completed
 	
 	#yield(get_tree().create_timer(20), "timeout")
 	
@@ -246,7 +246,7 @@ func _send_txn_to_receiver_addr( params,_funder_mnemonic : String, _receivers_ad
 	
 	
 	print("waiting for confirmation")
-	wait=yield(algod.wait_for_transaction(txid), "completed")
+	wait=await algod.wait_for_transaction(txid).completed
 	
 	print ('wait: ',wait)
 
@@ -255,7 +255,7 @@ func _send_txn_to_receiver_addr( params,_funder_mnemonic : String, _receivers_ad
 func _send_asset_transfers_to_receivers_address( _funder_mnemonic : String, _receivers_mnemonic : String): # 
 	print(" -- _sending_asset_transfers")
 
-	params = yield(algod.suggested_transaction_params(), "completed") #duplicate of :generate_suggested_transaction_parameters()
+	params = await algod.suggested_transaction_params().completed #duplicate of :generate_suggested_transaction_parameters()
 	
 	var _funder_address=algod.get_address(_funder_mnemonic)
 	var _receivers_address=algod.get_address(_receivers_mnemonic)
@@ -270,15 +270,15 @@ func _send_asset_transfers_to_receivers_address( _funder_mnemonic : String, _rec
 	
 
 	#Generating transaction Id from signed transaction
-	txid = yield(algod.send_transaction(stx), "completed") 
+	txid = await algod.send_transaction(stx).completed 
 	
 
 	#wait for transaction to finish sending
-	wait= yield(algod.wait_for_transaction(txid), "completed") 
+	wait= await algod.wait_for_transaction(txid).completed 
 	
 	
 	
-	var tx_info = yield(algod.transaction_information(txid), "completed") 
+	var tx_info = await algod.transaction_information(txid).completed 
 	
 
 	asset_index = int(tx_info.get("asset-index")) 
@@ -290,7 +290,7 @@ func _send_asset_transfers_to_receivers_address( _funder_mnemonic : String, _rec
 	# Signs the Raw transaction
 	raw_sign_transactions(optin_tx, _funder_mnemonic)
 		
-	yield(algod.send_transaction(stx), "completed") # sends raw signed transaction to the network
+	await algod.send_transaction(stx).completed # sends raw signed transaction to the network
 
 
 	print("atomic swap")
@@ -317,12 +317,12 @@ func _send_asset_transfers_to_receivers_address( _funder_mnemonic : String, _rec
 #----------------------------------------------
 
 	# send signed transaction
-	yield(algod.send_transactions(txns), "completed") 
+	await algod.send_transactions(txns).completed 
 	
 
 #-------------------------------------------------------------
 	# gets account information as a dictionary
-	var info = yield(algod.account_information(_receivers_address), "completed") #checks receivers address for asset tranfer #should contain account mnemonic?
+	var info = await algod.account_information(_receivers_address).completed #checks receivers address for asset tranfer #should contain account mnemonic?
 	
 	#print (asset_index) #for debugging in algod sandbox
 	
@@ -342,7 +342,7 @@ func _send_asset_transfers_to_receivers_address( _funder_mnemonic : String, _rec
 
 # broken in testnet
 func _check_account_information(address : String, mnemonic : String, info : String) -> Dictionary: #account debugger #works
-	_info = yield(algod.account_information(address,mnemonic), "completed")
+	_info = await algod.account_information(address,mnemonic).completed
 	if info == "" or null:
 		return (_info)
 	elif info == "assets" :
@@ -391,7 +391,7 @@ func construct_asset_transfer( params,from_address : String, to_address : String
 #generates a suggested transaction parameter instead of manually creating one
 
 func generate_suggested_transaction_parameters(): 
-	params = yield(algod.suggested_transaction_params(), "completed") 
+	params = await algod.suggested_transaction_params().completed 
 	return params
 
 func opt_in_asset_transaction( params ,from_address: String, _asset_index):
@@ -424,7 +424,7 @@ func transferAssets(params,_funder_mnemonic: String ,  _receiver_address : Strin
 	stx = algod.sign_transaction(asset_tx, _funder_mnemonic)
 	
 	#Generating transaction Id from signed transaction
-	txid = yield(algod.send_transaction(stx), "completed") 
+	txid = await algod.send_transaction(stx).completed 
 	
 	print (txid)
 	
@@ -443,7 +443,7 @@ func createAssets(_asset_name: String, _unit_name: String, _amount: int,_receive
 		false,		# Default frozen?
 		_amount,		# Total supply # This is 1000.00
 		_unit_name,		# Unit name eg GTC, TC, GC
-		PoolByteArray(['']),#metadata hash
+		PackedByteArray(['']),#metadata hash
 		"ipfs://QmNoThogc1D7XCzQrjePPxChyGmuohX6LXqDTCLJwTUUfR" #url
 	)
 	return tx
@@ -454,15 +454,15 @@ func createAssets(_asset_name: String, _unit_name: String, _amount: int,_receive
 	
 
 	#Generating transaction Id from signed transaction
-	txid = yield(algod.send_transaction(stx), "completed") 
+	txid = await algod.send_transaction(stx).completed 
 	
 
 	#wait for transaction to finish sending
-	wait= yield(algod.wait_for_transaction(txid), "completed") 
+	wait= await algod.wait_for_transaction(txid).completed 
 	
 	
 	
-	var tx_info = yield(algod.transaction_information(txid), "completed") 
+	var tx_info = await algod.transaction_information(txid).completed 
 	
 
 	asset_index = int(tx_info.get("asset-index"))

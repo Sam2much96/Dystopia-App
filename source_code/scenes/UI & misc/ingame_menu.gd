@@ -30,7 +30,7 @@ var selector = 0
 signal menu_hidden
 signal menu_showing
 signal loading_game
-export (bool) var enabled 
+@export (bool) var enabled 
 
 var shop = load('res://scenes/UI & misc/Shop.tscn')
 
@@ -40,30 +40,30 @@ The game menu script.
 
 enum { SHOWING, HIDDEN, LOADING}
 
-export (String) var menu_state
+@export (String) var menu_state
 
 
 #Buttons
-onready var comics : Button = $MarginContainer/ScrollContainer/HSeparator/comics
-onready var new_game : Button = $"MarginContainer/ScrollContainer/HSeparator/new game"
+@onready var comics : Button = $MarginContainer/ScrollContainer/HSeparator/comics
+@onready var new_game : Button = $"MarginContainer/ScrollContainer/HSeparator/new game"
 
-onready var continue_game : Button = get_node("MarginContainer/ScrollContainer/HSeparator/continue") 
-onready var game_menu : MarginContainer = get_node("MarginContainer")
+@onready var continue_game : Button = get_node("MarginContainer/ScrollContainer/HSeparator/continue") 
+@onready var game_menu : MarginContainer = get_node("MarginContainer")
 
-onready var _multiplayer = $MarginContainer/ScrollContainer/HSeparator/multiplayer
+@onready var _multiplayer = $MarginContainer/ScrollContainer/HSeparator/multiplayer
 
-onready var anime : Button = $MarginContainer/ScrollContainer/HSeparator/anime
-onready var practice : Button = $MarginContainer/ScrollContainer/HSeparator/practice
+@onready var anime : Button = $MarginContainer/ScrollContainer/HSeparator/anime
+@onready var practice : Button = $MarginContainer/ScrollContainer/HSeparator/practice
 #onready var City_scape : Button = $MarginContainer/ScrollContainer/HSeparator/City_scape # Depreciated
-onready var wallet_ : Button = $MarginContainer/ScrollContainer/HSeparator/wallet
-onready var controls : Button = $MarginContainer/ScrollContainer/HSeparator/controls
-onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit"
+@onready var wallet_ : Button = $MarginContainer/ScrollContainer/HSeparator/wallet
+@onready var controls : Button = $MarginContainer/ScrollContainer/HSeparator/controls
+@onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit"
 
 
 # Auto Scroll with Swipe Gestures
-onready var scroller : ScrollContainer= get_node("MarginContainer/ScrollContainer")
+@onready var scroller : ScrollContainer= get_node("MarginContainer/ScrollContainer")
 
-onready var MenuButtons : Array = [comics,new_game, continue_game, _multiplayer, anime,practice, wallet_,controls, quit]
+@onready var MenuButtons : Array = [comics,new_game, continue_game, _multiplayer, anime,practice, wallet_,controls, quit]
 
 var counter : int = 0 # Stopis ooverflow of Upscaling Method
 
@@ -173,7 +173,7 @@ func _on_continue_pressed():
 		
 		"Loads Large Scene"
 		
-		Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
+		Utils.Functions.change_scene_to_packed(Utils.Functions.LoadLargeScene(
 		Globals.current_level, 
 		Globals.scene_resource, 
 		Globals._o, 
@@ -199,7 +199,7 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 		#Globals._to_load = Globals.current_level
 		"Loads Large Scene"
 		
-		Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
+		Utils.Functions.change_scene_to_packed(Utils.Functions.LoadLargeScene(
 		Globals.current_level, 
 		Globals.scene_resource, 
 		Globals._o, 
@@ -285,11 +285,11 @@ func _menu_pause_and_play(boolean): #pass it a boolean to custom pause and play
 func _on_comics_pressed():
 	print_debug ('comics pressed')
 	Music.play_track(Music.ui_sfx[0])
-	Utils.Functions.change_scene_to(Globals.comics___2, get_tree())
+	Utils.Functions.change_scene_to_packed(Globals.comics___2, get_tree())
 
 func _on_controls_pressed():
 	Music.play_track(Music.ui_sfx[0])
-	Utils.Functions.change_scene_to(Globals.controls, get_tree())
+	Utils.Functions.change_scene_to_packed(Globals.controls, get_tree())
 
 
 func _on_quit_pressed():
@@ -299,13 +299,13 @@ func _on_quit_pressed():
 	else:
 		Music.play_track(Music.ui_sfx[1])
 		#Globals.memory_leak_management()
-		Utils.Functions.change_scene_to(Globals.title_screen, get_tree())
+		Utils.Functions.change_scene_to_packed(Globals.title_screen, get_tree())
 
 
 
 func _on_multiplayer_pressed(): # Experimental feature
 	Music.play_track(Music.ui_sfx[0])
-	return get_tree().change_scene_to(load ('res://scenes/multiplayer/login.tscn'))
+	return get_tree().change_scene_to_packed(load ('res://scenes/multiplayer/login.tscn'))
 
 func _exit_tree():
 	# Memory Leak Management
@@ -319,7 +319,7 @@ func _exit_tree():
 
 func _on_Shop_pressed():
 	Music.play_track(Music.ui_sfx[0])
-	Utils.Functions.change_scene_to(shop, get_tree())
+	Utils.Functions.change_scene_to_packed(shop, get_tree())
 
 func _hide_some_menu_options():
 	#if Engine.has_singleton ('Debug'):
@@ -337,17 +337,17 @@ func _hide_some_menu_options():
 
 func _on_anime_pressed():
 	Music.play_track(Music.ui_sfx[0])
-	return get_tree().change_scene_to((load('res://scenes/UI & misc/Shop.tscn')))
+	return get_tree().change_scene_to_packed((load('res://scenes/UI & misc/Shop.tscn')))
 
 
 func _on_wallet_pressed():
 	Music.play_track(Music.ui_sfx[0])
-	return get_tree().change_scene_to((load('res://scenes/Wallet/Wallet main.tscn')))
+	return get_tree().change_scene_to_packed((load('res://scenes/Wallet/Wallet main.tscn')))
 
 
 func _on_practice_pressed(): # turn off in release build
 	Globals.current_level = 'res://scenes/levels/Testing Scene 2.tscn' #breaks the Globals.current_level script
-	Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
+	Utils.Functions.change_scene_to_packed(Utils.Functions.LoadLargeScene(
 		Globals.current_level, 
 		Globals.scene_resource, 
 		Globals._o, 

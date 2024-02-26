@@ -23,7 +23,7 @@ class_name lobbyV2
 I'LL BE CONNECTING STATIC METHODS FROM THE NETWORKING SINGLETON 
 Code may be really hacky but will be thoughroughly Documented.
 """
-onready var network = NetworkedMultiplayerENet.new()
+@onready var network = ENetMultiplayerPeer.new()
 
 func _ready():
 	

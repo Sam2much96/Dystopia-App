@@ -35,33 +35,33 @@ THIS CODE STARTED OUT AS A DEBUGGER FOR THE AD'S . IT IS EVOLVING TO AN AD MANAG
 # Debug change_mediators function, especially the dictionary implementation
 
 #var Ads_debug (
-'Reference to the Ad Mediators'
-onready var Admob = $AdMob
-onready var _Appodeal = $Appodeal
-onready var _yodo1mas = $Yodo1Mas
-onready var timer = $Timer
+'RefCounted to the Ad Mediators'
+@onready var Admob = $AdMob
+@onready var _Appodeal = $Appodeal
+@onready var _yodo1mas = $Yodo1Mas
+@onready var timer = $Timer
 
 
-onready var java_singleton
+@onready var java_singleton
 
-export (int) var  _timeout_timer = 10
+@export (int) var  _timeout_timer = 10
 
 'Ads Mediators'
 var mediators = {0:'GodotAppodeal',1: "GodotAdMob",2:"GodotYodo1Mas"}
 
 'Ads Selector For Inspector Tab'
-export (String, 'GodotAppodeal', "GodotAdMob", "GodotYodo1Mas") var singleton #It can't auto detect during runtimes
+@export (String, 'GodotAppodeal', "GodotAdMob", "GodotYodo1Mas") var singleton #It can't auto detect during runtimes
 
 'Ads Type'
-export (String, 'banner_ad', "video_ad", 'interstitial') var _ad_type #='GodotAppodeal' #It can't auto detect during runtimes
-export var ads_debug:String
-export (bool) var enabled
-export (bool) var testing = true
-export (int) var _how_many_times #used for an initialization Loop
+@export (String, 'banner_ad', "video_ad", 'interstitial') var _ad_type #='GodotAppodeal' #It can't auto detect during runtimes
+@export var ads_debug:String
+@export (bool) var enabled
+@export (bool) var testing = true
+@export (int) var _how_many_times #used for an initialization Loop
 var _are_the_ads_displaying_ 
-export (bool) var Fast_debug # runs a fast debug loop (depreciated)
+@export (bool) var Fast_debug # runs a fast debug loop (depreciated)
 
-onready var _Debug = get_tree().get_root().get_node("/root/Debug")
+@onready var _Debug = get_tree().get_root().get_node("/root/Debug")
 
 "CHECKS FOR THE SINGLETON VARIABLES SO I'M NOT MAKING FREQUENT CALLS TO THE ENGINE"
 var DoEngineCheck1 #Admob
@@ -255,7 +255,7 @@ func change_ads_mediator(): #selects a random ads mediator ##temporarily disabli
 	print ("//Ad mediators: ",mediators)
 	singleton = ''
 	if mediators.size() > 1: # Only activates when more than one mediator is installed
-		var _no = int(rand_range(-1,mediators.size())) #selects a random mediator number
+		var _no = int(randf_range(-1,mediators.size())) #selects a random mediator number
 	
 		print ("Selected Mediator: ", str(mediators[_no])) #for debug Purposes only
 		singleton = mediators[_no]
@@ -274,7 +274,7 @@ func change_ads_type(ads):
 	if ads == null or '': # Random ad type selector
 		var types_of_ads = {0:'banner_ad', 1:"video_ad", 2:'interstitial'}
 		_ad_type = ''
-		var _no = int(rand_range(-1,types_of_ads.size())) #selects a random ad type
+		var _no = int(randf_range(-1,types_of_ads.size())) #selects a random ad type
 		_ad_type = types_of_ads[_no]
 		return _ad_type
 		init() #initialises ads manager with new ads manager singleton
@@ -299,28 +299,28 @@ func _connect_ads_signals(): # Documented
 	#Autochanges ads mediator
 	#Yodo1Mas
 	if mediators.has(2) :
-		if _yodo1mas.connect('banner_ad_not_loaded', self, "change_ads_mediators") != OK:
-			_yodo1mas.connect('banner_ad_not_loaded', self, "change_ads_mediators")
-			_yodo1mas.connect("interstitial_ad_not_loaded", self, "change_ads_mediators")
-			_yodo1mas.connect("rewarded_ad_not_loaded", self, "change_ads_mediators")
+		if _yodo1mas.connect('banner_ad_not_loaded', Callable(self, "change_ads_mediators")) != OK:
+			_yodo1mas.connect('banner_ad_not_loaded', Callable(self, "change_ads_mediators"))
+			_yodo1mas.connect("interstitial_ad_not_loaded", Callable(self, "change_ads_mediators"))
+			_yodo1mas.connect("rewarded_ad_not_loaded", Callable(self, "change_ads_mediators"))
 	if not mediators.has(2) : return
 
 	#Appodeal
 	if mediators.has(0) :
-		if _Appodeal.connect("banner_load_failed", self, "change_ads_mediators") != OK:
-			_Appodeal.connect("banner_load_failed", self, "change_ads_mediators")
-			_Appodeal.connect("interstitial_load_failed", self, "change_ads_mediators")
-			_Appodeal.connect("rewarded_video_load_failed", self, "change_ads_mediators")
+		if _Appodeal.connect("banner_load_failed", Callable(self, "change_ads_mediators")) != OK:
+			_Appodeal.connect("banner_load_failed", Callable(self, "change_ads_mediators"))
+			_Appodeal.connect("interstitial_load_failed", Callable(self, "change_ads_mediators"))
+			_Appodeal.connect("rewarded_video_load_failed", Callable(self, "change_ads_mediators"))
 	if not mediators.has(0): return
 	
 	
 	#Admob
 	if mediators.has(1) :
-		if Admob.connect("banner_failed_to_load", self, "change_ads_mediators") != OK:
+		if Admob.connect("banner_failed_to_load", Callable(self, "change_ads_mediators")) != OK:
 			Admob.connect_signals()  #admob connects emitted signals within it's own function
-			Admob.connect("banner_failed_to_load", self, "change_ads_mediators")
-			Admob.connect("interstitial_failed_to_load", self, "change_ads_mediators")
-			Admob.connect("rewarded_video_failed_to_load", self, "change_ads_mediators")
+			Admob.connect("banner_failed_to_load", Callable(self, "change_ads_mediators"))
+			Admob.connect("interstitial_failed_to_load", Callable(self, "change_ads_mediators"))
+			Admob.connect("rewarded_video_failed_to_load", Callable(self, "change_ads_mediators"))
 	if not mediators.has(1) : return
 	
 

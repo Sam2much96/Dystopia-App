@@ -36,10 +36,10 @@ var colorGrey
 var colorYt
 var colorBlue
 var colorBlck
-export (String) var Default_clr
+@export (String) var Default_clr
 
-export (int) var circle_size
-export (Vector2) onready var pos = $Position2D.position
+@export (int) var circle_size
+@export (Vector2) onready var pos = $Marker2D.position
 
 func _ready():
 	

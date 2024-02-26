@@ -1,3 +1,4 @@
+@tool
 # *************************************************
 # godot3-Dystopia-game by INhumanity_arts
 # Released under MIT License
@@ -8,12 +9,11 @@
 #(1) Debug
 # *************************************************
 
-tool
 extends RichTextLabel
 
 
 
-export (bool) var enable_editing = false
+@export (bool) var enable_editing = false
 var documentation_path: String = ""
 var MarkdownParser = load("res://addons/algodot/Documentation/Scripts/DocsMarkdownParser.gd").new()
 
@@ -60,7 +60,7 @@ func load_page(page_path: String, section : String=''):
 	current_page = page_path
 	
 	# parsing the file
-	bbcode_text = MarkdownParser.parse(f.get_as_text())
+	text = MarkdownParser.parse(f.get_as_text())
 	f.close()
 	
 	# saving the headings for going to sections
@@ -77,8 +77,8 @@ func scroll_to_section(title):
 	# this is not really nicely done...
 	for heading in current_headings:
 		if heading.to_lower().strip_edges().replace(' ', '-') == title.replace('#', ''):
-			var x = bbcode_text.find(heading.replace('#', '').strip_edges()+"[/font]")
-			x = bbcode_text.count("\n", 0, x)
+			var x = text.find(heading.replace('#', '').strip_edges()+"[/font]")
+			x = text.count("\n", 0, x)
 			scroll_to_line(x)
 			return
 

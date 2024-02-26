@@ -34,12 +34,12 @@ var VIDEO
 
 var cinematics : VideoStreamTheora #= preload ('res://resources/title animation/title..ogv') #I free memory once this is used # Depreciated
 var title_screen = load( 'res://scenes/Title screen.tscn')
-onready var form = load ('res://scenes/UI & misc/form/form.tscn')
+@onready var form = load ('res://scenes/UI & misc/form/form.tscn')
 var controls = load ('res://scenes/UI & misc/Controls.tscn')
 
 "Comics  Book Module variables"
-onready var comics = load ('res://scenes/UI & misc/Comics.tscn')
-onready var comics___2 = load ('res://scenes/UI & misc/Comics____2.tscn')
+@onready var comics = load ('res://scenes/UI & misc/Comics.tscn')
+@onready var comics___2 = load ('res://scenes/UI & misc/Comics____2.tscn')
 var comics_chapter 
 var comics_page 
 
@@ -49,9 +49,9 @@ var game_loop
 var prev_scene
 var prev_scene_spawnpoint
 var next_scene = null
-onready var curr_scene : String = ""
-onready var os: String = OS.get_name()
-onready var kill_count : int = 0 #update to load from savefile
+@onready var curr_scene : String = ""
+@onready var os: String = OS.get_name()
+@onready var kill_count : int = 0 #update to load from savefile
 
 # 
 var players : Array = [] # All Players
@@ -94,13 +94,13 @@ var near_interractible_objects #which objects use this?
 'Scene Loading variables'
 var scene_resource : PackedScene # Large Resouce Scene Placeholder
 var _to_load : String  # Large Resource Placeholder Variable
-var _o : ResourceInteractiveLoader#for polling resource loader
+var _o : ResourceLoader#for polling resource loader
 var err
 var a : int # Loader progress variable (a/b) 
 var b : int
 var loading_resource : bool = false
-onready var scene_loader= ResourceLoader
-onready var progress : float
+@onready var scene_loader= ResourceLoader
+@onready var progress : float
 
 "Crypto Variables" 
 var address : String
@@ -108,7 +108,7 @@ var mnemonic : String
 var player_name : String
 
 # Buggy
-onready var algos : int  #=  Wallet.Wallet.load_account_info(false, Wallet.token_write_path, Wallet.FileCheck3, Wallet.UserData).get("_wallet_algos")
+@onready var algos : int  #=  Wallet.Wallet.load_account_info(false, Wallet.token_write_path, Wallet.FileCheck3, Wallet.UserData).get("_wallet_algos")
 	#MicroAlgos 
 
 
@@ -159,7 +159,7 @@ func _ready():
 	
 	
 	#Set White Background
-	VisualServer.set_default_clear_color(ColorN("white")) 
+	RenderingServer.set_default_clear_color(Color(1,1,1,1))  
 
 
 
@@ -177,10 +177,10 @@ func _go_to_title():
 	
 	'changes scene to title_screen'
 	
-	return get_tree().change_scene("res://scenes/Title screen.tscn")
+	return get_tree().change_scene_to_file("res://scenes/Title screen.tscn")
 
 func _go_to_cinematics():
-	return get_tree().change_scene('res://scenes/cinematics/cinematics.tscn') 
+	return get_tree().change_scene_to_file('res://scenes/cinematics/cinematics.tscn') 
 
 
 #

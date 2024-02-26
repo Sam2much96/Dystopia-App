@@ -35,14 +35,14 @@
 # (8) Spawn Randomized Items Upon Despawn
 
 
-extends KinematicBody2D
+extends CharacterBody2D
 
 class_name Enemy
 
 
 # Organize Vabiables Please? (Done)
-export (int) var attack_wait_time #attack pause time
-export (String, 'Easy', "Intermediate", "Hard") var enemy_type #changes enemy behaviour depending on the enemy tpype # 
+@export (int) var attack_wait_time #attack pause time
+@export (String, 'Easy', "Intermediate", "Hard") var enemy_type #changes enemy behaviour depending on the enemy tpype # 
 
 
 
@@ -58,7 +58,7 @@ const FAST_FRAME_RATE = 5
 
 var selected_frame_rate : int
 
-"Enemy Movement & Path Finding"
+"Enemy Movement & Path3D Finding"
 
 var velocity = Vector2.ZERO #the movement vector
 var target_speed = Vector2() # used for walking State calculation
@@ -68,19 +68,19 @@ var run_speed : int = 100   #mob runspeeed
 
 var enemy_distance_to_player : float # used to calculate how closely the enemy should follow the layer
 
-onready var player #= get_tree().get_nodes_in_group('player')[0]  #reference to player
-onready var raycast : RayCast2D = $enemy_eyesight/pointer/RayCast2D
-onready var pointer : Node2D = $enemy_eyesight/pointer
-onready var navi : NavigationAgent2D = $NavigationAgent2D
-onready var path : Line2D = $Line2D
+@onready var player #= get_tree().get_nodes_in_group('player')[0]  #reference to player
+@onready var raycast : RayCast2D = $enemy_eyesight/pointer/RayCast2D
+@onready var pointer : Node2D = $enemy_eyesight/pointer
+@onready var navi : NavigationAgent2D = $NavigationAgent2D
+@onready var path : Line2D = $Line2D
 #onready var frame_counter : int = 0
 
-onready var pos_data : Array = []
+@onready var pos_data : Array = []
 
 
-export(int) var WALK_SPEED = 350
-export(int) var ROLL_SPEED = 1000
-export(int) var hitpoints = 3 #enemy life
+@export var WALK_SPEED: int = 350
+@export var ROLL_SPEED: int = 1000
+@export var hitpoints: int = 3 #enemy life
 
 
 #var despawn_fx = preload("res://scenes/UI & misc/DespawnFX.tscn")
@@ -92,7 +92,7 @@ var enemy_direction = Vector2(0,0)
 var random_walk_direction : Vector2 = Vector2(100,100)
 
 
-export(String, "up", "down", "left", "right") var facing = "down"
+@export var facing = "down" # (String, "up", "down", "left", "right")
 
 var anim = ""
 var new_anim = ""
@@ -233,9 +233,11 @@ func _physics_process(delta):
 				random_walk_direction =Vector2(100,0)
 			
 			#linear_vel = move_and_slide((global_position- random_walk_direction).normalized() * WALK_SPEED) # move and slide to a random direction
-			linear_vel = move_and_slide((random_walk_direction).normalized() * WALK_SPEED) # move and slide to a random direction
+			set_velocity((random_walk_direction).normalized() * WALK_SPEED)
+			move_and_slide()
+			linear_vel = velocity # move and slide to a random direction
 			
-			linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
+			linear_vel = linear_vel.lerp(target_speed, 0.9)
 			
 			
 			# implement Navigation 2d server
@@ -259,7 +261,9 @@ func _physics_process(delta):
 			new_anim = "slash_" + facing
 			pass
 		STATE_ROLL:
-			linear_vel = move_and_slide(linear_vel)
+			set_velocity(linear_vel)
+			move_and_slide()
+			linear_vel = velocity
 			var target_speed = Vector2()
 			if facing == "up":
 				target_speed.y = -1
@@ -270,7 +274,7 @@ func _physics_process(delta):
 			if facing == "right":
 				target_speed.x = 1
 			target_speed *= ROLL_SPEED
-			linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
+			linear_vel = linear_vel.lerp(target_speed, 0.9)
 			new_anim = "roll"
 			pass
 		STATE_DIE:
@@ -298,7 +302,9 @@ func _physics_process(delta):
 				
 				#print_debug(pos_data, navi.get_final_location())
 				
-				linear_vel = move_and_slide(linear_vel) # updates enemy movement
+				set_velocity(linear_vel)
+				move_and_slide()
+				linear_vel = velocity # updates enemy movement
 				
 				# theres a process method for this
 				#facing = Behaviour.update_facing(self.position, player.position, player, pointer,facing, target_speed)
@@ -308,7 +314,7 @@ func _physics_process(delta):
 
 				target_speed *= WALK_SPEED
 				
-				linear_vel = linear_vel.linear_interpolate(target_speed, 0.9) # linear interpolate?
+				linear_vel = linear_vel.lerp(target_speed, 0.9) # linear sample?
 			
 			if player == null:
 				# walk to a predetermined location
@@ -372,9 +378,10 @@ func _on_hurtbox_area_entered(area):
 		Music.play_sfx(Music.hit_sfx) # Plays sfx from the Music singleton
 		#print_debug ("enemy hitpoint: "+ str(hitpoints))# for debug purposes only
 		var pushback_direction = (global_position - area.global_position).normalized()
-		move_and_slide( pushback_direction *   rand_range(2000,10000)) # Flies back at a random distance
+		set_velocity(pushback_direction *   randf_range(2000,10000))
+		move_and_slide() # Flies back at a random distance
 		state = STATE_HURT
-		var blood = Globals.blood_fx.instance()
+		var blood = Globals.blood_fx.instantiate()
 		get_parent().add_child(blood) # Instances Blood FX
 		blood.global_position = global_position # Makes the fx position global?
 		
@@ -389,8 +396,8 @@ func despawn()->  void:
 	Globals.kill_count +=1
 	
 	# Create Despawn Particle fx
-	despawn_particles = Globals.despawn_fx.instance()
-	blood = Globals.blood_fx.instance()
+	despawn_particles = Globals.despawn_fx.instantiate()
+	blood = Globals.blood_fx.instantiate()
 	get_parent().add_child(despawn_particles)
 	get_parent().add_child(blood)
 	despawn_particles.global_position = global_position
@@ -456,7 +463,7 @@ func shoot()-> void: #spawns a bullet at a particular position
 	# Method Is Buggy
 	
 	print ('shooting player')
-	var b = Globals.bullet_fx.instance()
+	var b = Globals.bullet_fx.instantiate()
 	self.add_child(b)
 	b.transform = pointer.global_transform
 
@@ -503,7 +510,7 @@ func _on_VisibilityNotifier2D_screen_exited():
 
 
 
-class Behaviour extends Reference:
+class Behaviour extends RefCounted:
 	"""
 	# Enemy AI Behaviour in A  SeparateClass
 	
@@ -565,16 +572,16 @@ class Behaviour extends Reference:
 
 	static func enemy_navigation(navi : NavigationAgent2D, target_pos : Vector2, curr_pos : Vector2, line : Line2D, pos_data : Array, type: int): 
 		# refactored Navigation agent
-		navi.set_target_location(target_pos) # target location is the player position
+		navi.set_target_position(target_pos) # target location is the player position
 		
 		
 		if Debug.enabled and type == 2: # Debug Navigation path
-			line.add_point(navi.get_final_location())
+			line.add_point(navi.get_final_position())
 			#line.points = [navi.get_final_location(), curr_pos]
 			pos_data.append(line.points)
 
 		if Debug.enabled and type == 1:
-			line.points = [navi.get_final_location(), curr_pos]
+			line.points = [navi.get_final_position(), curr_pos]
 
 
 	static func behaviour_logic(hitpoints: int, raycast : RayCast2D, player : Player, player_pos , _position,_enemy, enemy_type : String, state, enemy_distance_to_player):
@@ -591,7 +598,9 @@ class Behaviour extends Reference:
 				# Calculates Distance to Player
 				if raycast.is_colliding() && player != null:
 					var center = Functions.calculate_center(player.position, _position) #calculates distance to plaer
-					_enemy.move_and_slide(center) # moves to player
+					_enemy.set_velocity(center)
+					_enemy.move_and_slide()
+					_enemy.velocity # moves to player
 					state = STATE_MOB
 					# # Calculates the enemy distance to playrer
 					enemy_distance_to_player = abs(_position.distance_to(player_pos )) # Calculates the enemy distance to playrer
@@ -654,11 +663,11 @@ class Behaviour extends Reference:
 
 	# Updates the raycast to the Enemy"s Direction
 	static func rotate_pointer(point_direction: Vector2, pointer) -> void:
-		var temp =rad2deg(atan2(point_direction.x, point_direction.y))
+		var temp =rad_to_deg(atan2(point_direction.x, point_direction.y))
 		pointer.rotation_degrees = temp
 
 
-class Functions extends Reference:
+class Functions extends RefCounted:
 	
 	# calculates the center btw two vectors (player and target)
 	static func calculate_center(player_position : Vector2, initial_position : Vector2)-> Vector2:

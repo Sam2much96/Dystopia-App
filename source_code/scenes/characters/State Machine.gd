@@ -4,16 +4,16 @@ class_name StateMachine
 #this code introduces wierd printing codes into the scene tree
 signal state_changed(current_state)
 
-export(NodePath) var start_state
+@export var start_state: NodePath
 
-onready var idle = null
-onready var motion = null
-onready var jump = null
-onready var stagger = null
-onready var attack = null
+@onready var idle = null
+@onready var motion = null
+@onready var jump = null
+@onready var stagger = null
+@onready var attack = null
 
 
-export(String, "up", "down", "left", "right") var facing = "down"
+@export var facing = "down" # (String, "up", "down", "left", "right")
 
 var anim = "" #delete if not needed in state machine
 var new_anim = "" #delete if not needed in state machine

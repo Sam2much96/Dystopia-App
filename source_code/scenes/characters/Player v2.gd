@@ -75,8 +75,8 @@ class_name Player_v2_networking
 #export var state = STATE_IDLE
 
 #************ Scene Tree Objects *************#
-onready var camera = $camera #the player's camera
-onready var impact_fx = $Impact
+@onready var camera = $camera #the player's camera
+@onready var impact_fx = $Impact
 
 #onready var animation : AnimationPlayer = $anims
 
@@ -125,7 +125,7 @@ func _ready():
 	
 
 	# Load Unique Player ID
-	peer_id = int(get_tree().get_network_unique_id())
+	peer_id = int(get_tree().get_unique_id())
 	
 	# Save Player Details
 	#CLient Peer Details Locally
@@ -168,7 +168,7 @@ func _ready():
 	print_debug("Initial Player Info Debug: ",Simulation.player_info)
 	
 	#detect if networking connection
-	camera._set_current(true) 
+	camera.set_current(true) 
 	
 	# Error Catcher 1
 	#if peer_id == 0:
@@ -178,15 +178,15 @@ func _ready():
 		
 
 	# Error Catcher 2
-	if Simulation.player_info["peer id"].empty():
+	if Simulation.player_info["peer id"].is_empty():
 		Simulation.player_info["peer id"] = {peer_id : {}}
 		print_debug(Simulation.player_info["peer id"])# For Debug Purposes ONly
 
 
 	" Connects to the Dialogue System"
 	if not (
-			Dialogs.connect("dialog_started", self, "_on_dialog_started") == OK and
-			Dialogs.connect("dialog_ended", self, "_on_dialog_ended") == OK ):
+			Dialogs.connect("dialog_started", Callable(self, "_on_dialog_started")) == OK and
+			Dialogs.connect("dialog_ended", Callable(self, "_on_dialog_ended")) == OK ):
 		printerr("Error connecting to dialog system")
 	
 	pass
@@ -195,11 +195,12 @@ func _ready():
 
 	# Connect SIgnals
 	# (1) Networking Singleton to SImulation SIngleton
-	if is_network_master():
+	if is_multiplayer_authority():
 		
-		Networking.connect("pi", Simulation,"simulate", [peer_id, self])
-		print_debug("Simulation signal is connected: ",Networking.is_connected("pi", Simulation,"simulate"))
-
+		# Disabling Temporarily for Debugging
+		#Networking.connect("pi", Callable(Simulation, "simulate").bind(peer_id, self))
+		#print_debug("Simulation signal is connected: ",Networking.is_connected("pi", Callable(Simulation, "simulate")))
+		pass
 
 func _process(delta : float):
 
@@ -254,7 +255,7 @@ func _input(event):
 	
 	# If not connected, don't handle input.
 	#if not my_peer.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
-	if not get_tree().has_network_peer() :
+	if not get_tree().has_multiplayer_peer() :
 		push_error(" Connection Bad, Not Handling Input")
 		return
 		
@@ -264,7 +265,7 @@ func _input(event):
 # Note: client peer id is peer_id whereas server peer_id for client peer is 1
 
 # CLIENT SIDE CODE
-	if not is_network_master():
+	if not is_multiplayer_authority():
 		if Input.is_action_just_pressed("move_up"):
 			# Update update ID to prevent wrong packet order 
 			
@@ -359,7 +360,7 @@ func _physics_process(delta):
 	"""
 	# server dowsnrt do any processing
 	
-	if not is_network_master():
+	if not is_multiplayer_authority():
 		
 		match state:
 			STATE_BLOCKED:
@@ -478,7 +479,7 @@ func _physics_process(delta):
 				#new_anim = "slash_" + _facing
 				
 				# should broadcast input 
-				 
+ 
 				pass
 			STATE_ROLL:
 				if roll_direction == Vector2.ZERO:
@@ -517,7 +518,7 @@ func _physics_process(delta):
 	SERVER SDE PHYSICS PROCESS
 	"""
 	# Simulation Logic
-	if is_network_master():
+	if is_multiplayer_authority():
 		
 		
 		# Debugx Server sie position
@@ -602,8 +603,8 @@ func goto_idle():
 #	pass
 
 func despawn():  #this code breaks
-	var blood = Globals.blood_fx.instance()
-	var despawn_particles = Globals.despawn_fx.instance()
+	var blood = Globals.blood_fx.instantiate()
+	var despawn_particles = Globals.despawn_fx.instantiate()
 	
 	
 	get_parent().add_child(despawn_particles)
@@ -615,13 +616,13 @@ func despawn():  #this code breaks
 	
 	hide()
 	print ('Update Player code for proper despawing')
-	yield(get_tree().create_timer(0.5), "timeout")
+	await get_tree().create_timer(0.5).timeout
 	#Update this code to update player position
 	
 	print ("player respawn is broken")
 	#get_tree().reload_current_scene() #Reboots the current scene if the Player Dies
 	if Globals._q != null:
-		Globals.change_scene_to(Globals._q)
+		Globals.change_scene_to_packed(Globals._q)
 	else: get_tree().reload_current_scene()
 
 #func _on_hurtbox_area_entered():
@@ -633,7 +634,7 @@ func despawn():  #this code breaks
 
 
 # Registers player info to Global peer id Dictionary
-remote func player_joined(id : int, info):
+@rpc("any_peer") func player_joined(id : int, info):
 	print("Callback: player_joined(" + str(id)+"," + str(info) + ")")
 	Networking.player_info[id] = info
 	
@@ -641,7 +642,7 @@ remote func player_joined(id : int, info):
 	#add_chat()
 	
 	var preload_player : String = ""
-	var node_player = load(preload_player).instance()
+	var node_player = load(preload_player).instantiate()
 	var color = info.color.to_lower()
 	
 	node_player.get_node("texture_player").texture = load("res://images/player_" + color + ".png")
@@ -650,7 +651,7 @@ remote func player_joined(id : int, info):
 	info.updates = {}
 	
 	var pos = Vector2(info.position.x,info.position.y)
-	node_player.mode = RigidBody2D.MODE_KINEMATIC
+	node_player.mode = RigidBody2D.FREEZE_MODE_KINEMATIC
 	node_player.set_position(pos)
 	node_player.name = info.name
 		
@@ -701,7 +702,7 @@ func update_player_info():
 
 
 
-remote func player_leaving(id : int):
+@rpc("any_peer") func player_leaving(id : int):
 	print("Callback: player_leaving(" + str(id)+")")
 	Dialogs.dialog_box.show_dialog("Player leaving: " + Networking.player_info[id].name, "Admin")
 	Simulation.player_info[id].node.queue_free()
@@ -736,13 +737,13 @@ func player_got_shot(body : Player_v2_networking):
 					
 
 
-remote func player_respawned(id : int, info):
+@rpc("any_peer") func player_respawned(id : int, info):
 	print("Callback: player_respawned (" + str(id)+"," + str(info) + ")")
 	Networking.player_info[id] = info
 	Dialogs.dialog_box.show_dialog("Player respawned: " + Networking.player_info[id].name, "Admin")
 	
 	var preload_player : String = ""
-	var node_player = load(preload_player).instance()
+	var node_player = load(preload_player).instantiate()
 	var color = info.color.to_lower()
 	
 	node_player.get_node("texture_player").texture = load("res://images/player_" + color + ".png")
@@ -753,7 +754,7 @@ remote func player_respawned(id : int, info):
 	var pos = Vector2(info.position.x,info.position.y)
 	
 	# Should Be Kinematic Body instead
-	node_player.mode = RigidBody2D.MODE_KINEMATIC
+	node_player.mode = RigidBody2D.FREEZE_MODE_KINEMATIC
 	node_player.set_position(pos)
 	node_player.name = info.name
 		
@@ -763,7 +764,7 @@ remote func player_respawned(id : int, info):
 
 # Updates Client Peer Remote Health
 # Replace Explosion with Global Blood Instances
-remote func player_health(id : int, health: int):
+@rpc("any_peer") func player_health(id : int, health: int):
 	print("Callback: player_health(" + str(id) +","+str(health)+")")
 	if health == 0:
 		Networking.player_info[id].destroyed = true
@@ -771,7 +772,7 @@ remote func player_health(id : int, health: int):
 		Networking.player_info[id].node.queue_free()
 		var preload_explosion
 		
-		var node_explosion = preload_explosion.instance()
+		var node_explosion = preload_explosion.instantiate()
 		node_explosion.get_node("particles").emitting = true
 		node_explosion.get_node("particles").one_shot = true
 		node_explosion.position = Networking.player_info[id].node.position
@@ -780,7 +781,7 @@ remote func player_health(id : int, health: int):
 	# Update HealthBar
 	var progress_health
 	
-	var peer_id = get_tree().get_network_unique_id()
+	var peer_id = get_tree().get_unique_id()
 	if id == peer_id:
 		progress_health.value = health
 
@@ -832,13 +833,13 @@ remote func player_health(id : int, health: int):
 #
 #
 ## Remote FUnction for emitting and displaying Damages points and Particles
-remote func display_damage(body):
+@rpc("any_peer") func display_damage(body):
 	var player_info 
 	
 	for peer_id in player_info:
 		if player_info[peer_id].node == body:
 			var preload_damage : String = ""
-			var node_damage = load(preload_damage).instance()
+			var node_damage = load(preload_damage).instantiate()
 			node_damage.name = "damage"
 			node_damage.get_node("particles").emitting = true
 			node_damage.get_node("particles").one_shot = true
@@ -846,25 +847,26 @@ remote func display_damage(body):
 			break
 
 
-class server  extends Reference:
-	remote func fire_weapon(id, position, current_angle):
-		Simulation.projectiles.append({ timestamp = OS.get_ticks_msec() + (Networking.TICK_DURATION * 2), id = id, position = position, current_angle = current_angle })
+class server  extends RefCounted:
+	# Remote Sync
+	func fire_weapon(id, position, current_angle):
+		Simulation.projectiles.append({ timestamp = Time.get_ticks_msec() + (Networking.TICK_DURATION * 2), id = id, position = position, current_angle = current_angle })
 
-class server2 extends Reference:
+class server2 extends RefCounted:
 	func fire_weapon(id : int):
 		print("Fire weapon!")
 			
 		var info = Networking.player_info[id]
 		var preload_projectile
 		var node_projectiles
-		var node_projectile = preload_projectile.instance()
+		var node_projectile = preload_projectile.instantiate()
 		var pos = Vector2(info.position.x,info.position.y)
 		
 		node_projectile.name = info.name
-		node_projectile.contacts_reported = 1
+		node_projectile.max_contacts_reported = 1
 		node_projectiles.add_child(node_projectile)
 
-		var weapon_angle = info.node.rotation + rand_range(-Networking.PROJECTILE_RANDOM/2, Networking.PROJECTILE_RANDOM/2)
+		var weapon_angle = info.node.rotation + randf_range(-Networking.PROJECTILE_RANDOM/2, Networking.PROJECTILE_RANDOM/2)
 		var trustp = Vector2(0,Networking.PROJECTILE_OFFSET).rotated(weapon_angle)
 		node_projectile.set_position(pos - trustp)
 		node_projectile.set_linear_velocity(-trustp * Networking.PROJECTILE_SPEED)

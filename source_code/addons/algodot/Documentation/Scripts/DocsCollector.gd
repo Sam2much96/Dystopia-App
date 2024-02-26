@@ -1,4 +1,4 @@
-tool
+@tool
 extends SceneTree
 # Finds and generates a code reference from gdscript files.
 
@@ -15,10 +15,10 @@ extends SceneTree
 # - is_recursive: if `true`, walks over subdirectories recursively, returning all
 #   files in the tree.
 func find_files(
-	dirpath := "", patterns := PoolStringArray(), is_recursive := false, do_skip_hidden := true
-) -> PoolStringArray:
-	var file_paths := PoolStringArray()
-	var directory := Directory.new()
+	dirpath := "", patterns := PackedStringArray(), is_recursive := false, do_skip_hidden := true
+) -> PackedStringArray:
+	var file_paths := PackedStringArray()
+	var directory := DirAccess.new()
 
 	if not directory.dir_exists(dirpath):
 		printerr("The directory does not exist: %s" % dirpath)
@@ -27,9 +27,9 @@ func find_files(
 		printerr("Could not open the following dirpath: %s" % dirpath)
 		return file_paths
 
-	directory.list_dir_begin(true, do_skip_hidden)
+	directory.list_dir_begin() # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 	var file_name := directory.get_next()
-	var subdirectories := PoolStringArray()
+	var subdirectories := PackedStringArray()
 	while file_name != "":
 		if directory.current_is_dir() and is_recursive:
 			var subdirectory := dirpath.plus_file(file_name)
@@ -55,7 +55,7 @@ func save_text(path := "", content := "") -> void:
 		printerr("Couldn't save: the file name, %s, contains invalid characters." % basename)
 		return
 
-	var directory := Directory.new()
+	var directory := DirAccess.new()
 	if not directory.dir_exists(dirpath):
 		directory.make_dir(dirpath)
 
@@ -71,7 +71,7 @@ func save_text(path := "", content := "") -> void:
 # code reference data.
 #
 # If `refresh_cache` is true, will refresh Godot's cache and get fresh symbols.
-func get_reference(files := PoolStringArray(), refresh_cache := false) -> Dictionary:
+func get_reference(files := PackedStringArray(), refresh_cache := false) -> Dictionary:
 	var data := {
 		name = ProjectSettings.get_setting("application/config/name"),
 		description = ProjectSettings.get_setting("application/config/description"),
@@ -92,4 +92,4 @@ func get_reference(files := PoolStringArray(), refresh_cache := false) -> Dictio
 
 
 func print_pretty_json(reference: Dictionary) -> String:
-	return JSON.print(reference, "  ")
+	return JSON.stringify(reference, "  ")

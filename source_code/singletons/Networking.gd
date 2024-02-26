@@ -40,10 +40,10 @@ NETWORKING SINGLETON 4.0
 
 To query if there's internet access and connect to various websites
 """
-export (bool) var enabled
-export(String) var connection_debug
-export (String) var cfg_server_ip 
-export (String) var cfg_client_ip 
+@export var enabled : bool
+@export var connection_debug: String
+@export var cfg_server_ip : String
+@export var cfg_client_ip : String
 #########################  Web browser codes  ############################3
 var url : String = ''
 var check_timer 
@@ -56,8 +56,8 @@ var WORLD_SIZE : int = 40000.0
 
 var peer_id : int
 var last_update = -1
-var my_peer : NetworkedMultiplayerENet
-var player_data : PoolByteArray
+var my_peer : ENetMultiplayerPeer
+var player_data : PackedByteArray
 var camera #stores general camera variables
 ###############################multiplayer codes########################
 # Debugs to Debugger Singleton
@@ -79,12 +79,12 @@ signal error_ssl_handshake
 signal game_finished
 signal Timeout
 
-onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
+@onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
 
-onready var timer :Timer  = $Timer2
-onready var _reference_to_self =get_node('/root/Networking') #formerly _y
-onready var _reference_to_debug =get_node('/root/Debug') #formerly _y
+@onready var timer :Timer  = $Timer2
+@onready var _reference_to_self =get_node('/root/Networking') #formerly _y
+@onready var _reference_to_debug =get_node('/root/Debug') #formerly _y
 
 # Default hostname used by the login form
 #const DEFAULT_HOSTNAME = "127.0.0.1"
@@ -104,7 +104,7 @@ const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
 
 #**********Helper Booleans***********#
 var running_request : bool = false
-var Timeout : bool = false
+@export var _Timeout : bool = false
 
 
 #*********IPFS Gateway***************#
@@ -148,7 +148,7 @@ var id_as_string : String
 
 # Local Play or Multiplayer Parameters
 enum {LOCAL, ONLINE}
-onready var GamePlay = LOCAL
+@onready var GamePlay = LOCAL
 
 
 
@@ -180,16 +180,16 @@ func _process(_delta):
 	for child in _reference_to_self.get_children():
 		if child is Timer:
 			check_timer = child
-			if not child.is_connected("timeout",self, '_check_connection') :
-				child.connect("timeout",self, '_check_connection') # connects timeout signal to check connection 
+			if not child.is_connected("timeout", Callable(self, '_check_connection')) :
+				child.connect("timeout", Callable(self, '_check_connection')) # connects timeout signal to check connection 
 		if child is HTTPRequest:
 #checks connection status -> Force connect HTTP request's signals
-			if child.is_connected("connection_success",self, '_on_success') != true:
-				return connect("request_completed", self,'on_request_result')
+			if child.is_connected("connection_success", Callable(self, '_on_success')) != true:
+				return connect("request_completed", Callable(self, 'on_request_result'))
 		
-				return connect("connection_success",self, '_on_success')
-				return connect("error_connection_failed",self,'_on_failure')
-				return connect("error_ssl_handshake",self, '_on_fail_ssl_handshake')
+				return connect("connection_success", Callable(self, '_on_success'))
+				return connect("error_connection_failed", Callable(self, '_on_failure'))
+				return connect("error_ssl_handshake", Callable(self, '_on_fail_ssl_handshake'))
 
  
 # Creates a Networking timer
@@ -202,10 +202,10 @@ func _init_timer() :
 	
 	# connect timer timeout signal
 	"Updates the Networking Boolean of Timer State"
-	if not timer.is_connected("timeout",self, "_on_Timer2_timeout"):
-		timer.connect("timeout",self, "_on_Timer2_timeout")
+	if not timer.is_connected("timeout", Callable(self, "_on_Timer2_timeout")):
+		timer.connect("timeout", Callable(self, "_on_Timer2_timeout"))
 	
-	print_debug ('Check_timer :' , check_timer, " Is connected: ", timer.is_connected("timeout",self, "_on_Timer2_timeout")) #code breaks here and gives cant resolve hostname errors
+	print_debug ('Check_timer :' , check_timer, " Is connected: ", timer.is_connected("timeout", Callable(self, "_on_Timer2_timeout"))) #code breaks here and gives cant resolve hostname errors
 
 
 
@@ -227,7 +227,7 @@ func stop_check()-> bool: #Stops timer check
 "Starts a check using Timer Node for 3 Seconds"
 func start_check(time: int): 
 	connection_debug = str('start check') # Debug Variable
-	Timeout = false
+	_Timeout = false
 	if time != null:
 		check_timer.start(time) 
 	
@@ -237,7 +237,7 @@ func start_check(time: int):
 
 
 func start_check_v2(wait_time : int):
-	yield(get_tree().create_timer(wait_time),"timeout")
+	await get_tree().create_timer(wait_time).timeout
 
 # Check http unsecured Url connection
 # fix multiple check bug
@@ -245,21 +245,21 @@ static func _check_connection(url, request_node: HTTPRequest):
 	#Ignore Warning
 	#Request Node must be in the SceneTree
 	print  ("Is Request Noode inside scene tree:", request_node.is_inside_tree())
-	var error = request_node.request(url,PoolStringArray(),false,0,"") 
+	var error = request_node.request(url,PackedStringArray(),false,0,"") 
 	print (' Networking Request Error: ',error) #for debug purposes only
 
 
 func _check_connection_secured(url): # Check http secured Url connection
 	#Ignore Warning
-	url =url.http_escape()
-	var error = .request(url,PoolStringArray(),false,HTTPClient.METHOD_GET) 
+	url =url.uri_encode()
+	var error = super.request(url,PackedStringArray(),false,HTTPClient.METHOD_GET) 
 	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
 	print (' Networking Request Error: ',error) #for debug purposes only
 
 
 func genrate_random_gateway():
 	randomize()
-	random = int(rand_range(-1,gateway.size())) #selects a random track number
+	random = int(randf_range(-1,gateway.size())) #selects a random track number
 	selected_gateway = gateway[random]
 
 # List of valid IPFS web 2.0 Gateways
@@ -280,10 +280,10 @@ static func _connect_to_ipfs_gateway(parse : bool, url : String, selected_gatewa
 		
 		#print ("NFT Url: ",url) #for debug purposes only
 		
-		var t=StreamPeerSSL.new()
+		var t=StreamPeerTLS.new()
 	
-		var error = request_node.request(url,PoolStringArray(),false,HTTPClient.METHOD_GET) 
-		 
+		var error = request_node.request(url,PackedStringArray(),false,HTTPClient.METHOD_GET) 
+		
 		print (' Networking Request Error: ',error) #for debug purposes only
 		print ("Final Url: ", url)
 		return
@@ -377,7 +377,7 @@ func _on_fail_ssl_handshake():
 
 'Downloads a Json file and Stores it Locally'
 #consider running 2 operations here. A read operation and a write operation
-func download_json_(body: PoolByteArray, Save_path: String) -> File:
+func download_json_(body: PackedByteArray, Save_path: String) -> File:
 	var json = File.new()
 	var cunt = []
 	if body != null:
@@ -387,11 +387,11 @@ func download_json_(body: PoolByteArray, Save_path: String) -> File:
 		
 		json.open((Save_path +".json"), File.WRITE )
 		
-		while not json.get_len() > get_body_size() : #kinda works
+		while not json.get_length() > get_body_size() : #kinda works
 			cunt = body.get_string_from_utf8() #works with local storage
 			
 			json.store_line(str(cunt)) #works
-			if json.get_len() == get_body_size(): break #works perfectly
+			if json.get_length() == get_body_size(): break #works perfectly
 			
 
 		json.close()  
@@ -412,7 +412,7 @@ func download_json_(body: PoolByteArray, Save_path: String) -> File:
 download a given image from a given http request
 returns a PNG texture file, saves image file
 """
-static func download_image_(body: PoolByteArray, Save_path: String, node : HTTPRequest) -> ImageTexture:
+static func download_image_(body: PackedByteArray, Save_path: String, node : HTTPRequest) -> ImageTexture:
 	var image = Image.new()
 	var texture = ImageTexture.new()
 	
@@ -447,7 +447,7 @@ static func download_image_(body: PoolByteArray, Save_path: String, node : HTTPR
 'Downloads A File and Stores it Locally'
 #consider running 2 operations here. A read operation and a write operation
 # works
-static func download_file_(node : HTTPRequest,body: PoolByteArray, Save_path: String, file_type: String) -> File:
+static func download_file_(node : HTTPRequest,body: PackedByteArray, Save_path: String, file_type: String) -> File:
 	var file = File.new()
 	#var cunt = []
 	if body != null:
@@ -488,7 +488,7 @@ static func download_file_(node : HTTPRequest,body: PoolByteArray, Save_path: St
 'Saves A File and Stores it Locally'
 #consider running 2 operations here. A read operation and a write operation
 # works
-static func save_file_(body: PoolByteArray, Save_path: String, file_size: int ) -> File:
+static func save_file_(body: PackedByteArray, Save_path: String, file_size: int ) -> File:
 	var file = File.new()
 	
 	#var Dir = Directory.new()
@@ -509,10 +509,10 @@ static func save_file_(body: PoolByteArray, Save_path: String, file_size: int ) 
 		
 		if err==OK:
 			
-			while not file.get_len() > file_size:
+			while not file.get_length() > file_size:
 				file.store_buffer(body)
 				
-				if file.get_len() == file_size:
+				if file.get_length() == file_size:
 					file.close()
 					break 
 			
@@ -553,7 +553,7 @@ func _server_disconnected():
 
 
 func _player_disconnected(_id : int):
-	 # _id, Lobby: SceneTree, UI : Control)
+	# _id, Lobby: SceneTree, UI : Control)
 	#emit_signal("game_finished")
 	Lobby._on_player_disconnected(_id, get_tree(), UserInterface)
 	#_end_game()
@@ -578,8 +578,8 @@ func _player_connected(_id : int):
 	# Create Global Pointers to Connected Peer ID's
 	if not peer_ids.has(_id):
 		peer_ids.append(_id)
-	if not peer_ids.has(get_tree().get_network_unique_id()):
-		peer_ids.append(get_tree().get_network_unique_id())
+	if not peer_ids.has(get_tree().get_unique_id()):
+		peer_ids.append(get_tree().get_unique_id())
 	
 	"Starts Game"
 	
@@ -596,7 +596,7 @@ func _player_connected(_id : int):
 		Globals.progress
 		)
 	
-	map_instance = Map.instance()
+	map_instance = Map.instantiate()
 	
 	
 
@@ -605,7 +605,7 @@ func _player_connected(_id : int):
 	# Defines the Type of COnnection
 	# Connects the Game Loop's Game Finished Signal to an End Game Method
 	# ENd Game Is a Non Existent Function SO it throws a warning
-	connect("game_finished", self, "_end_game", [], CONNECT_DEFERRED)
+	connect("game_finished", Callable(self, "_end_game").bind(), CONNECT_DEFERRED)
 	
 	#asafaf
 	# Logic: If player connected, Start Game
@@ -649,7 +649,7 @@ func _end_game():
 	UserInterface.show()
 
 	# Update UI when current Game Ends
-	get_tree().set_network_peer(null) # Remove peer.
+	get_tree().set_multiplayer_peer(null) # Remove peer.
 		
 		
 		#host_button.set_disabled(false)
@@ -662,26 +662,28 @@ func _end_game():
 "Multiplayer NetCode Functions"
 
 # Depreciated code, use GLobals.Functions.dict2byte for optimized data conversion
-func array2poolByte( data_from : Array) -> PoolByteArray: 
+func array2poolByte( data_from : Array) -> PackedByteArray: 
 	#	if frame_counter % 6_000 == 0:
 	# To Do:
 	# (1) update to check for data continuity
 	# (2) Implement Algorithm to reduce Data size to < 1000 bytes 
-	RawData = var2bytes([to_json(data_from)])
-	return PoolByteArray(RawData)
+	RawData = var_to_bytes([JSON.new().stringify(data_from)])
+	return PackedByteArray(RawData)
 
-func poolByte2Array(data_from: PoolByteArray) -> Array:
+func poolByte2Array(data_from: PackedByteArray) -> Array:
 	if data_from.size() > 5:
-		RawData = bytes2var(data_from, true)
+		RawData = bytes_to_var(data_from, true)
 		# Iterate through raw data
 		for i in RawData:
 			#Returns a String. Converting to Dictionary
 			
-			RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary
-		return RawJson.get_result()
+			var test_json_conv = JSON.new()
+			test_json_conv.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary
+			RawJson = test_json_conv.get_data()
+		return RawJson.get_data()
  
 	else: 
-		push_error("Error calling built-in function 'bytes2var': Not enough bytes for decoding bytes, or invalid format.")
+		push_error("Error calling built-in function 'bytes_to_var': Not enough bytes for decoding bytes, or invalid format.")
 		return [] # returns an empty array
 
 """
@@ -689,7 +691,7 @@ REGISTERS PLAYER INPUT AND RELEASES
 """
 # Debugs Player Data
 # Also updates the server object with player data from respective peers
-remote func pi(id : int,player_data : PoolByteArray):
+@rpc("any_peer") func pi(id : int,player_data : PackedByteArray):
 	# Remote Calls Player Input From Client Peer for each client peer
 	# Should Connect to Physics Process Simulation Logic
 	# Bug: Player positional data is not sent properly (Fixed)
@@ -702,7 +704,7 @@ remote func pi(id : int,player_data : PoolByteArray):
 	# (4) Server Performs simulation
 	# (5) Server Broadcasts data to all client peers to replicate SImulation
 	# (6) Server Measures states Synchronizations across all CLient Peers
-	if is_network_master():
+	if is_multiplayer_authority():
 		#print("Player Input Registered ",str (poolByte2Array(player_data)), "from ", id ) # player data returns array
 		
 		
@@ -718,7 +720,7 @@ remote func pi(id : int,player_data : PoolByteArray):
 		
 		
 		
-		id_as_string = var2str(id) 
+		id_as_string = var_to_str(id) 
 		
 		for i in poolByte2Array(player_data):
 			
@@ -832,7 +834,7 @@ PLAYER UPDATE
 # receives player info from sever object
 
 
-remote func pu(id : int, update_id : int, updates: PoolByteArray):
+@rpc("any_peer") func pu(id : int, update_id : int, updates: PackedByteArray):
 	
 	print_debug (" Player Update Packet Recieved, Size (Bytes): ", updates.size()) # for debug purposes only
 	
@@ -848,7 +850,7 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
 
 	
-	var id_as_string : String = var2str(peer_id) 
+	var id_as_string : String = var_to_str(peer_id) 
 	
 	# Maintain an Updated Timeline so older packets are discarded
 #	last_update = update_id
@@ -930,12 +932,12 @@ BROADCAST WORLD POSITIONS
 #Broadcats world position from server to all peers using player update methods
 
 
-remote func broadcast_world_positions():
+@rpc("any_peer") func broadcast_world_positions():
 	# Server Call
 	# Calls the pu Method in all Renote peers
 	# can only be called by Server
 	# Only the Hosting Device Can Update All NEtwork peers
-	if is_network_master():
+	if is_multiplayer_authority():
 		
 		# Ping
 		
@@ -963,36 +965,33 @@ class Downloader extends Node:
 		var arg_bytes_loaded = {"name":"bytes_loaded","type":TYPE_INT}
 		var arg_bytes_total = {"name":"bytes_total","type":TYPE_INT}
 		add_user_signal("loading",[arg_bytes_loaded,arg_bytes_total])
-		var arg_result = {"name":"result","type":TYPE_RAW_ARRAY}
+		var arg_result = {"name":"result","type":TYPE_PACKED_BYTE_ARRAY}
 		add_user_signal("loaded",[arg_result])
 		pass
-		
+	
+	# Disabled For Debugging
 	func __get(domain,url,port,ssl):
 		if(t.is_active()):
 			return
-		t.start(self,"_load",{"domain":domain,"url":url,"port":port,"ssl":ssl})
-		 
+	#	t.start(Callable(self, "_load").bind({"domain":domain), "url":url, "port":port, "ssl":ssl})
+ 
 	func _load(params):
 		var err = 0
 		var http = HTTPClient.new()
-		err = http.connect(params.domain,params.port,params.ssl)
-		 
+		err = http.connect(params.domain, Callable(params.port, params.ssl))
+ 
 		while(http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING):
 			http.poll()
-			OS.delay_msec(100)
-		  
+			OS.delay_msec(100)  
 		var headers = [
-		  "User-Agent: Pirulo/1.0 (Godot)",
-		  "Accept: */*"
-		 ]
-		 
+		"User-Agent: Pirulo/1.0 (Godot)",
+		"Accept: */*"
+		]
 		err = http.request(HTTPClient.METHOD_GET,params.url,headers)
-		 
 		while (http.get_status() == HTTPClient.STATUS_REQUESTING):
 			http.poll()
 			OS.delay_msec(500)
-		 
-		var rb = PoolByteArray()
+		var rb = PackedByteArray()
 		if(http.has_response()):
 			headers = http.get_response_headers_as_dictionary()
 			while(http.get_status()==HTTPClient.STATUS_BODY):
@@ -1003,14 +1002,13 @@ class Downloader extends Node:
 				else:
 					rb = rb+chunk
 					call_deferred("_send_loading_signal",rb.size(),http.get_response_body_length())
-		  
 		call_deferred("_send_loaded_signal")
 		http.close()
 		return rb
 	func _send_loading_signal(l,t):
 		emit_signal("loading",l,t)
 		pass
-		 
+
 	func _send_loaded_signal():
 		var r = t.wait_to_finish()
 		emit_signal("loaded",r)
@@ -1020,7 +1018,7 @@ class Downloader extends Node:
 
 
 
-class Player_v3_networking extends KinematicBody2D:
+class Player_v3_networking extends CharacterBody2D:
 
 	
 	
@@ -1030,17 +1028,17 @@ class Player_v3_networking extends KinematicBody2D:
 	
 	const MOTION_SPEED = 150
 
-	export var left = false
+	@export var left = false
 
 	var _motion = 0
 	var _you_hidden = false
 
-	onready var _screen_size_y = get_viewport_rect().size.y
+	@onready var _screen_size_y = get_viewport_rect().size.y
 
 
 	func ___process___(delta): # Depreciated
 		# Is the master of the paddle.
-		if is_network_master():
+		if is_multiplayer_authority():
 			_motion = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
 
 			#Depreciated
@@ -1064,8 +1062,9 @@ class Player_v3_networking extends KinematicBody2D:
 	"""
 	GAME SYNCHRONIZER
 	"""
+	# PUPPET FUNCTION
 	#Synchronize position and speed to the other peers.
-	puppet func set_pos_and_motion(pos, motion):
+	func set_pos_and_motion(pos, motion):
 		position = pos
 		_motion = motion
 		
@@ -1090,27 +1089,27 @@ class SceneManager extends Node2D:
 	var score_left = 0
 	var score_right = 0
 
-	onready var player2 = $Player2
-	onready var score_left_node = $ScoreLeft
-	onready var score_right_node = $ScoreRight
-	onready var winner_left = $WinnerLeft
-	onready var winner_right = $WinnerRight
+	@onready var player2 = $Player2
+	@onready var score_left_node = $ScoreLeft
+	@onready var score_right_node = $ScoreRight
+	@onready var winner_left = $WinnerLeft
+	@onready var winner_right = $WinnerRight
 
 	func _ready():
 		# By default, all nodes in server inherit from master,
 		# while all nodes in clients inherit from puppet.
 		# set_network_master is tree-recursive by default.
-		if get_tree().is_network_server():
+		if get_tree().is_server():
 			# For the server, give control of player 2 to the other peer.
-			player2.set_network_master(get_tree().get_network_connected_peers()[0])
+			player2.set_multiplayer_authority(get_tree().get_peers()[0])
 		else:
 			# For the client, give control of player 2 to itself.
-			player2.set_network_master(get_tree().get_network_unique_id())
+			player2.set_multiplayer_authority(get_tree().get_unique_id())
 
-		print("Unique id: ", get_tree().get_network_unique_id())
+		print("Unique id: ", get_tree().get_unique_id())
 
-
-	remotesync func update_score(add_to_left):
+	# Remote Sync function
+	func update_score(add_to_left):
 		if add_to_left:
 			score_left += 1
 			score_left_node.set_text(str(score_left))
@@ -1173,22 +1172,22 @@ class Lobby extends Control:
 		# Debug Signal Connections
 		# Signals Connect to Networking Main Script, which executeds Lobby Static Functions
 		# Present in the Lobby Class
-		scene_tree_obj.connect("network_peer_connected", Networking, "_player_connected")
-		scene_tree_obj.connect("network_peer_disconnected", Networking, "_player_disconnected")
+		scene_tree_obj.connect("peer_connected", Callable(Networking, "_player_connected"))
+		scene_tree_obj.connect("peer_disconnected", Callable(Networking, "_player_disconnected"))
 		
 		# Connection Signal
-		scene_tree_obj.connect("connected_to_server", Lobby, "_on_connected_ok") 
-		scene_tree_obj.connect("connection_failed", Networking, "_connected_fail")
+		scene_tree_obj.connect("connected_to_server", Callable(Lobby, "_on_connected_ok")) 
+		scene_tree_obj.connect("connection_failed", Callable(Networking, "_connected_fail"))
 		
 		# Server
-		scene_tree_obj.connect("server_disconnected", Networking, "_server_disconnected")
+		scene_tree_obj.connect("server_disconnected", Callable(Networking, "_server_disconnected"))
 
 
 
 
 
 	static func _on_player_disconnected(_id, Lobby: SceneTree, UI : Control):
-		if Lobby.is_network_server():
+		if Lobby.is_server():
 			# with_error : String , Lobby : SceneTree, UI: Control ,Map = "/root/Pong"
 			_end_game("Client disconnected", Lobby, UI)
 		else:
@@ -1209,7 +1208,7 @@ class Lobby extends Control:
 		print_debug("Couldn't Connect")
 		#_set_status("Couldn't connect", false)
 
-		Lobby.set_network_peer(null) # Remove peer.
+		Lobby.set_multiplayer_peer(null) # Remove peer.
 
 		# Update UI and Enable Disabled Buttons
 		
@@ -1235,7 +1234,7 @@ class Lobby extends Control:
 			# Erase immediately, otherwise network might show
 			# errors (this is why we connected deferred above).
 			#Lobby.get_node(Map).free()
-			Lobby.change_scene_to(error)
+			Lobby.change_scene_to_packed(error)
 			
 			Map.queue_free()
 			
@@ -1246,7 +1245,7 @@ class Lobby extends Control:
 			Networking.UserInterface.show()
 
 		# Update UI when current Game Ends
-		Lobby.set_network_peer(null) # Remove peer.
+		Lobby.set_multiplayer_peer(null) # Remove peer.
 		
 		# Enable UI buttons
 		#host_button.set_disabled(false)
@@ -1259,9 +1258,7 @@ class Lobby extends Control:
 	# Connect to Dialogue Box
 	static func _set_status(text : String, status : DialogBox, isok : bool):
 		Networking. start_check(2)
-		# Simple way to show status.
-		#
-		 
+		# Simple way to show status. 
 		status.show_dialog( text + str(isok), "Admin") 
 			
 		# Bug: Dialogue box doesnt stop showing 
@@ -1269,9 +1266,9 @@ class Lobby extends Control:
 
 	# Starts Server Connections
 	# Connects to UI Buttons
-	static func _on_host_pressed( peer : NetworkedMultiplayerENet, Lobby : SceneTree, host_button : Button, join_button : Button , dialog_box : DialogBox) -> bool:
-		peer = NetworkedMultiplayerENet.new()
-		peer.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER)
+	static func _on_host_pressed( peer : ENetMultiplayerPeer, Lobby : SceneTree, host_button : Button, join_button : Button , dialog_box : DialogBox) -> bool:
+		peer = ENetMultiplayerPeer.new()
+		peer.set_compression_mode(ENetMultiplayerPeer.COMPRESS_RANGE_CODER)
 		var err = peer.create_server(DEFAULT_PORT, Networking.MAX_PLAYERS) # Maximum of % peers
 		
 		# If Bad COnnection
@@ -1280,10 +1277,10 @@ class Lobby extends Control:
 			_set_status("Can't host, address in use.",dialog_box ,false)
 			return true
 
-		OS.set_window_title('Server')
+		get_window().set_title('Server')
 		
 		# Sets Network Peer
-		Lobby.set_network_peer(peer)
+		Lobby.set_multiplayer_peer(peer)
 		
 		
 		host_button.set_disabled(true)
@@ -1303,7 +1300,7 @@ class Lobby extends Control:
 		return true
 
 	# Connects to Server From Client
-	static func _on_join_pressed( address: LineEdit, ClientPeer: NetworkedMultiplayerENet, Lobby : SceneTree ) -> bool :
+	static func _on_join_pressed( address: LineEdit, ClientPeer: ENetMultiplayerPeer, Lobby : SceneTree ) -> bool :
 		var ip = address.get_text()
 		if not ip.is_valid_ip_address():
 			print_debug("IP Address Is Invalid")
@@ -1311,9 +1308,9 @@ class Lobby extends Control:
 			return true
 
 		#peer = NetworkedMultiplayerENet.new()
-		ClientPeer.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER)
+		ClientPeer.set_compression_mode(ENetMultiplayerPeer.COMPRESS_RANGE_CODER)
 		ClientPeer.create_client(ip, DEFAULT_PORT)
-		Lobby.set_network_peer(ClientPeer)
+		Lobby.set_multiplayer_peer(ClientPeer)
 
 		_set_status("Connecting...", Dialogs.dialog_box, true)
 		print_debug(" Connecting...")
@@ -1334,7 +1331,7 @@ class NetworkedObject extends Area2D:
 	var stopped = false
 	var _speed = DEFAULT_SPEED
 
-	onready var _screen_size = get_viewport_rect().size
+	@onready var _screen_size = get_viewport_rect().size
 
 	func _process(delta):
 		_speed += delta
@@ -1349,7 +1346,7 @@ class NetworkedObject extends Area2D:
 		if (ball_pos.y < 0 and direction.y < 0) or (ball_pos.y > _screen_size.y and direction.y > 0):
 			direction.y = -direction.y
 
-		if is_network_master():
+		if is_multiplayer_authority():
 			# Only the master will decide when the ball is out in
 			# the left side (it's own side). This makes the game
 			# playable even if latency is high and ball is going
@@ -1368,17 +1365,17 @@ class NetworkedObject extends Area2D:
 				get_parent().rpc("update_score", true)
 				rpc("_reset_ball", true)
 
-
-	remotesync func bounce(left, random):
+	# Remote Sync
+	func bounce(left, random):
 		# Using sync because both players can make it bounce.
 		pass
 
-
-	remotesync func stop():
+	# Remote Sync
+	func stop():
 		stopped = true
 
-
-	remotesync func _reset_ball(for_left):
+	# Remote Sync
+	func _reset_ball(for_left):
 		position = _screen_size / 2
 		if for_left:
 			direction = Vector2.LEFT

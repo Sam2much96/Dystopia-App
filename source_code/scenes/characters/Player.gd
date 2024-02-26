@@ -23,26 +23,26 @@
 # (9) Separate into 2 Separate Core Classes with inheritances. A COre Player class and a Top DOwn Player Class (Done) 
 # *************************************************
 
-extends KinematicBody2D
+extends CharacterBody2D
 
 class_name Player
 
 
 
-export(int) var WALK_SPEED = 350 # pixels per second
-export(int) var ROLL_SPEED = 1000 # pixels per second
-export(int) var GRAVITY = 0 # For Platforming Levels
-export(int) var ATTACK = 1 # For Item Equip
-export(int) var hitpoints = 3
-export(int) var pushback = 5000
+@export var WALK_SPEED: int = 350 # pixels per second
+@export var ROLL_SPEED: int = 1000 # pixels per second
+@export var GRAVITY: int = 0 # For Platforming Levels
+@export var ATTACK: int = 1 # For Item Equip
+@export var hitpoints: int = 3
+@export var pushback: int = 5000
 
-export (Vector2) var linear_vel = Vector2()
-export (Vector2) var roll_direction = Vector2.DOWN
+@export var linear_vel = Vector2()
+@export var roll_direction = Vector2.DOWN
 
-export(String) var item_equip = ""
+@export var item_equip: String = ""
 signal health_changed(current_hp)
 
-export(String, "up", "down", "left", "right") var _facing = "down" # used as a parameter for the player animation state machine
+@export var _facing = "down" # used as a parameter for the player animation state machine # (String, "up", "down", "left", "right")
 
 
 # For Animation Player State Machine
@@ -57,14 +57,14 @@ enum {
 
 enum { UP, DOWN, LEFT, RIGHT}
 
-export var state = STATE_IDLE
-export var facing = DOWN
+@export var state = STATE_IDLE
+@export var facing = DOWN
 
 #********Miscellaneous***********#
-onready var player_camera = $camera #the player's camera
+@onready var player_camera = $camera #the player's camera
 #onready var impact_fx = $Impact
-onready var timer = $ScentTimer
-onready var animation = $anims
+@onready var timer = $ScentTimer
+@onready var animation = $anims
 var timeout: bool = false
 #var frame_counter : int = 0
 
@@ -89,7 +89,7 @@ func _enter_tree():
 		pass
 	
 	if Networking.GamePlay == Networking.ONLINE: # Connection Successful
-		if is_network_master(): # if Server
+		if is_multiplayer_authority(): # if Server
 			server_player = true # Indicate
 
 
@@ -104,8 +104,8 @@ func _ready():
 	
 	
 	if not (
-			Dialogs.connect("dialog_started", self, "_on_dialog_started") == OK and
-			Dialogs.connect("dialog_ended", self, "_on_dialog_ended") == OK ):
+			Dialogs.connect("dialog_started", Callable(self, "_on_dialog_started")) == OK and
+			Dialogs.connect("dialog_ended", Callable(self, "_on_dialog_ended")) == OK ):
 		printerr("Error connecting to dialog system")
 	
 	pass
@@ -127,8 +127,8 @@ func goto_idle():
 
 
 func despawn():  #this code breaks
-	var blood = Globals.blood_fx.instance()
-	var despawn_particles = Globals.despawn_fx.instance()
+	var blood = Globals.blood_fx.instantiate()
+	var despawn_particles = Globals.despawn_fx.instantiate()
 	
 	
 	get_parent().add_child(despawn_particles)
@@ -152,7 +152,7 @@ func respawn()-> void:
 	# Reusing the preloaded scene resource
 	# Triggered with animation player
 	if Globals.scene_resource != null:
-		Globals.change_scene_to(Globals.scene_resource)
+		Globals.change_scene_to_packed(Globals.scene_resource)
 	else: get_tree().reload_current_scene()
 
 
@@ -172,9 +172,10 @@ func hurt(from_position : Vector2):
 		hitpoints -= 1
 		emit_signal("health_changed", hitpoints)
 		var pushback_direction = (global_position - from_position).normalized()
-		move_and_slide( pushback_direction * pushback)
+		set_velocity(pushback_direction * pushback)
+		move_and_slide()
 		state = STATE_HURT
-		var blood = Globals.blood_fx.instance()
+		var blood = Globals.blood_fx.instantiate()
 		blood.global_position = global_position
 		get_parent().add_child(blood)
 		

@@ -1,4 +1,4 @@
-tool
+@tool
 extends EditorScript
 class_name ReferenceCollector
 # Finds and generates a code reference from gdscript files.
@@ -23,7 +23,7 @@ var save_path := "res://reference.json"
 
 
 func _run() -> void:
-	var files := PoolStringArray()
+	var files := PackedStringArray()
 	for dirpath in directories:
 		files.append_array(Collector.find_files(dirpath, patterns, is_recursive))
 	var json: String = Collector.print_pretty_json(Collector.get_reference(files))

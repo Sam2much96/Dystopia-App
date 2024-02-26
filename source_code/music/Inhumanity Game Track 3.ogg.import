@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/Inhumanity Game Track 3.ogg-91a68cf5799d935432aa8feedb644482.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cslywd4w76vbv"
+path="res://.godot/imported/Inhumanity Game Track 3.ogg-91a68cf5799d935432aa8feedb644482.oggvorbisstr"
 
 [deps]
 
 source_file="res://music/Inhumanity Game Track 3.ogg"
-dest_files=[ "res://.import/Inhumanity Game Track 3.ogg-91a68cf5799d935432aa8feedb644482.oggstr" ]
+dest_files=["res://.godot/imported/Inhumanity Game Track 3.ogg-91a68cf5799d935432aa8feedb644482.oggvorbisstr"]
 
 [params]
 
 loop=true
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

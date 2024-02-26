@@ -19,11 +19,11 @@
 
 extends GridContainer
 
-onready var Grid_Container = self
-onready var Scroll_Container = Grid_Container.get_parent()
+@onready var Grid_Container = self
+@onready var Scroll_Container = Grid_Container.get_parent()
 
 
-onready var loaded_comics 
+@onready var loaded_comics 
 
 # Size Vectors For Stretching THe scroll Container
 # Bug Fix for Broken Comics UI on Mobile Screen Orientations
@@ -32,9 +32,9 @@ var size_A : Vector2 = Vector2(1772,1871)
 var size_B : Vector2 = Vector2(2490, 6289)
 
 # UI buttons
-onready var _back : Button = get_parent().get_parent().get_parent().get_node("back")
+@onready var _back : Button = get_parent().get_parent().get_parent().get_node("back")
 
-onready var Comics__2_UI : Array = [_back]
+@onready var Comics__2_UI : Array = [_back]
 
 func _ready():
 	manually_translate()

@@ -30,10 +30,10 @@ Will show a dialog box with the name of the character and
 dialog text, two lines at a time. 
 """
 
-onready var dialog_text : Label = $dialog_text
+@onready var dialog_text : Label = $dialog_text
 
-onready var character_text : Label = $nametag/label
-onready var anims : AnimationPlayer = $anims
+@onready var character_text : Label = $nametag/label
+@onready var anims : AnimationPlayer = $anims
 
 # warning-ignore:unused_signal
 signal dialog_started

@@ -41,9 +41,9 @@ signal dialog_ended
 
 var active = false
 
-var dialog_box = null setget _set_dialog_box
+var dialog_box = null: set = _set_dialog_box
 
-var word_bubble_box : WordBubbleBox = null  setget _set_wordbubble_box
+var word_bubble_box : WordBubbleBox = null: set = _set_wordbubble_box
 var language : String = ""# stores the current language the user selects
 
 var _script_testing : String = 'res://resources/dialogues/script_testing.gd'
@@ -65,7 +65,7 @@ var font_pack : Dictionary = {
 "W1":"res://Wallet fonts/Roboto-Medium.ttf"
 }
 
-var custom_font = DynamicFont.new()
+var custom_font = FontFile.new()
 
 # Hints
 # To Do: Implement Multiple Translations for Hint System using Spreadsheets
@@ -98,12 +98,12 @@ func _set_dialog_box(node):
 	dialog_box = node
 	
 	if dialog_box.get_script().has_script_signal("dialog_started"):
-		dialog_box.connect("dialog_started", self, "_on_dialog_started")
+		dialog_box.connect("dialog_started", Callable(self, "_on_dialog_started"))
 	else:
 		push_error("provided node doesn't implement dialog_started signal")
 	
 	if dialog_box.get_script().has_script_signal("dialog_ended"):
-		dialog_box.connect("dialog_ended", self, "_on_dialog_ended")
+		dialog_box.connect("dialog_ended", Callable(self, "_on_dialog_ended"))
 	else:
 		push_error("provided node doesn't implement dialog_started signal")
 	
@@ -124,7 +124,7 @@ func _on_dialog_ended():
 	active = false
 	emit_signal("dialog_ended")
 	
-	yield(get_tree().create_timer(WAIT_TIME), "timeout")
+	await get_tree().create_timer(WAIT_TIME).timeout
 	# DIalogue Box Node Might Be Removed From Scene Tree After 6 Seconds Wait
 	# This bloc Error Checks for any such occurences
 	if is_instance_valid(dialog_box):
@@ -152,11 +152,11 @@ func reset() -> void:
 
 # Dynamic function
 # Creates a CUstom Font Pack for UI with different Paramenters
-func create_font_pack(Size : int, prefered_font_pack : String, OutlineSize : int ) -> DynamicFont:
+func create_font_pack(Size : int, prefered_font_pack : String, OutlineSize : int ) -> FontFile:
 	
 	
 	# Default Languague Font Pack
-	if prefered_font_pack.empty():
+	if prefered_font_pack.is_empty():
 		# Uses font pack path dictionary to create custom languague packs per languague
 		# IF Language is not supported, English is the deefault
 		Dialogs.custom_font.font_data = load(Dialogs.font_pack.get(Dialogs.language, "en")) 
@@ -166,7 +166,7 @@ func create_font_pack(Size : int, prefered_font_pack : String, OutlineSize : int
 		Dialogs.custom_font.use_filter = true
 	
 	# Custom Font Pack
-	if not prefered_font_pack.empty():
+	if not prefered_font_pack.is_empty():
 		# Uses font pack path dictionary to create custom languague packs per languague
 		# IF Language is not supported, English is the deefault
 		Dialogs.custom_font.font_data = load(prefered_font_pack) 
@@ -186,15 +186,15 @@ func set_font(nodes:  Array, size : int, prefered_font_pack : String, OutlineSiz
 		)
 
 	# Font Overide simple state machine
-	if not nodes.empty():
+	if not nodes.is_empty():
 		for i in nodes:
 			if i is Button:
 				#print (i.name) # for debug purposes only	
-				i.add_font_override('font', Dialogs.custom_font)
+				i.add_theme_font_override('font', Dialogs.custom_font)
 			if i is StatusText:
-				i.add_font_override('font', Dialogs.custom_font)
+				i.add_theme_font_override('font', Dialogs.custom_font)
 			if i is Label:
-				i.add_font_override('font', Dialogs.custom_font)
+				i.add_theme_font_override('font', Dialogs.custom_font)
 
 # *************************************************
 # godot3-Dystopia-game by INhumanity_arts
@@ -211,7 +211,7 @@ func set_font(nodes:  Array, size : int, prefered_font_pack : String, OutlineSiz
 # To DO:
 # (1) Should Take Dialogues.languague as a type parameter
 
-class Parser extends Reference :
+class Parser extends RefCounted :
 	
 	"""
 	THE PURPOSE OF THIS CODE IS TO PARSE TEXT DATA FROM A JSON FILE AND DISPLAY IT IN A DIALOGUE BOX
@@ -226,16 +226,19 @@ class Parser extends Reference :
 	#
 	#
 	static func parse_script(line_to_return : int, _script : String ) -> String: #Places Dialogue in wordbubbles with Dialogue singleton-aid
+		print_debug("script: ", _script)
 		#Parse gd script
-		var _f = File.new()
+		var _f = FileAccess.open(_script, FileAccess.READ)
+		#file.store_string(content)
+		#File.new()
 		var line_string : String
 		var index : int = 0 # used for numbering each line in the parsed script
 		if _f.file_exists(_script): 
 			#print ('File Exists')
-			_f.open (_script, File.READ)
+			#_f.open (_script, File.READ)
 			# Resets count to start from beginning
 			#index = 1 
-			while _f.get_position() < _f.get_len() && not _f.eof_reached():
+			while _f.get_position() < _f.get_length() && not _f.eof_reached():
 			#iterate through all lines until the end of file is reached
 			#var index controls which line is shown
 				#t.seek(index)
@@ -266,9 +269,11 @@ class Parser extends Reference :
 	# Parses a script from one line to another line
 	# Simplifies Dialogs 2 Implementation
 	static func parse_script_from(line_to_start: int, line_to_end: int, _script: String) -> String:
-
+		print_debug("Script Debug: ",_script)
 		# Parse gd script
-		var _f = File.new()
+		var _f = FileAccess.open(_script, FileAccess.READ)
+		#file.store_string(content)
+
 		
 		var line_string: String
 		var line_passage: String = ""
@@ -276,9 +281,9 @@ class Parser extends Reference :
 		
 		if _f.file_exists(_script): 
 			print('File Exists')
-			_f.open(_script, File.READ)
+		#	_f.open(_script, File.READ)
 			
-			while _f.get_position() < _f.get_len() && not _f.eof_reached():
+			while _f.get_position() < _f.get_length() && not _f.eof_reached():
 				line_string = _f.get_line()
 				
 				

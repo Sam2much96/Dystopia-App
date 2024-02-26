@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://scenes/Comics/chapter 1/chapter 1 Neo sud, the new south webp.webp" type="Texture" id=2]
+[ext_resource path="res://scenes/Comics/chapter 1/chapter 1 Neo sud, the new south webp.webp" type="Texture2D" id=2]
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
@@ -55,7 +55,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[node name="chapter_1" type="AnimatedSprite" groups=["comics"]]
+[node name="chapter_1" type="AnimatedSprite2D" groups=["comics"]]
 position = Vector2( 495.936, 363.505 )
 scale = Vector2( 0.509925, 0.509925 )
 frames = SubResource( 10 )

@@ -34,8 +34,8 @@ var status2 : int
 # Stores Player ID's
 var player_id : Array = []
 
-export var autojoin = true
-export var lobby = "" # Will create a new lobby if empty.
+@export var autojoin = true
+@export var lobby = "" # Will create a new lobby if empty.
 
 #web socket client
 var web_client: WebSocketClient = WebSocketClient.new()
@@ -62,7 +62,7 @@ var chat_text: String
 
 #var player_id #my code
 var client_animation : String
-export (int) var ______update_id
+@export (int) var ______update_id
 var hitpoints= 3#var preload_projectile = preload("res://New game code and features/multiplayer/scenes/projectile.tscn") #tweak
 var preload_damage  #= preload("res://New game code and features/multiplayer/scenes/effects/damage.tscn") #tweak
 var preload_explosion #= preload("res://New game code and features/multiplayer/scenes/effects/explosion.tscn") #tweak
@@ -74,33 +74,33 @@ var player_info = {}
 #var projectiles = []
 var my_peer = null
 var last_update = -1 #probably used for updating the network
-onready var node_players = Node.new()#$players #p2p player nodes
-onready var node_enemies=Node.new()  #= #= $camera/projectiles #rewrote progectile nodes to enemy nodes
+@onready var node_players = Node.new()#$players #p2p player nodes
+@onready var node_enemies=Node.new()  #= #= $camera/projectiles #rewrote progectile nodes to enemy nodes
 #onready var camera = Camera2D.new()#$Camera2D#get_tree().get_root()
-onready var progress_health = load('res://scenes/UI & misc/Healthbar.tscn')
+@onready var progress_health = load('res://scenes/UI & misc/Healthbar.tscn')
 
 #*******Player Items*************#
 var facing
 
 #*******Chat Item*************#
-onready var chat : ItemList = $UI/item_chat
+@onready var chat : ItemList = $UI/item_chat
 
 #onready var client = $Client
 
-onready var state #im trying to send player state using rpc call and update it on the server using a remote funtion
+@onready var state #im trying to send player state using rpc call and update it on the server using a remote funtion
 
 #var PEER_ID
 var ch1 #data channel
 
 
-var multiplayerAPI_peer = NetworkedMultiplayerENet.new()
+var multiplayerAPI_peer = ENetMultiplayerPeer.new()
 
 #peer connection
 var peer: WebRTCPeerConnection = WebRTCPeerConnection.new()
 
 #multiplayer
 #open a data channel to send data using peer ID's
-var rtc_mp: WebRTCMultiplayer = WebRTCMultiplayer.new()
+var rtc_mp: WebRTCMultiplayerPeer = WebRTCMultiplayerPeer.new()
 var rtc_Peer_connection : WebRTCPeerConnection = WebRTCPeerConnection.new() # used in creating the Multiplayer API
 var sealed = false
 
@@ -116,87 +116,87 @@ func _init():
 
 func connecting_signals(debug : bool)->void:
 	#connect WebRTC signalling signals
-	connect("connected", self, "connected")
-	connect("disconnected", self, "disconnected")
+	connect("connected", Callable(self, "connected"))
+	connect("disconnected", Callable(self, "disconnected"))
 
-	connect("offer_received", self, "offer_received")
-	connect("answer_received", self, "answer_received")
-	connect("candidate_received", self, "candidate_received")
+	connect("offer_received", Callable(self, "offer_received"))
+	connect("answer_received", Callable(self, "answer_received"))
+	connect("candidate_received", Callable(self, "candidate_received"))
 
 	#connects peer joined and lobby joined signals
-	connect("lobby_joined", self, "lobby_joined")
+	connect("lobby_joined", Callable(self, "lobby_joined"))
 	
 	#connect("lobby_sealed", self, "lobby_sealed") #disabled for debugging
 	
-	connect("peer_connected", self, "peer_connected")
-	connect("peer_disconnected", self, "peer_disconnected")
+	connect("peer_connected", Callable(self, "peer_connected"))
+	connect("peer_disconnected", Callable(self, "peer_disconnected"))
 	
 	
-	connect("lobby_joined", self, "_lobby_joined")
+	connect("lobby_joined", Callable(self, "_lobby_joined"))
 	
 	
-	connect("lobby_sealed", self, "_lobby_sealed")
-	connect("connected", self, "_connected")
-	connect("disconnected", self, "_disconnected")
+	connect("lobby_sealed", Callable(self, "_lobby_sealed"))
+	connect("connected", Callable(self, "_connected"))
+	connect("disconnected", Callable(self, "_disconnected"))
 	
 
 	#Connects the Web Clients
 	
-	web_client.connect("data_received", self, "_parse_msg")
-	web_client.connect("connection_established", self, "_connected")
-	web_client.connect("connection_closed", self, "_closed")
-	web_client.connect("connection_error", self, "_closed")
-	web_client.connect("server_close_request", self, "_close_request")
+	web_client.connect("data_received", Callable(self, "_parse_msg"))
+	web_client.connect("connection_established", Callable(self, "_connected"))
+	web_client.connect("connection_closed", Callable(self, "_closed"))
+	web_client.connect("connection_error", Callable(self, "_closed"))
+	web_client.connect("server_close_request", Callable(self, "_close_request"))
 
 
 	#Connect signals from WebRTCMultiplayer node
 	
-	rtc_mp.connect("peer_connected", self, "_mp_peer_connected")
-	rtc_mp.connect("peer_disconnected", self, "_mp_peer_disconnected")
-	rtc_mp.connect("server_disconnected", self, "_mp_server_disconnect")
-	rtc_mp.connect("connection_succeeded", self, "_mp_connected")
+	rtc_mp.connect("peer_connected", Callable(self, "_mp_peer_connected"))
+	rtc_mp.connect("peer_disconnected", Callable(self, "_mp_peer_disconnected"))
+	rtc_mp.connect("server_disconnected", Callable(self, "_mp_server_disconnect"))
+	rtc_mp.connect("connection_succeeded", Callable(self, "_mp_connected"))
 
 	# Debug SIgnal connections
 	if debug :
-		Functions._log(is_connected("connected", self, "connected"))
-		Functions._log(is_connected("disconnected", self, "disconnected"))
+		Functions._log(is_connected("connected", Callable(self, "connected")))
+		Functions._log(is_connected("disconnected", Callable(self, "disconnected")))
 
-		Functions._log("" + str (is_connected("offer_received", self, "offer_received")))
-		Functions._log("" + str (is_connected("answer_received", self, "answer_received")))
-		Functions._log("" + str (is_connected("candidate_received", self, "candidate_received")))
+		Functions._log("" + str (is_connected("offer_received", Callable(self, "offer_received"))))
+		Functions._log("" + str (is_connected("answer_received", Callable(self, "answer_received"))))
+		Functions._log("" + str (is_connected("candidate_received", Callable(self, "candidate_received"))))
 
 		#connects peer joined and lobby joined signals
-		Functions._log("" + str (is_connected("lobby_joined", self, "lobby_joined")))
+		Functions._log("" + str (is_connected("lobby_joined", Callable(self, "lobby_joined"))))
 		
 		#connect("lobby_sealed", self, "lobby_sealed") #disabled for debugging
 		
-		Functions._log("" + str (is_connected("peer_connected", self, "peer_connected")))
-		Functions._log("" + str (is_connected("peer_disconnected", self, "peer_disconnected")))
+		Functions._log("" + str (is_connected("peer_connected", Callable(self, "peer_connected"))))
+		Functions._log("" + str (is_connected("peer_disconnected", Callable(self, "peer_disconnected"))))
 		
 		
-		Functions._log("" + str (is_connected("lobby_joined", self, "_lobby_joined")))
+		Functions._log("" + str (is_connected("lobby_joined", Callable(self, "_lobby_joined"))))
 		
 		
-		Functions._log("" + str (is_connected("lobby_sealed", self, "_lobby_sealed")))
-		Functions._log("" + str (is_connected("connected", self, "_connected")))
-		Functions._log("" + str (is_connected("disconnected", self, "_disconnected")))
+		Functions._log("" + str (is_connected("lobby_sealed", Callable(self, "_lobby_sealed"))))
+		Functions._log("" + str (is_connected("connected", Callable(self, "_connected"))))
+		Functions._log("" + str (is_connected("disconnected", Callable(self, "_disconnected"))))
 		
 
 		#Connects the Web Clients
 		
-		Functions._log("" + str (web_client.is_connected("data_received", self, "_parse_msg")))
-		Functions._log("" + str (web_client.is_connected("connection_established", self, "_connected")))
-		Functions._log("" + str (web_client.is_connected("connection_closed", self, "_closed")))
-		Functions._log("" + str (web_client.is_connected("connection_error", self, "_closed")))
-		Functions._log("" + str (web_client.is_connected("server_close_request", self, "_close_request")))
+		Functions._log("" + str (web_client.is_connected("data_received", Callable(self, "_parse_msg"))))
+		Functions._log("" + str (web_client.is_connected("connection_established", Callable(self, "_connected"))))
+		Functions._log("" + str (web_client.is_connected("connection_closed", Callable(self, "_closed"))))
+		Functions._log("" + str (web_client.is_connected("connection_error", Callable(self, "_closed"))))
+		Functions._log("" + str (web_client.is_connected("server_close_request", Callable(self, "_close_request"))))
 
 
 		#Connect signals from WebRTCMultiplayer node
 		
-		Functions._log( "" + str (rtc_mp.is_connected("peer_connected", self, "_mp_peer_connected")))
-		Functions._log("" + str (rtc_mp.is_connected("peer_disconnected", self, "_mp_peer_disconnected")))
-		Functions._log("" + str (rtc_mp.is_connected("server_disconnected", self, "_mp_server_disconnect")))
-		Functions._log("" + str ( rtc_mp.is_connected("connection_succeeded", self, "_mp_connected")))
+		Functions._log( "" + str (rtc_mp.is_connected("peer_connected", Callable(self, "_mp_peer_connected"))))
+		Functions._log("" + str (rtc_mp.is_connected("peer_disconnected", Callable(self, "_mp_peer_disconnected"))))
+		Functions._log("" + str (rtc_mp.is_connected("server_disconnected", Callable(self, "_mp_server_disconnect"))))
+		Functions._log("" + str ( rtc_mp.is_connected("connection_succeeded", Callable(self, "_mp_connected"))))
 
 
 
@@ -223,7 +223,7 @@ func _parse_msg():
 
 	print ("Packet from Server: ",pkt_str)
 
-	var req: PoolStringArray = pkt_str.split("\n", true, 1)
+	var req: PackedStringArray = pkt_str.split("\n", true, 1)
 	if req.size() != 2: # Invalid request size
 		return
 
@@ -239,7 +239,7 @@ func _parse_msg():
 		return
 
 	var src_str: String = type.substr(3, type.length() - 3)
-	if not src_str.is_valid_integer(): # Source id is not an integer
+	if not src_str.is_valid_int(): # Source id is not an integer
 		return
 
 	var src_id: int = int(src_str)
@@ -260,10 +260,10 @@ func _parse_msg():
 		emit_signal("answer_received", src_id, req[1])
 	elif type.begins_with("C: "):
 		# Candidate received
-		var candidate: PoolStringArray = req[1].split("\n", false)
+		var candidate: PackedStringArray = req[1].split("\n", false)
 		if candidate.size() != 3:
 			return
-		if not candidate[1].is_valid_integer():
+		if not candidate[1].is_valid_int():
 			return
 		emit_signal("candidate_received", src_id, candidate[0], int(candidate[1]), candidate[2])
 
@@ -271,11 +271,11 @@ func _parse_msg():
 func join_lobby(lobby):
 	
 	print ("-------sending joined Packet to peer")
-	return web_client.get_peer(1).put_packet(("J: %s\n" % lobby).to_utf8())
+	return web_client.get_peer(1).put_packet(("J: %s\n" % lobby).to_utf8_buffer())
 
 
 func seal_lobby():
-	return web_client.get_peer(1).put_packet("S: \n".to_utf8())
+	return web_client.get_peer(1).put_packet("S: \n".to_utf8_buffer())
 
 
 
@@ -391,7 +391,7 @@ func _process(delta):
 	# the last two previous updates, this way we always have smooth movements. The
 	# main drawback is added latency (100 ms).
 	
-	var target_timestamp = OS.get_ticks_msec() - (Networking.TICK_DURATION*2)
+	var target_timestamp = Time.get_ticks_msec() - (Networking.TICK_DURATION*2)
 	
 
 
@@ -497,7 +497,7 @@ func open_data_channel_to(channel: WebRTCPeerConnection, peer_id: int):
 	
 	print ("------------Creating WebRTC Connection-----------")
 	
-	web_client.get_peer(1).put_packet(("O: %d\n%s" % [peer_id, req[1]]).to_utf8())
+	web_client.get_peer(1).put_packet(("O: %d\n%s" % [peer_id, req[1]]).to_utf8_buffer())
 
 	var ch1 = channel.create_data_channel("chat", {"id": 1, "negotiated": true})
 
@@ -527,9 +527,9 @@ func _ready():
 	
 
 	
-	UI.UpscaleMobileUI(chat, $UI/Position2D.position)
+	UI.UpscaleMobileUI(chat, $UI/Marker2D.position)
 	
-	OS.set_window_title('Client') 
+	get_window().set_title('Client') 
 	#sdgagdfasdfasdf
 	#Handles Network Connectivity
 	node_enemies.name = 'node_enemies'
@@ -553,7 +553,7 @@ func _ready():
 
 
 	#_start() 
-	WebClient.start(web_client,Networking.cfg_client_ip + ":" + str(Networking.SERVER_PORT) , "", self, sealed)
+	WebClient.start(Callable(web_client, Networking.cfg_client_ip + ":" + str(Networking.SERVER_PORT)).bind(""), self, sealed)
 
 
 	#var peer = NetworkedMultiplayerENet.new()
@@ -620,15 +620,15 @@ func _ready():
 		# Connect signals
 		
 		# What are they Needed FOr???
-		if get_tree().connect("connected_to_server", self, "client_connected_ok") != OK:
+		if get_tree().connect("connected_to_server", Callable(self, "client_connected_ok")) != OK:
 			print("Unable to connect signal (connected_to_server) !")
 		
 		# What are they Needed FOr???
-		if get_tree().connect("connection_failed", self, "client_connected_fail") != OK:
+		if get_tree().connect("connection_failed", Callable(self, "client_connected_fail")) != OK:
 			print("Unable to connect signal (connection_failed) !")
 		
 		# What are they Needed FOr???
-		if get_tree().connect("server_disconnected", self, "server_disconnected") != OK:
+		if get_tree().connect("server_disconnected", Callable(self, "server_disconnected")) != OK:
 			print("Unable to connect signal (server_disconnected) !")
 
 
@@ -681,7 +681,7 @@ func _mp_peer_disconnected(id: int):
 
 "Connect to buttons"
 func ping():
-	Functions._log(rtc_mp.put_packet("ping".to_utf8()))
+	Functions._log(rtc_mp.put_packet("ping".to_utf8_buffer()))
 
 
 #"Backup Start Function "
@@ -697,7 +697,7 @@ func _stop():
 	stop()
 
 
-class WebClient extends Reference:
+class WebClient extends RefCounted:
 	#"All Web Client Code in one Class"
 	
 	
@@ -707,7 +707,7 @@ class WebClient extends Reference:
 		#reason = "Unknown"
 		web_client.connect_to_url(url)
 
-	static func start(web_client : WebSocketClient, url, lobby , node, sealed : bool):
+	static func start(Callable(web_client : WebSocketClient, url).bind(lobby), node, sealed : bool):
 		#stop()
 		sealed = false
 		node.lobby = lobby
@@ -722,15 +722,15 @@ class WebClient extends Reference:
 		push_error("Callback: server_disconnected")
 		OS.alert('You have been disconnected!', 'Connection Closed')
 		# Change to login scene
-		node.get_tree().change_scene("res://scenes/login.tscn")
-		if node.get_tree().change_scene("res://scenes/login.tscn") != OK:
+		node.get_tree().change_scene_to_file("res://scenes/login.tscn")
+		if node.get_tree().change_scene_to_file("res://scenes/login.tscn") != OK:
 			push_error("Unable to load login scene!")
 
 
-class Functions extends Reference:
+class Functions extends RefCounted:
 	
 	
-	static func send_data_to_webclient(web_client : WebSocketClient,data : PoolByteArray):
+	static func send_data_to_webclient(web_client : WebSocketClient,data : PackedByteArray):
 		"Sends Data to a peer"
 		#Send poolbyte arrays
 		# 
@@ -752,14 +752,14 @@ class Functions extends Reference:
 
 	# add chat via remote call
 	#sends data to server
-		send_data_to_webclient(web_client,text.to_utf8()) #Doesnt work
+		send_data_to_webclient(web_client,text.to_utf8_buffer()) #Doesnt work
 
 	# Currently prints mesages
 	# Should Ideally print to chat UI
 	static func _log(msg ):
 		print(str(msg))
 
-class UI extends Reference:
+class UI extends RefCounted:
 
 	static func UpscaleMobileUI(chat : ItemList, position : Vector2)-> void:
 		"Upscale UI on mobile"
@@ -769,10 +769,10 @@ class UI extends Reference:
 			#pass
 
 
-class WebRTC extends Reference:
+class WebRTC extends RefCounted:
 	
 	"Connect to buttons"
-	static func peers(rtc_mp : WebRTCMultiplayer):
+	static func peers(rtc_mp : WebRTCMultiplayerPeer):
 		var d = rtc_mp.get_peers()
 		Functions._log(d)
 		for k in d:
@@ -783,7 +783,7 @@ class WebRTC extends Reference:
 	#called everytime a peer is connected from signals
 	#save the webrtc connection from this method
 	#peer is multiplayer api
-	static func create_peer(id, node, peer : WebRTCPeerConnection, rtc_mp : WebRTCMultiplayer, player_id : Array): # Where node is self
+	static func create_peer(id, node, peer : WebRTCPeerConnection, rtc_mp : WebRTCMultiplayerPeer, player_id : Array): # Where node is self
 		Functions._log("creating peer id")
 		
 		#print ("webRTC peer connection: ",peer)
@@ -793,8 +793,8 @@ class WebRTC extends Reference:
 		peer.initialize({
 			"iceServers": [ { "urls": ["stun:stun.l.google.com:19302"] } ]
 		})
-		peer.connect("session_description_created", node, "_offer_created", [id])
-		peer.connect("ice_candidate_created", node, "_new_ice_candidate", [id])
+		peer.connect("session_description_created", Callable(node, "_offer_created").bind(id))
+		peer.connect("ice_candidate_created", Callable(node, "_new_ice_candidate").bind(id))
 
 		#saving these variables
 		player_id.append(id)
@@ -827,7 +827,7 @@ class WebRTC extends Reference:
 	#sends data to thr peer via webclient
 	# Code Duplicate and Unnecessary Obsfucation?
 	static func _send_msg(web_client: WebSocketClient , type, id, data) -> int:
-		return web_client.get_peer(1).put_packet(("%s: %d\n%s" % [type, id, data]).to_utf8())
+		return web_client.get_peer(1).put_packet(("%s: %d\n%s" % [type, id, data]).to_utf8_buffer())
 
 	
 
@@ -847,7 +847,7 @@ class WebRTC extends Reference:
 
 
 
-	static func _offer_created(rtc_mp : WebRTCMultiplayer,web_client: WebSocketClient,type, data, id):
+	static func _offer_created(rtc_mp : WebRTCMultiplayerPeer,web_client: WebSocketClient,type, data, id):
 		print ("--------------offer created---------")
 		if not rtc_mp.has_peer(id):
 			return
@@ -857,7 +857,7 @@ class WebRTC extends Reference:
 		else: send_answer(web_client,id, data)
 
 
-	static func connected(rtc_mp : WebRTCMultiplayer, id):
+	static func connected(rtc_mp : WebRTCMultiplayerPeer, id):
 		print("-----------Connected %d" % id)
 		rtc_mp.initialize(id, true)
 		
@@ -878,7 +878,7 @@ class WebRTC extends Reference:
 	
 
 "Handle Input v 2" #moved to player script
-remote func handle_player_input_and_state():
+@rpc("any_peer") func handle_player_input_and_state():
 	pass
 
 
@@ -897,7 +897,7 @@ remote func handle_player_input_and_state():
 func handle_input(): #DUplicate player state machine input here
 	# reimplement networked multiplayer
 	# If not connected, don't handle input.
-	if not my_peer.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
+	if not my_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
 		return
 		
 	# if not currently playing, don't handle input too.
@@ -905,7 +905,7 @@ func handle_input(): #DUplicate player state machine input here
 		return
 		
 	# Send input events over network to the server
-	var id = get_tree().get_network_unique_id()
+	var id = get_tree().get_unique_id()
 	
 	if (
 		Input.is_action_pressed("move_down") or
@@ -928,8 +928,8 @@ func client_connected_ok():
 	# Only called on clients, not server. Send my ID and info to all the other peers
 	my_info.name = Networking.cfg_player_name
 	my_info.color = Networking.cfg_color
-	rpc_id(1,"register_player", get_tree().get_network_unique_id(), my_info)
-	OS.set_window_title("Connected as " + my_info.name)
+	rpc_id(1,"register_player", get_tree().get_unique_id(), my_info)
+	get_window().set_title("Connected as " + my_info.name)
 
 #####Add your codes here
 	
@@ -941,18 +941,18 @@ func client_connected_fail():
 	push_error("Callback: client_connected_fail")
 	OS.alert('Unable to connect to server!', 'Connection Failed')
 	# Change to login scene
-	get_tree().change_scene("res://scenes/login.tscn")
-	if get_tree().change_scene("res://scenes/login.tscn") != OK:
+	get_tree().change_scene_to_file("res://scenes/login.tscn")
+	if get_tree().change_scene_to_file("res://scenes/login.tscn") != OK:
 		push_error("Unable to load login scene!")
 	
-remote func player_joined(id, info): #tweak code###########################
+@rpc("any_peer") func player_joined(id, info): #tweak code###########################
 	print("Callback: player_joined(" + str(id)+"," + str(info) + ")")
 	player_info[id] = info
 	Functions.add_chat(web_client,chat,"Player joined: " + player_info[id].name)
 	
 	
 	#node player is the instanced player node
-	node_player = preload_player.instance()
+	node_player = preload_player.instantiate()
 
 
 	
@@ -971,12 +971,12 @@ remote func player_joined(id, info): #tweak code###########################
 
 
 
-remote func player_respawned(id, info):
+@rpc("any_peer") func player_respawned(id, info):
 	print("Callback: player_respawned (" + str(id)+"," + str(info) + ")")
 	player_info[id] = info
 	Functions.add_chat(web_client,chat,"Player respawned: " + player_info[id].name)
 	
-	var node_player = preload_player.instance()
+	var node_player = preload_player.instantiate()
 	var color = info.color.to_lower()
 	
 	#node_player.get_node("texture_player").texture = load("res://images/player_" + color + ".png")
@@ -992,7 +992,7 @@ remote func player_respawned(id, info):
 	#node_players.append(node_player)
 	node_players.add_child(node_player)
 	
-remote func player_leaving(id): #Called when player leaves the game
+@rpc("any_peer") func player_leaving(id): #Called when player leaves the game
 	print("Callback: player_leaving(" + str(id)+")")
 	Functions.add_chat(web_client,chat,"Player leaving: " + player_info[id].name)
 	player_info[id].node.queue_free()
@@ -1001,14 +1001,14 @@ remote func player_leaving(id): #Called when player leaves the game
 
 #updates players healths
 
-remote func player_health(id, hitpoint): #where is this funtion called? 
+@rpc("any_peer") func player_health(id, hitpoint): #where is this funtion called? 
 	print("Callback: player_health(" + str(id) +","+str(hitpoint)+")")  #update this code to use player state
 	if hitpoint == 0:
 		player_info[id].destroyed = true
 		Functions.add_chat(web_client,chat, player_info[id].name +" destroyed!")
 		player_info[id].node.queue_free()
 		
-	var peer_id = get_tree().get_network_unique_id()
+	var peer_id = get_tree().get_unique_id()
 	if id == peer_id:
 		progress_health.value = hitpoint #updates the progress bar to player life
 	
@@ -1019,7 +1019,7 @@ remote func player_health(id, hitpoint): #where is this funtion called?
 
 
 
-remote func pu(id, update_id, pos, hitpoints, state, _facing): #try and use killcounts
+@rpc("any_peer") func pu(id, update_id, pos, hitpoints, state, _facing): #try and use killcounts
 	
 	# Unreliable packets can be sent in wrong order, we only work with the latest
 	# data available.
@@ -1033,7 +1033,7 @@ remote func pu(id, update_id, pos, hitpoints, state, _facing): #try and use kill
 	
 	'Updates the Client Details'
 	
-	player_info[id].updates[OS.get_ticks_msec()] = { position = pos, hitpoints = hitpoints,  state = state, facing = _facing } #update these variables to the server
+	player_info[id].updates[Time.get_ticks_msec()] = { position = pos, hitpoints = hitpoints,  state = state, facing = _facing } #update these variables to the server
 	while len(player_info[id].updates) > 10:
 		player_info[id].updates.erase(player_info[id].updates.keys()[0]) #when length of player update is more than 10, erase some update data
 	
@@ -1041,7 +1041,7 @@ remote func pu(id, update_id, pos, hitpoints, state, _facing): #try and use kill
 		return
 		
 	
-remote func attack(id, position, facing): #update code to be an attack #inhumanity
+@rpc("any_peer") func attack(id, position, facing): #update code to be an attack #inhumanity
 	#projectiles.append({ timestamp = OS.get_ticks_msec() + (Networking.TICK_DURATION * 2), id = id, position = position, current_angle = current_angle })
 	#The original vode ran mainly using simulaions so
 	#This was one of such simulations
@@ -1054,7 +1054,7 @@ remote func attack(id, position, facing): #update code to be an attack #inhumani
 
 
 "Adds chat item to all clients from server"
-remote func chat_added(id, info, text):
+@rpc("any_peer") func chat_added(id, info, text):
 	#print (my_peer, '/', id)
 	#if not id == my_peer: #breaks client
 	#player_info[id] = info #breaks client
@@ -1096,7 +1096,7 @@ func create_multiplayer_client(address : String, port)-> bool:
 	
 	if err == OK:
 		
-		get_tree().set_network_peer(multiplayerAPI_peer)
+		get_tree().set_multiplayer_peer(multiplayerAPI_peer)
 		return true
 	else : 
 		push_error("Networking Enet Error: " + str(err))

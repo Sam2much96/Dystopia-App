@@ -37,8 +37,8 @@ position = Vector2( -504, 1024 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Dialog_box" parent="CanvasLayer" instance=ExtResource( 5 )]
-margin_top = -858.0
-margin_bottom = -684.0
+offset_top = -858.0
+offset_bottom = -684.0
 
 [node name="Menu " parent="CanvasLayer" instance=ExtResource( 8 )]
 

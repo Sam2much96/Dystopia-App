@@ -34,14 +34,14 @@ func _ready():
 	
 	#connect our request handler
 	add_child(http_request)
-	http_request.connect("request_completed", self, "_http_request_completed")
+	http_request.connect("request_completed", Callable(self, "_http_request_completed"))
 	
 	
 func _process(_delta):
 	if is_requesting:
 		return
 
-	if requesting_queue.empty():
+	if requesting_queue.is_empty():
 		return
 
 	is_requesting = true
@@ -59,7 +59,9 @@ func _http_request_completed(_result,_response_code,_body):# might not be needew
 		
 	var response_body = _body.get_string_from_utf8()
 	# Grab our JSON and handle any errors reported by our php code
-	var response = parse_json(response_body)
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(response_body)
+	var response = test_json_conv.get_data()
 	if response['error'] != 'none':
 		printerr("We returned error: " + response['error'])
 		return
@@ -76,7 +78,7 @@ func _http_request_completed(_result,_response_code,_body):# might not be needew
 
 func request_nonce():
 	var client = HTTPClient.new()
-	var data = client.query_string_from_dict({"data" : JSON.print({})})
+	var data = client.query_string_from_dict({"data" : JSON.stringify({})})
 	var body = "command=get_nonce&" + data
 
 	# Make request to the server
@@ -87,7 +89,7 @@ func request_nonce():
 
 func send_request( request : Dictionary):
 	var client = HTTPClient.new()
-	var data = client.query_string_from_dict({"data" : JSON.print(request['data'])})
+	var data = client.query_string_from_dict({"data" : JSON.stringify(request['data'])})
 	var body = "command=" + request["command"] +"&" + data
 
 	# Generate our response nonce

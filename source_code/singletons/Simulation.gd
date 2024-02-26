@@ -26,10 +26,10 @@ class_name Simulationv1
 enum {SIMULATING, NON_SIMULATING}
 
 # Frame ID
-onready var frame_id : int 
+@onready var frame_id : int 
 
 # Frame Counter
-export (int) var frame_counter = 0
+@export (int) var frame_counter = 0
 
 
 # Placeholder variables ported from another multiplayer template
@@ -37,7 +37,7 @@ var SIMULATING_1: bool = false
 var v : Vector2
 var world_radius : int
 
-export (Dictionary) var player_info : Dictionary = {
+@export (Dictionary) var player_info : Dictionary = {
 	"peer id": { 0 : { # server peer id
 		"position": {"x": 0, "y":0}, # updated positional data, 
 		"velocity":{"x": 0, "y": 0},
@@ -91,7 +91,9 @@ func simulate(id : String, player : Player_v2_networking ):
 		# SHould implement position translations using the Networking frame buffer
 		#player.move_and_slide(Vector2(float(Networking.player_info["peer id"][id]["velocity"]["x"]),float(Networking.player_info["peer id"][id]["velocity"]["y"]))
 		# Data packet Lost
-		player.move_and_slide(Vector2(float(Simulation.player_info["peer id"][id]["velocity"]["x"]), float(Simulation.player_info["peer id"][id]["velocity"]["y"])))
+		player.set_velocity(Vector2(float(Simulation.player_info["peer id"][id]["velocity"]["x"]), float(Simulation.player_info["peer id"][id]["velocity"]["y"])))
+		player.move_and_slide()
+		player.velocity
 		
 		
 		player.set_position(Vector2(float(Simulation.player_info["peer id"][id]["position"]["x"]), float(Simulation.player_info["peer id"][id]["position"]["y"])))
@@ -256,7 +258,7 @@ func _physics_process(delta):
 		# the last two previous updates, this way we always have smooth movements. The
 		# main drawback is added latency (100 ms).
 		var pos = Vector2(0,0)
-		var target_timestamp = OS.get_ticks_msec() - (Networking.TICK_DURATION*2)
+		var target_timestamp = Time.get_ticks_msec() - (Networking.TICK_DURATION*2)
 		
 		for peer_id in Networking.player_info:
 			# Update position using lerp with 2 prior states
@@ -291,11 +293,11 @@ class projectiles:
 	# Uses Target Stamp Variable to Ensure Projectile Integrity Across ALl Peers
 	func SimulateProjectile():
 		# We spawn projectiles based on required timestamp (received from server)
-		var target_timestamp = OS.get_ticks_msec() 
+		var target_timestamp = Time.get_ticks_msec() 
 		for projectile in projectiles:
 			if projectile.timestamp <= target_timestamp:
 				var preload_projectile : String = ""
-				var node_projectile = load(preload_projectile).instance()
+				var node_projectile = load(preload_projectile).instantiate()
 				var info = Networking.player_info[projectile.id]
 				var projectile_os = Vector2(projectile.position.x,projectile.position.y)
 				node_projectile.name = "projectile_" + info.name
@@ -304,14 +306,14 @@ class projectiles:
 				#node_projectiles.add_child(node_projectile)
 				
 				var trustp = Vector2(0,Networking.PROJECTILE_OFFSET).rotated(projectile.current_angle)
-				node_projectile.contacts_reported = 1
+				node_projectile.max_contacts_reported = 1
 				node_projectile.set_position(projectile_os - trustp)
 				node_projectile.set_linear_velocity(-trustp * Networking.PROJECTILE_SPEED)
 				projectiles.erase(projectile)
 
 
 
-class Behaviour extends Reference:
+class Behaviour extends RefCounted:
 
 	"""
 	Autospawn Code

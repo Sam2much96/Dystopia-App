@@ -104,7 +104,10 @@ func _physics_process(delta):
 				if Input.is_action_just_pressed("roll"):
 					state = STATE_ROLL
 				
-				linear_vel = move_and_slide(linear_vel, Vector2(0,0))
+				set_velocity(linear_vel)
+				set_up_direction(Vector2(0,0))
+				move_and_slide()
+				linear_vel = velocity
 				
 				#print('Player linear velocity: ', linear_vel) #for debug purposes only
 				
@@ -147,7 +150,9 @@ func _physics_process(delta):
 				if roll_direction == Vector2.ZERO:
 					state = STATE_IDLE
 				else:
-					linear_vel = move_and_slide(linear_vel)
+					set_velocity(linear_vel)
+					move_and_slide()
+					linear_vel = velocity
 					var target_speed = Vector2()
 					target_speed = roll_direction
 					target_speed *= ROLL_SPEED
@@ -177,9 +182,10 @@ func _on_hurtbox_area_entered(area):
 		hitpoints -= 1
 		emit_signal("health_changed", hitpoints)
 		var pushback_direction = (global_position - area.global_position).normalized()
-		move_and_slide( pushback_direction * pushback)
+		set_velocity(pushback_direction * pushback)
+		move_and_slide()
 		state = STATE_HURT
-		var blood = Globals.blood_fx.instance()
+		var blood = Globals.blood_fx.instantiate()
 		blood.global_position = global_position
 		get_parent().add_child(blood)
 		

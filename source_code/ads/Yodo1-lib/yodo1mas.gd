@@ -29,8 +29,8 @@ signal rewarded_ad_earned()
 signal rewarded_ad_error()
 
 # properties
-export var app_key_ios: String
-export var app_key_android: String
+@export var app_key_ios: String
+@export var app_key_android: String
 
 # "private" properties
 var _yodo1mas_singleton = null
@@ -68,7 +68,7 @@ func init() -> bool:
 	if(Engine.has_singleton("GodotYodo1Mas")):
 
 		# check if one signal is already connected
-		if not _yodo1mas_singleton.is_connected("on_banner_ad_not_loaded", self, "_on_banner_ad_not_loaded"):
+		if not _yodo1mas_singleton.is_connected("on_banner_ad_not_loaded", Callable(self, "_on_banner_ad_not_loaded")):
 			connect_signals()
 		
 		print("OS.get_name()")
@@ -86,21 +86,21 @@ func init() -> bool:
 # connect the AdMob Java signals
 func connect_signals() -> void:	
 	
-	_yodo1mas_singleton.connect("on_banner_ad_not_loaded", self, "_on_banner_ad_not_loaded")
-	_yodo1mas_singleton.connect("on_banner_ad_opened", self, "_on_banner_ad_opened")
-	_yodo1mas_singleton.connect("on_banner_ad_closed", self, "_on_banner_ad_closed")
-	_yodo1mas_singleton.connect("on_banner_ad_error", self, "_on_banner_ad_error")
+	_yodo1mas_singleton.connect("on_banner_ad_not_loaded", Callable(self, "_on_banner_ad_not_loaded"))
+	_yodo1mas_singleton.connect("on_banner_ad_opened", Callable(self, "_on_banner_ad_opened"))
+	_yodo1mas_singleton.connect("on_banner_ad_closed", Callable(self, "_on_banner_ad_closed"))
+	_yodo1mas_singleton.connect("on_banner_ad_error", Callable(self, "_on_banner_ad_error"))
 	
-	_yodo1mas_singleton.connect("on_interstitial_ad_not_loaded", self, "_on_interstitial_ad_not_loaded")
-	_yodo1mas_singleton.connect("on_interstitial_ad_opened", self, "_on_interstitial_ad_opened")
-	_yodo1mas_singleton.connect("on_interstitial_ad_closed", self, "_on_interstitial_ad_closed")
-	_yodo1mas_singleton.connect("on_interstitial_ad_error", self, "_on_interstitial_ad_error")
+	_yodo1mas_singleton.connect("on_interstitial_ad_not_loaded", Callable(self, "_on_interstitial_ad_not_loaded"))
+	_yodo1mas_singleton.connect("on_interstitial_ad_opened", Callable(self, "_on_interstitial_ad_opened"))
+	_yodo1mas_singleton.connect("on_interstitial_ad_closed", Callable(self, "_on_interstitial_ad_closed"))
+	_yodo1mas_singleton.connect("on_interstitial_ad_error", Callable(self, "_on_interstitial_ad_error"))
 	
-	_yodo1mas_singleton.connect("on_rewarded_ad_not_loaded", self, "_on_rewarded_ad_not_loaded")
-	_yodo1mas_singleton.connect("on_rewarded_ad_opened", self, "_on_rewarded_ad_opened")
-	_yodo1mas_singleton.connect("on_rewarded_ad_closed", self, "_on_rewarded_ad_closed")
-	_yodo1mas_singleton.connect("on_rewarded_ad_earned", self, "_on_rewarded_ad_earned")
-	_yodo1mas_singleton.connect("on_rewarded_ad_error", self, "_on_rewarded_ad_error")
+	_yodo1mas_singleton.connect("on_rewarded_ad_not_loaded", Callable(self, "_on_rewarded_ad_not_loaded"))
+	_yodo1mas_singleton.connect("on_rewarded_ad_opened", Callable(self, "_on_rewarded_ad_opened"))
+	_yodo1mas_singleton.connect("on_rewarded_ad_closed", Callable(self, "_on_rewarded_ad_closed"))
+	_yodo1mas_singleton.connect("on_rewarded_ad_earned", Callable(self, "_on_rewarded_ad_earned"))
+	_yodo1mas_singleton.connect("on_rewarded_ad_error", Callable(self, "_on_rewarded_ad_error"))
 	
 
 

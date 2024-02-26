@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://resources/Environment Tilesets & Tilemaps/building3.webp" type="Texture" id=1]
-[ext_resource path="res://resources/Environment Tilesets & Tilemaps/item1.webp" type="Texture" id=2]
-[ext_resource path="res://resources/Environment Tilesets & Tilemaps/item2.webp" type="Texture" id=3]
+[ext_resource path="res://resources/Environment Tilesets & Tilemaps/building3.webp" type="Texture2D" id=1]
+[ext_resource path="res://resources/Environment Tilesets & Tilemaps/item1.webp" type="Texture2D" id=2]
+[ext_resource path="res://resources/Environment Tilesets & Tilemaps/item2.webp" type="Texture2D" id=3]
 [ext_resource path="res://scenes/levels/Exit.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=6]
@@ -14,20 +14,20 @@ scale = Vector2( 0.56435, 0.56435 )
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
-polygon = PoolVector2Array( 152.868, -678.727, -447.02, -686.518, -486.554, 4255.09, 2177.83, 4272.93, 2223.82, -713.935, 1529.7, -702.917, 1558.77, 1488.34, 885.417, 1499.27, 881.045, 1571.42, 1139.02, 1580.16, 1140.12, 2258.53, 1334.9, 2433.21, 1339.73, 3567.33, 314.399, 3565.15, 318.771, 2430.51, 500.227, 2257.8, 493.668, 1580.07, 703.544, 1573.51, 696.985, 1497, 174.482, 1492.62 )
+polygon = PackedVector2Array( 152.868, -678.727, -447.02, -686.518, -486.554, 4255.09, 2177.83, 4272.93, 2223.82, -713.935, 1529.7, -702.917, 1558.77, 1488.34, 885.417, 1499.27, 881.045, 1571.42, 1139.02, 1580.16, 1140.12, 2258.53, 1334.9, 2433.21, 1339.73, 3567.33, 314.399, 3565.15, 318.771, 2430.51, 500.227, 2257.8, 493.668, 1580.07, 703.544, 1573.51, 696.985, 1497, 174.482, 1492.62 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
-margin_top = -700.416
-margin_right = 1728.0
-margin_bottom = 3785.58
+offset_top = -700.416
+offset_right = 1728.0
+offset_bottom = 3785.58
 texture = ExtResource( 1 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2( 356.97, 1230.12 )
 scale = Vector2( 0.637061, 0.637061 )
 texture = ExtResource( 3 )
 
-[node name="Sprite2" type="Sprite" parent="."]
+[node name="Sprite2" type="Sprite2D" parent="."]
 position = Vector2( 1358.03, 1234.07 )
 scale = Vector2( 0.637061, 0.637061 )
 texture = ExtResource( 2 )

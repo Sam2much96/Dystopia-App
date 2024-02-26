@@ -31,16 +31,16 @@ class_name cinematic
 
 #hvjhvjhv
 
-export (bool) var cinematic_on = true
-export(String, FILE, "*.ogv") var vid_stream = ""
+@export (bool) var cinematic_on = true
+@export var vid_stream = "" # (String, FILE, "*.ogv")
 
 # Cread Object
 var yt_dlp = null # Depreciated Code #YtDlp.new()
-onready var dialgue_box = $Dialog_box
-onready var animation : AnimationPlayer = $"animation player"
-onready var position2d : Position2D = $Position2D
-onready var os 
-onready var node = get_node("Node2D") #popup node for centering cinematics
+@onready var dialgue_box = $Dialog_box
+@onready var animation : AnimationPlayer = $"animation player"
+@onready var position2d : Marker2D = $Marker2D
+@onready var os 
+@onready var node = get_node("Node2D") #popup node for centering cinematics
 
 "Cinematics DIctionary"
 # Modify Dictionary to Account for .ogv files
@@ -64,7 +64,7 @@ const youtube : Dictionary = {
 	"Animatic": '' # Animatic
 	}
 
-var videoplayer : VideoPlayer
+var videoplayer : VideoStreamPlayer
 
 
 const Mobile_Platforms : Array = ["Android", "iOS"]
@@ -97,7 +97,7 @@ func _ready(): #create a video player function
 
 	'Cinematics scene'
 	if Globals.curr_scene == 'Cinematics':
-		videoplayer  = get_node('VideoPlayer') #video player node
+		videoplayer  = get_node('VideoStreamPlayer') #video player node
 		videoplayer._set_size((get_viewport_rect().size))
 		
 		
@@ -108,7 +108,7 @@ func _ready(): #create a video player function
 	if Globals.curr_scene == "Shop":
 		# Get the Parent
 		var animationplayer : Control = $AnimationPlayer#get_node("AnimationPlayer")
-		videoplayer = $AnimationPlayer/VideoPlayer
+		videoplayer = $AnimationPlayer/VideoStreamPlayer
 		print ("video player: ", videoplayer)# For Debug puroses only
 		
 		var episode1 : Button = $"africa icon/VBoxContainer/episode"
@@ -162,7 +162,7 @@ func _on_skip_pressed():
 
 
 
-static func Video_Stream(stream : VideoStreamTheora , os: String, video_parent : Control, videoplayer : VideoPlayer): #This code works
+static func Video_Stream(stream : VideoStreamTheora , os: String, video_parent : Control, videoplayer : VideoStreamPlayer): #This code works
 	#Use Position 2d node for Viewport Calibrations
 	
 	if os == "Android":
@@ -212,7 +212,7 @@ func _on_VideoPlayer_finished():
 
 func _on_Timer_timeout():
 	push_error('Cinematic scene broken')
-	get_tree().change_scene_to(Globals.title_screen)
+	get_tree().change_scene_to_packed(Globals.title_screen)
 	if Globals.curr_scene == 'Cinematics':
 		Function._free_memory(Globals.cinematics)
 	
@@ -271,7 +271,7 @@ func store_video_files(_body, size) -> VideoStreamTheora: # FUnvtion breaks here
 		#Comvert size to MB usingConvertfunctiion
 		
 		 # Gets VIdeo file length in bytes, converts it to MB
-		var __video_file_size_mb = Globals._ram_convert(video_file.get_len())
+		var __video_file_size_mb = Globals._ram_convert(video_file.get_length())
 
 		print ('Video file size: ',__video_file_size_mb, '/',' Est file size: ', size)# For debug purposes only
 		#Stores PoolbyteArray into video file while the video file size is not the user's inputed video size
@@ -283,7 +283,7 @@ func store_video_files(_body, size) -> VideoStreamTheora: # FUnvtion breaks here
 			if __video_file_size_mb != size :
 				print ('Video File size is not equal or greater than the inputed video file size 1')
 				print ('Body (poolbytearray)',_body)
-			if error_checker.get_len() != size:
+			if error_checker.get_length() != size:
 				print('Video File size is not equal or greater than the inputed video file size 2')
 			
 
@@ -323,8 +323,8 @@ THIS IS THE LOGIC FOR THE ANIME VIDEO STREAMER. iT WILL RENDER THE PILOT AND THE
 """
 ##### IF IT BREAKS, IT BREAKS
 # The optimized code would unzip a video file zip to the user's directory
-export (VideoStreamTheora )var video_file
-export (String)var err
+@export (VideoStreamTheora )var video_file
+@export (String)var err
 
 var downloading_video = false
 
@@ -333,13 +333,13 @@ var downloading_video = false
 #var vid_file_mob = Globals.pilot_ep
 var dicL1 : Dictionary = {}
 
-onready var dir = Directory.new()
+@onready var dir = DirAccess.new()
 
 
 
 var download_video_size = 1
 var percent
-onready var error_code = 0
+@onready var error_code = 0
 
 
 var pilot_ep_scene = load ('res://scenes/cinematics/pilot_ep_1.tscn')
@@ -377,7 +377,7 @@ func _on_watch_anime_pressed():
 	
 	cinematics_get("Ep1")
 	
-	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
+	Music._notification(NOTIFICATION_APPLICATION_PAUSED)#Shuts off music
 	
 	$Label.hide()
 	#videoplayer._play_pilot_a() #depreciated in v1.1.9 for size problems
@@ -429,7 +429,7 @@ func _verify_Online_downloaded_video():
 		return Networking.request(Networking.url)
 		#play_loading_cinematic() #Plays the Loading cinematic while the video file downloads
 		downloading_video = true
-		Networking.connect("request_completed", self, "_http_request_completed")
+		Networking.connect("request_completed", Callable(self, "_http_request_completed"))
 		print ('download completed')
 	if not file_exists && downloading_video == true:
 		print('Already Downloading video, Please Wait or Quit and Restart')
@@ -448,12 +448,12 @@ func _verify_Online_downloaded_video():
 		print ('Video file is open: ',video_file.is_open(), '/error :', err) #Debugs if file can open
 		
 		var video_file_absolute_path = video_file.get_path_absolute()
-		print ('Video File Path: ',video_file_path)
-		print('Video file size : ', video_file.get_len())
+		print ('Video File Path3D: ',video_file_path)
+		print('Video file size : ', video_file.get_length())
 		
 		# Chhecks if the video is an 0 byte error
-		if video_file.get_len() ==0 :
-			push_error('Video file is corrupted /'+ str(video_file.get_len()))
+		if video_file.get_length() ==0 :
+			push_error('Video file is corrupted /'+ str(video_file.get_length()))
 		
 		if video_file.is_open() && err == 0: #error catcher 2
 			Globals.VIDEO = ResourceLoader.load(video_file_path, 'VideoStreamTheora', false) #Don't make the video a global file
@@ -468,7 +468,7 @@ func _verify_Online_downloaded_video():
 parses the poopbyte array as a video stream
 """
 func _http_request_completed(result, response_code, _headers, body): # dOWNLOADS A VIDEO FROM A SERVER
-	if body.empty() != true: #Executes once a Connection is established 
+	if body.is_empty() != true: #Executes once a Connection is established 
 
 		dir.open ("user://")
 		var file_exists = dir.file_exists('user://video.webm')
@@ -479,7 +479,7 @@ func _http_request_completed(result, response_code, _headers, body): # dOWNLOADS
 			dir.open("user://")
 			var _absolute_path = dir.get_current_dir ( )
 			
-			print ('Directory //', _absolute_path)
+			print ('DirAccess //', _absolute_path)
 			var err : int
 			Function.store_video_files(body)
 			print ('Video file is open: ',video_file.is_open(), '/error :', err) #Debugs if file can open
@@ -498,7 +498,7 @@ func _http_request_completed(result, response_code, _headers, body): # dOWNLOADS
 			#return Globals.video_stream
 		if file_exists:
 			print ('File Exists', file_exists)
-	if body.empty() == true:
+	if body.is_empty() == true:
 		print ('Streaming Site '+ Networking.url+ ' is unavailable ')
 		print ('It could be a myriad of problems. Please debug carefully')
 
@@ -506,10 +506,10 @@ func _http_request_completed(result, response_code, _headers, body): # dOWNLOADS
 #to use: video_html('video', body)
 
 
-class Pilot extends Reference:
+class Pilot extends RefCounted:
 	
 	
-	export (bool) var enabled 
+	@export (bool) var enabled 
 
 	# Preload for fast loading. Also used Global functions as well
 	# use Globals.cinematics for video files
@@ -521,7 +521,7 @@ class Pilot extends Reference:
 	onready var Pilot_a_sound# =  ('res://scenes/cinematics/Pilot_a.ogg')
 	onready var Pilot_b_sound# =('res://scenes/cinematics/Pilot_b.ogg')
 
-	onready var _video_player : VideoPlayer #= $VideoPlayer
+	onready var _video_player : VideoStreamPlayer #= $VideoStreamPlayer
 	onready var aspect_ratio : ColorRect#= $ColorRect
 	onready var audio : AudioStreamPlayer#= $AudioStreamPlayer
 
@@ -532,7 +532,7 @@ class Pilot extends Reference:
 	var counter : int = 0# An integer Used as a trigger aid for the video changer
 
 	#var error_code
-	export (bool )var new_feature  # A switch for the zip folder new function.
+	@export (bool )var new_feature  # A switch for the zip folder new function.
 	# The Video Code is broken, Fix it.
 
 	#var path_to_zip_file = 'res://scenes/cinematics/Pilot_a.zip' # Used in a #doesn't work
@@ -691,9 +691,9 @@ STORES A POOL BYTE ARRAY TO A VIDEO FILE AND PUBLISHES IT AS A GLOBAL VARIABLE
 """
 
 
-class Function extends Reference:
+class Function extends RefCounted:
 	
-	func store_video_files(_body : PoolByteArray):
+	func store_video_files(_body : PackedByteArray):
 		var video_file : File = File.new()
 		video_file.open('user://video.ogv',File.WRITE)
 		var err = (video_file.open('user://video.ogv', File.WRITE_READ))
@@ -725,7 +725,7 @@ class Function extends Reference:
 
 
 
-	func cinematic_debug(videoplayer: VideoPlayer, vid_stream)-> void:
+	func cinematic_debug(videoplayer: VideoStreamPlayer, vid_stream)-> void:
 		Debug.misc_debug = str(int(videoplayer.stream_position)) + Globals.os + str(videoplayer.is_playing(),
 		str(vid_stream) + videoplayer.get_stream_name()
 		)
@@ -748,7 +748,7 @@ func play_loading_cinematic(): #A simple loading loop
 	#_Video_Stream(Globals.cinematics) broken function. Video stream function is a global function now
 	
 	print_debug('Playing loading Cinematic ')
-	yield(get_tree().create_timer(5), "timeout") #Runs this loop every 5 secs
+	await get_tree().create_timer(5).timeout #Runs this loop every 5 secs
 
 
 
@@ -761,7 +761,7 @@ func exit(error) -> void:
 
 func _on_watch_anime2_pressed():
 	cinematics_get("FightScene")
-	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
+	Music._notification(NOTIFICATION_APPLICATION_PAUSED)#Shuts off music
 	#videoplayer._play_pilot_a() #depreciated in v1.1.9 for size problems
 	$Label.hide()
 	#return OS.shell_open(youtube[2])
@@ -777,12 +777,12 @@ func _on_watch_merch_pressed():
 func _on_watch_anime3_pressed():
 	cinematics_get("Animatic")
 	
-	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
+	Music._notification(NOTIFICATION_APPLICATION_PAUSED)#Shuts off music
 	#return OS.shell_open(youtube[3])
 
 
 func _on_watch_guidebook_pressed():
-	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
+	Music._notification(NOTIFICATION_APPLICATION_PAUSED)#Shuts off music
 	return OS.shell_open("https://github.com/Sam2much96/Dystopia-App/wiki")
 
 

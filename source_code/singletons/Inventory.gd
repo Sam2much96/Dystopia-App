@@ -38,8 +38,8 @@ var _stats_ui #: Stats
 
 
 # Intanciable items
-onready var bullet : PackedScene = preload("res://scenes/items/Bullet.tscn")
-onready var bomb_explosion : PackedScene = preload("res://scenes/items/bombexplosion.tscn")
+@onready var bullet : PackedScene = preload("res://scenes/items/Bullet.tscn")
+@onready var bomb_explosion : PackedScene = preload("res://scenes/items/bombexplosion.tscn")
 
 
 """
@@ -110,7 +110,7 @@ func remove_item(type:String, amount:int) -> bool:
 			player.pushback = 8000
 		
 		if type == "Bomb":
-			var bomb_instance = bomb_explosion.instance()
+			var bomb_instance = bomb_explosion.instantiate()
 			
 			#if is_instance_valid(bomb_instance) : # Error Catcher 1
 			
@@ -124,7 +124,7 @@ func remove_item(type:String, amount:int) -> bool:
 		if type == "Arrow" and  inventory.has("Bow"):
 			
 			
-			var bullet_instance = bullet.instance()
+			var bullet_instance = bullet.instantiate()
 			
 			
 			# rotate the projectile instance to player's facing direction

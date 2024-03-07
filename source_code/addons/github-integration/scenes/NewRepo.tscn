@@ -13,6 +13,7 @@ margin_left = -288.5
 margin_top = -133.5
 margin_right = 288.5
 margin_bottom = 133.5
+rect_min_size = Vector2( 150, 52.5 )
 popup_exclusive = true
 window_title = "[Create a new Repository]"
 dialog_hide_on_ok = false
@@ -164,4 +165,5 @@ size_flags_horizontal = 3
 custom_colors/font_color = Color( 1, 0, 0.235294, 1 )
 text = "Error: "
 align = 1
+
 [connection signal="confirmed" from="." to="." method="_on_NewRepo_confirmed"]

@@ -174,8 +174,7 @@ anchor_bottom = 1.0
 theme = ExtResource( 5 )
 script = ExtResource( 4 )
 __meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
+"_edit_group_": true
 }
 
 [node name="BG" type="ColorRect" parent="."]
@@ -240,29 +239,29 @@ custom_constants/separation = 4
 
 [node name="RepositoryHeader" type="HBoxContainer" parent="Panel/List"]
 margin_right = 990.0
-margin_bottom = 32.0
+margin_bottom = 34.0
 custom_constants/separation = 0
 
 [node name="repos_icon" type="TextureRect" parent="Panel/List/RepositoryHeader"]
 modulate = Color( 0.337255, 0.32549, 0.329412, 1 )
 margin_right = 16.0
-margin_bottom = 32.0
+margin_bottom = 34.0
 size_flags_vertical = 9
 texture = SubResource( 3 )
 stretch_mode = 6
 
 [node name="Label" type="Label" parent="Panel/List/RepositoryHeader"]
 margin_left = 16.0
-margin_top = 5.0
+margin_top = 6.0
 margin_right = 108.0
-margin_bottom = 27.0
+margin_bottom = 28.0
 text = "Repositories:"
 
 [node name="repos" type="Label" parent="Panel/List/RepositoryHeader"]
 margin_left = 108.0
-margin_top = 5.0
+margin_top = 6.0
 margin_right = 132.0
-margin_bottom = 27.0
+margin_bottom = 28.0
 size_flags_horizontal = 5
 custom_colors/font_color = Color( 0.184314, 0.909804, 0.486275, 1 )
 text = "51"
@@ -271,7 +270,7 @@ text = "51"
 modulate = Color( 0.415686, 0.45098, 0.490196, 1 )
 margin_left = 766.0
 margin_right = 782.0
-margin_bottom = 32.0
+margin_bottom = 34.0
 size_flags_horizontal = 10
 texture = ExtResource( 3 )
 stretch_mode = 6
@@ -279,14 +278,14 @@ stretch_mode = 6
 [node name="VSeparator" type="VSeparator" parent="Panel/List/RepositoryHeader"]
 margin_left = 782.0
 margin_right = 790.0
-margin_bottom = 32.0
-custom_styles/separator = SubResource( 4 )
+margin_bottom = 34.0
 custom_constants/separation = 8
+custom_styles/separator = SubResource( 4 )
 
 [node name="search_repo" type="LineEdit" parent="Panel/List/RepositoryHeader"]
 margin_left = 790.0
 margin_right = 990.0
-margin_bottom = 32.0
+margin_bottom = 34.0
 rect_min_size = Vector2( 200, 26 )
 max_length = 60
 expand_to_text_length = true
@@ -303,7 +302,7 @@ margin_bottom = 56.0
 custom_styles/panel = SubResource( 19 )
 
 [node name="RepositoryList" type="ScrollContainer" parent="Panel/List"]
-margin_top = 36.0
+margin_top = 38.0
 margin_right = 990.0
 margin_bottom = 241.0
 size_flags_horizontal = 3
@@ -315,7 +314,7 @@ scroll_horizontal_enabled = false
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 980.0
-margin_bottom = 195.0
+margin_bottom = 193.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
@@ -334,15 +333,15 @@ margin_right = 138.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 120, 0 )
 size_flags_horizontal = 5
+custom_colors/font_color_disabled = Color( 0.6, 0.6, 0.6, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 0.831373, 0.831373, 0.831373, 1 )
 custom_styles/hover = SubResource( 5 )
 custom_styles/pressed = SubResource( 6 )
 custom_styles/focus = SubResource( 6 )
 custom_styles/disabled = SubResource( 7 )
 custom_styles/normal = SubResource( 8 )
-custom_colors/font_color_disabled = Color( 0.6, 0.6, 0.6, 1 )
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
-custom_colors/font_color_pressed = Color( 0.831373, 0.831373, 0.831373, 1 )
 text = "New Repository"
 icon = SubResource( 10 )
 __meta__ = {
@@ -366,29 +365,29 @@ custom_styles/separator = SubResource( 1 )
 [node name="GistHeader" type="HBoxContainer" parent="Panel/List"]
 margin_top = 300.0
 margin_right = 990.0
-margin_bottom = 332.0
+margin_bottom = 334.0
 custom_constants/separation = 0
 
 [node name="gists_icon" type="TextureRect" parent="Panel/List/GistHeader"]
 modulate = Color( 0.415686, 0.45098, 0.490196, 1 )
 margin_right = 16.0
-margin_bottom = 32.0
+margin_bottom = 34.0
 size_flags_horizontal = 5
 texture = SubResource( 12 )
 stretch_mode = 6
 
 [node name="Label" type="Label" parent="Panel/List/GistHeader"]
 margin_left = 16.0
-margin_top = 5.0
+margin_top = 6.0
 margin_right = 61.0
-margin_bottom = 27.0
+margin_bottom = 28.0
 text = "Gists:"
 
 [node name="gists" type="Label" parent="Panel/List/GistHeader"]
 margin_left = 61.0
-margin_top = 5.0
+margin_top = 6.0
 margin_right = 76.0
-margin_bottom = 27.0
+margin_bottom = 28.0
 size_flags_horizontal = 5
 custom_colors/font_color = Color( 0.184314, 0.909804, 0.486275, 1 )
 text = "c"
@@ -397,7 +396,7 @@ text = "c"
 modulate = Color( 0.415686, 0.45098, 0.490196, 1 )
 margin_left = 766.0
 margin_right = 782.0
-margin_bottom = 32.0
+margin_bottom = 34.0
 size_flags_horizontal = 10
 texture = ExtResource( 3 )
 stretch_mode = 6
@@ -405,14 +404,14 @@ stretch_mode = 6
 [node name="VSeparator2" type="VSeparator" parent="Panel/List/GistHeader"]
 margin_left = 782.0
 margin_right = 790.0
-margin_bottom = 32.0
-custom_styles/separator = SubResource( 4 )
+margin_bottom = 34.0
 custom_constants/separation = 8
+custom_styles/separator = SubResource( 4 )
 
 [node name="search_gist" type="LineEdit" parent="Panel/List/GistHeader"]
 margin_left = 790.0
 margin_right = 990.0
-margin_bottom = 32.0
+margin_bottom = 34.0
 rect_min_size = Vector2( 200, 26 )
 max_length = 60
 expand_to_text_length = true
@@ -422,7 +421,7 @@ placeholder_alpha = 0.4
 caret_blink = true
 
 [node name="GistList" type="ScrollContainer" parent="Panel/List"]
-margin_top = 336.0
+margin_top = 338.0
 margin_right = 990.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
@@ -434,7 +433,7 @@ scroll_horizontal_enabled = false
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 980.0
-margin_bottom = 195.0
+margin_bottom = 193.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
@@ -451,15 +450,15 @@ margin_right = 120.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 120, 0 )
 size_flags_horizontal = 5
+custom_colors/font_color_disabled = Color( 0.6, 0.6, 0.6, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 0.831373, 0.831373, 0.831373, 1 )
 custom_styles/hover = SubResource( 5 )
 custom_styles/pressed = SubResource( 6 )
 custom_styles/focus = SubResource( 6 )
 custom_styles/disabled = SubResource( 7 )
 custom_styles/normal = SubResource( 8 )
-custom_colors/font_color_disabled = Color( 0.6, 0.6, 0.6, 1 )
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
-custom_colors/font_color_pressed = Color( 0.831373, 0.831373, 0.831373, 1 )
 text = "New Gist"
 icon = SubResource( 14 )
 __meta__ = {
@@ -627,6 +626,7 @@ margin_left = -424.5
 margin_top = -270.0
 margin_right = 424.5
 margin_bottom = 270.0
+rect_min_size = Vector2( 150, 52.5 )
 window_title = "Open File(s)"
 dialog_text = "Select all files you want to commit in your Gist
 "
@@ -638,3 +638,4 @@ __meta__ = {
 }
 
 [node name="NewRepo" parent="." instance=ExtResource( 7 )]
+rect_min_size = Vector2( 150, 52.5 )

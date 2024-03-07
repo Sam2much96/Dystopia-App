@@ -102,18 +102,12 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 	-Custom Button Mapping
 	-Guided view system
 	-NPC_2 Quests	
-	-Spritesheet animation upgrade
-	-Model player & enemy characters (Rig with mixamo)
-
 	-Update Game instructionals visuals
 	-Colour changing joystick
 	-Sandbox mechanics
 	-Polygon 2d to deconstruct comic panels
 	-Reprogrammable joystick
-	-Ads
-		-Interstitial Ads at the end of comic book page
-		-Video ads inbetwen the pilot 
-		-Banner Ads over video footage
+
 
 ## -3rd Party Integrations
 	-Web3 Storage

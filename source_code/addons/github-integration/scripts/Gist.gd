@@ -1,4 +1,14 @@
 #tool
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Github Gist UI Ported to Godot Engine
+#
+#
+#
+# *************************************************
+
 extends Control
 
 
@@ -21,7 +31,10 @@ onready var commit_btn = $GistContainer/GistButtons/commit
 onready var delete_btn = $GistContainer/GistButtons/delete
 
 var request = HTTPRequest.new()
-enum REQUESTS { REPOS = 0, GIST = 1, UP_REPOS = 2, UP_GISTS = 3, DELETE = 4, COMMIT = 5, BRANCHES = 6, CONTENTS = 7, TREES = 8, DELETE_RESOURCE = 9, END = -1 }
+enum REQUESTS {
+	 REPOS = 0, GIST = 1, UP_REPOS = 2, UP_GISTS = 3, DELETE = 4, COMMIT = 5, 
+	BRANCHES = 6, CONTENTS = 7, TREES = 8, DELETE_RESOURCE = 9, END = -1 
+}
 var requesting
 
 var privacy : bool

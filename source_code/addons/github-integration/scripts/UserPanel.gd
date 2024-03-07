@@ -1,6 +1,8 @@
 #tool
 extends Control
 
+class_name User_Panel
+
 onready var _repository_item = preload("res://addons/github-integration/scenes/RepositoryItem.tscn")
 onready var _gist_item = preload("res://addons/github-integration/scenes/GistItem.tscn")
 
@@ -41,6 +43,10 @@ var gist_list : Array = []
 
 onready var RestHandler_ = get_parent().get_node("RestHandler")
 onready var PluginSettings_ = get_parent().get_node("PluginSettings")
+onready var UserData_ = get_parent().get_node("UserData")
+
+
+
 func _ready():
 	load_icons()
 	call_deferred("add_child",request)
@@ -106,9 +112,9 @@ func load_panel() -> void:
 	var project_repository : Array = check_project_repository()
 	if not project_repository.empty():
 		print(project_repository)
-		RestHandler_.request_user_repository("organization" if Github.UserData_.USER.login != project_repository[0] else "user", project_repository[0], project_repository[1])
+		RestHandler_.request_user_repository("organization" if UserData_.USER.login != project_repository[0] else "user", project_repository[0], project_repository[1])
 		get_parent().print_debug_message("A repository linked to this project has been identified.")
-		_on_user_repository_requested(yield(Github.RestHandler_, "user_repository_requested"))
+		_on_user_repository_requested(yield(RestHandler_, "user_repository_requested"))
 		
 	request_repositories()
 	yield(RestHandler_, "user_repositories_requested")

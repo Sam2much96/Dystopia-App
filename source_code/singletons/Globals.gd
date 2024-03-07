@@ -36,6 +36,7 @@ var cinematics : VideoStreamTheora #= preload ('res://resources/title animation/
 var title_screen = load( 'res://scenes/Title screen.tscn')
 onready var form = load ('res://scenes/UI & misc/form/form.tscn')
 var controls = load ('res://scenes/UI & misc/Controls.tscn')
+var loading = load('res://addons/github-integration/scenes/loading.tscn')
 
 "Comics  Book Module variables"
 onready var comics = load ('res://scenes/UI & misc/Comics.tscn')

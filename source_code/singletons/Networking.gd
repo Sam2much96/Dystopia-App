@@ -110,7 +110,7 @@ var Timeout : bool = false
 #*********IPFS Gateway***************#
 # from https://ipfs.github.io/public-gateway-checker/
 # 1 ,2 , 3 work
-var gateway : Array = [
+export (Array) var gateway : Array = [
 	'gateway.ipfs.io', "dweb.link", "ipfs.io",
 	"ipfs.runfission.com", "jorropo.net", "via0.com", 
 	"cloudflare-ipfs.com", "hardbin.com"
@@ -956,9 +956,10 @@ remote func broadcast_world_positions():
 
 class Downloader extends Node:
 	# Unused Downloader Class   
-	####Generic File downloader######
+	#
+	###Generic File downloader######
 	var t = Thread.new()
-		
+	
 	func _init():
 		var arg_bytes_loaded = {"name":"bytes_loaded","type":TYPE_INT}
 		var arg_bytes_total = {"name":"bytes_total","type":TYPE_INT}
@@ -967,12 +968,12 @@ class Downloader extends Node:
 		add_user_signal("loaded",[arg_result])
 		pass
 		
-	func __get(domain,url,port,ssl):
+	func __get(domain : String ,url : String ,port: String,ssl : bool):
 		if(t.is_active()):
 			return
 		t.start(self,"_load",{"domain":domain,"url":url,"port":port,"ssl":ssl})
 		 
-	func _load(params):
+	func _load(params): # what params?
 		var err = 0
 		var http = HTTPClient.new()
 		err = http.connect(params.domain,params.port,params.ssl)

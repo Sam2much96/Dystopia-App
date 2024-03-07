@@ -1,4 +1,14 @@
-tool
+#tool
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+#
+# Github's Repository Item UI ported to Godot Engine
+#
+#
+# *************************************************
+
 class_name RepositoryItem
 extends PanelContainer
 
@@ -6,19 +16,24 @@ extends PanelContainer
 signal repo_selected(repo)
 signal repo_clicked(repo)
 
-onready var Name = $Repository/Name
-onready var Stars = $Repository/Stars
-onready var Forks = $Repository/Forks
-onready var Collaborator = $Repository/Name/Collaborator
-onready var BG = $BG
+# Pointers to Icons Parents
+onready var Name : HBoxContainer = $Repository/Name
+onready var Stars : HBoxContainer = $Repository/Stars
+onready var Forks : HBoxContainer = $Repository/Forks
+onready var Collaborator : TextureRect = $Repository/Name/Collaborator
+onready var BG : ColorRect = $BG
 
-var _name : String
-var _stars : int
-var _forks : int
-var _metadata : Dictionary
-var _repository : Dictionary
+export (String) var _name : String
+export (int) var _stars : int
+export (int) var _forks : int
+export (Dictionary) var _metadata : Dictionary
+export (Dictionary) var _repository : Dictionary
+export (bool) var is_collaborator : bool
 
+onready var _Github = get_tree().get_nodes_in_group("github")[0]
+onready var _UserData = get_tree().get_nodes_in_group("github_user_data")[0]
 func _ready():
+	# Sets UI textures for forks and stars
 	Stars.get_node("Icon").set_texture(Github.IconLoaderGithub.load_icon_from_name("stars"))
 	Forks.get_node("Icon").set_texture(Github.IconLoaderGithub.load_icon_from_name("forks"))
 
@@ -30,7 +45,7 @@ func set_repository(repository : Dictionary, current_project : bool = false):
 	_forks = repository.forkCount
 	
 	# Check collaboration
-	var is_collaborator : bool = repository.owner.login != Github.UserData.USER.login
+	is_collaborator = repository.owner.login != _UserData.USER.login
 	
 	Name.get_node("Text").set_text(_name)
 	Stars.get_node("Amount").set_text("Stars: "+str(_stars))
@@ -61,6 +76,7 @@ func deselect():
 	BG.hide()
 
 func _on_RepositoryItem_gui_input(event):
+	# A UI Input Event?
 	if event is InputEventMouseButton:
 		if event.is_pressed() and event.button_index == 1:
 			BG.show()

@@ -26,8 +26,8 @@ var center_of_viewport : Vector2
 
 var EnemyObjPool : Array = [] #Stores shared pointer to enemy Mob instances
 
-
-
+var dir : Directory = Directory.new() # Global FIle And Directory Paths
+var file : File = File.new()
 
 "Compression and Uncompression Algorithm"
 # Documentation: https://git.sr.ht/~jelle/gdunzip
@@ -191,6 +191,9 @@ class Functions extends Reference:
 			var time_max = 50000 #sets an estimate maximum time to load scene
 			var t = OS.get_ticks_msec()
 			
+			# play loading anmation 
+			# Play Animation
+			#GlobalAnimation.get_child(0).play("LOADING")
 			#scene_loader.load_interactive(_r) 
 			
 			_o= (scene_loader.load_interactive(_to_load)) #function returns a resourceInteractiveLoader
@@ -230,7 +233,7 @@ class Functions extends Reference:
 					break
 		if scene_resource != null: # 
 			return scene_resource
-
+		#GlobalAnimation.get_child(0).play("RESET")
 		return scene_resource
 
 

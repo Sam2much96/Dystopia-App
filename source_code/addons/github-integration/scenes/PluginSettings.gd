@@ -1,32 +1,46 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Loads the Plugin Settings from Local Storage
+#
+#
+# *************************************************
+
 #extends Github.PluginSettings
 
 #tool
 extends Node
-#
-var directory_name = "github_integration"
+class_name plugin_settings 
+
+export (String) var directory_name = "github_integration"
 var plugin_path : String = ProjectSettings.globalize_path("user://").replace("app_userdata/"+ProjectSettings.get_setting('application/config/name')+"/",directory_name)+"/"
 
-var setting_file : String = "settings.cfg"
+export(String, FILE, "*.cfg") var setting_file  = "settings.cfg"
 
 export (bool ) var debug = true
-var auto_log : bool = false
-var darkmode : bool = false
-var auto_update_notifications : bool = true
-var auto_update_timer : float = 300
-var owner_affiliations : Array = ["OWNER","COLLABORATOR","ORGANIZATION_MEMBER"]
+export (bool) var auto_log : bool = false
+export (bool) var darkmode : bool = false
+export (bool) var auto_update_notifications : bool = true
+export(float) var auto_update_timer : float = 300
+export (Array) var owner_affiliations : Array = ["OWNER","COLLABORATOR","ORGANIZATION_MEMBER"]
 
-var _loaded : bool = false
+export(bool) var _loaded : bool = false
+var config_file : ConfigFile = ConfigFile.new()
 
 func _check_plugin_path():
-	var dir = Directory.new()
+	# using Network singleton directory instead
+	#var dir = Directory.new()
+	
+	var dir = Utils.dir
 	if not dir.dir_exists(plugin_path):
 		dir.make_dir(plugin_path)
-		if debug:
-			printerr("[GitHub Integration] >> ","made custom directory in user folder, it is placed at ", plugin_path)
+		#if debug:
+		printerr("[GitHub Integration] >> ","made custom directory in user folder, it is placed at ", plugin_path)
 
 func _ready():
 	_check_plugin_path()
-	var config_file : ConfigFile = ConfigFile.new()
+	
 	var err = config_file.load(plugin_path+setting_file)
 	if err == 0:
 		debug = config_file.get_value("settings","debug", debug)
@@ -72,22 +86,25 @@ func set_owner_affiliations(affiliations : Array):
 
 func save_setting(key : String, value):
 	_check_plugin_path()
-	var file : ConfigFile = ConfigFile.new()
-	var err = file.load(plugin_path+setting_file)
+	#var file : ConfigFile = ConfigFile.new()
+	#var file = config_file
+	var err = config_file.load(plugin_path+setting_file)
 	if err == OK:
-		file.set_value("settings",key,value)
-	file.save(plugin_path+setting_file)
+		config_file.set_value("settings",key,value)
+	config_file.save(plugin_path+setting_file)
 
 func get_setting(key : String, default_value = ""):
 	_check_plugin_path()
-	var file : ConfigFile = ConfigFile.new()
-	var err = file.load(plugin_path+setting_file)
+	#var file : ConfigFile = config_file#ConfigFile.new()
+	var err = config_file.load(plugin_path+setting_file)
+	
+	# Nested Ifs? Code Smell
 	if err == OK:
-		if file.has_section_key("settings","key"):
-			return file.get_value("settings","key")
+		if config_file.has_section_key("settings","key"):
+			return config_file.get_value("settings","key")
 		else:
 			print("setting '%s' not found, now created" % key)
-			file.set_value("settings", key, default_value)
+			config_file.set_value("settings", key, default_value)
 
 func reset_plugin():
 	delete_all_files(plugin_path)

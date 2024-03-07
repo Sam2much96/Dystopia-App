@@ -64,8 +64,8 @@ size_flags_horizontal = 3
 [node name="HSeparator" type="HSeparator" parent="NotificationsContainer/NotificationsTabs/Tabs"]
 margin_right = 820.0
 margin_bottom = 10.0
-custom_styles/separator = SubResource( 1 )
 custom_constants/separation = 10
+custom_styles/separator = SubResource( 1 )
 
 [node name="Invitations" type="VBoxContainer" parent="NotificationsContainer/NotificationsTabs/Tabs"]
 visible = false
@@ -96,8 +96,8 @@ custom_constants/separation = 0
 [node name="Label" type="Label" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Notifications"]
 margin_right = 820.0
 margin_bottom = 18.0
-custom_styles/normal = SubResource( 2 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.392157 )
+custom_styles/normal = SubResource( 2 )
 text = "Notifications Settings"
 
 [node name="AutoUpdateNotificationsChk" type="CheckButton" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Notifications"]
@@ -145,8 +145,8 @@ custom_constants/separation = 0
 [node name="Label" type="Label" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Plugin"]
 margin_right = 820.0
 margin_bottom = 18.0
-custom_styles/normal = SubResource( 2 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.392157 )
+custom_styles/normal = SubResource( 2 )
 text = "Plugin Settings"
 
 [node name="DebugMessagesChk" type="CheckButton" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Plugin"]
@@ -182,38 +182,39 @@ custom_constants/separation = 0
 [node name="Label" type="Label" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Repositories"]
 margin_right = 820.0
 margin_bottom = 18.0
-custom_styles/normal = SubResource( 2 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.392157 )
+custom_styles/normal = SubResource( 2 )
 text = "Repositories"
 
 [node name="OwnerAffiliations" type="HBoxContainer" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Repositories"]
 margin_top = 18.0
 margin_right = 820.0
-margin_bottom = 40.0
+margin_bottom = 42.0
 custom_constants/separation = 10
 
 [node name="Label" type="Label" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Repositories/OwnerAffiliations"]
+margin_top = 1.0
 margin_right = 158.0
-margin_bottom = 22.0
+margin_bottom = 23.0
 text = "Filter owner affiliations:"
 
 [node name="Owner" type="CheckBox" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Repositories/OwnerAffiliations"]
-margin_left = 470.0
-margin_right = 535.0
-margin_bottom = 22.0
+margin_left = 464.0
+margin_right = 531.0
+margin_bottom = 24.0
 size_flags_horizontal = 10
 text = "owner"
 
 [node name="Collaborator" type="CheckBox" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Repositories/OwnerAffiliations"]
-margin_left = 545.0
-margin_right = 647.0
-margin_bottom = 22.0
+margin_left = 541.0
+margin_right = 645.0
+margin_bottom = 24.0
 text = "collaborator"
 
 [node name="OrganizationMember" type="CheckBox" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Repositories/OwnerAffiliations"]
-margin_left = 657.0
+margin_left = 655.0
 margin_right = 820.0
-margin_bottom = 22.0
+margin_bottom = 24.0
 text = "organization member"
 
 [node name="ResetPluginBtn" type="Button" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings"]
@@ -238,6 +239,7 @@ margin_left = -327.5
 margin_top = -46.5
 margin_right = 327.5
 margin_bottom = 46.5
+rect_min_size = Vector2( 150, 52.5 )
 window_title = "Reset this plugin"
 dialog_text = "Resetting this plugin will delete everything that was stored from the first time. 
 Continue only if you don't want to use this plugin anymore, or if it was suggested by the developer."

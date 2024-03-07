@@ -1,4 +1,13 @@
 #tool
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# GitHub Notifications Header Ported to Godot Engine
+#
+#
+# *************************************************
+
 extends Control
 
 var invitation_item_scene : PackedScene = preload("res://addons/github-integration/scenes/InvitationItem.tscn")
@@ -23,9 +32,15 @@ signal add_notifications(amount)
 var to_load_next : bool = false
 var notifications_tabs : Array = ["Invitations", "Settings"]
 
-# Plugin Settings
+# Local Pointers To Plugin Global Singletons
 onready var PluginSettings_ = get_parent().get_node("PluginSettings")
 onready var RestHandler_ = get_parent().get_node("RestHandler")
+onready var UserData_ = get_parent().get_node("UserData")
+# Plugin Buttons
+onready var ResetPluginBtn : Button = $NotificationsContainer/NotificationsTabs/Tabs/Settings/ResetPluginBtn
+onready var ResetPluginDialog : ConfirmationDialog = $ResetPluginDialog
+
+onready var BG : ColorRect = $BG
 
 
 func _ready():
@@ -47,8 +62,8 @@ func _connect_signals() -> void:
 	debug_messages_chk.connect("toggled", self, "_on_debug_toggled")
 	auto_login_chk.connect("toggled", self, "_on_autologin_toggled")
 	darkmode_chck.connect("toggled", self, "_on_darkmode_toggled")
-	$NotificationsContainer/NotificationsTabs/Tabs/Settings/ResetPluginBtn.connect("pressed", self, "_on_reset_plugin_pressed")
-	$ResetPluginDialog.connect("confirmed", self, "_on_reset_confirmed")
+	ResetPluginBtn.connect("pressed", self, "_on_reset_plugin_pressed")
+	ResetPluginDialog.connect("confirmed", self, "_on_reset_confirmed")
 	owner_check.connect("toggled", self, "_on_owner_check_pressed")
 	collaborator_check.connect("toggled", self, "_on_collaborator_check_pressed")
 	organization_member_check.connect("toggled", self, "_on_organization_member_check_pressed")
@@ -97,10 +112,10 @@ func hide_notification_tabs():
 
 func set_darkmode(darkmode : bool) -> void:
 	if darkmode:
-		$BG.color = "#24292e"
+		BG.color = "#24292e"
 		set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme-Dark.tres"))
 	else:
-		$BG.color = "#f6f8fa"
+		BG.color = "#f6f8fa"
 		set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme.tres"))
 
 func _open_notifications():
@@ -119,7 +134,7 @@ func request_notifications() -> void:
 	if not PluginSettings_.auto_update_notifications: return
 	
 	# If user Data is Empty Dictionary
-	if Github.UserData_.USER == {} : return
+	if UserData_.USER == {} : return
 	get_parent().print_debug_message("loading notifications, please wait...")
 	emit_signal("add_notifications",-get_parent().Header.notifications)
 	RestHandler_.request_invitations_list()
@@ -195,7 +210,7 @@ func _on_invitation_declined():
 	set_invitations_amount(invitations)
 
 func _on_reset_plugin_pressed():
-	$ResetPluginDialog.popup()
+	ResetPluginDialog.popup()
 
 func _clear():
 	emit_signal("add_notifications",-get_parent().Header.notifications)
@@ -206,11 +221,11 @@ func _on_reset_confirmed():
 	hide()
 	get_parent().logout()
 	get_parent().SignIn.delete_user()
-	Github.PluginSettings_.reset_plugin()
+	PluginSettings_.reset_plugin()
 
 func _on_owner_check_pressed(toggled : bool):
 	if toggled: 
-		if not "OWNER" in Github.PluginSettings_.owner_affiliations: 
+		if not "OWNER" in PluginSettings_.owner_affiliations: 
 			PluginSettings_.owner_affiliations.append("OWNER")
 	else: 
 		if "OWNER" in PluginSettings_.owner_affiliations: 
@@ -225,15 +240,15 @@ func _on_collaborator_check_pressed(toggled : bool):
 	else: 
 		if "COLLABORATOR" in PluginSettings_.owner_affiliations: 
 			PluginSettings_.owner_affiliations.erase("COLLABORATOR")
-	PluginSettings_.set_owner_affiliations(Github.PluginSettings_.owner_affiliations)
+	PluginSettings_.set_owner_affiliations(PluginSettings_.owner_affiliations)
 	get_parent().print_debug_message("repositories setting '%s': %s"%["COLLABORATOR",toggled])
 
 func _on_organization_member_check_pressed(toggled : bool):
 	if toggled: 
-		if not "ORGANIZATION_MEMBER" in Github.PluginSettings_.owner_affiliations: 
+		if not "ORGANIZATION_MEMBER" in PluginSettings_.owner_affiliations: 
 			PluginSettings_.owner_affiliations.append("ORGANIZATION_MEMBER")
 	else: 
-		if "ORGANIZATION_MEMBER" in Github.PluginSettings_.owner_affiliations: 
+		if "ORGANIZATION_MEMBER" in PluginSettings_.owner_affiliations: 
 			PluginSettings_.owner_affiliations.erase("ORGANIZATION_MEMBER")
 	PluginSettings_.set_owner_affiliations(PluginSettings_.owner_affiliations)
 	get_parent().print_debug_message("repositories setting '%s': %s"%["ORGANIZATION_MEMBER",toggled])

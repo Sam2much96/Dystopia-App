@@ -1,5 +1,17 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Handles The Rest Request for Github using graphql
+#
+#
+# *************************************************
+
 #extends Github.RestHandler
 extends Node
+
+class_name RestHandler
+
 	# The HTP Rest Handler As A Class
 	# Rewrite to use static fuctions 
 signal _check_connection(connection)
@@ -24,20 +36,24 @@ signal new_branch_requested()
 signal invitations_list_requested(list)
 signal invitation_accepted()
 signal invitation_declined()
-var requesting : int = -1
-var notifications_requesting : int = -1
 
-var repositories_limit : int = 100
-var gists_limit : int = 100
-var owner_affiliations : String
-var checking_connection : bool = false
-var downloading_file : bool = false
-
+export (int) var requesting : int = -1
+export (int) var notifications_requesting : int = -1
+export (int) var connection 
+export (int) var repositories_limit : int = 100
+export (int) var gists_limit : int = 100
+export (String) var owner_affiliations : String
+export (bool) var checking_connection : bool = false
+export (bool) var downloading_file : bool = false
+export (String) var graphql_endpoint : String = "https://api.github.com/graphql"
 onready var client : HTTPRequest = $Client
 onready var notifications_client : HTTPRequest = $NotificationsClient
-var loading : Control
+onready var _loading : loading = get_parent().get_node("loading")
+onready var PluginSettings = get_parent().get_node("PluginSettings")
+onready var UserData = get_parent().get_node("UserData")
+
 var session : HTTPClient = HTTPClient.new()
-var graphql_endpoint : String = "https://api.github.com/graphql"
+
 var graphql_queries : Dictionary = {
 	'repositories':'{user(login: "%s"){repositories(ownerAffiliations:%s, first:%d, orderBy: {field: NAME, direction: ASC}){ nodes { diskUsage name owner { login } description url isFork isPrivate forkCount stargazerCount isInOrganization collaborators(affiliation: DIRECT, first: 100) { nodes {login name avatarUrl} } mentionableUsers(first: 100){ nodes{ login name avatarUrl } } defaultBranchRef { name } refs(refPrefix: "refs/heads/", first: 100){ nodes{ name target { ... on Commit { oid tree { oid } zipballUrl tarballUrl } } } } } } %s } }',
 	'repository':'{%s(login: "%s"){repository(name:"%s"){diskUsage name owner { login } description url isFork isPrivate forkCount stargazerCount isInOrganization collaborators(affiliation: DIRECT, first: 100) { nodes {login name avatarUrl} } mentionableUsers(first: 100){ nodes{ login name avatarUrl } } defaultBranchRef { name } refs(refPrefix: "refs/heads/", first: 100){ nodes{ name target { ... on Commit { oid tree { oid } zipballUrl tarballUrl }}}}}}}',
@@ -75,10 +91,7 @@ enum REQUESTS {
 	DECLINE_INVITATION
 }
 
-onready var PluginSettings = get_parent().get_node("PluginSettings")
-onready var UserData = get_parent().get_node("UserData")
 
-export (int) var connection 
 
 func _ready():
 	client.connect("request_completed",self,"_on_request_completed")
@@ -86,10 +99,8 @@ func _ready():
 
 
 
-
-
-func load_default_variables():
-	pass
+#func load_default_variables():
+#	pass
 
 func check_connection() -> void:
 	checking_connection = true
@@ -111,12 +122,12 @@ func process_check_connection():
 		session.poll()
 	else:
 		if session.get_status() == HTTPClient.STATUS_CONNECTED:
-			if PluginSettings.debug:
-				print("[GitHub Integration] Connection to API successful")
+			#if PluginSettings.debug:
+			print("[GitHub Integration] Connection to API successful")
 			emit_signal("_check_connection",true)
 		else:
-			if PluginSettings.debug:
-				printerr("[GitHub Integration] Connection to API unsuccessful, exited with error %s, staus: %s" % 
+			#if PluginSettings.debug:
+			printerr("[GitHub Integration] Connection to API unsuccessful, exited with error %s, staus: %s" % 
 			[session.get_response_code(), session.get_status()])
 			emit_signal("_check_connection",false)
 		checking_connection = false
@@ -124,7 +135,7 @@ func process_check_connection():
 
 func process_download_file():
 	if downloading_file:
-		loading.show_number(client.get_downloaded_bytes()*0.001, disk_usage, "KB")
+		_loading.show_number(client.get_downloaded_bytes()*0.001, disk_usage, "KB")
 
 
 	# Print the GraphQL query from a String to a JSON/String for GraphQL endpoint
@@ -205,7 +216,7 @@ func _on_request_completed(result: int, response_code: int, headers: PoolStringA
 			422:
 				emit_signal("request_failed", requesting, parse_body(body))
 	downloading_file = false
-	loading.hide_number()
+	_loading.hide_number()
 
 	# ------------------------- REQUESTS -----------------------
 func request_user(token : String) -> void:

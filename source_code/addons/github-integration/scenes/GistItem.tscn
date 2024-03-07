@@ -25,13 +25,9 @@ size = Vector2( 16, 16 )
 [node name="GistItem" type="PanelContainer"]
 anchor_right = 1.0
 anchor_bottom = 0.04
-margin_bottom = -1.90735e-06
 rect_min_size = Vector2( 0, 24 )
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="BG" type="ColorRect" parent="."]
 visible = false
@@ -96,4 +92,5 @@ margin_right = 512.0
 margin_bottom = 19.0
 size_flags_horizontal = 3
 text = "Files: 0"
+
 [connection signal="gui_input" from="." to="." method="_on_GistItem_gui_input"]

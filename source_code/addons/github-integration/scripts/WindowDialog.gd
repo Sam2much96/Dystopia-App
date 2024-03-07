@@ -8,29 +8,37 @@
 
 
 # -----------------------------------------------
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Expansion Pack 001
+#
+# *************************************************
 
-tool
-extends Control
+#tool
+extends ConfirmationDialog
 
+class_name Window_Dialogue
 
-onready var gitignore = $VBoxContainer/HBoxContainer5/gitignore
-onready var privacy = $VBoxContainer/HBoxContainer3/privacy
-onready var readme = $VBoxContainer/HBoxContainer4/readme
-onready var license = $VBoxContainer/HBoxContainer6/license
-onready var nome = $VBoxContainer/HBoxContainer/nome
-onready var descrizione = $VBoxContainer/HBoxContainer2/descrizione
+onready var gitignore : OptionButton = $VBoxContainer/HBoxContainer5/gitignore
+onready var privacy : OptionButton = $VBoxContainer/HBoxContainer3/privacy
+onready var readme : CheckBox = $VBoxContainer/HBoxContainer4/readme
+onready var license : OptionButton = $VBoxContainer/HBoxContainer6/license
+onready var nome : LineEdit= $VBoxContainer/HBoxContainer/nome
+onready var descrizione : LineEdit = $VBoxContainer/HBoxContainer2/descrizione
 
 enum REQUESTS { REPOS = 0, GISTS = 1, END = -1 }
 var requesting
 var new_repo = HTTPRequest.new()
 var repo_body
 
-var LICENSES = ["afl-3.0","apache-2.0","artistic-2.0","bsl-1.0","bsd-2-clause","bsd-3-clause","bsd-3-clause-clear","cc","cc0-1.0","cc-by-4.0","cc-by-sa-4.0","wtfpl","ecl-2.0","epl-1.0","eupl-1.1",
+export (Array) var LICENSES = ["afl-3.0","apache-2.0","artistic-2.0","bsl-1.0","bsd-2-clause","bsd-3-clause","bsd-3-clause-clear","cc","cc0-1.0","cc-by-4.0","cc-by-sa-4.0","wtfpl","ecl-2.0","epl-1.0","eupl-1.1",
 "agpl-3.0","gpl","gpl-2.0","gpl-3.0","lgpl","lgpl-2.1","lgpl-3.0","isc","lppl-1.3c","ms-pl","mit","mpl-2.0","osl-3.0","postgresql","ofl-1.1","ncsa","unlicense","zlib"]
 
 #var GITIGNORE = ["Haskell","Godot"]
 
-onready var error = $VBoxContainer/error
+onready var error : Label = $VBoxContainer/error
 
 func _ready():
 	call_deferred("add_child",new_repo)

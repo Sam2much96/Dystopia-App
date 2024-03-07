@@ -13,6 +13,8 @@ onready var DeleteDataBtn : Button = $FieldContainer/signin_panel/DeleteDataBtn
 onready var DeletePopup : ConfirmationDialog = $DeletePopup
 onready var DeleteHover : ColorRect = $DeleteHover
 
+onready var Background : ColorRect = $BG
+
 var mail : String 
 var token : String
 var auth : String
@@ -20,7 +22,7 @@ enum REQUESTS { LOGIN = 0, AVATAR = 1, END = -1 , USER = 2 }
 var requesting : int
 var user_data : Dictionary
 
-var logfile : bool = false
+export (bool) var logfile : bool = false
 
 onready var Client : HTTPClient = HTTPClient.new()
 
@@ -31,6 +33,8 @@ var userdata : bool = false
 onready var RestHandler_ = get_parent().get_node("RestHandler")#$RestHandler
 onready var UserData_ = get_parent().get_node("UserData")#$RestHandler
 
+# Github pointer
+onready var Github_ = get_parent()
 func connect_signals() -> void:
 	Mail.connect("text_changed", self, "_on_mail_changed")
 	Token.connect("text_changed", self, "_on_token_changed")
@@ -76,10 +80,10 @@ func check_user():
 
 func set_darkmode(darkmode : bool) -> void:
 	if darkmode:
-		$BG.color = "#24292e"
+		Background.color = "#24292e"
 		set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme-Dark.tres"))
 	else:
-		$BG.color = "#f6f8fa"
+		Background.color = "#f6f8fa"
 		set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme.tres"))
 
 func create_token() -> void:
@@ -101,7 +105,7 @@ func sign_in() -> void:
 	else:
 		# If there is a logfile
 		get_parent().loading(true)
-		Github.UserData_.load_user()
+		UserData_.load_user()
 		emit_signal("signed")
 
 func _on_completed_loading():
@@ -110,7 +114,7 @@ func _on_completed_loading():
 
 func _on_request_failed(request_code : int, error_body : Dictionary) -> void:
 	match request_code:
-		Github.RestHandler_.REQUESTS.USER:
+		RestHandler_.REQUESTS.USER:
 			set_process(false)
 			get_parent().loading(true)
 			Error.show()

@@ -1,13 +1,25 @@
-tool
+#tool
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Github's Gist Item UI panel ported to godot 
+#
+#  
+#
+#
+# *************************************************
+
 class_name GistItem
 extends PanelContainer
 
 signal gist_selected(gist)
 signal gist_clicked(this_gist)
 
-onready var Name = $Gist/Name
-onready var Files = $Gist/Files
-onready var BG = $BG
+var gist_icon : ImageTexture 
+onready var Name : HBoxContainer = $Gist/Name
+onready var Files : HBoxContainer = $Gist/Files
+onready var BG : ColorRect = $BG
 
 var _name : String
 var _files_amount : int
@@ -28,7 +40,7 @@ func set_gist(gist : Dictionary):
 	Name.get_node("Text").set_text(_name)
 	Files.get_node("Amount").set_text("Files: "+str(_files_amount))
 	
-	var gist_icon : ImageTexture 
+	
 	if gist.isPublic:
 		gist_icon = (Github.IconLoaderGithub.load_icon_from_name("gists"))
 	else:
@@ -41,6 +53,7 @@ func deselect():
 	BG.hide()
 
 func _on_GistItem_gui_input(event):
+	# GUI Input Event
 	if event is InputEventMouseButton:
 		
 		if event.is_pressed() and event.button_index == 1:

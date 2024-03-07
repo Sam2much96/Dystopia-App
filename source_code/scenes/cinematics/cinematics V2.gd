@@ -119,7 +119,7 @@ func _ready(): #create a video player function
 		var back : Button = $back
 		var UI_buttons_2 : Array = [episode1, bts,animatic, merch,guidebook, back]
 		
-		print_debug("UI buttons: ",UI_buttons_2) #For Debug purposes only
+		#print_debug("UI buttons: ",UI_buttons_2) #For Debug purposes only
 		
 		Dialogs.set_font(UI_buttons_2, 44, "",2)
 		
@@ -333,7 +333,7 @@ var downloading_video = false
 #var vid_file_mob = Globals.pilot_ep
 var dicL1 : Dictionary = {}
 
-onready var dir = Directory.new()
+onready var dir = Utils.dir #Directory.new()
 
 
 
@@ -342,7 +342,7 @@ var percent
 onready var error_code = 0
 
 
-var pilot_ep_scene = load ('res://scenes/cinematics/pilot_ep_1.tscn')
+#var pilot_ep_scene = load ('res://scenes/cinematics/pilot_ep_1.tscn')
 
 #Declare some animation variables
 #var animmation_frames

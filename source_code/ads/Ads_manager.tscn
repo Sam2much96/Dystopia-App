@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://ads/Ads_manager.gd" type="Script" id=1]
 [ext_resource path="res://ads/admob-lib/admob.gd" type="Script" id=2]
-[ext_resource path="res://ads/Appodeal/Appodeal.gd" type="Script" id=3]
 [ext_resource path="res://ads/Yodo1-lib/yodo1mas.gd" type="Script" id=4]
 
 [node name="Ads_Manager" type="CanvasLayer"]
@@ -20,13 +19,8 @@ interstitial_id = "ca-app-pub-1198869974398081/2289590569"
 rewarded_id = "ca-app-pub-1198869974398081/5841026609"
 max_ad_content_rate = "MA"
 
-[node name="Appodeal" type="Node" parent="."]
-script = ExtResource( 3 )
-banner_size = "SMARTBANNER"
-
-[node name="Yodo1Mas" type="Node" parent="."]
+[node name="yodo1" type="Node" parent="."]
 script = ExtResource( 4 )
-app_key_android = "L6jqtVGr0V"
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 5.0

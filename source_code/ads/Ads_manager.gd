@@ -37,7 +37,7 @@ THIS CODE STARTED OUT AS A DEBUGGER FOR THE AD'S . IT IS EVOLVING TO AN AD MANAG
 #var Ads_debug (
 'Reference to the Ad Mediators'
 onready var Admob = $AdMob
-onready var _Appodeal = $Appodeal
+#onready var _Appodeal = $Appodeal
 onready var _yodo1mas = $Yodo1Mas
 onready var timer = $Timer
 
@@ -104,13 +104,7 @@ func _ready():
 			enabled = false # Deactivates the ads manager to avoid a stack overflow
 			
 		if mediators.has(0) && singleton == str('GodotAppodeal'):
-			# initializes the appodeal ads for either smart banner or video
-			__appodeal(_ad_type, testing) #rewrite
-			java_singleton = Engine.get_singleton(singleton) #sets the Java singleton
-			enabled = false # Deactivates the ads manager to avoid a stack overflow
-			
-			_are_the_ads_displaying_ = true #????
-				#_facebook() #checks for facebook login
+				pass
 		if mediators.has(2) &&  singleton == str ("GodotYodo1Mas"):
 			 
 			java_singleton = Engine.get_singleton(singleton) #sets the Java singleton
@@ -119,50 +113,9 @@ func _ready():
 			enabled = false # Deactivates the ads manager to avoid a stack overflow
 
 
-"""
-APPODEAL AD LOADING FUNCTION
-"""
-####################################### the dependencies for this code are broken          #########################################
-#################################### THe initialize is also broken. Disabling this for now #########################################
-func __appodeal(_ad_type, testing):
-	if singleton == null: #Error catcher
-		print ('singleton is null, deactivating')
-		return false
-	if (Engine.has_singleton(singleton)) == true && enabled == true:
-		
-		if _ad_type == 'banner' && testing != null or '': #???? what?
-			# Initializes banner Ads
-			_Appodeal.appodeal.setTestingEnabled(testing) 
-			_Appodeal.appodeal.setSmartBannersEnabled(true)
-			_Appodeal.appodeal.initialize(_Appodeal.key, 2, true) #initializes and show banner ads
-
-			_how_many_times = _how_many_times + 1 #initialization loop
-			print ('Is /', singleton,' /Initialized: ', _Appodeal.appodeal.isInitializedForAdType(2)) #checks if ads is initialized
-
-			_Appodeal.appodeal.setLogLevel(1) 
-			_Appodeal.appodeal.showAd(4)
-		
-		if _ad_type == 'video' && testing != null or '':
-			_Appodeal.appodeal.setTestingEnabled(testing)
-			_Appodeal.appodeal.initialize(_Appodeal.key,16,  true) 
-			
-			_how_many_times = _how_many_times + 1
-			print ('Is /', singleton,' /Initialized: ', _Appodeal.appodeal.isInitializedForAdType(16)) #checks if ads is initialized for unskippable video
-
-			
-			_Appodeal.appodeal.showAd(16) 
-			
-		__appodeal_debug() # For debug purposes only, disable on release build
-
-func __appodeal_debug(): # Each Ad mediator has it's own debug function
-#Debugs the current status of the appodeal ads
-	print (' Appodeal debug //')
-	print ('Is Appodeal initialized for Banner Ads: ',str(_Appodeal.appodeal.isInitializedForAdType(2))) 
-	print ('Is Appodeal initialized for Video Ads: ',str(_Appodeal.appodeal.isInitializedForAdType(16))) 
-	print ('Can Appodeal Show Banner Bottom Ads: ',str(_Appodeal.appodeal.canShow(4)))
-	print ('Can Appodeal Show Video Ads: ',str(_Appodeal.appodeal.canShow(16)))
-	print ('Can Appodeal Show Banner Top Ads: ',str(_Appodeal.appodeal.canShow(2)))
-
+#"""
+#APPODEAL AD LOADING FUNCTION
+#"""
 
 
 # Loads admob banner
@@ -307,10 +260,7 @@ func _connect_ads_signals(): # Documented
 
 	#Appodeal
 	if mediators.has(0) :
-		if _Appodeal.connect("banner_load_failed", self, "change_ads_mediators") != OK:
-			_Appodeal.connect("banner_load_failed", self, "change_ads_mediators")
-			_Appodeal.connect("interstitial_load_failed", self, "change_ads_mediators")
-			_Appodeal.connect("rewarded_video_load_failed", self, "change_ads_mediators")
+		pass
 	if not mediators.has(0): return
 	
 	
@@ -325,9 +275,6 @@ func _connect_ads_signals(): # Documented
 	
 
 func _process(_delta):
-	# Logic for Checking Ad singletons from fast_debug()
-	#if DoEngineCheck1 or DoEngineCheck2 or DoEngineCheck3 == true : # if any of the singletons are available
-	#	 _Has_singleton_compiled = true 
 	
 	
 	 #Debugs the Ad state to the Debug Panel
@@ -353,13 +300,8 @@ func _process(_delta):
 			
 			"Appodeal"
 		if mediators.has(0):
-			if _Appodeal.emit_signal("banner_load_failed") :
-				ads_debug += ('banner_load_failed')
-			if _Appodeal.emit_signal("interstitial_load_failed") :
-				ads_debug += ("interstitial_load_failed")
-			if _Appodeal.emit_signal("rewarded_video_load_failed"):
-				ads_debug += ("rewarded_video_load_failed")
-			
+
+			pass
 			
 			"Yodo1Mas"
 		if mediators.has(2):
@@ -433,30 +375,7 @@ func _on_Timer_timeout():
 				_are_the_ads_displaying_ = true
 		
 		# Appodeal
-		if mediators.has(0) && singleton =='GodotAppodeal': #Update to use _ad_type
-			if java_singleton != null:
-				if (java_singleton.isInitializedForAdType(2)) == false : #if banner ad initialization fails
-					print ('Is /', singleton,' /Initialized: ', java_singleton.isInitializedForAdType(2), 'trying again for the', _how_many_times, ' time') #checks if ads is initialized
-					__appodeal(_ad_type, testing)
-				if (java_singleton.isInitializedForAdType(2)) == true : #if banner ad initialization works
-					print ('Is /', singleton,' /Initialized: ', java_singleton.isInitializedForAdType(2)) #checks if ads is initialized
-					print ('Ad ', singleton,' is initialized')
-				if java_singleton.canShow(4) == false && java_singleton.canShow(2) == false: # if Top banner show fails try again,
-					print ('Banner top and bottom refused to show, trying again the //', _how_many_times, " time")
-					_how_many_times = _how_many_times +1
-					__appodeal(_ad_type, testing)
-					__appodeal_debug()
-				if java_singleton.canShow(4) == true  or  java_singleton.canShow(2) == true: #if banner ads show
-						print ('Banners can show, Stopping timeout loop')
-						timer.stop()
-				if java_singleton.canShow(16) == false: #if rewarded video fails to show
-					print ('Rewarded video failed to show')
-					_how_many_times = _how_many_times +1
-					__appodeal(_ad_type, testing)
-	
-		#No Yodo1Mas?
-	
-
+		
 	
 	if not mediators.size() == 0: # Does a secondary Debug
 		ads_debug = str ('Engine has singleton' , '/: ','/GodotAdMob :', DoEngineCheck1, '/GodotAppodeal :', DoEngineCheck2, '/GodotYodo1Mas :',  DoEngineCheck3)

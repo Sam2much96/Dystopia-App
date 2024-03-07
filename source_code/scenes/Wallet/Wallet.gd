@@ -121,10 +121,10 @@ var UserData : Dictionary = {
 }
 
 #************File Checkers*************#
-var FileCheck1=File.new() #checks account info
-var FileCheck2=File.new() #checks NFT metadata .json
-var FileCheck3=File.new()#checks local image storage
-var FileCheck4=File.new() # checks wallet mnemonic
+var FileCheck1= Utils.file #File.new() #checks account info
+var FileCheck2= Utils.file #File.new() #checks NFT metadata .json
+var FileCheck3= Utils.file #File.new()#checks local image storage
+var FileCheck4= Utils.file #File.new() # checks wallet mnemonic
 
 
 var FileDirectory=Directory.new() #deletes all theon reset

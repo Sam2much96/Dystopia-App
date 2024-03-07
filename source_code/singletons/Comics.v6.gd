@@ -91,9 +91,9 @@ var current_comics : PackedScene
 
 
 #************File Checkers*************#
-var FileCheck1=File.new() #checks local comics storage
+#var FileCheck1=File.new() #checks local comics storage
 
-var FileDirectory=Directory.new() #deletes all theon reset
+#var FileDirectory=Directory.new() #deletes all theon reset
 
 
 
@@ -172,22 +172,6 @@ var SwipeSpeed : Vector2
 var SwipeCounter : int = 0 # for limiting swipe detection.registration
 
 
-
-
-#"Rewriting As a Fininte State Machine"
-# Unimplemented State Machine
-#enum {START_SWIPE, END_SWIPE, DOWNLOAD_IMAGE, NEXT_PANEL, 
-#PREV_PANEL, DRAG, LOAD, ZOOM ,SET_FRAME,IDLE ,SWIPE_UP,
-#SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT, NOT_SWIPING, ERROR
-#} 
-
-# Swipe Direction Enum (Struct)
-#enum { } 
-
-#export (String, 'Up', "Down", "Left", "Right", "Idle") var direction_var ="Idle"
-
-#var _state = IDLE
-
 const SWIPE_AWAIT = 0.4
 
 onready var _debug_= get_tree().get_root().get_node("/root/Debug")
@@ -232,8 +216,8 @@ func _ready():
 	# Create HTTP Request Nodes
 	# Only create & use these nodes it Dowloading content
 	
-	if web3: 
-		Online._init()
+#	if web3: 
+#		Online._init()
 
 
 
@@ -466,16 +450,11 @@ func _process(delta):
 	"VISIBILITY"
 	# add counter
 	if enabled == true: #toggles visibility 
-		show() #Disabling for debugging
-		
-		#print ("Enabled")
-		
-		pass
+		show() 
 
 	if enabled == false:
-		hide() #Disabling for debugging
-		#print ("DIsabled")
-		pass
+		hide() 
+		
 	memory=get_tree().get_nodes_in_group("comics") #an array of all comics in the scene tree
 
 	if memory.empty() != true :
@@ -534,9 +513,6 @@ func next_panel(comics_sprite : AnimatedSprite) -> int:
 		Input.is_action_pressed("next_panel") && 
 		comics_sprite != null
 	): 
-	#if comics_sprite != null && !Timemout:
-		
-		#Networking.start_check(1)
 		
 		current_frame = abs(current_frame + 1 )
 		#var next_frame : int =  (current_frame + 1) 
@@ -544,27 +520,11 @@ func next_panel(comics_sprite : AnimatedSprite) -> int:
 		emit_signal("panel_change")
 		comics_sprite.set_frame(current_frame)
 		
-		#print (current_frame)
-		#current_frame = next_frame
-		
 		# Stops a swipe overflow for comic pages
 		SwipeLocked = true
-		
-		# Centers Comic page
-		#comics_sprite.set_position(Comics_v6.origin)
-			#center_page()
-		#	return int(current_frame) 
 	
 	else :
 		push_error("Waiting for swipe lock to timeout"+ str(can_drag)+ str(SwipeLocked) + str(comics_sprite))
-		#print_debug(!can_drag, !SwipeLocked, comics_sprite)
-	
-	
-	# Disabled for debugging
-	#" Play SFX "
-	#if Music.music_on == true:
-	#	Music.play_sfx(Music.comic_sfx)
-		
 
 	return current_frame
 
@@ -598,154 +558,6 @@ func prev_panel(comics_sprite : AnimatedSprite)-> int:
 		
 	return current_frame
 
-
-
-class Online extends Reference:
-	
-	var q : HTTPRequest
-	var q2 : HTTPRequest
-	var q3 : HTTPRequest
-	
-	const comics_IPFS : Dictionary = {
-		1 : "QmSpXTc7gE1Mj3HdKDGuwr87cuiiLP3homXuKbWVxoG4TX", #Chap 1 scene
-		2 : "QmWvgWit9REFghWLgofgormkr3QsKd2pXcxMtMxHdKMTZV", # Chap 1 sprite sheet
-		3 : "QmW3HJX8iADTFdNMBhuDsVqhQLajE8xwPw2XmonmL2HofA", # Icon Pixel Icon
-	}
-
-	func _init():
-		q = HTTPRequest.new() # checks internet connection, makes it a Global boolean
-		q2 = HTTPRequest.new() # Downloads imgs
-		q3 = HTTPRequest.new() # Downloads Comic Scenes
-
-
-		Comics_v6._comics_root.call_deferred('add_child',q) # checks internet connection, makes it a Global boolean
-		Comics_v6._comics_root.call_deferred('add_child',q2) # Downloads imgs
-		Comics_v6._comics_root.call_deferred('add_child',q3) # Downloads Comic Scenes
-		
-		
-	
-	'Performs a Bunch of HTTP requests'
-	# Duplicate of Wallet Codes
-	#(1) To Check if internet connection is good 
-	# (2) To download Images from IPFS 
-	# Q1
-	static func _http_request_completed_Internet(result, response_code, headers, body): #works with https connection
-		print (" request done 1: ", result) #********for debug purposes only
-		print (" headers 1: ", headers)#*************for debug purposes only
-		print (" response code 1: ", response_code) #for debug purposes only
-
-		if not body.empty():
-				Networking.good_internet = true
-			
-			
-		if body.empty(): #returns an empty body
-				push_error("Result Unsuccessful")
-				Networking.good_internet = false
-				#Networking.stop_check()
-				
-				
-				#Retry Check 
-				if Networking.Timeout:
-					Networking._check_if_device_is_online(Swipe.q)
-
-
-	# Q2
-
-	static func _http_request_completed_Images(result, response_code, headers, body): #works with https connection
-		print (" request done 2: ", result) #********for debug purposes only
-		print (" headers 2: ", headers)#*************for debug purposes only
-		print (" response code 2: ", response_code) #for debug purposes only
-		
-		#if not is_image_available_at_local_storage: 
-		"Should Parse the NFT's meta-data to get the image ink"
-		print ('request successful')
-		
-		"Downloads the NFT image"
-		print (" request successful", typeof(body))
-		
-			
-			#check if body is image type
-		#Comics_v5.set_comic_image_(Networking.download_image_(body, Local.comics_["Chap1 Panel"],q2)) #works
-		
-		if body.empty():
-			push_error("Problem downloading Image ")
-
-
-
-
-	# Q3
-
-	static func _http_request_completed_Scenes(result, response_code, headers, body): #works with https connection
-		print (" request done 3: ", result) #********for debug purposes only
-		print (" headers 3: ", headers)#*************for debug purposes only
-		print (" response code 3: ", response_code) #for debug purposes only
-		
-		#if not is_image_available_at_local_storage: 
-		"Should Parse the NFT's meta-data to get the image ink"
-		print ('request successful')
-		
-		"Downloads the NFT image"
-		print (" request successful", typeof(body))
-		
-		
-		#check if body is image type
-		#set_comic_image_(Networking.download_image_(body, Local.comics_["Chap1 Panel"],q2)) #works
-		
-		
-		#Comics_v5.load_local_comic(Networking.download_scene_(body, Local.comics_["Chap1 Scene"],q3))
-
-		
-		
-		if body.empty():
-			push_error("Problem downloading Image ")
-
-	static func download_comics(FileCheck1 : File):
-		
-#			" Downloads Comics "
-#			#Runs Directory and File Checks for Comic Nodes & Images
-#			
-#			# Check if comics folder exists locally
-#			#if not FileDirectory.dir_exists(comic_dir):
-#			#	"Creates Comics Directory if it doesn't exist"
-#			#	create_comics_directory(comic_dir)
-			
-			# Creates Comic Chapter Paths
-			#if not FileDirectory.dir_exists(Local.comics_local_path[1]):
-			#	create_comics_directory(Local.comics_local_path[1])
-			#	pass
-			
-			if !Networking.good_internet && !Networking.Timeout:
-				Networking._check_if_device_is_online(Swipe.q)
-				Networking.start_check(4)
-			
-			# If local Comics Doesnt exist
-			
-			if not FileCheck1.file_exists(Local.comics_["Chap1 Panel"])  && Networking.good_internet:
-				#GKHGHGHKGK
-				# download Comics from IPFS using Networking Gateway
-				"IPFS Downloads"
-				
-				# Downloads Comic scenes and Imgs from IPFS
-				#Networking.url = comics_[0]
-				
-				#comics_IPFS
-				Networking. _connect_to_ipfs_gateway(false,Online.comics_IPFS[1], Networking.gateway[2], Swipe.q2) # Downloads Spritesheet  
-				Networking. _connect_to_ipfs_gateway(false,Online.comics_IPFS[3], Networking.gateway[2], Swipe.q3)  # Downloads Scene
-			#	return
-			# Check if image is available for chapter 1
-			if FileCheck1.file_exists(Local.comics_["Chap1 Panel"]) :
-				# load the Comic if it's available
-				print ("Comic is Available Locally. Loading....Placeholder")
-				pass
-			
-			# If not, download spritesheet from IPFS
-			
-			
-			# check if CHapter 1 scene exists
-			
-			# Check if chapter 1 Comics and Scene are available
-			
-			# load chapter 1 scene from local memory if all are true
 
 class Local extends Reference:
 
@@ -1437,11 +1249,11 @@ class Extensions extends AnimatedSprite:
 
 
 # It Uses a camera 2d to simulate guided view. Should not be used when running the game
-func guided_view()-> void: #Unwriten code
-	#It's supposed tobe a controlled zoom
-	# USing matrix of array positions to guide a camera smoothing
-	# ANd a physics process
-	pass
+#func guided_view()-> void: #Unwriten code
+#	#It's supposed tobe a controlled zoom
+#	# USing matrix of array positions to guide a camera smoothing
+#	# ANd a physics process
+#	pass
 
 
 func _on_Rotate_pressed():#Page Rotation #Rewrite this function as a module
@@ -1537,23 +1349,7 @@ func _load_comics(chapter_no : int):
 
 func connect_signals()-> bool: #connects all required signals in the parent node
 	
-	# TO DO: 
-	# (1) Implement Server Storage
 	
-	if web3:
-		#checks internet connectivity
-		if not Online.q.is_connected("request_completed", self, "_http_request_completed_Internet"):
-			return Online.q.connect("request_completed", self, "_http_request_completed_Internet")
-
-		#checks Image downloader
-		if not Online.q2.is_connected("request_completed", self, "_http_request_completed_Images"):
-			return Online.q2.connect("request_completed", self, "_http_request_completed_Images")
-
-		#checks Scene downloader
-		if not Online.q3.is_connected("request_completed", self, "_http_request_completed_Scenes"):
-			return Online.q3.connect("request_completed", self, "_http_request_completed_Scenes")
-
-
 	if not Kinematic_2d.is_connected("mouse_entered", self, "mouse_entered"):
 		Kinematic_2d.connect("mouse_entered", self, "mouse_entered")
 		Kinematic_2d.connect("mouse_exited", self, "mouse_exited")

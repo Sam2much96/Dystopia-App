@@ -240,7 +240,7 @@ func _process(delta : float):
 	#	Networking.player_info["peer id"][peer_id]["state"].clear()
 
 
-func _input(event):
+func _input(_event):
 	"NETWORKING INPUTS"
 	
 	# Send input events over network to the server My Peer Across the Networks
@@ -345,7 +345,7 @@ func _input(event):
 
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 
 	
 	## PROCESS STATES
@@ -390,33 +390,6 @@ func _physics_process(delta):
 					
 				if Input.is_action_just_pressed("roll"):
 					state = STATE_ROLL
-					#roll_direction = Vector2(
-					#		- int( Input.is_action_pressed("move_left") ) + int( Input.is_action_pressed("move_right") ),
-					#		-int( Input.is_action_pressed("move_up") ) + int( Input.is_action_pressed("move_down") )
-					#	).normalized()
-					
-					
-					
-					#asfafaf
-					#Networking.player_info["peer id"][peer_id]["roll direction"].append(roll_direction)
-
-
-					# Update Facing
-						
-					# FOrmmerly update facing
-					# Depreciated code bloc
-					# SHould Ideally Call Remote Player input for it's Client Peer Accross the Networl
-					#if Input.is_action_pressed("move_left"):
-					#	
-					#	_facing = "left"
-					#if Input.is_action_pressed("move_right"):
-					#	_facing = "right"
-					#if Input.is_action_pressed("move_up"):
-					#	_facing = "up"
-					#if Input.is_action_pressed("move_down"):
-					#	_facing = "down"
-					
-					#_update_facing()
 				new_anim = "idle_" + _facing
 				#get_material().
 				
@@ -428,73 +401,12 @@ func _physics_process(delta):
 				if Input.is_action_just_pressed("roll"):
 					state = STATE_ROLL
 				
-				#linear_vel = move_and_slide(linear_vel)
-				
-				#print('Player linear velocity: ', linear_vel) #for debug purposes only
-				
-				#var target_speed = Vector2()
-				
-				#if Input.is_action_pressed("move_down"):
-				#	target_speed += Vector2.DOWN
-				#if Input.is_action_pressed("move_left"):
-				#	target_speed += Vector2.LEFT
-				#if Input.is_action_pressed("move_right"):
-				#	target_speed += Vector2.RIGHT
-				#if Input.is_action_pressed("move_up"):
-				#	target_speed += Vector2.UP
-				
-				#target_speed *= WALK_SPEED
-				#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
-				#linear_vel = target_speed
-				#roll_direction = linear_vel.normalized()
-				
-				
-				# FOrmmerly update facing
-				# Depreciated code bloc
-				# SHould Ideally Call Remote Player input for it's Client Peer Accross the Networl
-				#if Input.is_action_pressed("move_left"):
-				#	
-				#	facing = "left"
-				#if Input.is_action_pressed("move_right"):
-				#	facing = "right"
-				#if Input.is_action_pressed("move_up"):
-				#	facing = "up"
-				#if Input.is_action_pressed("move_down"):
-				#	facing = "down"
-
-				
-				
-				#_update_facing()
-				
-				#if linear_vel.length() > 5:
-				#	new_anim = "walk_" + _facing
-				#else:
-				#	goto_idle()
-				
-				#rpc calls to server
-				#Client.rpc_id(peer_id,"player_input_v2",state,facing,position, linear_vel) 
-				
 			STATE_ATTACK:
-				#new_anim = "slash_" + _facing
-				
-				# should broadcast input 
-				 
 				pass
 			STATE_ROLL:
 				if roll_direction == Vector2.ZERO:
 					state = STATE_IDLE
 				else:
-					#linear_vel = move_and_slide(linear_vel)
-					#var target_speed = Vector2()
-					#target_speed = roll_direction
-					#target_speed *= ROLL_SPEED
-					#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
-					#linear_vel = target_speed
-					#new_anim = "roll"
-					
-					
-					#if Input.is_action_just_pressed("attack"): #punch and slide
-					#	state = STATE_ATTACK
 					pass
 			STATE_DIE:
 				new_anim = "die"

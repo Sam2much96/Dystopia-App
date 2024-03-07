@@ -160,11 +160,7 @@ class Functions extends Reference:
 	
 
 	
-	static func dict2bytes(dict :Dictionary) -> int:
-		# Convert Dictionary json to raw bytes 
-		
-		return 0
-
+	
 	
 	
 	static func change_scene_to(scene : PackedScene, tree : SceneTree): #Loads scenes faster?
@@ -181,11 +177,12 @@ class Functions extends Reference:
 		scene_resource : PackedScene, 
 		_o : ResourceInteractiveLoader, 
 		scene_loader : ResourceLoader, 
-		loading_resource : bool, 
+		_loading_resource : bool, 
 		a: int , 
 		b : int, 
 		progress: float
 		) -> PackedScene:
+		
 		
 		if _to_load != "" && scene_resource == null:
 			var time_max = 50000 #sets an estimate maximum time to load scene
@@ -212,7 +209,7 @@ class Functions extends Reference:
 				
 				
 				if err == ERR_FILE_EOF: # Finished Loading #Works
-					loading_resource = false
+					_loading_resource = false
 					
 					scene_resource = (_o.get_resource()) 
 					print (scene_resource , "Resource Loaded")
@@ -714,7 +711,7 @@ class procedural extends Reference:
 
 'Delete Files'
 func delete_local_file(path_to_file: String) -> void:
-	var dir = Directory.new()
+	
 	if dir.file_exists(path_to_file):
 		dir.remove(path_to_file)
 		dir.queue_free()

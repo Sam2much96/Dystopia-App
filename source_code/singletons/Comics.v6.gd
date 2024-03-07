@@ -1236,7 +1236,7 @@ class Functions extends Reference:
 	center : Vector2, 
 	target_memory_x : Array, 
 	target_memory_y: Array
-	)-> void: 
+	) : 
 		#add more parameters
 	# Input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases 
 		print ("-----------Dragging------------")
@@ -1328,7 +1328,7 @@ class Functions extends Reference:
 					if target_memory_y.size() == 1: #error catcher
 						
 						#moves to a predicted presaved axis
-						_body.move_and_slide(Vector2(target_memory_x.back(), target_memory_y[0]))
+						return _body.move_and_slide(Vector2(target_memory_x.back(), target_memory_y[0]))
 						#_body.position = Vector2(target_memory_x.back(), target_memory_y[0])
 						#_body.move_and_slide()
 					
@@ -1337,7 +1337,7 @@ class Functions extends Reference:
 						var adjusted_target = Vector2(target_memory_x.back(), target_memory_y[target_memory_y.size() - 1])
 						
 						#moves to a predicted presaved axis
-						_body.move_and_slide(adjusted_target)
+						return _body.move_and_slide(adjusted_target)
 
 
 
@@ -1524,7 +1524,7 @@ func _on_chap_7_pressed():
 
 	# Polymorphic synamic code for loading Conics Sprite via Static functions
 func _load_comics(chapter_no : int):
-	Functions.show_comics(
+	return Functions.show_comics(
 		Functions.load_comics(comics[chapter_no], 
 		memory,get_tree(),
 		enabled, 

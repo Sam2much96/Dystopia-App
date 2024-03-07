@@ -1322,8 +1322,8 @@ class Lobby extends Control:
 		return true
 
 	# Finds Device Public IP Address from a WebSite
-	static func _on_find_public_ip_pressed() -> void:
-		OS.shell_open("https://icanhazip.com/")
+	static func _on_find_public_ip_pressed() :
+		return OS.shell_open("https://icanhazip.com/")
 
 
 

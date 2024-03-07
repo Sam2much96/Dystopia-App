@@ -176,7 +176,7 @@ var passed_all_connectivity_checks : bool = false #debugs all connectivity check
 var is_image_available_at_local_storage : bool  = FileCheck4.file_exists(local_image_path)
 #*************Signals************************************#
 signal completed #placehoder signal
-signal transaction
+#signal transaction #unused signal
 
 #**********************************#
 
@@ -457,7 +457,7 @@ func _ready():
 	
 	#print("----loaded acct info------")
 
-func _process(delta):
+func _process(_delta):
 	
 	frame_counter += 1
 	
@@ -541,7 +541,7 @@ func _process(delta):
 				
 				create_wallet_directory()
 			if not FileCheck1.file_exists(token_write_path):
-				save_account_info(dict , 0)
+				return save_account_info(dict , 0)
 			
 			# Error Catcher 3
 			if FileCheck1.file_exists(token_write_path):
@@ -589,7 +589,8 @@ func _process(delta):
 				var status : bool
 				status= yield(self.Algorand.algod.health(), "completed")
 				
-				#print ("Status debug: ", status,' ',wallet_check_counter) #for debug purposes only
+				if not status :
+					print_debug ("Status debug: ", status,' ',wallet_check_counter) #for debug purposes only
 				
 				# wallet check info returns an integer
 				Wallet.check_wallet_info(self.Algorand.algod, UserData, account_info, FileDirectory, token_dir, self) #checks saved wallet variables for error
@@ -799,8 +800,8 @@ func _process(delta):
 							#var status
 						var status : bool
 						status= yield(self.Algorand.algod.health(), "completed")
-						
-						print ("Status debug: ", status,' ',wallet_check_counter)
+						if not status:
+							print ("Status debug: ", status,' ',wallet_check_counter)
 						
 						#duplicates check wallet state function
 						Wallet.check_wallet_info(self.Algorand.algod, UserData, account_info, FileDirectory, token_dir, self)#saves account info with assets details
@@ -1593,7 +1594,7 @@ class Functions extends Reference:
 
 	#Deletes Local Account Info
 	static func reset(token_write_path : String)-> void:
-		Globals.delete_local_file(token_write_path)
+		Utils.delete_local_file(token_write_path)
 
 	
 	static func check_internet(good_internet : bool ,q : HTTPRequest):

@@ -113,7 +113,7 @@ func _ready():
 	#print_debug("Frame ID debug: ",frame_id)
 	pass
 
-func _process(delta):
+func _process(_delta):
 	
 	frame_counter += 1
 	
@@ -135,7 +135,7 @@ func _process(delta):
 		
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 
 	
 	if SIMULATING_1: # Placeholder conditional boolean

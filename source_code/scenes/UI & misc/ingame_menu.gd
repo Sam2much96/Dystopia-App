@@ -289,7 +289,7 @@ func _on_comics_pressed():
 
 func _on_controls_pressed():
 	Music.play_track(Music.ui_sfx[0])
-	Utils.Functions.change_scene_to(Globals.controls, get_tree())
+	return Utils.Functions.change_scene_to(Globals.controls, get_tree())
 
 
 func _on_quit_pressed():

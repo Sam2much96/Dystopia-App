@@ -336,23 +336,23 @@ func _music_debug(): #Breaks
 
 
 
-func play(stream: String):
+func play(_stream: String):
 	#kinda works
 	#it bugs out when the music track node is added to a scene
-	if stream != null or !stream.empty(): #null error
+	if _stream != null or !stream.empty(): #null error
 		if current_track == "a":
-			B.stream = load(stream) #invalid funtion load, cannot convert arguement from nil to string
+			B.stream = load(_stream) #invalid funtion load, cannot convert arguement from nil to string
 			transitions.play("AtoB")
 			current_track = "b"
 			music_on = true
 		else:
-			A.stream = load(stream)
+			A.stream = load(_stream)
 			transitions.play("BtoA")
 			current_track = "a"
 			music_on = true
-	if stream == null or stream == '':
+	if _stream.empty() :
 		push_error('Music stream is null, fix')
-		print_debug('Stream:',stream)
+		print_debug('Stream:',stream, _stream)
 		print_debug('Music Track',music_track)
 	
 	Utils.Functions.save_game(

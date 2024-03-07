@@ -503,188 +503,6 @@ func _http_request_completed(result, response_code, _headers, body): # dOWNLOADS
 		print ('It could be a myriad of problems. Please debug carefully')
 
 
-#to use: video_html('video', body)
-
-
-class Pilot extends Reference:
-	
-	
-	export (bool) var enabled 
-
-	# Preload for fast loading. Also used Global functions as well
-	# use Globals.cinematics for video files
-	onready var Pilot_a #= load ('res://scenes/cinematics/Pilot_a.ogv') # Ogv works best for mobile phones #depreciated in v1.1.9
-	onready var Pilot_b #= load ('res://scenes/cinematics/Pilot_b.ogv') # it decodes webm as well #depreciated in v1.1.9
-
-	onready var AMV #= load ('res://scenes/cinematics/AMV.ogv')
-
-	onready var Pilot_a_sound# =  ('res://scenes/cinematics/Pilot_a.ogg')
-	onready var Pilot_b_sound# =('res://scenes/cinematics/Pilot_b.ogg')
-
-	onready var _video_player : VideoPlayer #= $VideoPlayer
-	onready var aspect_ratio : ColorRect#= $ColorRect
-	onready var audio : AudioStreamPlayer#= $AudioStreamPlayer
-
-	#onready var ads_manager = $Ads_Manager
-	
-	var viewport : float = Globals.get_viewport().get_rect().size
-
-	var counter : int = 0# An integer Used as a trigger aid for the video changer
-
-	#var error_code
-	export (bool )var new_feature  # A switch for the zip folder new function.
-	# The Video Code is broken, Fix it.
-
-	#var path_to_zip_file = 'res://scenes/cinematics/Pilot_a.zip' # Used in a #doesn't work
-	func _init()-> void:
-		#Check if the uncompressed videos are available in the directory
-		var file2Check = File.new()
-		#var doFileExists = file2Check.file_exists('user://video.ogv')
-		#var doFileExists2 = file2Check.file_exists('user://video2.ogv') # this video does not exist
-		var doFileExists = file2Check.file_exists('res://scenes/cinematics/Pilot_a.ogv')
-		var doFileExists2 = file2Check.file_exists('res://scenes/cinematics/Pilot_b.ogv') # this video does not exist
-		
-		# Incase it's a broken build
-		var doFileExists3 = file2Check.file_exists('res://scenes/cinematics/Pilot_a.ogg')
-		var doFileExists4 = file2Check.file_exists('res://scenes/cinematics/Pilot_b.ogg')
-		
-		print ('Video File Check:', doFileExists,'/', doFileExists2, '/',doFileExists3, '/',doFileExists4) #For debug purposes only
-		
-		
-
-
-		"""
-		CHECKS IF THE AUDIO & VIDEO FILES DO NOT EXIST, EXECUTE THE FOLLOWING LINES OF CODE
-		"""
-
-	#Unzips the video if the User library's video file is none existent
-	# I turned this code bloc off because it is buggy 
-		if doFileExists == false && new_feature == true:
-			push_warning ('Video file: '+str(doFileExists2) + 'does not exist. Check it') # Checks if the video file exists in the project
-			# Unzips video file
-			#Globals.unzip_file_to_video(path_to_zip_file) # Disable after debugging #Unzip function break
-		# save the file to a web theora file
-		if doFileExists2 == false:
-			push_warning ('Video file: '+ str(doFileExists2) + 'does not exist. Check it')
-			pass
-		if doFileExists3 == false:
-			push_warning ('Sound file1: ' +str(doFileExists3) + 'does not exist. Check it')
-			pass
-		if doFileExists4 == false:
-			push_warning ('Sound file2: ' +str(doFileExists4) + 'does not exist. Check it')
-			pass
-		"""
-		IF VIDEO FILEs  EXISTS, Execute these blocs
-		"""
-		if doFileExists == true:
-			
-			return
-		if doFileExists2 == true:
-			return
-
-
-
-
-	func _play_pilot_a():
-		if enabled == true && Pilot_a != null:
-			_video_player.show()
-			
-			#It uses a global videostream function
-			Globals.cinematics = Pilot_a
-			audio.set_stream(load(Pilot_a_sound))
-			audio.play(0.0)
-			
-			
-			# Makes a Call to the Parent Script
-			return Globals._Video_Stream(_video_player , Globals.cinematics, Pilot_a_sound, viewport)# Rewrite function to root script
-			
-
-	func _play_pilot_b():
-		if enabled == true && Pilot_b != null:
-			_video_player.show()
-			#It uses a global videostream function
-			Globals.cinematics = Pilot_b
-			
-			audio.set_stream(load(Pilot_b_sound))
-			audio.play(0.0)
-			
-			Globals._Video_Stream(_video_player , Globals.cinematics, Pilot_b_sound, viewport)
-
-
-	func _play_AMV():
-		if enabled == true && Pilot_b != null:
-			_video_player.show()
-			#It uses a global videostream function
-			Globals.cinematics = AMV #makes the video file a global for improved playspeed
-			
-			audio.set_stream(load('res://music/chuks-dane_chuks-dane-shoot-back.ogg'))
-			audio.play(0.0)
-
-			
-			Globals._Video_Stream(_video_player , Globals.cinematics, '', viewport)
-			
-	func stop_playing():
-		_video_player.hide()
-		Music.sound('off') # Check THe GLobal Music settings and adjust accordingly
-
-	'should connect to ADS mANAGER'
-	# Video Monetization code
-	func _show_video_ads(): # Not properly tested, disabling this until it is.
-		# Initialises the Admob singleton through the ads manager for video ads
-		print ('showing video ads by connecting to Ads manager function')
-		if (OS.get_name()) == "Android"or  "iOS": # Activates the ads only on mobiles
-		#	ads_manager.singleton = "GodotYodo1Mas"
-		#	ads_manager.enabled = true
-		#	ads_manager._ad_type = "video_ad"
-		#	ads_manager.init()
-		#	ads_manager.yodo1mas()
-			counter = 4 # stops everything
-			check_counter()
-			return
-
-
-	func _exit_tree():
-		print ('Deleting All Videoplayer items from scene')
-		Function._free_memory(Globals.cinematics)
-		Function._free_memory(Pilot_a_sound)
-		Function._free_memory(Pilot_b_sound)
-		Function._free_memory(Pilot_a)
-		Function._free_memory(Pilot_b)
-		
-		_video_player.queue_free()
-
-
-
-
-
-	func _on_VideoPlayer_finished():
-		"""
-		THIS IS BAD CODE, PLEASE IMPROVE IT
-		"""
-		# A 3 POINT COUNTER FOR SEQUENTIALLY PLAYING THE VIDEO THROUGH TO THE ADS
-		counter += 1
-		check_counter()
-
-	func check_counter():
-		if counter == 1 :
-			_play_pilot_b()
-		if counter == 2:
-			_play_AMV()
-			#counter = 3
-		if counter == 3:
-			_show_video_ads()
-		if counter == 4 :
-		# Auto deletes once the pilot episode has finished playing
-			stop_playing()
-			#queue_free()
-		else:
-			return
-
-
-	func _input(_event):
-		if Input.is_action_pressed("ui_cancel") :#Press escape to quit
-			Globals._go_to_title()
-
 
 """
 STORES A POOL BYTE ARRAY TO A VIDEO FILE AND PUBLISHES IT AS A GLOBAL VARIABLE
@@ -694,9 +512,11 @@ STORES A POOL BYTE ARRAY TO A VIDEO FILE AND PUBLISHES IT AS A GLOBAL VARIABLE
 class Function extends Reference:
 	
 	func store_video_files(_body : PoolByteArray):
-		var video_file : File = File.new()
+		var video_file : File = Utils.file #= File.new()
 		video_file.open('user://video.ogv',File.WRITE)
-		var err = (video_file.open('user://video.ogv', File.WRITE_READ))
+		var _err = (video_file.open('user://video.ogv', File.WRITE_READ))
+		if _err != OK:
+			push_error(_err)
 		video_file.store_buffer(_body) #store pool byte array as video buffer
 		var video_file_path = video_file.get_path_absolute() #gets the file path
 		print ('Video File path: ', video_file_path)
@@ -740,12 +560,10 @@ class Function extends Reference:
 
 
 func play_loading_cinematic(): #A simple loading loop
-	#downloading_video: bool, download_video_size : int
 	Function._check_download_size(int(Networking.get_body_size()), Networking.get_downloaded_bytes(), downloading_video, download_video_size) #shows a progress report on video being downloaded
 	var _z = str( 'Downloading Remaining.../ ', percent ,'%') #formats the data
 	Dialogs.show_dialog( _z, 'Admin') #displays the download percent to the users
 
-	#_Video_Stream(Globals.cinematics) broken function. Video stream function is a global function now
 	
 	print_debug('Playing loading Cinematic ')
 	yield(get_tree().create_timer(5), "timeout") #Runs this loop every 5 secs
@@ -758,20 +576,6 @@ func exit(error) -> void:
 
 
 
-
-func _on_watch_anime2_pressed():
-	cinematics_get("FightScene")
-	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
-	#videoplayer._play_pilot_a() #depreciated in v1.1.9 for size problems
-	$Label.hide()
-	#return OS.shell_open(youtube[2])
-	
-	
-
-func _on_watch_merch_pressed():
-	var merch_link = 'https://inhumanity-merch.creator-spring.com/listing/dystopia-merch'
-	print ('opening merch link at ',merch_link )
-	return OS.shell_open(merch_link)
 
 
 func _on_watch_anime3_pressed():

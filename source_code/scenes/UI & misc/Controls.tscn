@@ -68,7 +68,7 @@ theme = ExtResource( 3 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_right = 352.0
-margin_bottom = 652.0
+margin_bottom = 570.0
 script = ExtResource( 6 )
 
 [node name="back" type="Button" parent="ScrollContainer/VBoxContainer"]
@@ -149,6 +149,7 @@ __meta__ = {
 }
 
 [node name="github" type="Button" parent="ScrollContainer/VBoxContainer"]
+visible = false
 margin_top = 328.0
 margin_right = 352.0
 margin_bottom = 406.0
@@ -163,26 +164,26 @@ __meta__ = {
 }
 
 [node name="help" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 410.0
+margin_top = 328.0
 margin_right = 352.0
-margin_bottom = 488.0
+margin_bottom = 406.0
 custom_fonts/font = ExtResource( 8 )
 text = "Hold to Show Help"
 flat = true
 
 [node name="change controller" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 492.0
+margin_top = 410.0
 margin_right = 352.0
-margin_bottom = 570.0
+margin_bottom = 488.0
 custom_fonts/font = ExtResource( 8 )
 toggle_mode = true
 text = "Direction/controls"
 flat = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-margin_top = 574.0
+margin_top = 492.0
 margin_right = 352.0
-margin_bottom = 652.0
+margin_bottom = 570.0
 
 [node name="vibration" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer"]
 margin_right = 185.0
@@ -215,7 +216,6 @@ toggle_mode = true
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/debug" to="." method="_on_Debug_toggled"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/languague" to="." method="_on_languague_pressed"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/shuffle" to="." method="_on_Shuffle_pressed"]
-[connection signal="pressed" from="ScrollContainer/VBoxContainer/github" to="." method="_on_Github_pressed"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/help" to="." method="_on_Help_pressed"]
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/change controller" to="." method="_on_Direction_controls_toggled"]
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/HBoxContainer/vibration" to="." method="_on_vibration_toggled"]

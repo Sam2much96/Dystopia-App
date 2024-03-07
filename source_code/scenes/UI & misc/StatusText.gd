@@ -31,6 +31,7 @@ var messages : Array = []
 
 var nodes : Array = [self]
 
+onready var anims : AnimationPlayer = $anims
 func _enter_tree():
 	# Make GLobal
 	GlobalInput._Status_text = self
@@ -102,7 +103,7 @@ func _inventory_updated(action : String, type: String, amount : int):
 
 func _queue_message(text):
 	messages.push_back(text)
-	if not $anims.is_playing():
+	if not anims.is_playing():
 		_play_next()
 
 
@@ -111,4 +112,4 @@ func _play_next():
 		return
 	else:
 		text = messages.pop_front()
-		$anims.queue("update")
+		anims.queue("update")

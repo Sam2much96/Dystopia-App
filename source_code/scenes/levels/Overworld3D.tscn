@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/levels/overworld model 3d.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/characters/3DPlayer.gd" type="Script" id=2]
-[ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=3]
 [ext_resource path="res://resources/3D/city_exterior.gltf" type="PackedScene" id=4]
 [ext_resource path="res://scenes/UI & misc/Exit3D.gd" type="Script" id=5]
 
@@ -46,8 +45,6 @@ to_scene = "res://scenes/levels/Building1.tscn"
 [node name="CollisionPolygon" type="CollisionPolygon" parent="WorldEnvironment/Area"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.08679, 0.818834, -0.0901022 )
 polygon = PoolVector2Array( 11.5037, 3.15512, 11.5656, 0.161346, 15.216, 0.153553, 15.0923, 3.33855 )
-
-[node name="GameHUD" parent="." instance=ExtResource( 3 )]
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 10.0

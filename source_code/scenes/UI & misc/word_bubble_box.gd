@@ -97,7 +97,7 @@ onready var _word_bubble_nodes : Array = [anims, word_bubble_label, word_bubble_
 
 var bubble_box = self
 
-func show_dialog(new_text : String, placeholdr : String) -> void:
+func show_dialog(new_text : String) -> void:
 	print('---showing dialog 1---') # For debug purposes only
 	word_bubble_label.text = new_text#new_text 
 	
@@ -182,13 +182,13 @@ func _ready():
 		# Default translation
 		if Dialogs.language == "":
 			
-			show_dialog(Dialogs.Parser.parse_script(line_index,dialogue), "")
+			show_dialog(Dialogs.Parser.parse_script(line_index,dialogue))
 		
 		# English Translation file
 		if Dialogs.language == "en_US":
-			show_dialog(Dialogs.Parser.parse_script(line_index,dialogue), "")
+			show_dialog(Dialogs.Parser.parse_script(line_index,dialogue))
 		if Dialogs.language == "te_IN":
-			show_dialog(Dialogs.Parser.parse_script(line_index,dialogue_tr), "")
+			show_dialog(Dialogs.Parser.parse_script(line_index,dialogue_tr))
 
 
 
@@ -232,15 +232,15 @@ func _ready():
 
 
 func hide_dialogue(): #my code
-	$anims.play("disappear")
+	anims.play("disappear")
 
 func _input(event):
 	if event.is_action_pressed("interact"): #change the action 
 		
 		# Similar to Rust Code?
-		match $anims.assigned_animation:
+		match anims.assigned_animation:
 			"show_text": 
-				$anims.play("wait")
+				anims.play("wait")
 			"wait":
 				lines_to_skip += 2
 				#if lines_to_skip < dialog_text.get_line_count(): 

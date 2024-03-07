@@ -30,8 +30,8 @@ class_name grass
 
 onready var nodeName : String = self.get_name() 
 
-onready var timer : Node = $Timer
-onready var anim : Node = $AnimationPlayer
+onready var timer : Timer = $Timer
+onready var anim : AnimationPlayer = $AnimationPlayer
 
 onready var item_spawner :itemSpawner = $itemSpawner
 

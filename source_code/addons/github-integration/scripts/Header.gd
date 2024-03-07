@@ -72,3 +72,7 @@ func hide_notifications():
 
 
 
+
+
+func _on_github_pressed():
+	_check_git()

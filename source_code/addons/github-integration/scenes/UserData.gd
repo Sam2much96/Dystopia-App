@@ -17,6 +17,13 @@ class_name User_Data
 	# -----------------------------------------------
 
 	# saves and loads user datas from custom folder in user://github_integration/user_data.ud
+	
+	# *************************************************
+	# godot3-Dystopia-game by INhumanity_arts
+	# Released under MIT License
+	# *************************************************
+	#
+	# Documeentation : https://docs.github.com/en/graphql
 
 export (String) var directory : String = ""
 export (String) var file_name : String = "user_data.ud"
@@ -30,7 +37,7 @@ var USER : Dictionary = {}
 
 var AVATAR : ImageTexture
 export (String) var AUTH : String
-export (String) var TOKEN : String
+var TOKEN : String # Private Data
 export (String) var MAIL : String
 
 var header : Array = [""]

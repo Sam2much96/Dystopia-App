@@ -30,11 +30,6 @@ _global_script_classes=[ {
 "path": "res://addons/algodot/Algod.gd"
 }, {
 "base": "Node",
-"class": "Appodeal",
-"language": "GDScript",
-"path": "res://ads/Appodeal/Appodeal.gd"
-}, {
-"base": "Node",
 "class": "AsyncExecutorDriver",
 "language": "NativeScript",
 "path": "res://addons/algodot/gdnative/async_executor.gdns"
@@ -519,7 +514,6 @@ _global_script_class_icons={
 "AdMob": "res://ads/admob-lib/icon.png",
 "Algod": "",
 "Algodot": "res://addons/algodot/icon.png",
-"Appodeal": "res://ads/Appodeal/appodeal_logo.png",
 "AsyncExecutorDriver": "",
 "BloodSplatter": "res://resources/FX/Blood splatter fx.webp",
 "Boulder_Big": "",
@@ -620,17 +614,13 @@ _global_script_class_icons={
 
 [application]
 
-config/description="Changing the World? Sigh. A very lofty dream. It is a feat few men ever really achieve.It's an idea that infectts men to hope, fight, kill and to die. It was for this dream we hoped, fought, killed, starved, bled and died for in a hellish war that lasted 5 years. After fighting for so long, you lose sight if what you're really fighting for; and when you lose someone you love, all those lofty dreams you so valiantly fought for suddenly lose meaning. After all, what is the point of changing the world, when you have no one left to share it with.
-
-A Stable build for the Dystopia App, preloaded with Chapters 1-3. Read the Comics, Watch the Anime, Play the Game, all in one app. It's a playable comic."
+config/name="Dystopia App stable"
 run/main_scene="res://scenes/UI & misc/form/form.tscn"
-run/flush_stdout_on_print.debug=false
 boot_splash/image="res://resources/title animation/Dystopia Logo Drop shadow.png"
 boot_splash/fullsize=false
 boot_splash/use_filter=false
 boot_splash/bg_color=Color( 1, 1, 1, 1 )
 config/icon="res://icon.png"
-config/windows_native_icon="res://windows icon.ico"
 
 [autoload]
 
@@ -639,29 +629,30 @@ Debug="*res://singletons/Debug.gd"
 Quest="*res://singletons/Quest.gd"
 Inventory="*res://singletons/Inventory.gd"
 Globals="*res://singletons/Globals.gd"
-Comics_v6="*res://scenes/UI & misc/Comics.tscn"
 Music="*res://singletons/Music.tscn"
 Networking="*res://singletons/Networking.tscn"
-GlobalAnimation="*res://singletons/GlobalAnimationPlayer.tscn"
-DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
-Wallet="*res://scenes/Wallet/Wallet.gd"
 Utils="*res://singletons/Utils.gd"
+Simulation="*res://singletons/Simulation.gd"
+GlobalInput="*res://singletons/Input.gd"
+GlobalAnimation="*res://singletons/GlobalAnimationPlayer.tscn"
+Comics_v6="*res://singletons/Comics.v6.gd"
+Wallet="*res://scenes/Wallet/Wallet.gd"
+DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
 AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
-FPSGraphOverlay="*res://addons/fps_graph_overlay/FPSGraphOverlay.tscn"
-SyncManager="*res://addons/godot-rollback-netcode/SyncManager.gd"
-GlobalInput="*res://singletons/Input.tscn"
-Simulation="*res://singletons/Simulation.tscn"
 
 [debug]
 
-gdscript/completion/autocomplete_setters_and_getters=true
+gdscript/warnings/unsafe_method_access=true
+gdscript/warnings/unsafe_cast=true
+gdscript/warnings/unsafe_call_argument=true
 
 [display]
 
+window/size/width=1280
+window/size/height=720
 window/dpi/allow_hidpi=true
-window/handheld/orientation="sensor"
 window/stretch/mode="2d"
-window/stretch/aspect="expand"
+window/stretch/aspect="keep_width"
 
 [editor_plugins]
 
@@ -670,12 +661,6 @@ enabled=PoolStringArray( "res://addons/algodot/plugin.cfg" )
 [gdnative]
 
 singletons=[ "res://addons/videodecoder/videodecoder.gdnlib" ]
-singletons_disabled=[  ]
-
-[global]
-
-keys=NodePath("")
-replicate_api=""
 
 [input]
 
@@ -706,36 +691,37 @@ move_right={
 attack={
 "deadzone": 0.5,
 "events": [ Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":0,"pressure":0.0,"pressed":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777238,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":49,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777237,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 roll={
 "deadzone": 0.5,
 "events": [ Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":1,"pressure":0.0,"pressed":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":50,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 interact={
 "deadzone": 0.5,
 "events": [ Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":2,"pressure":0.0,"pressed":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":51,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 pause={
 "deadzone": 0.5,
-"events": [ Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":11,"pressure":0.0,"pressed":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777237,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
- ]
+"events": [  ]
 }
 comics={
 "deadzone": 0.5,
-"events": [ Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":4,"pressure":0.0,"pressed":false,"script":null)
+"events": [ Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":8,"pressure":0.0,"pressed":false,"script":null)
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":67,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 menu={
 "deadzone": 0.5,
-"events": [ Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":8,"pressure":0.0,"pressed":false,"script":null)
+"events": [ Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":10,"pressure":0.0,"pressed":false,"script":null)
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777217,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
@@ -743,27 +729,6 @@ Debug={
 "deadzone": 0.5,
 "events": [ Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":9,"pressure":0.0,"pressed":false,"script":null)
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":48,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
-, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":5,"pressure":0.0,"pressed":false,"script":null)
- ]
-}
-sync_debug={
-"deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777254,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
- ]
-}
-dialogic_default_action={
-"deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777221,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
-, Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":true,"doubleclick":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":88,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
-, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":0,"pressure":0.0,"pressed":false,"script":null)
- ]
-}
-reset={
-"deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":45,"unicode":0,"echo":false,"script":null)
  ]
 }
 next_panel={
@@ -774,21 +739,17 @@ prev_panel={
 "deadzone": 0.5,
 "events": [  ]
 }
+reset={
+"deadzone": 0.5,
+"events": [  ]
+}
 
 [input_devices]
 
 pointing/emulate_touch_from_mouse=true
 
-[locale]
-
-locale_filter=[ 0, [ "ar", "en_US", "fr", "ha_NG", "hi_IN", "ig_NG", "pt_BR", "te_IN", "yo_NG", "zh_CN" ] ]
-translations=PoolStringArray( "res://Translation/Translation_1.en_US.translation", "res://Translation/Translation_1.pt_BR.translation", "res://Translation/Translation_1.fr.translation", "res://Translation/Translation_1.hi_IN.translation", "res://Translation/Translation_1.te_IN.translation", "res://Translation/Translation_1.ja.translation", "res://Translation/Translation_1.yo_NG.translation", "res://Translation/Translation_1.zh_CN.translation", "res://Translation/Translation_1.ar.translation" )
-
 [rendering]
 
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
-
-[tiled_importer]
-
-enable_json_format=false
+vram_compression/import_etc2=false

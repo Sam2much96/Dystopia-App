@@ -19,8 +19,8 @@ class_name minimap
 #tweak code for multiplayer
 onready var texture_object : StreamTexture = preload("res://scenes/multiplayer/images/minimap/object.png")
 onready var texture_player : StreamTexture = preload("res://scenes/multiplayer/images/minimap/player.png")
-onready var label_position = $label_position
-onready var node_root = get_node("/root/world")
+onready var label_position #= $label_position
+onready var node_root #= get_node("/root/world")
 var total_delta = 0
 
 #onready var Networking = GDScript.new() 

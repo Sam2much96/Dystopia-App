@@ -81,7 +81,6 @@ dependencies {
     }
 
 //CHUNK_DEPENDENCIES_BEGIN
-implementation 'androidx.multidex:multidex:2.0.1'
 //CHUNK_DEPENDENCIES_END
 }
 
@@ -123,7 +122,6 @@ android {
 
         missingDimensionStrategy 'products', 'template'
 //CHUNK_ANDROID_DEFAULTCONFIG_BEGIN
-multiDexEnabled true
 //CHUNK_ANDROID_DEFAULTCONFIG_END
     }
 

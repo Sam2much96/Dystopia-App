@@ -98,14 +98,14 @@ var anim = ""
 var new_anim = ""
 
 enum { STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE_DIE, STATE_HURT, STATE_MOB, STATE_PROJECTILE} # state machine needs expansion
-
+onready var anims = $anims
 
 var state = STATE_MOB #Fixed
 var center
 
 "Enemy FX"
 var despawn_particles
-var blood
+var blood : BloodSplatter
 
 func _enter_tree():
 	# Create A Global reference to self
@@ -130,7 +130,7 @@ func _ready():
 	#print_debug(enemy_type) 
 
 
-func _process(delta):
+func _process(_delta):
 	#debug() #turn off when not debugging
 	
 	# Debug MOb Calculation
@@ -203,7 +203,7 @@ func _process(delta):
 #	if frame_counter >= 1000:
 #		frame_counter = 0
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	
 	# Consider Moving All Physics calculation to the Globals Script
 	
@@ -260,7 +260,7 @@ func _physics_process(delta):
 			pass
 		STATE_ROLL:
 			linear_vel = move_and_slide(linear_vel)
-			var target_speed = Vector2()
+			#var target_speed = Vector2()
 			if facing == "up":
 				target_speed.y = -1
 			if facing == "down":
@@ -337,22 +337,22 @@ func _physics_process(delta):
 
 	if new_anim != anim:
 		anim = new_anim
-		$anims.play(anim)
+		anims.play(anim)
 	pass
 
 # Reset to Idle State
 func goto_idle():
 	state = STATE_IDLE
 
-func _randomize_self(enemy_type : String):
+func _randomize_self(enemy_type_ : String):
 	# Creates Randomized Enemy Behaviour
 	
 	state = Behaviour.randomize_state(state)
 	facing = Behaviour.randomize_facing(facing,["left", "right", "up", "down"])
 	
 	# Acts as redundancy code for preset and randomized enemy type
-	if enemy_type == "":
-		enemy_type = Behaviour.randomize_enemy_type(['Easy', "Intermediate", "Hard"])
+	if enemy_type_ == "":
+		enemy_type_ = Behaviour.randomize_enemy_type(['Easy', "Intermediate", "Hard"])
 
 
 func _get_player() -> Player :
@@ -374,7 +374,7 @@ func _on_hurtbox_area_entered(area):
 		var pushback_direction = (global_position - area.global_position).normalized()
 		move_and_slide( pushback_direction *   rand_range(2000,10000)) # Flies back at a random distance
 		state = STATE_HURT
-		var blood = Globals.blood_fx.instance()
+		blood = Globals.blood_fx.instance()
 		get_parent().add_child(blood) # Instances Blood FX
 		blood.global_position = global_position # Makes the fx position global?
 		
@@ -542,7 +542,7 @@ class Behaviour extends Reference:
 			#RIGHT :X= 1, Y= 0 [X > Y ]
 			#LEFT: X = -1, Y = 0 [Y>X]
 			#UP: X= 0, Y= -1   [X>Y]
-		return _facing
+		#return _facing
 		
 		# handles enemy facing a target location
 		if player == null:
@@ -560,7 +560,7 @@ class Behaviour extends Reference:
 			if X == 0 and Y == -1:
 				_facing = 'up'
 			
-			return _facing
+		return _facing
 
 
 	static func enemy_navigation(navi : NavigationAgent2D, target_pos : Vector2, curr_pos : Vector2, line : Line2D, pos_data : Array, type: int): 

@@ -6,9 +6,17 @@
 # [date] 09.13.2019
 
 # -----------------------------------------------
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# GitHUB Grapql API Ported to GDScript + Github UI made in Godot
+#
+# *************************************************
+#
 # 
 # To Do:
-# Should Load Dystopia-App Repository 
+# Should Load Dystopia-App Repository (Done)
 # 
 
 #tool
@@ -55,7 +63,7 @@ class IconLoaderGithub extends Reference:
 
 
 	static func load_icon_from_name(icon_name : String) -> ImageTexture:
-			var file = File.new()
+			var file = Utils.file #File.new()
 			var image = Image.new()
 			var texture = ImageTexture.new()
 			
@@ -68,15 +76,14 @@ class IconLoaderGithub extends Reference:
 			return texture
 
 
-# Disabling Temporarily for debug
 var connection_status : Array = [
 	IconLoaderGithub.load_icon_from_name("searchconnection"),
 	IconLoaderGithub.load_icon_from_name("noconnection"),
 	IconLoaderGithub.load_icon_from_name("connection")
 ]
 
-var plugin_version : String 
-var plugin_name : String
+export (String ) var plugin_version : String 
+export (String ) var plugin_name : String
 
 # Load the configuration file for this plugin to fetch some info
 func load_config() -> void:
@@ -144,8 +151,10 @@ func _ready():
 	
 	Menu.set_item_checked(0, PluginSettings_.debug)
 	Menu.set_item_checked(1, PluginSettings_.auto_log)
+	
 	# Check the plugin verison
-	VersionCheck.request("https://api.github.com/repos/fenix-hub/godot-engine.github-integration/tags",[],false,HTTPClient.METHOD_GET,"")
+	print_debug("Running Version Check")
+	VersionCheck.request("https://api.github.com/repos/Sam2much96/Dystopia-App/tags",[],false,HTTPClient.METHOD_GET,"")
 	
 	if PluginSettings_.auto_log:
 		SignIn.sign_in()
@@ -200,7 +209,7 @@ func menu_item_pressed(id : int) -> void:
 #		1:
 #			_on_autologin_toggled(!Menu.is_item_checked(id))
 		0:
-			OS.shell_open("https://github.com/fenix-hub/godot-engine.github-integration/wiki")
+			OS.shell_open("https://github.com/Sam2much96/Dystopia-App/wiki")
 		1:
 			logout()
 		2:
@@ -247,8 +256,8 @@ func _on_version_check(result, response_code, headers, body ) -> void:
 			var tags : Array = JSON.parse(body.get_string_from_utf8()).result
 			var first_tag : Dictionary = tags[0] as Dictionary
 			if first_tag.name != ("v"+plugin_version):
-				print_debug_message("a new plugin version has been found, current version is %s and new version is %s" % [("v"+plugin_version), first_tag.name],1)
-
+				print_debug_message("a new Dystopia App version has been found, current version is %s and new version is %s" % [("v"+plugin_version), first_tag.name],1)
+				#Dialogs.show_dialog(str("a new Dystopia App version has been found, current version is %s and new version is %s" % [("v"+plugin_version), first_tag.name],1), "Admin")
 
 
 

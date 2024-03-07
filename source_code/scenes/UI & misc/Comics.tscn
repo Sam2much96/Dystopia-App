@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://singletons/Comics.v6.gd" type="Script" id=1]
 [ext_resource path="res://resources/Buttons/bck.png" type="Texture" id=2]
 [ext_resource path="res://resources/Buttons/zoom.png" type="Texture" id=3]
-[ext_resource path="res://resources/misc/logo.png" type="Texture" id=4]
 
 [sub_resource type="GDScript" id=7]
 script/source = "extends Position2D
@@ -61,19 +60,6 @@ position = Vector2( 470.987, 412.943 )
 scale = Vector2( 1.11574, 1.12516 )
 normal = ExtResource( 3 )
 visibility_mode = 1
-
-[node name="Watermark" type="TextureRect" parent="."]
-visible = false
-self_modulate = Color( 0, 0, 0, 0.243137 )
-margin_left = 337.735
-margin_top = 61.8388
-margin_right = 772.735
-margin_bottom = 434.839
-rect_scale = Vector2( 1.41222, 1.41222 )
-texture = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Position2D" type="Position2D" parent="."]
 position = Vector2( -436.65, -249.813 )

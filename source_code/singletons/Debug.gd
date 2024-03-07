@@ -96,7 +96,7 @@ func _input(event):
 		return
 
 
-func _process(delta : float):
+func _process(_delta : float):
 
 	if enabled:
 		
@@ -166,7 +166,7 @@ func _process(delta : float):
 		debug_panel = debug_panels_cr8ted.pop_front()
 
 " Globally Accessible Framerate"
-func FPS_debug()-> float:
+func FPS_debug_()-> float:
 	return Engine.get_frames_per_second()
 
 func _ram_debug():

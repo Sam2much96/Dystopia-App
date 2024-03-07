@@ -178,8 +178,8 @@ func create_font_pack(Size : int, prefered_font_pack : String, OutlineSize : int
 	return Dialogs.custom_font
 
 #Dynamic function
-func set_font(nodes:  Array, size : int, prefered_font_pack : String, OutlineSize : int):
-	create_font_pack(
+func set_font(nodes:  Array, size : int, prefered_font_pack : String, OutlineSize : int) :
+	return create_font_pack(
 		size, 
 		prefered_font_pack,
 		OutlineSize
@@ -258,7 +258,7 @@ class Parser extends Reference :
 				if index == line_to_return:
 					return line_string
 					break
-			_f.close() 
+				_f.close() 
 			
 		return line_string
 

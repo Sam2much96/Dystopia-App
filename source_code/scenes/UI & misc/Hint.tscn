@@ -1,10 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://fonts/Comic Book.otf" type="DynamicFontData" id=2]
 [ext_resource path="res://resources/illustrations/Newspaper_art.webp" type="Texture" id=3]
-[ext_resource path="res://themes/Bold.tres" type="Theme" id=4]
 [ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=10]
-[ext_resource path="res://themes/Regular.tres" type="Theme" id=13]
 
 [sub_resource type="DynamicFont" id=2]
 size = 38
@@ -55,7 +53,6 @@ margin_left = 247.419
 margin_top = 461.566
 margin_right = 604.419
 margin_bottom = 504.566
-theme = ExtResource( 4 )
 text = "New  Music  &  Levels"
 
 [node name="Label3" type="Label" parent="."]
@@ -63,7 +60,6 @@ margin_left = 96.0473
 margin_top = 7.64708
 margin_right = 615.047
 margin_bottom = 70.6471
-theme = ExtResource( 4 )
 text = "NEW  UPDATES :Generic  Update"
 align = 1
 
@@ -72,7 +68,6 @@ margin_left = 120.772
 margin_top = 464.115
 margin_right = 206.772
 margin_bottom = 509.115
-theme = ExtResource( 13 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Feb 5, 2094"
 autowrap = true

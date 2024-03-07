@@ -1,12 +1,10 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://fonts/Comic Book.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/UI & misc/form/Form.gd" type="Script" id=2]
 [ext_resource path="res://resources/illustrations/coins silver.png" type="Texture" id=3]
 [ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=4]
 [ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=5]
-[ext_resource path="res://themes/Buttons_white+Black.tres" type="Theme" id=6]
-[ext_resource path="res://themes/option+button_Red.tres" type="Theme" id=7]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://fonts/Comic Book.otf"
@@ -116,32 +114,30 @@ custom_fonts/font = SubResource( 7 )
 text = "mnemonic"
 
 [node name="label_spacer3" type="Label" parent="ui/grid"]
-margin_right = 104.0
+margin_right = 96.0
 margin_bottom = 14.0
 
 [node name="label_spacer" type="Label" parent="ui/grid"]
-margin_left = 108.0
-margin_right = 108.0
+margin_left = 100.0
+margin_right = 100.0
 margin_bottom = 14.0
 
 [node name="play" type="Button" parent="ui/grid"]
 margin_top = 18.0
-margin_right = 104.0
-margin_bottom = 44.0
-theme = ExtResource( 6 )
+margin_right = 96.0
+margin_bottom = 38.0
 text = "Play!"
 
 [node name="label_spacer2" type="Label" parent="ui/grid"]
-margin_left = 108.0
-margin_top = 24.0
-margin_right = 108.0
-margin_bottom = 38.0
+margin_left = 100.0
+margin_top = 21.0
+margin_right = 100.0
+margin_bottom = 35.0
 
 [node name="language" type="OptionButton" parent="ui/grid"]
-margin_top = 48.0
-margin_right = 104.0
-margin_bottom = 71.0
-theme = ExtResource( 7 )
+margin_top = 42.0
+margin_right = 96.0
+margin_bottom = 62.0
 text = "Languague"
 
 [node name="instructions" type="Label" parent="ui"]
@@ -161,7 +157,7 @@ __meta__ = {
 [node name="Dialog_box" parent="." instance=ExtResource( 5 )]
 visible = false
 margin_top = 988.529
-margin_right = 18452.0
+margin_right = 22804.0
 margin_bottom = 1162.53
 
 [node name="Timer" type="Timer" parent="."]

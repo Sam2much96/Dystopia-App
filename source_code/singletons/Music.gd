@@ -176,7 +176,7 @@ onready var C : AudioStreamPlayer = $C
 onready var D : AudioStreamPlayer = $D 
 
 onready var requests : HTTPRequest = $HTTPRequest
-onready var timer : Timer = $Timer
+onready var timer : Timer #= $Timer
 
 
 var _music
@@ -193,15 +193,11 @@ onready var my_nodes : Array = [Music_streamer,B,C,Music_streamer_2,transitions,
 
 
 # THis URL fetches a Zip file from an AWS s3 buzket
-var musicAWS3_URL : Dictionary = {"zip":"https://llama2-7b.s3.eu-north-1.amazonaws.com/music.zip"
-} 
+#var musicAWS3_URL : Dictionary = {"zip":"https://llama2-7b.s3.eu-north-1.amazonaws.com/music.zip"
+#} 
 
-var FileCheck4=File.new() # checks Music Files
-var FileCheck3=File.new() # checks Music Files
-var FileCheck2=File.new() # checks Music Files
-var FileCheck1=File.new() # checks Music Files
-var FileCheck=File.new() # checks Music Files
-var FileDirectory=Directory.new() #checks Music Irectory
+onready var FileCheck= Utils.file  # checks Music Files
+onready var FileDirectory=Utils.dir #checks Music Irectory
 
 var Music_Available_Locally : bool = true
 var Music_Zip_Available_Locally : bool = false

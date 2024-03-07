@@ -33,14 +33,14 @@ var pilot_ep
 var VIDEO
 
 var cinematics : VideoStreamTheora #= preload ('res://resources/title animation/title..ogv') #I free memory once this is used # Depreciated
-var title_screen = load( 'res://scenes/Title screen.tscn')
-onready var form = load ('res://scenes/UI & misc/form/form.tscn')
+var title_screen : PackedScene = load( 'res://scenes/Title screen.tscn')
+var form = load ('res://scenes/UI & misc/form/form.tscn')
 var controls = load ('res://scenes/UI & misc/Controls.tscn')
 var loading = load('res://addons/github-integration/scenes/loading.tscn')
 
 "Comics  Book Module variables"
-onready var comics = load ('res://scenes/UI & misc/Comics.tscn')
-onready var comics___2 = load ('res://scenes/UI & misc/Comics____2.tscn')
+var comics = load ('res://scenes/UI & misc/Comics.tscn')
+var comics___2 = load ('res://scenes/UI & misc/Comics____2.tscn')
 var comics_chapter 
 var comics_page 
 
@@ -59,7 +59,7 @@ var players : Array = [] # All Players
 var player : Player # My Player
 
 # Player cam
-var player_cam : FightCam
+var player_cam 
 
 #var _p # Player placeholder
 var player_hitpoints : int
@@ -132,7 +132,7 @@ var despawn_fx: PackedScene = load ("res://scenes/UI & misc/DespawnFX.tscn")
 var bullet_fx : PackedScene
 
 "Node Pointer"
-var _smoke_fx_ : smoke_fx 
+var _smoke_fx_ 
 
 'Temporary variants'
 var temp

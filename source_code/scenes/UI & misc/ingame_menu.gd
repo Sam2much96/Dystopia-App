@@ -54,7 +54,7 @@ onready var _multiplayer = $MarginContainer/ScrollContainer/HSeparator/multiplay
 
 onready var anime : Button = $MarginContainer/ScrollContainer/HSeparator/anime
 onready var practice : Button = $MarginContainer/ScrollContainer/HSeparator/practice
-#onready var City_scape : Button = $MarginContainer/ScrollContainer/HSeparator/City_scape # Depreciated
+onready var github : Button = $MarginContainer/ScrollContainer/HSeparator/github # Depreciated
 onready var wallet_ : Button = $MarginContainer/ScrollContainer/HSeparator/wallet
 onready var controls : Button = $MarginContainer/ScrollContainer/HSeparator/controls
 onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit"
@@ -63,7 +63,7 @@ onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit"
 # Auto Scroll with Swipe Gestures
 onready var scroller : ScrollContainer= get_node("MarginContainer/ScrollContainer")
 
-onready var MenuButtons : Array = [comics,new_game, continue_game, _multiplayer, anime,practice, wallet_,controls, quit]
+onready var MenuButtons : Array = [comics,new_game, continue_game, _multiplayer, anime,practice, wallet_,github,controls, quit]
 
 var counter : int = 0 # Stopis ooverflow of Upscaling Method
 
@@ -386,3 +386,7 @@ func manually_translate()-> void:
 			i.set_text(Dialogs.translate_to(i.name, Dialogs.language))
 		
 		#comics.set_text(Dialogs.translate_to("comics", Dialogs.language))
+
+
+func _on_github_pressed():
+	get_tree().change_scene("res://addons/github-integration/scenes/GitHub.tscn")

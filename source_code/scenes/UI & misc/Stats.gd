@@ -48,7 +48,7 @@ onready var tab_container : TabContainer = $TabContainer
 onready var _inventory_parent : VBoxContainer = $"TabContainer/3/ScrollContainer3/VBoxContainer" 
 
 # Inventory Parent Node
-onready var _inventory_parent_label : Label = $"TabContainer/3/ScrollContainer3/VBoxContainer/Title2"
+onready var _inventory_parent_label : Label = $"TabContainer/3/ScrollContainer3/VBoxContainer/Title3"
 
 # Inventroy Parent Button
 onready var _inventory_button : Button = $"TabContainer/3/ScrollContainer3/VBoxContainer/Inventory"

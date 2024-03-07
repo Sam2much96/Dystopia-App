@@ -226,8 +226,8 @@ func _on_languague_pressed():
 	get_tree().change_scene("res://scenes/UI & misc/form/form.tscn")
 
 
-func _on_Github_pressed():
-	get_tree().change_scene("res://addons/github-integration/scenes/GitHub.tscn")
+#func _on_Github_pressed():
+#	get_tree().change_scene("res://addons/github-integration/scenes/GitHub.tscn")
 
 
 func _on_vibration_toggled(button_pressed):

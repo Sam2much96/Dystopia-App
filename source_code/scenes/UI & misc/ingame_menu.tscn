@@ -26,24 +26,25 @@ theme = ExtResource( 4 )
 scroll_horizontal_enabled = false
 
 [node name="HSeparator" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
-margin_right = 77.0
-margin_bottom = 116.0
+margin_right = 249.0
+margin_bottom = 619.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="comics" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-margin_right = 77.0
-margin_bottom = 20.0
+margin_right = 249.0
+margin_bottom = 85.0
 focus_next = NodePath("../new game")
 focus_previous = NodePath("../quit")
+theme = ExtResource( 4 )
 text = "comics"
 flat = true
 
 [node name="new game" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-margin_top = 24.0
-margin_right = 77.0
-margin_bottom = 44.0
+margin_top = 89.0
+margin_right = 249.0
+margin_bottom = 174.0
 focus_next = NodePath("../continue")
 focus_previous = NodePath("../comics")
 mouse_filter = 1
@@ -51,45 +52,43 @@ text = "new game"
 flat = true
 
 [node name="continue" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-visible = false
-margin_top = 140.0
-margin_right = 268.0
-margin_bottom = 206.0
+margin_top = 178.0
+margin_right = 249.0
+margin_bottom = 263.0
 focus_next = NodePath("../multiplayer")
 focus_previous = NodePath("../new game")
 text = "continue"
 flat = true
 
 [node name="multiplayer" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-visible = false
-margin_top = 140.0
-margin_right = 268.0
-margin_bottom = 206.0
+margin_top = 267.0
+margin_right = 249.0
+margin_bottom = 352.0
 focus_previous = NodePath("../continue")
 shortcut_in_tooltip = false
 text = "Multiplayer"
 flat = true
 
 [node name="practice" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-margin_top = 48.0
-margin_right = 77.0
-margin_bottom = 68.0
+margin_top = 356.0
+margin_right = 249.0
+margin_bottom = 441.0
 text = "practice"
 flat = true
 
 [node name="controls" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-margin_top = 72.0
-margin_right = 77.0
-margin_bottom = 92.0
+margin_top = 445.0
+margin_right = 249.0
+margin_bottom = 530.0
 focus_next = NodePath("../quit")
 shortcut_in_tooltip = false
 text = "Controls"
 flat = true
 
 [node name="quit" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-margin_top = 96.0
-margin_right = 77.0
-margin_bottom = 116.0
+margin_top = 534.0
+margin_right = 249.0
+margin_bottom = 619.0
 focus_neighbour_top = NodePath("../controls")
 focus_next = NodePath("../comics")
 focus_previous = NodePath("../controls")

@@ -41,7 +41,7 @@ class_name Enemy
 
 
 # Organize Vabiables Please? (Done)
-export (int) var attack_wait_time #attack pause time
+#export (int) var attack_wait_time #attack pause time
 export (String, 'Easy', "Intermediate", "Hard") var enemy_type #changes enemy behaviour depending on the enemy tpype # 
 
 
@@ -60,11 +60,11 @@ var selected_frame_rate : int
 
 "Enemy Movement & Path Finding"
 
-var velocity = Vector2.ZERO #the movement vector
-var target_speed = Vector2() # used for walking State calculation
-var m=0;  #distance variable
+export (Vector2) var velocity = Vector2.ZERO #the movement vector
+export (Vector2) var target_speed = Vector2() # used for walking State calculation
+#var m=0;  #distance variable
 
-var run_speed : int = 100   #mob runspeeed
+export (int) var run_speed : int = 100   #mob runspeeed
 
 var enemy_distance_to_player : float # used to calculate how closely the enemy should follow the layer
 
@@ -75,7 +75,7 @@ onready var navi : NavigationAgent2D = $NavigationAgent2D
 onready var path : Line2D = $Line2D
 #onready var frame_counter : int = 0
 
-onready var pos_data : Array = []
+export (Array) var pos_data : Array = []
 
 
 export(int) var WALK_SPEED = 350
@@ -87,21 +87,21 @@ export(int) var hitpoints = 3 #enemy life
 #var Bullet = Globals.bullet_fx#load ("res://scenes/items/Bullet.tscn") #null resource
 
 
-var linear_vel = Vector2.ZERO
-var enemy_direction = Vector2(0,0)
-var random_walk_direction : Vector2 = Vector2(100,100)
+export (Vector2) var linear_vel = Vector2.ZERO
+export (Vector2) var enemy_direction = Vector2(0,0)
+export (Vector2) var random_walk_direction : Vector2 = Vector2(100,100)
 
 
 export(String, "up", "down", "left", "right") var facing = "down"
 
-var anim = ""
-var new_anim = ""
+export (String) var anim = ""
+export (String) var new_anim = ""
 
 enum { STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE_DIE, STATE_HURT, STATE_MOB, STATE_PROJECTILE} # state machine needs expansion
-onready var anims = $anims
+onready var anims : AnimationPlayer = $anims
 
-var state = STATE_MOB #Fixed
-var center
+export (int) var state = STATE_MOB #Fixed
+export (Vector2) var center
 
 "Enemy FX"
 var despawn_particles
@@ -118,6 +118,11 @@ func _ready():
 	
 	raycast.set_enabled(false) 
 	
+		# If the Frame Rate is Low, Optimizze Processor
+	# Bug: THis creates a scenerio where a players that hack the games enemies by overloading the processors
+	# Bug: Bugt It also allows for a smoothe framerate
+	if Debug.FPS_debug < 15:
+		selected_frame_rate = IDIOT_FRAME_RATE
 	
 	
 	
@@ -156,12 +161,7 @@ func _process(_delta):
 	if enemy_type == "Hard":
 		selected_frame_rate = FAST_FRAME_RATE
 	
-	# If the Frame Rate is Low, Optimizze Processor
-	# Bug: THis creates a scenerio where a players that hack the games enemies by overloading the processors
-	# Bug: Bugt It also allows for a smoothe framerate
-	if Debug.FPS_debug() < 15:
-		selected_frame_rate = IDIOT_FRAME_RATE
-	
+
 	"""
 	ENEMY PROCESS LOGIC
 	"""
@@ -186,22 +186,10 @@ func _process(_delta):
 		#state = Behaviour.behaviour_logic(hitpoints, raycast, player, player.position, self.position , self, enemy_type, state, enemy_distance_to_player)
 		state = STATE_WALKING
 
-	
-	# Checks the Conditional Every 30th Frame
-	# Called every selected framerate. 30th Frame for slower processing
-	# LOGIC: frame counter is a modulous of the selected frame rate
-	# Depreciated to free up the Main Thread Process from repeated checks
-	#if Simulation.get_frame_counter() > 0 &&  Simulation.get_frame_counter() % selected_frame_rate == 0:
-	#	pass
 
 	if hitpoints <= 0: # Dies if hitpoint is zero
 		state = STATE_DIE
-		#despawn()
 
-
-	# Reset Frame Counter TO Conserver Memory
-#	if frame_counter >= 1000:
-#		frame_counter = 0
 
 func _physics_process(_delta):
 	

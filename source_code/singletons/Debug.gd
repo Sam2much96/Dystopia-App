@@ -50,7 +50,7 @@ var Autosave_debug =''
 var Music_debug 
 var Player_debug 
 var Ram_debug 
-var FPS_debug 
+export (float) var FPS_debug : float 
 var Enemy_debug 
 var debug_panel  
 var Comics_debug = ''
@@ -96,7 +96,7 @@ func _input(event):
 		return
 
 
-func _process(_delta : float):
+func _process(_delta):
 
 	if enabled:
 		
@@ -107,7 +107,9 @@ func _process(_delta : float):
 			#Reset Counter
 			frame_counter = 0
 
-		if frame_counter % 2 == 0:
+		if frame_counter % 5 == 0:
+			FPS_debug = fps_debug_() #fps_debug_() # update fps counter for other scenes
+			
 
 			" DEBUG STATE MACHINE " #Disabling to Debug
 			match _state_:
@@ -118,7 +120,7 @@ func _process(_delta : float):
 				
 					#it uses the ram_mb funtion to convert bytes to mb
 					Ram_debug= ('Ram Used :'+ ((_ram_debug())) + 'mb') 
-					FPS_debug = 'FPS: '+ str(Engine.get_frames_per_second())
+					#'FPS: '+ str(Engine.get_frames_per_second())
 					Enemy_debug = 'Enemy debug:' + str('Killcount:' , Globals.kill_count)
 					Autosave_debug = Autosave_debug
 
@@ -139,7 +141,7 @@ func _process(_delta : float):
 						Music_debug = null
 						Player_debug = null
 						Ram_debug= null
-						FPS_debug= null
+						FPS_debug #= null
 						Enemy_debug= null
 						Network_debug = null
 						misc_debug = null
@@ -166,10 +168,10 @@ func _process(_delta : float):
 		debug_panel = debug_panels_cr8ted.pop_front()
 
 " Globally Accessible Framerate"
-func FPS_debug_()-> float:
+func fps_debug_()-> float:
 	return Engine.get_frames_per_second()
 
-func _ram_debug():
+func _ram_debug() -> String:
 	#This code gets the current ram being used as bytes 
 	#and converts it to MB and rounds up the final figure
 	var ram_mb = String(round(float(OS.get_static_memory_usage()) / 1_048_576))

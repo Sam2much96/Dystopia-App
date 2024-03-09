@@ -46,8 +46,8 @@ export(String, "up", "down", "left", "right") var _facing = "down" # used as a p
 
 
 # For Animation Player State Machine
-var anim : String = ""
-var new_anim : String= ""
+export(String) var anim : String = ""
+export(String) var new_anim : String= ""
 
 enum { 
 	STATE_BLOCKED, STATE_IDLE, STATE_WALKING, 
@@ -57,26 +57,19 @@ enum {
 
 enum { UP, DOWN, LEFT, RIGHT}
 
-export var state = STATE_IDLE
-export var facing = DOWN
+export (int) var state = STATE_IDLE
+export (int) var facing = DOWN
 
 #********Miscellaneous***********#
-onready var player_camera = $camera #the player's camera
-#onready var impact_fx = $Impact
-onready var timer = $ScentTimer
-onready var animation = $anims
-var timeout: bool = false
-#var frame_counter : int = 0
+onready var player_camera : Camera2D = $camera #the player's camera
+onready var animation : AnimationPlayer = $anims
 
 
 # Helper Booleans
-var server_player : bool = false
+export (bool) var server_player : bool = false
 
 func _enter_tree():
 	Globals.update_curr_scene()
-	#if Globals.player_hitpoints != null:
-	#	hitpoints = Globals.player_hitpoints #Updates player health across scenes
-
 	Globals.players.append(self)  #saves player to the Global player variable
 	
 	'Makes Player Hitpoint a Global Variable'
@@ -139,12 +132,7 @@ func despawn():  #this code breaks
 	
 	
 	self.hide()
-	
-	'Uses Animation Player to Respawn'
-	# waits for 0.5 seconds to respawn
-	#start_timer(0.5)
-	
-	#respawn()
+
 
 func respawn():
 	'Updated Respawn Code'
@@ -186,8 +174,8 @@ func hurt(from_position : Vector2):
 			Music.play_track(Music.nokia_soundpack[27])
 
 
-func start_timer(time: float):
-	timer.start(time)
+#func start_timer(time: float):
+#	timer.start(time)
 
 
 

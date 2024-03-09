@@ -120,12 +120,6 @@ func _on_Debug_toggled(button_pressed):
 		if button_pressed:
 		
 			GlobalInput.parse_input("Debug", true)
-			#var a = InputEventAction.new()
-			#a.action = "Debug"
-			#a.pressed = true
-			#Input.parse_input_event(a)
-
-			#debug__.stop_debug()
 			$TextureRect2.show() #Shows Debug hint when in debug mode
 			$TextureRect.hide()
 
@@ -144,26 +138,10 @@ func _on_Shuffle_pressed():
 	print ('shuffle pressed')
 
 
-
-
-
-
-
-
-func _on_Networking_toggled(button_pressed):
-	#if Networking.ads != null:
-	#	if button_pressed:
-	#		Networking.ads.hide_ads()
-	#	else:
-	#		Networking.ads.show_ads()
-	print ('Place Holder Button, it does Nothing yet')
-
 func _on_music_toggled(button_pressed): #Music on and off settings
 	if button_pressed :
-		#Music.sound('off')
 		Music._notification(NOTIFICATION_APP_PAUSED)
 	if not button_pressed  :
-		#Music.sound("on")
 		Music._notification(NOTIFICATION_APP_RESUMED)
 
 
@@ -223,7 +201,7 @@ func _exit_tree():
 "Triggers Translation subsystem by changing scene to Form"
 func _on_languague_pressed():
 	Dialogs.reset()
-	get_tree().change_scene("res://scenes/UI & misc/form/form.tscn")
+	Utils.Functions.change_scene_to(load("res://scenes/UI & misc/form/form.tscn"), get_tree())
 
 
 #func _on_Github_pressed():

@@ -110,7 +110,7 @@ func _input(event):
 	
 	# Enable / DIsable Logic is Buggy
 	if event.is_action_pressed("pause")  && enabled == false:
-		print("enable")
+		print_debug("enable")
 		enabled = true
 		_enable()
 	#	#_state = ENABLED
@@ -120,14 +120,11 @@ func _input(event):
 		enabled = false
 		_disable()
 	#	#_state = DISABLED
-		print("disable")
+		print_debug("disable")
 		Music.play_track(Music.ui_sfx[1])
 		return enabled #_state
-#
 
-# Depreciated State Machine
-#func _process(delta):
-#	pass
+
 
 
 

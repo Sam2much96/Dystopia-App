@@ -57,21 +57,21 @@
 
 extends Control
 
-class_name ComicsSingleton
+class_name Comics
 
-signal comics_showing
-signal loaded_comics 
-signal comics_hidden
-signal panel_change
-signal swiped(direction)
-signal swiped_canceled(start_position)
+#signal comics_showing
+#signal loaded_comics 
+#signal comics_hidden
+#signal panel_change
+#signal swiped(direction)
+#signal swiped_canceled(start_position)
 #export(float,1.0,1.5) var MAX_DIAGONAL_SLOPE =1.3  
 
 
 export (bool) var enabled : bool 
 export (bool) var LastPage : bool = false 
 # Web 3 Activator for Downloading Content
-export (bool) var web3 : bool 
+#export (bool) var web3 : bool 
 export (bool) var _loaded_comics : bool = false
 export (bool) var SwipeLocked  
 export (int) var  current_frame : int   = 0 # Global Frame Variable
@@ -81,31 +81,14 @@ export (int) var  current_frame : int   = 0 # Global Frame Variable
 
 
 
-var current_comics : PackedScene
-
-"Prealoaded Comics"
-# host on ipfs and use local user directory to store comic files
-# run file checks to verify image downloadds and load
-#programmatically
-# Size optimization
+export (PackedScene) var current_comics : PackedScene
 
 
 #************File Checkers*************#
-#var FileCheck1=File.new() #checks local comics storage
-
-#var FileDirectory=Directory.new() #deletes all theon reset
-
-
 
 #************Wallet Save Path**********************#
-#var comic_write_path : String = "user://Comic"  
-var comic_dir : String = "user://Comics"
-#var chapter : String = "chapter "
 
-
-var CHECK_COMICS_LOCAL_STORAGE : bool = false
-
-var comics : Dictionary = {
+export (Dictionary) var comics : Dictionary = {
 	1: 'res://scenes/Comics/chapter 1/chapter 1.tscn',
 	2:'res://scenes/Comics/chapter 2/chapter 2.tscn',
 	3:'res://scenes/Comics/chapter 3/chapter 3.tscn',
@@ -131,20 +114,20 @@ var can_drag : bool = false
 var zoom : bool = false
 var comics_placeholder : Control = Control.new()
 
-var buttons
+#var buttons
 
 onready var Kinematic_2d :  KinematicBody2D = KinematicBody2D.new()
 #onready var camera2d = $Kinematic_2D/placeholder/Camera2D 
-var _position : Vector2 
+#var _position : Vector2 
 var center : Vector2 # should be used in a center comics method
 var target =Vector2(0,0) 
-onready var origin : Vector2 = get_viewport_rect().size/2#set origin point to the center of the viewport
+#onready var origin : Vector2 = get_viewport_rect().size/2#set origin point to the center of the viewport
 
 # Can Use a Tween Node to implement Drag and Drop
 var comics_sprite : AnimatedSprite
 
 
-var _input_device
+#var _input_device
 
 var _comics_root = self
 
@@ -152,21 +135,22 @@ var _comics_root = self
 
 "Bug FIx from <200 absolute Distances"
 
-var target_memory_x: Array = [] #stores vector 2 of previous targets
-var target_memory_y: Array = [] #stores vector 2 of previous targets
+export (Array) var target_memory_x: Array = [] #stores vector 2 of previous targets
+export (Array) var target_memory_y: Array = [] #stores vector 2 of previous targets
+
 
 
 
 
 #**********Swipe Detection Direction Calculation Parameters************#
-var swipe_target_memory_x : Array = [] # for swipe direction x calculation
-var swipe_target_memory_y : Array = [] # for swipe direction y calculation
+export (Array) var swipe_target_memory_x : Array = [] # for swipe direction x calculation
+export (Array) var swipe_target_memory_y : Array = [] # for swipe direction y calculation
 var direction : Vector2
-var swipe_parameters : float = 0.1 # is 1 in Dystopia-App
-var x1 : float = 0
-var x2 : float = 0
-var y1 : float = 0
-var y2 : float = 0
+export (float) var swipe_parameters : float = 1.0 # is 1 in Dystopia-App
+export (float) var x1 : float = 0.0
+export (float) var x2 : float = 0.0
+export (float) var y1 : float = 0.0
+export (float) var y2 : float = 0.0
 #export(float,0.5,1.5) var MAX_DIAGONAL_SLOPE  = 1.3
 var SwipeSpeed : Vector2
 var SwipeCounter : int = 0 # for limiting swipe detection.registration
@@ -213,11 +197,7 @@ func _ready():
 	if not _e.is_connected("timeout",self, "_on_Timer_timeout"):
 		push_error("Swipe Timer Signals Are Disconnected")
 		
-	# Create HTTP Request Nodes
-	# Only create & use these nodes it Dowloading content
-	
-#	if web3: 
-#		Online._init()
+
 
 
 

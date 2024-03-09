@@ -183,7 +183,7 @@ class Functions extends Reference:
 		progress: float
 		) -> PackedScene:
 		
-		
+		print_debug("Loading Large Scene")
 		if _to_load != "" && scene_resource == null:
 			var time_max = 50000 #sets an estimate maximum time to load scene
 			var t = OS.get_ticks_msec()
@@ -254,9 +254,9 @@ class Functions extends Reference:
 		direction_control : String
 		)-> bool: 
 		
-		print ("-------Saving Game -------")
+		print_debug ("-------Saving Game -------")
 		var save_dict : Dictionary = {}
-		var save_game = File.new()
+		var save_game = Utils.file 
 		save_game.open("user://savegeme.save", File.WRITE_READ)
 		if !player.empty():
 			save_dict.player = player #saves the player node 
@@ -405,9 +405,8 @@ class Functions extends Reference:
 	# Version 2 of Load_game function
 	# Should allow for loading individual variables from Local
 	static func load_user_data( data: String ):
-		print ("-------Fast Loading User Data -------")
-		var save_game = File.new()
 		
+		var save_game = Utils.file 
 		if not save_game.file_exists("user://savegeme.save"):
 			return false
 		save_game.open("user://savegeme.save", File.READ)
@@ -416,12 +415,14 @@ class Functions extends Reference:
 			return false
 
 		if save_dict.has(data):
+			print_debug ("Loading user data: ", data)
 			if data == 'languague':
 				Dialogs.language = save_dict.languague
 		#	if data == "Music_on_settings":
 		#		Music.Music_on_settings = save_dict.Music_on_settings
 		#		Music._ready()
-		pass
+		#pass
+		#ljpoj]-ju
 
 
 

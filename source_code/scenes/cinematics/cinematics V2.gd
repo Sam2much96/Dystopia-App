@@ -29,42 +29,15 @@ extends Control
 
 class_name cinematic
 
-#hvjhvjhv
-
-export (bool) var cinematic_on = true
 export(String, FILE, "*.ogv") var vid_stream = ""
 
-# Cread Object
-var yt_dlp = null # Depreciated Code #YtDlp.new()
-onready var dialgue_box = $Dialog_box
 onready var animation : AnimationPlayer = $"animation player"
 onready var position2d : Position2D = $Position2D
-onready var os 
-onready var node = get_node("Node2D") #popup node for centering cinematics
-
-"Cinematics DIctionary"
-# Modify Dictionary to Account for .ogv files
-# While .webm works well on PC, .ogv works best on Mobiles
-# Implement Global.os to togle btw .ogv and .webm
-const cinematic : Dictionary = {
-	0:'res://resources/title animation/title..ogv',
-	"Test": "user://Test.webm", #convert video to ogv
-	"Ep1": "user://Ep1.webm",
-	"FightScene": "user://Fightscene.webm",
-	"Animatic" : "user://Animatic.webm"
-	}
+onready var node : Control = get_node("Node2D") #popup node for centering cinematics
 
 
-"Youtube Urls as a Dictionary Parameters"
-# Depreciated
-const youtube : Dictionary = {
-	"Test":'', # Testing
-	"Ep1":'', # Ep 1
-	"FightScene": '', # Behind the Scenes
-	"Animatic": '' # Animatic
-	}
 
-var videoplayer : VideoPlayer
+onready var videoplayer : VideoPlayer = $VideoPlayer
 
 
 const Mobile_Platforms : Array = ["Android", "iOS"]
@@ -129,16 +102,6 @@ func _ready(): #create a video player function
 			# Update the button links then
 			i.set_text(Dialogs.translate_to(i.name, Dialogs.language))
 
-		
-		# File Doesn't Exist but user has good internet
-		if not Utils.check_files(Globals.user_data_dir, cinematic["Test"]) && Globals.os != "Android": 
-			pass
-		
-		
-		# Checks if Video File is locally available
-		# File Exists
-		if Utils.check_files(Globals.user_data_dir, "user://Test.webm") :
-			pass
 	
 	if vid_stream == null:
 		push_error('vid_stream is null')
@@ -146,10 +109,6 @@ func _ready(): #create a video player function
 	
 	
 	pass
-
-func _input(_event):
-	if is_instance_valid(dialgue_box): # Hides Dialgue
-		dialgue_box.hide_dialogue()
 
 func _on_skip_pressed():
 	videoplayer.stop()
@@ -164,27 +123,18 @@ func _on_skip_pressed():
 
 static func Video_Stream(stream : VideoStreamTheora , os: String, video_parent : Control, videoplayer : VideoPlayer): #This code works
 	#Use Position 2d node for Viewport Calibrations
-	
 	if os == "Android":
 		videoplayer.expand = false
 		
 		#True Center of Screen
-		# b uggy 
-		#video_parent.set_position(Vector2(-(Globals.center_of_viewport.x),300))
 		video_parent.set_position(Vector2(0,0))
 		
-		#videoplayer.set_position($Position2D.position) #Video Player Position: (-1334.26001, 412.127014)
-
-		
-		print("Video Player Position: ",videoplayer.get_position()) # For Debug Purposes only
+		print_debug("Video Player Position: ",videoplayer.get_position()) # For Debug Purposes only
 
 	if os == "X11" or "Windows":
 		
-		#print (Globals.center_of_viewport) # for debug purposes only
 		#True Center of Screen
 		videoplayer.set_position(Vector2((Globals.center_of_viewport.x/20),100)) # Globals.ceter_of_viewport calculation is off
-		#videoplayer.set_position($Position2D.position) 
-
 	
 	
 	if stream != null: 
@@ -192,21 +142,10 @@ static func Video_Stream(stream : VideoStreamTheora , os: String, video_parent :
 		videoplayer.set_stream(stream) 
 		videoplayer.play() 
 		
-		#cinematic_on= true
-		
-
-
-# warning-ignore:unused_argument
-func _on_Intro_animation_animation_finished(anim_name): #unused animation code
-	#get_tree().change_scene(Globals.title_screen)
-	#Music.clear()
-	pass
 
 
 
-
-
-"Exkibits diffenent behaviours depending on a  'One shot ' option"
+"Exhibits diffenent behaviours depending on a  'One shot ' option"
 func _on_VideoPlayer_finished():
 	_go_to_title()
 
@@ -220,7 +159,6 @@ func _on_Timer_timeout():
 
 
 func _go_to_title():
-	cinematic_on= false
 	
 	if Globals.curr_scene == 'Cinematics': #I use this bool to define two states
 		
@@ -238,64 +176,8 @@ func play_opening_cinematic():
 	#loads resource into memory 
 	animation.play("opening_cinematic")
 	# Playes a video stream to the video player in the scenetree
-	#Video_Stream(Globals.cinematics, Globals.os, self, videoplayer)
 	
 	return Music.play_track(Music.wind_sfx[0])
-
-
-
-"""
-CREATES AN VideoStreamTheora  .OGV  VIDEO FILE FROM A POOLBYE ARRAY
-"""
-
-# It needs a video file size and it will run as a loop as long as both aren't equal
-func store_video_files(_body, size) -> VideoStreamTheora: # FUnvtion breaks here
-	var video_file = File.new()
-	var error_checker = File.new()
-	
-	if _body != null:
-		# Add more error File error checkers
-		
-		#Writes a video file to the godot user's directory from a pool byte array
-		video_file.open('user://video.ogv',File.WRITE)
-		
-		# Checks the Video file
-		var err = (error_checker.open('user://video.ogv', File.READ))
-		#Debug.misc_debug = str('VIdeo buffer: ' ,_body) # Debugs the video file
-		 #store pool byte array as video buffer
-		var video_file_path = video_file.get_path_absolute() #gets the file path
-		print ('Video File path: ', video_file_path)
-		var VIDEO = load(video_file_path)
-		
-		#return print ('Video FIle Path',video_file_path)
-		#Comvert size to MB usingConvertfunctiion
-		
-		 # Gets VIdeo file length in bytes, converts it to MB
-		var __video_file_size_mb = Globals._ram_convert(video_file.get_len())
-
-		print ('Video file size: ',__video_file_size_mb, '/',' Est file size: ', size)# For debug purposes only
-		#Stores PoolbyteArray into video file while the video file size is not the user's inputed video size
-		if not error_checker.eof_reached() : # Original code uses a while loop. CHanging it because code breaks
-			if _body != null:
-				print ('Storing video buffer')
-				video_file.store_buffer(_body.get_buffer())
-		# Error checkers
-			if __video_file_size_mb != size :
-				print ('Video File size is not equal or greater than the inputed video file size 1')
-				print ('Body (poolbytearray)',_body)
-			if error_checker.get_len() != size:
-				print('Video File size is not equal or greater than the inputed video file size 2')
-			
-
-			if error_checker.eof_reached(): # If the error checker has read through the body
-				#break
-				return video_file
-			if __video_file_size_mb != null :
-				if __video_file_size_mb >= size: 
-					print ('STORAGE SUCCESS')
-		video_file.close()
-		return video_file
-	return video_file
 
 
 
@@ -313,205 +195,14 @@ func store_video_files(_body, size) -> VideoStreamTheora: # FUnvtion breaks here
 # (2)It triggers an error splash page in the debug script if user is offline
 # (3) It aids monetization through online advertising on Mobile
 # *************************************************
-# To DO:
-#(1) integrade youtube download through networking singleton
-# (2) Integrate video stream with proper documentation
-# (3) Integrate youtube links
-#extends Control
+# 
 """
 THIS IS THE LOGIC FOR THE ANIME VIDEO STREAMER. iT WILL RENDER THE PILOT AND THE OPENING IN GODOT GAME ENGINE
 """
-##### IF IT BREAKS, IT BREAKS
-# The optimized code would unzip a video file zip to the user's directory
-export (VideoStreamTheora )var video_file
-export (String)var err
 
-var downloading_video = false
-
-
-# Feature is broken
-#var vid_file_mob = Globals.pilot_ep
-var dicL1 : Dictionary = {}
-
-onready var dir = Utils.dir #Directory.new()
-
-
-
-var download_video_size = 1
-var percent
-onready var error_code = 0
-
-
-#var pilot_ep_scene = load ('res://scenes/cinematics/pilot_ep_1.tscn')
-
-#Declare some animation variables
-#var animmation_frames
-#var NFT
-
-func _on_Button_pressed():
-	return Globals._go_to_title()
-
-func download_yt_video():
-	# It should take a parameter to download different videos 
-	# without affecting it's signals.
-	# How to pass parameters through signls
+class Function :
 	
-	#dialgue_box.show_dialog( ("Downloading YT video: " + youtube[0]),  "admin")
-	print ("Downloading YT video: " + youtube.get(1, "") + "Depreciated code") 
-	#Download video using url to local storage
-	#yt_dlp.download(youtube[1],OS.get_user_data_dir(),cinematic["user://Test.webm"] ) # The cinematics dictionary returns the key as the File Save name
-	
-
-func stream_yt_video():
-	
-	dialgue_box.show_dialog("Playing YT Video", "admin ")
-	print("Playing YT Video")
-	
-	# Play Downloaded Video file
-	var stream := VideoStreamWebm.new()
-	stream.set_file(cinematic["Test"])
-	#Video_Stream(stream, Globals.os, self, videoplayer)
-
-func _on_watch_anime_pressed():
-	# Get Animated Pilot Ep
-	
-	cinematics_get("Ep1")
-	
-	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
-	
-	$Label.hide()
-	#videoplayer._play_pilot_a() #depreciated in v1.1.9 for size problems
-	#
-
-
-func cinematics_get(parameters : String) :
-	
-	return OS.shell_open(youtube[parameters])
-	
-	
-	# Enables Polymorphism of Cinematics Yt Downloader & Streamer
-	# Disabled for Refactoring and Debugging
-	"""
-	for i in Mobile_Platforms:
-		# PC Platforms
-		if Globals.os != i && Globals.check_files(Globals.user_data_dir, cinematic[parameters]):  
-			
-			if Networking.good_internet:
-				
-				# PC platforms
-				var stream := VideoStreamWebm.new()
-				stream.set_file(cinematic[parameters])
-				dialgue_box.show_dialog("Playing " + parameters + ".webm" , "admin" )
-				Video_Stream(stream, Globals.os)
-				
-				
-			elif !Networking.good_internet:
-				return OS.shell_open(youtube[parameters])
-		
-		if Globals.os == i: # Mobile Platforms
-			return OS.shell_open(youtube[parameters])
-	"""
-
-
-# Rewrite this code
-func _verify_Online_downloaded_video():
-	# Verifies if the downloaded video is valid
-	dir.open ("user://")
-	var file_exists
-	if Globals.os != str ('Android'):
-		file_exists = dir.file_exists('user://video.webm')
-	if Globals.os == str ('Android'):
-		file_exists = dir.file_exists('user://video.ogv')
-	
-	print ('Video File Exists: ', file_exists)
-	if not file_exists && downloading_video != true:
-		print ('Video File Doesn.t exist,downloading' )#;_check_download_size(int(Networking.get_body_size()), Networking.get_downloaded_bytes())
-		return Networking.request(Networking.url)
-		#play_loading_cinematic() #Plays the Loading cinematic while the video file downloads
-		downloading_video = true
-		Networking.connect("request_completed", self, "_http_request_completed")
-		print ('download completed')
-	if not file_exists && downloading_video == true:
-		print('Already Downloading video, Please Wait or Quit and Restart')
-
-#Checks if the file exists
-
-	if file_exists: 
-		print ('Video File Exists')
-		#stop_playing_laoding_cinematic()
-		downloading_video = false
-		var err
-		var video_file : File = File.new()
-		var video_file_path = "user://video.ogv"
-		video_file.open(video_file_path, File.READ_WRITE)
-		err = (video_file.open(video_file_path, File.READ))
-		print ('Video file is open: ',video_file.is_open(), '/error :', err) #Debugs if file can open
-		
-		var video_file_absolute_path = video_file.get_path_absolute()
-		print ('Video File Path: ',video_file_path)
-		print('Video file size : ', video_file.get_len())
-		
-		# Chhecks if the video is an 0 byte error
-		if video_file.get_len() ==0 :
-			push_error('Video file is corrupted /'+ str(video_file.get_len()))
-		
-		if video_file.is_open() && err == 0: #error catcher 2
-			Globals.VIDEO = ResourceLoader.load(video_file_path, 'VideoStreamTheora', false) #Don't make the video a global file
-			#Music.notification(NOTIFICATION_PREDELETE) #. Fix Music off function #not needed
-			print ('Playing Global video File: ', Globals.VIDEO )
-			#_Video_Stream((Globals.AMV)) #Plays the AMV video with Shootback
-
-
-
-
-"""
-parses the poopbyte array as a video stream
-"""
-func _http_request_completed(result, response_code, _headers, body): # dOWNLOADS A VIDEO FROM A SERVER
-	if body.empty() != true: #Executes once a Connection is established 
-
-		dir.open ("user://")
-		var file_exists = dir.file_exists('user://video.webm')
-		print ('Video File Exists: ', file_exists)
-		
-		#Checks if video file exits
-		if not file_exists : #executes if videofile doesnt exit
-			dir.open("user://")
-			var _absolute_path = dir.get_current_dir ( )
-			
-			print ('Directory //', _absolute_path)
-			var err : int
-			Function.store_video_files(body)
-			print ('Video file is open: ',video_file.is_open(), '/error :', err) #Debugs if file can open
-			if video_file.is_open() && err == 0: #error catcher 2
-				
-				download_video_size = Networking.get_body_size()#8gets video size from servers
-				
-				
-				#downloading_video: bool, download_video_size : int
-				Function._check_download_size(int(Networking.get_body_size()), Networking.get_downloaded_bytes(), downloading_video, download_video_size)
-				#var parser = _body.decompress(download_video_size) #decompresses the poolbyte
-				
-
-
-				downloading_video = false
-			#return Globals.video_stream
-		if file_exists:
-			print ('File Exists', file_exists)
-	if body.empty() == true:
-		print ('Streaming Site '+ Networking.url+ ' is unavailable ')
-		print ('It could be a myriad of problems. Please debug carefully')
-
-
-
-"""
-STORES A POOL BYTE ARRAY TO A VIDEO FILE AND PUBLISHES IT AS A GLOBAL VARIABLE
-"""
-
-
-class Function extends Reference:
-	
-	func store_video_files(_body : PoolByteArray):
+	static func store_video_files(_body : PoolByteArray):
 		var video_file : File = Utils.file #= File.new()
 		video_file.open('user://video.ogv',File.WRITE)
 		var _err = (video_file.open('user://video.ogv', File.WRITE_READ))
@@ -545,44 +236,66 @@ class Function extends Reference:
 
 
 
-	func cinematic_debug(videoplayer: VideoPlayer, vid_stream)-> void:
+	static func cinematic_debug(videoplayer: VideoPlayer, vid_stream)-> void:
 		Debug.misc_debug = str(int(videoplayer.stream_position)) + Globals.os + str(videoplayer.is_playing(),
 		str(vid_stream) + videoplayer.get_stream_name()
 		)
 
-		#streamer for android and ios
-	func OS_play(_stream): #buggy
-		if Globals.os == str('Android'):
-			print ('playing ', _stream, "on", Globals.os)
-		else:
-			pass
+		
+	"""
+	CREATES AN VideoStreamTheora  .OGV  VIDEO FILE FROM A POOLBYE ARRAY
+	"""
+
+	# It needs a video file size and it will run as a loop as long as both aren't equal
+	func _store_video_files(_body, size) -> VideoStreamTheora: # FUnvtion breaks here
+		var video_file = Utils.file #File.new()
+		var error_checker = Utils.file #File.new()
+		
+		if _body != null:
+			# Add more error File error checkers
+			
+			#Writes a video file to the godot user's directory from a pool byte array
+			video_file.open('user://video.ogv',File.WRITE)
+			
+			# Checks the Video file
+			var err = (error_checker.open('user://video.ogv', File.READ))
+			#Debug.misc_debug = str('VIdeo buffer: ' ,_body) # Debugs the video file
+			 #store pool byte array as video buffer
+			var video_file_path = video_file.get_path_absolute() #gets the file path
+			print ('Video File path: ', video_file_path)
+			var VIDEO = load(video_file_path)
+			
+			#return print ('Video FIle Path',video_file_path)
+			#Comvert size to MB usingConvertfunctiion
+			
+			 # Gets VIdeo file length in bytes, converts it to MB
+			var __video_file_size_mb = Globals._ram_convert(video_file.get_len())
+
+			print ('Video file size: ',__video_file_size_mb, '/',' Est file size: ', size)# For debug purposes only
+			#Stores PoolbyteArray into video file while the video file size is not the user's inputed video size
+			if not error_checker.eof_reached() : # Original code uses a while loop. CHanging it because code breaks
+				if _body != null:
+					print ('Storing video buffer')
+					video_file.store_buffer(_body.get_buffer())
+			# Error checkers
+				if __video_file_size_mb != size :
+					print ('Video File size is not equal or greater than the inputed video file size 1')
+					print ('Body (poolbytearray)',_body)
+				if error_checker.get_len() != size:
+					print('Video File size is not equal or greater than the inputed video file size 2')
+				
+
+				if error_checker.eof_reached(): # If the error checker has read through the body
+					#break
+					return video_file
+				if __video_file_size_mb != null :
+					if __video_file_size_mb >= size: 
+						print ('STORAGE SUCCESS')
+			video_file.close()
+			return video_file
+		return video_file
 
 
-
-func play_loading_cinematic(): #A simple loading loop
-	Function._check_download_size(int(Networking.get_body_size()), Networking.get_downloaded_bytes(), downloading_video, download_video_size) #shows a progress report on video being downloaded
-	var _z = str( 'Downloading Remaining.../ ', percent ,'%') #formats the data
-	Dialogs.show_dialog( _z, 'Admin') #displays the download percent to the users
-
-	
-	print_debug('Playing loading Cinematic ')
-	yield(get_tree().create_timer(5), "timeout") #Runs this loop every 5 secs
-
-
-
-func exit(error) -> void:
-	print ('Error code: ', error)
-	get_tree().quit()
-
-
-
-
-
-func _on_watch_anime3_pressed():
-	cinematics_get("Animatic")
-	
-	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
-	#return OS.shell_open(youtube[3])
 
 
 func _on_watch_guidebook_pressed():
@@ -592,7 +305,7 @@ func _on_watch_guidebook_pressed():
 
 
 
-
+# Changes Scene Tree to Title Screen After Intro Finished Playing
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name ==  "opening_cinematic":
 		_go_to_title()

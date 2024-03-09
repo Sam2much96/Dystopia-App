@@ -91,17 +91,13 @@ margin_bottom = 8.48523
 rect_scale = Vector2( 0.65, 0.65 )
 
 [node name="skip" type="TextureButton" parent="."]
-visible = false
 modulate = Color( 0.584314, 0.152941, 0.152941, 1 )
-margin_left = 571.07
-margin_top = 557.632
-margin_right = 931.07
-margin_bottom = 869.632
+margin_left = 364.443
+margin_top = 555.112
+margin_right = 724.443
+margin_bottom = 867.112
 rect_scale = Vector2( 0.488382, 0.469212 )
 texture_normal = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 20.0

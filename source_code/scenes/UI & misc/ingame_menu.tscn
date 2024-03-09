@@ -27,7 +27,7 @@ scroll_horizontal_enabled = false
 
 [node name="HSeparator" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
 margin_right = 77.0
-margin_bottom = 164.0
+margin_bottom = 116.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -65,65 +65,31 @@ visible = false
 margin_top = 140.0
 margin_right = 268.0
 margin_bottom = 206.0
-focus_next = NodePath("../anime")
 focus_previous = NodePath("../continue")
 shortcut_in_tooltip = false
 text = "Multiplayer"
-flat = true
-
-[node name="anime" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-visible = false
-margin_top = 210.0
-margin_right = 268.0
-margin_bottom = 276.0
-focus_next = NodePath("../multiplayer")
-focus_previous = NodePath("../practice")
-text = "anime"
 flat = true
 
 [node name="practice" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
 margin_top = 48.0
 margin_right = 77.0
 margin_bottom = 68.0
-focus_next = NodePath("../wallet")
-focus_previous = NodePath("../anime")
 text = "practice"
 flat = true
 
-[node name="wallet" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
+[node name="controls" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
 margin_top = 72.0
 margin_right = 77.0
 margin_bottom = 92.0
-focus_next = NodePath("../controls")
-focus_previous = NodePath("../practice")
-shortcut_in_tooltip = false
-text = "Wallet"
-flat = true
-
-[node name="github" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-margin_top = 96.0
-margin_right = 77.0
-margin_bottom = 116.0
-focus_next = NodePath("../controls")
-focus_previous = NodePath("../practice")
-shortcut_in_tooltip = false
-text = "Github"
-flat = true
-
-[node name="controls" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-margin_top = 120.0
-margin_right = 77.0
-margin_bottom = 140.0
 focus_next = NodePath("../quit")
-focus_previous = NodePath("../wallet")
 shortcut_in_tooltip = false
 text = "Controls"
 flat = true
 
 [node name="quit" type="Button" parent="MarginContainer/ScrollContainer/HSeparator"]
-margin_top = 144.0
+margin_top = 96.0
 margin_right = 77.0
-margin_bottom = 164.0
+margin_bottom = 116.0
 focus_neighbour_top = NodePath("../controls")
 focus_next = NodePath("../comics")
 focus_previous = NodePath("../controls")
@@ -136,9 +102,6 @@ flat = true
 [connection signal="pressed" from="MarginContainer/ScrollContainer/HSeparator/new game" to="." method="_on_new_game_pressed"]
 [connection signal="pressed" from="MarginContainer/ScrollContainer/HSeparator/continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="MarginContainer/ScrollContainer/HSeparator/multiplayer" to="." method="_on_multiplayer_pressed"]
-[connection signal="pressed" from="MarginContainer/ScrollContainer/HSeparator/anime" to="." method="_on_anime_pressed"]
 [connection signal="pressed" from="MarginContainer/ScrollContainer/HSeparator/practice" to="." method="_on_practice_pressed"]
-[connection signal="pressed" from="MarginContainer/ScrollContainer/HSeparator/wallet" to="." method="_on_wallet_pressed"]
-[connection signal="pressed" from="MarginContainer/ScrollContainer/HSeparator/github" to="." method="_on_github_pressed"]
 [connection signal="pressed" from="MarginContainer/ScrollContainer/HSeparator/controls" to="." method="_on_controls_pressed"]
 [connection signal="pressed" from="MarginContainer/ScrollContainer/HSeparator/quit" to="." method="_on_quit_pressed"]

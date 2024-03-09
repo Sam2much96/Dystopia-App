@@ -27,29 +27,30 @@
 
 extends Node
 
+class_name GlobalsVar
 
 
-var pilot_ep 
-var VIDEO
-
-var cinematics : VideoStreamTheora #= preload ('res://resources/title animation/title..ogv') #I free memory once this is used # Depreciated
+# Load Scenes Programmatically
 var title_screen : PackedScene = load( 'res://scenes/Title screen.tscn')
-var form = load ('res://scenes/UI & misc/form/form.tscn')
-var controls = load ('res://scenes/UI & misc/Controls.tscn')
-var loading = load('res://addons/github-integration/scenes/loading.tscn')
-
+var form : PackedScene = load ('res://scenes/UI & misc/form/form.tscn')
+var controls : PackedScene = load ('res://scenes/UI & misc/Controls.tscn')
+var loading : PackedScene = load('res://addons/github-integration/scenes/loading.tscn')
+var github : PackedScene = load("res://addons/github-integration/scenes/GitHub.tscn")
+var wallet : PackedScene = load('res://scenes/Wallet/Wallet main.tscn')
+var title : PackedScene = load ("res://scenes/Title screen.tscn")
+var cinematics : PackedScene = load('res://scenes/cinematics/cinematics.tscn')
 "Comics  Book Module variables"
-var comics = load ('res://scenes/UI & misc/Comics.tscn')
-var comics___2 = load ('res://scenes/UI & misc/Comics____2.tscn')
-var comics_chapter 
-var comics_page 
+var comics : PackedScene = load ('res://scenes/UI & misc/Comics.tscn')
+var comics___2 : PackedScene = load ('res://scenes/UI & misc/Comics____2.tscn')
+#var comics_chapter 
+#var comics_page 
 
 
-var game_loop
+#var game_loop
 
-var prev_scene
-var prev_scene_spawnpoint
-var next_scene = null
+#var prev_scene
+#var prev_scene_spawnpoint
+#var next_scene = null
 onready var curr_scene : String = ""
 onready var os: String = OS.get_name()
 onready var kill_count : int = 0 #update to load from savefile
@@ -178,10 +179,10 @@ func _go_to_title():
 	
 	'changes scene to title_screen'
 	
-	return get_tree().change_scene("res://scenes/Title screen.tscn")
+	return Utils.Functions.change_scene_to(title, get_tree())#get_tree().change_scene()
 
 func _go_to_cinematics():
-	return get_tree().change_scene('res://scenes/cinematics/cinematics.tscn') 
+	return Utils.Functions.change_scene_to(cinematics, get_tree())#get_tree().change_scene() 
 
 
 #

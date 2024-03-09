@@ -128,8 +128,7 @@ func _on_play_pressed():
 
 	print_debug(Dialogs.language)
 
-	get_tree().change_scene_to(cinematics)
-
+	Utils.Functions.change_scene_to(cinematics, get_tree())
 
 
 """

@@ -17,8 +17,8 @@ extends CanvasLayer
 
 class_name RainFX
 
-onready var rain_particles = $Particles2D
-onready var timer = $Timer
+onready var rain_particles : CPUParticles2D = $Particles2D
+onready var timer : Timer = $Timer
 export (bool) var enable
 
 export (float) var time #in secs
@@ -30,9 +30,8 @@ const Long_lifetime : int = 6
 const Short_lifetime : int = 3
 
 
-# Add other Parameters to Automatically trigger the rain on and off
-func _process(delta):
-	
+func _ready():
+
 	"Performance Saver"
 	"Performance Optimizations"
 	# Particle Optimization for Differing Screen Orientations
@@ -44,25 +43,32 @@ func _process(delta):
 		#rain_particles.lifetime = Short_lifetime
 
 
+
+# Add other Parameters to Automatically trigger the rain on and off
+func _process(_delta):
+	
+
  
 	if Simulation.frame_counter % 60 == 0: # RUn these calculations on the 60th frame
 	
 	# Programmatically controls the Rain FX using the GLobal Game Framerate to OPtimize for perfomance
 	# Using the time node. set to 500 for 8.3 mins
+		rain_logic(enable, Debug.FPS_debug)
 	
-	
-		if enable == true && int (Debug.FPS_debug()) >= MINUMUM_FPS:
-			rain_particles.emitting = true
-			#print ('Emitting Rain Particles') #-introducees a bug
-			
-		if enable == false:
-			rain_particles.emitting = false
-	
+
+
+
+func rain_logic(_enabled : bool, fps : float) -> void:
+	# Rain Logic In A Single Function
+	if _enabled && int (fps) >= MINUMUM_FPS:
+		rain_particles.emitting = true
+		#print ('Emitting Rain Particles') #-introducees a bug
 		
-		if  enable == true && int (Debug.FPS_debug()) < MINUMUM_FPS:
-			rain_particles.emitting = false
-
-
+	if !enable:
+		rain_particles.emitting = false
+	
+	if  enable && int (fps) < MINUMUM_FPS:
+		rain_particles.emitting = false
 
 func _on_Timer_timeout(): 
  # Turns rain on/ off every 8.3 hours of playtime

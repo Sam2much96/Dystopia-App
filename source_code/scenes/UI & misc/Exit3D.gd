@@ -68,22 +68,23 @@ func _on_Timer_timeout():
 		#Globals.prev_scene_spawnpoint = $spawnpoint.position 
 
 	"Loads Large Scene"
+	# creates a bug in the titlescreen
+	# depreciating until better exit parameters are fixed
+	#Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
+	#to_scene, 
+	#Globals.scene_resource, 
+	#Globals._o, 
+	#Globals.scene_loader, 
+	#Globals.loading_resource, 
+	#Globals.a, 
+	#Globals.b, 
+	#Globals.progress
+	#), get_tree())
 	
-	Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
-	to_scene, 
-	Globals.scene_resource, 
-	Globals._o, 
-	Globals.scene_loader, 
-	Globals.loading_resource, 
-	Globals.a, 
-	Globals.b, 
-	Globals.progress
-	), get_tree())
 	
-	
-	Music.play_track(Music.ui_sfx[0]) #plays ui sfx in a loop
+	#Music.play_track(Music.ui_sfx[0]) #plays ui sfx in a loop
 	
 		
 		# Old Scene Transition
-	if get_tree().change_scene(to_scene) != OK:
-		push_error("Error changing scene")
+	#if get_tree().change_scene(to_scene) != OK:
+	#	push_error("Error changing scene")

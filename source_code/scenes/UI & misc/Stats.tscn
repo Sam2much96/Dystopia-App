@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Stats.gd" type="Script" id=1]
 [ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://resources/misc/compass.webp" type="Texture" id=9]
 [ext_resource path="res://resources/misc/rupees.webp" type="Texture" id=10]
 [ext_resource path="res://resources/misc/map ui 64x64.webp" type="Texture" id=11]
+[ext_resource path="res://scenes/UI & misc/Third_Party_Software.tscn" type="PackedScene" id=12]
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.792157, 0.792157, 0.792157, 0.415686 )
@@ -57,6 +58,7 @@ custom_fonts/font = ExtResource( 3 )
 script = ExtResource( 6 )
 
 [node name="0" type="Tabs" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 74.0
@@ -207,7 +209,6 @@ text = "Item 1
 flat = true
 
 [node name="4" type="Tabs" parent="TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -217,10 +218,10 @@ margin_bottom = -4.0
 
 [node name="minimap" type="TextureRect" parent="TabContainer/4"]
 modulate = Color( 1, 1, 1, 0.411765 )
-margin_left = 66.0
-margin_top = 89.0
-margin_right = 132.0
-margin_bottom = 153.0
+margin_left = 180.164
+margin_top = 8.13399
+margin_right = 246.164
+margin_bottom = 72.134
 rect_scale = Vector2( 6, 6 )
 texture = ExtResource( 11 )
 script = ExtResource( 7 )
@@ -240,3 +241,9 @@ margin_right = 52.3471
 margin_bottom = 99.4905
 rect_scale = Vector2( 4, 4 )
 texture = ExtResource( 9 )
+
+[node name="Third Party Software" parent="TabContainer/4" instance=ExtResource( 12 )]
+margin_left = 40.6463
+margin_top = 199.975
+margin_right = -1010.35
+margin_bottom = 71.9753

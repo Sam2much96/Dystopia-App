@@ -1017,6 +1017,127 @@ class Downloader extends Node:
 		emit_signal("loaded",r)
 		pass
 
+			
+		# Enables Polymorphism of Cinematics Yt Downloader & Streamer
+		# Disabled for Refactoring and Debugging
+		"""
+		for i in Mobile_Platforms:
+			# PC Platforms
+			if Globals.os != i && Globals.check_files(Globals.user_data_dir, cinematic[parameters]):  
+				
+				if Networking.good_internet:
+					
+					# PC platforms
+					var stream := VideoStreamWebm.new()
+					stream.set_file(cinematic[parameters])
+					dialgue_box.show_dialog("Playing " + parameters + ".webm" , "admin" )
+					Video_Stream(stream, Globals.os)
+					
+					
+				elif !Networking.good_internet:
+					return OS.shell_open(youtube[parameters])
+			
+			if Globals.os == i: # Mobile Platforms
+				return OS.shell_open(youtube[parameters])
+		"""
+
+
+	# Rewrite this code
+	func _verify_Online_downloaded_video():
+		# Verifies if the downloaded video is valid
+		Utils.dir.open ("user://")
+		var file_exists
+		if Globals.os != str ('Android'):
+			file_exists = Utils.dir.file_exists('user://video.webm')
+		if Globals.os == str ('Android'):
+			file_exists = Utils.dir.file_exists('user://video.ogv')
+		
+		print ('Video File Exists: ', file_exists)
+		if not file_exists : # && downloading_video != true:
+			print ('Video File Doesn.t exist,downloading' )#;_check_download_size(int(Networking.get_body_size()), Networking.get_downloaded_bytes())
+			return Networking.request(Networking.url)
+			#play_loading_cinematic() #Plays the Loading cinematic while the video file downloads
+			#downloading_video = true
+			Networking.connect("request_completed", self, "_http_request_completed")
+			print ('download completed')
+		if not file_exists : #&& downloading_video == true:
+			print('Already Downloading video, Please Wait or Quit and Restart')
+
+	#Checks if the file exists
+
+		if file_exists: 
+			print ('Video File Exists')
+			#stop_playing_laoding_cinematic()
+			#downloading_video = false
+			var err
+			var video_file : File = Utils.file #File.new()
+			var video_file_path = "user://video.ogv"
+			video_file.open(video_file_path, File.READ_WRITE)
+			err = (video_file.open(video_file_path, File.READ))
+			print ('Video file is open: ',video_file.is_open(), '/error :', err) #Debugs if file can open
+			
+			var video_file_absolute_path = video_file.get_path_absolute()
+			print ('Video File Path: ',video_file_path)
+			print('Video file size : ', video_file.get_len())
+			
+			# Chhecks if the video is an 0 byte error
+			if video_file.get_len() ==0 :
+				push_error('Video file is corrupted /'+ str(video_file.get_len()))
+			
+			if video_file.is_open() && err == 0: #error catcher 2
+				Globals.VIDEO = ResourceLoader.load(video_file_path, 'VideoStreamTheora', false) #Don't make the video a global file
+				#Music.notification(NOTIFICATION_PREDELETE) #. Fix Music off function #not needed
+				print ('Playing Global video File: ', Globals.VIDEO )
+				#_Video_Stream((Globals.AMV)) #Plays the AMV video with Shootback
+
+
+
+
+	"""
+	parses the poopbyte array as a video stream
+	"""
+	# Refactor into proper clas/static function
+	func _http_request_completed(result, response_code, _headers, body): # dOWNLOADS A VIDEO FROM A SERVER
+		if body.empty() != true: #Executes once a Connection is established 
+
+			Utils.dir.open ("user://")
+			var file_exists = Utils.dir.file_exists('user://video.webm')
+			print ('Video File Exists: ', file_exists)
+			
+			#Checks if video file exits
+			if not file_exists : #executes if videofile doesnt exit
+				Utils.dir.open("user://")
+				var _absolute_path = Utils.dir.get_current_dir ( )
+				
+				print ('Directory //', _absolute_path)
+				var err : int
+				var video_file = cinematic.Function.store_video_files(body)
+				print ('Video file is open: ',video_file.is_open(), '/error :', err) #Debugs if file can open
+				if video_file.is_open() && err == 0: #error catcher 2
+					
+					#download_video_size = Networking.get_body_size()#8gets video size from servers
+					
+					
+					#downloading_video: bool, download_video_size : int
+					cinematic.Function._check_download_size(int(Networking.get_body_size()), Networking.get_downloaded_bytes(), false, false)
+					#var parser = _body.decompress(download_video_size) #decompresses the poolbyte
+					
+
+
+					#downloading_video = false
+				#return Globals.video_stream
+			if file_exists:
+				print ('File Exists', file_exists)
+		if body.empty() == true:
+			print ('Streaming Site '+ Networking.url+ ' is unavailable ')
+			print ('It could be a myriad of problems. Please debug carefully')
+
+
+
+	"""
+	STORES A POOL BYTE ARRAY TO A VIDEO FILE AND PUBLISHES IT AS A GLOBAL VARIABLE
+	"""
+
 
 
 

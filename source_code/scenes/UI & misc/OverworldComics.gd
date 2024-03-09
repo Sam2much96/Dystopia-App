@@ -1,4 +1,4 @@
-extends ComicsSingleton
+extends Comics
 
 
 

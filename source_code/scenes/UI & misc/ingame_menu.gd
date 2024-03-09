@@ -32,7 +32,7 @@ signal menu_showing
 signal loading_game
 export (bool) var enabled 
 
-var shop = load('res://scenes/UI & misc/Shop.tscn')
+#var shop = load('res://scenes/UI & misc/Shop.tscn')
 
 """
 The game menu script. 
@@ -52,10 +52,10 @@ onready var game_menu : MarginContainer = get_node("MarginContainer")
 
 onready var _multiplayer = $MarginContainer/ScrollContainer/HSeparator/multiplayer
 
-onready var anime : Button = $MarginContainer/ScrollContainer/HSeparator/anime
+#onready var anime : Button = $MarginContainer/ScrollContainer/HSeparator/anime
 onready var practice : Button = $MarginContainer/ScrollContainer/HSeparator/practice
-onready var github : Button = $MarginContainer/ScrollContainer/HSeparator/github # Depreciated
-onready var wallet_ : Button = $MarginContainer/ScrollContainer/HSeparator/wallet
+#onready var github : Button = $MarginContainer/ScrollContainer/HSeparator/github # Depreciated
+#onready var wallet_ : Button = $MarginContainer/ScrollContainer/HSeparator/wallet
 onready var controls : Button = $MarginContainer/ScrollContainer/HSeparator/controls
 onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit"
 
@@ -63,7 +63,7 @@ onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit"
 # Auto Scroll with Swipe Gestures
 onready var scroller : ScrollContainer= get_node("MarginContainer/ScrollContainer")
 
-onready var MenuButtons : Array = [comics,new_game, continue_game, _multiplayer, anime,practice, wallet_,github,controls, quit]
+onready var MenuButtons : Array = [comics,new_game, continue_game, _multiplayer, practice,controls, quit]
 
 var counter : int = 0 # Stopis ooverflow of Upscaling Method
 
@@ -90,15 +90,15 @@ func _ready():
 	GlobalInput.menu = self
 	
 	"Continue Button Disable"#?
-	if Utils.Functions.load_game(true, Globals) and continue_game != null:
-		continue_game.disabled = false 
+	#if Utils.Functions.load_game(true, Globals) and continue_game != null:
+	#	continue_game.disabled = false 
 		
-	else:
-		continue_game.disabled = true
-	print_debug("Continue Disabled",continue_game.disabled)
+	#else:
+	#	continue_game.disabled = true
+	#print_debug("Continue Disabled",continue_game.disabled)
 
 
-func _process(delta):
+func _process(_delta):
 	
 	
 	
@@ -114,7 +114,7 @@ func _process(delta):
 			'simply emits a signal in this state'
 			print ("Emitting Signa--Loading game")
 			return emit_signal("loading_game")
-	pass
+
 
 
 func _input(event): #Toggles menu visibility on/off
@@ -166,7 +166,7 @@ func _input(event): #Toggles menu visibility on/off
 
 
 func _on_continue_pressed():
-	# Buggy
+	print_debug("continue game pressed")
 	Music.play_track(Music.ui_sfx[0])
 	#Utils.Functions.load_game(false, Globals)
 	if Globals.current_level != null:
@@ -192,6 +192,7 @@ func _on_continue_pressed():
 
 
 func _on_new_game_pressed(): #breaks the Globals.current_level script
+	print_debug("new game pressed")
 	if Globals.initial_level != "":
 		Globals.current_level = Globals.initial_level
 		print (" Emitting signal--loading game--", Globals.current_level)
@@ -317,18 +318,6 @@ func _exit_tree():
 	
 
 
-func _on_Shop_pressed():
-	Music.play_track(Music.ui_sfx[0])
-	Utils.Functions.change_scene_to(shop, get_tree())
-
-func _hide_some_menu_options():
-	#if Engine.has_singleton ('Debug'):
-	#	var Debug = Engine.get_singleton('Debug')
-	#	if Debug.debug_panel != null: #turns multiplayer on when debugging000
-	#		_multiplayer.show()
-	#	if Debug.debug_panel == null:
-	#		_multiplayer.hide()
-	pass
 
 
 
@@ -388,5 +377,5 @@ func manually_translate()-> void:
 		#comics.set_text(Dialogs.translate_to("comics", Dialogs.language))
 
 
-func _on_github_pressed():
-	get_tree().change_scene("res://addons/github-integration/scenes/GitHub.tscn")
+#func _on_github_pressed():
+#	get_tree().change_scene("res://addons/github-integration/scenes/GitHub.tscn")

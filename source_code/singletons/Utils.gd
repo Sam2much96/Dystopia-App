@@ -124,7 +124,11 @@ func randomize_enemy_type() -> String:
 	return ['Easy', "Intermediate", "Hard"][randi()%3]
 
 
-
+func array_to_string(arr: Array) -> String:
+	var s = ""
+	for i in arr:
+		s += String(i)
+	return s
 
 "Memory Leak/ Orphaned Nodes Management System"
 class MemoryManagement extends Reference :

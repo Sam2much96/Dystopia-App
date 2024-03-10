@@ -13,8 +13,8 @@ func _ready():
 
 
 func _on_github_pressed():
-	get_tree().change_scene_to(Globals.github)
+	Utils.Functions.change_scene_to(Globals.github, get_tree())
 
 
 func _on_wallet_pressed():
-	get_tree().change_scene_to(Globals.wallet)
+	Utils.Functions.change_scene_to(Globals.wallet, get_tree())

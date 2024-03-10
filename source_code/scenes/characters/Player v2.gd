@@ -304,7 +304,7 @@ func _input(_event):
 			
 			
 			"Updates Player Input Data Across Client/Server Peers"
-			Networking.rpc_unreliable_id(1, "pi", peer_id, Networking.RawData) # Packet Loss Error
+			Simulation.rpc_unreliable_id(1, "pi", peer_id, Simulation.RawData) # Packet Loss Error
 		
 		# Move Left
 		if Input.is_action_just_pressed("move_left"):
@@ -313,7 +313,7 @@ func _input(_event):
 		if Input.is_action_just_released("move_left"):
 			
 			"Updates Player Input Data Across Client/Server Peers"
-			Networking.rpc_unreliable_id(1, "pi", peer_id, Networking.RawData) # Packet Loss Error
+			Simulation.rpc_unreliable_id(1, "pi", peer_id, Simulation.RawData) # Packet Loss Error
 			
 		# Move RIght
 		if Input.is_action_just_pressed("move_right"):
@@ -323,7 +323,7 @@ func _input(_event):
 			
 			
 			"Updates Player Input Data Across Client/Server Peers"
-			Networking.rpc_unreliable_id(1, "pi", peer_id, Networking.RawData) # Packet Loss Error
+			Simulation.rpc_unreliable_id(1, "pi", peer_id, Simulation.RawData) # Packet Loss Error
 			
 		# Attack
 		if Input.is_action_just_pressed("attack"):
@@ -333,7 +333,7 @@ func _input(_event):
 		if Input.is_action_just_released("attack"):
 			
 			"Updates Player Input Data Across Client/Server Peers"
-			Networking.rpc_unreliable_id(1, "pi", peer_id, Networking.RawData) # Packet Loss Error
+			Simulation.rpc_unreliable_id(1, "pi", peer_id, Simulation.RawData) # Packet Loss Error
 		
 		# Roll
 		if Input.is_action_just_pressed("roll"):
@@ -343,7 +343,7 @@ func _input(_event):
 		if Input.is_action_just_released("roll"):
 			
 			"Updates Player Input Data Across Client/Server Peers"
-			Networking.rpc_unreliable_id(1, "pi", peer_id, Networking.RawData) # Packet Loss Error
+			Simulation.rpc_unreliable_id(1, "pi", peer_id, Simulation.RawData) # Packet Loss Error
 
 
 
@@ -362,188 +362,16 @@ func _physics_process(_delta):
 	# server dowsnrt do any processing
 	
 	if not is_network_master():
-		
-		match state:
-			STATE_BLOCKED:
-				new_anim = "idle_" + _facing
-				pass
-			STATE_IDLE:
-				if (
-						Input.is_action_pressed("move_down") or
-						Input.is_action_pressed("move_left") or
-						Input.is_action_pressed("move_right") or
-						Input.is_action_pressed("move_up")
-					):
-						state = STATE_WALKING
-						
-						# Updates State to Global Dictionary
-						# RPC calls to client peer
-						#Networking.player_info["peer id"][peer_id]["state"].append(state)
-						
-						
-
-						
-				if Input.is_action_just_pressed("attack"):
-					state = STATE_ATTACK
-					
-					#rpc calls to server
-					#Networking.player_info["peer id"][peer_id]["state"].append(state)
-
-					
-				if Input.is_action_just_pressed("roll"):
-					state = STATE_ROLL
-				new_anim = "idle_" + _facing
-				#get_material().
-				
-				pass
-			STATE_WALKING:
-				if Input.is_action_just_pressed("attack"):
-					state = STATE_ATTACK
-					
-				if Input.is_action_just_pressed("roll"):
-					state = STATE_ROLL
-				
-			STATE_ATTACK:
-				pass
-			STATE_ROLL:
-				if roll_direction == Vector2.ZERO:
-					state = STATE_IDLE
-				else:
-					pass
-			STATE_DIE:
-				new_anim = "die"
-				
-
-				
-			STATE_HURT:
-				new_anim = "hurt"
-				
-		
-		'UPDATE ANIMATIONS'
-		if new_anim != anim:
-			anim = new_anim
-			animation.play(anim)
 		pass
-	#if is_network_master():
-	#	set_position(Networking.player_info["peer id"][peer_id]["position"]) 
 	
 	"""
 	SERVER SDE PHYSICS PROCESS
 	"""
 	# Simulation Logic
 	if is_network_master():
-		
-		
-		# Debugx Server sie position
-		
-		#print(Networking.player_info["peer id"][Networking.peer_ids[0]]["position"])
-		#print(Networking.player_info["peer id"].keys()) # works
+	
 		if Simulation.player_info["peer id"].keys().size() > 1:
-			#print(Networking.player_info["peer id"].keys()[1] ,": ",Networking.player_info["peer id"][Networking.player_info["peer id"].keys()[1]]["position"] ,"/", Networking.player_info["peer id"][Networking.player_info["peer id"].keys()[0]]["position"])
 			pass
-		
-		#print_debug(Networking.peer_ids) # Works # For debug purposes only
-		pass
-		
-		
-		#should ideally set server player position to peer's position
-		# But getting positional data is somewhat buggy
-
-# Refactored to A Simulation Singleton on Nov 20, 23
-# COnnetcs to a Player Input Signal from the Networking Singleton
-# Simulates player position on Kinematic body 2d
-#func poop(id : String):
-
-#	"Server Simulation Logic"
-	# Refactored to A Simulation Singleton on Nov 20, 23
-	# Merges Server Player Info to Server Player Info with Peer ID's
-	# Trying to get updated positinal data from data packed
-	# SHould Ideally be called i the Player Networking script
-	# SHould connect to a Networking Signal to optimize performance
-
-	# SHould instead be a physics process method
-	
-#	if Networking.player_info["peer id"].has(id):
-			
-			
-
-			# position simulation
-			#print(Vector2(float(i["peer id"][id_as_string]["position"]["x"]), float(i["peer id"][id_as_string]["position"]["y"]))) # For Debug Purposes only
-			
-		# should ideally be called in a process method
-		# SHould implement position translations using the Networking frame buffer
-#		set_position(Vector2(float(Networking.player_info["peer id"][id]["position"]["x"]), float(Networking.player_info["peer id"][id]["position"]["y"])))
-		
-		# facing
-#		self.facing = Networking.player_info["peer id"][id]["facing"]
-		
-		# State
-		
-		# roll directin
-		
-		#linear velocity
-		
-		# BroadCast Update to all Network Peers
-		# 
-#		Networking.broadcast_world_positions()
-
-
-
-
-func _on_dialog_started():
-	state = STATE_BLOCKED
-
-func _on_dialog_ended():
-	state = STATE_IDLE
-
-
-## HELPER FUNCS
-func goto_idle():
-	linear_vel = Vector2.ZERO
-	new_anim = "idle_" + _facing
-	state = STATE_IDLE
-
-#func _update_facing():
-	#facing = Networking.player_info["peer id"][var2str(peer_id)]["facing"] #Buggy
-#	if Input.is_action_pressed("move_left"):
-#		facing = "left"
-#	if Input.is_action_pressed("move_right"):
-#		facing = "right"
-#	if Input.is_action_pressed("move_up"):
-#		facing = "up"
-#	if Input.is_action_pressed("move_down"):
-#		facing = "down"
-#	pass
-
-func despawn():  #this code breaks
-	var blood = Globals.blood_fx.instance()
-	var despawn_particles = Globals.despawn_fx.instance()
-	
-	
-	get_parent().add_child(despawn_particles)
-	get_parent().add_child(blood) 
-	despawn_particles.global_position = global_position
-	blood.global_position = global_position
-	
-	
-	
-	hide()
-	print ('Update Player code for proper despawing')
-	yield(get_tree().create_timer(0.5), "timeout")
-	#Update this code to update player position
-	
-	print ("player respawn is broken")
-	#get_tree().reload_current_scene() #Reboots the current scene if the Player Dies
-	if Globals._q != null:
-		Globals.change_scene_to(Globals._q)
-	else: get_tree().reload_current_scene()
-
-#func _on_hurtbox_area_entered():
-#	pass
-
-
-
-#var last_update = -1
 
 
 # Registers player info to Global peer id Dictionary
@@ -596,7 +424,7 @@ func update_player_info():
 	
 	
 	# update Input buffer
-	Simulation.player_info["peer id"][peer_id]["input"] = GlobalInput.input_buffer 
+	Simulation.player_info["peer id"][peer_id]["input"] = GlobalInput._get_input_buffer()
 	
 	#print_debug(Networking.player_info["peer id"][peer_id]["frames"])
 	

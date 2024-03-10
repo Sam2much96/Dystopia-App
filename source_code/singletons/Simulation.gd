@@ -51,7 +51,7 @@ export (Dictionary) var player_info : Dictionary = {
 		"position": {"x": 0, "y":0}, # updated positional data, 
 		"velocity":{"x": 0, "y": 0},
 		"frames": 0, #frame data
-		"input": [], #input buffer
+		"input": 0, #input buffer
 		"hitpoints" : 3,
 		"facing": 0,
 		"state" : 0, # AN array of state s for Roll Back Networking Prediction would be ideal
@@ -106,6 +106,7 @@ func simulate(id : String, player : Player_v2_networking ):
 		player.set_position(Vector2(float(Simulation.player_info["peer id"][id]["position"]["x"]), float(Simulation.player_info["peer id"][id]["position"]["y"])))
 		
 		# facing
+		# should use input buffer instead
 		player.facing = Simulation.player_info["peer id"][id]["facing"]
 		
 		# State
@@ -471,7 +472,7 @@ remote func pi(id : int,player_data : PoolByteArray):
 					player_info["peer id"][id_as_string] = {
 					"position": i["peer id"][id_as_string]["position"], # updated positional data, 
 					"frames": 0, #frame data
-					"input" : [],
+					"input" : 0,
 					"hitpoints" : 3,
 					"facing": 0,
 					"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal

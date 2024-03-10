@@ -241,16 +241,18 @@ func _process(delta : float):
 
 
 func _input(_event):
-	"NETWORKING INPUTS"
+	"""
+	NETWORKING INPUTS
 	
-	# Send input events over network to the server My Peer Across the Networks
-	# Sends Input Twice, Once when Pressed and one when not pressed
+	Send input events over network to the server My Peer Across the Networks
+	Sends Input Twice, Once when Pressed and one when not pressed
 	
-	# Each Method Calls the Player Input Remote Function in
-	# It's Calls THis client Player Input to the Remote Peer
+	Each Method Calls the Player Input Remote Function in
+	It's Calls THis client Player Input to the Remote Peer
 	
-	# Sends Data by updating the Netwprking.player info dictionary
-	# And broadcasting updates across network every 6000th frame
+	Sends Data by updating the Simulatoin player info dictionary
+	And broadcasting updates across network every 6000th frame
+	"""
 	
 	# If not connected, don't handle input.
 	#if not my_peer.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED:

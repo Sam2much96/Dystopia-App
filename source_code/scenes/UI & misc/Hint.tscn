@@ -14,7 +14,6 @@ extra_spacing_top = -1
 font_data = ExtResource( 2 )
 
 [node name="Notification" type="Popup"]
-visible = true
 margin_left = 393.67
 margin_top = 55.198
 margin_right = 801.668

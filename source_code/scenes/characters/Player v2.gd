@@ -44,7 +44,7 @@
 # (7) Base Player Script accepts input from all devices
 # *************************************************
 
-extends Player
+extends Player_v1_TopDown
 
 class_name Player_v2_networking
 
@@ -163,7 +163,7 @@ func _ready():
 	
 	#Networking.player_info["peer id"][peer_id] ["node"].append(self)# NOt Needed
 	
-	Networking.player = self
+	Simulation.player = self
 	
 	print_debug("Initial Player Info Debug: ",Simulation.player_info)
 	
@@ -282,7 +282,7 @@ func _input(_event):
 			
 			# One KB Per Input is too Large. Please optimize to 20 Bytes Maz
 			# Only send changed innformation rather than entire merged dictionary
-			print_debug("Size (Bytes) : ", Networking.RawData.size())
+			print_debug("Size (Bytes) : ", Simulation.RawData.size())
 			
 			
 			#print("Largest Peer ID: ",Networking.peer_ids[0], "No: ", Networking.peer_ids.size() ) # for debug purposes only
@@ -291,7 +291,7 @@ func _input(_event):
 		if Input.is_action_just_released("move_up"):
 			
 			"Updates Player Input Data Across Client/Server Peers"
-			Networking.rpc_unreliable_id(1, "pi", peer_id, Networking.RawData) # Packet Loss Error
+			Simulation.rpc_unreliable_id(1, "pi", peer_id, Simulation.RawData) # Packet Loss Error
 			
 		# Move Down
 		if Input.is_action_just_pressed("move_down"):
@@ -606,7 +606,8 @@ func update_player_info():
 	
 	
 	# Update Player Info Data as poolbyte
-	Networking.RawData = Networking.array2poolByte([Simulation.player_info])
+	# saves it to simulation Raw Data
+	Networking.array2poolByte([Simulation.player_info])
 	
 	#print_debug(Networking.RawData) # for debug purposes only
 
@@ -627,7 +628,7 @@ remote func player_leaving(id : int):
 
 
 
-func player_got_shot(body : Player_v2_networking):
+remote func player_hit_collision(body : Player_v2_networking):
 	print("player got shot!")
 	for peer_id in Networking.player_info:
 		if Networking.player_info[peer_id].node == body:

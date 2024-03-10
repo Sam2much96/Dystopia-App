@@ -331,8 +331,8 @@ func show_debug_2(): #works, but the label spawn point breaks
 func log_debug(): #improvve logging code run at exit tree  #Copy log files to documents
 	if ProjectSettings.get_setting('logging/file_logging/enable_file_logging'):
 		var _doc = OS.get_system_dir(2) 
-		var _dir =Directory.new()
-		var _log = File.new()
+		var _dir = Utils.dir
+		var _log = Utils.file
 		_log.open('user://logs/godot.log', File.READ_WRITE)
 		_log.store_string ( 'dystopia_app_log'+ str(OS.get_time(true)) +
 			Music_debug + Player_debug + Ram_debug + FPS_debug + Enemy_debug + Network_debug + Comics_debug +

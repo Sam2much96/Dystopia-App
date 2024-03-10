@@ -14,8 +14,6 @@ extends Control
 class_name Headers
 
 export (String) var github_link = ""  # "https://github.com/fenix-hub/godot-engine.github-integration"
-#onready var discord : TextureButton = $datas/discord #depreciated
-#onready var paypal : TextureButton = $datas/paypal #depreciated
 onready var github : TextureButton = $datas/github
 onready var notifications_btn : TextureButton = $datas/notifications
 onready var notifications_lbl : Label = $datas/notifications/VBoxContainer/NotificationsLbl

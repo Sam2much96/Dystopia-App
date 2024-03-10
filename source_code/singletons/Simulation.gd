@@ -36,6 +36,14 @@ export (int) var frame_counter = 0
 var SIMULATING_1: bool = false
 var v : Vector2
 var world_radius : int
+var player_data : PoolByteArray
+var RawData : Array
+var id_as_string : String #= Networking.id_as_string
+
+
+# My Player Networking object
+var player : Player_v2_networking
+
 
 export (Dictionary) var player_info : Dictionary = {
 	"peer id": { 0 : { # server peer id
@@ -109,9 +117,9 @@ func simulate(id : String, player : Player_v2_networking ):
 		# 
 		Networking.broadcast_world_positions()
 
-func _ready():
+#func _ready():
 	#print_debug("Frame ID debug: ",frame_id)
-	pass
+#	pass
 
 func _process(_delta):
 	
@@ -380,3 +388,136 @@ static func set_position(x : Vector2):
 
 func get_frame_counter()-> int:
 	return frame_counter 
+
+
+"""
+REGISTERS PLAYER INPUT AND RELEASES
+"""
+# Debugs Player Data
+# Also updates the server object with player data from respective peers
+remote func pi(id : int,player_data : PoolByteArray):
+	# Remote Calls Player Input From Client Peer for each client peer
+	# Should Connect to Physics Process Simulation Logic
+	# Bug: Player positional data is not sent properly (Fixed)
+
+
+	"Server Logic"
+	# (1) Server receives player input from CLinet Peers
+	# (2) Server authenticates data packet
+	# (3) Server updates its records
+	# (4) Server Performs simulation
+	# (5) Server Broadcasts data to all client peers to replicate SImulation
+	# (6) Server Measures states Synchronizations across all CLient Peers
+	if is_network_master():
+		#print("Player Input Registered ",str (poolByte2Array(player_data)), "from ", id ) # player data returns array
+		
+		
+		
+		# update Update ID
+		#last_update = update_id
+		
+		
+		print_debug("Packet Size (Bytes): ", player_data.size())
+		
+		#print(player_info) # for debug purposes only
+		
+		
+		
+		
+		id_as_string = var2str(id) 
+		for i in Networking.poolByte2Array(player_data):
+			
+			if i != null:
+					#Returns a String. Converting to Dictionary
+					
+			#	RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
+				
+				
+				# Bug : Nerging Dictionaries may be overwrite positional data? 
+				# Fix : Set Overwrite to true for duplicate keys
+				
+				
+				#print ("I: ", i["peer id"][var2str(id)]["position"]) # works # for debug purposes only
+				#print ("I: ", i) # works # for debug purposes only
+				
+				"Data to debug"
+				
+				#Position
+				print_debug("Positional Data: ",i["peer id"][id_as_string]["position"])
+				
+				# Velocity
+				print_debug("Positional Data: ",i["peer id"][id_as_string]["velocity"])
+				
+				
+				# Input Buffer
+				print_debug("Input Buffer: ",i["peer id"][id_as_string]["input"])
+				
+				# Facing
+				print_debug("Facing: ",i["peer id"][id_as_string]["facing"])
+				
+				# Update ID
+				print_debug("Update ID: ",i["peer id"][id_as_string]["updates"])
+				
+				# Frame Data
+				print_debug("Frame: ",i["peer id"][id_as_string]["frames"], "/", "Server Frame :", get_frame_counter())
+				
+					
+				# Registers the Player Connected Peer ID Locally if not registered
+				if not player_info["peer id"].has(id_as_string):
+					
+					# Register New Player Info
+					
+					player_info["peer id"][id_as_string] = {
+					"position": i["peer id"][id_as_string]["position"], # updated positional data, 
+					"frames": 0, #frame data
+					"input" : [],
+					"hitpoints" : 3,
+					"facing": 0,
+					"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
+					"roll dir": [],
+					"destroyed": 0,
+					"updates": 0,  # Stores Present Update ID Across All Clients # Depreciated
+					"wallet addr": [0],
+					"asset id": {},
+					"smart contract": [], # Arrays As it will only be one Smart COntract
+					"kill Count": 0,
+					"inventory": {},
+					"velocity":{"x": 0, "y": 0},
+					"rotation":0,
+					"firing":0,
+					"current_angle": 0,
+					"rewspawn_time":1000,
+					"hash" : ""
+					
+					}
+				
+				
+			"Player Variables"
+			# Positional Data
+			print_debug("Updating Player Information for peer ",id_as_string, " from " ,player_info["peer id"][id_as_string]["position"], " to " , i["peer id"][id_as_string]["position"])
+			player_info["peer id"][id_as_string]["position"] = i["peer id"][id_as_string]["position"] #WORKS
+			
+			# Emit Signal
+			#emit_signal("PlayerInput", id_as_string) # Buggy Signal
+			
+			"Simulates Player Posititional Data "
+			#player.poop(id_as_string)
+			simulate(id_as_string, player)
+			
+
+			#Requires Debugging
+			#if key == "left":
+			#	Networking.player_info[id].facing = key
+			##	Networking.player_info[id].rotation = -1 if pressed else 0
+			#elif key == "right":
+			#	Networking.player_info[id].rotation = 1 if pressed else 0
+			#elif key == "up":
+			#	Networking.player_info[id].velocity = -1 if pressed else 0
+			#elif key == "down":
+			#	Networking.player_info[id].velocity = 1 if pressed else 0
+			#elif key == "fire":
+			#	Networking.player_info[id].firing = 1 if pressed else 0
+			#elif key == "attack":
+			##	
+			#else : pass
+

@@ -25,7 +25,7 @@
 # *************************************************
 # To Do:
 # (1) Implement Rollback NetCodes for Multiplayer Gameplay
-# (2) 
+# (2) Implement Match Making
 #
 #
 # *************************************************
@@ -45,7 +45,7 @@ export(String) var connection_debug
 export (String) var cfg_server_ip 
 export (String) var cfg_client_ip 
 #########################  Web browser codes  ############################3
-var url : String = ''
+export (String) var url : String = ''
 var check_timer 
 var debug = ''
 var WORLD_SIZE : int = 40000.0
@@ -57,8 +57,9 @@ var WORLD_SIZE : int = 40000.0
 var peer_id : int
 var last_update = -1
 var my_peer : NetworkedMultiplayerENet
-var player_data : PoolByteArray
-var camera #stores general camera variables
+export (Array) var ip : Array = []
+
+#var camera #stores general camera variables
 ###############################multiplayer codes########################
 # Debugs to Debugger Singleton
 var multiplayer_client_debug
@@ -88,10 +89,11 @@ onready var _reference_to_debug =get_node('/root/Debug') #formerly _y
 
 # Default hostname used by the login form
 #const DEFAULT_HOSTNAME = "127.0.0.1"
-const DEFAULT_HOSTNAME = "ws://localhost"
-const BACKUP_HOSTNAME = "127.0.0.1"
+const DEFAULT_HOSTNAME = "ws://localhost" # depreciated 
+const BACKUP_HOSTNAME = "127.0.0.1" # depreciated
 const SERVER_PORT = 9080
-const MAX_PLAYERS = 5
+const MAX_PLAYERS = 4
+export (String) var CLIENT_IP : String  
 
 const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
 
@@ -119,7 +121,7 @@ export (Array) var gateway : Array = [
 var random : int
 var selected_gateway : String
 
-var good_internet : bool
+export (bool) var good_internet : bool
 
 # Lobby UI
 var UserInterface : Control
@@ -131,16 +133,14 @@ var map_instance
 var update_id : int = -1
 
 # Raw Player Info Data
-var RawData : Array
+
 var RawJson 
 var peer_ids : Array
 
 # World Root Node
 var WorldRoot : Node
 
-# My Player Networking object
-var player : Player_v2_networking
-var id_as_string : String
+#export (String) var id_as_string : String
 
 
 # Signals
@@ -171,11 +171,11 @@ func _ready():
 
 
 func _process(_delta): 
-
-	debug = ( str(connection_debug)  + str (multiplayer_server_debug) + str(multiplayer_client_debug)) # Debugs the Networking and Multiplayer states
-
-
-
+	
+	#debug = ( str(connection_debug)  + str (multiplayer_server_debug) + str(multiplayer_client_debug)) # Debugs the Networking and Multiplayer states
+	
+	
+	
 	"Checks Nodes Connections"
 	for child in _reference_to_self.get_children():
 		if child is Timer:
@@ -183,7 +183,10 @@ func _process(_delta):
 			if not child.is_connected("timeout",self, '_check_connection') :
 				child.connect("timeout",self, '_check_connection') # connects timeout signal to check connection 
 		if child is HTTPRequest:
-#checks connection status -> Force connect HTTP request's signals
+			#
+			# Checks connection status -> Force connect HTTP request's signals
+			#
+			#
 			if child.is_connected("connection_success",self, '_on_success') != true:
 				return connect("request_completed", self,'on_request_result')
 		
@@ -378,7 +381,7 @@ func _on_fail_ssl_handshake():
 'Downloads a Json file and Stores it Locally'
 #consider running 2 operations here. A read operation and a write operation
 func download_json_(body: PoolByteArray, Save_path: String) -> File:
-	var json = File.new()
+	var json = Utils.file
 	var cunt = []
 	if body != null:
 		
@@ -667,14 +670,14 @@ func array2poolByte( data_from : Array) -> PoolByteArray:
 	# To Do:
 	# (1) update to check for data continuity
 	# (2) Implement Algorithm to reduce Data size to < 1000 bytes 
-	RawData = var2bytes([to_json(data_from)])
-	return PoolByteArray(RawData)
+	Simulation.RawData = var2bytes([to_json(data_from)])
+	return PoolByteArray(Simulation.RawData)
 
 func poolByte2Array(data_from: PoolByteArray) -> Array:
 	if data_from.size() > 5:
-		RawData = bytes2var(data_from, true)
+		Simulation.RawData = bytes2var(data_from, true)
 		# Iterate through raw data
-		for i in RawData:
+		for i in Simulation.RawData:
 			#Returns a String. Converting to Dictionary
 			
 			RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary
@@ -683,138 +686,6 @@ func poolByte2Array(data_from: PoolByteArray) -> Array:
 	else: 
 		push_error("Error calling built-in function 'bytes2var': Not enough bytes for decoding bytes, or invalid format.")
 		return [] # returns an empty array
-
-"""
-REGISTERS PLAYER INPUT AND RELEASES
-"""
-# Debugs Player Data
-# Also updates the server object with player data from respective peers
-remote func pi(id : int,player_data : PoolByteArray):
-	# Remote Calls Player Input From Client Peer for each client peer
-	# Should Connect to Physics Process Simulation Logic
-	# Bug: Player positional data is not sent properly (Fixed)
-
-
-	"Server Logic"
-	# (1) Server receives player input from CLinet Peers
-	# (2) Server authenticates data packet
-	# (3) Server updates its records
-	# (4) Server Performs simulation
-	# (5) Server Broadcasts data to all client peers to replicate SImulation
-	# (6) Server Measures states Synchronizations across all CLient Peers
-	if is_network_master():
-		#print("Player Input Registered ",str (poolByte2Array(player_data)), "from ", id ) # player data returns array
-		
-		
-		
-		# update Update ID
-		#last_update = update_id
-		
-		
-		print_debug("Packet Size (Bytes): ", player_data.size())
-		
-		#print(player_info) # for debug purposes only
-		
-		
-		
-		
-		id_as_string = var2str(id) 
-		
-		for i in poolByte2Array(player_data):
-			
-			if i != null:
-					#Returns a String. Converting to Dictionary
-					
-			#	RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
-				
-				
-				# Bug : Nerging Dictionaries may be overwrite positional data? 
-				# Fix : Set Overwrite to true for duplicate keys
-				
-				
-				#print ("I: ", i["peer id"][var2str(id)]["position"]) # works # for debug purposes only
-				#print ("I: ", i) # works # for debug purposes only
-				
-				"Data to debug"
-				
-				#Position
-				print_debug("Positional Data: ",i["peer id"][id_as_string]["position"])
-				
-				# Velocity
-				print_debug("Positional Data: ",i["peer id"][id_as_string]["velocity"])
-				
-				
-				# Input Buffer
-				print_debug("Input Buffer: ",i["peer id"][id_as_string]["input"])
-				
-				# Facing
-				print_debug("Facing: ",i["peer id"][id_as_string]["facing"])
-				
-				# Update ID
-				print_debug("Update ID: ",i["peer id"][id_as_string]["updates"])
-				
-				# Frame Data
-				print_debug("Frame: ",i["peer id"][id_as_string]["frames"], "/", "Server Frame :", Simulation.get_frame_counter())
-				
-					
-				# Registers the Player Connected Peer ID Locally if not registered
-				if not Simulation.player_info["peer id"].has(id_as_string):
-					
-					# Register New Player Info
-					
-					Simulation.player_info["peer id"][id_as_string] = {
-					"position": i["peer id"][id_as_string]["position"], # updated positional data, 
-					"frames": 0, #frame data
-					"input" : [],
-					"hitpoints" : 3,
-					"facing": 0,
-					"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
-					"roll dir": [],
-					"destroyed": 0,
-					"updates": 0,  # Stores Present Update ID Across All Clients # Depreciated
-					"wallet addr": [0],
-					"asset id": {},
-					"smart contract": [], # Arrays As it will only be one Smart COntract
-					"kill Count": 0,
-					"inventory": {},
-					"velocity":{"x": 0, "y": 0},
-					"rotation":0,
-					"firing":0,
-					"current_angle": 0,
-					"rewspawn_time":1000,
-					"hash" : ""
-					
-					}
-				
-				
-			"Player Variables"
-			# Positional Data
-			print_debug("Updating Player Information for peer ",id_as_string, " from " ,Simulation.player_info["peer id"][id_as_string]["position"], " to " , i["peer id"][id_as_string]["position"])
-			Simulation.player_info["peer id"][id_as_string]["position"] = i["peer id"][id_as_string]["position"] #WORKS
-			
-			# Emit Signal
-			#emit_signal("PlayerInput", id_as_string) # Buggy Signal
-			
-			"Simulates Player Posititional Data "
-			#player.poop(id_as_string)
-			Simulation.simulate(id_as_string, player)
-			
-
-			#Requires Debugging
-			#if key == "left":
-			#	Networking.player_info[id].facing = key
-			##	Networking.player_info[id].rotation = -1 if pressed else 0
-			#elif key == "right":
-			#	Networking.player_info[id].rotation = 1 if pressed else 0
-			#elif key == "up":
-			#	Networking.player_info[id].velocity = -1 if pressed else 0
-			#elif key == "down":
-			#	Networking.player_info[id].velocity = 1 if pressed else 0
-			#elif key == "fire":
-			#	Networking.player_info[id].firing = 1 if pressed else 0
-			#elif key == "attack":
-			##	
-			#else : pass
 
 
 
@@ -1415,7 +1286,7 @@ class Lobby extends Control:
 		print("Waiting for player...")
 		
 		# Sets UI Status : text : String, status : DialogBox, isok : bool
-		_set_status("Waiting for player...",dialog_box ,true)
+		_set_status("Waiting for players ..." + str(Networking.ip[0]) ,dialog_box ,true)
 
 		# Only show hosting instructions when relevant.
 		#
@@ -1442,9 +1313,6 @@ class Lobby extends Control:
 		
 		return true
 
-	# Finds Device Public IP Address from a WebSite
-	static func _on_find_public_ip_pressed() :
-		return OS.shell_open("https://icanhazip.com/")
 
 
 

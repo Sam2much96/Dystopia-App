@@ -138,7 +138,7 @@ margin_bottom = 300.0
 margin_left = 356.312
 margin_top = 23.2817
 margin_right = 533.312
-margin_bottom = 283.282
+margin_bottom = 285.282
 rect_scale = Vector2( 2, 2 )
 scroll_horizontal_enabled = false
 
@@ -235,6 +235,9 @@ anims/RESET = SubResource( 26 )
 anims/VERTICAL_SCREEN = SubResource( 18 )
 
 [node name="Dialog_box" parent="." instance=ExtResource( 4 )]
+margin_top = 268.529
+margin_right = 1357.0
+margin_bottom = 442.529
 
 [connection signal="pressed" from="ui/ScrollContainer/grid/play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="ui/ScrollContainer/grid/host" to="." method="_on_host_pressed"]

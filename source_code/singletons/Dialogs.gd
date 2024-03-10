@@ -268,7 +268,7 @@ class Parser extends Reference :
 	static func parse_script_from(line_to_start: int, line_to_end: int, _script: String) -> String:
 
 		# Parse gd script
-		var _f = File.new()
+		var _f = Utils.file #File.new()
 		
 		var line_string: String
 		var line_passage: String = ""

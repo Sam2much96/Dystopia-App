@@ -741,7 +741,7 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 		#player_info["peer id"].merge(RawJson.get_result()["peer id"])
 		
 		print("I: ",i) # for debug purposes only
-		
+		print("ao;bh;hdioadhfsiopdhg;oasdigdiopas'i")
 		# Debug All Connected Players Peer ID
 		#print_debug ("All Players: ",player_info["peer id"].keys()) #for debug purposes only
 		#print_debug(player_info["peer id"])
@@ -749,7 +749,7 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 		# Update Local Peer Data from peer Update
 		# Simplify this code bloc
 		#if player_info["peer id"].keys().size() > 1:
-		Simulation.player_info["peer id"][Simulation.get_all_player_ids().pop_back()]["position"] = i["peer id"][id_as_string]["position"]
+		Simulation.player_info["peer id"][Simulation.get_all_player_ids().pop_back()]["pos"] = i["peer id"][id_as_string]["pos"]
 		
 		#print(player_info["peer id"].size()) # FOr debug purposes only
 	

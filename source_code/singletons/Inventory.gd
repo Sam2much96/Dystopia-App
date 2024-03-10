@@ -146,7 +146,11 @@ func remove_item(type:String, amount:int) -> bool:
 func list() -> Dictionary:
 	return inventory.duplicate()
 
-
+"RETURNS A DUPLICATE OF THE INVENTORY DICTIONARY AS A JSON STRING"
+func jsonify() -> String:
+	#
+	var inv : String = JSON.print(inventory.duplicate())
+	return inv
 #"""
 #STATS UI
 #"""

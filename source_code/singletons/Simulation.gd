@@ -48,29 +48,27 @@ var player : Player_v2_networking
 
 export (Dictionary) var player_info : Dictionary = {
 	"peer id": { 0 : { # server peer id
-		"position": {"x": 0, "y":0}, # updated positional data, 
-		"velocity":{"x": 0, "y": 0},
-		"frames": 0, #frame data
-		"input": 0, #input buffer
-		"hitpoints" : 3,
-		"facing": 0,
-		"state" : 0, # AN array of state s for Roll Back Networking Prediction would be ideal
-		"roll dir": {"x": 0, "y": 0},
-		"destroyed": 0, # boolean converted to integer for smaller packet size
-		"updates": 0,  # Stores Present Update ID Across All Clients #
-		"wallet addr": 0,#[Wallet.address], # wallet Address and ID
-		"asset id": {},
-		"smart contract": 0,#[Wallet.smart_contract_addr, Wallet._app_id, Wallet._app_args], # Arrays As it will only be one Smart COntract
-		"kill Count": 0,
-		"inventory": Inventory.list(), # symchronizes Inventory Item
-		"rotation":0,
-		#"firing":false,
-		"current_angle": 0,
-		"rewspawn_time":1000,
-	}},
+		"pos": {"x": 0, "y":0}, # updated positional data, 
+		"vel":{"x": 0, "y": 0},
+		"fr": 0, #frame data
+		"in": 0, #input buffer
+		"hp" : 3,
+		"st" : 0, # AN array of state s for Roll Back Networking Prediction would be ideal
+		"rd": {"x": 0, "y": 0},
+		"dx": 0, # boolean converted to integer for smaller packet size
+		"up": 0,  # Stores Present Update ID Across All Clients #
+		"wa": "",#[Wallet.address], # wallet Address and ID
+		"ai": 0,
+		"sc": 0,#[Wallet.smart_contract_addr, Wallet._app_id, Wallet._app_args], # Arrays As it will only be one Smart COntract
+		"kc": 0,
+		"inv": Inventory.jsonify(), # symchronizes Inventory Item,
+		"rt":60,
+		"hash" : "" # Arrays because hash data is discarded eventually
+	}}
 	
-	"hash" : "" # Arrays because hash data is discarded eventually
-	} 
+	
+	}
+
 
 
 # Refactored to A Simulation Singleton on Nov 20, 23
@@ -100,14 +98,14 @@ func simulate(id : String, player : Player_v2_networking ):
 		# SHould implement position translations using the Networking frame buffer
 		#player.move_and_slide(Vector2(float(Networking.player_info["peer id"][id]["velocity"]["x"]),float(Networking.player_info["peer id"][id]["velocity"]["y"]))
 		# Data packet Lost
-		player.move_and_slide(Vector2(float(Simulation.player_info["peer id"][id]["velocity"]["x"]), float(Simulation.player_info["peer id"][id]["velocity"]["y"])))
+		player.move_and_slide(Vector2(float(Simulation.player_info["peer id"][id]["vel"]["x"]), float(Simulation.player_info["peer id"][id]["vel"]["y"])))
 		
 		
-		player.set_position(Vector2(float(Simulation.player_info["peer id"][id]["position"]["x"]), float(Simulation.player_info["peer id"][id]["position"]["y"])))
+		player.set_position(Vector2(float(Simulation.player_info["peer id"][id]["pos"]["x"]), float(Simulation.player_info["peer id"][id]["pos"]["y"])))
 		
 		# facing
 		# should use input buffer instead
-		player.facing = Simulation.player_info["peer id"][id]["facing"]
+		#player.facing = Simulation.player_info["peer id"][id]["facing"]
 		
 		# State
 		
@@ -147,7 +145,9 @@ func _process(_delta):
 
 func _physics_process(_delta):
 
-	
+	"""
+	UNIMPLEMENTED SIMULATION LOGIC
+	"""
 	if SIMULATING_1: # Placeholder conditional boolean
 		"Multiplayer Enet"
 		
@@ -168,25 +168,25 @@ func _physics_process(_delta):
 			
 			#print(Networking.peer_ids)
 				#print(Networking.player_info["peer id"][i]["destroyed"]) # for debug purposes only
-				if bool(Networking.player_info["peer id"][i]["destroyed"]) == false:
+				if Networking.player_info["peer id"][i]["dx"] == 0:
 					continue
 				
 				
 				#synchronize positions for my peer
-				Networking.player_info["peer id"][1]["node"].pop_front().set_position(Networking.player_info["peer id"][i]["position"])
+				#Networking.player_info["peer id"][1]["node"].pop_front().set_position(Networking.player_info["peer id"][i]["position"])
 				
 				
-				var velocity_speed = 2
-				if int(Networking.player_info["peer id"][i]["velocity"]) != 0:
-					continue
+				#var velocity_speed = 2
+				#if int(Networking.player_info["peer id"][i]["velocity"]) != 0:
+				#	continue
 				
 				# Apply Impulse Simulation To Peer UD
 
 			#	pass
-				if Networking.player_info["peer id"][i]["rotation"] != 0:
-						if Networking.player_info["peer id"][i]["rotation"] < 0:
-							# More Impulse Calculation
-							pass
+				#if Networking.player_info["peer id"][i]["rotation"] != 0:
+				#		if Networking.player_info["peer id"][i]["rotation"] < 0:
+				#			# More Impulse Calculation
+				#			pass
 
 				"""
 				KEEP PLAYER WITHIN BOUNDARIES
@@ -445,23 +445,23 @@ remote func pi(id : int,player_data : PoolByteArray):
 				"Data to debug"
 				
 				#Position
-				print_debug("Positional Data: ",i["peer id"][id_as_string]["position"])
+				print_debug("Positional Data: ",i["peer id"][id_as_string]["pos"])
 				
 				# Velocity
-				print_debug("Positional Data: ",i["peer id"][id_as_string]["velocity"])
+				print_debug("Positional Data: ",i["peer id"][id_as_string]["vel"])
 				
 				
 				# Input Buffer
-				print_debug("Input Buffer: ",i["peer id"][id_as_string]["input"])
+				print_debug("Input Buffer: ",i["peer id"][id_as_string]["in"])
 				
 				# Facing
-				print_debug("Facing: ",i["peer id"][id_as_string]["facing"])
+				# use input buffer instead 
 				
 				# Update ID
-				print_debug("Update ID: ",i["peer id"][id_as_string]["updates"])
+				print_debug("Update ID: ",i["peer id"][id_as_string]["up"])
 				
 				# Frame Data
-				print_debug("Frame: ",i["peer id"][id_as_string]["frames"], "/", "Server Frame :", get_frame_counter())
+				print_debug("Frame: ",i["peer id"][id_as_string]["fr"], "/", "Server Frame :", get_frame_counter())
 				
 					
 				# Registers the Player Connected Peer ID Locally if not registered
@@ -470,25 +470,21 @@ remote func pi(id : int,player_data : PoolByteArray):
 					# Register New Player Info
 					
 					player_info["peer id"][id_as_string] = {
-					"position": i["peer id"][id_as_string]["position"], # updated positional data, 
-					"frames": 0, #frame data
-					"input" : 0,
-					"hitpoints" : 3,
-					"facing": 0,
-					"state" : [], # AN array of state s for Roll Back Networking Prediction would be ideal
-					"roll dir": [],
-					"destroyed": 0,
-					"updates": 0,  # Stores Present Update ID Across All Clients # Depreciated
-					"wallet addr": [0],
-					"asset id": {},
-					"smart contract": [], # Arrays As it will only be one Smart COntract
-					"kill Count": 0,
-					"inventory": {},
-					"velocity":{"x": 0, "y": 0},
-					"rotation":0,
-					"firing":0,
-					"current_angle": 0,
-					"rewspawn_time":1000,
+					"pos": i["peer id"][id_as_string]["pos"], # updated positional data, 
+					"vel":{"x": 0, "y": 0},
+					"fr": 0, #frame data
+					"in" : 0,
+					"hp" : 3,
+					"st" : 0, # AN array of state s for Roll Back Networking Prediction would be ideal
+					"rd": {"x": 0, "y": 0},
+					"dx": 0,
+					"up": 0,  # Stores Present Update ID Across All Clients # Depreciated
+					"wa": "",
+					"ai": 0,
+					"sc": [], # Arrays As it will only be one Smart COntract
+					"kc": 0,
+					"inv": "",
+					"rt":60,
 					"hash" : ""
 					
 					}
@@ -496,8 +492,8 @@ remote func pi(id : int,player_data : PoolByteArray):
 				
 			"Player Variables"
 			# Positional Data
-			print_debug("Updating Player Information for peer ",id_as_string, " from " ,player_info["peer id"][id_as_string]["position"], " to " , i["peer id"][id_as_string]["position"])
-			player_info["peer id"][id_as_string]["position"] = i["peer id"][id_as_string]["position"] #WORKS
+			print_debug("Updating Player Information for peer ",id_as_string, " from " ,player_info["peer id"][id_as_string]["pos"], " to " , i["peer id"][id_as_string]["pos"])
+			player_info["peer id"][id_as_string]["pos"] = i["peer id"][id_as_string]["pos"] #WORKS
 			
 			# Emit Signal
 			#emit_signal("PlayerInput", id_as_string) # Buggy Signal

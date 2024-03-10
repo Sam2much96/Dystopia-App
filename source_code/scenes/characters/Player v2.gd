@@ -130,25 +130,23 @@ func _ready():
 	# Save Player Details
 	#CLient Peer Details Locally
 	Simulation.player_info["peer id"][peer_id] = {
-		"position": {"x": 0, "y":0}, # updated positional data, 
-		"velocity":{"x": 0, "y": 0},
-		"frames": 0, #frame data
-		"input": 0, #input buffer
-		"hitpoints" : 3,
-		"facing": 0,
-		"state" : 0, # AN array of state s for Roll Back Networking Prediction would be ideal
-		"roll dir": {"x": 0, "y": 0},
-		"destroyed": 0, # boolean converted to integer for smaller packet size
-		"updates": 0,  # Stores Present Update ID Across All Clients #
-		"wallet addr": 0,#[Wallet.address], # wallet Address and ID
-		"asset id": 0,
-		"smart contract": 0,#[Wallet.smart_contract_addr, Wallet._app_id, Wallet._app_args], # Arrays As it will only be one Smart COntract
-		"kill Count": 0,
-		"inventory": 0, # symchronizes Inventory Item
-		"rotation":0,
-		#"firing":false,
-		"current_angle": 0,
-		"rewspawn_time":1000,}
+		"pos": {"x": 0, "y":0}, # updated positional data, 
+		"vel":{"x": 0, "y": 0},
+		"fr": 0, #frame data
+		"in": 0, #input buffer
+		"hp" : 3,
+		"st" : 0, # AN array of state s for Roll Back Networking Prediction would be ideal
+		"rd": {"x": 0, "y": 0},
+		"dx": 0, # boolean converted to integer for smaller packet size
+		"up": 0,  # Stores Present Update ID Across All Clients #
+		"wa": 0,#[Wallet.address], # wallet Address and ID
+		"ai": 0,
+		"sc": 0,#[Wallet.smart_contract_addr, Wallet._app_id, Wallet._app_args], # Arrays As it will only be one Smart COntract
+		"kc": 0,
+		"inv": Inventory.jsonify(), # symchronizes Inventory Item
+		"rt":60,
+		"hash": ""
+		}
 	
 	print_debug("Networking Peer ID: ", Simulation.get_all_player_ids())
 	
@@ -404,35 +402,64 @@ func update_player_info():
 	
 	# Updates player Info to Server Object for Broadcasting
 	
-	Simulation.player_info["peer id"][peer_id]["facing"] = self.facing
+	#Simulation.player_info["peer id"][peer_id]["facing"] = self.facing
 	#print(Networking.peer_ids) # for debug purposes only
 	
 	# Update Positional Data
-	Simulation.player_info["peer id"][peer_id]["position"]["x"] = self.position.x
-	Simulation.player_info["peer id"][peer_id]["position"]["y"] = self.position.y
+	Simulation.player_info["peer id"][peer_id]["pos"]["x"] = self.position.x
+	Simulation.player_info["peer id"][peer_id]["pos"]["y"] = self.position.y
 	
 	# Update Velocity
-	Simulation.player_info["peer id"][peer_id]["velocity"]["x"] = self.linear_vel.x
-	Simulation.player_info["peer id"][peer_id]["velocity"]["y"] = self.linear_vel.y
+	Simulation.player_info["peer id"][peer_id]["vel"]["x"] = self.linear_vel.x
+	Simulation.player_info["peer id"][peer_id]["vel"]["y"] = self.linear_vel.y
 	
 	# update Update ID
 	
 	# update frame Data
-	Simulation.player_info["peer id"][peer_id]["frames"] = Simulation.get_frame_counter()
+	Simulation.player_info["peer id"][peer_id]["fr"] = Simulation.get_frame_counter()
 	
-	Simulation.player_info["peer id"][peer_id]["updates"] = self.update_id
-	
-	
+
 	# update Input buffer
-	Simulation.player_info["peer id"][peer_id]["input"] = GlobalInput._get_input_buffer()
+	Simulation.player_info["peer id"][peer_id]["in"] = GlobalInput._get_input_buffer()
 	
-	#print_debug(Networking.player_info["peer id"][peer_id]["frames"])
+	# Hitpoints
+	Simulation.player_info["peer id"][peer_id]["hp"] = self.hitpoints
+	
+	# State
+	# implement state buffer for player script
+	Simulation.player_info["peer id"][peer_id]["st"] = self.state
+	
+	# roll direction
+	# is useable? 
+	# requires simulation test
+	Simulation.player_info["peer id"][peer_id]["rd"] = self.roll_direction
+	
+	# despawn
+	Simulation.player_info["peer id"][peer_id]["dx"] = 1 # false
+	
+	# Update ID
+	#
+	Simulation.player_info["peer id"][peer_id]["up"] = self.update_id
+	
+	# Wallet Address Requires Third party integration login
+	Simulation.player_info["peer id"][peer_id]["wa"] = ""
+	
+	# Asset ID
+	Simulation.player_info["peer id"][peer_id]["ai"] = 0 # Requires 3rd party integration
+	
+	# Kill COunt
+	Simulation.player_info["peer id"][peer_id]["kc"] = Globals.kill_count
 	
 	
-	# Update state Machine
+	# Inventory
+	Simulation.player_info["peer id"][peer_id]["inv"] = Inventory.jsonify()
 	
-	# Update Inventory
+	# Respawn Time
+	Simulation.player_info["peer id"][peer_id]["rt"] = 60
 	
+	# 
+	# Hash
+	Simulation.player_info["peer id"][peer_id]["hash"] = ""
 	
 	
 	# Update Player Info Data as poolbyte

@@ -243,4 +243,4 @@ func roll_direction_calculation()-> Vector2:
 # Returns an Input Buffer for simulations calculations
 # concats the input buffer array into a string
 func _get_input_buffer() -> int:
-	return int(Utils.array_to_string(input_buffer))
+	return int(Utils.array_to_string(input_buffer.duplicate()))

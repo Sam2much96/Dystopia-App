@@ -46,8 +46,7 @@ var id_as_string : String #= Networking.id_as_string
 var player : Player_v2_networking
 
 
-export (Dictionary) var player_info : Dictionary = {
-	"peer id": { 0 : { # server peer id
+export (Dictionary) var player_info : Dictionary = { 0 : { # server peer id
 		"pos": {"x": 0, "y":0}, # updated positional data, 
 		"vel":{"x": 0, "y": 0},
 		"fr": 0, #frame data
@@ -67,7 +66,7 @@ export (Dictionary) var player_info : Dictionary = {
 	}}
 	
 	
-	}
+	
 
 
 
@@ -87,7 +86,7 @@ func simulate(id : String, player : Player_v2_networking ):
 
 	# SHould instead be a physics process method
 	
-	if Simulation.player_info["peer id"].has(id):
+	if Simulation.player_info.has(id):
 			
 			
 
@@ -98,10 +97,12 @@ func simulate(id : String, player : Player_v2_networking ):
 		# SHould implement position translations using the Networking frame buffer
 		#player.move_and_slide(Vector2(float(Networking.player_info["peer id"][id]["velocity"]["x"]),float(Networking.player_info["peer id"][id]["velocity"]["y"]))
 		# Data packet Lost
-		player.move_and_slide(Vector2(float(Simulation.player_info["peer id"][id]["vel"]["x"]), float(Simulation.player_info["peer id"][id]["vel"]["y"])))
+		player.move_and_slide(Vector2(float(Simulation.player_info[id]["vel"]["x"]), float(Simulation.player_info[id]["vel"]["y"])))
 		
+		var tween := create_tween()
+		tween.tween_property(player, "global_position", Vector2(float(Simulation.player_info[id]["pos"]["x"]), float(Simulation.player_info[id]["pos"]["y"])), 0.5)
 		
-		player.set_position(Vector2(float(Simulation.player_info["peer id"][id]["pos"]["x"]), float(Simulation.player_info["peer id"][id]["pos"]["y"])))
+		#player.set_position(Vector2(float(Simulation.player_info[id]["pos"]["x"]), float(Simulation.player_info[id]["pos"]["y"])))
 		
 		# facing
 		# should use input buffer instead
@@ -168,7 +169,7 @@ func _physics_process(_delta):
 			
 			#print(Networking.peer_ids)
 				#print(Networking.player_info["peer id"][i]["destroyed"]) # for debug purposes only
-				if Networking.player_info["peer id"][i]["dx"] == 0:
+				if Networking.player_info[i]["dx"] == 0:
 					continue
 				
 				
@@ -191,23 +192,24 @@ func _physics_process(_delta):
 				"""
 				KEEP PLAYER WITHIN BOUNDARIES
 				"""
-				
+				# refactor to use simulation function instead
+				# player Networking Node direct placement is depreciated
 				# Debugging
 		
-				v = Vector2(Networking.player_info["peer id"][i]["position"])
+				v = Vector2(Networking.player_info[i]["pos"])
 				
 				if v.x > world_radius:
 					v.x = world_radius
-					Networking.player_info["peer id"][i]["node"].pop_front().set_position(v)
+					Networking.player_info[i]["node"].pop_front().set_position(v)
 				if v.x < -world_radius:
 					v.x = -world_radius
-					Networking.player_info["peer id"][i]["node"].pop_front().set_position(v)
+					Networking.player_info[i]["node"].pop_front().set_position(v)
 				if v.y > world_radius:
 					v.y = world_radius
-					Networking.player_info["peer id"][i]["node"].pop_front().set_position(v)
+					Networking.player_info[i]["node"].pop_front().set_position(v)
 				if v.y < -world_radius:
 					v.y = -world_radius
-					Networking.player_info["peer id"][i]["node"].pop_front().set_position(v)
+					Networking.player_info[i]["node"].pop_front().set_position(v)
 	#
 
 	
@@ -234,7 +236,7 @@ func _physics_process(_delta):
 				continue
 				
 				#print_debug(i)
-			print(Networking.player_info["peer id"][i])
+			print(Networking.player_info[i])
 			
 			# BUGGY:
 			#if Networking.player_info["peer id"][i]["respawn_time"] != -999:
@@ -355,7 +357,7 @@ func register_player(id : int)-> Dictionary:
 	# (1) Optimize Dictionary size to Max 1000 bytes
 	# (2) Implewment Data Optimization for  Data packet (gdunzip/zip)
 	var player_info : Dictionary = {
-		"peer id": { id : { # server peer id
+		 id : { # server peer id
 		"position": {"x": 0, "y":0}, # updated positional data, 
 		"velocity":{"x": 0, "y": 0},
 		"frames": 0, #frame data
@@ -375,14 +377,15 @@ func register_player(id : int)-> Dictionary:
 		#"firing":false,
 		"current_angle": 0,
 		"rewspawn_time":1000,
-	}},
+		"hash" : "" # Arrays because hash data is discarded eventually
+	}}
 	
-	"hash" : "" # Arrays because hash data is discarded eventually
-	} 
+	
+	 
 	return player_info
 
 func get_all_player_ids()-> Array:
-	return Simulation.player_info["peer id"].keys()
+	return Simulation.player_info.keys()
 
 static func set_position(x : Vector2):
 	pass
@@ -445,32 +448,32 @@ remote func pi(id : int,player_data : PoolByteArray):
 				"Data to debug"
 				
 				#Position
-				print_debug("Positional Data: ",i["peer id"][id_as_string]["pos"])
+				print_debug("Positional Data: ",i[id_as_string]["pos"])
 				
 				# Velocity
-				print_debug("Positional Data: ",i["peer id"][id_as_string]["vel"])
+				print_debug("Positional Data: ",i[id_as_string]["vel"])
 				
 				
 				# Input Buffer
-				print_debug("Input Buffer: ",i["peer id"][id_as_string]["in"])
+				print_debug("Input Buffer: ",i[id_as_string]["in"])
 				
 				# Facing
 				# use input buffer instead 
 				
 				# Update ID
-				print_debug("Update ID: ",i["peer id"][id_as_string]["up"])
+				print_debug("Update ID: ",i[id_as_string]["up"])
 				
 				# Frame Data
-				print_debug("Frame: ",i["peer id"][id_as_string]["fr"], "/", "Server Frame :", get_frame_counter())
+				print_debug("Frame: ",i[id_as_string]["fr"], "/", "Server Frame :", get_frame_counter())
 				
 					
 				# Registers the Player Connected Peer ID Locally if not registered
-				if not player_info["peer id"].has(id_as_string):
+				if not player_info.has(id_as_string):
 					
 					# Register New Player Info
 					
-					player_info["peer id"][id_as_string] = {
-					"pos": i["peer id"][id_as_string]["pos"], # updated positional data, 
+					player_info[id_as_string] = {
+					"pos": i[id_as_string]["pos"], # updated positional data, 
 					"vel":{"x": 0, "y": 0},
 					"fr": 0, #frame data
 					"in" : 0,
@@ -492,8 +495,8 @@ remote func pi(id : int,player_data : PoolByteArray):
 				
 			"Player Variables"
 			# Positional Data
-			print_debug("Updating Player Information for peer ",id_as_string, " from " ,player_info["peer id"][id_as_string]["pos"], " to " , i["peer id"][id_as_string]["pos"])
-			player_info["peer id"][id_as_string]["pos"] = i["peer id"][id_as_string]["pos"] #WORKS
+			print_debug("Updating Player Information for peer ",id_as_string, " from " ,player_info[id_as_string]["pos"], " to " , i[id_as_string]["pos"])
+			player_info[id_as_string]["pos"] = i[id_as_string]["pos"] #WORKS
 			
 			# Emit Signal
 			#emit_signal("PlayerInput", id_as_string) # Buggy Signal

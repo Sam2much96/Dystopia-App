@@ -129,7 +129,7 @@ func _ready():
 	
 	# Save Player Details
 	#CLient Peer Details Locally
-	Simulation.player_info["peer id"][peer_id] = {
+	Simulation.player_info[peer_id] = {
 		"pos": {"x": 0, "y":0}, # updated positional data, 
 		"vel":{"x": 0, "y": 0},
 		"fr": 0, #frame data
@@ -176,9 +176,9 @@ func _ready():
 		
 
 	# Error Catcher 2
-	if Simulation.player_info["peer id"].empty():
-		Simulation.player_info["peer id"] = {peer_id : {}}
-		print_debug(Simulation.player_info["peer id"])# For Debug Purposes ONly
+	if Simulation.player_info.keys().empty():
+		Simulation.player_info = {peer_id : {}}
+		print_debug(Simulation.player_info.keys())# For Debug Purposes ONly
 
 
 	" Connects to the Dialogue System"
@@ -368,7 +368,7 @@ func _physics_process(_delta):
 	# Simulation Logic
 	if is_network_master():
 	
-		if Simulation.player_info["peer id"].keys().size() > 1:
+		if Simulation.player_info.keys().size() > 1:
 			pass
 
 
@@ -406,60 +406,60 @@ func update_player_info():
 	#print(Networking.peer_ids) # for debug purposes only
 	
 	# Update Positional Data
-	Simulation.player_info["peer id"][peer_id]["pos"]["x"] = self.position.x
-	Simulation.player_info["peer id"][peer_id]["pos"]["y"] = self.position.y
+	Simulation.player_info[peer_id]["pos"]["x"] = self.position.x
+	Simulation.player_info[peer_id]["pos"]["y"] = self.position.y
 	
 	# Update Velocity
-	Simulation.player_info["peer id"][peer_id]["vel"]["x"] = self.linear_vel.x
-	Simulation.player_info["peer id"][peer_id]["vel"]["y"] = self.linear_vel.y
+	Simulation.player_info[peer_id]["vel"]["x"] = self.linear_vel.x
+	Simulation.player_info[peer_id]["vel"]["y"] = self.linear_vel.y
 	
 	# update Update ID
 	
 	# update frame Data
-	Simulation.player_info["peer id"][peer_id]["fr"] = Simulation.get_frame_counter()
+	Simulation.player_info[peer_id]["fr"] = Simulation.get_frame_counter()
 	
 
 	# update Input buffer
-	Simulation.player_info["peer id"][peer_id]["in"] = GlobalInput._get_input_buffer()
+	Simulation.player_info[peer_id]["in"] = GlobalInput._get_input_buffer()
 	
 	# Hitpoints
-	Simulation.player_info["peer id"][peer_id]["hp"] = self.hitpoints
+	Simulation.player_info[peer_id]["hp"] = self.hitpoints
 	
 	# State
 	# implement state buffer for player script
-	Simulation.player_info["peer id"][peer_id]["st"] = self.state
+	Simulation.player_info[peer_id]["st"] = self.state
 	
 	# roll direction
 	# is useable? 
 	# requires simulation test
-	Simulation.player_info["peer id"][peer_id]["rd"] = self.roll_direction
+	Simulation.player_info[peer_id]["rd"] = self.roll_direction
 	
 	# despawn
-	Simulation.player_info["peer id"][peer_id]["dx"] = 1 # false
+	Simulation.player_info[peer_id]["dx"] = 1 # false
 	
 	# Update ID
 	#
-	Simulation.player_info["peer id"][peer_id]["up"] = self.update_id
+	Simulation.player_info[peer_id]["up"] = self.update_id
 	
 	# Wallet Address Requires Third party integration login
-	Simulation.player_info["peer id"][peer_id]["wa"] = ""
+	Simulation.player_info[peer_id]["wa"] = ""
 	
 	# Asset ID
-	Simulation.player_info["peer id"][peer_id]["ai"] = 0 # Requires 3rd party integration
+	Simulation.player_info[peer_id]["ai"] = 0 # Requires 3rd party integration
 	
 	# Kill COunt
-	Simulation.player_info["peer id"][peer_id]["kc"] = Globals.kill_count
+	Simulation.player_info[peer_id]["kc"] = Globals.kill_count
 	
 	
 	# Inventory
-	Simulation.player_info["peer id"][peer_id]["inv"] = Inventory.jsonify()
+	Simulation.player_info[peer_id]["inv"] = Inventory.jsonify()
 	
 	# Respawn Time
-	Simulation.player_info["peer id"][peer_id]["rt"] = 60
+	Simulation.player_info[peer_id]["rt"] = 60
 	
 	# 
 	# Hash
-	Simulation.player_info["peer id"][peer_id]["hash"] = ""
+	Simulation.player_info[peer_id]["hash"] = ""
 	
 	
 	# Update Player Info Data as poolbyte

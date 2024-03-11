@@ -644,13 +644,13 @@ Globals="*res://singletons/Globals.gd"
 Music="*res://singletons/Music.tscn"
 Networking="*res://singletons/Networking.tscn"
 Utils="*res://singletons/Utils.gd"
-Simulation="*res://singletons/Simulation.gd"
-GlobalInput="*res://singletons/Input.gd"
 GlobalAnimation="*res://singletons/GlobalAnimationPlayer.tscn"
 Comics_v6="*res://singletons/Comics.v6.gd"
 Wallet="*res://scenes/Wallet/Wallet.gd"
 DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
 AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
+Simulation="*res://singletons/Simulation.tscn"
+GlobalInput="*res://singletons/Input.tscn"
 
 [debug]
 

@@ -60,7 +60,9 @@ custom_fonts/font = ExtResource( 2 )
 text = "Watch Afro Anime"
 
 [node name="Dialog_box" parent="." instance=ExtResource( 6 )]
-margin_right = 2381.0
+margin_top = 988.529
+margin_right = 3405.0
+margin_bottom = 1162.53
 
 [node name="back" type="Button" parent="."]
 margin_left = 17.8381

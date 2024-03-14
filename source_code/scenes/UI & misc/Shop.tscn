@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://fonts/stats.tres" type="DynamicFont" id=2]
 [ext_resource path="res://scenes/cinematics/cinematics V2.gd" type="Script" id=3]
 [ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/UI & misc/Youtube_Thumbnail.gd" type="Script" id=7]
 
 [node name="Shop" type="Control"]
 anchor_right = 1.0
@@ -24,42 +23,28 @@ margin_top = -826.385
 margin_right = 150.662
 margin_bottom = -215.385
 rect_scale = Vector2( 2.8, 2.8 )
+alignment = 1
 
 [node name="episode" type="Button" parent="africa icon/VBoxContainer"]
+margin_top = 184.0
 margin_right = 567.0
-margin_bottom = 78.0
+margin_bottom = 262.0
 custom_fonts/font = ExtResource( 4 )
 text = " watch Ep 1"
 flat = true
 
-[node name="behind the scenes" type="Button" parent="africa icon/VBoxContainer"]
-margin_top = 82.0
-margin_right = 567.0
-margin_bottom = 160.0
-custom_fonts/font = ExtResource( 4 )
-text = "Behind the scenes"
-flat = true
-
 [node name="animatic" type="Button" parent="africa icon/VBoxContainer"]
-margin_top = 164.0
+margin_top = 266.0
 margin_right = 567.0
-margin_bottom = 242.0
+margin_bottom = 344.0
 custom_fonts/font = ExtResource( 4 )
 text = " watch Animatic"
 flat = true
 
-[node name="merchandise" type="Button" parent="africa icon/VBoxContainer"]
-margin_top = 246.0
-margin_right = 567.0
-margin_bottom = 324.0
-custom_fonts/font = ExtResource( 4 )
-text = "merch"
-flat = true
-
 [node name="guide book" type="Button" parent="africa icon/VBoxContainer"]
-margin_top = 328.0
+margin_top = 348.0
 margin_right = 567.0
-margin_bottom = 406.0
+margin_bottom = 426.0
 custom_fonts/font = ExtResource( 4 )
 text = "Guidebook"
 flat = true
@@ -75,15 +60,7 @@ custom_fonts/font = ExtResource( 2 )
 text = "Watch Afro Anime"
 
 [node name="Dialog_box" parent="." instance=ExtResource( 6 )]
-margin_top = 988.529
-margin_right = 1357.0
-margin_bottom = 1162.53
-
-[node name="YoutubeThumbnail" type="TextureRect" parent="."]
-visible = false
-margin_right = 288.0
-margin_bottom = 288.0
-script = ExtResource( 7 )
+margin_right = 2381.0
 
 [node name="back" type="Button" parent="."]
 margin_left = 17.8381
@@ -97,9 +74,7 @@ flat = true
 
 [node name="Position2D" type="Position2D" parent="."]
 
-[connection signal="pressed" from="africa icon/VBoxContainer/episode" to="." method="_on_watch_anime_pressed"]
-[connection signal="pressed" from="africa icon/VBoxContainer/behind the scenes" to="." method="_on_watch_anime3_pressed"]
-[connection signal="pressed" from="africa icon/VBoxContainer/animatic" to="." method="_on_watch_anime2_pressed"]
-[connection signal="pressed" from="africa icon/VBoxContainer/merchandise" to="." method="_on_watch_merch_pressed"]
+[connection signal="pressed" from="africa icon/VBoxContainer/episode" to="." method="_on_episode_pressed"]
+[connection signal="pressed" from="africa icon/VBoxContainer/animatic" to="." method="_on_animatic_pressed"]
 [connection signal="pressed" from="africa icon/VBoxContainer/guide book" to="." method="_on_watch_guidebook_pressed"]
 [connection signal="pressed" from="back" to="." method="_on_Button_pressed"]

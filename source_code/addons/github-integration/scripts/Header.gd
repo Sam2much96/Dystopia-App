@@ -13,7 +13,7 @@ extends Control
 
 class_name Headers
 
-export (String) var github_link = ""  # "https://github.com/fenix-hub/godot-engine.github-integration"
+export (String) var github_link =   "https://github.com"
 onready var github : TextureButton = $datas/github
 onready var notifications_btn : TextureButton = $datas/notifications
 onready var notifications_lbl : Label = $datas/notifications/VBoxContainer/NotificationsLbl
@@ -45,7 +45,7 @@ func set_darkmode(darkmode : bool):
 #	OS.shell_open("https://paypal.me/NSantilio?locale.x=it_IT")
 
 func _check_git():
-	return OS.shell_open(github_link)
+	return Networking.open_browser(github_link)
 
 func _notifications_opened():
 	if get_parent().Notifications.visible :

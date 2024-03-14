@@ -52,10 +52,8 @@ onready var game_menu : MarginContainer = get_node("MarginContainer")
 
 onready var _multiplayer = $MarginContainer/ScrollContainer/HSeparator/multiplayer
 
-#onready var anime : Button = $MarginContainer/ScrollContainer/HSeparator/anime
+onready var anime : Button = $MarginContainer/ScrollContainer/HSeparator/anime
 onready var practice : Button = $MarginContainer/ScrollContainer/HSeparator/practice
-#onready var github : Button = $MarginContainer/ScrollContainer/HSeparator/github # Depreciated
-#onready var wallet_ : Button = $MarginContainer/ScrollContainer/HSeparator/wallet
 onready var controls : Button = $MarginContainer/ScrollContainer/HSeparator/controls
 onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit"
 
@@ -63,7 +61,7 @@ onready var quit : Button = $"MarginContainer/ScrollContainer/HSeparator/quit"
 # Auto Scroll with Swipe Gestures
 onready var scroller : ScrollContainer= get_node("MarginContainer/ScrollContainer")
 
-onready var MenuButtons : Array = [comics,new_game, continue_game, _multiplayer, practice,controls, quit]
+onready var MenuButtons : Array = [comics,new_game, continue_game, _multiplayer, anime,practice,controls, quit]
 
 var counter : int = 0 # Stopis ooverflow of Upscaling Method
 

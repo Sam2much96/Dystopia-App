@@ -1235,7 +1235,7 @@ class Lobby extends Control:
 		join_button.set_disabled(true)
 		
 		#i/o
-		print("Waiting for player...")
+		print_debug("Waiting for player..."+ str(Networking.ip[0]))
 		
 		# Sets UI Status : text : String, status : DialogBox, isok : bool
 		_set_status("Waiting for players ..." + str(Networking.ip[0]) ,dialog_box ,true)
@@ -1329,3 +1329,5 @@ class NetworkedObject extends Area2D:
 		_speed = DEFAULT_SPEED
 
 
+func open_browser(url : String):
+	return OS.shell_open(url)

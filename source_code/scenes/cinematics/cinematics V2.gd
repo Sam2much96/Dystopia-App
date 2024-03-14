@@ -35,7 +35,8 @@ onready var animation : AnimationPlayer = $"animation player"
 onready var position2d : Position2D = $Position2D
 onready var node : Control = get_node("Node2D") #popup node for centering cinematics
 
-
+var anime_pilot : String = "https://github.com/Sam2much96/RenderChan/actions/runs/"
+var animatic : String = "https://youtu.be/uzDzAuJVHcI"
 
 onready var videoplayer : VideoPlayer = $VideoPlayer
 
@@ -300,7 +301,7 @@ class Function :
 
 func _on_watch_guidebook_pressed():
 	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
-	return OS.shell_open("https://github.com/Sam2much96/Dystopia-App/wiki")
+	return Networking.open_browser("https://github.com/Sam2much96/Dystopia-App/wiki")
 
 
 
@@ -309,3 +310,13 @@ func _on_watch_guidebook_pressed():
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name ==  "opening_cinematic":
 		_go_to_title()
+
+
+func _on_episode_pressed():
+	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
+	return Networking.open_browser(anime_pilot)
+
+
+func _on_animatic_pressed():
+	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
+	return Networking.open_browser(animatic)

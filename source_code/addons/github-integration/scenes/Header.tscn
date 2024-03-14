@@ -142,7 +142,6 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": true
 }
-github_link = "https://github.com/Sam2much96/RenderChan/actions/runs/"
 
 [node name="BG" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -155,7 +154,7 @@ anchor_bottom = 1.0
 
 [node name="VSeparator3" type="VSeparator" parent="datas"]
 margin_right = 8.0
-margin_bottom = 57.0
+margin_bottom = 48.0
 custom_constants/separation = 8
 custom_styles/separator = SubResource( 1 )
 
@@ -163,7 +162,7 @@ custom_styles/separator = SubResource( 1 )
 material = SubResource( 10 )
 margin_left = 12.0
 margin_right = 30.0
-margin_bottom = 57.0
+margin_bottom = 48.0
 rect_min_size = Vector2( 18, 18 )
 hint_tooltip = "Can't connect to GitHub API, check your internet connection or API status"
 size_flags_horizontal = 4
@@ -189,15 +188,15 @@ __meta__ = {
 [node name="VSeparator" type="VSeparator" parent="datas"]
 margin_left = 34.0
 margin_right = 34.0
-margin_bottom = 57.0
+margin_bottom = 48.0
 custom_constants/separation = 0
 custom_styles/separator = SubResource( 1 )
 
 [node name="version" type="Label" parent="datas"]
 margin_left = 38.0
-margin_top = 17.0
+margin_top = 13.0
 margin_right = 89.0
-margin_bottom = 39.0
+margin_bottom = 35.0
 hint_tooltip = "Version of this plugin: always check this plugin's GitHub repository for latest releases."
 mouse_filter = 1
 size_flags_horizontal = 0
@@ -207,7 +206,7 @@ text = "v 0.9.3"
 [node name="VSeparator5" type="VSeparator" parent="datas"]
 margin_left = 93.0
 margin_right = 101.0
-margin_bottom = 57.0
+margin_bottom = 48.0
 size_flags_horizontal = 0
 custom_constants/separation = 8
 custom_styles/separator = SubResource( 1 )
@@ -215,7 +214,7 @@ custom_styles/separator = SubResource( 1 )
 [node name="github" type="TextureButton" parent="datas"]
 margin_left = 105.0
 margin_right = 135.0
-margin_bottom = 57.0
+margin_bottom = 48.0
 rect_min_size = Vector2( 30, 0 )
 hint_tooltip = "Check the repository!"
 mouse_default_cursor_shape = 2
@@ -226,7 +225,7 @@ stretch_mode = 5
 [node name="VSeparator6" type="VSeparator" parent="datas"]
 margin_left = 139.0
 margin_right = 147.0
-margin_bottom = 57.0
+margin_bottom = 48.0
 size_flags_horizontal = 0
 custom_constants/separation = 8
 custom_styles/separator = SubResource( 1 )
@@ -234,7 +233,7 @@ custom_styles/separator = SubResource( 1 )
 [node name="VSeparator7" type="VSeparator" parent="datas"]
 margin_left = 151.0
 margin_right = 159.0
-margin_bottom = 57.0
+margin_bottom = 48.0
 size_flags_horizontal = 0
 custom_constants/separation = 8
 custom_styles/separator = SubResource( 1 )
@@ -242,16 +241,16 @@ custom_styles/separator = SubResource( 1 )
 [node name="VSeparator4" type="VSeparator" parent="datas"]
 margin_left = 163.0
 margin_right = 171.0
-margin_bottom = 57.0
+margin_bottom = 48.0
 size_flags_horizontal = 2
 custom_constants/separation = 8
 custom_styles/separator = SubResource( 1 )
 
 [node name="notifications" type="TextureButton" parent="datas"]
-margin_left = 1111.0
-margin_top = 9.0
-margin_right = 1149.0
-margin_bottom = 47.0
+margin_left = 855.0
+margin_top = 5.0
+margin_right = 893.0
+margin_bottom = 43.0
 rect_min_size = Vector2( 38, 38 )
 hint_tooltip = "You have no unread notifications"
 size_flags_horizontal = 4
@@ -281,17 +280,17 @@ align = 1
 valign = 2
 
 [node name="VSeparator8" type="VSeparator" parent="datas"]
-margin_left = 1153.0
-margin_right = 1158.0
-margin_bottom = 57.0
+margin_left = 897.0
+margin_right = 902.0
+margin_bottom = 48.0
 custom_constants/separation = 5
 custom_styles/separator = SubResource( 1 )
 
 [node name="user" type="Label" parent="datas"]
-margin_left = 1162.0
-margin_top = 17.0
-margin_right = 1198.0
-margin_bottom = 39.0
+margin_left = 906.0
+margin_top = 13.0
+margin_right = 942.0
+margin_bottom = 35.0
 hint_tooltip = "Version of this plugin: always check this plugin's GitHub repository for latest releases."
 mouse_filter = 1
 size_flags_horizontal = 8
@@ -300,9 +299,9 @@ text = "user"
 
 [node name="avatar" type="TextureRect" parent="datas"]
 material = ExtResource( 10 )
-margin_left = 1202.0
-margin_right = 1240.0
-margin_bottom = 57.0
+margin_left = 946.0
+margin_right = 984.0
+margin_bottom = 48.0
 rect_min_size = Vector2( 38, 38 )
 size_flags_horizontal = 4
 texture = ExtResource( 4 )
@@ -310,18 +309,18 @@ expand = true
 stretch_mode = 6
 
 [node name="Menu" type="MenuButton" parent="datas"]
-margin_left = 1244.0
-margin_right = 1268.0
-margin_bottom = 57.0
+margin_left = 988.0
+margin_right = 1012.0
+margin_bottom = 48.0
 mouse_default_cursor_shape = 2
 size_flags_vertical = 5
 icon = ExtResource( 5 )
 items = [ "Plugin Wiki", null, 0, false, false, 0, 0, null, "", false, "Log Out", ExtResource( 6 ), 0, false, false, 1, 0, null, "", false ]
 
 [node name="VSeparator2" type="VSeparator" parent="datas"]
-margin_left = 1272.0
-margin_right = 1280.0
-margin_bottom = 57.0
+margin_left = 1016.0
+margin_right = 1024.0
+margin_bottom = 48.0
 custom_constants/separation = 8
 custom_styles/separator = SubResource( 1 )
 

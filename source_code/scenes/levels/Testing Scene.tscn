@@ -58,4 +58,8 @@ rect_scale = Vector2( 2.48164, 2.48164 )
 
 [node name="Player" parent="." instance=ExtResource( 7 )]
 
-[node name="TouchInterface" parent="." instance=ExtResource( 2 )]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TouchInterface" parent="CanvasLayer" instance=ExtResource( 2 )]
+position = Vector2( -6.10352e-05, -3.05176e-05 )
+scale = Vector2( 1, 1 )

@@ -236,7 +236,7 @@ anims/VERTICAL_SCREEN = SubResource( 18 )
 
 [node name="Dialog_box" parent="." instance=ExtResource( 4 )]
 margin_top = 988.529
-margin_right = 997.0
+margin_right = 2021.0
 margin_bottom = 1162.53
 
 [connection signal="pressed" from="ui/ScrollContainer/grid/play" to="." method="_on_play_pressed"]

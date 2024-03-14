@@ -33,6 +33,11 @@ func _ready():
 	# warning-ignore:return_value_discarded
 	connect("body_entered", self, "_on_body_entered")
 	
+	# update current scene
+		#use current scene to trigger cinematic
+	Globals.update_curr_scene() 
+
+
 func _on_body_entered(body):
 	# Buggy not workinh
 	# Using timer node instead
@@ -62,24 +67,26 @@ func _on_body_entered(body):
 
 
 func _on_Timer_timeout():
+	#print_debug(Globals.curr_scene)
 	if  to_scene == "":
 		push_error("Error changing scenes: to_scene has no assigned scene")
 		return false
 		#Globals.prev_scene_spawnpoint = $spawnpoint.position 
-
-	"Loads Large Scene"
-	# creates a bug in the titlescreen
-	# depreciating until better exit parameters are fixed
-	#Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
-	#to_scene, 
-	#Globals.scene_resource, 
-	#Globals._o, 
-	#Globals.scene_loader, 
-	#Globals.loading_resource, 
-	#Globals.a, 
-	#Globals.b, 
-	#Globals.progress
-	#), get_tree())
+	
+	if Globals.curr_scene == "Overworld3D":
+		"Loads Large Scene"
+		print_debug("creates a bug in the titlescreen")
+		# depreciating until better exit parameters are fixed
+		Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
+		to_scene, 
+		Globals.scene_resource, 
+		Globals._o, 
+		Globals.scene_loader, 
+		Globals.loading_resource, 
+		Globals.a, 
+		Globals.b, 
+		Globals.progress
+		), get_tree())
 	
 	
 	#Music.play_track(Music.ui_sfx[0]) #plays ui sfx in a loop

@@ -14,7 +14,9 @@
 # (1) Refactor to use player controls
 # (2) Refactor to use Camera Shake fx to simulate player movement
 
-class_name FreeLookCamera extends Camera
+extends Camera
+
+class_name FreeLookCamera 
 
 # Modifier keys' speed multiplier
 const SHIFT_MULTIPLIER = 2.5

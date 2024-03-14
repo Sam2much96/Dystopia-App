@@ -38,12 +38,15 @@ var SIMULATING_1: bool = false
 var v : Vector2
 var world_radius : int
 var player_data : PoolByteArray
-var RawData : Array
+export (PoolByteArray) var RawData : PoolByteArray # Raw Data Sent Every Player Input
+export (PoolByteArray) var RawDataArray : Array # Raw Data Sent Every Player Input
 var id_as_string : String #= Networking.id_as_string
 
 
 # My Player Networking object
 var player : Player_v2_networking
+
+export (Array) var all_players = [] 
 
 
 export (Dictionary) var player_info : Dictionary = { 0 : { # server peer id
@@ -75,7 +78,7 @@ export (Dictionary) var player_info : Dictionary = { 0 : { # server peer id
 # Simulates player position on Kinematic body 2d
 #
 # SHould Implement Input Buffer into simulation Logic
-func simulate(id : String, player : Player_v2_networking ):
+func simulate(id : int, player : Player_v2_networking ):
 
 	"Server Simulation Logic"
 	# Refactored to A Simulation Singleton on Nov 20, 23
@@ -99,8 +102,12 @@ func simulate(id : String, player : Player_v2_networking ):
 		# Data packet Lost
 		player.move_and_slide(Vector2(float(Simulation.player_info[id]["vel"]["x"]), float(Simulation.player_info[id]["vel"]["y"])))
 		
-		var tween := create_tween()
+		"TWEEN ANIMATION"
+		var tween := create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 		tween.tween_property(player, "global_position", Vector2(float(Simulation.player_info[id]["pos"]["x"]), float(Simulation.player_info[id]["pos"]["y"])), 0.5)
+		
+		# PARALLEL ANIMATION
+		#tween.parallel().tween_property()
 		
 		#player.set_position(Vector2(float(Simulation.player_info[id]["pos"]["x"]), float(Simulation.player_info[id]["pos"]["y"])))
 		
@@ -294,6 +301,9 @@ func _physics_process(_delta):
 		
 
 
+
+
+
 class projectiles:
 	# THe Projectile Class's TimeStamp
 	var timestamp : float = 0
@@ -346,39 +356,37 @@ class Behaviour extends Reference:
 
 
 "Player Info"
-#
-# should store Non-threathening Crypto and Multiplayerinfo too
-# Data Integrity can be checked using hash
-# Stores Data FOr Synchronizing Player Data Among Multiple Peers
-# Should be converted to Json before sent over Network
-# Organize player Info for each client peer id. It should synchronize game states across player network mesh
+# Features: 
+# (1) should store Non-threathening Crypto and Multiplayerinfo too
+# (2) Data Integrity can be checked using hash
+# (3) Stores Data FOr Synchronizing Player Data Among Multiple Peers
+# (4) converted to poolbyte array before sent over Network
+# (5) synchronizes game states across player network mesh
 func register_player(id : int)-> Dictionary:
 	# To Do:
 	# (1) Optimize Dictionary size to Max 1000 bytes
 	# (2) Implewment Data Optimization for  Data packet (gdunzip/zip)
-	var player_info : Dictionary = {
-		 id : { # server peer id
-		"position": {"x": 0, "y":0}, # updated positional data, 
-		"velocity":{"x": 0, "y": 0},
-		"frames": 0, #frame data
-		"input": 0, #input buffer
-		"hitpoints" : 3,
-		"facing": 0,
-		"state" : 0, # AN array of state s for Roll Back Networking Prediction would be ideal
-		"roll dir": {"x": 0, "y": 0},
-		"destroyed": 0, # boolean converted to integer for smaller packet size
-		"updates": 0,  # Stores Present Update ID Across All Clients #
-		"wallet addr": 0,#[Wallet.address], # wallet Address and ID
-		"asset id": 0,
-		"smart contract": 0,#[Wallet.smart_contract_addr, Wallet._app_id, Wallet._app_args], # Arrays As it will only be one Smart COntract
-		"kill Count": 0,
-		"inventory": 0, # symchronizes Inventory Item
-		"rotation":0,
-		#"firing":false,
-		"current_angle": 0,
-		"rewspawn_time":1000,
+	
+	
+	player_info[id] = {
+		 #id : { # server peer id
+		"pos": {"x": 0, "y":0}, # updated positional data, 
+		"vel":{"x": 0, "y": 0},
+		"fr": 0, #frame data
+		"in": 0, #input buffer
+		"hp" : 3,
+		"st" : 0, # AN array of state s for Roll Back Networking Prediction would be ideal
+		"rd": {"x": 0, "y": 0},
+		"dx": 0, # boolean converted to integer for smaller packet size
+		"up": 0,  # Stores Present Update ID Across All Clients #
+		"wa": 0,#[Wallet.address], # wallet Address and ID
+		"ai": 0,
+		"sc": 0,#[Wallet.smart_contract_addr, Wallet._app_id, Wallet._app_args], # Arrays As it will only be one Smart COntract
+		"kc": 0,
+		"inv": Inventory.jsonify(), # symchronizes Inventory Item
+		"rt":60,
 		"hash" : "" # Arrays because hash data is discarded eventually
-	}}
+	}
 	
 	
 	 
@@ -406,7 +414,9 @@ remote func pi(id : int,player_data : PoolByteArray):
 	# Bug: Player positional data is not sent properly (Fixed)
 
 
-	"Server Logic"
+	"""
+	SERVER LOGIC
+	"""
 	# (1) Server receives player input from CLinet Peers
 	# (2) Server authenticates data packet
 	# (3) Server updates its records
@@ -426,6 +436,14 @@ remote func pi(id : int,player_data : PoolByteArray):
 		
 		#print(player_info) # for debug purposes only
 		
+		"Registers the Player Connected Peer ID Locally if not registered"
+		if not player_info.has(id):
+			
+			# Register New Player Info
+			
+			register_player(id) 
+			
+		
 		
 		
 		
@@ -433,20 +451,10 @@ remote func pi(id : int,player_data : PoolByteArray):
 		for i in Networking.poolByte2Array(player_data):
 			
 			if i != null:
-					#Returns a String. Converting to Dictionary
-					
-			#	RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary 
-				
-				
-				# Bug : Nerging Dictionaries may be overwrite positional data? 
-				# Fix : Set Overwrite to true for duplicate keys
-				
-				
-				#print ("I: ", i["peer id"][var2str(id)]["position"]) # works # for debug purposes only
-				#print ("I: ", i) # works # for debug purposes only
 				
 				"Data to debug"
-				
+				# Debugs the sent Data
+				# works
 				#Position
 				print_debug("Positional Data: ",i[id_as_string]["pos"])
 				
@@ -467,58 +475,24 @@ remote func pi(id : int,player_data : PoolByteArray):
 				print_debug("Frame: ",i[id_as_string]["fr"], "/", "Server Frame :", get_frame_counter())
 				
 					
-				# Registers the Player Connected Peer ID Locally if not registered
-				if not player_info.has(id_as_string):
-					
-					# Register New Player Info
-					
-					player_info[id_as_string] = {
-					"pos": i[id_as_string]["pos"], # updated positional data, 
-					"vel":{"x": 0, "y": 0},
-					"fr": 0, #frame data
-					"in" : 0,
-					"hp" : 3,
-					"st" : 0, # AN array of state s for Roll Back Networking Prediction would be ideal
-					"rd": {"x": 0, "y": 0},
-					"dx": 0,
-					"up": 0,  # Stores Present Update ID Across All Clients # Depreciated
-					"wa": "",
-					"ai": 0,
-					"sc": [], # Arrays As it will only be one Smart COntract
-					"kc": 0,
-					"inv": "",
-					"rt":60,
-					"hash" : ""
-					
-					}
 				
 				
 			"Player Variables"
+			
+			print_debug (player_info[id])
+			
 			# Positional Data
-			print_debug("Updating Player Information for peer ",id_as_string, " from " ,player_info[id_as_string]["pos"], " to " , i[id_as_string]["pos"])
-			player_info[id_as_string]["pos"] = i[id_as_string]["pos"] #WORKS
+			print_debug("Updating Player Information for peer ",id, " from " ,player_info[id]["pos"], " to " , i[id_as_string]["pos"])
+			player_info[id]["pos"] = i[id_as_string]["pos"] #WORKS
 			
 			# Emit Signal
 			#emit_signal("PlayerInput", id_as_string) # Buggy Signal
 			
-			"Simulates Player Posititional Data "
-			#player.poop(id_as_string)
-			simulate(id_as_string, player)
+			"""
 			
-
-			#Requires Debugging
-			#if key == "left":
-			#	Networking.player_info[id].facing = key
-			##	Networking.player_info[id].rotation = -1 if pressed else 0
-			#elif key == "right":
-			#	Networking.player_info[id].rotation = 1 if pressed else 0
-			#elif key == "up":
-			#	Networking.player_info[id].velocity = -1 if pressed else 0
-			#elif key == "down":
-			#	Networking.player_info[id].velocity = 1 if pressed else 0
-			#elif key == "fire":
-			#	Networking.player_info[id].firing = 1 if pressed else 0
-			#elif key == "attack":
-			##	
-			#else : pass
-
+			RUNS MULTIPLAYER SIMULATION 
+			
+			"""
+			
+			simulate(id, player)
+			

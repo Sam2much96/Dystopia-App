@@ -35,7 +35,7 @@ export(int) var GRAVITY = 0 # For Platforming Levels
 export(int) var ATTACK = 1 # For Item Equip
 export(int) var hitpoints = 3
 export(int) var pushback = 5000
-
+#export (Array) var state_buffer : Array # Useful For Multuiplayer Simulation
 export (Vector2) var linear_vel = Vector2()
 export (Vector2) var roll_direction = Vector2.DOWN
 

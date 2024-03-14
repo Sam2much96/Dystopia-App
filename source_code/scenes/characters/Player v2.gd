@@ -49,31 +49,6 @@ extends Player_v1_TopDown
 class_name Player_v2_networking
 
 
-
-
-
-#const WALK_SPEED = 350 # pixels per second
-#const ROLL_SPEED = 1000 # pixels per second
-#var hitpoints = 3
-
-#var linear_vel = Vector2()
-#var roll_direction = Vector2.DOWN
-
-#signal health_changed(current_hp)
-
-#export(String, "up", "down", "left", "right") var facing = "down"
-
-
-#var despawn_fx = preload("res://scenes/UI & misc/DespawnFX.tscn")
-#export (PackedScene) var blood_fx #= load("res://scenes/UI & misc/Blood_Splatter_FX.tscn")
-
-#var anim = ""
-#var new_anim = ""
-
-#enum { STATE_BLOCKED, STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, STATE_DIE, STATE_HURT }
-
-#export var state = STATE_IDLE
-
 #************ Scene Tree Objects *************#
 onready var camera = $camera #the player's camera
 onready var impact_fx = $Impact
@@ -129,24 +104,9 @@ func _ready():
 	
 	# Save Player Details
 	#CLient Peer Details Locally
-	Simulation.player_info[peer_id] = {
-		"pos": {"x": 0, "y":0}, # updated positional data, 
-		"vel":{"x": 0, "y": 0},
-		"fr": 0, #frame data
-		"in": 0, #input buffer
-		"hp" : 3,
-		"st" : 0, # AN array of state s for Roll Back Networking Prediction would be ideal
-		"rd": {"x": 0, "y": 0},
-		"dx": 0, # boolean converted to integer for smaller packet size
-		"up": 0,  # Stores Present Update ID Across All Clients #
-		"wa": 0,#[Wallet.address], # wallet Address and ID
-		"ai": 0,
-		"sc": 0,#[Wallet.smart_contract_addr, Wallet._app_id, Wallet._app_args], # Arrays As it will only be one Smart COntract
-		"kc": 0,
-		"inv": Inventory.jsonify(), # symchronizes Inventory Item
-		"rt":60,
-		"hash": ""
-		}
+	Simulation.register_player(peer_id)
+	
+	print_debug ("Client Peer Data ", Simulation.player_info[peer_id])
 	
 	print_debug("Networking Peer ID: ", Simulation.get_all_player_ids())
 	
@@ -154,13 +114,10 @@ func _ready():
 
 	# Create A Frame Buffer for Player Information
 	# From Simulaton
-	# Update Networking Player Info With Player Info
+	# Update SImulation Player Info With Player Info
 	# Works
-	#Networking.player_info["peer id"][peer_id] = Simulation.player_info
-		
 	
-	#Networking.player_info["peer id"][peer_id] ["node"].append(self)# NOt Needed
-	
+	# Make Player Global
 	Simulation.player = self
 	
 	print_debug("Initial Player Info Debug: ",Simulation.player_info)
@@ -171,71 +128,19 @@ func _ready():
 	# Error Catcher 1
 	#if peer_id == 0:
 	#	peer_id = get_tree().get_network_unique_id() # Defaults to Zero If Not Connected to MultiplayerENet
-
-	#for i in Networking.player_info:
-		
-
+	
+	
 	# Error Catcher 2
 	if Simulation.player_info.keys().empty():
 		Simulation.player_info = {peer_id : {}}
 		print_debug(Simulation.player_info.keys())# For Debug Purposes ONly
 
-
-	" Connects to the Dialogue System"
-	if not (
-			Dialogs.connect("dialog_started", self, "_on_dialog_started") == OK and
-			Dialogs.connect("dialog_ended", self, "_on_dialog_ended") == OK ):
-		printerr("Error connecting to dialog system")
-	
-	pass
-
-
-
 	# Connect SIgnals
 	# (1) Networking Singleton to SImulation SIngleton
 	if is_network_master():
 		
-		Networking.connect("pi", Simulation,"simulate", [peer_id, self])
-		print_debug("Simulation signal is connected: ",Networking.is_connected("pi", Simulation,"simulate"))
-
-
-func _process(delta : float):
-
-		
-	# BroadCasts player info to client peers from Host Devide
-	# 
-	# Delta Update counts up to Delta interval, and resets to zero when exceeding delta interval
-	# It also brodcasts player data to all remote peers from the server
-	# Allows the Server to Broadcast Player Data 
-	# To All Client Peers using pu remote function
-	
-	#if is_network_master(): #creates a bug on the Cluent device
-		# Raises up a Frame Counter
-	#frame_counter += delta
-		
-
-		
-		
-		# Checks the Spawning Boolean Every 60th Frame
-		# Called #very 60th Frame
-		# tEMPORARILY dISABLED FOR DEBUGGING
-	#if frame_counter % 6_000 == 0:
-			# BroadCasts Player Info to Each Client Peer suing the pu remote call
-			# Should Be Called From the Server Class Instead
-	#	Networking.broadcast_world_positions()
-
-	
-	# Resets Frame Counter
-	#if frame_counter >= 6_000:
-	#	frame_counter = 0
-
-	
-	"Clears the Frame Buffer"
-	# Prevents Memory overflow and increased bandwidth from large packet sizes
-	# Should ideally only clear up to the last two?
-	# Buggy
-	#if Networking.player_info["peer id"][peer_id]["state"].size() > 10:
-	#	Networking.player_info["peer id"][peer_id]["state"].clear()
+		Simulation.connect("pi", Simulation,"simulate", [peer_id, self])
+		print_debug("Simulation signal is connected: ",Simulation.is_connected("pi", Simulation,"simulate"))
 
 
 func _input(_event):
@@ -398,8 +303,12 @@ remote func player_joined(id : int, info):
 
 
 func update_player_info():
+	"""
+	UPDATES ALL PLAYER INFO TO A GLOBAL DICTIONARY
+	"""
 	update_id += 1
 	
+	print_debug("UPdate Player Debug: ",Simulation.player_info[peer_id])
 	# Updates player Info to Server Object for Broadcasting
 	
 	#Simulation.player_info["peer id"][peer_id]["facing"] = self.facing
@@ -463,8 +372,8 @@ func update_player_info():
 	
 	
 	# Update Player Info Data as poolbyte
-	# saves it to simulation Raw Data
-	Networking.array2poolByte([Simulation.player_info])
+	
+	Simulation.RawData = Networking.array2poolByte([Simulation.player_info])
 	
 	#print_debug(Networking.RawData) # for debug purposes only
 
@@ -485,7 +394,7 @@ remote func player_leaving(id : int):
 
 
 
-remote func player_hit_collision(body : Player_v2_networking):
+remote func player_hit_collision(id ,body : Player_v2_networking):
 	print("player got shot!")
 	for peer_id in Networking.player_info:
 		if Networking.player_info[peer_id].node == body:

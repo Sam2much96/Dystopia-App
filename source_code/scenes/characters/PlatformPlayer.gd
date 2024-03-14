@@ -19,7 +19,7 @@ extends Player
 
 class_name Player_v3_Platformer
 
-export (int) var speed = 1200
+export (int) var speed = 75
 export (int) var jump_speed = -1800
 export (int) var gravity = 4000
 
@@ -27,35 +27,28 @@ export (int) var gravity = 4000
 const max_air_jumps : int = 6
 var air_jump_counter : int = 0
 
-var velocity = Vector2.ZERO
+export (Vector2) var velocity = Vector2.ZERO
 
 # State Machine for Platform Player
 # Extends States from a Core Player Class
 
-
-func _input(event):
+func _physics_process(delta):
+	
+	# left & right
 	velocity.x = 0
 	
 	# Left & Right
 	if Input.is_action_pressed("move_right"):
-		velocity.x += speed
+		velocity.x += speed #* delta
 		
 		animation.play("walk_right")
 		
 	if Input.is_action_pressed("move_left"):
-		velocity.x -= speed
+		velocity.x -= speed #* delta
 		animation.play("walk_left")
 
 
-func _physics_process(delta):
-	
-	# Facing State machine for Platforming player
-	#	LEFT: 
-	#		_facing = "left"
-	#	RIGHT:
-	#		_facing = "right"
 
-	
 	# Gravity
 	velocity.y += gravity * delta
 	

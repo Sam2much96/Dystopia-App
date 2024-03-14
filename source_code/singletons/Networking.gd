@@ -675,9 +675,9 @@ func array2poolByte( data_from : Array) -> PoolByteArray:
 
 func poolByte2Array(data_from: PoolByteArray) -> Array:
 	if data_from.size() > 5:
-		Simulation.RawData = bytes2var(data_from, true)
+		Simulation.RawDataArray = bytes2var(data_from, true)
 		# Iterate through raw data
-		for i in Simulation.RawData:
+		for i in Simulation.RawDataArray:
 			#Returns a String. Converting to Dictionary
 			
 			RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary
@@ -741,46 +741,11 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 		#player_info["peer id"].merge(RawJson.get_result()["peer id"])
 		
 		print("I: ",i) # for debug purposes only
-		print("ao;bh;hdioadhfsiopdhg;oasdigdiopas'i")
-		# Debug All Connected Players Peer ID
-		#print_debug ("All Players: ",player_info["peer id"].keys()) #for debug purposes only
-		#print_debug(player_info["peer id"])
+		Simulation.player_info[Simulation.get_all_player_ids().pop_back()]["pos"] = i[id_as_string]["pos"]
 		
-		# Update Local Peer Data from peer Update
-		# Simplify this code bloc
-		#if player_info["peer id"].keys().size() > 1:
-		Simulation.player_info["peer id"][Simulation.get_all_player_ids().pop_back()]["pos"] = i["peer id"][id_as_string]["pos"]
-		
-		#print(player_info["peer id"].size()) # FOr debug purposes only
-	
-	#print ("Peer ID's: ",player_info["peer id"].keys()) # Peer ID's of the Connected CLient Peers with Respective Player info dictionaries
-	
 	# only works on client peer
 	peer_ids = Simulation.get_all_player_ids()
-	#print(player_info) # for debug purposes only
-	
-	# Peer ID's 1 needs to be emulated
-	
-	# Updates the Update Parameter for This Peer ID. 
-	# Is Called Remotely From a Peer
-	#print_debug (updates.get_string_from_utf8())
-	
-	# REwrite to instead Parse json
-#	download_json_(updates, "res://")
-	#Networking.player_info[id].updates[OS.get_ticks_msec()] = { position = pos, velocity = velocity, rotation = rotation }
-	
-	# Stops a Stack Overflow or by Eraci=sing Excess Updates over 10
-	#while len(Networking.player_info["peer id"][id].updates) > 10:
-	#	Networking.player_info[id].updates.erase(Networking.player_info[id]["updates"].keys()[0])
-	
-	
-	# Dont Update If Peer Destroyed
-	#if Networking.player_info[id].destroyed:
-	#	return
-	
-	
-	# Remote Update Particles
-	
+
 
 """
 PING
@@ -817,12 +782,7 @@ remote func broadcast_world_positions():
 		
 		
 		rpc_unreliable_id(peer_id, "pu", peer_id, update_id, array2poolByte([Simulation.player_info])) # pu call is buggy cuz of peer id error
-	
-	#	for i in player_info["peer id"]:
-	#		print (i.keys())
-			
 		update_id += 1
-		
 
 
 class Downloader extends Node:
@@ -1224,18 +1184,10 @@ class Lobby extends Control:
 			# Debug Loobby Map Instance
 			#print_debug (Lobby.has_node(Map), is_instance_valid(Map))
 			
-			#if Lobby.has_node(Map):
-			# Erase immediately, otherwise network might show
-			# errors (this is why we connected deferred above).
-			#Lobby.get_node(Map).free()
 			Lobby.change_scene_to(error)
 			
 			Map.queue_free()
 			
-			#var _map = Lobby.get_nodes_in_group("Multiplayer").pop_front()
-			#Map.free()
-			#_map.free()
-			# UI SHow
 			Networking.UserInterface.show()
 
 		# Update UI when current Game Ends

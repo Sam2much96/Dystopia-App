@@ -43,9 +43,10 @@ noise_threshold = 0.05
 position = Vector2( 315.94, -9728.72 )
 scale = Vector2( 1.1107, 1.1107 )
 script = ExtResource( 6 )
-speed = 1200
+speed = 75
 jump_speed = -1800
 gravity = 4000
+velocity = Vector2( 0, 0 )
 
 [node name="Exit" type="Area2D" parent="Dunes_Procedural"]
 monitorable = false

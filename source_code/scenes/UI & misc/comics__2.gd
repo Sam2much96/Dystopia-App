@@ -32,12 +32,28 @@ var size_A : Vector2 = Vector2(1772,1871)
 var size_B : Vector2 = Vector2(2490, 6289)
 
 # UI buttons
-onready var _back : Button = get_parent().get_parent().get_parent().get_node("back")
+#onready var _back : Button = get_parent().get_parent().get_parent().get_node("back")
+onready var chap_1 : TextureButton = $chap_1
+onready var chap_2 : TextureButton = $chap_2
+onready var chap_3 : TextureButton = $chap_3
+onready var chap_4 : TextureButton = $chap_4
+onready var chap_5 : TextureButton = $chap_5
+onready var chap_6 : TextureButton = $chap_6
+onready var chap_7 : TextureButton = $chap_7
 
-onready var Comics__2_UI : Array = [_back]
+# Header Labels
+onready var Comics__2_UI : Array = [] # SHould contail label files
+
+onready var Comics_Grid_UI : Array = [chap_1, chap_2, chap_3, chap_4, chap_5, chap_6, chap_7]
 
 func _ready():
-	manually_translate()
+	Globals.update_curr_scene()
+	#manually_translate() # Temporarily Disabling
+	# Only Connect buttons in Comics 2 Scene 
+	if Globals.curr_scene == "Comics UI":
+	
+		print_debug("Comics Buttons COnnected: ",connect_signals())
+	
 	
 	get_node("chap_1").grab_focus()
 	
@@ -64,6 +80,24 @@ func _ready():
 		return Scroll_Container.set_size(size_A)
 		
 
+
+func connect_signals()-> bool:
+	chap_1.connect("pressed", self, "_on_chap_1_pressed")
+	chap_2.connect("pressed", self, "_on_chap_2_pressed")
+	chap_3.connect("pressed", self, "_on_chap_3_pressed")
+	chap_4.connect("pressed", self, "_on_chap_4_pressed")
+	chap_5.connect("pressed", self, "_on_chap_5_pressed")
+	chap_6.connect("pressed", self, "_on_chap_6_pressed")
+	chap_7.connect("pressed", self, "_on_chap_7_pressed")
+	return (
+		chap_1.is_connected("pressed",self,"_on_chap_1_pressed") &&
+		chap_2.connect("pressed", self, "_on_chap_2_pressed") &&
+		chap_3.connect("pressed", self, "_on_chap_3_pressed") &&
+		chap_4.connect("pressed", self, "_on_chap_4_pressed") &&
+		chap_5.connect("pressed", self, "_on_chap_5_pressed") &&
+		chap_6.connect("pressed", self, "_on_chap_6_pressed") &&
+		chap_7.connect("pressed", self, "_on_chap_7_pressed")
+		)
 
 
 "Hides Comics Chapters Buttons"
@@ -133,6 +167,7 @@ func _on_chap_7_pressed():
 	return Comics_v6._on_chap_7_pressed()
 
 func manually_translate():
+	# Should Be Implemented In Header Names
 	if Dialogs.language != "" or null:
 		#jggugu
 		Dialogs.set_font(Comics__2_UI, 44, "",0)

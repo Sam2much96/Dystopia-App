@@ -301,11 +301,16 @@ func _input(event):
 			Functions.drag_v2(comics_sprite,event.get_position())
 
 
-	"Global Swipe Detection"
+	"""
+	Global Swipe Detection
+	
+	"""
 	# Uses Swipe Speed to trigger swipe detection and registration 
 	# 
 	if (event is InputEventScreenDrag && SwipeCounter < 2 && !SwipeLocked): 
 		
+		
+		push_error("Swipe Detection is Buggy")
 		# Debug the screen drag event
 		#print_debug("index/",event.get_index(), "/speed: ", event.get_speed())
 		
@@ -359,7 +364,7 @@ func _input(event):
 			"Visualize swipe"
 			#print_debug(event.position)
 			
-			#print_debug("2: ", swipe_target_memory_x, swipe_target_memory_y)
+			print_debug("2: ", swipe_target_memory_x, swipe_target_memory_y)
 			#Swipe._visualize_swipe([event.position,Swipe.swipe_start_position], $Line2D, get_tree())
 			
 			#visualises the last swipe position and the initial swipe position

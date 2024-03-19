@@ -2,7 +2,7 @@
 
 [ext_resource path="res://themes/Light.tres" type="Theme" id=1]
 [ext_resource path="res://fonts/Comic Book.otf" type="DynamicFontData" id=2]
-[ext_resource path="res://resources/illustrations/Newspaper_art.webp" type="Texture" id=3]
+[ext_resource path="res://scenes/Comics/chapter 4/Cover 2.webp" type="Texture" id=3]
 [ext_resource path="res://themes/Bold.tres" type="Theme" id=4]
 [ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=10]
 
@@ -14,6 +14,7 @@ extra_spacing_top = -1
 font_data = ExtResource( 2 )
 
 [node name="Notification" type="Popup"]
+visible = true
 margin_left = 393.67
 margin_top = 55.198
 margin_right = 801.668
@@ -22,11 +23,12 @@ rect_scale = Vector2( 0.988701, 0.988701 )
 script = ExtResource( 10 )
 
 [node name="Sprite" type="TextureRect" parent="."]
-margin_left = 63.9772
-margin_top = -26.7795
-margin_right = 2543.97
-margin_bottom = 2618.22
-rect_scale = Vector2( 0.552251, 0.552251 )
+self_modulate = Color( 0.25098, 0.219608, 0.219608, 1 )
+margin_left = 94.3085
+margin_top = -48.216
+margin_right = 1374.31
+margin_bottom = 1725.78
+rect_scale = Vector2( 0.38671, 0.358709 )
 texture = ExtResource( 3 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -35,6 +37,12 @@ margin_top = 8.0
 margin_right = 596.0
 margin_bottom = 67.0
 color = Color( 0.0784314, 0.0784314, 0.0784314, 1 )
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+margin_left = 108.218
+margin_top = 464.541
+margin_right = 200.218
+margin_bottom = 523.541
 
 [node name="Label" type="Label" parent="."]
 margin_left = 108.77
@@ -70,9 +78,9 @@ align = 1
 margin_left = 120.772
 margin_top = 464.115
 margin_right = 206.772
-margin_bottom = 509.115
+margin_bottom = 523.115
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Feb 5, 2094"
+text = "Apr 1, 2094"
 autowrap = true
 uppercase = true

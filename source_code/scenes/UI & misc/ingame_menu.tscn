@@ -4,10 +4,10 @@
 [ext_resource path="res://fonts/ingame_menu.tres" type="Theme" id=4]
 
 [node name="Menu " type="Container"]
-margin_left = -48.0
-margin_top = 148.0
-margin_right = 1134.0
-margin_bottom = 752.0
+margin_left = -33.7456
+margin_top = 94.5461
+margin_right = 1148.25
+margin_bottom = 594.546
 script = ExtResource( 2 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -21,7 +21,7 @@ __meta__ = {
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
 margin_right = 314.0
-margin_bottom = 400.0
+margin_bottom = 667.0
 theme = ExtResource( 4 )
 scroll_horizontal_enabled = false
 

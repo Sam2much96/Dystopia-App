@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scenes/Comics/chapter 1/Cover 1_pressed.webp" type="Texture" id=1]
 [ext_resource path="res://scenes/Comics/chapter 4/Cover 1.webp" type="Texture" id=2]
 [ext_resource path="res://scenes/Comics/chapter 6/chap 6 cover art 1.webp" type="Texture" id=3]
 [ext_resource path="res://resources/misc/UI hover buttons.webp" type="Texture" id=4]
 [ext_resource path="res://scenes/Comics/chapter 2/cover 2_pressed.webp" type="Texture" id=5]
+[ext_resource path="res://scenes/UI & misc/ComicsGridUI.gd" type="Script" id=6]
 [ext_resource path="res://scenes/Comics/chapter 3/cover 2.webp" type="Texture" id=7]
 [ext_resource path="res://scenes/Comics/chapter 5/chap 1 cover page.webp" type="Texture" id=8]
 [ext_resource path="res://scenes/Comics/chapter 2/cover 2.webp" type="Texture" id=10]
@@ -24,6 +25,15 @@ rect_scale = Vector2( 0.3, 0.3 )
 rect_clip_content = false
 theme = ExtResource( 17 )
 scroll_vertical_enabled = false
+script = ExtResource( 6 )
+AUTO = true
+chap_1 = true
+chap_2 = true
+chap_3 = true
+chap_4 = true
+chap_5 = true
+chap_6 = true
+chap_7 = true
 
 [node name="GridContainer" type="GridContainer" parent="."]
 margin_right = 8814.0

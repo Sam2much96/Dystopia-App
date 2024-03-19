@@ -1,68 +1,19 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://fonts/stats.tres" type="DynamicFont" id=2]
+[ext_resource path="res://scenes/UI & misc/ComicsGridUI.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/cinematics/cinematics V2.gd" type="Script" id=3]
 [ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=4]
-[ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=6]
 
 [node name="Shop" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 3 )
 
-[node name="africa icon" type="TextureRect" parent="."]
-margin_left = 399.456
-margin_top = 286.083
-margin_right = 849.456
-margin_bottom = 886.083
-rect_scale = Vector2( 0.357228, 0.357228 )
-
-[node name="VBoxContainer" type="VBoxContainer" parent="africa icon"]
-margin_left = -416.338
-margin_top = -826.385
-margin_right = 150.662
-margin_bottom = -215.385
-rect_scale = Vector2( 2.8, 2.8 )
-alignment = 1
-
-[node name="episode" type="Button" parent="africa icon/VBoxContainer"]
-margin_top = 184.0
-margin_right = 567.0
-margin_bottom = 262.0
-custom_fonts/font = ExtResource( 4 )
-text = " watch Ep 1"
-flat = true
-
-[node name="animatic" type="Button" parent="africa icon/VBoxContainer"]
-margin_top = 266.0
-margin_right = 567.0
-margin_bottom = 344.0
-custom_fonts/font = ExtResource( 4 )
-text = " watch Animatic"
-flat = true
-
-[node name="guide book" type="Button" parent="africa icon/VBoxContainer"]
-margin_top = 348.0
-margin_right = 567.0
-margin_bottom = 426.0
-custom_fonts/font = ExtResource( 4 )
-text = "Guidebook"
-flat = true
-
-[node name="Label" type="Label" parent="."]
-visible = false
-margin_left = 563.0
-margin_top = 314.0
-margin_right = 1028.0
-margin_bottom = 381.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_fonts/font = ExtResource( 2 )
-text = "Watch Afro Anime"
-
-[node name="Dialog_box" parent="." instance=ExtResource( 6 )]
-margin_top = 988.529
-margin_right = 5453.0
-margin_bottom = 1162.53
+[node name="ScrollContainer" parent="." instance=ExtResource( 1 )]
+chap_1 = false
+chap_3 = false
+chap_4 = false
+chap_5 = false
 
 [node name="back" type="Button" parent="."]
 margin_left = 17.8381
@@ -76,7 +27,4 @@ flat = true
 
 [node name="Position2D" type="Position2D" parent="."]
 
-[connection signal="pressed" from="africa icon/VBoxContainer/episode" to="." method="_on_episode_pressed"]
-[connection signal="pressed" from="africa icon/VBoxContainer/animatic" to="." method="_on_animatic_pressed"]
-[connection signal="pressed" from="africa icon/VBoxContainer/guide book" to="." method="_on_watch_guidebook_pressed"]
-[connection signal="pressed" from="back" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="back" to="." method="_on_back_pressed"]

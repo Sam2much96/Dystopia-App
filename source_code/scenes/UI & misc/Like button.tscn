@@ -22,12 +22,10 @@ rect_scale = Vector2( 1.5, 1.5 )
 texture_normal = ExtResource( 2 )
 texture_pressed = ExtResource( 1 )
 script = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 no_of_likes = 4
 
 [node name="Label" type="Label" parent="."]
+visible = false
 margin_left = 38.3333
 margin_top = -5.33333
 margin_right = 115.333

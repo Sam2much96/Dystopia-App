@@ -19,36 +19,47 @@ extends Player
 
 class_name Player_v3_Platformer
 
-export (int) var speed = 75
+export (int) var speed = 10
 export (int) var jump_speed = -1800
 export (int) var gravity = 4000
 
+const MAX_SPEED = 1000
 # For Jumping Mechanics
 const max_air_jumps : int = 6
 var air_jump_counter : int = 0
 
 export (Vector2) var velocity = Vector2.ZERO
 
+
+
 # State Machine for Platform Player
 # Extends States from a Core Player Class
 
+
+
+
 func _physics_process(delta):
-	
 	# left & right
-	velocity.x = 0
+	
 	
 	# Left & Right
 	if Input.is_action_pressed("move_right"):
-		velocity.x += speed #* delta
-		
+		velocity.x += speed
+		#print (velocity.x) # for debug purposes only 
+		if velocity.x >= MAX_SPEED:
+			velocity.x = MAX_SPEED
 		animation.play("walk_right")
 		
 	if Input.is_action_pressed("move_left"):
-		velocity.x -= speed #* delta
+		velocity.x -= speed 
+		if velocity.x <= (-MAX_SPEED):
+			velocity.x = -MAX_SPEED
 		animation.play("walk_left")
 
 
 
+
+	
 	# Gravity
 	velocity.y += gravity * delta
 	

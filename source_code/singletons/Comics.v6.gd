@@ -59,21 +59,13 @@ extends Control
 
 class_name Comics
 
-#signal comics_showing
-#signal loaded_comics 
-#signal comics_hidden
-#signal panel_change
-#signal swiped(direction)
-#signal swiped_canceled(start_position)
-#export(float,1.0,1.5) var MAX_DIAGONAL_SLOPE =1.3  
-
 
 export (bool) var enabled : bool 
 export (bool) var LastPage : bool = false 
 # Web 3 Activator for Downloading Content
 #export (bool) var web3 : bool 
 export (bool) var _loaded_comics : bool = false
-export (bool) var SwipeLocked  
+export (bool) var SwipeLocked  : bool   # Temporarily disabling for testing
 export (int) var  current_frame : int   = 0 # Global Frame Variable
 
 #Stores comics current page as a global variable 
@@ -1347,7 +1339,11 @@ func connect_signals()-> bool: #connects all required signals in the parent node
 
 
 
-func _on_zoom_pressed():
-	Functions._zoom_2(comics_sprite, !zoom)
-	zoom = !zoom
-	return zoom
+#func _on_zoom_pressed():
+#	Functions._zoom_2(comics_sprite, !zoom)
+#	zoom = !zoom
+#	return zoom
+
+
+func _on_back_pressed():
+	Globals._go_to_title()

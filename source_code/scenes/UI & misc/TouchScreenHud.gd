@@ -13,7 +13,7 @@
 # (3) Touch OS enables or Disables the touch interface depending on if a touch screen is present and the Globals.os. _Hide_touch_interface boolean variable
 # (4) uses Globals.screenOrientation to change the button arrangements for mobiles
 # (5) Connects to signals from Dialogues and COmics SIngletons
-#
+# (5) Changes Menu Button Colour Depending on Scene
 #
 #
 # Bugs :
@@ -128,10 +128,11 @@ func _enter_tree():
 
 func _ready():
 	
+	Globals.update_curr_scene()
 	
 	#print_debug( " Global Touch HUD: ", GlobalInput.TouchInterface)
-
-
+	
+	
 	_menu = $menu
 	_interract = $Control/InterractButtons/interact
 	stats = $Control/InterractButtons/stats
@@ -176,7 +177,12 @@ func _ready():
 	
 	# Disabling for debugging
 	hide_self(Globals.os, Globals.screenOrientation, _Hide_touch_interface, self)
-
+	
+	"Touch Menu Button Customization"
+	if Globals.curr_scene == "HouseInside":
+		_menu.self_modulate = Color(255,255,255) # white
+	else: _menu.self_modulate = Color(0,0,0) # black
+	
 	"Auto sets the controller button"
 	reset()
 	Utils.Screen.calculate_button_positional_data(

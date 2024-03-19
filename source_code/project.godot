@@ -654,6 +654,8 @@ GlobalInput="*res://singletons/Input.tscn"
 
 [debug]
 
+gdscript/warnings/treat_warnings_as_errors=true
+gdscript/warnings/unused_class_variable=true
 gdscript/warnings/unsafe_method_access=true
 gdscript/warnings/unsafe_cast=true
 gdscript/warnings/unsafe_call_argument=true
@@ -765,4 +767,4 @@ pointing/emulate_touch_from_mouse=true
 
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
-vram_compression/import_etc2=false
+misc/lossless_compression/webp_compression_level=9

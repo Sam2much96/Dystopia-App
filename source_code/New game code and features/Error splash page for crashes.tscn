@@ -1,41 +1,12 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://fonts/Word_bubble_dialogue.tres" type="DynamicFont" id=1]
-
-[sub_resource type="GDScript" id=1]
-script/source = "extends Control
-
-
-var text =\"\"\"
-		I'm Sorry the App Crashed :( ,
-		 It'll send a bug report so i can debug and fix it.
-		 thank you 
-		\"\"\"
-var text_2 =\"\"\"
-		I'm Sorry the App Crashed :( ,
-		 No Internet Access.Please Connect to the
-		Internet and Try Again thank you 
-		\"\"\"
-
-onready var label = $Label
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	label.set_text( text_2)
-	label.ALIGN_CENTER
-	
-	# Delete
-	queue_free()
-
-func _exit_tree():
-	yield(get_tree().create_timer(7), \"timeout\")
-	get_tree().quit(0)
-"
+[ext_resource path="res://New game code and features/Error.gd" type="Script" id=2]
 
 [node name="Error splash page for crashes" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = SubResource( 1 )
+script = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 1281.0

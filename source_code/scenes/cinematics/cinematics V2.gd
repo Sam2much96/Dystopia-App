@@ -98,10 +98,11 @@ func _ready(): #create a video player function
 		Dialogs.set_font(UI_buttons_2, 44, "",2)
 		
 		# Manually Translate UI
-		for i in UI_buttons_2:
-			# Note: If it breaks with a null object error, it means that the scene layout has been changed
-			# Update the button links then
-			i.set_text(Dialogs.translate_to(i.name, Dialogs.language))
+		# Disabled for testing 
+		#for i in UI_buttons_2:
+		#	# Note: If it breaks with a null object error, it means that the scene layout has been changed
+		#	# Update the button links then
+		#	i.set_text(Dialogs.translate_to(i.name, Dialogs.language))
 
 	
 	if vid_stream == null:
@@ -320,3 +321,7 @@ func _on_episode_pressed():
 func _on_animatic_pressed():
 	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
 	return Networking.open_browser(animatic)
+
+
+func _on_back_pressed():
+	Globals._go_to_title()

@@ -9,6 +9,7 @@
 # Features:
 #(1) shows and hides comic page buttons
 #(2) Connects to signal from Comics node
+# (3) Extends ComicsGridUI gd
 
 # To Do:
 #(1) Implement grid panels for mobile screens (done)
@@ -22,6 +23,8 @@ extends GridContainer
 onready var Grid_Container = self
 onready var Scroll_Container = Grid_Container.get_parent()
 
+# Controls GRID UI Layout
+onready var _controller : ScrollContainer = get_parent()
 
 onready var loaded_comics 
 
@@ -47,6 +50,11 @@ onready var Comics__2_UI : Array = [] # SHould contail label files
 onready var Comics_Grid_UI : Array = [chap_1, chap_2, chap_3, chap_4, chap_5, chap_6, chap_7]
 
 func _ready():
+	
+	hide_buttons()
+	show_buttons()
+	
+	
 	Globals.update_curr_scene()
 	#manually_translate() # Temporarily Disabling
 	# Only Connect buttons in Comics 2 Scene 
@@ -54,31 +62,21 @@ func _ready():
 	
 		print_debug("Comics Buttons COnnected: ",connect_signals())
 	
+	_controller.grab_focus()
+	#get_node("chap_1").grab_focus()
 	
-	get_node("chap_1").grab_focus()
-	
-	#**********Buggy*****************#
+	#*************** UI LAYOUT ************************#
 	
 	# Changes UI Orientation Based on Globals screen Orientation
-	if Globals.screenOrientation == 1: #mobile UI 
-		Grid_Container.set_columns(2)
-		Scroll_Container.set_enable_h_scroll(false)
-		Scroll_Container.set_enable_v_scroll(true)
+	if Globals.screenOrientation == 1 && _controller.AUTO: #mobile UI 
+		v_layout()
 		
-		
-		return Scroll_Container.set_size(size_B)
-		
-		
-		
-	elif Globals.screenOrientation == 0: #PC UI
-		Grid_Container.set_columns(7)
-		Scroll_Container.set_enable_h_scroll(true)
-		Scroll_Container.set_enable_v_scroll(false)
-		#get_node("chap_3").grab_focus()
-
-		
-		return Scroll_Container.set_size(size_A)
-		
+	if Globals.screenOrientation == 0 && _controller.AUTO: #PC UI
+		h_layout()
+	if _controller.HORIZONTAL:
+		h_layout()
+	if _controller.VERTICAL:
+		v_layout()
 
 
 func connect_signals()-> bool:
@@ -99,6 +97,42 @@ func connect_signals()-> bool:
 		chap_7.connect("pressed", self, "_on_chap_7_pressed")
 		)
 
+func h_layout():
+	Grid_Container.set_columns(7)
+	Scroll_Container.set_enable_h_scroll(true)
+	Scroll_Container.set_enable_v_scroll(false)
+	#get_node("chap_3").grab_focus()
+	Scroll_Container.set_size(size_A)
+
+
+func v_layout():
+	Grid_Container.set_columns(2)
+	Scroll_Container.set_enable_h_scroll(false)
+	Scroll_Container.set_enable_v_scroll(true)
+	Scroll_Container.set_size(size_B)
+
+func hide_buttons():
+	for i in Comics_Grid_UI:
+		i.hide()
+
+func show_buttons():
+	# hide all buttons
+	#************ Show & Hides UI Texture buttpms*********#
+	if _controller.chap_1:
+		chap_1.show()
+	if _controller.chap_2:
+		chap_2.show()
+	if _controller.chap_3:
+		chap_3.show()
+	if _controller.chap_4:
+		chap_4.show()
+	if _controller.chap_5:
+		chap_5.show()
+	if _controller.chap_6:
+		chap_6.show()
+	if _controller.chap_7:
+		chap_7.show()
+	pass
 
 "Hides Comics Chapters Buttons"
 func _on_Comics_loaded_comics():

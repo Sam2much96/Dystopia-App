@@ -64,10 +64,11 @@ text = "back"
 flat = true
 
 [node name="Dialog_box" parent="." instance=ExtResource( 10 )]
-margin_right = 3405.0
+margin_top = 988.529
+margin_right = 7501.0
+margin_bottom = 1162.53
 
 [node name="Like button" parent="." instance=ExtResource( 11 )]
-visible = false
 margin_left = 39.5979
 margin_top = 265.872
 margin_right = 39.5979
@@ -76,7 +77,6 @@ focus_mode = 0
 enabled_focus_mode = 0
 
 [node name="Hint" type="Popup" parent="."]
-visible = true
 margin_left = -85.5263
 margin_top = -299.661
 margin_right = -45.5263
@@ -102,7 +102,6 @@ Swipe Top & Bottoms Screen
 to Change pages"
 
 [node name="Hint2" type="Popup" parent="."]
-visible = true
 margin_left = -115.579
 margin_top = 1224.75
 margin_right = -75.5789
@@ -127,3 +126,4 @@ text = "Swipe TOP & BOTTOM SCREENS
  TO CHANGE PAGES"
 
 [connection signal="pressed" from="Rotate" to="Comics" method="_on_Rotate_pressed"]
+[connection signal="pressed" from="back" to="Comics" method="_on_back_pressed"]

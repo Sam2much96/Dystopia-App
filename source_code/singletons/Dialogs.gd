@@ -43,15 +43,15 @@ var active = false
 
 var dialog_box = null setget _set_dialog_box
 
-var word_bubble_box : WordBubbleBox = null  setget _set_wordbubble_box
+var word_bubble_box : AnimatedSprite = null  setget _set_wordbubble_box
 var language : String = ""# stores the current language the user selects
 
-var _script_testing : String = 'res://resources/dialogues/script_testing.gd'
+#var _script_testing : String = 'res://resources/dialogues/script_testing.gd'
 
 const WAIT_TIME = 6 # Wait time before hiding dialogue box
 
 # Contains path to supported languague paired with supported language packs
-var font_pack : Dictionary = {
+export (Dictionary) var font_pack : Dictionary = {
 "en":"res://fonts/Comic_Andy.ttf",
 "en_US": "res://fonts/Comic_Andy.ttf",
 "pt_BR": "res://fonts/Comic_Andy.ttf",
@@ -109,7 +109,7 @@ func _set_dialog_box(node):
 	
 	pass
 
-func _set_wordbubble_box(node  : WordBubbleBox):
+func _set_wordbubble_box(node): #word bubblebox class
 	word_bubble_box = node
 	
 	# Connect signals

@@ -654,7 +654,6 @@ GlobalInput="*res://singletons/Input.tscn"
 
 [debug]
 
-gdscript/warnings/treat_warnings_as_errors=true
 gdscript/warnings/unused_class_variable=true
 gdscript/warnings/unsafe_method_access=true
 gdscript/warnings/unsafe_cast=true

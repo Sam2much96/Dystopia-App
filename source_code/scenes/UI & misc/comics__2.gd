@@ -59,8 +59,11 @@ func _ready():
 	#manually_translate() # Temporarily Disabling
 	# Only Connect buttons in Comics 2 Scene 
 	if Globals.curr_scene == "Comics UI":
-	
+		# connect Comics Signals
 		print_debug("Comics Buttons COnnected: ",connect_signals())
+	if Globals.curr_scene == "Shop":
+		# connect to Stream Anime methods
+		connect_cinematic_signals()
 	
 	_controller.grab_focus()
 	#get_node("chap_1").grab_focus()
@@ -80,6 +83,9 @@ func _ready():
 
 
 func connect_signals()-> bool:
+	"""
+	COMICS UI SIGNALS
+	"""
 	chap_1.connect("pressed", self, "_on_chap_1_pressed")
 	chap_2.connect("pressed", self, "_on_chap_2_pressed")
 	chap_3.connect("pressed", self, "_on_chap_3_pressed")
@@ -96,6 +102,28 @@ func connect_signals()-> bool:
 		chap_6.connect("pressed", self, "_on_chap_6_pressed") &&
 		chap_7.connect("pressed", self, "_on_chap_7_pressed")
 		)
+
+func connect_cinematic_signals():
+	chap_2.connect("pressed", self, "_on_episode_pressed")
+	chap_6.connect("pressed",self,"_on_animatic_pressed")
+	chap_7.connect("pressed",self,"_on_watch_guidebook_pressed")
+"""
+Cinematic Signals
+"""
+func _on_episode_pressed():
+	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
+	return Networking.open_browser("https://github.com/Sam2much96/RenderChan/actions/")
+
+
+func _on_animatic_pressed():
+	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
+	return Networking.open_browser("https://youtu.be/uzDzAuJVHcI")
+
+func _on_watch_guidebook_pressed():
+	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
+	return Networking.open_browser("https://github.com/Sam2much96/Dystopia-App/wiki")
+
+
 
 func h_layout():
 	Grid_Container.set_columns(7)

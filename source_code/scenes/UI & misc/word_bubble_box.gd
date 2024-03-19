@@ -59,7 +59,7 @@ var Page : int
 
 
 
-var text_boundary : Vector2 # map & alter this data with the statemachine
+#var text_boundary : Vector2 # map & alter this data with the statemachine
 #Write Different States for the word bubbles
 enum { 
 	STATE_NARRATION, STATE_ANGRY ,STATE_THOUGHTS, STATE_TALK_RIGHT, 
@@ -77,14 +77,14 @@ var _state : int  = STATE_THOUGHTS
 var Position : Vector2
 var index : int 
 
-var lg : String = Dialogs.language
+#var lg : String = Dialogs.language
 
 # Word Bubble Object Data as a Struct
 export  var wordbubbleobjectdata : Dictionary = {
 	"position": Position,
 	"state" : state,
 	"index" : index,
-	"Language" : lg
+	"Language" : ""#Dialogs.language
 } # Dictionary containing all object's properties
 #Use a polygon2d to build the word bubbles
 

@@ -9,31 +9,6 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "CanvasLayer",
-"class": "ADsManager",
-"language": "GDScript",
-"path": "res://ads/Ads_manager.gd"
-}, {
-"base": "Node",
-"class": "AdMob",
-"language": "GDScript",
-"path": "res://ads/admob-lib/admob.gd"
-}, {
-"base": "Node",
-"class": "Algod",
-"language": "NativeScript",
-"path": "res://addons/algodot/gdnative/algod.gdns"
-}, {
-"base": "Node",
-"class": "Algodot",
-"language": "GDScript",
-"path": "res://addons/algodot/Algod.gd"
-}, {
-"base": "Node",
-"class": "AsyncExecutorDriver",
-"language": "NativeScript",
-"path": "res://addons/algodot/gdnative/async_executor.gdns"
-}, {
 "base": "CPUParticles2D",
 "class": "BloodSplatter",
 "language": "GDScript",
@@ -279,11 +254,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Rain_Fx.gd"
 }, {
-"base": "EditorScript",
-"class": "ReferenceCollector",
-"language": "GDScript",
-"path": "res://addons/algodot/Documentation/Scripts/DocsReferenceCollector.gd"
-}, {
 "base": "PanelContainer",
 "class": "RepositoryItem",
 "language": "GDScript",
@@ -388,11 +358,6 @@ _global_script_classes=[ {
 "class": "WordBubbleBox",
 "language": "GDScript",
 "path": "res://scenes/UI & misc/word_bubble_box.gd"
-}, {
-"base": "Node",
-"class": "Yodo1Mas",
-"language": "GDScript",
-"path": "res://ads/Yodo1-lib/yodo1mas.gd"
 }, {
 "base": "Node",
 "class": "android",
@@ -510,11 +475,6 @@ _global_script_classes=[ {
 "path": "res://scenes/Wallet/state_controller.gd"
 } ]
 _global_script_class_icons={
-"ADsManager": "",
-"AdMob": "res://ads/admob-lib/icon.png",
-"Algod": "",
-"Algodot": "res://addons/algodot/icon.png",
-"AsyncExecutorDriver": "",
 "BloodSplatter": "res://resources/FX/Blood splatter fx.webp",
 "Boulder_Big": "",
 "BrokenShip": "",
@@ -564,7 +524,6 @@ _global_script_class_icons={
 "Puddle": "",
 "QuestGiver": "",
 "RainFX": "",
-"ReferenceCollector": "",
 "RepositoryItem": "",
 "RestHandler": "",
 "Scent": "",
@@ -586,7 +545,6 @@ _global_script_class_icons={
 "WebConnection": "",
 "Window_Dialogue": "",
 "WordBubbleBox": "",
-"Yodo1Mas": "",
 "android": "res://resources/misc/Android 32x32.png",
 "camera": "",
 "cinematic": "",
@@ -659,12 +617,12 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/algodot/plugin.cfg", "res://addons/fps_graph_overlay/plugin.cfg", "res://addons/orphan_import_file_cleaner/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/fps_graph_overlay/plugin.cfg", "res://addons/orphan_import_file_cleaner/plugin.cfg" )
 
 [gdnative]
 
-singletons=[ "res://addons/videodecoder/videodecoder.gdnlib" ]
-singletons_disabled=[ "res://addons/videodecoder/videodecoder.gdnlib" ]
+singletons=[  ]
+singletons_disabled=[  ]
 
 [input]
 

@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/UI & misc/web_browser.gd" type="Script" id=1]
+[ext_resource path="res://fonts/Word_bubble_dialogue.tres" type="DynamicFont" id=2]
+
+[node name="web browser" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+website_url = "https://godotengine.org"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+margin_right = 1285.0
+margin_bottom = 741.0
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/normal_font = ExtResource( 2 )
+
+[node name="LineEdit" type="LineEdit" parent="."]
+margin_left = 24.0
+margin_top = 12.0
+margin_right = 1266.0
+margin_bottom = 54.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 27.7795
+margin_top = 96.0378
+margin_right = 106.78
+margin_bottom = 110.038
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "efssfhsdfbgs"

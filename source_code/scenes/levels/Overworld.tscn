@@ -1,0 +1,246 @@
+[gd_scene load_steps=23 format=2]
+
+[ext_resource path="res://scenes/levels/Tilemap_1_overworld.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/levels/ForestTilemap.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/items/enemy spawner.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/props/Pond.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/levels/buildings.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/levels/Exit.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/props/Grass.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/levels/VisibilityOptimizer.gd" type="Script" id=9]
+[ext_resource path="res://scenes/props/flowers.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/props/Temple exterior.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/items/extra life.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/props/signpost.tscn" type="PackedScene" id=14]
+[ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=15]
+[ext_resource path="res://scenes/props/broken ship.tscn" type="PackedScene" id=16]
+[ext_resource path="res://scenes/items/Arrow.tscn" type="PackedScene" id=17]
+[ext_resource path="res://scenes/Shaders/CRT.tscn" type="PackedScene" id=19]
+[ext_resource path="res://scenes/characters/Npc.tscn" type="PackedScene" id=20]
+[ext_resource path="res://scenes/UI & misc/Rain_Fx.tscn" type="PackedScene" id=26]
+[ext_resource path="res://scenes/levels/Overworld_Level_Properties.gd" type="Script" id=28]
+
+[sub_resource type="NavigationPolygon" id=1]
+vertices = PoolVector2Array( 20238.3, -5171.15, 20198, -7267.66, 21407.5, -7106.39, 21300.8, -3597.04, 16932.2, -5534.01, 17698.3, -5493.69, 15992.5, -3520.84, 15789.3, -4003.41, 15480.8, -4848.61, -1832.39, 1550.66, -1832.39, -951.084, -1489.51, -925.686, -1514.91, 1588.76, -1734.75, 4424.4, 7256.05, 4343.77, 2167.86, 1525.26, 3425.89, -816.867, 7377, -937.819, 2066.27, -722.498, 2409.15, -836.791, 15256, -3139.87, 15319.5, 191.069, 13747.2, 150.752, 13858.5, -3166.83, 2417.95, -4929.25, 3425.89, -4324.49 )
+polygons = [ PoolIntArray( 0, 1, 2, 3 ), PoolIntArray( 4, 5, 0, 3, 6, 7, 8 ), PoolIntArray( 9, 10, 11, 12, 13 ), PoolIntArray( 14, 13, 12, 15 ), PoolIntArray( 16, 17, 14, 15, 18 ), PoolIntArray( 16, 18, 19 ), PoolIntArray( 20, 21, 22, 23 ), PoolIntArray( 20, 23, 7, 6 ), PoolIntArray( 24, 4, 8, 25 ), PoolIntArray( 19, 24, 25, 16 ) ]
+outlines = [ PoolVector2Array( 2417.95, -4929.25, 2409.15, -836.791, 2066.27, -722.498, 2167.86, 1525.26, -1514.91, 1588.76, -1489.51, -925.686, -1832.39, -951.084, -1832.39, 1550.66, -1734.75, 4424.4, 7256.05, 4343.77, 7377, -937.819, 3425.89, -816.867, 3425.89, -4324.49, 15480.8, -4848.61, 15789.3, -4003.41, 13858.5, -3166.83, 13747.2, 150.752, 15319.5, 191.069, 15256, -3139.87, 15992.5, -3520.84, 21300.8, -3597.04, 21407.5, -7106.39, 20198, -7267.66, 20238.3, -5171.15, 17698.3, -5493.69, 16932.2, -5534.01 ) ]
+
+[node name="Outside" type="Node2D"]
+script = ExtResource( 28 )
+
+[node name="YSort" type="YSort" parent="."]
+sort_enabled = false
+
+[node name="Trees_TileMap" parent="YSort" instance=ExtResource( 2 )]
+tile_data = PoolIntArray( -393133, 0, 0, -393132, 0, 0, -393131, 0, 0, -393130, 0, 0, -393129, 0, 0, -327597, 0, 0, -327596, 0, 0, -327595, 0, 0, -327594, 0, 0, -327593, 0, 0, -262058, 0, 0, -262057, 0, 0, -196522, 0, 0, -196521, 0, 0, -130986, 0, 0, -130985, 0, 0, -65450, 0, 0, -65449, 0, 0, 86, 0, 0, 87, 0, 0, 65622, 0, 0, 65623, 0, 0 )
+
+[node name="VisibilityNotifier2D2" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap"]
+position = Vector2( 7217.91, -106.122 )
+scale = Vector2( 16.3521, 30.3082 )
+script = ExtResource( 9 )
+
+[node name="Trees_TileMap2" parent="YSort" instance=ExtResource( 2 )]
+tile_data = PoolIntArray( 131145, 0, 0, 131146, 0, 0, 131147, 0, 0, 131148, 0, 0, 131149, 0, 0, 131150, 0, 0, 131151, 0, 0, 131152, 0, 0, 131153, 0, 0, 131154, 0, 0, 131155, 0, 0, 131156, 0, 0, 131157, 0, 0, 131158, 0, 0, 131159, 0, 0, 196681, 0, 0, 196682, 0, 0, 196683, 0, 0, 196684, 0, 0, 196685, 0, 0, 196686, 0, 0, 196687, 0, 0, 196688, 0, 0, 196689, 0, 0, 196690, 0, 0, 196691, 0, 0, 196692, 0, 0, 196693, 0, 0, 196694, 0, 0, 196695, 0, 0 )
+
+[node name="VisibilityNotifier2D3" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap2"]
+position = Vector2( 6836.93, 170.721 )
+scale = Vector2( 63.3392, 7.19565 )
+script = ExtResource( 9 )
+
+[node name="Trees_TileMap3" parent="YSort" instance=ExtResource( 2 )]
+tile_data = PoolIntArray( -393143, 0, 0, -393142, 0, 0, -393141, 0, 0, -393140, 0, 0, -393139, 0, 0, -393138, 0, 0, -327607, 0, 0, -327606, 0, 0, -327605, 0, 0, -327604, 0, 0, -327603, 0, 0, -327602, 0, 0, -262071, 0, 0, -262070, 0, 0, -196535, 0, 0, -196534, 0, 0, -130999, 0, 0, -130998, 0, 0, -65463, 0, 0, -65462, 0, 0, 73, 0, 0, 74, 0, 0, 65609, 0, 0, 65610, 0, 0, 131145, 0, 0, 131146, 0, 0 )
+
+[node name="VisibilityNotifier2D4" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap3"]
+position = Vector2( 6463.57, -80.7232 )
+scale = Vector2( 13.3043, 33.864 )
+script = ExtResource( 9 )
+
+[node name="Trees_TileMap4" parent="YSort" instance=ExtResource( 2 )]
+tile_data = PoolIntArray( -786331, 0, 0, -720817, 0, 0, -720816, 0, 0, -720815, 0, 0, -720814, 0, 0, -720813, 0, 0, -720812, 0, 0, -720811, 0, 0, -720810, 0, 0, -720809, 0, 0, -655282, 0, 0, -655281, 0, 0, -655280, 0, 0, -655279, 0, 0, -655278, 0, 0, -655277, 0, 0, -655276, 0, 0, -655275, 0, 0, -655274, 0, 0, -655273, 0, 0, -655272, 0, 0, -655271, 0, 0, -589746, 0, 0, -589745, 0, 0, -524210, 0, 0, -524209, 0, 0, -524207, 0, 0, -524206, 0, 0, -524205, 0, 0, -524204, 0, 0, -524203, 0, 0, -524202, 0, 0, -524201, 0, 0, -524200, 0, 0, -524199, 0, 0, -458674, 0, 0, -458673, 0, 0, -458671, 0, 0, -458670, 0, 0, -458668, 0, 0, -458667, 0, 0, -458666, 0, 0, -458665, 0, 0, -458664, 0, 0, -458663, 0, 0, -393138, 0, 0, -393137, 0, 0, -393135, 0, 0, -393134, 0, 0, -393130, 0, 0, -393129, 0, 0, -327602, 0, 0, -327601, 0, 0, -327599, 0, 0, -327598, 0, 0, -327597, 0, 0, -327594, 0, 0, -327593, 0, 0 )
+
+[node name="VisibilityNotifier2D5" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap4"]
+position = Vector2( 7109.06, -539.752 )
+scale = Vector2( 46.6596, 31.0177 )
+script = ExtResource( 9 )
+
+[node name="Trees_TileMap5" parent="YSort" instance=ExtResource( 2 )]
+tile_data = PoolIntArray( -851869, 0, 0, -851868, 0, 0, -851867, 0, 0, -851866, 0, 0, -786331, 0, 0, -786330, 0, 0, -720793, 0, 0, -655258, 0, 0, -655257, 0, 0, -589722, 0, 0, -524186, 0, 0, -458663, 0, 0 )
+
+[node name="VisibilityNotifier2D6" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap5"]
+position = Vector2( 8596.84, -841.402 )
+scale = Vector2( 12.0439, 21.5264 )
+script = ExtResource( 9 )
+
+[node name="Trees_TileMap6" parent="YSort" instance=ExtResource( 2 )]
+tile_data = PoolIntArray( -458649, 0, 0, -393113, 0, 0, -327577, 0, 0, -327576, 0, 0, -262041, 0, 0, -262040, 0, 0, -196505, 0, 0, -130969, 0, 0, -65433, 0, 0 )
+
+[node name="VisibilityNotifier2D7" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap6"]
+position = Vector2( 8680.35, -308.008 )
+scale = Vector2( 11.5949, 25.8366 )
+script = ExtResource( 9 )
+
+[node name="grass" parent="YSort" instance=ExtResource( 8 )]
+position = Vector2( 3639.47, -407.372 )
+scale = Vector2( 4.19165, 4.19165 )
+
+[node name="grass2" parent="YSort" instance=ExtResource( 8 )]
+position = Vector2( 10196.5, -4811.97 )
+scale = Vector2( 4.19165, 4.19165 )
+
+[node name="flowers" parent="YSort" instance=ExtResource( 10 )]
+position = Vector2( 2854.35, -447.652 )
+scale = Vector2( 4.59821, 4.59821 )
+monitorable = false
+
+[node name="flowers2" parent="YSort" instance=ExtResource( 10 )]
+position = Vector2( 2913.68, -1083.33 )
+scale = Vector2( 4.59821, 4.59821 )
+monitorable = false
+
+[node name="flowers3" parent="YSort" instance=ExtResource( 10 )]
+position = Vector2( 10625.3, -4447.36 )
+scale = Vector2( 4.59821, 4.59821 )
+monitorable = false
+
+[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="."]
+navpoly = SubResource( 1 )
+
+[node name="Outside" parent="." instance=ExtResource( 1 )]
+position = Vector2( -53.8173, -83.4771 )
+
+[node name="Temple" parent="Outside" instance=ExtResource( 11 )]
+position = Vector2( 556.731, 1079.94 )
+scale = Vector2( 4.02896, 4.02896 )
+z_index = 0
+
+[node name="Exit_2" parent="Outside" instance=ExtResource( 6 )]
+position = Vector2( 369.709, -307.968 )
+rotation = 3.09728
+scale = Vector2( 1.61925, 2.04034 )
+to_scene = "res://scenes/levels/Temple interior.tscn"
+
+[node name="Exit_3" parent="Outside" instance=ExtResource( 6 )]
+position = Vector2( 8926.21, -4652.41 )
+rotation = 4.57069
+scale = Vector2( 1.61925, 2.04034 )
+to_scene = "res://scenes/levels/DuneProcedural.tscn"
+
+[node name="Exit_4" parent="Outside" instance=ExtResource( 6 )]
+position = Vector2( 4434.88, 3289.24 )
+rotation = 3.09728
+scale = Vector2( 1.61925, 2.04034 )
+to_scene = "res://scenes/levels/Overworld3D.tscn"
+
+[node name="Outside City" parent="." instance=ExtResource( 5 )]
+position = Vector2( 12571.8, -3727.55 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="Outside City"]
+position = Vector2( 2280.12, 1071.42 )
+scale = Vector2( 380.22, 243.027 )
+script = ExtResource( 9 )
+
+[node name="Exit" parent="Outside City" instance=ExtResource( 6 )]
+position = Vector2( 5010.28, -1093.29 )
+rotation = 1.01254
+scale = Vector2( 6.26556, 1.62012 )
+to_scene = "res://scenes/levels/Building1.tscn"
+
+[node name="GameHUD" parent="." instance=ExtResource( 15 )]
+
+[node name="Rain_Fx" parent="GameHUD" instance=ExtResource( 26 )]
+
+[node name="CRT" parent="GameHUD" instance=ExtResource( 19 )]
+visible = false
+
+[node name="Player" parent="." instance=ExtResource( 7 )]
+position = Vector2( 672.514, 418.212 )
+scale = Vector2( 0.55068, 0.55068 )
+
+[node name="Enemy" parent="." instance=ExtResource( 12 )]
+position = Vector2( 2792.15, 705.99 )
+
+[node name="Old Woman NPC" parent="." instance=ExtResource( 20 )]
+position = Vector2( -215.521, 1749.43 )
+rotation = 0.0423461
+scale = Vector2( 0.8, 0.8 )
+
+[node name="enemy_spawner" parent="." instance=ExtResource( 3 )]
+position = Vector2( 2522.96, 656.199 )
+enabled = true
+_hitpoints = 1
+enemy_type = "Hard"
+enemy_spawn_1 = ExtResource( 12 )
+spawn_count = 5
+
+[node name="enemy_spawner4" parent="." instance=ExtResource( 3 )]
+position = Vector2( 5516.38, 2138.66 )
+enabled = true
+_hitpoints = 1
+enemy_type = "Hard"
+enemy_spawn_1 = ExtResource( 12 )
+spawn_count = 5
+
+[node name="enemy_spawner5" parent="." instance=ExtResource( 3 )]
+position = Vector2( -213.881, 1682.51 )
+enabled = true
+_hitpoints = 1
+enemy_type = "Easy"
+enemy_spawn_1 = ExtResource( 12 )
+spawn_count = 5
+
+[node name="enemy_spawner2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 6833.48, -4887.52 )
+enabled = true
+_hitpoints = 2
+enemy_type = "Intermediate"
+enemy_spawn_1 = ExtResource( 12 )
+spawn_count = 5
+
+[node name="enemy_spawner3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 17739.9, -4751.76 )
+enabled = true
+_hitpoints = 3
+enemy_type = "Hard"
+enemy_spawn_1 = ExtResource( 12 )
+spawn_count = 5
+
+[node name="hole" parent="." instance=ExtResource( 4 )]
+position = Vector2( 8881.06, -4751.42 )
+scale = Vector2( 0.641414, 0.771429 )
+
+[node name="signpost" parent="." instance=ExtResource( 14 )]
+position = Vector2( 3429.35, 145.337 )
+enabled = true
+dialogue = "dir3"
+HINT = true
+
+[node name="signpost2" parent="." instance=ExtResource( 14 )]
+position = Vector2( 209.981, 2199.49 )
+enabled = true
+dialogue = "dir1"
+
+[node name="signpost4" parent="." instance=ExtResource( 14 )]
+position = Vector2( 8148.29, -4770.68 )
+enabled = true
+dialogue = "Don't Go Into The Hole, I  Wouldn't Do It"
+
+[node name="signpost3" parent="." instance=ExtResource( 14 )]
+position = Vector2( 2793.21, -4823.67 )
+enabled = true
+dialogue = "East : Abbi City / South: Ukwani Desert"
+
+[node name="broken ship" parent="." instance=ExtResource( 16 )]
+position = Vector2( 3134.37, 2440.4 )
+
+[node name="items" type="YSort" parent="."]
+
+[node name="extra life" parent="items" instance=ExtResource( 13 )]
+position = Vector2( 3235.65, 822.261 )
+
+[node name="Arrow" parent="items" instance=ExtResource( 17 )]
+position = Vector2( 3248.91, 674.174 )

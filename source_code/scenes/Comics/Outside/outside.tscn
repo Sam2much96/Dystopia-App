@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/Comics/Outside/outside.tres" type="SpriteFrames" id=1]
+
+[node name="outside" type="AnimatedSprite" groups=["comics"]]
+position = Vector2( -6.72717, 3.36282 )
+scale = Vector2( 0.696879, 0.696879 )
+frames = ExtResource( 1 )

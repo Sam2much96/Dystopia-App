@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/Shaders/speedlines.shader" type="Shader" id=1]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 1 )
+shader_param/speedScale = 16.0
+shader_param/clipPosition = 0.2
+
+[node name="ColorRect" type="ColorRect"]
+material = SubResource( 1 )
+margin_right = 1001.0
+margin_bottom = 618.0

@@ -1,0 +1,196 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://themes/Bold.tres" type="Theme" id=1]
+[ext_resource path="res://themes/Light.tres" type="Theme" id=2]
+[ext_resource path="res://themes/Buttons_white.tres" type="Theme" id=3]
+[ext_resource path="res://themes/Textbar.tres" type="Theme" id=4]
+[ext_resource path="res://themes/Panel+blue+5.tres" type="StyleBox" id=5]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Panel" type="Panel" parent="."]
+margin_top = -113.0
+margin_right = 1027.0
+margin_bottom = 718.0
+custom_styles/panel = ExtResource( 5 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+margin_left = 312.0
+margin_top = 5.0
+margin_right = 690.0
+margin_bottom = 607.0
+color = Color( 0.192157, 0.262745, 0.858824, 1 )
+
+[node name="LineEdit" type="LineEdit" parent="."]
+margin_left = 393.0
+margin_top = 183.0
+margin_right = 608.0
+margin_bottom = 211.0
+theme = ExtResource( 4 )
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 452.0
+margin_top = 131.0
+margin_right = 550.0
+margin_bottom = 167.0
+theme = ExtResource( 1 )
+text = "User ID"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="."]
+margin_left = 417.0
+margin_top = 221.0
+margin_right = 500.0
+margin_bottom = 369.0
+rect_scale = Vector2( 2, 2 )
+columns = 3
+
+[node name="Button" type="Button" parent="GridContainer"]
+margin_right = 25.0
+margin_bottom = 34.0
+theme = ExtResource( 2 )
+text = "1"
+flat = true
+
+[node name="Button2" type="Button" parent="GridContainer"]
+margin_left = 29.0
+margin_right = 54.0
+margin_bottom = 34.0
+theme = ExtResource( 2 )
+text = "2"
+flat = true
+
+[node name="Button3" type="Button" parent="GridContainer"]
+margin_left = 58.0
+margin_right = 83.0
+margin_bottom = 34.0
+theme = ExtResource( 2 )
+text = "3"
+flat = true
+
+[node name="Button4" type="Button" parent="GridContainer"]
+margin_top = 38.0
+margin_right = 25.0
+margin_bottom = 72.0
+theme = ExtResource( 2 )
+text = "4"
+flat = true
+
+[node name="Button5" type="Button" parent="GridContainer"]
+margin_left = 29.0
+margin_top = 38.0
+margin_right = 54.0
+margin_bottom = 72.0
+theme = ExtResource( 2 )
+text = "5"
+flat = true
+
+[node name="Button6" type="Button" parent="GridContainer"]
+margin_left = 58.0
+margin_top = 38.0
+margin_right = 83.0
+margin_bottom = 72.0
+theme = ExtResource( 2 )
+text = "6"
+flat = true
+
+[node name="Button7" type="Button" parent="GridContainer"]
+margin_top = 76.0
+margin_right = 25.0
+margin_bottom = 110.0
+theme = ExtResource( 2 )
+text = "7"
+flat = true
+
+[node name="Button8" type="Button" parent="GridContainer"]
+margin_left = 29.0
+margin_top = 76.0
+margin_right = 54.0
+margin_bottom = 110.0
+theme = ExtResource( 2 )
+text = "8"
+flat = true
+
+[node name="Button9" type="Button" parent="GridContainer"]
+margin_left = 58.0
+margin_top = 76.0
+margin_right = 83.0
+margin_bottom = 110.0
+theme = ExtResource( 2 )
+text = "9"
+flat = true
+
+[node name="Button10" type="Button" parent="GridContainer"]
+margin_top = 114.0
+margin_right = 25.0
+margin_bottom = 148.0
+theme = ExtResource( 2 )
+text = "9"
+flat = true
+
+[node name="Button11" type="Button" parent="GridContainer"]
+margin_left = 29.0
+margin_top = 114.0
+margin_right = 54.0
+margin_bottom = 148.0
+theme = ExtResource( 2 )
+text = "0"
+flat = true
+
+[node name="Button12" type="Button" parent="GridContainer"]
+margin_left = 58.0
+margin_top = 114.0
+margin_right = 83.0
+margin_bottom = 148.0
+theme = ExtResource( 2 )
+text = "<"
+flat = true
+
+[node name="Button" type="Button" parent="."]
+margin_left = 408.0
+margin_top = 530.0
+margin_right = 823.0
+margin_bottom = 629.0
+rect_scale = Vector2( 0.468829, 0.468829 )
+theme = ExtResource( 3 )
+text = "Confirm"
+
+[node name="YSort" type="YSort" parent="."]
+position = Vector2( -260, -3 )
+scale = Vector2( 1.49671, 1.49671 )
+
+[node name="Line2D" type="Line2D" parent="YSort"]
+position = Vector2( 73.8356, -19 )
+scale = Vector2( 0.863014, 1 )
+points = PoolVector2Array( 502, 47, 492.76, 47.0616, 485.793, 49.0659, 478.825, 53.7429, 474.18, 58.4198, 471.083, 67.7736, 471, 75, 471.857, 81.1363, 475, 87, 480.373, 92.4945, 487, 96, 495.083, 98.5077, 503, 99, 511.341, 98.5077, 519, 96, 526.05, 92.4945, 530, 87, 533.018, 79.8, 534, 74, 533.018, 65.7692, 529.73, 59, 525.276, 53.0747, 518, 49, 509.792, 47.0616, 502, 47 )
+width = 3.0
+default_color = Color( 1, 1, 1, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+
+[node name="Line2D3" type="Line2D" parent="YSort"]
+position = Vector2( 344, 18 )
+scale = Vector2( 0.325539, 0.377211 )
+points = PoolVector2Array( 502, 47, 486, 50, 474.111, 59, 471, 75, 475, 87, 487, 96, 503, 99, 519, 96, 530, 87, 534, 74, 529.73, 59, 518, 49, 502, 47 )
+width = 5.0
+default_color = Color( 1, 1, 1, 1 )
+joint_mode = 1
+begin_cap_mode = 2
+
+[node name="Line2D2" type="Line2D" parent="YSort"]
+position = Vector2( 9, -33 )
+points = PoolVector2Array( 480, 106, 485, 97, 499, 96, 512, 97, 516, 106 )
+width = 3.0
+default_color = Color( 1, 1, 1, 1 )
+joint_mode = 1
+begin_cap_mode = 2
+end_cap_mode = 2

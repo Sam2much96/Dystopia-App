@@ -1,0 +1,118 @@
+ ,en_US,pt_BR,fr,te_IN,hi_IN,yo_NG,ha_NG,ig_NG,ja,zh_CN,ar
+char1,hello,olá,allo,హలో,नमस्ते,ẹkọ.,,,こんにちは,你好,مرحباً
+char2,how are you,como vai,comment allez-vous,మీరు ఎలా ఉన్నారు,आप कैसे हैं,Bawo ni,,,お元気ですか,你好吗,كيف حالك؟
+char3,options,opções,choix,ఎంపికలు,विकल्प,ọrọ tuntun,,,選択肢,选项,خيارات
+comics,comics,banda desenhada,bandes dessinées,కామిక్స్,कॉमिक्स,kọ́míksì,,,漫画,漫画,قصص مصورة
+new game,new game,novo jogo,nouveau jeu,కొత్త ఆట,नया खेल,wọlé lati ṣẹdálẹ,,,新しいゲーム,新游戏,لعبة جديدة
+Continue,Continue,Continuar,Continuer,కొన్నిసారిగా,जारी रखें,tẹ,,,続ける,继续,استمر
+continue,continue,continuar,continuer,కొన్నిసారిగా,जारी रखें,tẹ,,,続ける,继续,استمر
+multiplayer,multiplayer,multijogador,multijoueur,బహుక్కలి,बहु-खिलाड़ी,òwe múlẹ́,,,まるちぷれいやー,多人模式,لاعبون متعددون
+anime,anime,animação,animer,ఆనిమే,एनिमे,ọran,,,あにめ,动画,أنمي
+practice,practice,Magic Sword,pratique,అభ్యాసం,अभ्यास,Ile-iṣẹ,,,練習,练习,ممارسة
+cityscape,cityscape,urbano,urbain,అభ్యాసం,शहर का दृश्य,Ayé ilu,,,都市の景観,都市风貌,منظر المدينة
+Wallet,Wallet,Carteira,Portefeuille,వాలెట్,बटुआ,Apamọwọ,,,財布,钱包,محفظة
+wallet,wallet,carteira,portefeuille,వాలెట్,बटुआ,apamọwọ,,,財布,钱包,محفظة
+controls,controls,controles,contrôles,నియంత్రణలు,नियंत्रण,Ilo,,,こんとろーらー,操作,ضوابط
+quit,quit,desistir,arrêter,వద్దు,छोड़ना,dariji,,,やめる,放弃,ترك
+back,back,de volta,dos,వెనక్కి,पीछे,lẹhin,,,もどる,返回,رجوع
+Back,Back,De volta,Dos,వెనక్కి,पीछे,Lẹhin,,,もどる,返回,رجوع
+music,music,música,musique,సంగీతం,संगीत,orin,,,おんがく,音乐,موسيقى
+shuffle,shuffle,embaralhar as músicas,mélanger,షఫిల్,मिलाकर खेलना,jìjìlẹ́,,,しゃっふる,随机播放,امزج
+help,help,ajuda,aider,సహాయం,मदद,ṣòfin,,,たすけて,帮助,مساعدة
+debug,debug,debugar,déboguer,పిలుపుట,डीबग,mọ́ nípada ewu,,,でばぐ,调试,إصلاح الأخطاء
+change controller,change controller,trocar o controle,changer de contrôleur,కంట్రోలర్ మార్చు,कंट्रोलर बदलें,fi ìlànì yẹ̀ títẹ̀,,,コントローラーをかえる,更换手柄,تغيير الوحدة التحكم
+github,github,github,github,గితుబ్,गिटहब,github,,,ギットハブ,github,جيت هاب
+languague,languague,Idioma,langue,భాష,भाषा,ede,,,言語,语言,لغة
+guide book,guide book,guia turístico,guide,మార్గదర్శక పుస్తకం,मार्गदर्शिका,iwe inu didun,,,みちびきほん,指南书,كتاب دليل
+animatic,animatic,animatic,prévisualisation animée,ఆనిమాటిక్,एनिमैटिक,ayẹwọ̀-dínán,,,アニマティック,动画草图,أنيماتيك
+merch,merchandise,mercadoria,marchandise,వస్త్రములు,वस्त्रवस्तु,Ọja,,,商品,商品,بضائع
+bts,behind the scenes,por trás das câmeras,en coulisses,పర్దనష్టములు,सीन के पीछे,niwaju aṣọ,,,舞台裏,幕后花絮,وراء الكواليس
+episode 1,episode,capítulo,episode,పాటలు,एपिसोड,Itiṣẹ,,,エピソード,剧集,الحلقة
+Obtained,Obtained,obtido,obtenu,పొందింది,प्राप्त किया,gba,,,得られた,获得,مُقتَنىً
+obtained,Obtained,obtida,obtenue,,,,,,,,
+Lost,Lost,Perdido,Perdu,కోల్పోయిన,खो गया,Ti sọnu,,,失った,丢失的,ضائع
+lost,,Perdida,Perdue,,,,,,,,
+Magic Sword,Magic Sword,Espada Mágica,Épée magique,మేజిక్ స్వోర్డ్,जादुई तलवार,Magic idà,,,魔法の剣,魔剑,سيف سحري
+Generic Item,Generic Item,Item genérico,Article générique,సాధారణ అంశం,सामान्य वस्तु,Generic Nkan,,,汎用品,通用项目,البند العام
+Bandit Head,Bandit Head,Cabeça de bandido,Tête de bandit,బందిపోటు హెడ్,दस्यु प्रमुख,Ori Bandit,,,山賊の頭,强盗头,رئيس قطاع الطرق
+Home,Home,Casa,Maison,హోమ్,घर,Ile,,,家,家,بيت
+Send Algos,Send Algos,Enviar Algos,Envoyer des Algo,ఆల్గోస్ పంపండి,अल्गोस भेजें,Firanṣẹ Algos,,,送信アルゴ,发送算法,أرسل ألجوس
+Copy Mnemonic,Copy Mnemonic,Copiar Mnemônico,Copier le mnémonique,జ్ఞాపికను కాపీ చేయండి,निमोनिक कॉपी करें,Daakọ Mnemonic,,,秘密鍵をコピーする,复制私钥,نسخ المفتاح الخاص
+Proceed,Proceed,Continuar,Procéder,కొనసాగండి,आगे बढ़ना,Tesiwaju,,,進む,继续,يتابع
+Fund Account,Fund Account,Conta de Fundo,Compte de fonds,ఫండ్ ఖాతా,निधि खाता,Owo Account,,,基金口座,资金账户,حساب الصندوق
+Make Payment,Make Payment,Faça o pagamento,Effectuer le paiement,చెల్లింపు చేయండి,भुगतान करें,Ṣe owo sisan,,,支払う,付款,قم بالدفع
+Create New Account,Create New Account,Criar nova conta,Créer un nouveau compte,క్రొత్త ఖాతా తెరువుము,नया खाता बनाएँ,Ṣẹda Account Tuntun,,,新しいアカウントを作成する,建立新帐户,انشاء حساب جديد
+Confirm,Confirm,Confirmar,Confirmer,నిర్ధారించండి,पुष्टि करना,Jẹrisi,,,確認する,确认,يتأكد
+Approve,Approve,Aprovar,Approuver,ఆమోదించడానికి,मंज़ूरी देना,Fi ọwọ si,,,承認する,批准,يعتمد
+Reject,Reject,Rejeitar,Rejeter,తిరస్కరించు,अस्वीकार करना,Kọ,,,拒否する,拒绝,يرفض
+Show Account,Show Account,mostrar conta,Afficher le compte,ఖాతా చూపించు,खाता दिखाएं,Nípa ìfọ́pamọ,,,アカウントを表示する,显示账户,عرض الحساب
+Check Account,Check Account,verificar conta,Vérifier le compte,ఖాతా తనిఖీ చేయండి,खाता जांचें,ṣi èèyàn ìfọ́pamọ,,,アカウントを確認する,查看账户,تحقق من الحساب
+Import Account,Import Account,importar conta,Importer le compte,ఖాతాని దిగుమతి చేయండి,खाता आयात करें,Jẹ́ kó létí ìfọ́pamọ,,,アカウトをインポートする,导入账户,استيراد الحساب
+Transactions,Transactions,transações,transactions,లేఖాకార్యములు,लेन-देन,iwọṣọna,,,取引,交易,
+Smart Contracts,Smart Contracts,contratos inteligentes,contrats intelligents,స్మార్ట్ ఒపెరేటింగు చేసే ఒపెరేషన్లు,स्मार्ट समझौते,iṣakoso ọlọpaa,,,スマートコントラクト,智能合约,عقد ذكي
+Collectibles,Collectibles,colecionáveis,objets de collection,సేకరణలు,संग्रहीय,awọn idana,,,コレクタブル,收藏品,مقتنيات
+Login,Login,login,Connexion,లాగిన్,लॉगिन,tẹju ìsọdọ̀mọ,,,ログイン,登录,تسجيل الدخول
+Show Mnemonic,Show Mnemonic,Mostrar Mnemônico,Mnémonique,సూచన పదాలు చూపించు,म्नेमोनिक दिखाएं,ìyìn ìròyìn,,,ニーモニックを表示,显示助记词,عرض الكلمة المميزة
+Dash,Dash,Traço,Ruée,దూరంగా,डैश,wẹ̀wẹ̀,,,ダッシュ,冲刺,اندفاع
+Dashboard,Dashboard,painel,Tableau de bord,డాష్బోర్డు,डैशबोर्ड,pápa orí,,,ダッシュボード,仪表板,لوحة التحكم
+Requests,Requests,pedidos,Demandes,అభ్యర్థనలు,अनुरोध,awọn ìfé,,,リクエスト,请求,طلبات
+Notifications,Notifications,notificações,Avis,అఱియపరచాలు,सूचनाएँ,awọn ohun inú,,,通知,通知,إشعارات
+Receive Payment,Receive Payment,Receber Pagamento,Recevoir un paiement,చెల్లింపు పొందండి,भुगतान प्राप्त करें,Nípà ifọwọsowọ,,,支払いを受ける,收款,استيراد الحساب
+Request Payout,Request Payout,Solicitar Pagamento,Demande un versement,చెల్లింపును అభ్యర్థించండి,भुगतान अनुरोध,ìbéèrè payout,,,支払いを要求する,请求支付,طلب دفع تعويضات
+"Double Tap to Zoom in, 
+Swipe Top & Bottoms Screen
+to Change pages","Double Tap to Zoom in, 
+Swipe Top & Bottoms Screen
+to Change pages","Toque duas vezes para ampliar,
+Deslizar tela superior e inferior
+para mudar de página","Appuyez deux fois pour zoomer,
+Glisser l'écran du haut et du bas
+pour changer de page","జూమ్ ఇన్ చేయడానికి రెండుసార్లు నొక్కండి,
+టాప్ & బాటమ్స్ స్క్రీన్‌ని స్వైప్ చేయండి
+పేజీలను మార్చడానికి","ज़ूम इन करने के लिए डबल टैप करें,
+स्क्रीन को ऊपर और नीचे स्वाइप करें
+पेज बदलने के लिए","Fọwọ ba lẹẹmeji lati Sun-un sinu,
+Ra Oke & Iboju isalẹ
+Lati Yi awọn oju-iwe pada",,,"ダブルタップして拡大します。
+画面の上下をスワイプ
+ページを変更するには","双击放大，
+滑动顶部和底部屏幕
+更改页面","انقر نقرًا مزدوجًا للتكبير،
+انتقد أعلى وأسفل الشاشة
+لتغيير الصفحات"
+"Swipe TOP & BOTTOM SCREENS
+ TO CHANGE PAGES","Swipe TOP & BOTTOM SCREENS
+ TO CHANGE PAGES","Deslize as telas superior e inferior
+ PARA MUDAR DE PÁGINA","Faites glisser les écrans du haut et du bas
+ POUR CHANGER DE PAGE","టాప్ & బాటమ్ స్క్రీన్‌లను స్వైప్ చేయండి
+ పేజీలను మార్చడానికి","ऊपर और नीचे की स्क्रीन को स्वाइप करें
+ पन्ने बदलने के लिए","Ra TOP & Awọn iboju isale
+ LATI YI awọn oju-iwe pada",,,"上部と下部の画面をスワイプ
+ ページを切り替えるには","滑动顶部和底部屏幕
+ 更改页面","اسحب الشاشات العلوية والسفلية
+ لتغيير الصفحات"
+hint1,Use Your Inventory Items For Easier Progression,Use seus itens do inventário para uma progressão mais fácil.,Utilisez les objets de votre inventaire pour une progression plus facile.,సులభమైన పునరావృత్తి కోసం మీ అంగడానికి అంగడానికి ఉపయోగించండి,अपने इन्वेंटरी आइटम का उपयोग करें सुगम प्रगति के लिए,"Pàápàá ní àwọn ohun tí o ní lọ pẹ̀lú láàárín, kọọkan rẹ yó gbogbo wa lọ",,,インベントリアイテムを使用して進行を容易にしてください,使用你的库存物品来更轻松地进行游戏进展,استخدم العناصر في المخزون لتسهيل التقدم
+hint2,Control Game Settings in Control Settings,Controle as configurações do jogo em Controles.,Contrôlez les paramètres du jeu dans les paramètres de contrôle.,కంట్రోల్ సెట్టింగ్స్లో గేమ్ సెట్టింగ్స్ను నియంత్రించండి,नियंत्रण सेटिंग्स में गेम सेटिंग्स को नियंत्रित करें,Ṣe irọ̀-ẹ̀dá àwọn ìṣẹ̀tọ̀ àwọn iṣẹ̀tọ̀ ní irọ̀-ẹ̀dá,,,ゲーム設定をコントロール設定で調整する,在「控制设置」中管理游戏设定,ضبط إعدادات اللعب في إعدادات التحكم
+hint3,Press & Hold Direction Button or Joystick to Move,Pressione e segure o botão de direção ou joystick para se mover.,Appuyez et maintenez le bouton de direction ou le joystick pour vous déplacer.,దిక్కు బటన్ లేదా జాయిస్టిక్ ను నొక్కి ఉంచండి లేదా ఉంచండి,दिशा बटन या जॉयस्टिक को दबाएं और रखें गति के लिए,Pọ̀sì àti pè àwọn èdá ìkànsí tó lọ,,,移動するには方向ボタンまたはジョイスティックを押し続けてください,按住方向按钮或摇杆以移动,اضغط واستمر في الضغط على زر الاتجاه أو الجويستيك للتحرك
+hint4,Press Slash Button To Attack,Pressione o botão de barra invertida para atacar.,Appuyez sur le bouton de slash pour attaquer,ఆక్రమిణి కోసం స్లాష్ బటన్‌ను నొక్కండి,हमला करने के लिए स्लैश बटन दबाएं,Pọ̀sì àwọn àmì ìkànsí pẹ̀lú pẹ̀lú láàárín,,,攻撃するにはスラッシュボタンを押してください,按下斜杠按钮进行攻击,اضغط على زر الشرطة للهجوم
+hint5,Press Dash Button to Dash,Pressione o botão de dash para dar um dash.,Appuyez sur le bouton de dash pour sprinter.,డాష్ కోసం డాష్ బటన్‌ను నొక్కండి,डैश करने के लिए डैश बटन दबाएं,Pọ̀sì àwọn àmì wẹ̀wẹ̀ pẹ̀lú pẹ̀lú láàárín,,,ダッシュするにはダッシュボタンを押してください,按下冲刺按钮进行冲刺,اضغط على زر الاندفاع للاندفاع
+hint6,Use Generic Item For More Speed,Use item genérico para mais velocidade.,Utilisez l'objet générique pour plus de vitesse.,"అద్భుతమైన వస్త్రాన్ని ఉపయోగించండి, మరియు మరి వేగం పొందండి",और गति के लिए सामान्य आइटम का उपयोग करें,Pàápàá àwọn ohun tó jẹ́ lẹ́tẹ̀tẹ̀ pẹ̀lú ohun tó jẹ́ fúnra,,,より速くするために汎用アイテムを使用してください,使用通用物品以提高速度,استخدم العنصر العام لزيادة السرعة
+hint7,Turn Off Vibration In the Control Settings,Desative a Vibração nas Configurações de Controle.,Désactivez la vibration dans les paramètres de contrôle.,కంట్రోల్ సెట్టింగ్లలో వైబ్రేషన్‌ను ఆఫ్ చేయండి,नियंत्रण सेटिंग्स में विभ्रम बंद करें,Wọn bọ̀ tọrọ fún ìdá ìrọ̀-ẹ̀dá ní irọ̀-ẹ̀dá,,,コントロール設定で振動をオフにしてください,在控制设置中关闭振动,أوقف الاهتزاز في إعدادات التحكم
+hint8,Explore the World and Discover New Secrets,Explore o mundo e descubra novos segredos.,Explorez le monde et découvrez de nouveaux secrets.,ప్రపంచాన్ని అన్వేషించండి మరియు కొత్త రహస్యాలను కనుగొనండి,दुनिया का अन्वेषण करें और नए रहस्यों की खोज करें,Wọlé ní ilẹ̀ yìí àti rí àwọn ẹ̀tò tí wọ̀nyí,,,世界を探機し、新しい秘密を発見してください,探索这个世界，发现新的秘密,استكشف العالم واكتشف أسرار جديدة
+dir1,North : Nmoru's temple,Norte: Templo de Nmoru,Nord : Temple de Nmoru,ఉత్తరం: ఎన్మోరు దేవాలయం,उत्तर: एनमोरू का मंदिर,Àríwá: ilẹ̀ Nmoru,,,北：ノモルの寺院,北方：Nmoru神庙,الشمال: معبد نمورو
+dir2,East : Abbi City / South: Ukwani Desert,East: Cidade Abbi / Sul: Deserto de Ukwani,Est : Ville Abbi / Sud : Désert d'Ukwani,తూర్పు: అబ్బి నగరం / దక్షిణం: ఉక్వాని మరుబూ,पूरब: आबी शहर / दक्षिण: उकवानी रेगिस्तान,Ọ̀kan: Ilẹ̀ Abbi / Ìwọ̀ọ̀: Ìwọ̀ọ̀ Ukwani,,,東：アビシティ  南：ウクワニ砂漠,东方：阿比城 / 南方：乌克瓦尼沙漠,الشرق: مدينة أبي / الجنوب: صحراء أوكواني
+dir3,Signpost Clicked,Placa Clicada,Poteau indicateur cliqué,సైన్‌పోస్టు నొక్కబడింది,साइनपोस्ट क्लिक किया गया,Iwakọ Pọ̀sì,,,サインポストをクリックしました,路标被点击,لافتة انقرت
+Stats,Stats,Estatísticos,Statistiques,గణాంకాలు,आँकड़े,Awọn iṣiro,,,統計,统计数据,احصائيات
+Quests,Quests,Missões,Quêtes,అన్వేషణలు,खोज,Awọn ibeere,,,クエスト,任务,أسئلة
+Inventory,Inventory,Inventário,Inventaire,ఇన్వెంటరీ,भंडार,Oja,,,在庫,存货,جرد
+Character,Character,Personagem,Personnage,పాత్ర,चरित्र,Ohun kikọ,,,キャラクター,特点,شخصية
+vibration,vibration,vibração,vibration,ప్రతిస్పందన,विभ्रम,èdá,,,振動,振动,اهتزاز
+Vibration,Vibration,Vibração,Vibration,ప్రతిస్పందన,विभ्रम,èdá,,,振動,振动,اهتزاز
+Rotate Page,Rotate Page,Girar Página,Faire pivoter la page,పేజీ తిరిగి ఉంచండి,पृष्ठ को घुमाएं,Pípa Rẹ Rọté,,,ページを回転させる,旋转页面,تدوير الصفحة
+Direction,Direction,Direção,Direction,దిక్కు,दिशा,ẹ̀dá,,,方向,方向,اتجاه
+Lives,Lives,Vidas,Vies,జీవితాలు,जीवन,ẹ̀dá,,,生命,生命,حياة
+Attack,Attack,Ataque,Attaque,దాడి,हमला,Ṣeré,,,攻撃,攻击,هجوم
+Interact,Interact,Interagir,Interagir,పరస్పర చర్చ,अंतरक्रिया करना,fi ìṣekó ṣe,,,対話する,互动,تفاعل
+Zoom,Zoom,Zoom,Zoom,జూమ్,ज़ूम,fọwọ́ rẹ,,,ズーム,缩放,زووم
+Movement,Movement,Movimento,Mouvement,చలన,आंदोलन,ìkànsí,,,動き,动作,حركة
+Press Any Button To Skip,Press Any Button To Skip,Pressione qualquer botão para pular a cena,Appuyez sur n'importe quelle touche pour passer,ప్రేస్ అనీ బటన్ ప్రేస్ చేయండి మారడానికి,कोई भी बटन दबाएं ताकि छोड़ जाए,Pọ̀sì èdá tó kọọkan,,,スキップするには任意のボタンを押してください,按任意按钮跳过,اضغط على أي زر للتخطي

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/Shaders/Rain&SnowFX2.shader" type="Shader" id=1]
+[ext_resource path="res://scenes/Shaders/Rain FX 2.gd" type="Script" id=2]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 1 )
+shader_param/count = 150
+shader_param/slant = -0.1
+shader_param/speed = 25.0
+shader_param/blur = 0.001
+shader_param/colour = Plane( 0, 0, 0, 1 )
+shader_param/size = Vector2( 0.01, 0.2 )
+
+[node name="Rain FX 2" type="ColorRect"]
+material = SubResource( 1 )
+margin_right = 1039.0
+margin_bottom = 592.0
+color = Color( 0.615686, 0.615686, 0.615686, 1 )
+script = ExtResource( 2 )

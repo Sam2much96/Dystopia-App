@@ -1,0 +1,224 @@
+[gd_scene load_steps=33 format=2]
+
+[ext_resource path="res://scenes/Wallet/state_controller.gd" type="Script" id=1]
+[ext_resource path="res://addons/algodot/Algod.gd" type="Script" id=2]
+[ext_resource path="res://Wallet Scenes/AccountsSetupPage.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Wallet Scenes/GalleryUI.tscn" type="PackedScene" id=4]
+[ext_resource path="res://themes/option+button.tres" type="Theme" id=5]
+[ext_resource path="res://Wallet Scenes/SwipeIcons.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Wallet Scenes/AccountsDashboard1.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Wallet Scenes/Merchant ID Validation.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Wallet Scenes/Merchant Pin.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Wallet Scenes/FundingSuccess.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Wallet Scenes/ChoosePaymentOption.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Wallet Scenes/SuccessfullStudentUpload.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Wallet Scenes/RequestPage.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/Wallet/animation/RESET.tres" type="Animation" id=14]
+[ext_resource path="res://scenes/Wallet/animation/SWIPE_DOWN.tres" type="Animation" id=15]
+[ext_resource path="res://scenes/Wallet/animation/SWIPE_RIGHT.tres" type="Animation" id=16]
+[ext_resource path="res://scenes/Wallet/animation/SWIPE_LEFT.tres" type="Animation" id=17]
+[ext_resource path="res://scenes/Wallet/animation/SWIPE_UP.tres" type="Animation" id=18]
+[ext_resource path="res://scenes/Wallet/animation/SLIDE_IN.tres" type="Animation" id=19]
+[ext_resource path="res://scenes/Wallet/animation/SLIDE_OUT.tres" type="Animation" id=20]
+[ext_resource path="res://scenes/Wallet/animation/RESET_UI.tres" type="Animation" id=21]
+[ext_resource path="res://scenes/Wallet/animation/SWIPE_RIGHT_UI.tres" type="Animation" id=22]
+[ext_resource path="res://scenes/Wallet/animation/SLIDE_OUT_UI.tres" type="Animation" id=23]
+[ext_resource path="res://scenes/Wallet/animation/SWIPE_DOWN_UI.tres" type="Animation" id=24]
+[ext_resource path="res://scenes/Wallet/animation/SWIPE_UP_UI.tres" type="Animation" id=25]
+[ext_resource path="res://scenes/Wallet/animation/SWIPE_LEFT_UI.tres" type="Animation" id=26]
+[ext_resource path="res://scenes/Wallet/animation/SLIDE_IN_UI.tres" type="Animation" id=27]
+[ext_resource path="res://scenes/Wallet/animation/WalletSHOW_MNEMONIC.tres" type="Animation" id=28]
+[ext_resource path="res://scenes/Wallet/animation/SUCCESSS.tres" type="Animation" id=30]
+
+[sub_resource type="AnimationRootNode" id=2]
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("state_controller:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 8.4174, 17.7982 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "REST_UP"
+tracks/0/type = "value"
+tracks/0/path = NodePath("state_controller:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 4.94763, 15.3219 ) ]
+}
+
+[node name="Wallet_scene" type="Control" groups=["Wallet"]]
+anchor_right = 0.474
+anchor_bottom = 0.996
+margin_left = 20.1815
+margin_top = 20.1816
+margin_right = -465.194
+margin_bottom = -577.418
+rect_scale = Vector2( 15.563, 19.384 )
+
+[node name="Algodot" type="Node" parent="."]
+script = ExtResource( 2 )
+network_type = "TESTNET"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Dashboard_UI" parent="CanvasLayer" instance=ExtResource( 7 )]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -550.94
+margin_top = -325.42
+margin_right = 404.058
+margin_bottom = 269.576
+grow_horizontal = 0
+grow_vertical = 0
+rect_scale = Vector2( 1.15621, 1.15621 )
+mouse_filter = 1
+
+[node name="Mnemonic_UI" parent="CanvasLayer" instance=ExtResource( 8 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -571.591
+margin_top = -326.047
+margin_right = 15.4092
+margin_bottom = 259.957
+rect_scale = Vector2( 1.09568, 1.09568 )
+mouse_filter = 1
+
+[node name="Password_UI" parent="CanvasLayer" instance=ExtResource( 9 )]
+visible = false
+margin_left = -42.9436
+margin_top = -22.9727
+margin_right = -42.9436
+margin_bottom = -362.756
+rect_scale = Vector2( 1.04306, 1.04306 )
+mouse_filter = 1
+
+[node name="FundingSuccess" parent="CanvasLayer" instance=ExtResource( 10 )]
+visible = false
+margin_left = -78.7701
+margin_top = -38.714
+margin_right = -78.7701
+margin_bottom = -516.714
+rect_scale = Vector2( 1.12115, 1.12115 )
+mouse_filter = 1
+
+[node name="Transaction_UI" parent="CanvasLayer" instance=ExtResource( 11 )]
+visible = false
+margin_left = -44.2854
+margin_top = -37.2706
+margin_right = -44.2854
+margin_bottom = -377.055
+rect_scale = Vector2( 1.10299, 1.10299 )
+mouse_filter = 1
+
+[node name="SmartContract_UI" parent="CanvasLayer" instance=ExtResource( 3 )]
+visible = false
+margin_left = 10.43
+margin_top = -0.487978
+margin_right = 10.4299
+margin_bottom = -0.487976
+rect_scale = Vector2( 0.999486, 0.999486 )
+
+[node name="CreateAccountSuccess" parent="CanvasLayer" instance=ExtResource( 12 )]
+visible = false
+margin_left = -97.3364
+margin_top = -32.6247
+margin_right = -97.3364
+margin_bottom = -32.6247
+rect_scale = Vector2( 1.15358, 1.15358 )
+
+[node name="Collectibles_UI" parent="CanvasLayer" instance=ExtResource( 4 )]
+visible = false
+margin_left = 89.487
+margin_top = 37.8058
+margin_right = 89.4871
+margin_bottom = 37.8058
+rect_scale = Vector2( 0.8357, 0.8357 )
+
+[node name="Asset_UI" parent="CanvasLayer" instance=ExtResource( 13 )]
+visible = false
+margin_left = -578.0
+margin_top = 42.0
+margin_right = 10180.0
+margin_bottom = 6300.0
+rect_scale = Vector2( 0.993464, 0.993464 )
+
+[node name="state_controller" type="OptionButton" parent="."]
+margin_left = 8.4174
+margin_top = 17.7982
+margin_right = 136.417
+margin_bottom = 37.7982
+rect_scale = Vector2( 0.136668, 0.136668 )
+focus_mode = 0
+mouse_filter = 1
+theme = ExtResource( 5 )
+enabled_focus_mode = 0
+text = "State Controller"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Position2D" type="Position2D" parent="state_controller"]
+position = Vector2( -297.652, 40.8779 )
+scale = Vector2( 7.317, 7.317 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="SwipeIcon" parent="." instance=ExtResource( 6 )]
+visible = false
+offset = Vector2( -200, 500 )
+rotation = -1.5708
+transform = Transform2D( -4.37114e-08, -1, 1, -4.37114e-08, -200, 500 )
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( 2 )
+anim_player = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="AnimationTree"]
+root_node = NodePath("../..")
+anims/RESET = SubResource( 3 )
+anims/RESET_UI = ExtResource( 21 )
+anims/REST_UP = SubResource( 4 )
+anims/SHOW_MNEMONIC = ExtResource( 28 )
+anims/SLIDE_IN_UI = ExtResource( 27 )
+anims/SLIDE_OUT_UI = ExtResource( 23 )
+anims/SUCCESS = ExtResource( 30 )
+anims/SWIPE_DOWN_UI = ExtResource( 24 )
+anims/SWIPE_LEFT_UI = ExtResource( 26 )
+anims/SWIPE_RIGHT_UI = ExtResource( 22 )
+anims/SWIPE_UP_UI = ExtResource( 25 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationTree"]
+root_node = NodePath("../..")
+anims/RESET = ExtResource( 14 )
+anims/SLIDE_IN = ExtResource( 19 )
+anims/SLIDE_OUT = ExtResource( 20 )
+anims/SWIPE_DOWN = ExtResource( 15 )
+anims/SWIPE_LEFT = ExtResource( 17 )
+anims/SWIPE_RIGHT = ExtResource( 16 )
+anims/SWIPE_UP = ExtResource( 18 )
+
+[connection signal="toggled" from="state_controller" to="state_controller" method="_on_state_controller_toggled"]

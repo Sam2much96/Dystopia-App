@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/Shaders/lightning2D.shader" type="Shader" id=1]
+[ext_resource path="res://scenes/Shaders/Lightning.gd" type="Script" id=2]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 1 )
+shader_param/lightning_color = Color( 0.380392, 0.866667, 1, 1 )
+shader_param/size = 0.01
+shader_param/width = 0.107
+shader_param/speed = 3.0
+shader_param/cycle = 3.0
+shader_param/ratio = 2.0
+shader_param/time_shift = null
+
+[node name="LightningFX" type="ColorRect"]
+material = SubResource( 1 )
+margin_right = 1038.0
+margin_bottom = 601.0
+script = ExtResource( 2 )

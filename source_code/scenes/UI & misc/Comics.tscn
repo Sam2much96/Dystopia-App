@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://singletons/Comics.v6.gd" type="Script" id=1]
+
+[sub_resource type="GDScript" id=7]
+script/source = "extends Position2D
+
+# Updates the Screen Center
+func _ready():
+	Comics_v6.center = self.position
+	pass
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+"
+
+[node name="Comics" type="Control" groups=["Cmx_Root"]]
+mouse_filter = 1
+script = ExtResource( 1 )
+SwipeLocked = false
+
+[node name="panel" type="ColorRect" parent="."]
+visible = false
+margin_left = 10.0
+margin_top = -57.0
+margin_right = 1199.0
+margin_bottom = 2038.0
+mouse_filter = 2
+color = Color( 1, 1, 1, 0.254902 )
+
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( -436.65, -249.813 )
+script = SubResource( 7 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="Line2D" type="Line2D" parent="."]
+position = Vector2( 506.03, 260.142 )
+default_color = Color( 0.698039, 0.270588, 0.670588, 1 )
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

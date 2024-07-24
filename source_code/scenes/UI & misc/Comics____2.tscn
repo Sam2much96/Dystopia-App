@@ -1,0 +1,126 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://scenes/UI & misc/Comics.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/UI & misc/ComicsGridUI.tscn" type="PackedScene" id=2]
+[ext_resource path="res://resources/Buttons/comics.png" type="Texture" id=7]
+[ext_resource path="res://resources/misc/rotate_screen_webp2.webp" type="Texture" id=8]
+[ext_resource path="res://fonts/ingame_menu.tres" type="Theme" id=9]
+[ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/UI & misc/Like button.tscn" type="PackedScene" id=11]
+[ext_resource path="res://fonts/Word_bubble_dialogue.tres" type="DynamicFont" id=17]
+
+[sub_resource type="GDScript" id=5]
+script/source = "extends Popup
+
+
+\"\"\"
+NOTIFICATION GENERIC BAR
+\"\"\"
+
+
+func _ready():
+
+	self.call_deferred('popup')
+#	self.popup_centered()
+
+func _exit_tree():
+	self.queue_free()
+
+"
+
+[node name="Comics UI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -5.65696
+margin_top = 16.9707
+margin_right = -5.65698
+margin_bottom = 16.9707
+rect_pivot_offset = Vector2( 638.313, 315.55 )
+
+[node name="Comics" parent="." instance=ExtResource( 1 )]
+rect_pivot_offset = Vector2( 643.969, 373.494 )
+
+[node name="ScrollContainer" parent="Comics" instance=ExtResource( 2 )]
+
+[node name="Book" type="TouchScreenButton" parent="."]
+normal = ExtResource( 7 )
+action = "comics"
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Rotate" type="TouchScreenButton" parent="."]
+position = Vector2( 8.65696, 119.029 )
+scale = Vector2( 1.39185, 1.39185 )
+normal = ExtResource( 8 )
+
+[node name="back" type="Button" parent="."]
+margin_left = 822.273
+margin_top = 13.5227
+margin_right = 948.273
+margin_bottom = 52.5227
+theme = ExtResource( 9 )
+text = "back"
+flat = true
+
+[node name="Dialog_box" parent="." instance=ExtResource( 10 )]
+
+[node name="Like button" parent="." instance=ExtResource( 11 )]
+margin_left = 39.5979
+margin_top = 265.872
+margin_right = 39.5979
+margin_bottom = 265.872
+focus_mode = 0
+enabled_focus_mode = 0
+
+[node name="Hint" type="Popup" parent="."]
+margin_left = -85.5263
+margin_top = -299.661
+margin_right = -45.5263
+margin_bottom = -259.661
+script = SubResource( 5 )
+
+[node name="ColorRect" type="ColorRect" parent="Hint"]
+margin_left = 100.0
+margin_top = 584.0
+margin_right = 960.0
+margin_bottom = 823.0
+
+[node name="Label" type="Label" parent="Hint"]
+margin_left = 96.1114
+margin_top = 610.014
+margin_right = 1762.11
+margin_bottom = 796.014
+rect_scale = Vector2( 0.63, 0.63 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 17 )
+text = "Double Tap to Zoom in, 
+Swipe Top & Bottoms Screen
+to Change pages"
+
+[node name="Hint2" type="Popup" parent="."]
+margin_left = -115.579
+margin_top = 1224.75
+margin_right = -75.5789
+margin_bottom = 1264.75
+script = SubResource( 5 )
+
+[node name="ColorRect" type="ColorRect" parent="Hint2"]
+margin_left = 128.0
+margin_top = -25.0
+margin_right = 1023.0
+margin_bottom = 170.0
+
+[node name="Label" type="Label" parent="Hint2"]
+margin_left = 178.415
+margin_top = 16.8495
+margin_right = 1524.41
+margin_bottom = 76.8495
+rect_scale = Vector2( 0.63048, 0.63048 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 17 )
+text = "Swipe TOP & BOTTOM SCREENS
+ TO CHANGE PAGES"
+
+[connection signal="pressed" from="Rotate" to="Comics" method="_on_Rotate_pressed"]
+[connection signal="pressed" from="back" to="Comics" method="_on_back_pressed"]

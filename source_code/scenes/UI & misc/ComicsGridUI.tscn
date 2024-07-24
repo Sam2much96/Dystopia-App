@@ -1,0 +1,99 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://scenes/Comics/chapter 1/Cover 1_pressed.webp" type="Texture" id=1]
+[ext_resource path="res://scenes/Comics/chapter 4/Cover 1.webp" type="Texture" id=2]
+[ext_resource path="res://scenes/Comics/chapter 6/chap 6 cover art 1.webp" type="Texture" id=3]
+[ext_resource path="res://resources/misc/UI hover buttons.webp" type="Texture" id=4]
+[ext_resource path="res://scenes/Comics/chapter 2/cover 2_pressed.webp" type="Texture" id=5]
+[ext_resource path="res://scenes/UI & misc/ComicsGridUI.gd" type="Script" id=6]
+[ext_resource path="res://scenes/Comics/chapter 3/cover 2.webp" type="Texture" id=7]
+[ext_resource path="res://scenes/Comics/chapter 5/chap 1 cover page.webp" type="Texture" id=8]
+[ext_resource path="res://scenes/Comics/chapter 2/cover 2.webp" type="Texture" id=10]
+[ext_resource path="res://scenes/Comics/chapter 7/Cover 1.webp" type="Texture" id=13]
+[ext_resource path="res://scenes/Comics/chapter 1/Cover 1.webp" type="Texture" id=15]
+[ext_resource path="res://scenes/UI & misc/comics__2.gd" type="Script" id=16]
+[ext_resource path="res://fonts/scroll_bar_theme.tres" type="Theme" id=17]
+[ext_resource path="res://scenes/Comics/chapter 3/Chapter 3 cover_pressed.webp" type="Texture" id=19]
+[ext_resource path="res://scenes/Comics/chapter 4/Cover 1 pressed.webp" type="Texture" id=21]
+
+[node name="ScrollContainer" type="ScrollContainer"]
+margin_left = 261.0
+margin_top = 13.0
+margin_right = 2751.0
+margin_bottom = 1884.0
+rect_scale = Vector2( 0.3, 0.3 )
+rect_clip_content = false
+theme = ExtResource( 17 )
+scroll_vertical_enabled = false
+script = ExtResource( 6 )
+AUTO = true
+chap_1 = true
+chap_2 = true
+chap_3 = true
+chap_4 = true
+chap_5 = true
+chap_6 = true
+chap_7 = true
+
+[node name="GridContainer" type="GridContainer" parent="."]
+margin_right = 8814.0
+margin_bottom = 1771.0
+columns = 7
+script = ExtResource( 16 )
+
+[node name="chap_1" type="TextureButton" parent="GridContainer"]
+margin_right = 1240.0
+margin_bottom = 1771.0
+focus_next = NodePath("../chap_2")
+focus_previous = NodePath(".")
+texture_normal = ExtResource( 15 )
+texture_hover = ExtResource( 1 )
+
+[node name="chap_2" type="TextureButton" parent="GridContainer"]
+margin_left = 1244.0
+margin_right = 2514.0
+margin_bottom = 1771.0
+focus_next = NodePath("../chap_3")
+focus_previous = NodePath("../chap_1")
+texture_normal = ExtResource( 10 )
+texture_hover = ExtResource( 5 )
+
+[node name="chap_3" type="TextureButton" parent="GridContainer"]
+margin_left = 2518.0
+margin_right = 3758.0
+margin_bottom = 1771.0
+focus_next = NodePath("../chap_2")
+focus_previous = NodePath(".")
+texture_normal = ExtResource( 7 )
+texture_hover = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="chap_4" type="TextureButton" parent="GridContainer"]
+margin_left = 3762.0
+margin_right = 5048.0
+margin_bottom = 1771.0
+texture_normal = ExtResource( 2 )
+texture_hover = ExtResource( 21 )
+
+[node name="chap_5" type="TextureButton" parent="GridContainer"]
+margin_left = 5052.0
+margin_right = 6306.0
+margin_bottom = 1771.0
+texture_normal = ExtResource( 8 )
+texture_hover = ExtResource( 4 )
+
+[node name="chap_6" type="TextureButton" parent="GridContainer"]
+margin_left = 6310.0
+margin_right = 7550.0
+margin_bottom = 1771.0
+texture_normal = ExtResource( 3 )
+texture_hover = ExtResource( 4 )
+
+[node name="chap_7" type="TextureButton" parent="GridContainer"]
+margin_left = 7554.0
+margin_right = 8814.0
+margin_bottom = 1771.0
+texture_normal = ExtResource( 13 )
+texture_hover = ExtResource( 4 )

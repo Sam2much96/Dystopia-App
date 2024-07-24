@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/UI & misc/Joystick circle.gd" type="Script" id=1]
+
+[node name="joystick_circle" type="TouchScreenButton"]
+position = Vector2( 681.651, 313.955 )
+script = ExtResource( 1 )
+
+[node name="Position2D" type="Position2D" parent="."]

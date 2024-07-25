@@ -7,11 +7,11 @@
 #
 # *************************************************
 
-extends Viewport
+extends SubViewport
 
 
-export (ViewportTexture )var viewport_image : ViewportTexture = get_texture()
+@export var viewport_image : ViewportTexture = get_texture()
 #onready var image : image
 
 func _ready():
-	get_parent().get_node("Sprite").set_texture(viewport_image)
+	get_parent().get_node("Sprite2D").set_texture(viewport_image)

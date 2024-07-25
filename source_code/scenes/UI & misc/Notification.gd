@@ -21,15 +21,15 @@ class_name hint
 
 #add signals
 
-export (bool)var condition 
-export(String) var Display_text = ""
+@export var condition : bool
+@export var Display_text: String = ""
 
 var label  
 
 enum { STATE_POPUP, STATE_HIDE,}
-export var state = STATE_POPUP
+@export var state = STATE_POPUP
 
-onready var _help : Help = $Control
+@onready var _help : Help = $Control
 
 func _ready():
 	# Node not found Error catcher

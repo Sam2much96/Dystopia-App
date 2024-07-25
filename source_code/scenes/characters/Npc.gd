@@ -18,7 +18,7 @@
 # *************************************************
 
 
-extends KinematicBody2D
+extends CharacterBody2D
 
 class_name NPC
 
@@ -28,22 +28,22 @@ which should be an instance of Quest.gd it'll become a quest giver and show what
 text Quest.process() returns
 """
 
-export (bool)var active
+@export (bool)var active
 
-export(String) var character_name = "Nameless NPC"
-export(Array, String, MULTILINE) var dialogs = ["..."]
+@export var character_name: String = "Nameless NPC"
+@export var dialogs = ["..."] # (Array, String, MULTILINE)
 var current_dialog = 0
 
 
-var Kinematic_Body : KinematicBody2D = get_parent()
+var Kinematic_Body : CharacterBody2D = get_parent()
 var root : Node2D = get_parent()
 
 var __body : Player
 
-onready var npc : Area2D = $NPC
+@onready var npc : Area2D = $NPC
 
 # AI API fetches Prompt from server
-onready var _AI : Llama2API = $AI
+@onready var _AI : Llama2API = $AI
 
 var frame_counter : int = 0
 
@@ -54,13 +54,13 @@ func _ready():
 		# Adds a Kinematic Body for Move and SLide
 		#self.add_child(Kinematic_Body)
 		
-		if not npc.is_connected("body_entered", self, "_on_NPC_body_entered"):
+		if not npc.is_connected("body_entered", Callable(self, "_on_NPC_body_entered")):
 			# warning-ignore:return_value_discarded
-			npc.connect("body_entered", self, "_on_NPC_body_entered")
+			npc.connect("body_entered", Callable(self, "_on_NPC_body_entered"))
 
-		if not npc.is_connected("body_exited", self, "_on_NPC_body_exited"):
+		if not npc.is_connected("body_exited", Callable(self, "_on_NPC_body_exited")):
 			# warning-ignore:return_value_discarded
-			npc.connect("body_exited", self, "_on_NPC_body_exited")
+			npc.connect("body_exited", Callable(self, "_on_NPC_body_exited"))
 
 	#print_debug(_AI.name)
 
@@ -89,7 +89,8 @@ func _process(delta : float):
 				#print (get_tree().get_nodes_in_group('player').pop_front())
 				
 				# Follow Player
-				move_and_slide( Behaviour.EscapePlayer(self, __body))
+				set_velocity(Behaviour.EscapePlayer(self, __body))
+				move_and_slide()
 				
 				pass
 		
@@ -105,7 +106,7 @@ func _process(delta : float):
 func _input(event):
 	if (
 			active and not
-			dialogs.empty() and
+			dialogs.is_empty() and
 			event.is_action_pressed("interact") and not
 			Dialogs.active
 		):
@@ -126,7 +127,7 @@ func _input(event):
 
 
 
-class Behaviour extends Reference:
+class Behaviour extends RefCounted:
 	
 	# Uses the Mob Enemy Function for FOllow the Player Arround
 	# Not Working

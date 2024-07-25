@@ -1,16 +1,16 @@
 [gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Help.gd" type="Script" id=1]
-[ext_resource path="res://resources/misc/rotate_screen_webp2.webp" type="Texture" id=2]
-[ext_resource path="res://resources/misc/arrow.png" type="Texture" id=3]
+[ext_resource path="res://resources/misc/rotate_screen_webp2.webp" type="Texture2D" id=2]
+[ext_resource path="res://resources/misc/arrow.png" type="Texture2D" id=3]
 [ext_resource path="res://themes/Bold.tres" type="Theme" id=4]
-[ext_resource path="res://resources/misc/Pixel Heart BW 32x32.png" type="Texture" id=5]
-[ext_resource path="res://resources/misc/btn-roll.png" type="Texture" id=6]
-[ext_resource path="res://resources/misc/btn-slash.png" type="Texture" id=7]
-[ext_resource path="res://resources/misc/btn-stats.png" type="Texture" id=8]
-[ext_resource path="res://resources/misc/btn-interact.png" type="Texture" id=9]
-[ext_resource path="res://resources/Buttons/zoom.png" type="Texture" id=10]
-[ext_resource path="res://resources/Buttons/comics.png" type="Texture" id=11]
+[ext_resource path="res://resources/misc/Pixel Heart BW 32x32.png" type="Texture2D" id=5]
+[ext_resource path="res://resources/misc/btn-roll.png" type="Texture2D" id=6]
+[ext_resource path="res://resources/misc/btn-slash.png" type="Texture2D" id=7]
+[ext_resource path="res://resources/misc/btn-stats.png" type="Texture2D" id=8]
+[ext_resource path="res://resources/misc/btn-interact.png" type="Texture2D" id=9]
+[ext_resource path="res://resources/Buttons/zoom.png" type="Texture2D" id=10]
+[ext_resource path="res://resources/Buttons/comics.png" type="Texture2D" id=11]
 [ext_resource path="res://resources/misc/PadIcon.tscn" type="PackedScene" id=12]
 [ext_resource path="res://resources/misc/KeyboardIcon.tscn" type="PackedScene" id=13]
 
@@ -20,278 +20,278 @@ anchor_bottom = 1.0
 script = ExtResource( 1 )
 
 [node name="PC" type="Control" parent="."]
-margin_left = 338.069
-margin_top = 84.1953
-margin_right = 378.069
-margin_bottom = 124.195
+offset_left = 338.069
+offset_top = 84.1953
+offset_right = 378.069
+offset_bottom = 124.195
 
 [node name="ColorRect" type="ColorRect" parent="PC"]
-margin_left = -408.35
-margin_top = -171.049
-margin_right = 833.65
-margin_bottom = 598.951
+offset_left = -408.35
+offset_top = -171.049
+offset_right = 833.65
+offset_bottom = 598.951
 
 [node name="Pad" parent="PC" instance=ExtResource( 12 )]
 visible = false
 
 [node name="Label2" type="Label" parent="PC"]
-margin_left = 494.0
-margin_top = 67.0
-margin_right = 595.0
-margin_bottom = 107.0
+offset_left = 494.0
+offset_top = 67.0
+offset_right = 595.0
+offset_bottom = 107.0
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Attack"
 
 [node name="Label3" type="Label" parent="PC"]
-margin_left = 506.0
-margin_top = 355.0
-margin_right = 607.0
-margin_bottom = 395.0
+offset_left = 506.0
+offset_top = 355.0
+offset_right = 607.0
+offset_bottom = 395.0
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Roll"
 
 [node name="Label4" type="Label" parent="PC"]
-margin_left = 42.0
-margin_top = 345.0
-margin_right = 143.0
-margin_bottom = 385.0
+offset_left = 42.0
+offset_top = 345.0
+offset_right = 143.0
+offset_bottom = 385.0
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Move"
 
 [node name="Label5" type="Label" parent="PC"]
-margin_left = 10.0
-margin_top = 181.0
-margin_right = 111.0
-margin_bottom = 221.0
+offset_left = 10.0
+offset_top = 181.0
+offset_right = 111.0
+offset_bottom = 221.0
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Interract"
 
 [node name="Label6" type="Label" parent="PC"]
-margin_left = 10.0
-margin_top = 83.0
-margin_right = 144.0
-margin_bottom = 123.0
+offset_left = 10.0
+offset_top = 83.0
+offset_right = 144.0
+offset_bottom = 123.0
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Menu"
 
 [node name="Label7" type="Label" parent="PC"]
-margin_left = 394.0
-margin_top = 179.0
-margin_right = 528.0
-margin_bottom = 219.0
+offset_left = 394.0
+offset_top = 179.0
+offset_right = 528.0
+offset_bottom = 219.0
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Comics"
 
 [node name="Keyboard" parent="PC" instance=ExtResource( 13 )]
 position = Vector2( -368, -48 )
 scale = Vector2( 3.5, 3.5 )
 
-[node name="YSort" type="YSort" parent="PC"]
+[node name="Node2D" type="Node2D" parent="PC"]
 position = Vector2( -428.373, -60.4763 )
 
 [node name="Mobile" type="Control" parent="."]
 visible = false
-margin_left = 246.0
-margin_top = 8.0
-margin_right = 876.0
-margin_bottom = 593.0
+offset_left = 246.0
+offset_top = 8.0
+offset_right = 876.0
+offset_bottom = 593.0
 
 [node name="Panel" type="ColorRect" parent="Mobile"]
 visible = false
-margin_left = -244.0
-margin_top = -120.0
-margin_right = 774.0
-margin_bottom = 724.0
+offset_left = -244.0
+offset_top = -120.0
+offset_right = 774.0
+offset_bottom = 724.0
 
 [node name="GridContainer" type="GridContainer" parent="Mobile"]
-margin_right = 560.0
-margin_bottom = 555.0
+offset_right = 560.0
+offset_bottom = 555.0
 columns = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Mobile/GridContainer"]
-margin_right = 274.0
-margin_bottom = 87.0
+offset_right = 274.0
+offset_bottom = 87.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer"]
-margin_right = 87.0
-margin_bottom = 87.0
+offset_right = 87.0
+offset_bottom = 87.0
 texture = ExtResource( 2 )
 stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer"]
-margin_left = 91.0
-margin_top = 23.0
-margin_right = 274.0
-margin_bottom = 63.0
+offset_left = 91.0
+offset_top = 23.0
+offset_right = 274.0
+offset_bottom = 63.0
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Rotate Page"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Mobile/GridContainer"]
-margin_left = 278.0
-margin_right = 638.0
-margin_bottom = 87.0
+offset_left = 278.0
+offset_right = 638.0
+offset_bottom = 87.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer2"]
-margin_right = 87.0
-margin_bottom = 87.0
+offset_right = 87.0
+offset_bottom = 87.0
 texture = ExtResource( 3 )
 stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer2"]
-margin_left = 91.0
-margin_top = 23.0
-margin_right = 231.0
-margin_bottom = 63.0
+offset_left = 91.0
+offset_top = 23.0
+offset_right = 231.0
+offset_bottom = 63.0
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Direction"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Mobile/GridContainer"]
-margin_top = 91.0
-margin_right = 274.0
-margin_bottom = 194.0
+offset_top = 91.0
+offset_right = 274.0
+offset_bottom = 194.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer3"]
-margin_right = 34.0
-margin_bottom = 103.0
+offset_right = 34.0
+offset_bottom = 103.0
 texture = ExtResource( 5 )
 stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer3"]
-margin_left = 38.0
-margin_top = 31.0
-margin_right = 118.0
-margin_bottom = 71.0
+offset_left = 38.0
+offset_top = 31.0
+offset_right = 118.0
+offset_bottom = 71.0
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Lives"
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="Mobile/GridContainer"]
-margin_left = 278.0
-margin_top = 91.0
-margin_right = 638.0
-margin_bottom = 194.0
+offset_left = 278.0
+offset_top = 91.0
+offset_right = 638.0
+offset_bottom = 194.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer4"]
-margin_right = 110.0
-margin_bottom = 103.0
+offset_right = 110.0
+offset_bottom = 103.0
 texture = ExtResource( 6 )
 stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer4"]
-margin_left = 114.0
-margin_top = 31.0
-margin_right = 190.0
-margin_bottom = 71.0
+offset_left = 114.0
+offset_top = 31.0
+offset_right = 190.0
+offset_bottom = 71.0
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Dash"
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="Mobile/GridContainer"]
-margin_top = 198.0
-margin_right = 274.0
-margin_bottom = 301.0
+offset_top = 198.0
+offset_right = 274.0
+offset_bottom = 301.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer5"]
-margin_right = 110.0
-margin_bottom = 103.0
+offset_right = 110.0
+offset_bottom = 103.0
 texture = ExtResource( 7 )
 stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer5"]
-margin_left = 114.0
-margin_top = 31.0
-margin_right = 215.0
-margin_bottom = 71.0
+offset_left = 114.0
+offset_top = 31.0
+offset_right = 215.0
+offset_bottom = 71.0
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Attack"
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="Mobile/GridContainer"]
-margin_left = 278.0
-margin_top = 198.0
-margin_right = 638.0
-margin_bottom = 301.0
+offset_left = 278.0
+offset_top = 198.0
+offset_right = 638.0
+offset_bottom = 301.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer6"]
-margin_right = 110.0
-margin_bottom = 103.0
+offset_right = 110.0
+offset_bottom = 103.0
 texture = ExtResource( 9 )
 stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer6"]
-margin_left = 114.0
-margin_top = 31.0
-margin_right = 360.0
-margin_bottom = 71.0
+offset_left = 114.0
+offset_top = 31.0
+offset_right = 360.0
+offset_bottom = 71.0
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Interract/ Dance"
 
 [node name="HBoxContainer7" type="HBoxContainer" parent="Mobile/GridContainer"]
-margin_top = 305.0
-margin_right = 274.0
-margin_bottom = 448.0
+offset_top = 305.0
+offset_right = 274.0
+offset_bottom = 448.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer7"]
-margin_right = 110.0
-margin_bottom = 143.0
+offset_right = 110.0
+offset_bottom = 143.0
 texture = ExtResource( 8 )
 stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer7"]
-margin_left = 114.0
-margin_top = 51.0
-margin_right = 194.0
-margin_bottom = 91.0
+offset_left = 114.0
+offset_top = 51.0
+offset_right = 194.0
+offset_bottom = 91.0
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Stats"
 
 [node name="HBoxContainer8" type="HBoxContainer" parent="Mobile/GridContainer"]
-margin_left = 278.0
-margin_top = 305.0
-margin_right = 638.0
-margin_bottom = 448.0
+offset_left = 278.0
+offset_top = 305.0
+offset_right = 638.0
+offset_bottom = 448.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer8"]
-margin_right = 166.0
-margin_bottom = 143.0
+offset_right = 166.0
+offset_bottom = 143.0
 texture = ExtResource( 11 )
 stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer8"]
-margin_left = 170.0
-margin_top = 51.0
-margin_right = 284.0
-margin_bottom = 91.0
+offset_left = 170.0
+offset_top = 51.0
+offset_right = 284.0
+offset_bottom = 91.0
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Comics"
 
 [node name="HBoxContainer9" type="HBoxContainer" parent="Mobile/GridContainer"]
-margin_top = 452.0
-margin_right = 274.0
-margin_bottom = 555.0
+offset_top = 452.0
+offset_right = 274.0
+offset_bottom = 555.0
 
 [node name="TextureRect" type="TextureRect" parent="Mobile/GridContainer/HBoxContainer9"]
-margin_right = 110.0
-margin_bottom = 103.0
+offset_right = 110.0
+offset_bottom = 103.0
 texture = ExtResource( 10 )
 stretch_mode = 3
 
 [node name="Label" type="Label" parent="Mobile/GridContainer/HBoxContainer9"]
-margin_left = 114.0
-margin_top = 31.0
-margin_right = 201.0
-margin_bottom = 71.0
+offset_left = 114.0
+offset_top = 31.0
+offset_right = 201.0
+offset_bottom = 71.0
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Zoom"

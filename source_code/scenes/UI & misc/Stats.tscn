@@ -1,16 +1,16 @@
 [gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Stats.gd" type="Script" id=1]
-[ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=2]
-[ext_resource path="res://fonts/stats.tres" type="DynamicFont" id=3]
+[ext_resource path="res://fonts/dialog.tres" type="FontFile" id=2]
+[ext_resource path="res://fonts/stats.tres" type="FontFile" id=3]
 [ext_resource path="res://scenes/UI & misc/stats.stylebox" type="StyleBox" id=4]
 [ext_resource path="res://fonts/scroll_bar_theme.tres" type="Theme" id=5]
 [ext_resource path="res://scenes/UI & misc/StatsIcons.gd" type="Script" id=6]
 [ext_resource path="res://scenes/UI & misc/minimap.gd" type="Script" id=7]
-[ext_resource path="res://resources/Aarin/spritesheet_4.webp" type="Texture" id=8]
-[ext_resource path="res://resources/misc/compass.webp" type="Texture" id=9]
-[ext_resource path="res://resources/misc/rupees.webp" type="Texture" id=10]
-[ext_resource path="res://resources/misc/map ui 64x64.webp" type="Texture" id=11]
+[ext_resource path="res://resources/Aarin/spritesheet_4.webp" type="Texture2D" id=8]
+[ext_resource path="res://resources/misc/compass.webp" type="Texture2D" id=9]
+[ext_resource path="res://resources/misc/rupees.webp" type="Texture2D" id=10]
+[ext_resource path="res://resources/misc/map ui 64x64.webp" type="Texture2D" id=11]
 [ext_resource path="res://scenes/UI & misc/Third_Party_Software.tscn" type="PackedScene" id=12]
 
 [sub_resource type="StyleBoxFlat" id=2]
@@ -36,197 +36,197 @@ TabContainer/styles/tab_bg = SubResource( 4 )
 TabContainer/styles/tab_fg = SubResource( 6 )
 
 [node name="Stats" type="PanelContainer"]
-pause_mode = 2
+process_mode = 3
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = 4.0
-focus_neighbour_top = NodePath("VBoxContainer/Exit")
-focus_neighbour_bottom = NodePath("VBoxContainer/Exit")
+offset_right = 4.0
+focus_neighbor_top = NodePath("VBoxContainer/Exit")
+focus_neighbor_bottom = NodePath("VBoxContainer/Exit")
 focus_mode = 2
-custom_styles/panel = ExtResource( 4 )
+theme_override_styles/panel = ExtResource( 4 )
 script = ExtResource( 1 )
 enabled = true
 
 [node name="TabContainer" type="TabContainer" parent="."]
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 1008.0
-margin_bottom = 580.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 1008.0
+offset_bottom = 580.0
 theme = SubResource( 3 )
-custom_colors/font_color_bg = Color( 0, 0, 0, 1 )
-custom_fonts/font = ExtResource( 3 )
+theme_override_colors/font_color_bg = Color( 0, 0, 0, 1 )
+theme_override_fonts/font = ExtResource( 3 )
 script = ExtResource( 6 )
 
-[node name="0" type="Tabs" parent="TabContainer"]
+[node name="0" type="TabBar" parent="TabContainer"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 74.0
+offset_top = 74.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/0"]
-margin_left = 3.07108
-margin_top = 3.35535
-margin_right = 991.071
-margin_bottom = 905.355
+offset_left = 3.07108
+offset_top = 3.35535
+offset_right = 991.071
+offset_bottom = 905.355
 theme = ExtResource( 5 )
 scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/0/ScrollContainer"]
-margin_right = 62.0
-margin_bottom = 178.0
+offset_right = 62.0
+offset_bottom = 178.0
 
 [node name="Title" type="Label" parent="TabContainer/0/ScrollContainer/VBoxContainer"]
-margin_right = 62.0
-margin_bottom = 43.0
+offset_right = 62.0
+offset_bottom = 43.0
 size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 2 )
+theme_override_fonts/font = ExtResource( 2 )
 text = "Stats"
 align = 1
 
 [node name="Kill_count" type="Label" parent="TabContainer/0/ScrollContainer/VBoxContainer"]
-margin_top = 47.0
-margin_right = 62.0
-margin_bottom = 178.0
+offset_top = 47.0
+offset_right = 62.0
+offset_bottom = 178.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 3 )
+theme_override_fonts/font = ExtResource( 3 )
 text = "KC
 "
 align = 1
 
-[node name="1" type="Tabs" parent="TabContainer"]
+[node name="1" type="TabBar" parent="TabContainer"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+offset_left = 4.0
+offset_top = 32.0
+offset_right = -4.0
+offset_bottom = -4.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/1"]
-margin_right = 77.0
-margin_bottom = 224.0
+offset_right = 77.0
+offset_bottom = 224.0
 
 [node name="TextureRect" type="TextureRect" parent="TabContainer/1/VBoxContainer"]
-margin_right = 77.0
-margin_bottom = 32.0
-rect_scale = Vector2( 1.5, 1.5 )
+offset_right = 77.0
+offset_bottom = 32.0
+scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 10 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/1/VBoxContainer"]
-margin_top = 36.0
-margin_right = 77.0
-margin_bottom = 167.0
+offset_top = 36.0
+offset_right = 77.0
+offset_bottom = 167.0
 
 [node name="Algos" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
-margin_right = 77.0
-margin_bottom = 131.0
+offset_right = 77.0
+offset_bottom = 131.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 3 )
+theme_override_fonts/font = ExtResource( 3 )
 text = "Coins
 "
 align = 1
 
-[node name="2" type="Tabs" parent="TabContainer"]
+[node name="2" type="TabBar" parent="TabContainer"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+offset_left = 4.0
+offset_top = 32.0
+offset_right = -4.0
+offset_bottom = -4.0
 
 [node name="ScrollContainer2" type="ScrollContainer" parent="TabContainer/2"]
-margin_left = 3.07108
-margin_top = 3.35535
-margin_right = 991.071
-margin_bottom = 905.355
+offset_left = 3.07108
+offset_top = 3.35535
+offset_right = 991.071
+offset_bottom = 905.355
 theme = ExtResource( 5 )
 scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/2/ScrollContainer2"]
-margin_right = 122.0
-margin_bottom = 245.0
+offset_right = 122.0
+offset_bottom = 245.0
 
 [node name="Title2" type="Label" parent="TabContainer/2/ScrollContainer2/VBoxContainer"]
-margin_right = 122.0
-margin_bottom = 43.0
+offset_right = 122.0
+offset_bottom = 43.0
 size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 2 )
+theme_override_fonts/font = ExtResource( 2 )
 text = "Quests"
 align = 1
 
 [node name="Quests" type="Label" parent="TabContainer/2/ScrollContainer2/VBoxContainer"]
-margin_top = 47.0
-margin_right = 122.0
-margin_bottom = 245.0
+offset_top = 47.0
+offset_right = 122.0
+offset_bottom = 245.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 3 )
+theme_override_fonts/font = ExtResource( 3 )
 text = "Quest 1
 Quest 2
 "
 align = 1
 
-[node name="3" type="Tabs" parent="TabContainer"]
+[node name="3" type="TabBar" parent="TabContainer"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+offset_left = 4.0
+offset_top = 32.0
+offset_right = -4.0
+offset_bottom = -4.0
 
 [node name="ScrollContainer3" type="ScrollContainer" parent="TabContainer/3"]
-margin_left = 3.07108
-margin_top = 3.35535
-margin_right = 991.071
-margin_bottom = 905.355
+offset_left = 3.07108
+offset_top = 3.35535
+offset_right = 991.071
+offset_bottom = 905.355
 theme = ExtResource( 5 )
 scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/3/ScrollContainer3"]
-margin_right = 103.0
-margin_bottom = 117.0
+offset_right = 103.0
+offset_bottom = 117.0
 
 [node name="Title3" type="Label" parent="TabContainer/3/ScrollContainer3/VBoxContainer"]
-margin_right = 103.0
-margin_bottom = 43.0
-custom_fonts/font = ExtResource( 2 )
+offset_right = 103.0
+offset_bottom = 43.0
+theme_override_fonts/font = ExtResource( 2 )
 text = "Inventory"
 align = 1
 
 [node name="Inventory" type="Button" parent="TabContainer/3/ScrollContainer3/VBoxContainer"]
-margin_top = 47.0
-margin_right = 103.0
-margin_bottom = 117.0
+offset_top = 47.0
+offset_right = 103.0
+offset_bottom = 117.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 3 )
+theme_override_fonts/font = ExtResource( 3 )
 text = "Item 1
 "
 flat = true
 
-[node name="4" type="Tabs" parent="TabContainer"]
+[node name="4" type="TabBar" parent="TabContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+offset_left = 4.0
+offset_top = 32.0
+offset_right = -4.0
+offset_bottom = -4.0
 
 [node name="minimap" type="TextureRect" parent="TabContainer/4"]
 modulate = Color( 1, 1, 1, 0.411765 )
-margin_left = 180.164
-margin_top = 8.13399
-margin_right = 246.164
-margin_bottom = 72.134
-rect_scale = Vector2( 6, 6 )
+offset_left = 180.164
+offset_top = 8.13399
+offset_right = 246.164
+offset_bottom = 72.134
+scale = Vector2( 6, 6 )
 texture = ExtResource( 11 )
 script = ExtResource( 7 )
 
-[node name="Sprite" type="Sprite" parent="TabContainer/4"]
+[node name="Sprite2D" type="Sprite2D" parent="TabContainer/4"]
 position = Vector2( 791.076, 258.768 )
 scale = Vector2( 0.623425, 0.623425 )
 texture = ExtResource( 8 )
@@ -235,15 +235,15 @@ vframes = 7
 frame = 29
 
 [node name="TextureRect" type="TextureRect" parent="TabContainer/4"]
-margin_left = 12.3471
-margin_top = 59.4905
-margin_right = 52.3471
-margin_bottom = 99.4905
-rect_scale = Vector2( 4, 4 )
+offset_left = 12.3471
+offset_top = 59.4905
+offset_right = 52.3471
+offset_bottom = 99.4905
+scale = Vector2( 4, 4 )
 texture = ExtResource( 9 )
 
 [node name="Third Party Software" parent="TabContainer/4" instance=ExtResource( 12 )]
-margin_left = 40.6463
-margin_top = 199.975
-margin_right = -1010.35
-margin_bottom = 71.9753
+offset_left = 40.6463
+offset_top = 199.975
+offset_right = -1010.35
+offset_bottom = 71.9753

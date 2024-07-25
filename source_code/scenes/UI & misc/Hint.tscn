@@ -1,56 +1,56 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://themes/Light.tres" type="Theme" id=1]
-[ext_resource path="res://fonts/Comic Book.otf" type="DynamicFontData" id=2]
-[ext_resource path="res://scenes/Comics/chapter 4/Cover 2.webp" type="Texture" id=3]
+[ext_resource path="res://themes/Light3D.tres" type="Theme" id=1]
+[ext_resource path="res://fonts/Comic Book.otf" type="FontFile" id=2]
+[ext_resource path="res://scenes/Comics/chapter 4/Cover 2.webp" type="Texture2D" id=3]
 [ext_resource path="res://themes/Bold.tres" type="Theme" id=4]
 [ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=10]
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="FontFile" id=2]
 size = 38
 outline_size = 6
 outline_color = Color( 0.00392157, 0.00392157, 0.00392157, 1 )
-extra_spacing_top = -1
+spacing_top = -1
 font_data = ExtResource( 2 )
 
 [node name="Notification" type="Popup"]
 visible = true
-margin_left = 393.67
-margin_top = 55.198
-margin_right = 801.668
-margin_bottom = 386.199
-rect_scale = Vector2( 0.988701, 0.988701 )
+offset_left = 393.67
+offset_top = 55.198
+offset_right = 801.668
+offset_bottom = 386.199
+scale = Vector2( 0.988701, 0.988701 )
 script = ExtResource( 10 )
 
-[node name="Sprite" type="TextureRect" parent="."]
+[node name="Sprite2D" type="TextureRect" parent="."]
 self_modulate = Color( 0.25098, 0.219608, 0.219608, 1 )
-margin_left = 94.3085
-margin_top = -48.216
-margin_right = 1374.31
-margin_bottom = 1725.78
-rect_scale = Vector2( 0.38671, 0.358709 )
+offset_left = 94.3085
+offset_top = -48.216
+offset_right = 1374.31
+offset_bottom = 1725.78
+scale = Vector2( 0.38671, 0.358709 )
 texture = ExtResource( 3 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_left = 107.0
-margin_top = 8.0
-margin_right = 596.0
-margin_bottom = 67.0
+offset_left = 107.0
+offset_top = 8.0
+offset_right = 596.0
+offset_bottom = 67.0
 color = Color( 0.0784314, 0.0784314, 0.0784314, 1 )
 
 [node name="ColorRect2" type="ColorRect" parent="."]
-margin_left = 108.218
-margin_top = 464.541
-margin_right = 200.218
-margin_bottom = 523.541
+offset_left = 108.218
+offset_top = 464.541
+offset_right = 200.218
+offset_bottom = 523.541
 
 [node name="Label" type="Label" parent="."]
-margin_left = 108.77
-margin_top = 73.6963
-margin_right = 405.77
-margin_bottom = 223.696
-custom_colors/font_color = Color( 0.882353, 0.882353, 0.882353, 1 )
-custom_fonts/font = SubResource( 2 )
+offset_left = 108.77
+offset_top = 73.6963
+offset_right = 405.77
+offset_bottom = 223.696
+theme_override_colors/font_color = Color( 0.882353, 0.882353, 0.882353, 1 )
+theme_override_fonts/font = SubResource( 2 )
 text = "Dystopia App
 V2.0.1.8
 "
@@ -58,29 +58,29 @@ align = 1
 autowrap = true
 
 [node name="Label2" type="Label" parent="."]
-margin_left = 247.419
-margin_top = 461.566
-margin_right = 604.419
-margin_bottom = 504.566
+offset_left = 247.419
+offset_top = 461.566
+offset_right = 604.419
+offset_bottom = 504.566
 theme = ExtResource( 4 )
 text = "New  Music  &  Levels"
 
 [node name="Label3" type="Label" parent="."]
-margin_left = 96.0473
-margin_top = 7.64708
-margin_right = 615.047
-margin_bottom = 70.6471
+offset_left = 96.0473
+offset_top = 7.64708
+offset_right = 615.047
+offset_bottom = 70.6471
 theme = ExtResource( 4 )
 text = "NEW  UPDATES :Generic  Update"
 align = 1
 
 [node name="Label4" type="Label" parent="."]
-margin_left = 120.772
-margin_top = 464.115
-margin_right = 206.772
-margin_bottom = 523.115
+offset_left = 120.772
+offset_top = 464.115
+offset_right = 206.772
+offset_bottom = 523.115
 theme = ExtResource( 1 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Apr 1, 2094"
 autowrap = true
 uppercase = true

@@ -13,10 +13,10 @@ extends Control
 
 class_name Headers
 
-export (String) var github_link =   "https://github.com"
-onready var github : TextureButton = $datas/github
-onready var notifications_btn : TextureButton = $datas/notifications
-onready var notifications_lbl : Label = $datas/notifications/VBoxContainer/NotificationsLbl
+@export var github_link : String =   "https://github.com"
+@onready var github : TextureButton = $datas/github
+@onready var notifications_btn : TextureButton = $datas/notifications
+@onready var notifications_lbl : Label = $datas/notifications/VBoxContainer/NotificationsLbl
 
 signal load_invitations(list)
 
@@ -29,8 +29,8 @@ func _ready():
 func _connect_signals():
 	#discord.connect("pressed",self,"_join_discord")
 	#paypal.connect("pressed",self,"_support_paypal")
-	github.connect("pressed",self,"_check_git")
-	notifications_btn.connect("pressed", self, "_notifications_opened")
+	github.connect("pressed", Callable(self, "_check_git"))
+	notifications_btn.connect("pressed", Callable(self, "_notifications_opened"))
 
 func set_darkmode(darkmode : bool):
 	if darkmode:

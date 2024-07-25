@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scenes/levels/VisibilityOptimizer.gd" type="Script" id=1]
 
-[node name="VisibilityNotifier2D" type="VisibilityNotifier2D"]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D"]
 position = Vector2( -2.54272, -8.89925 )
 scale = Vector2( 62.5318, 30.1132 )
 script = ExtResource( 1 )

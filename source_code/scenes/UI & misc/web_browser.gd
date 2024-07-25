@@ -2,9 +2,9 @@ extends Control
 
 class_name WebBrowser
 
-export (bool) var image 
+@export (bool) var image 
 
-export (String) var website_url #= '' 
+@export (String) var website_url #= '' 
 
 
 
@@ -20,14 +20,14 @@ func _ready():
 		Networking.request(website_url)
 		
 		#if Networking.emit_signal("connection_success"):
-		Networking.connect("request_completed", self, "_http_request_completed")
+		Networking.connect("request_completed", Callable(self, "_http_request_completed"))
 			#Networking._http_request_completed(result, response_code, headers, body)
 
 		#else :
 		#	pass
 
 func _http_request_completed(result, response_code, headers, body):
-	if body.empty() != true:
+	if body.is_empty() != true:
 		#var response =regex('body',(body.get_string_from_ascii ( )))
 
 		var response = body.get_string_from_utf8()
@@ -41,7 +41,7 @@ func _http_request_completed(result, response_code, headers, body):
 		#get_node("RichTextLabel").set_text(str(_y))
 		
 		#print(response)
-	if body.empty() == true:
+	if body.is_empty() == true:
 		print ('web page '+ Networking.url+ ' is unavailable ')
 
 

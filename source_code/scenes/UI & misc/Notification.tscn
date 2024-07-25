@@ -1,10 +1,10 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=1]
-[ext_resource path="res://resources/Buttons/Pop up menu.webp" type="Texture" id=2]
-[ext_resource path="res://fonts/Comic Book.otf" type="DynamicFontData" id=7]
+[ext_resource path="res://resources/Buttons/Pop up menu.webp" type="Texture2D" id=2]
+[ext_resource path="res://fonts/Comic Book.otf" type="FontFile" id=7]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="FontFile" id=1]
 size = 38
 outline_size = 6
 outline_color = Color( 0.00392157, 0.00392157, 0.00392157, 1 )
@@ -12,14 +12,14 @@ font_data = ExtResource( 7 )
 
 [node name="Notification" type="Popup"]
 visible = true
-margin_left = 347.897
-margin_top = 96.1666
-margin_right = 755.897
-margin_bottom = 427.167
+offset_left = 347.897
+offset_top = 96.1666
+offset_right = 755.897
+offset_bottom = 427.167
 script = ExtResource( 1 )
 Display_text = "itssjsjsjsjsjsjsjsjsjsjs"
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2( 229.585, 198.654 )
 scale = Vector2( 3.50343, 1.21621 )
 texture = ExtResource( 2 )
@@ -27,19 +27,19 @@ texture = ExtResource( 2 )
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_top = -24.5
-margin_right = 549.0
-margin_bottom = 24.5
+offset_top = -24.5
+offset_right = 549.0
+offset_bottom = 24.5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="CenterContainer"]
-margin_left = 2.0
-margin_right = 546.0
-margin_bottom = 49.0
-custom_colors/font_color = Color( 0.72549, 0.741176, 0.160784, 1 )
-custom_fonts/font = SubResource( 1 )
+offset_left = 2.0
+offset_right = 546.0
+offset_bottom = 49.0
+theme_override_colors/font_color = Color( 0.72549, 0.741176, 0.160784, 1 )
+theme_override_fonts/font = SubResource( 1 )
 text = "Out of Service dkdkdkdkd"
 align = 1
 __meta__ = {

@@ -31,6 +31,7 @@ class_name GlobalsVar
 
 
 # Load Scenes Programmatically
+# TO DO : Rewrite to use dictionary strings instead of packed scene to free meme requirements
 var title_screen : PackedScene = load( 'res://scenes/Title screen.tscn')
 var form : PackedScene = load ('res://scenes/UI & misc/form/form.tscn')
 var controls : PackedScene = load ('res://scenes/UI & misc/Controls.tscn')
@@ -41,7 +42,7 @@ var title : PackedScene = load ("res://scenes/Title screen.tscn")
 var cinematics : PackedScene = load('res://scenes/cinematics/cinematics.tscn')
 "Comics  Book Module variables"
 var comics : PackedScene = load ('res://scenes/UI & misc/Comics.tscn')
-var comics___2 : PackedScene = load ('res://scenes/UI & misc/Comics____2.tscn')
+var comics___2 : PackedScene #= load ('res://scenes/UI & misc/Comics____2.tscn') # disabled for 4.2 port
 #var comics_chapter 
 #var comics_page 
 
@@ -51,9 +52,9 @@ var comics___2 : PackedScene = load ('res://scenes/UI & misc/Comics____2.tscn')
 #var prev_scene
 #var prev_scene_spawnpoint
 #var next_scene = null
-onready var curr_scene : String = ""
-onready var os: String = OS.get_name()
-onready var kill_count : int = 0 #update to load from savefile
+@onready var curr_scene : String = ""
+@onready var os: String = OS.get_name()
+@onready var kill_count : int = 0 #update to load from savefile
 
 # 
 var players : Array = [] # All Players
@@ -95,13 +96,13 @@ var near_interractible_objects #which objects use this?
 'Scene Loading variables'
 var scene_resource : PackedScene # Large Resouce Scene Placeholder
 var _to_load : String  # Large Resource Placeholder Variable
-var _o : ResourceInteractiveLoader#for polling resource loader
+var _o : ResourceLoader#for polling resource loader
 var err
 var a : int # Loader progress variable (a/b) 
 var b : int
 var loading_resource : bool = false
-onready var scene_loader= ResourceLoader
-onready var progress : float
+@onready var scene_loader= ResourceLoader
+@onready var progress : float
 
 var loading_scene : PackedScene = preload("res://scenes/UI & misc/LoadingScene.tscn")
 
@@ -119,7 +120,7 @@ var mnemonic : String
 var player_name : String
 
 # Buggy
-onready var algos : int  #=  Wallet.Wallet.load_account_info(false, Wallet.token_write_path, Wallet.FileCheck3, Wallet.UserData).get("_wallet_algos")
+@onready var algos : int  #=  Wallet.Wallet.load_account_info(false, Wallet.token_write_path, Wallet.FileCheck3, Wallet.UserData).get("_wallet_algos")
 	#MicroAlgos 
 
 
@@ -129,7 +130,7 @@ var user_data_dir : String =OS.get_user_data_dir()
 
 "Screen Orientation"
 # for upscaling and wonscaling UI
-onready var screenOrientation : int = Utils.Screen.Orientation() 
+@onready var screenOrientation : int = Utils.Screen.Orientation() 
 var viewport_size : Vector2
 var center_of_viewport : Vector2 
 
@@ -169,7 +170,7 @@ func _ready():
 	
 	
 	#Set White Background
-	VisualServer.set_default_clear_color(ColorN("white")) 
+	RenderingServer.set_default_clear_color(Color("white")) 
 	
 	
 
@@ -187,10 +188,10 @@ func _go_to_title():
 	
 	'changes scene to title_screen'
 	
-	return Utils.Functions.change_scene_to(title, get_tree())#get_tree().change_scene()
+	return Utils.Functions.change_scene_to_packed(title, get_tree())#get_tree().change_scene_to_file()
 
 func _go_to_cinematics():
-	return Utils.Functions.change_scene_to(cinematics, get_tree())#get_tree().change_scene() 
+	return Utils.Functions.change_scene_to_packed(cinematics, get_tree())#get_tree().change_scene_to_file() 
 
 
 

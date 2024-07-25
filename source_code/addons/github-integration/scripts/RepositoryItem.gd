@@ -17,21 +17,21 @@ signal repo_selected(repo)
 signal repo_clicked(repo)
 
 # Pointers to Icons Parents
-onready var Name : HBoxContainer = $Repository/Name
-onready var Stars : HBoxContainer = $Repository/Stars
-onready var Forks : HBoxContainer = $Repository/Forks
-onready var Collaborator : TextureRect = $Repository/Name/Collaborator
-onready var BG : ColorRect = $BG
+@onready var Name : HBoxContainer = $Repository/Name
+@onready var Stars : HBoxContainer = $Repository/Stars
+@onready var Forks : HBoxContainer = $Repository/Forks
+@onready var Collaborator : TextureRect = $Repository/Name/Collaborator
+@onready var BG : ColorRect = $BG
 
-export (String) var _name : String
-export (int) var _stars : int
-export (int) var _forks : int
-export (Dictionary) var _metadata : Dictionary
-export (Dictionary) var _repository : Dictionary
-export (bool) var is_collaborator : bool
+@export var _name : String
+@export var _stars : int
+@export var _forks : int
+@export var _metadata : Dictionary
+@export var _repository : Dictionary
+@export var is_collaborator : bool
 
-onready var _Github = get_tree().get_nodes_in_group("github")[0]
-onready var _UserData = get_tree().get_nodes_in_group("github_user_data")[0]
+@onready var _Github = get_tree().get_nodes_in_group("github")[0]
+@onready var _UserData = get_tree().get_nodes_in_group("github_user_data")[0]
 func _ready():
 	# Sets UI textures for forks and stars
 	Stars.get_node("Icon").set_texture(Github.IconLoaderGithub.load_icon_from_name("stars"))

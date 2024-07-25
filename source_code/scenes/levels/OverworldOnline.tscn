@@ -18,89 +18,89 @@
 [ext_resource path="res://scenes/props/signpost.tscn" type="PackedScene" id=20]
 
 [sub_resource type="NavigationPolygon" id=1]
-vertices = PoolVector2Array( 20238.3, -5171.15, 20198, -7267.66, 21407.5, -7106.39, 21528.4, 1682.82, 16932.2, -5534.01, 17698.3, -5493.69, 15279.2, 1803.77, 15319.5, 191.069, 15480.8, -4848.61, 3425.89, -816.867, 7377, -937.819, 7256.05, 4343.77, -1734.75, 4424.4, 2458.27, -736.232, -1815.38, -776.55, 2417.95, -4929.25, 3425.89, -4324.49, 13666.5, -1421.63, 13747.2, 150.752 )
-polygons = [ PoolIntArray( 0, 1, 2, 3 ), PoolIntArray( 4, 5, 0, 3, 6, 7, 8 ), PoolIntArray( 9, 10, 11, 12, 13 ), PoolIntArray( 12, 14, 13 ), PoolIntArray( 9, 13, 15, 16 ), PoolIntArray( 16, 15, 4, 8 ), PoolIntArray( 17, 8, 7, 18 ) ]
-outlines = [ PoolVector2Array( 2417.95, -4929.25, 2458.27, -736.232, -1815.38, -776.55, -1734.75, 4424.4, 7256.05, 4343.77, 7377, -937.819, 3425.89, -816.867, 3425.89, -4324.49, 15480.8, -4848.61, 13666.5, -1421.63, 13747.2, 150.752, 15319.5, 191.069, 15279.2, 1803.77, 21528.4, 1682.82, 21407.5, -7106.39, 20198, -7267.66, 20238.3, -5171.15, 17698.3, -5493.69, 16932.2, -5534.01 ) ]
+vertices = PackedVector2Array( 20238.3, -5171.15, 20198, -7267.66, 21407.5, -7106.39, 21528.4, 1682.82, 16932.2, -5534.01, 17698.3, -5493.69, 15279.2, 1803.77, 15319.5, 191.069, 15480.8, -4848.61, 3425.89, -816.867, 7377, -937.819, 7256.05, 4343.77, -1734.75, 4424.4, 2458.27, -736.232, -1815.38, -776.55, 2417.95, -4929.25, 3425.89, -4324.49, 13666.5, -1421.63, 13747.2, 150.752 )
+polygons = [ PackedInt32Array( 0, 1, 2, 3 ), PackedInt32Array( 4, 5, 0, 3, 6, 7, 8 ), PackedInt32Array( 9, 10, 11, 12, 13 ), PackedInt32Array( 12, 14, 13 ), PackedInt32Array( 9, 13, 15, 16 ), PackedInt32Array( 16, 15, 4, 8 ), PackedInt32Array( 17, 8, 7, 18 ) ]
+outlines = [ PackedVector2Array( 2417.95, -4929.25, 2458.27, -736.232, -1815.38, -776.55, -1734.75, 4424.4, 7256.05, 4343.77, 7377, -937.819, 3425.89, -816.867, 3425.89, -4324.49, 15480.8, -4848.61, 13666.5, -1421.63, 13747.2, 150.752, 15319.5, 191.069, 15279.2, 1803.77, 21528.4, 1682.82, 21407.5, -7106.39, 20198, -7267.66, 20238.3, -5171.15, 17698.3, -5493.69, 16932.2, -5534.01 ) ]
 
 [node name="Outside" type="Node2D"]
 script = ExtResource( 2 )
 
-[node name="YSort" type="YSort" parent="."]
+[node name="Node2D" type="Node2D" parent="."]
 sort_enabled = false
 
-[node name="Trees_TileMap" parent="YSort" instance=ExtResource( 5 )]
-tile_data = PoolIntArray( -393133, 0, 0, -393132, 0, 0, -393131, 0, 0, -393130, 0, 0, -393129, 0, 0, -327597, 0, 0, -327596, 0, 0, -327595, 0, 0, -327594, 0, 0, -327593, 0, 0, -262058, 0, 0, -262057, 0, 0, -196522, 0, 0, -196521, 0, 0, -130986, 0, 0, -130985, 0, 0, -65450, 0, 0, -65449, 0, 0, 86, 0, 0, 87, 0, 0, 65622, 0, 0, 65623, 0, 0 )
+[node name="Trees_TileMap" parent="Node2D" instance=ExtResource( 5 )]
+tile_data = PackedInt32Array( -393133, 0, 0, -393132, 0, 0, -393131, 0, 0, -393130, 0, 0, -393129, 0, 0, -327597, 0, 0, -327596, 0, 0, -327595, 0, 0, -327594, 0, 0, -327593, 0, 0, -262058, 0, 0, -262057, 0, 0, -196522, 0, 0, -196521, 0, 0, -130986, 0, 0, -130985, 0, 0, -65450, 0, 0, -65449, 0, 0, 86, 0, 0, 87, 0, 0, 65622, 0, 0, 65623, 0, 0 )
 
-[node name="VisibilityNotifier2D2" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap"]
+[node name="VisibilityNotifier2D2" type="VisibleOnScreenNotifier2D" parent="Node2D/Trees_TileMap"]
 position = Vector2( 7217.91, -106.122 )
 scale = Vector2( 16.3521, 30.3082 )
 script = ExtResource( 3 )
 
-[node name="Trees_TileMap2" parent="YSort" instance=ExtResource( 5 )]
-tile_data = PoolIntArray( 131145, 0, 0, 131146, 0, 0, 131147, 0, 0, 131148, 0, 0, 131149, 0, 0, 131150, 0, 0, 131151, 0, 0, 131152, 0, 0, 131153, 0, 0, 131154, 0, 0, 131155, 0, 0, 131156, 0, 0, 131157, 0, 0, 131158, 0, 0, 131159, 0, 0, 196681, 0, 0, 196682, 0, 0, 196683, 0, 0, 196684, 0, 0, 196685, 0, 0, 196686, 0, 0, 196687, 0, 0, 196688, 0, 0, 196689, 0, 0, 196690, 0, 0, 196691, 0, 0, 196692, 0, 0, 196693, 0, 0, 196694, 0, 0, 196695, 0, 0 )
+[node name="Trees_TileMap2" parent="Node2D" instance=ExtResource( 5 )]
+tile_data = PackedInt32Array( 131145, 0, 0, 131146, 0, 0, 131147, 0, 0, 131148, 0, 0, 131149, 0, 0, 131150, 0, 0, 131151, 0, 0, 131152, 0, 0, 131153, 0, 0, 131154, 0, 0, 131155, 0, 0, 131156, 0, 0, 131157, 0, 0, 131158, 0, 0, 131159, 0, 0, 196681, 0, 0, 196682, 0, 0, 196683, 0, 0, 196684, 0, 0, 196685, 0, 0, 196686, 0, 0, 196687, 0, 0, 196688, 0, 0, 196689, 0, 0, 196690, 0, 0, 196691, 0, 0, 196692, 0, 0, 196693, 0, 0, 196694, 0, 0, 196695, 0, 0 )
 
-[node name="VisibilityNotifier2D3" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap2"]
+[node name="VisibilityNotifier2D3" type="VisibleOnScreenNotifier2D" parent="Node2D/Trees_TileMap2"]
 position = Vector2( 6836.93, 170.721 )
 scale = Vector2( 63.3392, 7.19565 )
 script = ExtResource( 3 )
 
-[node name="Trees_TileMap3" parent="YSort" instance=ExtResource( 5 )]
-tile_data = PoolIntArray( -393143, 0, 0, -393142, 0, 0, -393141, 0, 0, -393140, 0, 0, -393139, 0, 0, -393138, 0, 0, -327607, 0, 0, -327606, 0, 0, -327605, 0, 0, -327604, 0, 0, -327603, 0, 0, -327602, 0, 0, -262071, 0, 0, -262070, 0, 0, -196535, 0, 0, -196534, 0, 0, -130999, 0, 0, -130998, 0, 0, -65463, 0, 0, -65462, 0, 0, 73, 0, 0, 74, 0, 0, 65609, 0, 0, 65610, 0, 0, 131145, 0, 0, 131146, 0, 0 )
+[node name="Trees_TileMap3" parent="Node2D" instance=ExtResource( 5 )]
+tile_data = PackedInt32Array( -393143, 0, 0, -393142, 0, 0, -393141, 0, 0, -393140, 0, 0, -393139, 0, 0, -393138, 0, 0, -327607, 0, 0, -327606, 0, 0, -327605, 0, 0, -327604, 0, 0, -327603, 0, 0, -327602, 0, 0, -262071, 0, 0, -262070, 0, 0, -196535, 0, 0, -196534, 0, 0, -130999, 0, 0, -130998, 0, 0, -65463, 0, 0, -65462, 0, 0, 73, 0, 0, 74, 0, 0, 65609, 0, 0, 65610, 0, 0, 131145, 0, 0, 131146, 0, 0 )
 
-[node name="VisibilityNotifier2D4" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap3"]
+[node name="VisibilityNotifier2D4" type="VisibleOnScreenNotifier2D" parent="Node2D/Trees_TileMap3"]
 position = Vector2( 6463.57, -80.7232 )
 scale = Vector2( 13.3043, 33.864 )
 script = ExtResource( 3 )
 
-[node name="Trees_TileMap4" parent="YSort" instance=ExtResource( 5 )]
-tile_data = PoolIntArray( -786331, 0, 0, -720817, 0, 0, -720816, 0, 0, -720815, 0, 0, -720814, 0, 0, -720813, 0, 0, -720812, 0, 0, -720811, 0, 0, -720810, 0, 0, -720809, 0, 0, -655282, 0, 0, -655281, 0, 0, -655280, 0, 0, -655279, 0, 0, -655278, 0, 0, -655277, 0, 0, -655276, 0, 0, -655275, 0, 0, -655274, 0, 0, -655273, 0, 0, -655272, 0, 0, -655271, 0, 0, -589746, 0, 0, -589745, 0, 0, -524210, 0, 0, -524209, 0, 0, -524207, 0, 0, -524206, 0, 0, -524205, 0, 0, -524204, 0, 0, -524203, 0, 0, -524202, 0, 0, -524201, 0, 0, -524200, 0, 0, -524199, 0, 0, -458674, 0, 0, -458673, 0, 0, -458671, 0, 0, -458670, 0, 0, -458668, 0, 0, -458667, 0, 0, -458666, 0, 0, -458665, 0, 0, -458664, 0, 0, -458663, 0, 0, -393138, 0, 0, -393137, 0, 0, -393135, 0, 0, -393134, 0, 0, -393130, 0, 0, -393129, 0, 0, -327602, 0, 0, -327601, 0, 0, -327599, 0, 0, -327598, 0, 0, -327597, 0, 0, -327594, 0, 0, -327593, 0, 0 )
+[node name="Trees_TileMap4" parent="Node2D" instance=ExtResource( 5 )]
+tile_data = PackedInt32Array( -786331, 0, 0, -720817, 0, 0, -720816, 0, 0, -720815, 0, 0, -720814, 0, 0, -720813, 0, 0, -720812, 0, 0, -720811, 0, 0, -720810, 0, 0, -720809, 0, 0, -655282, 0, 0, -655281, 0, 0, -655280, 0, 0, -655279, 0, 0, -655278, 0, 0, -655277, 0, 0, -655276, 0, 0, -655275, 0, 0, -655274, 0, 0, -655273, 0, 0, -655272, 0, 0, -655271, 0, 0, -589746, 0, 0, -589745, 0, 0, -524210, 0, 0, -524209, 0, 0, -524207, 0, 0, -524206, 0, 0, -524205, 0, 0, -524204, 0, 0, -524203, 0, 0, -524202, 0, 0, -524201, 0, 0, -524200, 0, 0, -524199, 0, 0, -458674, 0, 0, -458673, 0, 0, -458671, 0, 0, -458670, 0, 0, -458668, 0, 0, -458667, 0, 0, -458666, 0, 0, -458665, 0, 0, -458664, 0, 0, -458663, 0, 0, -393138, 0, 0, -393137, 0, 0, -393135, 0, 0, -393134, 0, 0, -393130, 0, 0, -393129, 0, 0, -327602, 0, 0, -327601, 0, 0, -327599, 0, 0, -327598, 0, 0, -327597, 0, 0, -327594, 0, 0, -327593, 0, 0 )
 
-[node name="VisibilityNotifier2D5" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap4"]
+[node name="VisibilityNotifier2D5" type="VisibleOnScreenNotifier2D" parent="Node2D/Trees_TileMap4"]
 position = Vector2( 7109.06, -539.752 )
 scale = Vector2( 46.6596, 31.0177 )
 script = ExtResource( 3 )
 
-[node name="Trees_TileMap5" parent="YSort" instance=ExtResource( 5 )]
-tile_data = PoolIntArray( -851869, 0, 0, -851868, 0, 0, -851867, 0, 0, -851866, 0, 0, -786331, 0, 0, -786330, 0, 0, -720793, 0, 0, -655258, 0, 0, -655257, 0, 0, -589722, 0, 0, -524186, 0, 0, -458663, 0, 0 )
+[node name="Trees_TileMap5" parent="Node2D" instance=ExtResource( 5 )]
+tile_data = PackedInt32Array( -851869, 0, 0, -851868, 0, 0, -851867, 0, 0, -851866, 0, 0, -786331, 0, 0, -786330, 0, 0, -720793, 0, 0, -655258, 0, 0, -655257, 0, 0, -589722, 0, 0, -524186, 0, 0, -458663, 0, 0 )
 
-[node name="VisibilityNotifier2D6" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap5"]
+[node name="VisibilityNotifier2D6" type="VisibleOnScreenNotifier2D" parent="Node2D/Trees_TileMap5"]
 position = Vector2( 8596.84, -841.402 )
 scale = Vector2( 12.0439, 21.5264 )
 script = ExtResource( 3 )
 
-[node name="Trees_TileMap6" parent="YSort" instance=ExtResource( 5 )]
-tile_data = PoolIntArray( -458649, 0, 0, -393113, 0, 0, -327577, 0, 0, -327576, 0, 0, -262041, 0, 0, -262040, 0, 0, -196505, 0, 0, -130969, 0, 0, -65433, 0, 0 )
+[node name="Trees_TileMap6" parent="Node2D" instance=ExtResource( 5 )]
+tile_data = PackedInt32Array( -458649, 0, 0, -393113, 0, 0, -327577, 0, 0, -327576, 0, 0, -262041, 0, 0, -262040, 0, 0, -196505, 0, 0, -130969, 0, 0, -65433, 0, 0 )
 
-[node name="VisibilityNotifier2D7" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap6"]
+[node name="VisibilityNotifier2D7" type="VisibleOnScreenNotifier2D" parent="Node2D/Trees_TileMap6"]
 position = Vector2( 8680.35, -308.008 )
 scale = Vector2( 11.5949, 25.8366 )
 script = ExtResource( 3 )
 
-[node name="grass" parent="YSort" instance=ExtResource( 11 )]
+[node name="grass" parent="Node2D" instance=ExtResource( 11 )]
 position = Vector2( 3639.47, -407.372 )
 scale = Vector2( 4.19165, 4.19165 )
 
-[node name="grass2" parent="YSort" instance=ExtResource( 11 )]
+[node name="grass2" parent="Node2D" instance=ExtResource( 11 )]
 position = Vector2( 10196.5, -4811.97 )
 scale = Vector2( 4.19165, 4.19165 )
 
-[node name="flowers" parent="YSort" instance=ExtResource( 9 )]
+[node name="flowers" parent="Node2D" instance=ExtResource( 9 )]
 position = Vector2( 2854.35, -447.652 )
 scale = Vector2( 4.59821, 4.59821 )
 monitorable = false
 
-[node name="flowers2" parent="YSort" instance=ExtResource( 9 )]
+[node name="flowers2" parent="Node2D" instance=ExtResource( 9 )]
 position = Vector2( 2913.68, -1083.33 )
 scale = Vector2( 4.59821, 4.59821 )
 monitorable = false
 
-[node name="flowers3" parent="YSort" instance=ExtResource( 9 )]
+[node name="flowers3" parent="Node2D" instance=ExtResource( 9 )]
 position = Vector2( 10625.3, -4447.36 )
 scale = Vector2( 4.59821, 4.59821 )
 monitorable = false
 
-[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="."]
-navpoly = SubResource( 1 )
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource( 1 )
 
 [node name="Outside" parent="." instance=ExtResource( 8 )]
 position = Vector2( -53.8173, -83.4771 )
@@ -116,7 +116,7 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="Outside City"]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="Outside City"]
 position = Vector2( 2280.12, 1071.42 )
 scale = Vector2( 380.22, 243.027 )
 script = ExtResource( 3 )
@@ -154,7 +154,7 @@ dialogue = "East : Abbi City / South: Ukwani Desert"
 [node name="broken ship" parent="." instance=ExtResource( 16 )]
 position = Vector2( 3134.37, 2440.4 )
 
-[node name="items" type="YSort" parent="."]
+[node name="items" type="Node2D" parent="."]
 
 [node name="extra life" parent="items" instance=ExtResource( 12 )]
 position = Vector2( 3235.65, 822.261 )

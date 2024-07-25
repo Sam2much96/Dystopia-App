@@ -1,15 +1,15 @@
 [gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/props/Mushroom.tscn" type="PackedScene" id=6]
-[ext_resource path="res://resources/Environment Tilesets & Tilemaps/house.webp" type="Texture" id=7]
-[ext_resource path="res://resources/Environment Tilesets & Tilemaps/grass.webp" type="Texture" id=10]
+[ext_resource path="res://resources/Environment Tilesets & Tilemaps/house.webp" type="Texture2D" id=7]
+[ext_resource path="res://resources/Environment Tilesets & Tilemaps/grass.webp" type="Texture2D" id=10]
 [ext_resource path="res://scenes/props/idol.tscn" type="PackedScene" id=17]
 [ext_resource path="res://scenes/props/BoulderSmall.tscn" type="PackedScene" id=19]
 [ext_resource path="res://scenes/props/Boulder Big.tscn" type="PackedScene" id=21]
 [ext_resource path="res://scenes/props/Dune big.tscn" type="PackedScene" id=23]
 [ext_resource path="res://scenes/props/Dune small.tscn" type="PackedScene" id=24]
 [ext_resource path="res://scenes/props/stone walkway.tscn" type="PackedScene" id=26]
-[ext_resource path="res://resources/Environment Tilesets & Tilemaps/desert dunes tex.webp" type="Texture" id=28]
+[ext_resource path="res://resources/Environment Tilesets & Tilemaps/desert dunes tex.webp" type="Texture2D" id=28]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 261.431
@@ -21,95 +21,95 @@ height = 885.177
 position = Vector2( 208.024, -128.355 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Boundary"]
-polygon = PoolVector2Array( -2763.35, -1683.33, -2713.91, 5305.44, 8212.13, 5103.86, 8131.49, -1669.48, 3595.33, -1362.43, 3487.7, -3649.66, 10429.6, -3463.61, 10409.4, -4088.53, 2922.62, -4241.65, 2976.44, -878.069, 7226.44, -1006.39, 7302.63, 4428.87, -2209.94, 4418.46, -2250.2, -1113.16, 2196.08, -931.886, 2196.08, -5156.55, 10510.9, -5210.37, 10484, -5802.36, 1523.37, -5802.36, 1484.45, -1583.55 )
+polygon = PackedVector2Array( -2763.35, -1683.33, -2713.91, 5305.44, 8212.13, 5103.86, 8131.49, -1669.48, 3595.33, -1362.43, 3487.7, -3649.66, 10429.6, -3463.61, 10409.4, -4088.53, 2922.62, -4241.65, 2976.44, -878.069, 7226.44, -1006.39, 7302.63, 4428.87, -2209.94, 4418.46, -2250.2, -1113.16, 2196.08, -931.886, 2196.08, -5156.55, 10510.9, -5210.37, 10484, -5802.36, 1523.37, -5802.36, 1484.45, -1583.55 )
 
-[node name="Dune textures" type="YSort" parent="."]
+[node name="Dune textures" type="Node2D" parent="."]
 position = Vector2( 1600.61, 2690.46 )
 scale = Vector2( 0.5, 0.5 )
 
 [node name="Dune_Tex" type="Control" parent="Dune textures"]
-margin_right = 40.0
-margin_bottom = 40.0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="dune_tex 1" type="TextureRect" parent="Dune textures/Dune_Tex"]
 self_modulate = Color( 1, 1, 1, 0.552941 )
-margin_left = -603.22
-margin_top = -5738.92
-margin_right = -205.22
-margin_bottom = -5614.92
-rect_scale = Vector2( 7.2228, 7.2228 )
+offset_left = -603.22
+offset_top = -5738.92
+offset_right = -205.22
+offset_bottom = -5614.92
+scale = Vector2( 7.2228, 7.2228 )
 texture = ExtResource( 28 )
 
 [node name="dune_tex 2" type="TextureRect" parent="Dune textures/Dune_Tex"]
 self_modulate = Color( 1, 1, 1, 0.584314 )
-margin_left = -1903.22
-margin_top = -6856.92
-margin_right = -1505.22
-margin_bottom = -6732.92
-rect_scale = Vector2( 6.93118, 6.93118 )
+offset_left = -1903.22
+offset_top = -6856.92
+offset_right = -1505.22
+offset_bottom = -6732.92
+scale = Vector2( 6.93118, 6.93118 )
 texture = ExtResource( 28 )
 
 [node name="dune_tex3" type="TextureRect" parent="Dune textures/Dune_Tex"]
 self_modulate = Color( 1, 1, 1, 0.6 )
-margin_left = 7430.78
-margin_top = -4016.92
-margin_right = 7828.78
-margin_bottom = -3892.92
-rect_scale = Vector2( 11.4114, 11.4114 )
+offset_left = 7430.78
+offset_top = -4016.92
+offset_right = 7828.78
+offset_bottom = -3892.92
+scale = Vector2( 11.4114, 11.4114 )
 texture = ExtResource( 28 )
 
 [node name="dune_tex 4" type="TextureRect" parent="Dune textures/Dune_Tex"]
 self_modulate = Color( 1, 1, 1, 0.556863 )
-margin_left = 4984.78
-margin_top = -7096.92
-margin_right = 5382.78
-margin_bottom = -6972.92
-rect_scale = Vector2( 8.79356, 8.79356 )
+offset_left = 4984.78
+offset_top = -7096.92
+offset_right = 5382.78
+offset_bottom = -6972.92
+scale = Vector2( 8.79356, 8.79356 )
 texture = ExtResource( 28 )
 
 [node name="dune_tex 5" type="TextureRect" parent="Dune textures/Dune_Tex"]
 self_modulate = Color( 1, 1, 1, 0.556863 )
-margin_left = 7210.72
-margin_top = -1570.33
-margin_right = 7608.72
-margin_bottom = -1446.33
-rect_scale = Vector2( 12.6836, 12.6836 )
+offset_left = 7210.72
+offset_top = -1570.33
+offset_right = 7608.72
+offset_bottom = -1446.33
+scale = Vector2( 12.6836, 12.6836 )
 texture = ExtResource( 28 )
 
 [node name="dune_tex 6" type="TextureRect" parent="Dune textures/Dune_Tex"]
 self_modulate = Color( 1, 1, 1, 0.556863 )
-margin_left = -211.22
-margin_top = -2264.92
-margin_right = 186.78
-margin_bottom = -2140.92
-rect_scale = Vector2( 13.6744, 13.6744 )
+offset_left = -211.22
+offset_top = -2264.92
+offset_right = 186.78
+offset_bottom = -2140.92
+scale = Vector2( 13.6744, 13.6744 )
 texture = ExtResource( 28 )
 
 [node name="dune_tex 7" type="TextureRect" parent="Dune textures/Dune_Tex"]
 self_modulate = Color( 1, 1, 1, 0.556863 )
-margin_left = 5618.78
-margin_top = 635.08
-margin_right = 6016.78
-margin_bottom = 759.08
-rect_scale = Vector2( 14.8126, 14.8126 )
+offset_left = 5618.78
+offset_top = 635.08
+offset_right = 6016.78
+offset_bottom = 759.08
+scale = Vector2( 14.8126, 14.8126 )
 texture = ExtResource( 28 )
 
 [node name="dune_tex 8" type="TextureRect" parent="Dune textures/Dune_Tex"]
 self_modulate = Color( 1, 1, 1, 0.556863 )
-margin_left = -6507.22
-margin_top = 323.08
-margin_right = -6109.22
-margin_bottom = 447.08
-rect_scale = Vector2( 20.4925, 20.4925 )
+offset_left = -6507.22
+offset_top = 323.08
+offset_right = -6109.22
+offset_bottom = 447.08
+scale = Vector2( 20.4925, 20.4925 )
 texture = ExtResource( 28 )
 
 [node name="dune_tex 9" type="TextureRect" parent="Dune textures/Dune_Tex"]
 self_modulate = Color( 1, 1, 1, 0.556863 )
-margin_left = -6869.22
-margin_top = -2434.92
-margin_right = -6471.22
-margin_bottom = -2310.92
-rect_scale = Vector2( 17.0401, 17.0401 )
+offset_left = -6869.22
+offset_top = -2434.92
+offset_right = -6471.22
+offset_bottom = -2310.92
+scale = Vector2( 17.0401, 17.0401 )
 texture = ExtResource( 28 )
 
 [node name="Dune_Areas" type="Node2D" parent="Dune textures"]
@@ -173,7 +173,7 @@ position = Vector2( 7511.64, -2594.54 )
 rotation = 3.05619
 scale = Vector2( 1.88, 1.88 )
 
-[node name="level" type="YSort" parent="."]
+[node name="level" type="Node2D" parent="."]
 position = Vector2( 208.024, -128.355 )
 
 [node name="House" type="StaticBody2D" parent="level"]
@@ -181,7 +181,7 @@ position = Vector2( 1160, 2504 )
 scale = Vector2( 0.455064, 0.455064 )
 z_index = 1
 
-[node name="House" type="Sprite" parent="level/House"]
+[node name="House" type="Sprite2D" parent="level/House"]
 z_index = -1
 texture = ExtResource( 7 )
 
@@ -190,7 +190,7 @@ position = Vector2( -102.287, -31.1055 )
 rotation = 1.56317
 shape = SubResource( 1 )
 
-[node name="idols" type="YSort" parent="level"]
+[node name="idols" type="Node2D" parent="level"]
 position = Vector2( 166.022, 1384.49 )
 scale = Vector2( 1.29149, 1.29149 )
 
@@ -198,7 +198,7 @@ scale = Vector2( 1.29149, 1.29149 )
 position = Vector2( 3543.1, -152.112 )
 scale = Vector2( 1, 1 )
 
-[node name="Blocks" type="YSort" parent="level"]
+[node name="Blocks" type="Node2D" parent="level"]
 position = Vector2( 2233.45, 2424.54 )
 
 [node name="bloc_big" parent="level/Blocks" instance=ExtResource( 21 )]
@@ -227,12 +227,12 @@ position = Vector2( -1607.53, -328.68 )
 [node name="bloc_small2" parent="level/Blocks" instance=ExtResource( 19 )]
 position = Vector2( 454.1, -399.92 )
 
-[node name="Items" type="YSort" parent="level"]
+[node name="Items" type="Node2D" parent="level"]
 position = Vector2( 1032.97, 1956.3 )
 
-[node name="Ponds" type="YSort" parent="level"]
+[node name="Ponds" type="Node2D" parent="level"]
 
-[node name="flowers and grass" type="YSort" parent="level"]
+[node name="flowers and grass" type="Node2D" parent="level"]
 position = Vector2( 1371.99, 2764.66 )
 scale = Vector2( 0.5, 0.5 )
 
@@ -241,6 +241,6 @@ position = Vector2( 5886.78, -3506.92 )
 
 [node name="Tall_grass" type="TextureRect" parent="level/flowers and grass"]
 light_mask = 2
-margin_right = 40.0
-margin_bottom = 40.0
+offset_right = 40.0
+offset_bottom = 40.0
 texture = ExtResource( 10 )

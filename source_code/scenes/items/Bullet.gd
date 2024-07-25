@@ -18,10 +18,10 @@ extends Area2D
 class_name Bullet
 
 
-export (int) var speed 
-export(String, "up", "down", "left", "right") var facing = "" 
+@export var speed : int
+@export var facing = ""  # (String, "up", "down", "left", "right")
 
-onready var anims : AnimationPlayer = $"AnimationPlayer"
+@onready var anims : AnimationPlayer = $"AnimationPlayer"
 
 func _ready():
 	print_debug("Arrow facing:", facing)

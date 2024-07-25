@@ -14,28 +14,28 @@ class_name FightCam
 
 
 # Multi - Target Camera
-export var move_speed = 0.5 # camera position lerp speed
-export var zoom_speed = 0.25 # camera zoom lerp speed
-export var min_zoom = 1.5 # camera wont zoom closer than this
-export var max_zoom = 5 # camera wont zoom further than this
-export var margin = Vector2(400, 200)  # include some buffer area around targets
+@export var move_speed = 0.5 # camera position lerp speed
+@export var zoom_speed = 0.25 # camera zoom lerp speed
+@export var min_zoom = 1.5 # camera wont zoom closer than this
+@export var max_zoom = 5 # camera wont zoom further than this
+@export var margin = Vector2(400, 200)  # include some buffer area around targets
 
 
 var targets = []
 
-onready var screen_size = get_viewport_rect().size
+@onready var screen_size = get_viewport_rect().size
 
 # Camer Shake FX
 
-export var decay = 0.8  # How quickly the shaking stops [0, 1].
-export var max_offset = Vector2(100, 75)  # Maximum hor/ver shake in pixels.
-export var max_roll = 0.1  # Maximum rotation in radians (use sparingly).
-export (NodePath) var target  # Assign the node this camera will follow.
+@export var decay = 0.8  # How quickly the shaking stops [0, 1].
+@export var max_offset = Vector2(100, 75)  # Maximum hor/ver shake in pixels.
+@export var max_roll = 0.1  # Maximum rotation in radians (use sparingly).
+@export var target : NodePath # Assign the node this camera will follow.
 
-export(float)var trauma = 0.0  # Current shake strength.
+@export var trauma : float = 0.0  # Current shake strength.
 var trauma_power = 2  # Trauma exponent. Use [2, 3].
 
-onready var noise = OpenSimplexNoise.new() # Use procedural generation class code
+@onready var noise = FastNoiseLite.new() # Use procedural generation class code
 var noise_y = 0
 
 func _ready():
@@ -49,7 +49,7 @@ func _ready():
 	randomize()
 	noise.seed = randi()
 	noise.period = 4
-	noise.octaves = 2
+	noise.fractal_octaves = 2
 
 func _process(delta):
 	if !targets: 
@@ -101,9 +101,9 @@ func add_trauma(amount):
 
 func shake():
 	var amount = pow(trauma, trauma_power)
-	rotation = max_roll * amount * rand_range(-1, 1)
-	offset.x = max_offset.x * amount * rand_range(-1, 1)
-	offset.y = max_offset.y * amount * rand_range(-1, 1)
+	rotation = max_roll * amount * randf_range(-1, 1)
+	offset.x = max_offset.x * amount * randf_range(-1, 1)
+	offset.y = max_offset.y * amount * randf_range(-1, 1)
 	noise_y += 1
 	rotation = max_roll * amount * noise.get_noise_2d(noise.seed, noise_y)
 	offset.x = max_offset.x * amount * noise.get_noise_2d(noise.seed*2, noise_y)

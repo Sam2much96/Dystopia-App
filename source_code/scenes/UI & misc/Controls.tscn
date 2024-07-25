@@ -3,9 +3,9 @@
 [ext_resource path="res://scenes/UI & misc/Controls.gd" type="Script" id=1]
 [ext_resource path="res://scenes/UI & misc/Help.tscn" type="PackedScene" id=2]
 [ext_resource path="res://fonts/scroll_bar_theme.tres" type="Theme" id=3]
-[ext_resource path="res://scenes/Comics/chapter 4/Cover 2.webp" type="Texture" id=4]
+[ext_resource path="res://scenes/Comics/chapter 4/Cover 2.webp" type="Texture2D" id=4]
 [ext_resource path="res://scenes/UI & misc/generic_joystick_ui_selector.gd" type="Script" id=6]
-[ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=8]
+[ext_resource path="res://fonts/Menu_dynamicfont.tres" type="FontFile" id=8]
 [ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=14]
 
 [sub_resource type="Theme" id=1]
@@ -19,32 +19,32 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="TextureRect" parent="."]
-margin_left = 74.065
-margin_top = -5.66075
-margin_right = 3098.06
-margin_bottom = 3230.34
-rect_rotation = -1.54681
-rect_scale = Vector2( 0.277108, 0.190609 )
+offset_left = 74.065
+offset_top = -5.66075
+offset_right = 3098.06
+offset_bottom = 3230.34
+rotation = -1.54681
+scale = Vector2( 0.277108, 0.190609 )
 
 [node name="TextureRect2" type="TextureRect" parent="."]
-margin_left = 236.512
-margin_top = -59.7258
-margin_right = 1516.51
-margin_bottom = 1714.27
-rect_rotation = 0.411034
-rect_scale = Vector2( 0.433765, 0.433765 )
+offset_left = 236.512
+offset_top = -59.7258
+offset_right = 1516.51
+offset_bottom = 1714.27
+rotation = 0.411034
+scale = Vector2( 0.433765, 0.433765 )
 texture = ExtResource( 4 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_top = -321.0
-margin_right = 1064.0
-margin_bottom = 1185.0
+offset_top = -321.0
+offset_right = 1064.0
+offset_bottom = 1185.0
 color = Color( 1, 1, 1, 0.611765 )
 
 [node name="Help popup" type="Popup" parent="."]
 visible = true
-margin_right = 1285.0
-margin_bottom = 741.0
+offset_right = 1285.0
+offset_bottom = 741.0
 script = ExtResource( 14 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -54,28 +54,28 @@ __meta__ = {
 
 [node name="CheckButton" type="CheckButton" parent="."]
 visible = false
-margin_left = 670.09
-margin_top = 96.1085
-margin_right = 746.09
-margin_bottom = 136.108
+offset_left = 670.09
+offset_top = 96.1085
+offset_right = 746.09
+offset_bottom = 136.108
 theme = SubResource( 1 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-margin_left = 299.0
-margin_top = 51.0
-margin_right = 809.0
-margin_bottom = 557.0
+offset_left = 299.0
+offset_top = 51.0
+offset_right = 809.0
+offset_bottom = 557.0
 theme = ExtResource( 3 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
-margin_right = 352.0
-margin_bottom = 816.0
+offset_right = 352.0
+offset_bottom = 816.0
 script = ExtResource( 6 )
 
 [node name="back" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_right = 352.0
-margin_bottom = 78.0
-custom_fonts/font = ExtResource( 8 )
+offset_right = 352.0
+offset_bottom = 78.0
+theme_override_fonts/font = ExtResource( 8 )
 action_mode = 0
 text = "Back"
 flat = true
@@ -85,14 +85,14 @@ __meta__ = {
 }
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-margin_top = 82.0
-margin_right = 352.0
-margin_bottom = 160.0
+offset_top = 82.0
+offset_right = 352.0
+offset_bottom = 160.0
 
 [node name="music" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer2"]
-margin_right = 236.0
-margin_bottom = 78.0
-custom_fonts/font = ExtResource( 8 )
+offset_right = 236.0
+offset_bottom = 78.0
+theme_override_fonts/font = ExtResource( 8 )
 toggle_mode = true
 text = "music on/off"
 flat = true
@@ -102,15 +102,15 @@ __meta__ = {
 }
 
 [node name="CheckBox" type="CheckBox" parent="ScrollContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 240.0
-margin_right = 264.0
-margin_bottom = 78.0
+offset_left = 240.0
+offset_right = 264.0
+offset_bottom = 78.0
 
 [node name="debug" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 164.0
-margin_right = 352.0
-margin_bottom = 242.0
-custom_fonts/font = ExtResource( 8 )
+offset_top = 164.0
+offset_right = 352.0
+offset_bottom = 242.0
+theme_override_fonts/font = ExtResource( 8 )
 toggle_mode = true
 shortcut_in_tooltip = false
 text = "Debug "
@@ -121,10 +121,10 @@ __meta__ = {
 }
 
 [node name="languague" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 246.0
-margin_right = 352.0
-margin_bottom = 324.0
-custom_fonts/font = ExtResource( 8 )
+offset_top = 246.0
+offset_right = 352.0
+offset_bottom = 324.0
+theme_override_fonts/font = ExtResource( 8 )
 toggle_mode = true
 shortcut_in_tooltip = false
 text = "languague"
@@ -135,10 +135,10 @@ __meta__ = {
 }
 
 [node name="shuffle" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 328.0
-margin_right = 352.0
-margin_bottom = 406.0
-custom_fonts/font = ExtResource( 8 )
+offset_top = 328.0
+offset_right = 352.0
+offset_bottom = 406.0
+theme_override_fonts/font = ExtResource( 8 )
 toggle_mode = true
 shortcut_in_tooltip = false
 text = "Shuffle Music "
@@ -149,10 +149,10 @@ __meta__ = {
 }
 
 [node name="CRT" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 410.0
-margin_right = 352.0
-margin_bottom = 488.0
-custom_fonts/font = ExtResource( 8 )
+offset_top = 410.0
+offset_right = 352.0
+offset_bottom = 488.0
+theme_override_fonts/font = ExtResource( 8 )
 toggle_mode = true
 shortcut_in_tooltip = false
 text = "CRT on off"
@@ -163,56 +163,56 @@ __meta__ = {
 }
 
 [node name="help" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 492.0
-margin_right = 352.0
-margin_bottom = 570.0
-custom_fonts/font = ExtResource( 8 )
+offset_top = 492.0
+offset_right = 352.0
+offset_bottom = 570.0
+theme_override_fonts/font = ExtResource( 8 )
 text = "Hold to Show Help"
 flat = true
 
 [node name="change controller" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 574.0
-margin_right = 352.0
-margin_bottom = 652.0
-custom_fonts/font = ExtResource( 8 )
+offset_top = 574.0
+offset_right = 352.0
+offset_bottom = 652.0
+theme_override_fonts/font = ExtResource( 8 )
 toggle_mode = true
 text = "Direction/controls"
 flat = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-margin_top = 656.0
-margin_right = 352.0
-margin_bottom = 734.0
+offset_top = 656.0
+offset_right = 352.0
+offset_bottom = 734.0
 
 [node name="vibration" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer"]
-margin_right = 185.0
-margin_bottom = 78.0
-custom_fonts/font = ExtResource( 8 )
+offset_right = 185.0
+offset_bottom = 78.0
+theme_override_fonts/font = ExtResource( 8 )
 toggle_mode = true
 text = "vibration"
 flat = true
 
 [node name="CheckBox" type="CheckBox" parent="ScrollContainer/VBoxContainer/HBoxContainer"]
-margin_left = 189.0
-margin_right = 213.0
-margin_bottom = 78.0
+offset_left = 189.0
+offset_right = 213.0
+offset_bottom = 78.0
 
 [node name="TextureButton" type="TextureButton" parent="ScrollContainer/VBoxContainer"]
 visible = false
-margin_top = 656.0
-margin_right = 352.0
-margin_bottom = 656.0
+offset_top = 656.0
+offset_right = 352.0
+offset_bottom = 656.0
 toggle_mode = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-margin_top = 738.0
-margin_right = 352.0
-margin_bottom = 816.0
+offset_top = 738.0
+offset_right = 352.0
+offset_bottom = 816.0
 
 [node name="multiplayer" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer3"]
-margin_right = 217.0
-margin_bottom = 78.0
-custom_fonts/font = ExtResource( 8 )
+offset_right = 217.0
+offset_bottom = 78.0
+theme_override_fonts/font = ExtResource( 8 )
 toggle_mode = true
 shortcut_in_tooltip = false
 text = "online mmo"

@@ -25,7 +25,7 @@ signal state_changed(state_)
 
 # Error Catcher for physics logic
 # Checks if Peer Id can be called and Network Is Set up
-onready var err = Networking.GamePlay
+@onready var err = Networking.GamePlay
 
 func _input(event):
 	# Node Individual Input Processes were depreciated in favor of GlobalInput Singleton
@@ -81,7 +81,7 @@ func _on_hurtbox_area_entered(area):
 		#move_and_slide( pushback_direction * pushback)
 		
 		state = STATE_HURT
-		var blood = Globals.blood_fx.instance()
+		var blood = Globals.blood_fx.instantiate()
 		blood.global_position = global_position
 		get_parent().add_child(blood)
 		
@@ -182,7 +182,10 @@ func state_machine_logic(node, peer_id : int):
 				node.state = STATE_ROLL
 				#emit_signal("state_changed")
 			
-			linear_vel = move_and_slide(linear_vel, Vector2(0,0))
+			set_velocity(linear_vel)
+			set_up_direction(Vector2(0,0))
+			move_and_slide()
+			linear_vel = velocity
 			
 			#print('Player linear velocity: ', linear_vel) #for debug purposes only
 			
@@ -217,7 +220,9 @@ func state_machine_logic(node, peer_id : int):
 			if roll_direction == Vector2.ZERO:
 				node.state = STATE_IDLE
 			else:
-				linear_vel = move_and_slide(linear_vel)
+				set_velocity(linear_vel)
+				move_and_slide()
+				linear_vel = velocity
 				var target_speed = Vector2()
 				target_speed = roll_direction
 				target_speed *= ROLL_SPEED

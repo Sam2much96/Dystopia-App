@@ -1,49 +1,56 @@
-[gd_resource type="Theme" load_steps=10 format=2]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://86p0fg0vwo7j"]
 
-[ext_resource path="res://themes/option_button_panel_flatbox.tres" type="StyleBox" id=1]
-[ext_resource path="res://fonts/tiny.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://fonts/LiberationSans.ttf" type="DynamicFontData" id=3]
+[ext_resource type="StyleBox" path="res://themes/option_button_panel_flatbox.tres" id="1"]
+[ext_resource type="FontFile" uid="uid://bpg63jythkuxo" path="res://fonts/tiny.ttf" id="2"]
+[ext_resource type="FontFile" uid="uid://bsycnt051xb6t" path="res://fonts/LiberationSans.ttf" id="3"]
 
-[sub_resource type="DynamicFont" id=1]
-size = 19
-font_data = ExtResource( 2 )
+[sub_resource type="FontFile" id="1"]
+fallbacks = Array[Font]([ExtResource("2")])
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 
-[sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 0.482353, 0.482353, 0.482353, 1 )
+[sub_resource type="StyleBoxFlat" id="3"]
+bg_color = Color(0.482353, 0.482353, 0.482353, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.301961, 0.301961, 0.301961, 1 )
+[sub_resource type="StyleBoxFlat" id="2"]
+bg_color = Color(0.301961, 0.301961, 0.301961, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 shadow_size = 2
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id="4"]
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="DynamicFont" id=6]
-size = 12
-outline_size = 1
-outline_color = Color( 0, 0, 0, 1 )
-use_filter = true
-font_data = ExtResource( 3 )
+[sub_resource type="FontFile" id="6"]
+fallbacks = Array[Font]([ExtResource("3")])
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 
-[sub_resource type="StyleBoxFlat" id=5]
-bg_color = Color( 0.439216, 0.439216, 0.439216, 1 )
+[sub_resource type="StyleBoxFlat" id="5"]
+bg_color = Color(0.439216, 0.439216, 0.439216, 1)
 
 [resource]
-OptionButton/fonts/font = SubResource( 1 )
-OptionButton/styles/hover = SubResource( 3 )
-OptionButton/styles/normal = SubResource( 2 )
-OptionButton/styles/pressed = SubResource( 4 )
-Panel/styles/panel = ExtResource( 1 )
-PopupMenu/fonts/font = SubResource( 6 )
-PopupMenu/styles/panel = SubResource( 5 )
+OptionButton/fonts/font = SubResource("1")
+OptionButton/styles/hover = SubResource("3")
+OptionButton/styles/normal = SubResource("2")
+OptionButton/styles/pressed = SubResource("4")
+Panel/styles/panel = ExtResource("1")
+PopupMenu/fonts/font = SubResource("6")
+PopupMenu/styles/panel = SubResource("5")

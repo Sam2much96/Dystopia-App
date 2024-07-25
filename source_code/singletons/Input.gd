@@ -33,7 +33,7 @@ extends Control
 class_name Input_Buffer
 
 # For Storing An Array of Input Data FOr Networking Multiplayer
-export (Array) var input_buffer = []
+@export var input_buffer : Array = []
 
 enum {LEFT,RIGHT,UP,DOWN,ATTACK,ROLL,BLOCK, RESET, 
 COMICS, NEXTPANEL, PREVPANEL, DRAG, PAUSE, MENU, 
@@ -41,7 +41,7 @@ INTERRACT, DIALOGUE
 }
 
 # State Machine
-export (int) var _state  
+@export var _state : int 
 
 # Frame Counter
 #var _frame_counter : int = 0
@@ -49,7 +49,7 @@ export (int) var _state
 var pressed : bool = false
 
 # Vibration Settings
-export (bool) var vibrate = true
+@export var vibrate : bool = true
 
 
 
@@ -82,7 +82,7 @@ func _input(event):
 		_state = LEFT
 		#facing = LEFT
 		pressed = true
-		vibrate(40, Globals.os)
+		vibrate_(40, Globals.os)
 	if Input.is_action_just_released("move_left"):
 		
 		_state = RESET
@@ -93,7 +93,7 @@ func _input(event):
 		
 		_state = RIGHT
 		#facing = RIGHT
-		vibrate(40,Globals.os)
+		vibrate_(40,Globals.os)
 	if Input.is_action_just_released("move_right"):
 		
 		_state = RESET
@@ -103,7 +103,7 @@ func _input(event):
 		
 		_state = UP
 		#facing = UP
-		vibrate(40,Globals.os)
+		vibrate_(40,Globals.os)
 	if Input.is_action_just_released("move_up"):
 		
 		_state = RESET
@@ -113,7 +113,7 @@ func _input(event):
 		
 		_state = DOWN
 		#facing = DOWN
-		vibrate(40,Globals.os)
+		vibrate_(40,Globals.os)
 	if Input.is_action_just_released("move_down"):
 		
 		_state = RESET
@@ -123,7 +123,7 @@ func _input(event):
 		
 		_state = ATTACK
 		
-		vibrate(75,Globals.os)
+		vibrate_(75,Globals.os)
 	if Input.is_action_just_released("attack"):
 		
 		_state = RESET
@@ -136,7 +136,7 @@ func _input(event):
 		
 		_state = RESET
 		#pass
-		vibrate(40,Globals.os)
+		vibrate_(40,Globals.os)
 	
 	# Comics Input
 	if event.is_action_pressed("reset"):
@@ -197,11 +197,11 @@ func _input(event):
 		#Game_Menu.scroll(true, true,scroller)
 	#	pass
 
-	if input_buffer.empty() == true && pressed:
+	if input_buffer.is_empty() == true && pressed:
 		input_buffer.append(_state)
 		return
 	
-	if not input_buffer.empty() && int(input_buffer[input_buffer.size()-1]) != _state:
+	if not input_buffer.is_empty() && int(input_buffer[input_buffer.size()-1]) != _state:
 		input_buffer.append(_state)
 		return
 
@@ -218,11 +218,11 @@ func parse_input( action : String, _pressed : bool):
 	
 	var a = InputEventAction.new()
 	a.action = action
-	a.pressed = _pressed
+	a.button_pressed = _pressed
 	Input.parse_input_event(a)
 
 
-func vibrate(duration_ms : int, os : String):
+func vibrate_(duration_ms : int, os : String):
 	# Nested if?
 	if Globals.os == "Android" && vibrate : #or "iOS" or "HTML5":
 		

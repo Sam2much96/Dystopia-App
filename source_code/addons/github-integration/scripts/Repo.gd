@@ -16,54 +16,54 @@
 # Rewrite to use local pointers once
 extends Control
 
-onready var repo_icon : TextureRect = $Repository/RepoInfos/RepoInfosContainer/repo_infos/repo_icon
-onready var private_icon : TextureRect = $Repository/RepoInfos/RepoInfosContainer/repo_infos/private_icon
-onready var star_icon : TextureRect = $Repository/RepoInfos/RepoInfosContainer/repo_infos/star_values/star_icon
-onready var fork_icon : TextureRect = $Repository/RepoInfos/RepoInfosContainer/repo_infos/fork_values/fork_icon
-onready var forked_icon : TextureRect = $Repository/RepoInfos/RepoInfosContainer/repo_infos/forked_icon
+@onready var repo_icon : TextureRect = $Repository/RepoInfos/RepoInfosContainer/repo_infos/repo_icon
+@onready var private_icon : TextureRect = $Repository/RepoInfos/RepoInfosContainer/repo_infos/private_icon
+@onready var star_icon : TextureRect = $Repository/RepoInfos/RepoInfosContainer/repo_infos/star_values/star_icon
+@onready var fork_icon : TextureRect = $Repository/RepoInfos/RepoInfosContainer/repo_infos/fork_values/fork_icon
+@onready var forked_icon : TextureRect = $Repository/RepoInfos/RepoInfosContainer/repo_infos/forked_icon
 
-onready var extension_option = $extension_choosing/VBoxContainer/extension_option
-onready var extension_choosing = $extension_choosing
+@onready var extension_option = $extension_choosing/VBoxContainer/extension_option
+@onready var extension_choosing = $extension_choosing
 #onready var watch_value = $Repository/RepoInfos/RepoInfosContainer/repo_infos/watch_values/watch
-onready var star_value : Label = $Repository/RepoInfos/RepoInfosContainer/repo_infos/star_values/star
-onready var fork_value : Label = $Repository/RepoInfos/RepoInfosContainer/repo_infos/fork_values/fork
+@onready var star_value : Label = $Repository/RepoInfos/RepoInfosContainer/repo_infos/star_values/star
+@onready var fork_value : Label = $Repository/RepoInfos/RepoInfosContainer/repo_infos/fork_values/fork
 
-onready var owner_lbl : Label = $Repository/RepoInfos/RepoInfosContainer/repo_infos/repo_owner
-onready var description_lbl : Label = $Repository/RepositoryInfo/RepositoryDetails/About/Description
-onready var default_branch_lbl : Label = $Repository/RepositoryInfo/RepositoryContent/BranchInfo/branch/HBoxContainer6/default_branch
-onready var repo_name_link : LinkButton = $Repository/RepoInfos/RepoInfosContainer/repo_infos/repo_name
-onready var contents_tree : Tree = $Repository/RepositoryInfo/RepositoryContent/contents
-onready var close_btn : TextureButton = $Repository/RepoInfos/RepoInfosContainer/close
-onready var branches_opt_btn : OptionButton = $Repository/RepositoryInfo/RepositoryContent/BranchInfo/branch/branch2
-onready var delete_repository_btn : Button = $Repository/repos_buttons/HBoxContainer2/delete
-onready var commit_btn : Button = $Repository/repos_buttons/HBoxContainer3/commit
-onready var delete_resource_btn : Button = $Repository/repos_buttons/HBoxContainer2/delete2
+@onready var owner_lbl : Label = $Repository/RepoInfos/RepoInfosContainer/repo_infos/repo_owner
+@onready var description_lbl : Label = $Repository/RepositoryInfo/RepositoryDetails/About/Description
+@onready var default_branch_lbl : Label = $Repository/RepositoryInfo/RepositoryContent/BranchInfo/branch/HBoxContainer6/default_branch
+@onready var repo_name_link : LinkButton = $Repository/RepoInfos/RepoInfosContainer/repo_infos/repo_name
+@onready var contents_tree : Tree = $Repository/RepositoryInfo/RepositoryContent/contents
+@onready var close_btn : TextureButton = $Repository/RepoInfos/RepoInfosContainer/close
+@onready var branches_opt_btn : OptionButton = $Repository/RepositoryInfo/RepositoryContent/BranchInfo/branch/branch2
+@onready var delete_repository_btn : Button = $Repository/repos_buttons/HBoxContainer2/delete
+@onready var commit_btn : Button = $Repository/repos_buttons/HBoxContainer3/commit
+@onready var delete_resource_btn : Button = $Repository/repos_buttons/HBoxContainer2/delete2
 
-onready var reload_btn :Button = $Repository/repos_buttons/HBoxContainer/reload
-onready var new_branch_btn : Button = $Repository/RepositoryInfo/RepositoryContent/BranchInfo/branch/new_branchBtn
-onready var new_branch_dialog : AcceptDialog = $NewBranch
-onready var pull_btn : Button = $Repository/RepositoryInfo/RepositoryContent/BranchInfo/branch/pull_btn
-onready var git_lfs = $Repository/RepositoryInfo/RepositoryContent/BranchInfo/branch/git_lfs
+@onready var reload_btn :Button = $Repository/repos_buttons/HBoxContainer/reload
+@onready var new_branch_btn : Button = $Repository/RepositoryInfo/RepositoryContent/BranchInfo/branch/new_branchBtn
+@onready var new_branch_dialog : AcceptDialog = $NewBranch
+@onready var pull_btn : Button = $Repository/RepositoryInfo/RepositoryContent/BranchInfo/branch/pull_btn
+@onready var git_lfs = $Repository/RepositoryInfo/RepositoryContent/BranchInfo/branch/git_lfs
 
-onready var from_branch : OptionButton = $NewBranch/VBoxContainer/HBoxContainer2/from_branch
+@onready var from_branch : OptionButton = $NewBranch/VBoxContainer/HBoxContainer2/from_branch
 
-onready var ExtractionRequest = $extraction_request
-onready var ExtractionOverwriting = $extraction_overwriting
+@onready var ExtractionRequest = $extraction_request
+@onready var ExtractionOverwriting = $extraction_overwriting
 
-onready var SetupDialog = $setup_git_lfs
-onready var WhatIsDialog = $whatis_dialog
+@onready var SetupDialog = $setup_git_lfs
+@onready var WhatIsDialog = $whatis_dialog
 
-onready var ExtensionsList = $setup_git_lfs/VBoxContainer/extensions_list
+@onready var ExtensionsList = $setup_git_lfs/VBoxContainer/extensions_list
 
 # Collaborators
-onready var add_collaborator_btn : Button = $Repository/RepositoryInfo/RepositoryDetails/Collaborators/AddCollaboratorBtn
-onready var AddCollaborator : AcceptDialog = $AddCollaborator
-onready var CollaboratorName : LineEdit = $AddCollaborator/VBoxContainer/HBoxContainer/name
-onready var CollaboratorPermission : OptionButton = $AddCollaborator/VBoxContainer/HBoxContainer2/permission
+@onready var add_collaborator_btn : Button = $Repository/RepositoryInfo/RepositoryDetails/Collaborators/AddCollaboratorBtn
+@onready var AddCollaborator : AcceptDialog = $AddCollaborator
+@onready var CollaboratorName : LineEdit = $AddCollaborator/VBoxContainer/HBoxContainer/name
+@onready var CollaboratorPermission : OptionButton = $AddCollaborator/VBoxContainer/HBoxContainer2/permission
 
 # Details
-onready var collaborators_list : VBoxContainer = $Repository/RepositoryInfo/RepositoryDetails/Collaborators/ListContainer/List
-onready var contributors_list : VBoxContainer = $Repository/RepositoryInfo/RepositoryDetails/Contributors/ListContainer/List
+@onready var collaborators_list : VBoxContainer = $Repository/RepositoryInfo/RepositoryDetails/Collaborators/ListContainer/List
+@onready var contributors_list : VBoxContainer = $Repository/RepositoryInfo/RepositoryDetails/Contributors/ListContainer/List
 
 var contributor_class : PackedScene = load("res://addons/github-integration/scenes/ContributorClass.tscn")
 
@@ -90,8 +90,8 @@ var archive_extension : String = ""
 
 signal resource_deleted()
 
-onready var RestHandler_ = get_parent().get_node("RestHandler")
-onready var UserData_ = get_parent().get_node("UserData")
+@onready var RestHandler_ = get_parent().get_node("RestHandler")
+@onready var UserData_ = get_parent().get_node("UserData")
 
 
 func _ready():
@@ -99,43 +99,43 @@ func _ready():
 	delete_resource_btn.disabled = true
 
 func _connect_signals() -> void:
-	delete_resource_btn.connect("pressed",self,"delete_resource")
-	repo_name_link.connect("pressed",self,"open_html")
-	close_btn.connect("pressed",self,"close_tab")
-	delete_repository_btn.connect("pressed",self,"delete_repo")
-	commit_btn.connect("pressed",self,"commit")
-	new_branch_btn.connect("pressed",self,"on_newbranch_pressed")
-	new_branch_dialog.connect("confirmed",self,"on_newbranch_confirmed")
-	pull_btn.connect("pressed",self,"on_pull_pressed")
-	git_lfs.connect("pressed",self,"setup_git_lfs")
-	add_collaborator_btn.connect("pressed", self, "add_collaborator")
-	AddCollaborator.connect("confirmed",self,"invite_collaborator")
+	delete_resource_btn.connect("pressed", Callable(self, "delete_resource"))
+	repo_name_link.connect("pressed", Callable(self, "open_html"))
+	close_btn.connect("pressed", Callable(self, "close_tab"))
+	delete_repository_btn.connect("pressed", Callable(self, "delete_repo"))
+	commit_btn.connect("pressed", Callable(self, "commit"))
+	new_branch_btn.connect("pressed", Callable(self, "on_newbranch_pressed"))
+	new_branch_dialog.connect("confirmed", Callable(self, "on_newbranch_confirmed"))
+	pull_btn.connect("pressed", Callable(self, "on_pull_pressed"))
+	git_lfs.connect("pressed", Callable(self, "setup_git_lfs"))
+	add_collaborator_btn.connect("pressed", Callable(self, "add_collaborator"))
+	AddCollaborator.connect("confirmed", Callable(self, "invite_collaborator"))
 	
 #    RestHandler.connect("user_repository_requested",self, "_on_user_repository_requested")
-	RestHandler_.connect("request_failed", self, "_on_request_failed")
-	RestHandler_.connect("branch_contents_requested", self, "_on_branch_contents_requested")
-	RestHandler_.connect("gitignore_requested", self, "_on_gitignore_requested")
-	RestHandler_.connect("pull_branch_requested", self, "_on_pull_branch_requested")
-	RestHandler_.connect("collaborator_requested", self, "_on_collaborator_requested")
-	RestHandler_.connect("resource_delete_requested", self, "_on_delete_resource_requested")
-	RestHandler_.connect("repository_delete_requested", self, "_on_repository_deleted")
-	RestHandler_.connect("new_branch_requested", self, "_on_new_branch_created")
+	RestHandler_.connect("request_failed", Callable(self, "_on_request_failed"))
+	RestHandler_.connect("branch_contents_requested", Callable(self, "_on_branch_contents_requested"))
+	RestHandler_.connect("gitignore_requested", Callable(self, "_on_gitignore_requested"))
+	RestHandler_.connect("pull_branch_requested", Callable(self, "_on_pull_branch_requested"))
+	RestHandler_.connect("collaborator_requested", Callable(self, "_on_collaborator_requested"))
+	RestHandler_.connect("resource_delete_requested", Callable(self, "_on_delete_resource_requested"))
+	RestHandler_.connect("repository_delete_requested", Callable(self, "_on_repository_deleted"))
+	RestHandler_.connect("new_branch_requested", Callable(self, "_on_new_branch_created"))
 
 func set_darkmode(darkmode : bool):
 	if darkmode:
 		$BG.color = "#24292e"
 		set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme-Dark.tres"))
-		$Repository/RepoInfos.set("custom_styles/panel",load("res://addons/github-integration/resources/styles/Repohead-black.tres"))
-		$Repository/RepositoryInfo/RepositoryContent/BranchInfo.set("custom_styles/panel",load("res://addons/github-integration/resources/styles/Branch-black.tres"))
-		contents_tree.set("custom_styles/bg", load("res://addons/github-integration/resources/styles/ContentesBG-dark.tres"))   
-		contents_tree.set("custom_styles/bg_focus", load("res://addons/github-integration/resources/styles/ContentesBG-dark.tres"))   
+		$Repository/RepoInfos.set("theme_override_styles/panel",load("res://addons/github-integration/resources/styles/Repohead-black.tres"))
+		$Repository/RepositoryInfo/RepositoryContent/BranchInfo.set("theme_override_styles/panel",load("res://addons/github-integration/resources/styles/Branch-black.tres"))
+		contents_tree.set("theme_override_styles/bg", load("res://addons/github-integration/resources/styles/ContentesBG-dark.tres"))   
+		contents_tree.set("theme_override_styles/focus", load("res://addons/github-integration/resources/styles/ContentesBG-dark.tres"))   
 	else:
 		$BG.color = "#f6f8fa"
 		set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme.tres"))
-		$Repository/RepoInfos.set("custom_styles/panel",load("res://addons/github-integration/resources/styles/Repohead-white.tres"))
-		$Repository/RepositoryInfo/RepositoryContent/BranchInfo.set("custom_styles/panel",load("res://addons/github-integration/resources/styles/Branch-white.tres"))
-		contents_tree.set("custom_styles/bg", load("res://addons/github-integration/resources/styles/ContentesBG-white.tres"))
-		contents_tree.set("custom_styles/bg_focus", load("res://addons/github-integration/resources/styles/ContentesBG-white.tres"))
+		$Repository/RepoInfos.set("theme_override_styles/panel",load("res://addons/github-integration/resources/styles/Repohead-white.tres"))
+		$Repository/RepositoryInfo/RepositoryContent/BranchInfo.set("theme_override_styles/panel",load("res://addons/github-integration/resources/styles/Branch-white.tres"))
+		contents_tree.set("theme_override_styles/bg", load("res://addons/github-integration/resources/styles/ContentesBG-white.tres"))
+		contents_tree.set("theme_override_styles/focus", load("res://addons/github-integration/resources/styles/ContentesBG-white.tres"))
 
 func load_icons(r : Dictionary):
 	repo_icon.set_texture(Github.IconLoaderGithub.load_icon_from_name("repos"))
@@ -202,7 +202,7 @@ func load_collaborators(collaborators : Array) -> void:
 	
 	for contributor in collaborators:
 		collaborators_login.append(contributor.login)
-		var temp_contributor_class : ContributorClass = contributor_class.instance()
+		var temp_contributor_class : ContributorClass = contributor_class.instantiate()
 		collaborators_list.add_child(temp_contributor_class)
 		temp_contributor_class.load_contributor(contributor.login, contributor.name if contributor.name!=null else "", contributor.avatarUrl)
 
@@ -213,7 +213,7 @@ func load_contributors(collaborators : Array, contributors : Array) -> void:
 	for contributor in contributors:
 		if contributor.login in collaborators_login:
 			continue
-		var temp_contributor_class : ContributorClass = contributor_class.instance()
+		var temp_contributor_class : ContributorClass = contributor_class.instantiate()
 		contributors_list.add_child(temp_contributor_class)
 		temp_contributor_class.load_contributor(contributor.login, contributor.name if contributor.name!=null else "", contributor.avatarUrl)
 
@@ -246,10 +246,10 @@ func delete_repo():
 	var confirm = ConfirmationDialog.new()
 	confirm.dialog_text = "Do you really want to permanently delete /"+current_repo._name+" ?"
 	add_child(confirm)
-	confirm.rect_position = OS.get_screen_size()/2 - confirm.rect_size/2
+	confirm.position = DisplayServer.screen_get_size()/2 - confirm.size/2
 	confirm.popup()
-	confirm.connect("confirmed", self, "delete_repository")
-	confirm.get_cancel().connect("pressed", confirm, "free")
+	confirm.connect("confirmed", Callable(self, "delete_repository"))
+	confirm.get_cancel_button().connect("pressed", Callable(confirm, "free"))
 
 func delete_repository():
 	get_parent().loading(true)
@@ -266,11 +266,11 @@ func delete_resource():
 		for item in multi_selected:
 			request_delete_resource(item.get_metadata(0).path, item)
 			get_parent().print_debug_message("deleting "+item.get_metadata(0).path+"...")
-			yield(self,"resource_deleted")
+			await self.resource_deleted
 	else:
 		request_delete_resource(contents_tree.get_selected().get_metadata(0).path)
 		get_parent().print_debug_message("deleting "+contents_tree.get_selected().get_metadata(0).path+"...")
-		yield(self,"resource_deleted")
+		await self.resource_deleted
 	multi_selected.clear()
 	_on_reload_pressed()
 	delete_resource_btn.disabled = true
@@ -312,7 +312,7 @@ func _on_request_failed(requesting : int, error_body : Dictionary) -> void:
 			get_parent().print_debug_message("ERROR: %s" % error_body.errors[0].message, 1)
 		RestHandler_.REQUESTS.DELETE_RESOURCE:
 			get_parent().print_debug_message("ERROR: can't delete a folder!",1)
-		Github.RestHandler_.REQUESTS.NEW_BRANCH:
+		RestHandler_.REQUESTS.NEW_BRANCH:
 			get_parent().print_debug_message("ERROR: %s" % error_body.errors[0].message, 1)
 	get_parent().loading(false)
 
@@ -413,7 +413,7 @@ func _on_reload_pressed():
 	get_parent().print_debug_message("reloading all branches, please wait...")
 	RestHandler_.request_user_repository("organization" if current_repo._repository.isInOrganization else "user",
 	current_repo._repository.owner.login, current_repo._name)
-	_on_user_repository_requested(yield(Github.RestHandler_, "user_repository_requested"))
+	_on_user_repository_requested(await RestHandler_.user_repository_requested)
 
 
 func _clear() -> void:
@@ -453,9 +453,9 @@ func _on_extension_choosing_confirmed():
 			archive_extension = ".zip"
 			typeball = "zipball"
 			typeball_url = current_branch.target.zipballUrl
-	var zipfile = File.new()
+	var zipfile : FileAccess #= File.new()
 	zip_filepath = "res://"+current_repo._name+"-"+current_branch.name+archive_extension
-	zipfile.open_compressed(zip_filepath,File.WRITE,File.COMPRESSION_GZIP)
+	#zipfile.open_compressed(zip_filepath,File.WRITE,File.COMPRESSION_GZIP)
 	
 	zipfile.close()
 	RestHandler_.request_pull_branch(zip_filepath, typeball_url, current_repo._repository.diskUsage)
@@ -471,7 +471,7 @@ func add_collaborator():
 	AddCollaborator.popup()
 
 func invite_collaborator():
-	var header : Array = Github.UserData_.header
+	var header : Array = UserData_.header
 	header.append("Content-Length: 0")
 	var collaborator_name : String = CollaboratorName.text
 	var body : Dictionary = {
@@ -490,14 +490,14 @@ func _on_collaborator_requested() -> void:
 func setup_git_lfs():
 	var path : String = UserData_.directory+current_repo._name+"/"+current_branch.name+"/.gitattributes"
 	var extensions : String = ""
-	if File.new().file_exists(path) :
-		get_parent().print_debug_message(".gitattributes file already set for this repository. You can overwrite it.")
-		var gitattributes = File.new()
-		gitattributes.open(path,File.READ)
-		ExtensionsList.set_text("")
-		while not gitattributes.eof_reached():
-				extensions += (gitattributes.get_line().split(" "))[0].replace("*","")+"\n"
-		ExtensionsList.set_text(extensions)
+	#if File.new().file_exists(path) :
+	#	get_parent().print_debug_message(".gitattributes file already set for this repository. You can overwrite it.")
+	#	var gitattributes = File.new()
+	#	gitattributes.open(path,File.READ)
+	#	ExtensionsList.set_text("")
+	#	while not gitattributes.eof_reached():
+	#			extensions += (gitattributes.get_line().split(" "))[0].replace("*","")+"\n"
+	#	ExtensionsList.set_text(extensions)
 
 	SetupDialog.popup()
 
@@ -517,16 +517,16 @@ func _on_java_pressed():
 func python_extraction():
 	var output = []
 	var unzipper_path = ProjectSettings.globalize_path("res://addons/github-integration/resources/extraction/unzip.py")
-	var arguments : PoolStringArray = [unzipper_path,ProjectSettings.globalize_path(zip_filepath),ProjectSettings.globalize_path("res://")]
-	var err = OS.execute("python",arguments,true)
+	var arguments : PackedStringArray = [unzipper_path,ProjectSettings.globalize_path(zip_filepath),ProjectSettings.globalize_path("res://")]
+	var err #= OS.execute("python",arguments,true)
 	get_parent().print_debug_message("archive unzipped in project folder with Python method.")
 	ExtractionRequest.hide()
 
 func java_extraction():
 	var output = []
 	var unzipper_path = ProjectSettings.globalize_path("res://addons/github-integration/resources/extraction/unzipper.jar")
-	var arguments : PoolStringArray = ["-jar",unzipper_path,ProjectSettings.globalize_path(zip_filepath),ProjectSettings.globalize_path("res://")]
-	var err = OS.execute("java",arguments,true)
+	var arguments : PackedStringArray = ["-jar",unzipper_path,ProjectSettings.globalize_path(zip_filepath),ProjectSettings.globalize_path("res://")]
+	var err #= OS.execute("java",arguments,true)
 	get_parent().print_debug_message("archive unzipped in project folder with Java method.")
 	ExtractionRequest.hide()
 
@@ -544,17 +544,17 @@ func _on_setup_git_lfs_confirmed():
 	setup_gitlfs(exstensionList)
 
 func setup_gitlfs(extensions : Array):
-	var gitattributes = File.new()
-	var dir = Directory.new()
-	var directory : String = Github.UserData_.directory+current_repo._name+"/"+current_branch.name
-	if not dir.dir_exists(directory):
-		dir.make_dir(directory)
-	gitattributes.open(directory+"/.gitattributes",File.WRITE_READ)
+	var gitattributes : FileAccess#= File.new()
+	var dir = DirAccess#.new()
+	var directory : String = UserData_.directory+current_repo._name+"/"+current_branch.name
+	#if not dir.dir_exists(directory):
+	#	dir.make_dir(directory)
+	#gitattributes.open(directory+"/.gitattributes",File.WRITE_READ)
 	for extension in extensions:
 		var tracking : String = "*."+extension+" filter=lfs diff=lfs merge=lfs -text"
 		gitattributes.store_line(tracking)
 	gitattributes.close()
-	get_parent().print_debug_message("New .gitattributes created with the file extensions you want to track. It will be uploaded to you repository during the next push.")
+	get_parent().print_debug_message("New super.gitattributes created with the file extensions you want to track. It will be uploaded to you repository during the next push.")
 
 
 

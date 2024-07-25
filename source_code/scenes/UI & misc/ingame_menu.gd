@@ -30,7 +30,7 @@ var selector = 0
 signal menu_hidden
 signal menu_showing
 signal loading_game
-export (bool) var enabled 
+@export var enabled : bool
 
 #var shop = load('res://scenes/UI & misc/Shop.tscn')
 
@@ -40,7 +40,7 @@ The game menu script.
 
 enum { SHOWING, HIDDEN}
 
-export (String) var menu_state
+@export var menu_state : int
 
 
 
@@ -66,7 +66,7 @@ var scroller : ScrollContainer
 var MenuButtons : Array = []
 
 var initialScale : Vector2 =self.get_scale()
-export (Vector2) var newScale : Vector2 = Vector2(2,2)
+@export var newScale : Vector2 = Vector2(2,2)
 
 
 func _ready():
@@ -97,7 +97,7 @@ func _ready():
 
 	" Translation"
 	
-	manually_translate()
+	#manually_translate()
 	
 	"Scales for Mobile UI"
 	# Disabling for debuggin
@@ -170,7 +170,7 @@ func _on_continue_pressed():
 		
 		"Loads Large Scene"
 		
-		Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
+		Utils.Functions.change_scene_to_packed(Utils.Functions.LoadLargeScene(
 		Globals.current_level, 
 		Globals.scene_resource, 
 		Globals._o, 
@@ -198,7 +198,7 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 		
 
 		# shance scene to loading scene with nspecialized logic for device loadi handling
-		Utils.Functions.change_scene_to(Globals.loading_scene,get_tree() )
+		Utils.Functions.change_scene_to_packed(Globals.loading_scene,get_tree() )
 		
 		# Required Variables
 		#player: Array, 
@@ -224,8 +224,8 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 			Globals.direction_control 
 			) == false: push_error("Error saving game")
 
-		return 	Music.play_track(Music.ui_sfx.get(0)) #plays ui sfx in a loop
-
+		await Music.play_track(Music.ui_sfx.get(0)) #plays ui sfx in a loop
+		return 0
 
 #Handles Displaying the menu
 func _menu_showing(): #Broken funtions #rewrite with state machine
@@ -249,7 +249,7 @@ func _menu_showing(): #Broken funtions #rewrite with state machine
 		counter += 1
 	
 	
-	return show()
+	show()
 
 #Handles Hiding the menu
 func _menu_not_showing():
@@ -271,11 +271,11 @@ func _menu_pause_and_play(boolean): #pass it a boolean to custom pause and play
 func _on_comics_pressed():
 	print_debug ('comics pressed')
 	Music.play_track(Music.ui_sfx[0])
-	Utils.Functions.change_scene_to(Globals.comics___2, get_tree())
+	Utils.Functions.change_scene_to_packed(Globals.comics___2, get_tree())
 
 func _on_controls_pressed():
 	Music.play_track(Music.ui_sfx[0])
-	return Utils.Functions.change_scene_to(Globals.controls, get_tree())
+	return Utils.Functions.change_scene_to_packed(Globals.controls, get_tree())
 
 
 func _on_quit_pressed():
@@ -289,13 +289,13 @@ func _on_quit_pressed():
 	else:
 		Music.play_track(Music.ui_sfx[1])
 		#Globals.memory_leak_management()
-		Utils.Functions.change_scene_to(Globals.title_screen, get_tree())
+		Utils.Functions.change_scene_to_packed(Globals.title_screen, get_tree())
 
 
 
 func _on_multiplayer_pressed(): # Experimental feature
 	Music.play_track(Music.ui_sfx[0])
-	return get_tree().change_scene_to(load ('res://scenes/multiplayer/login.tscn'))
+	return get_tree().change_scene_to_packed(load ('res://scenes/multiplayer/login.tscn'))
 
 func _exit_tree():
 	# Memory Leak Management
@@ -315,12 +315,12 @@ func _exit_tree():
 
 func _on_anime_pressed():
 	Music.play_track(Music.ui_sfx[0])
-	return get_tree().change_scene_to((load('res://scenes/UI & misc/Shop.tscn')))
+	return get_tree().change_scene_to_packed((load('res://scenes/UI & misc/Shop.tscn')))
 
 
 func _on_wallet_pressed():
 	Music.play_track(Music.ui_sfx[0])
-	return get_tree().change_scene_to((load('res://scenes/Wallet/Wallet main.tscn')))
+	return get_tree().change_scene_to_packed((load('res://scenes/Wallet/Wallet main.tscn')))
 
 
 func _on_practice_pressed(): # turn off in release build
@@ -328,7 +328,7 @@ func _on_practice_pressed(): # turn off in release build
 	# (1) refactor practice scene to forced tutorial scene for new players
 	# (2) Fix audo delete save file bug in form.tscn
 	Globals.current_level = 'res://scenes/levels/Testing Scene 2.tscn' #breaks the Globals.current_level script
-	Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
+	Utils.Functions.change_scene_to_packed(Utils.Functions.LoadLargeScene(
 		Globals.current_level, 
 		Globals.scene_resource, 
 		Globals._o, 

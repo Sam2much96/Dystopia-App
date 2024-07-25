@@ -15,8 +15,8 @@ uniform float thickness : hint_range (0.0, 0.5) = 0.08;
 uniform float symmetry : hint_range(0.0, 2.0) = 1.0;
 uniform vec2 ratio = vec2(0.5, 1.0);
 
-uniform vec4 brick_color : hint_color = vec4(0.52, 0.28, 0.18, 1.0);
-uniform vec4 mortar_color : hint_color = vec4(0.55, 0.55, 0.55, 1.0);
+uniform vec4 brick_color : source_color = vec4(0.52, 0.28, 0.18, 1.0);
+uniform vec4 mortar_color : source_color = vec4(0.55, 0.55, 0.55, 1.0);
 uniform sampler2D rough_noise; // Add an OpenSimplexNoise and set 'Height' to 200, 'Period' to 15 and 'Lacunarity' to 3
 uniform float rough_amount : hint_range(0.0, 2.0) = 1.0;
 

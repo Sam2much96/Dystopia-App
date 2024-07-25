@@ -44,32 +44,32 @@
 extends Node2D
 
 
-class_name TouchScreenHUD, "res://resources/misc/Android 32x32.png"
+class_name TouchScreenHUD #, "res://resources/misc/Android 32x32.png"
 
 var _Hide_touch_interface : bool
 
 #Debug
-onready var _debug = get_tree().get_root().get_node("/root/Debug")
+@onready var _debug = get_tree().get_root().get_node("/root/Debug")
 
 # Comics Singleton Pointer
-onready var _comics = get_tree().get_root().get_node("/root/Comics_v6")
+@onready var _comics = get_tree().get_root().get_node("/root/Comics_v6")
 # Pointer to Parent
-onready var parent = get_parent()
+@onready var parent = get_parent()
 
 # Pointer to menu node from Parent
-onready var menu2 = parent.get_child(4)
+@onready var menu2 = parent.get_child(4)
 
 # Pointer to Global Menu Pointer
-onready var menu3 = GlobalInput.menu
+@onready var menu3 = GlobalInput.menu
 
 #State Machine
 enum { _MENU, _INTERRACT, _ATTACK, _STATS, _COMICS, _RESET }
 
-export (int) var _state_controller = _STATS
-export (String, 'modern', 'classic') var _control # Dupli9cate of Globals._controller_type
+@export var _state_controller : int = _STATS
+@export var _control : String # Dupli9cate of Globals._controller_type # (String, 'modern', 'classic') 
 var _Debug_Run : bool = false
 
-export (bool) var enabled # Local Variant for stroing if device is android from adnroid singleton
+@export var enabled : bool # Local Variant for stroing if device is android from adnroid singleton
 
 #signal menu
 signal interract
@@ -81,11 +81,11 @@ signal reset
 
 var _menu : TouchScreenButton 
 var _interract : TouchScreenButton 
-var stats : TouchScreenButton
+var stats_ : TouchScreenButton
 var roll : TouchScreenButton 
 var slash  : TouchScreenButton 
 
-var comics : TouchScreenButton 
+var comics_ : TouchScreenButton 
 var _joystick : TouchScreenButton 
 var joystick2 : TouchScreenButton 
 var D_pad : Control 
@@ -108,11 +108,11 @@ var buttons_positional_data : Array
 
 var LineDebug : Line2D 
 
-onready var joystick_parent: Control = $Joystick
+@onready var joystick_parent: Control = $Joystick
 
 'UI button as arrays'
-onready var action_buttons : Array 
-onready var direction_buttons : Array 
+@onready var action_buttons : Array 
+@onready var direction_buttons : Array 
 
 
 # debug COunter counts how many times a mehtod has been called
@@ -136,7 +136,9 @@ func _ready():
 	Android.TouchInterface = self
 	
 	
-	self.hide() if not Android.is_android() else print_debug("Showing Touch Interface")
+	if not Android.is_android():
+		self.hide() 
+	else: print_debug("Showing Touch Interface")
 	
 	enabled = Android.is_android()
 	
@@ -154,10 +156,10 @@ func _ready():
 	if ( Globals.os == "Android" or Android.is_android()):
 		_menu = $menu
 		_interract = $Control/InterractButtons/interact
-		stats = $Control/InterractButtons/stats
+		stats_ = $Control/InterractButtons/stats
 		roll = $Control/ActionButtons/roll
 		slash = $Control/ActionButtons/slash
-		comics = $Control/InterractButtons/comics
+		comics_ = $Control/InterractButtons/comics
 		_joystick = $Joystick/joystick_circle
 		joystick2 = $Joystick/joystick_circle2
 		 
@@ -204,7 +206,7 @@ func _ready():
 		else: _menu.self_modulate = Color(0,0,0) # black
 		
 		"Auto sets the controller button"
-		reset()
+		reset_()
 		Utils.Screen.calculate_button_positional_data(
 			_menu, 
 			_interract,
@@ -244,36 +246,36 @@ func _ready():
 		print_debug("Stats Signals and Menu signals implementation are broken")
 		# COnnect signals from dialogue
 		# DIalogues to self
-		Dialogs.connect("dialog_started", self, "interract")
-		Dialogs.connect("dialog_ended", self, "reset")
+		Dialogs.connect("dialog_started", Callable(self, "interract"))
+		Dialogs.connect("dialog_ended", Callable(self, "reset"))
 
 		# Comics to Touch Interface
 		if is_instance_valid(_comics): # Buggy Singleton Instance
-			_comics.connect( 'comics_showing', self, '_on_comics_showing')
-			_comics.connect( 'comics_showing', self, '_on_comics_hidden'  )
+			_comics.connect('comics_showing', Callable(self, '_on_comics_showing'))
+			_comics.connect('comics_showing', Callable(self, '_on_comics_hidden'))
 
 		# Menu to Touch Interface
 		# Quick Hacky Fiz
 		if is_instance_valid(menu2): # Error Catcher 1
-			menu2.connect("menu_showing", self, "menu") 
-			menu2.connect("menu_hidden", self, "reset")
+			menu2.connect("menu_showing", Callable(self, "menu")) 
+			menu2.connect("menu_hidden", Callable(self, "reset"))
 		
 		# REdundancy code
 		# connects menu from global pointer
 		if is_instance_valid(menu2):
-			if not (menu3.is_connected("menu_showing", self, "menu") &&
-			menu3.is_connected("menu_hidden", self, "reset")
+			if not (menu3.is_connected("menu_showing", Callable(self, "menu")) &&
+			menu3.is_connected("menu_hidden", Callable(self, "reset"))
 			):
-				menu3.connect("menu_showing", self, "menu") 
-				menu3.connect("menu_hidden", self, "reset")
+				menu3.connect("menu_showing", Callable(self, "menu")) 
+				menu3.connect("menu_hidden", Callable(self, "reset"))
 		# Networking TImer to Touch Interface
 		# Resets Using Networking timer
-		Networking.timer.connect("timeout", self, "reset") 
+		Networking.timer.connect("timeout", Callable(self, "reset")) 
 
 		# Connects Stats Ui Signals To Touchscreen HUD for Mobile
 		if is_instance_valid(Inventory._stats_ui):
-			Inventory._stats_ui.connect("status_showing",self,"status")
-			Inventory._stats_ui.connect("status_hidden",self,"reset")
+			Inventory._stats_ui.connect("status_showing", Callable(self, "status"))
+			Inventory._stats_ui.connect("status_hidden", Callable(self, "reset"))
 			
 			# Debug Signals
 
@@ -283,23 +285,23 @@ func _ready():
 		# (1) Debug Code
 		# (2) Update Documentation
 		if is_instance_valid(Dialogs && Comics_v6 && menu3 && Networking):
-			if not (Dialogs.is_connected("dialog_started", self, "interract") &&
-				Dialogs.is_connected("dialog_ended", self, "reset") &&
-				_comics.is_connected( 'comics_showing', self, '_on_comics_showing') &&
-				_comics.is_connected( 'comics_showing', self, '_on_comics_hidden'  ) &&
-				menu3.is_connected("menu_showing", self, "menu") &&
-				menu3.is_connected("menu_hidden", self, "reset") &&
-				Networking.timer.is_connected("timeout", self, "reset")) == true:
+			if not (Dialogs.is_connected("dialog_started", Callable(self, "interract")) &&
+				Dialogs.is_connected("dialog_ended", Callable(self, "reset")) &&
+				_comics.is_connected('comics_showing', Callable(self, '_on_comics_showing')) &&
+				_comics.is_connected('comics_showing', Callable(self, '_on_comics_hidden')) &&
+				menu3.is_connected("menu_showing", Callable(self, "menu")) &&
+				menu3.is_connected("menu_hidden", Callable(self, "reset")) &&
+				Networking.timer.is_connected("timeout", Callable(self, "reset"))) == true:
 
 				# Debug Node Signal Connections
 				print_debug(
-					Dialogs.is_connected("dialog_started", self, "interract"),
-					Dialogs.is_connected("dialog_ended", self, "reset"),
-					_comics.is_connected( 'comics_showing', self, '_on_comics_showing'),
-					_comics.is_connected( 'comics_showing', self, '_on_comics_hidden'  ),
-					menu3.is_connected("menu_showing", self, "menu"), 
-					menu3.is_connected("menu_hidden", self, "reset"),
-					Networking.timer.is_connected("timeout", self, "reset") 
+					Dialogs.is_connected("dialog_started", Callable(self, "interract")),
+					Dialogs.is_connected("dialog_ended", Callable(self, "reset")),
+					_comics.is_connected('comics_showing', Callable(self, '_on_comics_showing')),
+					_comics.is_connected('comics_showing', Callable(self, '_on_comics_hidden')),
+					menu3.is_connected("menu_showing", Callable(self, "menu")), 
+					menu3.is_connected("menu_hidden", Callable(self, "reset")),
+					Networking.timer.is_connected("timeout", Callable(self, "reset")) 
 					)
 
 
@@ -309,7 +311,7 @@ func _ready():
 """
 THE STATE MACHINE CALLS WITH FUNCTIONS
 """
-func reset():  #resets node visibility statuses
+func reset_():  #resets node visibility statuses
 	_state_controller = _RESET
 	return _state_controller 
 
@@ -318,10 +320,10 @@ func reset():  #resets node visibility statuses
 func status():  #used by ui scene when status is clicked
 	
 	hide_buttons()
-	stats.show()
+	stats_.show()
 
 
-func comics():  #used by ui scene when comics is clicked
+func comics__():  #used by ui scene when comics is clicked
 	_state_controller = _COMICS
 	return _state_controller 
 
@@ -330,7 +332,7 @@ func menu(): #used by ui scene when menu is clicked
 	_state_controller = _MENU
 	return _state_controller 
 
-func interract(): #used by ui scene when interract is clicked
+func interract_(): #used by ui scene when interract is clicked
 	print_debug("interract")
 	_state_controller = _INTERRACT
 	
@@ -345,7 +347,7 @@ func interract(): #used by ui scene when interract is clicked
 	#return _state_controller  
 
 
-func attack(): #used by ui scene when attack is clicked 
+func attack_(): #used by ui scene when attack is clicked 
 	_state_controller = _ATTACK
 	return _state_controller 
 
@@ -411,12 +413,12 @@ func _input(event):
 			if _comics.enabled == true:
 				
 				if _state_controller != _COMICS : # and _Comics.loaded_comics == true:
-					comics()
+					comics__()
 				
 			if not _comics.enabled : #or _Comics.loaded_comics == false:
-				reset()
+				reset_()
 		if GlobalInput._state == GlobalInput.PAUSE or Input.is_action_just_pressed("pause"):
-			if GlobalInput._Stats.enabled == true : # GLobal Pointer to Stats HUD
+			if GlobalInput._Stats.enabled_ == true : # GLobal Pointer to Stats HUD
 				status() #calls a display function int the touch interface scene
 				
 		if GlobalInput._state == GlobalInput.MENU or Input.is_action_just_pressed('menu'):
@@ -424,19 +426,19 @@ func _input(event):
 				
 				menu()
 			if not GlobalInput.menu.enabled:
-				reset()
+				reset_()
 		if GlobalInput._state == GlobalInput.ATTACK or Input.is_action_just_pressed('attack'):
 			if _state_controller != _ATTACK:
-				attack()
+				attack_()
 				
 				# Uses Networking Timer to Reset Touch Interface
 				# Use Local TImer Instead
 				Networking.start_check(3)
 		if GlobalInput._state == GlobalInput.COMICS or Input.is_action_just_pressed('comics'):
 			if GlobalInput._Comics.enabled :
-				comics()
+				comics__()
 		else : 
-			reset()
+			reset_()
 		
 		'Interract UI'
 		# Disabled for Debugging
@@ -511,12 +513,12 @@ func _physics_process(delta):
 			_STATS:
 				hide_buttons()
 				
-				stats.show()
+				stats_.show()
 			_COMICS:
 				#kj;kn;k
 				#Anim.play("COMICS")
 				hide_buttons()
-				comics.show()
+				comics_.show()
 			
 			_RESET: 
 				"shows all the UI options"
@@ -584,10 +586,10 @@ func show_direction_buttons():
 func _on_comics_showing(): # Doesnt Work
 	print_debug("Comics SHowing")
 	
-	comics() 
+	comics__() 
 
 
 func _on_comics_hidden():
 	print_debug("Comics Hidden")
-	reset()
+	reset_()
 

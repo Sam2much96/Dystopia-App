@@ -31,26 +31,26 @@ Game Control settings
 #map game settings to save file
 var selector #for the menu cycle selector
 
-onready var back : Button = $ScrollContainer/VBoxContainer/back
-onready var music : Button = $ScrollContainer/VBoxContainer/HBoxContainer2/music
-onready var _debug : Button = $ScrollContainer/VBoxContainer/debug
-onready var Shuffle : Button =$ScrollContainer/VBoxContainer/shuffle
-onready var Change_Controller_type : Button = get_node("ScrollContainer/VBoxContainer/change controller")
+@onready var back : Button = $ScrollContainer/VBoxContainer/back
+@onready var music : Button = $ScrollContainer/VBoxContainer/HBoxContainer2/music
+@onready var _debug : Button = $ScrollContainer/VBoxContainer/debug
+@onready var Shuffle : Button =$ScrollContainer/VBoxContainer/shuffle
+@onready var Change_Controller_type : Button = get_node("ScrollContainer/VBoxContainer/change controller")
 
-onready var languague : Button = $ScrollContainer/VBoxContainer/languague
-onready var help : Button = $ScrollContainer/VBoxContainer/help
+@onready var languague : Button = $ScrollContainer/VBoxContainer/languague
+@onready var help : Button = $ScrollContainer/VBoxContainer/help
 
 # Auto Scroll with Swipe Gestures 
-onready var scroller : ScrollContainer= get_node("ScrollContainer")
-onready var _Help_hint : hint = get_node("Help popup")
+@onready var scroller : ScrollContainer= get_node("ScrollContainer")
+@onready var _Help_hint : hint = get_node("Help popup")
 
 # vibration
-onready var vibration : Button = $ScrollContainer/VBoxContainer/HBoxContainer/vibration
+@onready var vibration : Button = $ScrollContainer/VBoxContainer/HBoxContainer/vibration
 
 # multiplayer
-onready var _multiplayer : Button = $ScrollContainer/VBoxContainer/HBoxContainer3/multiplayer
+@onready var _multiplayer : Button = $ScrollContainer/VBoxContainer/HBoxContainer3/multiplayer
 
-onready var ControlButtons : Array =  [
+@onready var ControlButtons : Array =  [
 	back, 
 	music,
 	_debug,
@@ -65,7 +65,7 @@ onready var ControlButtons : Array =  [
 
 
 # COntroller Help
-onready var _controller_help : Help = $"Help popup/Control"
+@onready var _controller_help : Help = $"Help popup/Control"
 
 func _ready():
 	if get_tree().get_root().has_node("/root/Debug") == true:
@@ -107,7 +107,7 @@ func _ready():
 
 
 func _on_Button_pressed():
-	return get_tree().change_scene_to(Globals.title_screen) #changes scene to main title
+	return get_tree().change_scene_to_packed(Globals.title_screen) #changes scene to main title
 
 
 """
@@ -134,7 +134,7 @@ func upscale_ui():
 	#print (cinematic.calculateViewportSize(self))
 	var newScale = Vector2(1.5,1.5)
 	scroller.set_scale(newScale)
-	scroller.margin_bottom = 850
+	scroller.offset_bottom = 850
 
 func _on_Shuffle_pressed():
 	#var _o =Music.playlist_one
@@ -144,9 +144,9 @@ func _on_Shuffle_pressed():
 
 func _on_music_toggled(button_pressed): #Music on and off settings
 	if button_pressed :
-		Music._notification(NOTIFICATION_APP_PAUSED)
+		Music._notification(NOTIFICATION_APPLICATION_PAUSED)
 	if not button_pressed  :
-		Music._notification(NOTIFICATION_APP_RESUMED)
+		Music._notification(NOTIFICATION_APPLICATION_RESUMED)
 
 
 func _on_Help_pressed():
@@ -205,7 +205,7 @@ func _exit_tree():
 "Triggers Translation subsystem by changing scene to Form"
 func _on_languague_pressed():
 	Dialogs.reset()
-	Utils.Functions.change_scene_to(load("res://scenes/UI & misc/form/form.tscn"), get_tree())
+	Utils.Functions.change_scene_to_packed(load("res://scenes/UI & misc/form/form.tscn"), get_tree())
 
 
 #func _on_Github_pressed():
@@ -230,7 +230,8 @@ func _on_multiplayer_toggled(button_pressed):
 	if button_pressed:
 		if _multiplayer.text == "online mmo":
 			Networking.GamePlay = Networking.LOCAL_COOP
-			return _multiplayer.set_text("local coop")
+			_multiplayer.set_text("local coop")
+			return 0
 		else:
 			_multiplayer.set_text("online mmo")
 			Networking.GamePlay = Networking.MMO_SERVER

@@ -1,7 +1,7 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://resources/Environment Tilesets & Tilemaps/desert dunes 3d.webp" type="Texture" id=1]
+[ext_resource path="res://resources/Environment Tilesets & Tilemaps/desert dunes 3d.webp" type="Texture2D" id=1]
 
-[node name="Sprite" type="Sprite"]
+[node name="Sprite2D" type="Sprite2D"]
 position = Vector2( 648, 360 )
 texture = ExtResource( 1 )

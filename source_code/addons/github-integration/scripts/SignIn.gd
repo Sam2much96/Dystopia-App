@@ -3,17 +3,17 @@ extends Control
 
 signal signed()
 
-onready var Mail : LineEdit = $FieldContainer/signin_panel/Mail
-onready var Token : LineEdit = $FieldContainer/signin_panel/Password
-onready var Error : Label = $FieldContainer/signin_panel/error
-onready var LogfileIcon : Label = $FieldContainer/signin_panel/HBoxContainer3/logfile
-onready var btnSignIn : Button = $FieldContainer/signin_panel/HBoxContainer3/btnSignIn
-onready var btnCreateToken : LinkButton = $FieldContainer/signin_panel/Token/btnCreateToken
-onready var DeleteDataBtn : Button = $FieldContainer/signin_panel/DeleteDataBtn
-onready var DeletePopup : ConfirmationDialog = $DeletePopup
-onready var DeleteHover : ColorRect = $DeleteHover
+@onready var Mail : LineEdit = $FieldContainer/signin_panel/Mail
+@onready var Token : LineEdit = $FieldContainer/signin_panel/Password
+@onready var Error : Label = $FieldContainer/signin_panel/error
+@onready var LogfileIcon : Label = $FieldContainer/signin_panel/HBoxContainer3/logfile
+@onready var btnSignIn : Button = $FieldContainer/signin_panel/HBoxContainer3/btnSignIn
+@onready var btnCreateToken : LinkButton = $FieldContainer/signin_panel/Token/btnCreateToken
+@onready var DeleteDataBtn : Button = $FieldContainer/signin_panel/DeleteDataBtn
+@onready var DeletePopup : ConfirmationDialog = $DeletePopup
+@onready var DeleteHover : ColorRect = $DeleteHover
 
-onready var Background : ColorRect = $BG
+@onready var Background : ColorRect = $BG
 
 var mail : String 
 var token : String
@@ -22,36 +22,36 @@ enum REQUESTS { LOGIN = 0, AVATAR = 1, END = -1 , USER = 2 }
 var requesting : int
 var user_data : Dictionary
 
-export (bool) var logfile : bool = false
+@export var logfile : bool = false
 
-onready var Client : HTTPClient = HTTPClient.new()
+@onready var Client : HTTPClient = HTTPClient.new()
 
 var userdata : bool = false
 #onready var Github_RestHandler_ = get_parent()
 
 # resthandlerpointer
-onready var RestHandler_ = get_parent().get_node("RestHandler")#$RestHandler
-onready var UserData_ = get_parent().get_node("UserData")#$RestHandler
+@onready var RestHandler_ = get_parent().get_node("RestHandler")#$RestHandler
+@onready var UserData_ = get_parent().get_node("UserData")#$RestHandler
 
 # Github pointer
-onready var Github_ = get_parent()
+@onready var Github_ = get_parent()
 func connect_signals() -> void:
-	Mail.connect("text_changed", self, "_on_mail_changed")
-	Token.connect("text_changed", self, "_on_token_changed")
+	Mail.connect("text_changed", Callable(self, "_on_mail_changed"))
+	Token.connect("text_changed", Callable(self, "_on_token_changed"))
 	
-	btnSignIn.connect("pressed",self,"sign_in")
-	btnCreateToken.connect("pressed",self,"create_token")
+	btnSignIn.connect("pressed", Callable(self, "sign_in"))
+	btnCreateToken.connect("pressed", Callable(self, "create_token"))
 	
-	DeleteDataBtn.connect("pressed",self,"_on_delete_pressed")
-	DeletePopup.connect("confirmed",self,"_on_delete_confirm")
-	DeletePopup.connect("popup_hide", self, "close_popup")
+	DeleteDataBtn.connect("pressed", Callable(self, "_on_delete_pressed"))
+	DeletePopup.connect("confirmed", Callable(self, "_on_delete_confirm"))
+	DeletePopup.connect("popup_hide", Callable(self, "close_popup"))
 	
 	
 	
 	# Connections to the RestHandler
-	RestHandler_.connect("request_failed", self, "_on_request_failed")
-	RestHandler_.connect("user_requested", self, "_on_user_requested")
-	RestHandler_.connect("user_avatar_requested", self, "_on_user_avatar_requested")
+	RestHandler_.connect("request_failed", Callable(self, "_on_request_failed"))
+	RestHandler_.connect("user_requested", Callable(self, "_on_user_requested"))
+	RestHandler_.connect("user_avatar_requested", Callable(self, "_on_user_avatar_requested"))
 
 func _ready() -> void:
 	connect_signals()
@@ -60,7 +60,7 @@ func _ready() -> void:
 	
 	DeleteDataBtn.set_disabled(true)
 	
-	yield(get_tree(),"idle_frame")
+	await get_tree().idle_frame
 	check_user()
 
 func _on_userdata_ready():
@@ -127,7 +127,7 @@ func _on_user_requested(user : Dictionary) -> void:
 	user_data = user
 	RestHandler_.request_user_avatar(user_data.avatar_url)
 
-func _on_user_avatar_requested(user_avatar : PoolByteArray) -> void:
+func _on_user_avatar_requested(user_avatar : PackedByteArray) -> void:
 	get_parent().loading(true)
 	UserData_.save(user_data, user_avatar, auth, token, mail) 
 	emit_signal("signed")
@@ -147,7 +147,7 @@ func _on_delete_confirm():
 	delete_user()
 
 func delete_user():
-	Github.UserData_.delete_user()
+	#Github.UserData_.delete_user()
 	logfile = false
 	LogfileIcon.hide()
 	DeleteDataBtn.disabled = true

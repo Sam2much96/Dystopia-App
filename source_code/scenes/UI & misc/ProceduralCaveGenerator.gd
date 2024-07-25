@@ -25,36 +25,36 @@ class_name ProceduralGeneration
 #How to Use
 # Attach this NOde As a child top the Tilemap with AutoTIle
 
-export (bool) var enabled
-export (bool) var STATIC # Determine if To use Dynamic or static memory / For RAM Load Balancing
+@export (bool) var enabled
+@export (bool) var STATIC # Determine if To use Dynamic or static memory / For RAM Load Balancing
 
 
 # Specifies the Draw Map Area so the Tilemap drawn isnt infinite
-export(int) var map_width = 80
-export(int) var map_height = 50
+@export var map_width: int = 80
+@export var map_height: int = 50
 
-export(String) var world_seed = "Hello World!"
-export(int) var noise_octaves = 3
-export(int) var noise_period = 3
-export(float) var noise_persistence = 0.7
-export(float) var noise_lacunarity = 0.4
-export(float) var noise_threshold = 0.5
+@export var world_seed: String = "Hello World!"
+@export var noise_octaves: int = 3
+@export var noise_period: int = 3
+@export var noise_persistence: float = 0.7
+@export var noise_lacunarity: float = 0.4
+@export var noise_threshold: float = 0.5
 
 # set get method to update Map generated on the fly
-export(bool) var redraw setget redraw
+@export var redraw: bool: set = redraw
 
 # Acces the Parent TileMap with the AutoTile
-onready var tile_map : TileMap
-onready var simplex_noise : OpenSimplexNoise = OpenSimplexNoise.new()
+@onready var tile_map : TileMap
+@onready var simplex_noise : FastNoiseLite = FastNoiseLite.new()
 
 # Generated Bool
-export(bool) var generated 
+@export var generated: bool 
 
 # Cave Gen Dimensions
 var map__width : int 
 var map__height : int 
 var map_dimensions : Vector2
-var point_data : PoolVector2Array
+var point_data : PackedVector2Array
 
 # Random World Seed Generator
 # To Do :
@@ -153,7 +153,7 @@ func generate() :
 			simplex_noise.seed = world_seed.hash()
 			
 			# set simplex noise using Editor values
-			simplex_noise.octaves = noise_octaves
+			simplex_noise.fractal_octaves = noise_octaves
 			simplex_noise.period = noise_period
 			simplex_noise.persistence = noise_persistence
 			simplex_noise.lacunarity = noise_lacunarity

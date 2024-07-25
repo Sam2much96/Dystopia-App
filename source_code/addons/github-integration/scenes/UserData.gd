@@ -25,9 +25,9 @@ class_name User_Data
 	#
 	# Documeentation : https://docs.github.com/en/graphql
 
-export (String) var directory : String = ""
-export (String) var file_name : String = "user_data.ud"
-export (String) var avatar_name : String = "avatar"
+@export var directory : String = ""
+@export var file_name : String = "user_data.ud"
+@export var avatar_name : String = "avatar"
 var USER : Dictionary = {}
 
 	# --- on the USER usage
@@ -36,19 +36,19 @@ var USER : Dictionary = {}
 	# id
 
 var AVATAR : ImageTexture
-export (String) var AUTH : String
+@export var AUTH : String
 var TOKEN : String # Private Data
-export (String) var MAIL : String
+@export  var MAIL : String
 
 var header : Array = [""]
 var gitlfs_header : Array = [""]
-export (String) var gitlfs_request : String = ".git/info/lfs/objects/batch"
+@export var gitlfs_request : String = ".git/info/lfs/objects/batch"
 
-export (String) var plugin_version : String = "0.9.4"
+@export var plugin_version : String = "0.9.4"
 
-onready var PluginSettings_ = get_parent().get_node("PluginSettings")
-var file : File = Utils.file
-var dir : Directory = Utils.dir
+@onready var PluginSettings_ = get_parent().get_node("PluginSettings")
+var file : FileAccess = Utils.file
+var dir : DirAccess = Utils.dir
 
 var image : Image = Image.new()
 
@@ -60,20 +60,20 @@ func user_exists():
 	#var file : File = File.new()
 	return (true if file.file_exists(directory+file_name) else false)
 
-func save(user : Dictionary, avatar : PoolByteArray, auth : String, token : String, mail : String) -> void:
+func save(user : Dictionary, avatar : PackedByteArray, auth : String, token : String, mail : String) -> void:
 	
 	
 	if user!=null:
-			var err = file.open_encrypted_with_pass(directory+file_name,File.WRITE,OS.get_unique_id())
+			var err #= file.open_encrypted_with_pass(directory+file_name,File.WRITE,OS.get_unique_id())
 			USER = user
 			AUTH = auth
 			TOKEN = token
 			MAIL = mail
-			var formatting : PoolStringArray
+			var formatting : PackedStringArray
 			formatting.append(auth)                     #0
 			formatting.append(mail)                     #1
 			formatting.append(token)                    #2
-			formatting.append(JSON.print(user))         #3
+			formatting.append(JSON.stringify(user))         #3
 			formatting.append(plugin_version)           #4
 			file.store_csv_line(formatting)
 			file.close()
@@ -85,21 +85,21 @@ func save(user : Dictionary, avatar : PoolByteArray, auth : String, token : Stri
 	
 	header = ["Authorization: Token "+token]
 
-func save_avatar(avatar : PoolByteArray):
+func save_avatar(avatar : PackedByteArray):
 	#var file : File = File.new()
 	if avatar == null:
 		return
 		
-		var extension : String = avatar.subarray(0,1).hex_encode()
+		var extension : String #= avatar.subarray(0,1).hex_encode()
 		match extension:
 			"ffd8":
 				image.load_jpg_from_buffer(avatar)
-				file.open(directory+avatar_name+".jpg", File.WRITE)
+				#file.open(directory+avatar_name+".jpg", File.WRITE)
 				file.store_buffer(avatar)
 			"8950":
 				image.load_png_from_buffer(avatar)
 				image.save_png(directory+avatar_name+".png")
-				file.open(directory+avatar_name+".png", File.WRITE)
+				#file.open(directory+avatar_name+".png", File.WRITE)
 		file.close()
 		load_avatar()
 
@@ -118,9 +118,9 @@ func load_avatar():
 	else:
 		AVATAR = null
 
-func load_user() -> PoolStringArray :
+func load_user() -> PackedStringArray :
 	#var file = File.new()
-	var content : PoolStringArray
+	var content : PackedStringArray
 		
 		#if PluginSettings.debug:
 	print("[GitHub Integration] >> loading user profile, checking for existing logfile...")
@@ -128,7 +128,7 @@ func load_user() -> PoolStringArray :
 	if file.file_exists(directory+file_name) :
 		#if PluginSettings.debug:
 		print("[GitHub Integration] >> ","logfile found, fetching datas..")
-		file.open_encrypted_with_pass(directory+file_name,File.READ,OS.get_unique_id())
+		#file.open_encrypted_with_pass(directory+file_name,File.READ,OS.get_unique_id())
 		content = file.get_csv_line()
 		if content.size() < 5:
 			#if PluginSettings.debug:
@@ -142,7 +142,9 @@ func load_user() -> PoolStringArray :
 		AUTH = content[0]
 		MAIL = content[1]
 		TOKEN = content[2]
-		USER = JSON.parse(content[3]).result
+		var test_json_conv = JSON.new()
+		#test_json_conv.parse(content[3]).result
+		USER = test_json_conv.get_data()
 		load_avatar()
 			
 		header = ["Authorization: Token "+TOKEN]

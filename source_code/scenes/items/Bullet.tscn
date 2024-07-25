@@ -1,8 +1,8 @@
 [gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/items/Bullet.gd" type="Script" id=1]
-[ext_resource path="res://scenes/Shaders/outline.shader" type="Shader" id=2]
-[ext_resource path="res://resources/misc/arrow.webp" type="Texture" id=3]
+[ext_resource path="res://scenes/Shaders/outline.gdshader" type="Shader" id=2]
+[ext_resource path="res://resources/misc/arrow.webp" type="Texture2D" id=3]
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 2 )
@@ -16,14 +16,14 @@ height = 30.0
 [sub_resource type="Animation" id=4]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/path = NodePath("Sprite2D:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ -90.0 ]
 }
@@ -34,8 +34,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ -90.0 ]
 }
@@ -46,20 +46,20 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( 11.9936, 14.095 ) ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("VisibilityNotifier2D:rotation_degrees")
+tracks/3/path = NodePath("VisibleOnScreenNotifier2D:rotation_degrees")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ -90.0 ]
 }
@@ -67,14 +67,14 @@ tracks/3/keys = {
 [sub_resource type="Animation" id=5]
 resource_name = "down"
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/path = NodePath("Sprite2D:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.8 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.8 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ 0.0 ]
 }
@@ -85,20 +85,20 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.8 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.8 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ 180.0 ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("VisibilityNotifier2D:rotation_degrees")
+tracks/2/path = NodePath("VisibleOnScreenNotifier2D:rotation_degrees")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0.8 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.8 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ 180.0 ]
 }
@@ -109,8 +109,8 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0.8 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.8 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( 11.2715, 12.4494 ) ]
 }
@@ -118,14 +118,14 @@ tracks/3/keys = {
 [sub_resource type="Animation" id=6]
 resource_name = "left"
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/path = NodePath("Sprite2D:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.8 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.8 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ 90.0 ]
 }
@@ -136,8 +136,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.8 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.8 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ -90.0 ]
 }
@@ -148,20 +148,20 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0.8 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.8 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( 11.9936, 14.095 ) ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("VisibilityNotifier2D:rotation_degrees")
+tracks/3/path = NodePath("VisibleOnScreenNotifier2D:rotation_degrees")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0.8 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.8 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ -90.0 ]
 }
@@ -169,26 +169,26 @@ tracks/3/keys = {
 [sub_resource type="Animation" id=7]
 resource_name = "right"
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/path = NodePath("Sprite2D:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.8 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.8 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ -90.0 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("VisibilityNotifier2D:rotation_degrees")
+tracks/1/path = NodePath("VisibleOnScreenNotifier2D:rotation_degrees")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.8 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.8 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ -90.0 ]
 }
@@ -199,8 +199,8 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0.8 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.8 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ -90.0 ]
 }
@@ -211,8 +211,8 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0.8 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.8 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( 11.9936, 14.095 ) ]
 }
@@ -220,14 +220,14 @@ tracks/3/keys = {
 [sub_resource type="Animation" id=3]
 resource_name = "up"
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/path = NodePath("Sprite2D:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.8 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.8 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ 180.0 ]
 }
@@ -238,20 +238,20 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.8 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.8 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ 180.0 ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("VisibilityNotifier2D:rotation_degrees")
+tracks/2/path = NodePath("VisibleOnScreenNotifier2D:rotation_degrees")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0.8 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.8 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ 180.0 ]
 }
@@ -261,7 +261,7 @@ rotation = -3.13296
 script = ExtResource( 1 )
 speed = 1500
 
-[node name="Sprite" type="Sprite" parent="." groups=["weapon"]]
+[node name="Sprite2D" type="Sprite2D" parent="." groups=["weapon"]]
 material = SubResource( 2 )
 position = Vector2( 11.0905, 13.6862 )
 rotation = -1.5708
@@ -276,7 +276,7 @@ shape = SubResource( 1 )
 wait_time = 3.0
 autostart = true
 
-[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 position = Vector2( 10.6066, 13.435 )
 rotation = -1.5708
 scale = Vector2( 0.893934, 2.64402 )
@@ -289,4 +289,4 @@ anims/right = SubResource( 7 )
 anims/up = SubResource( 3 )
 
 [connection signal="body_entered" from="." to="." method="_on_Area2D_body_entered"]
-[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

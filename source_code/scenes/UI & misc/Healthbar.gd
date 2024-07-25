@@ -51,7 +51,7 @@ func _ready():
 		# use a global function instead
 		player_group = get_tree().get_nodes_in_group("player")
 		# Too much Nested Ifs?
-		if not player_group.empty():
+		if not player_group.is_empty():
 			for i in player_group:
 				if i is Player:
 					player = i #player = player_group.pop_front()
@@ -62,14 +62,14 @@ func _ready():
 		else:
 			
 			# Emitted befor Node._process()
-			yield(get_tree(), "idle_frame")
+			await get_tree().idle_frame
 	
 	
 	# Connect Signals to Player Object
-	player.connect("health_changed", self, "_on_health_changed")
+	player.connect("health_changed", Callable(self, "_on_health_changed"))
 	
 	# Debug SIgnals
-	print_debug(player.is_connected("health_changed", self, "_on_health_changed"))
+	print_debug(player.is_connected("health_changed", Callable(self, "_on_health_changed")))
 	
 
 	

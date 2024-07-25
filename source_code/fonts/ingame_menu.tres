@@ -1,9 +1,9 @@
 [gd_resource type="Theme" load_steps=5 format=2]
 
-[sub_resource type="DynamicFontData" id=3]
+[sub_resource type="FontFile" id=3]
 font_path = "res://fonts/Comic_Andy.ttf"
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="FontFile" id=4]
 size = 55
 outline_size = 3
 outline_color = Color( 0, 0, 0, 1 )

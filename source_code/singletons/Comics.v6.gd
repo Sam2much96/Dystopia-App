@@ -60,27 +60,27 @@ extends Control
 class_name Comics
 
 
-export (bool) var enabled : bool 
-export (bool) var LastPage : bool = false 
+@export var enabled : bool 
+@export var LastPage : bool = false 
 # Web 3 Activator for Downloading Content
 #export (bool) var web3 : bool 
-export (bool) var _loaded_comics : bool = false
-export (bool) var SwipeLocked  : bool   = true # Temporarily disabling for testing
-export (int) var  current_frame : int   = 0 # Global Frame Variable
+@export var _loaded_comics : bool = false
+@export var SwipeLocked  : bool   = true # Temporarily disabling for testing
+@export var  current_frame : int   = 0 # Global Frame Variable
 
 #Stores comics current page as a global variable 
 #export var current_page : int  = -2# Global page variable, same as above, but differentiating for testing
 
 
 
-export (PackedScene) var current_comics : PackedScene
+@export var current_comics : PackedScene
 
 
 #************File Checkers*************#
 
 #************Wallet Save Path**********************#
-
-export (Dictionary) var comics : Dictionary = {
+# Depreciated
+@export  var comics : Dictionary = {
 	1: 'res://scenes/Comics/chapter 1/chapter 1.tscn',
 	2:'res://scenes/Comics/chapter 2/chapter 2.tscn',
 	3:'res://scenes/Comics/chapter 3/chapter 3.tscn',
@@ -108,7 +108,7 @@ var comics_placeholder : Control = Control.new()
 
 #var buttons
 
-onready var Kinematic_2d :  KinematicBody2D = KinematicBody2D.new()
+@onready var Kinematic_2d :  CharacterBody2D = CharacterBody2D.new()
 #onready var camera2d = $Kinematic_2D/placeholder/Camera2D 
 #var _position : Vector2 
 var center : Vector2 # should be used in a center comics method
@@ -116,7 +116,7 @@ var target =Vector2(0,0)
 #onready var origin : Vector2 = get_viewport_rect().size/2#set origin point to the center of the viewport
 
 # Can Use a Tween Node to implement Drag and Drop
-var comics_sprite : AnimatedSprite
+var comics_sprite : AnimatedSprite2D
 
 
 #var _input_device
@@ -127,22 +127,22 @@ var _comics_root = self
 
 "Bug FIx from <200 absolute Distances"
 
-export (Array) var target_memory_x: Array = [] #stores vector 2 of previous targets
-export (Array) var target_memory_y: Array = [] #stores vector 2 of previous targets
+@export var target_memory_x: Array = [] #stores vector 2 of previous targets
+@export var target_memory_y: Array = [] #stores vector 2 of previous targets
 
 
 
 
 
 #**********Swipe Detection Direction Calculation Parameters************#
-export (Array) var swipe_target_memory_x : Array = [] # for swipe direction x calculation
-export (Array) var swipe_target_memory_y : Array = [] # for swipe direction y calculation
+@export var swipe_target_memory_x : Array = [] # for swipe direction x calculation
+@export var swipe_target_memory_y : Array = [] # for swipe direction y calculation
 var direction : Vector2
-export (float) var swipe_parameters : float = 1.0 # is 1 in Dystopia-App
-export (float) var x1 : float = 0.0
-export (float) var x2 : float = 0.0
-export (float) var y1 : float = 0.0
-export (float) var y2 : float = 0.0
+@export var swipe_parameters : float = 1.0 # is 1 in Dystopia-App
+@export var x1 : float = 0.0
+@export var x2 : float = 0.0
+@export var y1 : float = 0.0
+@export var y2 : float = 0.0
 #export(float,0.5,1.5) var MAX_DIAGONAL_SLOPE  = 1.3
 var SwipeSpeed : Vector2
 var SwipeCounter : int = 0 # for limiting swipe detection.registration
@@ -150,13 +150,13 @@ var SwipeCounter : int = 0 # for limiting swipe detection.registration
 
 const SWIPE_AWAIT = 0.4
 
-onready var _debug_= get_tree().get_root().get_node("/root/Debug")
-onready var cmx_root : Control = get_tree().get_nodes_in_group("Cmx_Root").pop_front()
+@onready var _debug_= get_tree().get_root().get_node("/root/Debug")
+@onready var cmx_root : Control = get_tree().get_nodes_in_group("Cmx_Root").pop_front()
 
 # Timer Needed for Detecting Swipe Stopped Directions
 
 #onready var _e : Timer = $Timer# Use Manual Timer
-onready var _e : Timer = Timer.new()
+@onready var _e : Timer = Timer.new()
 
 func _ready():
 	
@@ -183,10 +183,10 @@ func _ready():
 	Swipe._init_(_e)
 	
 	# Connect signals
-	_e.connect("timeout",self, "_on_Timer_timeout")
+	_e.connect("timeout", Callable(self, "_on_Timer_timeout"))
 	# Signals are connected manually
 	# Redundancy Code
-	if not _e.is_connected("timeout",self, "_on_Timer_timeout"):
+	if not _e.is_connected("timeout", Callable(self, "_on_Timer_timeout")):
 		push_error("Swipe Timer Signals Are Disconnected")
 		
 
@@ -380,9 +380,9 @@ func _input(event):
 			return zoom
 
 
-
-	if event is InputEventMouseButton && event.doubleclick :
-		Functions._zoom(comics_placeholder, zoom)
+	# Temporarily disabled for porting to 4.2.2
+	#if event is InputEventMouseButton && event.doubleclick :
+	#	Functions._zoom(comics_placeholder, zoom)
 
 
 
@@ -399,7 +399,7 @@ func _process(delta):
 
 	" Kinematics 2D Error catcher"
 	if not is_instance_valid(Kinematic_2d):
-		Kinematic_2d= KinematicBody2D.new() 
+		Kinematic_2d= CharacterBody2D.new() 
 
 	"Limits memory usage for Drag and Drop bug fixer"
 	#optimize code
@@ -434,9 +434,9 @@ func _process(delta):
 		
 	memory=get_tree().get_nodes_in_group("comics") #an array of all comics in the scene tree
 
-	if memory.empty() != true :
+	if memory.is_empty() != true :
 		pass
-	elif memory.empty() == true:
+	elif memory.is_empty() == true:
 		#current_comics = load_comics()
 		pass
 	if _loaded_comics == true && memory.size() >= 2: #double instancing error fix
@@ -481,7 +481,7 @@ func close_comic()-> void:
 'sets comic page to center of screen'
 
 
-func next_panel(comics_sprite : AnimatedSprite) -> int:
+func next_panel(comics_sprite : AnimatedSprite2D) -> int:
 	
 # Works
 	if (
@@ -507,7 +507,7 @@ func next_panel(comics_sprite : AnimatedSprite) -> int:
 
 
 
-func prev_panel(comics_sprite : AnimatedSprite)-> int:
+func prev_panel(comics_sprite : AnimatedSprite2D)-> int:
 # Works
 	if !can_drag && !SwipeLocked && Input.is_action_pressed("prev_panel") && comics_sprite != null: #&& !Timemout:
 	#if comics_sprite != null && !Timemout:
@@ -536,7 +536,7 @@ func prev_panel(comics_sprite : AnimatedSprite)-> int:
 	return current_frame
 
 
-class Local extends Reference:
+class Local extends RefCounted:
 
 	# Comics Name as Strings
 	const comic_names : Dictionary = {
@@ -566,7 +566,7 @@ class Local extends Reference:
 
 
 
-class Swipe : #extends Reference:
+class Swipe : #extends RefCounted:
 	
 	
 	# Bugs:
@@ -811,7 +811,7 @@ class Swipe : #extends Reference:
 				print_debug('right swipe') #for debug purposes
 				
 				# Play Animation
-				return print_debug("SWIPE_RIGHT")
+				print_debug("SWIPE_RIGHT")
 			
 				
 			if abs (direction.y) > abs(direction.x):
@@ -828,7 +828,7 @@ class Swipe : #extends Reference:
 				prev_panel()
 				
 				# Play Animation
-				return print_debug("SWIPE_UP")
+				print_debug("SWIPE_UP")
 				
 				#doenst work
 				#_state = SWIPE_UP
@@ -840,7 +840,7 @@ class Swipe : #extends Reference:
 				next_panel()
 				
 				# Play Animation
-				return print_debug("SWIPE_DOWN")
+				print_debug("SWIPE_DOWN")
 				
 			#emit_signal('swiped', Vector2(0.0,-sign(direction.y))) #vertical swipe
 				#	print ('poot poot poot') 
@@ -860,7 +860,7 @@ class Swipe : #extends Reference:
 				LineDebug.add_point(i)
 			
 			# clear LineDebug after end detection
-			yield(tree.create_timer(2.5),"timeout")
+			await tree.create_timer(2.5).timeout
 			
 			LineDebug.clear_points()
 			
@@ -869,7 +869,7 @@ class Swipe : #extends Reference:
 	static func next_panel():
 		var a = InputEventAction.new()
 		a.action = "next_panel"
-		a.pressed = true
+		a.button_pressed = true
 		a.strength = 1
 		
 		Input.parse_input_event(a)
@@ -878,13 +878,13 @@ class Swipe : #extends Reference:
 	static func prev_panel():
 		var a = InputEventAction.new()
 		a.action = "prev_panel"
-		a.pressed = true
+		a.button_pressed = true
 		a.strength = 1
 		
 		Input.parse_input_event(a)
 
 
-class Functions extends Reference:
+class Functions extends RefCounted:
 	
 	
 	static func show_comics (comics_chap : Node, cmx_root : Control, comic_main  )-> Control:
@@ -902,9 +902,9 @@ class Functions extends Reference:
 		can_drag : bool, 
 		zoom : bool , 
 		current_frame : int, 
-		Kinematic_2d: KinematicBody2D, 
+		Kinematic_2d: CharacterBody2D, 
 		comics_placeholder : Control
-		) -> AnimatedSprite: 
+		) -> AnimatedSprite2D: 
 
 		
 		
@@ -918,10 +918,10 @@ class Functions extends Reference:
 					Globals.b, 
 					Globals.progress
 					)
-		var node : AnimatedSprite
+		var node : AnimatedSprite2D
 		
 		
-		if current_comics != null && err.can_instance() == true:
+		if current_comics != null && err.can_instantiate() == true:
 			for _p in scenetree.get_nodes_in_group('Cmx_Root'):
 				enabled = true
 				zoom = false
@@ -956,8 +956,8 @@ class Functions extends Reference:
 				
 				"connect signals"
 				# Doesnt work
-				Kinematic_2d.connect("mouse_entered", comics_main,  "mouse_entered")
-				Kinematic_2d.connect("mouse_exited",comics_main ,  "on_mouse_exited")
+				Kinematic_2d.connect("mouse_entered", Callable(comics_main, "mouse_entered"))
+				Kinematic_2d.connect("mouse_exited", Callable(comics_main, "on_mouse_exited"))
 				
 				# Debug connections 
 				
@@ -971,9 +971,9 @@ class Functions extends Reference:
 				# Debug Packed Scene
 				#print (err.can_instantiate())
 				"Load Comics Scene"
-				if err.can_instance(): # 
+				if err.can_instantiate(): # 
 					
-					node = err.instance(0)
+					node = err.instantiate(0)
 					
 					 
 					
@@ -997,14 +997,14 @@ class Functions extends Reference:
 
 
 				# Error Catcher 1
-				if current_comics == "" and !err.can_instance()   :
+				if current_comics == "" and !err.can_instantiate()   :
 					push_error('unable to instance comics scene')
 					pass
-				if memory.empty() != true && current_comics == "": #error catcher 1
+				if memory.is_empty() != true && current_comics == "": #error catcher 1
 					
 					current_comics = memory[0] # load from memory
 
-				if memory.empty() == true && current_comics == "": #error catcher 2
+				if memory.is_empty() == true && current_comics == "": #error catcher 2
 					push_error('current comics empty')
 					
 					print ("Loading Default comic" + Comics_v6.comics[1])
@@ -1024,7 +1024,7 @@ class Functions extends Reference:
 	#******************************Drag 1 is Buggy , v2 works Best**********************#
 	static func drag(_target : Vector2, 
 	_position : Vector2, 
-	_body :  KinematicBody2D, 
+	_body :  CharacterBody2D, 
 	center : Vector2, 
 	target_memory_x : Array, 
 	target_memory_y: Array
@@ -1047,7 +1047,9 @@ class Functions extends Reference:
 		if abs(_position.distance_to(_target)) > 200: #if its far...
 			##use suma vectores function for vector maths
 			
-			_body.move_and_slide(center)
+			_body.set_velocity(center)
+			_body.move_and_slide()
+			_body.velocity
 			#print ('moving to center') #for debug purposes only
 
 
@@ -1091,14 +1093,18 @@ class Functions extends Reference:
 					
 					#target_memory_x.remove(target_memory_x[-1]) #deletes error #introduces bug
 					if target_memory_x.size() == 1:
-						_body.move_and_slide(Vector2(target_memory_x[0], target_memory_y.back()))
+						_body.set_velocity(Vector2(target_memory_x[0], target_memory_y.back()))
+						_body.move_and_slide()
+						_body.velocity
 						#_body.position = Vector2(target_memory_x[0], target_memory_y.back())
 						#_body.move_and_slide()
 					
 					#Erases Faulty Horizontal Input
 					if target_memory_x.size() > 1:
 						var adjusted_target = Vector2(target_memory_x[target_memory_x.size() - 2], target_memory_y.back())
-						_body.move_and_slide(adjusted_target)
+						_body.set_velocity(adjusted_target)
+						_body.move_and_slide()
+						_body.velocity
 						#_body.position = Vector2(target_memory_x[target_memory_x.size() - 2], target_memory_y.back())
 						#_body.move_and_slide()
 					
@@ -1120,7 +1126,9 @@ class Functions extends Reference:
 					if target_memory_y.size() == 1: #error catcher
 						
 						#moves to a predicted presaved axis
-						return _body.move_and_slide(Vector2(target_memory_x.back(), target_memory_y[0]))
+						_body.set_velocity(Vector2(target_memory_x.back(), target_memory_y[0]))
+						_body.move_and_slide()
+						return _body.velocity
 						#_body.position = Vector2(target_memory_x.back(), target_memory_y[0])
 						#_body.move_and_slide()
 					
@@ -1129,11 +1137,13 @@ class Functions extends Reference:
 						var adjusted_target = Vector2(target_memory_x.back(), target_memory_y[target_memory_y.size() - 1])
 						
 						#moves to a predicted presaved axis
-						return _body.move_and_slide(adjusted_target)
+						_body.set_velocity(adjusted_target)
+						_body.move_and_slide()
+						return _body.velocity
 
 
 
-	static func drag_v2(comics_sprite : AnimatedSprite, target : Vector2)-> void:
+	static func drag_v2(comics_sprite : AnimatedSprite2D, target : Vector2)-> void:
 		if comics_sprite != null: # Error Catcher 1
 			comics_sprite.set_position(target)
 
@@ -1172,10 +1182,10 @@ class Functions extends Reference:
 
 
 
-class Extensions extends AnimatedSprite:
+class Extensions extends AnimatedSprite2D:
 	"""
 	The goal of this script is to store and send comic page details 
-	to the comic class script from the Comics Animated Sprite. 
+	to the comic class script from the Comics Animated Sprite2D. 
 	"""
 	# TO DO: Implement Polymorphism for all Chapter pages
 	# It should also synconize data with the word bubble in a way that is playable 
@@ -1184,8 +1194,8 @@ class Extensions extends AnimatedSprite:
 	# Features
 	# (1) Loads into comics node Programmatically
 	# (2) Syncs Comics node info to Singleton
-	export var panel : Vector2
-	export var word_buble_count : int 
+	@export var panel : Vector2
+	@export var word_buble_count : int 
 
 	var TotalPageCount : int = 0
 	var CurrentPage : int = 0
@@ -1194,7 +1204,7 @@ class Extensions extends AnimatedSprite:
 
 
 
-	export var Chapter_Data : Dictionary = {
+	@export var Chapter_Data : Dictionary = {
 		"Word Bubbles": word_buble_count,
 		"All Pages" : TotalPageCount,
 		"Name" : "Neo Sud, the New South",
@@ -1335,9 +1345,9 @@ func _load_comics(chapter_no : int):
 func connect_signals()-> bool: #connects all required signals in the parent node
 	
 	
-	if not Kinematic_2d.is_connected("mouse_entered", self, "mouse_entered"):
-		Kinematic_2d.connect("mouse_entered", self, "mouse_entered")
-		Kinematic_2d.connect("mouse_exited", self, "mouse_exited")
+	if not Kinematic_2d.is_connected("mouse_entered", Callable(self, "mouse_entered")):
+		Kinematic_2d.connect("mouse_entered", Callable(self, "mouse_entered"))
+		Kinematic_2d.connect("mouse_exited", Callable(self, "mouse_exited"))
 
 	# connect Timer Signals for Swipe Locker
 

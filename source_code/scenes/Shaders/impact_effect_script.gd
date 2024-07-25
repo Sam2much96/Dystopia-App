@@ -17,11 +17,11 @@ extends Node2D
 class_name ImpactFX
 
 
-export (bool) var _impact
-export(float) var power #= 1;
-export(float) var maxSize #= 3;
-export(float) var offsetDecreaseSpeed #= 0.01;
-export(float) var maxOffsetStrength #= 0.178;
+@export var _impact : bool
+@export var power: float #= 1;
+@export var maxSize: float #= 3;
+@export var offsetDecreaseSpeed: float #= 0.01;
+@export var maxOffsetStrength: float #= 0.178;
 
 
 var currentScale = 0;
@@ -29,7 +29,7 @@ var currentOffsetStrength = 0;
 var expand = false;
 var decreaseStrength = false;
 
-onready var playerRef = get_tree().get_nodes_in_group('player').pop_front()
+@onready var playerRef = get_tree().get_nodes_in_group('player').pop_front()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.scale = Vector2.ZERO;
@@ -52,7 +52,7 @@ func _process(delta):
 			decreaseStrength = true;
 	if(!expand && decreaseStrength):
 		currentOffsetStrength -= offsetDecreaseSpeed;
-		self.material.set_shader_param("offsetStrength", currentOffsetStrength);
+		self.material.set_shader_parameter("offsetStrength", currentOffsetStrength);
 		if(currentOffsetStrength <=0):
 			_resetObject();
 			pass;
@@ -81,7 +81,7 @@ func impact():
 func _resetObject():
 	self.scale = Vector2.ZERO;
 	currentOffsetStrength = maxOffsetStrength;
-	self.material.set_shader_param("offsetStrength", maxOffsetStrength);
+	self.material.set_shader_parameter("offsetStrength", maxOffsetStrength);
 	expand = false;
 	decreaseStrength = false;
 	_impact = false;

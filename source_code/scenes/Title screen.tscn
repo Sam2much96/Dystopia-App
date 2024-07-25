@@ -1,17 +1,17 @@
 [gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Title screen.gd" type="Script" id=1]
-[ext_resource path="res://resources/title animation/Dystopia Logo webp.webp" type="Texture" id=2]
+[ext_resource path="res://resources/title animation/Dystopia Logo webp.webp" type="Texture2D" id=2]
 [ext_resource path="res://scenes/UI & misc/ingame_menu.tscn" type="PackedScene" id=3]
-[ext_resource path="res://resources/Buttons/menu.png" type="Texture" id=4]
+[ext_resource path="res://resources/Buttons/menu.png" type="Texture2D" id=4]
 [ext_resource path="res://scenes/UI & misc/TitleScreenViewport.gd" type="Script" id=5]
 [ext_resource path="res://scenes/levels/Overworld3D.tscn" type="PackedScene" id=6]
-[ext_resource path="res://resources/illustrations/cover 1.png" type="Texture" id=7]
-[ext_resource path="res://scenes/Shaders/softedge.shader" type="Shader" id=8]
-[ext_resource path="res://icon.png" type="Texture" id=9]
+[ext_resource path="res://resources/illustrations/cover 1.png" type="Texture2D" id=7]
+[ext_resource path="res://scenes/Shaders/softedge.gdshader" type="Shader" id=8]
+[ext_resource path="res://icon.png" type="Texture2D" id=9]
 
 [sub_resource type="ViewportTexture" id=8]
-viewport_path = NodePath("Viewport")
+viewport_path = NodePath("SubViewport")
 
 [sub_resource type="ShaderMaterial" id=10]
 shader = ExtResource( 8 )
@@ -31,14 +31,14 @@ shader_param/right_clip = 0.0
 light_mask = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-focus_neighbour_left = NodePath("quit")
-focus_neighbour_top = NodePath("continue")
-focus_neighbour_right = NodePath("credits")
-focus_neighbour_bottom = NodePath("new_game")
+focus_neighbor_left = NodePath("quit")
+focus_neighbor_top = NodePath("continue")
+focus_neighbor_right = NodePath("credits")
+focus_neighbor_bottom = NodePath("new_game")
 focus_mode = 2
 script = ExtResource( 1 )
 
-[node name="Viewport" type="Viewport" parent="."]
+[node name="SubViewport" type="SubViewport" parent="."]
 size = Vector2( 450, 110 )
 own_world = true
 transparent_bg = true
@@ -50,31 +50,31 @@ gui_snap_controls_to_pixels = false
 script = ExtResource( 5 )
 viewport_image = SubResource( 8 )
 
-[node name="Spatial" parent="Viewport" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.660889, 0, -3.24523 )
+[node name="Node3D" parent="SubViewport" instance=ExtResource( 6 )]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.660889, 0, -3.24523 )
 
 [node name="Control" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="Sprite" type="TextureRect" parent="."]
+[node name="Sprite2D" type="TextureRect" parent="."]
 modulate = Color( 1, 1, 1, 0.662745 )
 show_behind_parent = true
 material = SubResource( 10 )
-margin_left = -323.634
-margin_top = 89.8985
-margin_right = -259.634
-margin_bottom = 153.898
-rect_scale = Vector2( 4.7295, 4.35369 )
+offset_left = -323.634
+offset_top = 89.8985
+offset_right = -259.634
+offset_bottom = 153.898
+scale = Vector2( 4.7295, 4.35369 )
 texture = ExtResource( 9 )
 
 [node name="TextureRect2" type="TextureRect" parent="."]
 show_behind_parent = true
-margin_left = 30.6746
-margin_top = 747.207
-margin_right = 443.675
-margin_bottom = 1375.21
-rect_scale = Vector2( 2.42217, 2.42217 )
+offset_left = 30.6746
+offset_top = 747.207
+offset_right = 443.675
+offset_bottom = 1375.21
+scale = Vector2( 2.42217, 2.42217 )
 texture = ExtResource( 7 )
 
 [node name="menu" type="TouchScreenButton" parent="."]
@@ -89,11 +89,11 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -270.979
-margin_top = -155.485
-margin_right = 202.021
-margin_bottom = 24.515
-rect_scale = Vector2( 1.03307, 1.03307 )
+offset_left = -270.979
+offset_top = -155.485
+offset_right = 202.021
+offset_bottom = 24.515
+scale = Vector2( 1.03307, 1.03307 )
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 6
@@ -105,8 +105,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="Position2D" type="Position2D" parent="."]
+[node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2( -755.147, 113.871 )

@@ -28,8 +28,8 @@ Displays A Dialogue Text When the Player comes near
 
 var interract : bool = false
 
-export(bool) var enabled
-export(String) var dialogue = ""
+@export var enabled: bool
+@export var dialogue: String = ""
 
 
 
@@ -38,38 +38,38 @@ var frame_counter : int = 0
 
 
 
-export (bool) var HINT #= false # Boolean conditional for hint system
-export (bool) var triggered #= false # Boolean conditional for controlling signpost activation
+@export (bool) var HINT #= false # Boolean conditional for hint system
+@export (bool) var triggered #= false # Boolean conditional for controlling signpost activation
 func _ready():
 	
 	if enabled:
 		
 		#Connect All Signals
-		connect("area_entered", self, "_on_player_area_entered")
-		connect("area_exited", self, "_on_player_area_exited")
+		connect("area_entered", Callable(self, "_on_player_area_entered"))
+		connect("area_exited", Callable(self, "_on_player_area_exited"))
 		
-		if not (is_connected("body_entered",self, "_on_signpost_body_entered") &&
-		is_connected("body_exited",self, "_on_signpost_body_exited")
+		if not (is_connected("body_entered", Callable(self, "_on_signpost_body_entered")) &&
+		is_connected("body_exited", Callable(self, "_on_signpost_body_exited"))
 		):
-			connect("body_entered",self, "_on_signpost_body_entered")
-			connect("body_exited",self, "_on_signpost_body_exited")
+			connect("body_entered", Callable(self, "_on_signpost_body_entered"))
+			connect("body_exited", Callable(self, "_on_signpost_body_exited"))
 		
 
 		
 		# Dialogs
 		
-		Dialogs.connect("dialog_started", self, "_on_dialog_started")
+		Dialogs.connect("dialog_started", Callable(self, "_on_dialog_started"))
 		
-		Dialogs.connect("dialog_ended", self, "_on_dialog_ended")
+		Dialogs.connect("dialog_ended", Callable(self, "_on_dialog_ended"))
 		
 		# Debug All Signals
 		
-		if not ( is_connected("area_entered", self, "_on_player_area_entered") and 
-		is_connected("area_exited", self, "_on_player_area_exited") and
-		is_connected("body_entered",self, "_on_signpost_body_entered") and
-		is_connected("body_exited",self, "_on_signpost_body_exited") and
-		Dialogs.is_connected("dialog_started", self, "_on_dialog_started") and
-		Dialogs.is_connected("dialog_ended", self, "_on_dialog_ended") 
+		if not ( is_connected("area_entered", Callable(self, "_on_player_area_entered")) and 
+		is_connected("area_exited", Callable(self, "_on_player_area_exited")) and
+		is_connected("body_entered", Callable(self, "_on_signpost_body_entered")) and
+		is_connected("body_exited", Callable(self, "_on_signpost_body_exited")) and
+		Dialogs.is_connected("dialog_started", Callable(self, "_on_dialog_started")) and
+		Dialogs.is_connected("dialog_ended", Callable(self, "_on_dialog_ended")) 
 		):
 		
 			push_error("Debug Connected Signals")
@@ -107,7 +107,7 @@ func _on_signpost_body_entered(body):
 
 func _on_player_area_exited(area):
 	if area.is_in_group("player_hurtbox"):
-		print(" Player Exited Area ")
+		print(" Player Exited Area3D ")
 		#activate(false)
 
 

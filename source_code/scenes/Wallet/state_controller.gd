@@ -29,76 +29,76 @@ WALLET NODE MANAGER
 """
 # Implement TouchScreen Controller for State controller
 
-onready var canvasLayer = get_parent().get_node("CanvasLayer")
-onready var Algorand = get_parent().get_node("Algodot")
-onready var dashboard_UI = get_parent().get_node("CanvasLayer/Dashboard_UI")
-onready var transaction_UI = get_parent().get_node("CanvasLayer/Transaction_UI")
-onready var account_addr = get_parent().get_node("CanvasLayer/Dashboard_UI/YSort/Label2") 
+@onready var canvasLayer = get_parent().get_node("CanvasLayer")
+@onready var Algorand = get_parent().get_node("Algodot")
+@onready var dashboard_UI = get_parent().get_node("CanvasLayer/Dashboard_UI")
+@onready var transaction_UI = get_parent().get_node("CanvasLayer/Transaction_UI")
+@onready var account_addr = get_parent().get_node("CanvasLayer/Dashboard_UI/Node2D/Label2") 
 
-onready var ingame_algos = get_parent().get_node("CanvasLayer/Dashboard_UI/YSort2/VBoxContainer/HBoxContainer/VBoxContainer2/Label2")
+@onready var ingame_algos = get_parent().get_node("CanvasLayer/Dashboard_UI/YSort2/VBoxContainer/HBoxContainer/VBoxContainer2/Label2")
 
-onready var wallet_algos = get_parent().get_node("CanvasLayer/Dashboard_UI/YSort/Label")
+@onready var wallet_algos = get_parent().get_node("CanvasLayer/Dashboard_UI/Node2D/Label")
 
-onready var mnemonic_UI = get_parent().get_node("CanvasLayer/Mnemonic_UI")
-onready var Collectibles_UI = get_parent().get_node("CanvasLayer/Collectibles_UI")
-onready var mnemonic_UI_LineEdit = get_parent().get_node("CanvasLayer/Mnemonic_UI/LineEdit")
+@onready var mnemonic_UI = get_parent().get_node("CanvasLayer/Mnemonic_UI")
+@onready var Collectibles_UI = get_parent().get_node("CanvasLayer/Collectibles_UI")
+@onready var mnemonic_UI_LineEdit = get_parent().get_node("CanvasLayer/Mnemonic_UI/LineEdit")
 
-onready var submit_txn_button = get_parent().get_node("CanvasLayer/Transaction_UI/VBoxContainer/Button")
+@onready var submit_txn_button = get_parent().get_node("CanvasLayer/Transaction_UI/VBoxContainer/Button")
 
-onready var submit_mnemonic_button = get_parent().get_node("CanvasLayer/Mnemonic_UI/Button")
-onready var image_texture_holder = get_parent().get_node("CanvasLayer/Collectibles_UI/KinematicBody2D/TextureRect")
-onready var kinematic2d = get_parent().get_node("CanvasLayer/Collectibles_UI/KinematicBody2D")
-onready var asset_index_label = get_parent().get_node("CanvasLayer/Collectibles_UI/KinematicBody2D/Label")
-onready var Password_UI = get_parent().get_node("CanvasLayer/Password_UI")
-onready var App_Call_UI = get_parent().get_node("CanvasLayer/SmartContract_UI")
-onready var transaction_UI_address_lineEdit = get_parent().get_node("CanvasLayer/Transaction_UI/LineEdit")
+@onready var submit_mnemonic_button = get_parent().get_node("CanvasLayer/Mnemonic_UI/Button")
+@onready var image_texture_holder = get_parent().get_node("CanvasLayer/Collectibles_UI/CharacterBody2D/TextureRect")
+@onready var kinematic2d = get_parent().get_node("CanvasLayer/Collectibles_UI/CharacterBody2D")
+@onready var asset_index_label = get_parent().get_node("CanvasLayer/Collectibles_UI/CharacterBody2D/Label")
+@onready var Password_UI = get_parent().get_node("CanvasLayer/Password_UI")
+@onready var App_Call_UI = get_parent().get_node("CanvasLayer/SmartContract_UI")
+@onready var transaction_UI_address_lineEdit = get_parent().get_node("CanvasLayer/Transaction_UI/LineEdit")
 
-onready var transaction_UI_amount_lineEdit = get_parent().get_node("CanvasLayer/Transaction_UI/LineEdit2")
-onready var FundingSuccessUI = get_parent().get_node("CanvasLayer/FundingSuccess")
-onready var Funding_Success_Close_Button = get_parent().get_node("CanvasLayer/FundingSuccess/Button")
-onready var fund_account_Button = get_parent().get_node("CanvasLayer/Dashboard_UI/Panel/TabContainer/Dashboard/Button")
-onready var make_payment_state_controller_button = get_parent().get_node("CanvasLayer/Dashboard_UI/Panel/TabContainer/Dashboard/Button2")
-onready var smartcontract_UI_Address = get_parent().get_node("CanvasLayer/SmartContract_UI/VBoxContainer/LineEdit")
-onready var smartcontract_UI_AppID = get_parent().get_node("CanvasLayer/SmartContract_UI/VBoxContainer/LineEdit2")
-onready var smartcontract_UI_AppArgs = get_parent().get_node("CanvasLayer/SmartContract_UI/VBoxContainer/LineEdit3")
-onready var smartcontract_UI_Button = get_parent().get_node("CanvasLayer/SmartContract_UI/Button")
-onready var transaction_UI_asset_id_LineEdit = get_parent().get_node("CanvasLayer/Transaction_UI/LineEdit3")
-onready var enter_wallet_PassWord_Button = get_parent().get_node("CanvasLayer/Password_UI/Button")
-onready var password_Enter_LineEdit = get_parent().get_node("CanvasLayer/Password_UI/LineEdit")
-onready var create_new_acct_button = get_parent().get_node("CanvasLayer/Mnemonic_UI/VBoxContainer/Button2")
-
-
-onready var create_account_succcessful_UI = get_parent().get_node("CanvasLayer/CreateAccountSuccess")
-onready var create_account_succcessful_Label = get_parent().get_node("CanvasLayer/CreateAccountSuccess/Label2")
-onready var copy_mnemonic_button = get_parent().get_node("CanvasLayer/CreateAccountSuccess/Button") 
-onready var proceed_home_button = get_parent().get_node("CanvasLayer/CreateAccountSuccess/Button2")
-
-onready var asset__UI = get_parent().get_node("CanvasLayer/Asset_UI")
-onready var asset_Txn_valid_Button = get_parent().get_node("CanvasLayer/Transaction_UI/Button2")
-onready var asset_Optin_Txn_valid_Button = get_parent().get_node("CanvasLayer/Asset_UI/Button")
-onready var asset_Optin_Txn_reject_Button = get_parent().get_node("CanvasLayer/Asset_UI/Button2")
-
-onready var button_0  = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button10")
-onready var button_1 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button")
-onready var button_2 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button2")
-onready var button_3 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button3")
-onready var button_4 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button4")
-onready var button_5 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button5")
-onready var button_6 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button6")
-onready var button_7 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button7")
-onready var button_8 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button8")
-onready var button_9 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button9")
-onready var button_11 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button11")
-onready var button_12 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button12")
+@onready var transaction_UI_amount_lineEdit = get_parent().get_node("CanvasLayer/Transaction_UI/LineEdit2")
+@onready var FundingSuccessUI = get_parent().get_node("CanvasLayer/FundingSuccess")
+@onready var Funding_Success_Close_Button = get_parent().get_node("CanvasLayer/FundingSuccess/Button")
+@onready var fund_account_Button = get_parent().get_node("CanvasLayer/Dashboard_UI/Panel/TabContainer/Dashboard/Button")
+@onready var make_payment_state_controller_button = get_parent().get_node("CanvasLayer/Dashboard_UI/Panel/TabContainer/Dashboard/Button2")
+@onready var smartcontract_UI_Address = get_parent().get_node("CanvasLayer/SmartContract_UI/VBoxContainer/LineEdit")
+@onready var smartcontract_UI_AppID = get_parent().get_node("CanvasLayer/SmartContract_UI/VBoxContainer/LineEdit2")
+@onready var smartcontract_UI_AppArgs = get_parent().get_node("CanvasLayer/SmartContract_UI/VBoxContainer/LineEdit3")
+@onready var smartcontract_UI_Button = get_parent().get_node("CanvasLayer/SmartContract_UI/Button")
+@onready var transaction_UI_asset_id_LineEdit = get_parent().get_node("CanvasLayer/Transaction_UI/LineEdit3")
+@onready var enter_wallet_PassWord_Button = get_parent().get_node("CanvasLayer/Password_UI/Button")
+@onready var password_Enter_LineEdit = get_parent().get_node("CanvasLayer/Password_UI/LineEdit")
+@onready var create_new_acct_button = get_parent().get_node("CanvasLayer/Mnemonic_UI/VBoxContainer/Button2")
 
 
-onready var AnimationPlayer_ = get_parent().get_node("AnimationTree/AnimationPlayer") # icon and minor UI animations
-onready var AnimationPlayer_2 = get_parent().get_node("AnimationTree/AnimationPlayer2") # State Controller button ANimation
-onready var AnimationTree_ = get_parent().get_node("AnimationTree") #animation tree for complex animations
+@onready var create_account_succcessful_UI = get_parent().get_node("CanvasLayer/CreateAccountSuccess")
+@onready var create_account_succcessful_Label = get_parent().get_node("CanvasLayer/CreateAccountSuccess/Label2")
+@onready var copy_mnemonic_button = get_parent().get_node("CanvasLayer/CreateAccountSuccess/Button") 
+@onready var proceed_home_button = get_parent().get_node("CanvasLayer/CreateAccountSuccess/Button2")
 
-onready var profile_pic = get_parent().get_node("CanvasLayer/Asset_UI/TextureRect") 
-onready var asset_ui_index = get_parent().get_node("CanvasLayer/Asset_UI/YSort/VBoxContainer/HBoxContainer2/Label3")  
-onready var asset_ui_amount = get_parent().get_node("CanvasLayer/Asset_UI/YSort/VBoxContainer/HBoxContainer/Label2")  
+@onready var asset__UI = get_parent().get_node("CanvasLayer/Asset_UI")
+@onready var asset_Txn_valid_Button = get_parent().get_node("CanvasLayer/Transaction_UI/Button2")
+@onready var asset_Optin_Txn_valid_Button = get_parent().get_node("CanvasLayer/Asset_UI/Button")
+@onready var asset_Optin_Txn_reject_Button = get_parent().get_node("CanvasLayer/Asset_UI/Button2")
+
+@onready var button_0  = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button10")
+@onready var button_1 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button")
+@onready var button_2 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button2")
+@onready var button_3 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button3")
+@onready var button_4 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button4")
+@onready var button_5 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button5")
+@onready var button_6 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button6")
+@onready var button_7 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button7")
+@onready var button_8 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button8")
+@onready var button_9 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button9")
+@onready var button_11 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button11")
+@onready var button_12 = get_parent().get_node("CanvasLayer/Password_UI/GridContainer/Button12")
+
+
+@onready var AnimationPlayer_ = get_parent().get_node("AnimationTree/AnimationPlayer") # icon and minor UI animations
+@onready var AnimationPlayer_2 = get_parent().get_node("AnimationTree/AnimationPlayer2") # State Controller button ANimation
+@onready var AnimationTree_ = get_parent().get_node("AnimationTree") #animation tree for complex animations
+
+@onready var profile_pic = get_parent().get_node("CanvasLayer/Asset_UI/TextureRect") 
+@onready var asset_ui_index = get_parent().get_node("CanvasLayer/Asset_UI/Node2D/VBoxContainer/HBoxContainer2/Label3")  
+@onready var asset_ui_amount = get_parent().get_node("CanvasLayer/Asset_UI/Node2D/VBoxContainer/HBoxContainer/Label2")  
 
 
 func _ready():
@@ -230,7 +230,7 @@ func upscale()-> void:
 	var newScale = Vector2(2,2)
 	#var newPosition = Vector2(-650,250)
 	#var newPosition = Vector2(0,0)
-	var newPosition = Vector2($Position2D.position)
+	var newPosition = Vector2($Marker2D.position)
 	canvasLayer.set_scale(newScale)
 	
 	for i in canvasLayer.get_children():

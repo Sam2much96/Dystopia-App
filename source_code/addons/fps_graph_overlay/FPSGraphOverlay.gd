@@ -3,18 +3,18 @@ extends CanvasLayer
 
 
 
-export(float) var point_interval_seconds: float = 1
-export(int) var points_on_screen: int = 120
-export(int) var max_fps: int = 60
-export(bool) var enable_f12_shortcut: bool = true
+@export var point_interval_seconds: float = 1
+@export var points_on_screen: int = 120
+@export var max_fps: int = 60
+@export var enable_f12_shortcut: bool = true
 
-onready var _line: Line2D = $Line
-onready var _timer: Timer = $Timer
-onready var _label: Label = $Label
+@onready var _line: Line2D = $Line
+@onready var _timer: Timer = $Timer
+@onready var _label: Label = $Label
 
 
-onready var _window_size: Vector2 = _line.get_viewport_rect().size
-onready var _line_width_margin: float = _line.width / 2.0
+@onready var _window_size: Vector2 = _line.get_viewport_rect().size
+@onready var _line_width_margin: float = _line.width / 2.0
 var _x_delta: float
 
 
@@ -31,7 +31,7 @@ func _ready() -> void:
 		_line.add_point(Vector2(_x_delta * i, _window_size.y - _line_width_margin))
 
 	_timer.start(point_interval_seconds)
-	var _c = _timer.connect("timeout", self, "_on_timer_timeout")
+	var _c = _timer.connect("timeout", Callable(self, "_on_timer_timeout"))
 
 
 func _input(event: InputEvent) -> void:
@@ -54,7 +54,7 @@ func add_point() -> void:
 
 	_line.points[-1] = Vector2(
 		_window_size.x,
-		range_lerp(fps, 0, max_fps, _window_size.y - _line_width_margin, _line_width_margin)
+		remap(fps, 0, max_fps, _window_size.y - _line_width_margin, _line_width_margin)
 	)
 
 	_label.text = str(fps)

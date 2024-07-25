@@ -62,7 +62,7 @@ var SIMULATING_1 : bool = false
 # For World Boundarty calculation
 var v : Vector2 = Vector2.ZERO
 
-onready var _label : Label = $Label
+@onready var _label : Label = $Label
 
 
 
@@ -75,16 +75,16 @@ func _ready():
 	_label.set_text(self.name)
 	
 	# add a random position to fix  stuck colision bug on client
-	var random = Vector2(rand_range(0,2), rand_range(0,2))
+	var random = Vector2(randf_range(0,2), randf_range(0,2))
 	self.set_position(random)
 	
-	connect("state_changed",self,"update_state_buffer",[state])
-	print_debug(is_connected("input_event",self,"update_state_buffer"),[state])
+	connect("state_changed", Callable(self, "update_state_buffer").bind(state))
+	print_debug(is_connected("input_event", Callable(self, "update_state_buffer")),[state])
 	
 	# Load Unique Player ID
 	# Error catcher
 	if peer_id == -99: # Dummy peer id
-		peer_id = int(get_tree().get_network_unique_id()) # Get the real peer id
+		peer_id = int(get_tree().get_unique_id()) # Get the real peer id
 	
 	# Save Player Details
 	#CLient Peer Details Locally
@@ -99,20 +99,20 @@ func _ready():
 	
 	"Register Player Error Catcher"
 	# Error Catcher 2
-	if Simulation.player_info.keys().empty():
+	if Simulation.player_info.keys().is_empty():
 		Simulation.player_info = {peer_id : {}}
 		print_debug(Simulation.player_info.keys())# For Debug Purposes ONly
 
 	# Connect SIgnals
 	# (1) Networking Singleton to SImulation SIngleton
-	if is_network_master():
+	if is_multiplayer_authority():
 		
-		Simulation.connect("pi", Simulation,"simulate", [peer_id, self])
-		print_debug("Simulation signal is connected: ",Simulation.is_connected("pi", Simulation,"simulate"))
+		Simulation.connect("pi", Callable(Simulation, "simulate").bind(peer_id, self))
+		print_debug("Simulation signal is connected: ",Simulation.is_connected("pi", Callable(Simulation, "simulate")))
 
-	"Active Camera"
+	"Active Camera3D"
 	
-	if not is_network_master():
+	if not is_multiplayer_authority():
 		if Networking.GamePlay == Networking.LOCAL_COOP:
 			# Fixes Client Player Inactive Camera
 			# Breaks in Online MMO Gameplay
@@ -149,7 +149,7 @@ func _input(_event):
 	"""
 	if err > 0: # Networked Multiplayer Is Up
 	
-		if not get_tree().has_network_peer() :
+		if not get_tree().has_multiplayer_peer() :
 			push_error(" Connection Bad, Not Handling Input")
 			return
 			
@@ -157,7 +157,7 @@ func _input(_event):
 
 		
 		
-		if not is_network_master():
+		if not is_multiplayer_authority():
 			if Networking.GamePlay == Networking.LOCAL_COOP:
 				facing_logic(Simulation.all_player_objects[2], 0) # Where Zero is the default server player id
 			if Networking.GamePlay == Networking.MMO_SERVER:
@@ -206,7 +206,7 @@ func _input(_event):
 	# Hack : I'm hardcoding for 2 players for faster development, future code should account for more and pay back this technical debt 
 		# Multiplayer Input Facing Logic
 		
-		if is_network_master(): # Server player
+		if is_multiplayer_authority(): # Server player
 			# call the refactored state machine logic with the peed id parameter
 			if Networking.GamePlay == Networking.LOCAL_COOP:
 				facing_logic(Simulation.all_player_objects[3], 0) # Where Zero is the default server player id
@@ -258,14 +258,14 @@ func _physics_process(_delta):
 
 
 		# Server
-		if is_network_master():
+		if is_multiplayer_authority():
 			if Networking.GamePlay == Networking.LOCAL_COOP:
 				# Server Class
 				
 				state_machine_logic(Simulation.all_player_objects[3],0)
 			
 		# Client
-		if not is_network_master():
+		if not is_multiplayer_authority():
 			if Networking.GamePlay == Networking. LOCAL_COOP:
 				# Place Error Catcher Here
 				# Client Class
@@ -290,7 +290,7 @@ func _get_state_buffer() : #-> int:
 	"""
 	# server dowsnrt do any processing
 	
-	if not is_network_master():
+	if not is_multiplayer_authority():
 		pass
 	
 	"""
@@ -299,7 +299,7 @@ func _get_state_buffer() : #-> int:
 	
 	"""
 	# Simulation Logic
-	if is_network_master():
+	if is_multiplayer_authority():
 	
 		if Simulation.player_info.keys().size() > 1:
 			pass
@@ -399,11 +399,11 @@ func update_state_buffer(state, state_):
 	
 	
 	#print("Updating State Buffer 1 :", StateBuffer)
-	return StateBuffer.append(state)
+	StateBuffer.append(state)
+	return 0
 
 
-
-remote func player_leaving(id : int):
+@rpc("any_peer") func player_leaving(id : int):
 	print_debug("Callback: player_leaving(" + str(id)+")")
 	Dialogs.dialog_box.show_dialog("Player leaving: " + Networking.player_info[id].name, "Admin")
 	Simulation.player_info[id].node.queue_free()
@@ -412,24 +412,24 @@ remote func player_leaving(id : int):
 
 
 
-remote func enemy_hit_collision(id ,body : Player_v2_networking):
+@rpc("any_peer") func enemy_hit_collision(id ,body : Player_v2_networking):
 	pass
 
-remote func player_hit_collision(id):
+@rpc("any_peer") func player_hit_collision(id):
 	# Logic:
 	# (1) On CLient Player, Simulate the Hit Commision on the Player Object using it's ID
 	# (2) On Server, Simulate Logic if Local Lan else broadcast collision if Online MMO
 	print_debug("player got hit!")
-	if not is_network_master(): # Client Player
+	if not is_multiplayer_authority(): # Client Player
 		
 		for peer_id in Networking.player_info:
-			if Networking.player_info[peer_id].node ==KinematicBody2D: # Depreciated line
+			if Networking.player_info[peer_id].node ==CharacterBody2D: # Depreciated line
 				if not Networking.player_info[peer_id].health == 0:
 					Networking.player_info[peer_id].health -= 10
 					if Networking.player_info[peer_id].health < 0:
 						Networking.player_info[peer_id].health = 0
 	
-	if is_network_master(): # Server Player
+	if is_multiplayer_authority(): # Server Player
 		# Server Player
 		# broadcast!
 		print("Broadcast health: " + str(Networking.player_info[peer_id].health))
@@ -446,7 +446,7 @@ remote func player_hit_collision(id):
 
 # Updates Client Peer Remote Health
 # Replace Explosion with Global Blood Instances
-remote func player_health(id : int, health: int):
+@rpc("any_peer") func player_health(id : int, health: int):
 	print("Callback: player_health(" + str(id) +","+str(health)+")")
 	if health == 0:
 		Networking.player_info[id].destroyed = true
@@ -454,7 +454,7 @@ remote func player_health(id : int, health: int):
 		Networking.player_info[id].node.queue_free()
 		var preload_explosion
 		
-		var node_explosion = preload_explosion.instance()
+		var node_explosion = preload_explosion.instantiate()
 		node_explosion.get_node("particles").emitting = true
 		node_explosion.get_node("particles").one_shot = true
 		node_explosion.position = Networking.player_info[id].node.position
@@ -463,19 +463,19 @@ remote func player_health(id : int, health: int):
 	# Update HealthBar
 	var progress_health
 	
-	var peer_id = get_tree().get_network_unique_id()
+	var peer_id = get_tree().get_unique_id()
 	if id == peer_id:
 		progress_health.value = health
 
 
 ## Remote FUnction for emitting and displaying Damages points and Particles
-remote func display_damage(body):
+@rpc("any_peer") func display_damage(body):
 	var player_info 
 	
 	for peer_id in player_info:
 		if player_info[peer_id].node == body:
 			var preload_damage : String = ""
-			var node_damage = load(preload_damage).instance()
+			var node_damage = load(preload_damage).instantiate()
 			node_damage.name = "damage"
 			node_damage.get_node("particles").emitting = true
 			node_damage.get_node("particles").one_shot = true
@@ -483,25 +483,26 @@ remote func display_damage(body):
 			break
 
 
-class server  extends Reference:
-	remote func fire_weapon(id, position, current_angle):
-		Simulation.projectiles.append({ timestamp = OS.get_ticks_msec() + (Networking.TICK_DURATION * 2), id = id, position = position, current_angle = current_angle })
+class server  extends RefCounted:
+	func fire_weapon(id, position, current_angle):
+		#Simulation.projectiles.append({ timestamp = Time.get_ticks_msec() + (Networking.TICK_DURATION * 2), id = id, position = position, current_angle = current_angle })
+		pass
 
-class server2 extends Reference:
+class server2 extends RefCounted:
 	func fire_weapon(id : int):
 		print("Fire weapon!")
 			
 		var info = Networking.player_info[id]
 		var preload_projectile
 		var node_projectiles
-		var node_projectile = preload_projectile.instance()
+		var node_projectile = preload_projectile.instantiate()
 		var pos = Vector2(info.position.x,info.position.y)
 		
 		node_projectile.name = info.name
-		node_projectile.contacts_reported = 1
+		node_projectile.max_contacts_reported = 1
 		node_projectiles.add_child(node_projectile)
 
-		var weapon_angle = info.node.rotation + rand_range(-Networking.PROJECTILE_RANDOM/2, Networking.PROJECTILE_RANDOM/2)
+		var weapon_angle = info.node.rotation + randf_range(-Networking.PROJECTILE_RANDOM/2, Networking.PROJECTILE_RANDOM/2)
 		var trustp = Vector2(0,Networking.PROJECTILE_OFFSET).rotated(weapon_angle)
 		node_projectile.set_position(pos - trustp)
 		node_projectile.set_linear_velocity(-trustp * Networking.PROJECTILE_SPEED)

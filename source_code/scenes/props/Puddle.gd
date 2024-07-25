@@ -10,11 +10,11 @@
 # *************************************************
 
 
-extends KinematicBody2D
+extends CharacterBody2D
 
 class_name Puddle
 
-onready var animation_player_ : AnimationPlayer = $CollisionShape2D/AnimationPlayer
+@onready var animation_player_ : AnimationPlayer = $CollisionShape2D/AnimationPlayer
 
 func ripple()-> void:
 	animation_player_.play("ripple_anim ")
@@ -28,7 +28,9 @@ func change_position(position): #Changes the position of the effect to the playe
 	var a=position.x
 	var b=position.y
 	
-	return move_and_slide(Vector2(a,b))
+	set_velocity(Vector2(a,b))
+	move_and_slide()
+	return velocity
 
 
 func _exit_tree():

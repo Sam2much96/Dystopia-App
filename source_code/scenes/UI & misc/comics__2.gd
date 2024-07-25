@@ -20,13 +20,13 @@
 
 extends GridContainer
 
-onready var Grid_Container = self
-onready var Scroll_Container = Grid_Container.get_parent()
+@onready var Grid_Container = self
+@onready var Scroll_Container = Grid_Container.get_parent()
 
 # Controls GRID UI Layout
-onready var _controller : ScrollContainer = get_parent()
+@onready var _controller : ScrollContainer = get_parent()
 
-onready var loaded_comics 
+@onready var loaded_comics 
 
 # Size Vectors For Stretching THe scroll Container
 # Bug Fix for Broken Comics UI on Mobile Screen Orientations
@@ -36,18 +36,18 @@ var size_B : Vector2 = Vector2(2490, 6289)
 
 # UI buttons
 #onready var _back : Button = get_parent().get_parent().get_parent().get_node("back")
-onready var chap_1 : TextureButton = $chap_1
-onready var chap_2 : TextureButton = $chap_2
-onready var chap_3 : TextureButton = $chap_3
-onready var chap_4 : TextureButton = $chap_4
-onready var chap_5 : TextureButton = $chap_5
-onready var chap_6 : TextureButton = $chap_6
-onready var chap_7 : TextureButton = $chap_7
+@onready var chap_1 : TextureButton = $chap_1
+@onready var chap_2 : TextureButton = $chap_2
+@onready var chap_3 : TextureButton = $chap_3
+@onready var chap_4 : TextureButton = $chap_4
+@onready var chap_5 : TextureButton = $chap_5
+@onready var chap_6 : TextureButton = $chap_6
+@onready var chap_7 : TextureButton = $chap_7
 
 # Header Labels
-onready var Comics__2_UI : Array = [] # SHould contail label files
+@onready var Comics__2_UI : Array = [] # SHould contail label files
 
-onready var Comics_Grid_UI : Array = [chap_1, chap_2, chap_3, chap_4, chap_5, chap_6, chap_7]
+@onready var Comics_Grid_UI : Array = [chap_1, chap_2, chap_3, chap_4, chap_5, chap_6, chap_7]
 
 func _ready():
 	
@@ -86,41 +86,41 @@ func connect_signals()-> bool:
 	"""
 	COMICS UI SIGNALS
 	"""
-	chap_1.connect("pressed", self, "_on_chap_1_pressed")
-	chap_2.connect("pressed", self, "_on_chap_2_pressed")
-	chap_3.connect("pressed", self, "_on_chap_3_pressed")
-	chap_4.connect("pressed", self, "_on_chap_4_pressed")
-	chap_5.connect("pressed", self, "_on_chap_5_pressed")
-	chap_6.connect("pressed", self, "_on_chap_6_pressed")
-	chap_7.connect("pressed", self, "_on_chap_7_pressed")
+	chap_1.connect("pressed", Callable(self, "_on_chap_1_pressed"))
+	chap_2.connect("pressed", Callable(self, "_on_chap_2_pressed"))
+	chap_3.connect("pressed", Callable(self, "_on_chap_3_pressed"))
+	chap_4.connect("pressed", Callable(self, "_on_chap_4_pressed"))
+	chap_5.connect("pressed", Callable(self, "_on_chap_5_pressed"))
+	chap_6.connect("pressed", Callable(self, "_on_chap_6_pressed"))
+	chap_7.connect("pressed", Callable(self, "_on_chap_7_pressed"))
 	return (
-		chap_1.is_connected("pressed",self,"_on_chap_1_pressed") &&
-		chap_2.connect("pressed", self, "_on_chap_2_pressed") &&
-		chap_3.connect("pressed", self, "_on_chap_3_pressed") &&
-		chap_4.connect("pressed", self, "_on_chap_4_pressed") &&
-		chap_5.connect("pressed", self, "_on_chap_5_pressed") &&
-		chap_6.connect("pressed", self, "_on_chap_6_pressed") &&
-		chap_7.connect("pressed", self, "_on_chap_7_pressed")
+		chap_1.is_connected("pressed", Callable(self, "_on_chap_1_pressed")) &&
+		chap_2.connect("pressed", Callable(self, "_on_chap_2_pressed")) &&
+		chap_3.connect("pressed", Callable(self, "_on_chap_3_pressed")) &&
+		chap_4.connect("pressed", Callable(self, "_on_chap_4_pressed")) &&
+		chap_5.connect("pressed", Callable(self, "_on_chap_5_pressed")) &&
+		chap_6.connect("pressed", Callable(self, "_on_chap_6_pressed")) &&
+		chap_7.connect("pressed", Callable(self, "_on_chap_7_pressed"))
 		)
 
 func connect_cinematic_signals():
-	chap_2.connect("pressed", self, "_on_episode_pressed")
-	chap_6.connect("pressed",self,"_on_animatic_pressed")
-	chap_7.connect("pressed",self,"_on_watch_guidebook_pressed")
+	chap_2.connect("pressed", Callable(self, "_on_episode_pressed"))
+	chap_6.connect("pressed", Callable(self, "_on_animatic_pressed"))
+	chap_7.connect("pressed", Callable(self, "_on_watch_guidebook_pressed"))
 """
 Cinematic Signals
 """
 func _on_episode_pressed():
-	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
+	Music._notification(NOTIFICATION_APPLICATION_PAUSED)#Shuts off music
 	return Networking.open_browser("https://github.com/Sam2much96/RenderChan/actions/")
 
 
 func _on_animatic_pressed():
-	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
+	Music._notification(NOTIFICATION_APPLICATION_PAUSED)#Shuts off music
 	return Networking.open_browser("https://youtu.be/uzDzAuJVHcI")
 
 func _on_watch_guidebook_pressed():
-	Music._notification(NOTIFICATION_APP_PAUSED)#Shuts off music
+	Music._notification(NOTIFICATION_APPLICATION_PAUSED)#Shuts off music
 	return Networking.open_browser("https://github.com/Sam2much96/Dystopia-App/wiki")
 
 

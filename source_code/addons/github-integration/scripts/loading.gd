@@ -14,18 +14,18 @@ extends ColorRect
 
 class_name loading
 
-export (bool) var VISIBLE
+@export var VISIBLE : bool
 
-onready var Progress : ProgressBar = $VBoxContainer/ProgressBar
-onready var Number : Label= $VBoxContainer/Number
-onready var message : Label = $VBoxContainer/Message
+@onready var Progress : ProgressBar = $VBoxContainer/ProgressBar
+@onready var Number : Label= $VBoxContainer/Number
+@onready var message : Label = $VBoxContainer/Message
 
 
-onready var  loading2 : TextureRect = $VBoxContainer/loading2
+@onready var  loading2 : TextureRect = $VBoxContainer/loading2
 
 
 # related to Github scene
-onready var RestHandler_ = get_parent().get_node_or_null("RestHandler")
+@onready var RestHandler_ = get_parent().get_node_or_null("RestHandler")
 
 
 
@@ -39,8 +39,8 @@ func _ready():
 	
 	
 	# COnnect Signals for redundancy errors
-	if not is_connected("visibility_changed",self,"_on_loading_visibility_changed"):
-		connect("visibility_changed",self,"_on_loading_visibility_changed")
+	if not is_connected("visibility_changed", Callable(self, "_on_loading_visibility_changed")):
+		connect("visibility_changed", Callable(self, "_on_loading_visibility_changed"))
 
 
 func _input(_event):
@@ -51,29 +51,29 @@ func _on_loading_visibility_changed():
 	VISIBLE = visible
 	if visible:
 		loading2.show()
-		loading2.material.set_shader_param("speed",5)
+		loading2.material.set_shader_parameter("speed",5)
 	if not visible:
 		Progress.hide()
 		Progress.set_value(0)
 		Number.hide()
 		Number.set_text("...")
-		loading2.material.set_shader_param("speed",0)
+		loading2.material.set_shader_parameter("speed",0)
 
 func visibility_logic( _visible : bool):
 	if _visible:
 		loading2.show()
-		loading2.material.set_shader_param("speed",5)
+		loading2.material.set_shader_parameter("speed",5)
 	if not _visible:
 		Progress.hide()
 		Progress.set_value(0)
 		Number.hide()
 		Number.set_text("...")
-		loading2.material.set_shader_param("speed",0)
+		loading2.material.set_shader_parameter("speed",0)
 
 # Shows a Progress Bar
 func show_progress(value : float , max_value : float):
 	Progress.show()
-	Progress.set_value(range_lerp(value,0,max_value,0,100))
+	Progress.set_value(remap(value,0,max_value,0,100))
 
 func hide_progress():
 	Progress.hide()

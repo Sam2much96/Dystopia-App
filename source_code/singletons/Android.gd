@@ -11,7 +11,7 @@
 
 extends Node
 
-class_name android, "res://resources/misc/Android 32x32.png"
+class_name android #, "res://resources/misc/Android 32x32.png"
 
 # Lifetime OPtimizations for CPU Particle FX
 const Long_lifetime : int = 6
@@ -23,7 +23,7 @@ var TouchInterface : TouchScreenHUD
 
 var ingameMenu : Game_Menu
 
-export (bool) var is_android  
+@export var _is_android : bool 
 
 # To reduce memory over write of Global scerenn orientation integer unless necessary
 # and reduce memory calls between singletons unless necessary
@@ -35,17 +35,17 @@ func _ready():
 	# Disable if not on android
 	
 	if Globals.os == "Android":
-		is_android = true
+		_is_android = true
 		initial_screen_orientation = Utils.Screen.Orientation()
 	else:
-		is_android = false
+		_is_android = false
 		self.set_process(false)
 		self.set_physics_process(false)
 
 func is_android() -> bool:
 	# Returns script state as boolean if is android or isnt safely
 	
-	return is_android
+	return _is_android
 
 func _process(_delta):
 	

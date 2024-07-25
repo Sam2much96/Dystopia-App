@@ -28,12 +28,12 @@ extends Area2D
 
 class_name grass
 
-onready var nodeName : String = self.get_name() 
+@onready var nodeName : String = self.get_name() 
 
-onready var timer : Timer = $Timer
-onready var anim : AnimationPlayer = $AnimationPlayer
+@onready var timer : Timer = $Timer
+@onready var anim : AnimationPlayer = $AnimationPlayer
 
-onready var item_spawner :itemSpawner = $itemSpawner
+@onready var item_spawner :itemSpawner = $itemSpawner
 
 #List of Aread 2D groups that can destroy this node
 
@@ -45,13 +45,13 @@ func _ready():
 	#anim.play("idle",-1,1.0,0.0) 
 	
 	# Connect Signls
-	if not (is_connected("area_entered", self, "_on_grass_area_entered") 
+	if not (is_connected("area_entered", Callable(self, "_on_grass_area_entered")) 
 	):
-		connect("area_entered", self, "_on_grass_area_entered")
+		connect("area_entered", Callable(self, "_on_grass_area_entered"))
 	
-	if not (is_connected("area_entered", self, "_on_flowers_area_entered")
+	if not (is_connected("area_entered", Callable(self, "_on_flowers_area_entered"))
 	):
-		connect("area_entered", self, "_on_flowers_area_entered")
+		connect("area_entered", Callable(self, "_on_flowers_area_entered"))
 	
 	# Debug Signals
 	
@@ -60,7 +60,7 @@ func _ready():
 	#	is_connected("area_entered", self, "_on_flowers_area_entered")
 	#	)
 	
-	timer.connect("timeout", self, "_queue_free")
+	timer.connect("timeout", Callable(self, "_queue_free"))
 	
 	
 	

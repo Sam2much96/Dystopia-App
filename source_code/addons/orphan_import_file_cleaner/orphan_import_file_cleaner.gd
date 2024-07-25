@@ -1,47 +1,47 @@
-tool
+@tool
 extends EditorPlugin
 
 
 var _orphan_imports: Array = []
 
-onready var confirmation_dialog: ConfirmationDialog = $ConfirmationDialog
-onready var accept_dialog: AcceptDialog = $AcceptDialog
+@onready var confirmation_dialog: ConfirmationDialog = $ConfirmationDialog
+@onready var accept_dialog: AcceptDialog = $AcceptDialog
 
 
 func _ready():
-	confirmation_dialog.connect("confirmed", self, "_on_ConfirmationDialog_confirmed")
+	confirmation_dialog.connect("confirmed", Callable(self, "_on_ConfirmationDialog_confirmed"))
 
 
 func _enter_tree():
-	add_tool_menu_item("Orphan .import file cleaner", self, "_on_cleaner_pressed")
-	add_child(preload("./confirmation_dialog.tscn").instance())
-	add_child(preload("./accept_dialog.tscn").instance())
+	add_tool_menu_item("Orphan super.import file cleaner", self, "_on_cleaner_pressed")
+	add_child(preload("./confirmation_dialog.tscn").instantiate())
+	add_child(preload("./accept_dialog.tscn").instantiate())
 
 
 func _exit_tree():
-	remove_tool_menu_item("Orphan .import file cleaner")
+	remove_tool_menu_item("Orphan super.import file cleaner")
 	confirmation_dialog.free()
 	accept_dialog.free()
 
 
 func _on_cleaner_pressed(ub):
-	accept_dialog.rect_size = Vector2(83, 58)
+	accept_dialog.size = Vector2(83, 58)
 	accept_dialog.dialog_text = ""
 
 	var item_list: ItemList = confirmation_dialog.get_node("VBoxContainer/ScrollContainer/VBoxContainer/ItemList")
 	item_list.clear()
 
 	var found_files: Array = []
-	var dir: Directory = Directory.new()
+	var dir: DirAccess = DirAccess.new()
 	var sub_directories: Array = ["res://"]
 
 	while sub_directories.size() > 0:
 		var path: String = sub_directories[0]
 		var err: int = dir.open(path)
 		if err == OK:
-			dir.list_dir_begin()
+			dir.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 			var file_name: String = dir.get_next()
-			while not file_name.empty():
+			while not file_name.is_empty():
 				if not file_name.begins_with("."):
 					if dir.current_is_dir():
 						sub_directories.append(path + file_name + "/")
@@ -64,7 +64,7 @@ func _on_cleaner_pressed(ub):
 			if not original_file in found_files:
 				_orphan_imports.append(import_file)
 
-	if not _orphan_imports.empty():
+	if not _orphan_imports.is_empty():
 		for orphan_file in _orphan_imports:
 			item_list.add_item(orphan_file)
 		confirmation_dialog.popup_centered()
@@ -74,7 +74,7 @@ func _on_cleaner_pressed(ub):
 
 
 func _on_ConfirmationDialog_confirmed():
-	var dir: Directory = Directory.new()
+	var dir: DirAccess = DirAccess.new()
 	var errors: Array = []
 	for file in _orphan_imports:
 		var err: int = dir.remove(file)
@@ -83,7 +83,7 @@ func _on_ConfirmationDialog_confirmed():
 
 	_orphan_imports = []
 
-	if not errors.empty():
+	if not errors.is_empty():
 		accept_dialog.dialog_text = "Could not remove the following files: \n"
 		for e in errors:
 			accept_dialog.dialog_text += e + " \n"

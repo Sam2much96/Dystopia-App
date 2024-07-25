@@ -28,27 +28,27 @@ This is a gate-keeper script to keep check user's internet connections, restrict
 var cinematics = load('res://scenes/cinematics/cinematics.tscn')
 var index : int = 0
 
-onready var play_button : Button = $ui/grid/play
-onready var dialgue_box = $Dialog_box
-onready var language = $ui/grid/language
+@onready var play_button : Button = $ui/grid/play
+@onready var dialgue_box = $Dialog_box
+@onready var language = $ui/grid/language
 
 ########Label Spacer Codes Are Used For Aesthetics#########
-onready var label_spacer = $ui/grid/label_spacer
-onready var label_spacer2 = $ui/grid/label_spacer2
-onready var label_spacer3 =$ui/grid/label_spacer3
+@onready var label_spacer = $ui/grid/label_spacer
+@onready var label_spacer2 = $ui/grid/label_spacer2
+@onready var label_spacer3 =$ui/grid/label_spacer3
 
-onready var timer = $Timer
-onready var _debug =get_tree().get_root().get_node("/root/Debug")
+@onready var timer = $Timer
+@onready var _debug =get_tree().get_root().get_node("/root/Debug")
 
 var os = Globals.os # Pointer
 
-onready var UI_buttons : Array = [
+@onready var UI_buttons : Array = [
 	play_button, dialgue_box, 
 	language, label_spacer, 
 	label_spacer2, label_spacer3
 	]
 
-onready var _hide_dialogue_box : bool = false
+@onready var _hide_dialogue_box : bool = false
 
 func _ready():
 # Described Above
@@ -66,8 +66,8 @@ func _ready():
 	
 	# If Dialogue Already Preset, Skip to Cinematics.
 	print_debug("User Preloaded Language: ", Dialogs.language)
-	if not Dialogs.language.empty() :
-		get_tree().change_scene_to(cinematics)
+	if not Dialogs.language.is_empty() :
+		get_tree().change_scene_to_packed(cinematics)
 
 	
 
@@ -85,7 +85,7 @@ func _ready():
 
 	# Connects the Networking signal
 	# Temporarily disabling for refactorng
-	Networking.connect("request_completed", self, "_http_request_completed")
+	Networking.connect("request_completed", Callable(self, "_http_request_completed"))
 
 
 	"Checks Internet Access is Verified "
@@ -128,7 +128,7 @@ func _on_play_pressed():
 
 	print_debug(Dialogs.language)
 
-	Utils.Functions.change_scene_to(cinematics, get_tree())
+	Utils.Functions.change_scene_to_packed(cinematics, get_tree())
 
 
 """
@@ -143,7 +143,7 @@ func _check_if_device_is_online():
 
 
 func _http_request_completed(result, response_code, headers, body):
-	if body.empty() != true:
+	if body.is_empty() != true:
 		show_play_button()
 		
 		Networking.good_internet = true #aves the internet status as a global variable
@@ -152,20 +152,20 @@ func _http_request_completed(result, response_code, headers, body):
 		print ('Device is internet connected', result, response_code)
 		return
 	# Loop
-	while body.empty() == true && index < 30:
+	while body.is_empty() == true && index < 30:
 		print ('No Internet Connection', result, response_code)
 		index += 1
 		_check_if_device_is_online()
 		#if _debug != null:
 		
-		get_tree().change_scene_to( _debug.error_splash_page)
+		get_tree().change_scene_to_packed( _debug.error_splash_page)
 		
 		#Resets Networking node
 		Networking.stop_check()
 		# Error splash page
 		if index == 10:
 			#dialgue_box.show_dialog('No Internet Connection','Admin') #not needed
-			get_tree().change_scene_to(_debug.error_splash_page)
+			get_tree().change_scene_to_packed(_debug.error_splash_page)
 			break
 
 

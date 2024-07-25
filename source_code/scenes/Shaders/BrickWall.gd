@@ -1,7 +1,7 @@
 # BrickWall Shade
 # DOcumentation : https://godotshaders.com/shader/brick-wall/
 
-extends Sprite
+extends Sprite2D
 
 
 func _ready():

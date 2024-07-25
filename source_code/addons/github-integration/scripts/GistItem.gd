@@ -17,9 +17,9 @@ signal gist_selected(gist)
 signal gist_clicked(this_gist)
 
 var gist_icon : ImageTexture 
-onready var Name : HBoxContainer = $Gist/Name
-onready var Files : HBoxContainer = $Gist/Files
-onready var BG : ColorRect = $BG
+@onready var Name : HBoxContainer = $Gist/Name
+@onready var Files : HBoxContainer = $Gist/Files
+@onready var BG : ColorRect = $BG
 
 var _name : String
 var _files_amount : int

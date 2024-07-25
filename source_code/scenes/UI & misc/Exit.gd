@@ -22,13 +22,13 @@ class_name Exit
 Add this to any area2d and it will send the player to the indicated scene and spawnpoint
 """
 
-export(String, FILE, "*.tscn") var to_scene
-export(String) var spawnpoint = ""
+@export var to_scene # (String, FILE, "*.tscn")
+@export var spawnpoint: String = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# warning-ignore:return_value_discarded
-	connect("body_entered", self, "_on_body_entered")
+	connect("body_entered", Callable(self, "_on_body_entered"))
 	
 func _on_body_entered(body):
 	if body is Player:
@@ -57,13 +57,13 @@ func _on_body_entered(body):
 			) 
 			
 			
-	if  to_scene.empty():
+	if  to_scene.is_empty():
 		push_error("Error changing scenes: to_scene has no assigned scene")
 		return false
 		
 		
 		
 		# Global Scene Transition
-	if Utils.Functions.change_scene_to(Globals.loading_scene, get_tree()) != OK:
+	if Utils.Functions.change_scene_to_packed(Globals.loading_scene, get_tree()) != OK:
 		push_error("Error changing scene")
 

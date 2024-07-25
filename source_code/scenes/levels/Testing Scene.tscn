@@ -49,11 +49,11 @@ position = Vector2( -11, 617 )
 
 [node name="Menu " parent="." instance=ExtResource( 11 )]
 visible = false
-margin_left = -779.956
-margin_top = -1145.02
-margin_right = 402.044
-margin_bottom = -546.016
-rect_scale = Vector2( 2.48164, 2.48164 )
+offset_left = -779.956
+offset_top = -1145.02
+offset_right = 402.044
+offset_bottom = -546.016
+scale = Vector2( 2.48164, 2.48164 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -64,4 +64,4 @@ position = Vector2( -6.10352e-05, -3.05176e-05 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
 position = Vector2( -181.429, -1048.25 )
-polygon = PoolVector2Array( 904.05, -1252.36, -1918.17, -1353.15, -2220.55, 6145.9, 4149.61, 6065.26, 3484.37, -1292.68, -43.4111, -970.137, -244.999, -647.597, 3181.99, -1030.61, 3766.59, 5702.41, -1877.86, 5762.88, -1615.79, -1030.61, 198.494, -1050.77 )
+polygon = PackedVector2Array( 904.05, -1252.36, -1918.17, -1353.15, -2220.55, 6145.9, 4149.61, 6065.26, 3484.37, -1292.68, -43.4111, -970.137, -244.999, -647.597, 3181.99, -1030.61, 3766.59, 5702.41, -1877.86, 5762.88, -1615.79, -1030.61, 198.494, -1050.77 )

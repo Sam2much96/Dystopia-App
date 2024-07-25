@@ -3,29 +3,29 @@ extends Control
 
 class_name User_Panel
 
-onready var _repository_item = preload("res://addons/github-integration/scenes/RepositoryItem.tscn")
-onready var _gist_item = preload("res://addons/github-integration/scenes/GistItem.tscn")
+@onready var _repository_item = preload("res://addons/github-integration/scenes/RepositoryItem.tscn")
+@onready var _gist_item = preload("res://addons/github-integration/scenes/GistItem.tscn")
 
-onready var Avatar : TextureRect = $Panel/HBoxContainer/avatar
-onready var GistIcon : TextureRect = $Panel/List/GistHeader/gists_icon
-onready var RepoIcon : TextureRect = $Panel/List/RepositoryHeader/repos_icon
+@onready var Avatar : TextureRect = $Panel/HBoxContainer/avatar
+@onready var GistIcon : TextureRect = $Panel/List/GistHeader/gists_icon
+@onready var RepoIcon : TextureRect = $Panel/List/RepositoryHeader/repos_icon
 
-onready var User : Label  = $Panel/HBoxContainer/user
-onready var Repos : Label = $Panel/List/RepositoryHeader/repos
-onready var Gists : Label = $Panel/List/GistHeader/gists
-onready var RepoList : VBoxContainer = $Panel/List/RepositoryList/Repos
-onready var GistList : VBoxContainer = $Panel/List/GistList/Gists
-onready var NewRepo : Button = $Panel/List/repos_buttons/repo
-onready var NewGist : Button = $Panel/List/gist_buttons/gist
-onready var ReloadBtn : Button = $ReloadBtn
+@onready var User : Label  = $Panel/HBoxContainer/user
+@onready var Repos : Label = $Panel/List/RepositoryHeader/repos
+@onready var Gists : Label = $Panel/List/GistHeader/gists
+@onready var RepoList : VBoxContainer = $Panel/List/RepositoryList/Repos
+@onready var GistList : VBoxContainer = $Panel/List/GistList/Gists
+@onready var NewRepo : Button = $Panel/List/repos_buttons/repo
+@onready var NewGist : Button = $Panel/List/gist_buttons/gist
+@onready var ReloadBtn : Button = $ReloadBtn
 
-onready var SearchRepo : LineEdit = $Panel/List/RepositoryHeader/search_repo
-onready var SearchGist : LineEdit = $Panel/List/GistHeader/search_gist
+@onready var SearchRepo : LineEdit = $Panel/List/RepositoryHeader/search_repo
+@onready var SearchGist : LineEdit = $Panel/List/GistHeader/search_gist
 
-onready var GistDialog : WindowDialog = $NewGist
-onready var RepoDialog : ConfirmationDialog = $NewRepo
+@onready var GistDialog : Window = $NewGist
+@onready var RepoDialog : ConfirmationDialog = $NewRepo
 
-onready var ProjectRepository : PanelContainer = $Panel/List/ProjectRepository
+@onready var ProjectRepository : PanelContainer = $Panel/List/ProjectRepository
 
 signal new_branch()
 signal completed_loading()
@@ -41,9 +41,9 @@ var branches : Array = []
 var repository_list : Array = []
 var gist_list : Array = []
 
-onready var RestHandler_ = get_parent().get_node("RestHandler")
-onready var PluginSettings_ = get_parent().get_node("PluginSettings")
-onready var UserData_ = get_parent().get_node("UserData")
+@onready var RestHandler_ = get_parent().get_node("RestHandler")
+@onready var PluginSettings_ = get_parent().get_node("PluginSettings")
+@onready var UserData_ = get_parent().get_node("UserData")
 
 
 
@@ -53,29 +53,29 @@ func _ready():
 	_connect_signals()
 
 func _connect_signals() -> void:
-	NewRepo.connect("pressed",self,"new_repo")
-	NewGist.connect("pressed",self,"new_gist")
-	ReloadBtn.connect("pressed",self,"_reload")
-	SearchRepo.connect("text_changed",self,"_on_search_repo")
-	SearchGist.connect("text_changed",self,"_on_search_gist")
+	NewRepo.connect("pressed", Callable(self, "new_repo"))
+	NewGist.connect("pressed", Callable(self, "new_gist"))
+	ReloadBtn.connect("pressed", Callable(self, "_reload"))
+	SearchRepo.connect("text_changed", Callable(self, "_on_search_repo"))
+	SearchGist.connect("text_changed", Callable(self, "_on_search_gist"))
 	
-	RestHandler_.connect("request_failed", self, "_on_request_failed")
-	RestHandler_.connect("user_repositories_requested",self,"_on_user_repositories_requested")
-	RestHandler_.connect("user_gists_requested", self, "_on_user_gists_requested")
-	$Panel/List/gist_buttons/reload.connect("pressed", self, "request_gists")
-	$Panel/List/repos_buttons/reload.connect("pressed", self, "request_repositories")
+	RestHandler_.connect("request_failed", Callable(self, "_on_request_failed"))
+	RestHandler_.connect("user_repositories_requested", Callable(self, "_on_user_repositories_requested"))
+	RestHandler_.connect("user_gists_requested", Callable(self, "_on_user_gists_requested"))
+	$Panel/List/gist_buttons/reload.connect("pressed", Callable(self, "request_gists"))
+	$Panel/List/repos_buttons/reload.connect("pressed", Callable(self, "request_repositories"))
 
 func set_darkmode(darkmode : bool):
 	if darkmode:
 		$BG.color = "#24292e"
 		set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme-Dark.tres"))
-		$Panel/List/RepositoryList.set("custom_styles/bg", load("res://addons/github-integration/resources/styles/List-black.tres"))
-		$Panel/List/GistList.set("custom_styles/bg", load("res://addons/github-integration/resources/styles/List-black.tres"))
+		$Panel/List/RepositoryList.set("theme_override_styles/bg", load("res://addons/github-integration/resources/styles/List-black.tres"))
+		$Panel/List/GistList.set("theme_override_styles/bg", load("res://addons/github-integration/resources/styles/List-black.tres"))
 	else:
 		$BG.color = "#f6f8fa"
 		set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme.tres"))
-		$Panel/List/RepositoryList.set("custom_styles/bg", load("res://addons/github-integration/resources/styles/List-white.tres"))
-		$Panel/List/GistList.set("custom_styles/bg", load("res://addons/github-integration/resources/styles/List-white.tres"))
+		$Panel/List/RepositoryList.set("theme_override_styles/bg", load("res://addons/github-integration/resources/styles/List-white.tres"))
+		$Panel/List/GistList.set("theme_override_styles/bg", load("res://addons/github-integration/resources/styles/List-white.tres"))
 
 func load_icons():
 	GistIcon.texture = Github.IconLoaderGithub.load_icon_from_name("gists")
@@ -110,23 +110,23 @@ func load_panel() -> void:
 #	Gists.text = str(UserData.USER.public_gists)
 	
 	var project_repository : Array = check_project_repository()
-	if not project_repository.empty():
+	if not project_repository.is_empty():
 		print(project_repository)
 		RestHandler_.request_user_repository("organization" if UserData_.USER.login != project_repository[0] else "user", project_repository[0], project_repository[1])
 		get_parent().print_debug_message("A repository linked to this project has been identified.")
-		_on_user_repository_requested(yield(RestHandler_, "user_repository_requested"))
+		_on_user_repository_requested(await RestHandler_.user_repository_requested)
 		
 	request_repositories()
-	yield(RestHandler_, "user_repositories_requested")
+	await RestHandler_.user_repositories_requested
 	request_gists()
-	yield(RestHandler_, "user_gists_requested")
+	await RestHandler_.user_gists_requested
 	emit_signal("completed_loading")
 	show()
 
 # Snippet code provided by @konsumer on GitHub and adapted. Thanks!!!
 func check_project_repository() -> Array:
-	var f = File.new()
-	var err = f.open("res://.git/config", File.READ)
+	var f : FileAccess #= File.new()
+	var err : int #= f.open("res://.git/config", File.READ)
 	if err != OK:
 		return []
 	else:
@@ -169,26 +169,26 @@ func load_repositories(repositories : Array) -> void:
 	get_parent().loading(false)
 
 func append_repository(repository : Dictionary, current_project : bool = false):
-	var repo_item = _repository_item.instance()
+	var repo_item = _repository_item.instantiate()
 	if current_project:
 		ProjectRepository.show()
 		ProjectRepository.add_child(repo_item)
 	else:
 		RepoList.add_child(repo_item)
 	repo_item.set_repository(repository, current_project)
-	repo_item.connect("repo_selected",self,"repo_selected")
-	repo_item.connect("repo_clicked",self,"repo_clicked")
+	repo_item.connect("repo_selected", Callable(self, "repo_selected"))
+	repo_item.connect("repo_clicked", Callable(self, "repo_clicked"))
 	repository_list.append(repo_item)
 
 func load_gists(gists : Array) -> void:
 	clear_gist_list()
 	
 	for gist in gists:
-		var gist_item = _gist_item.instance()
+		var gist_item = _gist_item.instantiate()
 		GistList.add_child(gist_item)
 		gist_item.set_gist(gist)
-		gist_item.connect("gist_selected",self,"gist_selected")
-		gist_item.connect("gist_clicked",self,"gist_clicked")
+		gist_item.connect("gist_selected", Callable(self, "gist_selected"))
+		gist_item.connect("gist_clicked", Callable(self, "gist_clicked"))
 		gist_list.append(gist_item)
 	
 	Gists.text = str(gists.size())
@@ -196,12 +196,14 @@ func load_gists(gists : Array) -> void:
 	emit_signal("loaded_gists")
 	get_parent().loading(false)
 
-func request_completed(result : int, response_code : int, headers : PoolStringArray, body : PoolByteArray ):
+func request_completed(result : int, response_code : int, headers : PackedStringArray, body : PackedByteArray ):
 	if result == 0:
 		match requesting:
 			REQUESTS.BRANCHES:
 				if response_code == 200:
-					branches = JSON.parse(body.get_string_from_utf8()).result
+					var test_json_conv = JSON.new()
+					#test_json_conv.parse(body.get_string_from_utf8()).result
+					branches = test_json_conv.get_data()
 					emit_signal("new_branch")
 			REQUESTS.DELETE:
 				if response_code == 204:
@@ -210,7 +212,7 @@ func request_completed(result : int, response_code : int, headers : PoolStringAr
 
 func request_branches(req : int, rep : Dictionary):
 	requesting = req
-	request.request("https://api.github.com/repos/"+Github.UserData.USER.login+"/"+rep.name+"/branches",Github.UserData.header,false,HTTPClient.METHOD_GET,"")
+	#request.request("https://api.github.com/repos/"+Github.UserData.USER.login+"/"+rep.name+"/branches",Github.UserData.header,false,HTTPClient.METHOD_GET,"")
 
 func new_repo():
 	RepoDialog.popup()

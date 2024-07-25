@@ -1,4 +1,4 @@
-extends Area
+extends Area3D
 
 
 # *************************************************
@@ -25,13 +25,13 @@ class_name Exit3D
 Add this to any area2d and it will send the player to the indicated scene and spawnpoint
 """
 
-export(String, FILE, "*.tscn") var to_scene
-export(String) var spawnpoint = ""
+@export var to_scene : String # (String, FILE, "*.tscn")
+@export var spawnpoint: String = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# warning-ignore:return_value_discarded
-	connect("body_entered", self, "_on_body_entered")
+	connect("body_entered", Callable(self, "_on_body_entered"))
 	
 	# update current scene
 		#use current scene to trigger cinematic
@@ -41,7 +41,7 @@ func _ready():
 func _on_body_entered(body):
 	# Buggy not workinh
 	# Using timer node instead
-	if body is Camera:
+	if body is Camera3D:
 		print("11111111111")
 		Globals.current_level = to_scene
 		Globals.spawn_x = body.position.x+ 200 
@@ -77,7 +77,7 @@ func _on_Timer_timeout():
 		"Loads Large Scene"
 		print_debug("creates a bug in the titlescreen")
 		# depreciating until better exit parameters are fixed
-		Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
+		Utils.Functions.change_scene_to_packed(Utils.Functions.LoadLargeScene(
 		to_scene, 
 		Globals.scene_resource, 
 		Globals._o, 

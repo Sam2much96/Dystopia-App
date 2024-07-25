@@ -12,10 +12,10 @@ void fragment() {
 }"
 
 [sub_resource type="Gradient" id=10]
-offsets = PoolRealArray( 0, 0.0688073, 0.238532, 0.444954, 1 )
-colors = PoolColorArray( 1, 0, 0, 1, 1, 0.0910375, 0.0120563, 1, 1, 0.737404, 0.0976563, 1, 0.0820883, 0.978916, 0.00784101, 1, 0.00195313, 1, 0, 1 )
+offsets = PackedFloat32Array( 0, 0.0688073, 0.238532, 0.444954, 1 )
+colors = PackedColorArray( 1, 0, 0, 1, 1, 0.0910375, 0.0120563, 1, 1, 0.737404, 0.0976563, 1, 0.0820883, 0.978916, 0.00784101, 1, 0.00195313, 1, 0, 1 )
 
-[sub_resource type="GradientTexture" id=11]
+[sub_resource type="GradientTexture2D" id=11]
 gradient = SubResource( 10 )
 width = 1000
 
@@ -38,7 +38,7 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -55.0
-margin_top = -14.0
+offset_left = -55.0
+offset_top = -14.0
 text = "60"
 align = 2

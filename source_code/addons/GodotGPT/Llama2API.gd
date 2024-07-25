@@ -19,7 +19,7 @@ extends Node
 
 var replicate_api = ProjectSettings.get_setting("application/config/openai_api")
 
-export (String) var prompt = ""
+@export (String) var prompt = ""
 var timer
 
 var url
@@ -30,13 +30,13 @@ var output_data = ""
 var output = ""
 var output_response : Dictionary
 
-onready var _prompt : HTTPRequest = HTTPRequest.new()
+@onready var _prompt : HTTPRequest = HTTPRequest.new()
 
 # Make the GET request
-onready var response2 : HTTPRequest = HTTPRequest.new()
+@onready var response2 : HTTPRequest = HTTPRequest.new()
 
 # Headers
-var _headers = PoolStringArray()
+var _headers = PackedStringArray()
 
 
 
@@ -86,14 +86,14 @@ func _ready():
 	if not replicate_api == null:
 		# For making direct api calls to replicate api
 		# POST method
-		_prompt.connect("request_completed",self, "_request_callback")
+		_prompt.connect("request_completed", Callable(self, "_request_callback"))
 	
 		# GET method
-		response2.connect("request_completed", self, "_output")
+		response2.connect("request_completed", Callable(self, "_output"))
 	
 	if replicate_api == null:
 		# POST method
-		_prompt.connect("request_completed",self, "_output")
+		_prompt.connect("request_completed", Callable(self, "_output"))
 
 
 
@@ -105,7 +105,7 @@ func _ready():
 func _request_callback(result, response_code, headers, body) -> void:
 	#print_debug("headers", headers)
 	if response_code == HTTPClient.RESPONSE_OK or HTTPClient.RESPONSE_CREATED :
-		var response = str2var(body.get_string_from_utf8())
+		var response = str_to_var(body.get_string_from_utf8())
 		
 		
 		print_debug("response", response)
@@ -117,7 +117,7 @@ func _request_callback(result, response_code, headers, body) -> void:
 		print_debug(url2)
 
 		
-		yield(get_tree().create_timer(4), "timeout")
+		await get_tree().create_timer(4).timeout
 		
 		# Get request
 		response2.request(url2, _headers, false, HTTPClient.METHOD_GET)
@@ -125,7 +125,7 @@ func _request_callback(result, response_code, headers, body) -> void:
 	elif response_code == HTTPClient.STATUS_DISCONNECTED:
 		print_debug("not connected to server")
 	else:
-		var response = str2var(body.get_string_from_utf8())
+		var response = str_to_var(body.get_string_from_utf8())
 		print_debug("ERROR: " + str(response_code))
 		print_debug("response", response)
 
@@ -136,7 +136,7 @@ func _output(result, response_code, headers, body) -> String:
 	
 	
 	if response_code == HTTPClient.RESPONSE_OK:
-		output_response = str2var(body.get_string_from_utf8())
+		output_response = str_to_var(body.get_string_from_utf8())
 		
 		output_data = output_response.get("output", null)
 		
@@ -147,7 +147,7 @@ func _output(result, response_code, headers, body) -> String:
 		if output_data == null : push_error("Error in Prompt")
 	else:
 		#print(body)
-		var response = str2var(body.get_string_from_utf8())
+		var response = str_to_var(body.get_string_from_utf8())
 		print_debug("ERROR: " + str(response_code))
 		print_debug("response: ", response)
 	return output
@@ -160,7 +160,7 @@ func send_prompt(request: HTTPRequest) -> void:
 		print("sending prompt >>>>")
 		#print_debug(url)
 		
-		request.request(url,_headers , false, HTTPClient.METHOD_POST, JSON.print(data))
+		request.request(url,_headers , false, HTTPClient.METHOD_POST, JSON.stringify(data))
 	else:
 		push_error("prompt cannot be empty")
 

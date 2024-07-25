@@ -28,21 +28,21 @@ class_name lobbyV2
 I'LL BE CONNECTING STATIC METHODS FROM THE NETWORKING SINGLETON 
 Code may be really hacky but will be thoughroughly Documented.
 """
-onready var network = NetworkedMultiplayerENet.new()
-export (String) var pub_ipaddr = "https://icanhazip.com/" # used in match making to 
-export (String) var my_ip : String = ""
+@onready var network = ENetMultiplayerPeer.new()
+@export (String) var pub_ipaddr = "https://icanhazip.com/" # used in match making to 
+@export (String) var my_ip : String = ""
 
 # Lobby UI Items
-onready var c_react : ColorRect = $ColorRect
+@onready var c_react : ColorRect = $ColorRect
 #onready var image_tex : TextureRect = $TextureRect
 
 # Host Button for Server
-onready var _host : Button = $ui/ScrollContainer/grid/host
+@onready var _host : Button = $ui/ScrollContainer/grid/host
 
 # Selector for Local Lan or Online mmo 
-onready var _multiplayer_type : OptionButton = $ui/ScrollContainer/grid/input_game
+@onready var _multiplayer_type : OptionButton = $ui/ScrollContainer/grid/input_game
 
-export(bool) var DEDICATED_SERVER 
+@export var DEDICATED_SERVER: bool 
 
 
 func _ready():
@@ -93,7 +93,7 @@ func _ready():
 		hide_lobby_UI_elements()
 		
 		# turn off music
-		Music._notification(NOTIFICATION_APP_PAUSED)
+		Music._notification(NOTIFICATION_APPLICATION_PAUSED)
 		
 		# host server
 		_dedicated_server()

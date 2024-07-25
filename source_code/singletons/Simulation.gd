@@ -40,20 +40,20 @@ class_name Simulationv1
 enum {SIMULATING, NON_SIMULATING}
 
 # Frame ID
-onready var frame_id : int 
+@onready var frame_id : int 
 
 # Frame Counter
-export (int) var frame_counter = 0
+@export var frame_counter : int = 0
 
-var last_update = -1
+var last_update : int = -1
 
 # Placeholder variables ported from another multiplayer template
 var SIMULATING_1: bool = false
 var v : Vector2
 var world_radius : int
-var player_data : PoolByteArray
-export (PoolByteArray) var RawData : PoolByteArray # Raw Data Sent Every Player Input
-export (PoolByteArray) var RawDataArray : Array # Raw Data Sent Every Player Input
+var player_data : PackedByteArray
+@export  var RawData : PackedByteArray # Raw Data Sent Every Player Input
+@export  var RawDataArray : Array # Raw Data Sent Every Player Input
 var id_as_string : String #= Networking.id_as_string
 
 
@@ -62,8 +62,8 @@ var id_as_string : String #= Networking.id_as_string
 # 
 var player : Player_v2_networking
 
-export (Array) var all_player_objects = [] # kinematic2d and integers
-export (Array) var player_IDs = [] # IDs
+@export var all_player_objects : Array = [] # kinematic2d and integers
+@export var player_IDs : Array = [] # IDs
 
 
 """
@@ -73,7 +73,7 @@ Player Data + Game State
 """
 # (1) Depreciating Inventory data until it is optimized
 
-export (Dictionary) var player_info : Dictionary = { 0 : { # server peer id
+@export var player_info : Dictionary = { 0 : { # server peer id
 		"pos": {"x": 0, "y":0}, # updated positional data, 
 		"vel":{"x": 0, "y": 0},
 		"fr": 0, #frame data
@@ -188,7 +188,9 @@ func simulate(id : int): # playerclass controls all player networkinf objects
 			player.new_anim = "walk_left"
 		
 		# Data packet Lost
-		player.move_and_slide(Vector2(float(Simulation.player_info[id]["vel"]["x"]), float(Simulation.player_info[id]["vel"]["y"])))
+		player.set_velocity(Vector2(float(Simulation.player_info[id]["vel"]["x"]), float(Simulation.player_info[id]["vel"]["y"])))
+		player.move_and_slide()
+		player.velocity
 		
 		"TWEEN ANIMATION"
 		# Position
@@ -270,7 +272,7 @@ func _physics_process(_delta):
 		# the last two previous updates, this way we always have smooth movements. The
 		# main drawback is added latency (100 ms).
 		var pos = Vector2(0,0)
-		var target_timestamp = OS.get_ticks_msec() - (Networking.TICK_DURATION*2)
+		var target_timestamp = Time.get_ticks_msec() - (Networking.TICK_DURATION*2)
 		
 		for peer_id in Networking.player_info:
 			# Update position using lerp with 2 prior states
@@ -301,23 +303,23 @@ class projectiles:
 	# Uses Target Stamp Variable to Ensure Projectile Integrity Across ALl Peers
 	func SimulateProjectile():
 		# We spawn projectiles based on required timestamp (received from server)
-		var target_timestamp = OS.get_ticks_msec() 
-		for projectile in projectiles:
-			if projectile.timestamp <= target_timestamp:
-				var preload_projectile : String = ""
-				var node_projectile = load(preload_projectile).instance()
-				var info = Networking.player_info[projectile.id]
-				var projectile_os = Vector2(projectile.position.x,projectile.position.y)
-				node_projectile.name = "projectile_" + info.name
+		var target_timestamp = Time.get_ticks_msec() 
+		#for projectile in projectiles:
+		#	if projectile.timestamp <= target_timestamp:
+		#		var preload_projectile : String = ""
+		#		var node_projectile = load(preload_projectile).instantiate()
+		#		var info = Networking.player_info[projectile.id]
+		#		var projectile_os = Vector2(projectile.position.x,projectile.position.y)
+		#		node_projectile.name = "projectile_" + info.name
 				
 				# Add Projectile to the Scene Tree
 				#node_projectiles.add_child(node_projectile)
 				
-				var trustp = Vector2(0,Networking.PROJECTILE_OFFSET).rotated(projectile.current_angle)
-				node_projectile.contacts_reported = 1
-				node_projectile.set_position(projectile_os - trustp)
-				node_projectile.set_linear_velocity(-trustp * Networking.PROJECTILE_SPEED)
-				projectiles.erase(projectile)
+		#		var trustp = Vector2(0,Networking.PROJECTILE_OFFSET).rotated(projectile.current_angle)
+		#		node_projectile.max_contacts_reported = 1
+		#		node_projectile.set_position(projectile_os - trustp)
+		#		node_projectile.set_linear_velocity(-trustp * Networking.PROJECTILE_SPEED)
+		#		projectiles.erase(projectile)
 
 
 
@@ -377,7 +379,7 @@ REGISTERS PLAYER INPUT AND RELEASES
 """
 # Debugs Player Data
 # Also updates the server object with player data from respective peers
-remote func pi(id : int,player_data : PoolByteArray):
+@rpc("any_peer") func pi(id : int,player_data : PackedByteArray):
 	# Remote Calls Player Input From Client Peer for each client peer
 	# Should Connect to Physics Process Simulation Logic
 	# Bug: Player positional data is not sent properly (Fixed)
@@ -392,7 +394,7 @@ remote func pi(id : int,player_data : PoolByteArray):
 	# (4) Server Performs simulation on server
 	# (5) Server Broadcasts data to all client peers to replicate SImulation
 	# (6) Server Maintains states Synchronizations across all CLient Peers
-	if is_network_master():
+	if is_multiplayer_authority():
 		#print("Player Input Registered ",str (poolByte2Array(player_data)), "from ", id ) # player data returns array
 		
 		
@@ -416,7 +418,7 @@ remote func pi(id : int,player_data : PoolByteArray):
 		
 		
 		
-		id_as_string = var2str(id) 
+		id_as_string = var_to_str(id) 
 		for i in Networking.poolByte2Array(player_data):
 			
 			if i != null:
@@ -488,7 +490,7 @@ remote func pi(id : int,player_data : PoolByteArray):
 
 
 
-remote func pu(id : int, update_id : int, updates: PoolByteArray):
+@rpc("any_peer") func pu(id : int, update_id : int, updates: PackedByteArray):
 	
 	"Client Logic"
 	#Client Side Database Update & Simulation
@@ -508,7 +510,7 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
 
 	
-	var id_as_string : String = var2str(Networking.peer_id) 
+	var id_as_string : String = var_to_str(Networking.peer_id) 
 	
 	# Maintain an Updated Timeline so older packets are discarded
 #	last_update = update_id

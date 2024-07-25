@@ -25,18 +25,18 @@ this triggers an autosave spawnpoint feature one within its kinematic body 2d
 """
 
 
-onready var _debug : debug = get_node("/root/Debug")
+@onready var _debug : debug = get_node("/root/Debug")
 
 func _connect_signals() -> void:
 	
 	"Backup Signal connector"
 	
-	if not is_connected("body_entered", self, "_on_body_entered"):
+	if not is_connected("body_entered", Callable(self, "_on_body_entered")):
 		# warning-ignore:return_value_discarded
-		connect("body_entered", self, "_on_body_entered") #connects the signals with code
+		connect("body_entered", Callable(self, "_on_body_entered")) #connects the signals with code
 	
-	if not is_connected("body_exited", self, "_on_body_exited"):
-		connect("body_exited", self, "_on_body_exited")
+	if not is_connected("body_exited", Callable(self, "_on_body_exited")):
+		connect("body_exited", Callable(self, "_on_body_exited"))
 	
 
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://fonts/Word_bubble_dialogue.tres" type="DynamicFont" id=1]
+[ext_resource path="res://fonts/Word_bubble_dialogue.tres" type="FontFile" id=1]
 [ext_resource path="res://scenes/UI & misc/StatusText.gd" type="Script" id=2]
 
 [sub_resource type="StyleBoxFlat" id=2]
@@ -23,8 +23,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 1.9 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PackedFloat32Array( 0, 1.9 ),
+"transitions": PackedFloat32Array( 1, 1 ),
 "update": 1,
 "values": [ true, false ]
 }
@@ -35,8 +35,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.2, 1.6, 1.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PackedFloat32Array( 0, 0.2, 1.6, 1.9 ),
+"transitions": PackedFloat32Array( 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
@@ -47,8 +47,8 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 1.9 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 1.9 ),
+"transitions": PackedFloat32Array( 1 ),
 "values": [ {
 "args": [  ],
 "method": "_play_next"
@@ -60,18 +60,18 @@ modulate = Color( 1, 1, 1, 0.5 )
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_top = 90.609
-margin_bottom = 121.609
-custom_fonts/font = ExtResource( 1 )
+offset_top = 90.609
+offset_bottom = 121.609
+theme_override_fonts/font = ExtResource( 1 )
 text = "Got x thingie"
 align = 1
 script = ExtResource( 2 )
 
 [node name="Panel" type="Panel" parent="."]
 show_behind_parent = true
-margin_left = 114.491
-margin_right = 1140.49
-margin_bottom = 59.0
+offset_left = 114.491
+offset_right = 1140.49
+offset_bottom = 59.0
 theme = SubResource( 3 )
 
 [node name="anims" type="AnimationPlayer" parent="."]

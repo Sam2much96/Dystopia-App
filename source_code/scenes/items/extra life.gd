@@ -22,15 +22,15 @@ class_name Potion
 EXTRA LIFE
 """
 
-export(String) var item_type = "health potion"
-export(int) var amount = 1
+@export var item_type: String = "health potion"
+@export var amount: int = 1
 
-onready var anims : AnimationPlayer = $anims
+@onready var anims : AnimationPlayer = $anims
 
 
 
 func _ready():
-	connect("body_entered", self, "_on_Item_body_entered")
+	connect("body_entered", Callable(self, "_on_Item_body_entered"))
 	pass
 
 func _on_Item_body_entered(body): # use body : Player to make priority process

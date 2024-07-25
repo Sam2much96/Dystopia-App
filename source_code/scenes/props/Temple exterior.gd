@@ -18,8 +18,8 @@ extends StaticBody2D
 
 class_name TempleExterior
 
-export(String, FILE, "*.tscn") var to_scene = "res://scenes/levels/Temple interior.tscn"
-export(String) var spawnpoint = ''
+@export var to_scene = "res://scenes/levels/Temple interior.tscn" # (String, FILE, "*.tscn")
+@export var spawnpoint: String = ''
 
 #func _ready():
 	#$to_inside.to_scene = to_scene

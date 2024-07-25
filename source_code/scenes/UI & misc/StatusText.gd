@@ -31,7 +31,7 @@ var messages : Array = []
 
 var nodes : Array = [self]
 
-onready var anims : AnimationPlayer = $anims
+@onready var anims : AnimationPlayer = $anims
 func _enter_tree():
 	# Make GLobal
 	GlobalInput._Status_text = self
@@ -41,16 +41,16 @@ func _ready():
 	
 	# connect Signals
 	# Connects to Both Quest and Item Singleton
-	Quest.connect("quest_changed", self, "_questlog_updated")
+	Quest.connect("quest_changed", Callable(self, "_questlog_updated"))
 	
 	# Inventory to Status Text
 	# Item changed signals contain parameters
-	Inventory.connect("item_changed", self, "_inventory_updated")
+	Inventory.connect("item_changed", Callable(self, "_inventory_updated"))
 	
 	#Debug Signals
 	print_debug(
-		Inventory.is_connected("item_changed", self, "_inventory_updated"), 
-		Quest.is_connected("quest_changed", self, "_questlog_updated")
+		Inventory.is_connected("item_changed", Callable(self, "_inventory_updated")), 
+		Quest.is_connected("quest_changed", Callable(self, "_questlog_updated"))
 		)
 	
 	
@@ -108,7 +108,7 @@ func _queue_message(text):
 
 
 func _play_next():
-	if messages.empty():
+	if messages.is_empty():
 		return
 	else:
 		text = messages.pop_front()

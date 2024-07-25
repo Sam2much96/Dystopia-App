@@ -1,16 +1,16 @@
 [gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Joystick circle.tscn" type="PackedScene" id=1]
-[ext_resource path="res://resources/Buttons/menu white.png" type="Texture" id=2]
+[ext_resource path="res://resources/Buttons/menu white.png" type="Texture2D" id=2]
 [ext_resource path="res://resources/misc/btn-mask.png" type="BitMap" id=3]
 [ext_resource path="res://scenes/UI & misc/TouchScreenHud.gd" type="Script" id=4]
 [ext_resource path="res://scenes/UI & misc/joystick v2.gd" type="Script" id=5]
-[ext_resource path="res://resources/misc/btn-hands.png" type="Texture" id=6]
-[ext_resource path="res://resources/misc/btn-interact.png" type="Texture" id=11]
-[ext_resource path="res://resources/Buttons/comics.png" type="Texture" id=12]
-[ext_resource path="res://resources/misc/btn-stats.png" type="Texture" id=13]
-[ext_resource path="res://resources/misc/btn-roll.png" type="Texture" id=14]
-[ext_resource path="res://resources/misc/arrow.png" type="Texture" id=15]
+[ext_resource path="res://resources/misc/btn-hands.png" type="Texture2D" id=6]
+[ext_resource path="res://resources/misc/btn-interact.png" type="Texture2D" id=11]
+[ext_resource path="res://resources/Buttons/comics.png" type="Texture2D" id=12]
+[ext_resource path="res://resources/misc/btn-stats.png" type="Texture2D" id=13]
+[ext_resource path="res://resources/misc/btn-roll.png" type="Texture2D" id=14]
+[ext_resource path="res://resources/misc/arrow.png" type="Texture2D" id=15]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 30, 100 )
@@ -27,8 +27,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ true ]
 }
@@ -39,8 +39,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -51,8 +51,8 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -63,8 +63,8 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -75,8 +75,8 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -87,8 +87,8 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -99,8 +99,8 @@ tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -114,8 +114,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -126,8 +126,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ true ]
 }
@@ -138,8 +138,8 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -150,8 +150,8 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -162,8 +162,8 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -174,8 +174,8 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -186,8 +186,8 @@ tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -201,8 +201,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -213,8 +213,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -225,8 +225,8 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -237,8 +237,8 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ true ]
 }
@@ -249,8 +249,8 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -261,8 +261,8 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -273,8 +273,8 @@ tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -288,8 +288,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ true ]
 }
@@ -300,8 +300,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ true ]
 }
@@ -312,8 +312,8 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ false ]
 }
@@ -324,8 +324,8 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ true ]
 }
@@ -336,8 +336,8 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0.1, 0.4 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PackedFloat32Array( 0.1, 0.4 ),
+"transitions": PackedFloat32Array( 1, 1 ),
 "values": [ {
 "args": [  ],
 "method": "show_action_buttons"
@@ -353,8 +353,8 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ true ]
 }
@@ -365,8 +365,8 @@ tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ true ]
 }
@@ -380,20 +380,20 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( 6, 44 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Joystick:rect_position")
+tracks/1/path = NodePath("Joystick:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( 203.651, 467.955 ) ]
 }
@@ -404,46 +404,46 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0.1 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.1 ),
+"transitions": PackedFloat32Array( 1 ),
 "values": [ {
 "args": [  ],
 "method": "touch_interface_debug"
 } ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("Control/ActionButtons:rect_position")
+tracks/3/path = NodePath("Control/ActionButtons:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( -190.419, -13.7044 ) ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("Control/InterractButtons:rect_position")
+tracks/4/path = NodePath("Control/InterractButtons:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( -203.463, -23.4271 ) ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("D-pad:rect_position")
+tracks/5/path = NodePath("D-pad:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( 175.42, 425.286 ) ]
 }
@@ -454,8 +454,8 @@ tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ true ]
 }
@@ -466,8 +466,8 @@ tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ true ]
 }
@@ -478,8 +478,8 @@ tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ true ]
 }
@@ -487,14 +487,14 @@ tracks/8/keys = {
 [sub_resource type="Animation" id=5]
 resource_name = "SCREEN_VERTICAL_1"
 tracks/0/type = "value"
-tracks/0/path = NodePath("Joystick:rect_position")
+tracks/0/path = NodePath("Joystick:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( 163.651, 1566.8 ) ]
 }
@@ -505,8 +505,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -517,8 +517,8 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ true ]
 }
@@ -529,46 +529,46 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0.2 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.2 ),
+"transitions": PackedFloat32Array( 1 ),
 "values": [ {
 "args": [  ],
 "method": "touch_interface_debug"
 } ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("Control/ActionButtons:rect_position")
+tracks/4/path = NodePath("Control/ActionButtons:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( -149.076, 999.425 ) ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("Control/InterractButtons:rect_position")
+tracks/5/path = NodePath("Control/InterractButtons:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( -220.205, -19.3816 ) ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("D-pad:rect_position")
+tracks/6/path = NodePath("D-pad:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( 173.633, 1469.94 ) ]
 }
@@ -576,14 +576,14 @@ tracks/6/keys = {
 [sub_resource type="Animation" id=6]
 resource_name = "SCREEN_VERTICAL_2"
 tracks/0/type = "value"
-tracks/0/path = NodePath("Joystick:rect_position")
+tracks/0/path = NodePath("Joystick:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( 163.651, 1566.8 ) ]
 }
@@ -594,8 +594,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -606,8 +606,8 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ true ]
 }
@@ -618,22 +618,22 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0.2 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.2 ),
+"transitions": PackedFloat32Array( 1 ),
 "values": [ {
 "args": [  ],
 "method": "touch_interface_debug"
 } ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("D-pad:rect_position")
+tracks/4/path = NodePath("D-pad:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( 173.633, 1469.94 ) ]
 }
@@ -647,8 +647,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -659,8 +659,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -671,8 +671,8 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -683,8 +683,8 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -695,8 +695,8 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -707,8 +707,8 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "values": [ {
 "args": [  ],
 "method": "hide_buttons"
@@ -721,8 +721,8 @@ tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ true ]
 }
@@ -749,13 +749,13 @@ __meta__ = {
 [node name="InterractButtons" type="Control" parent="Control"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -220.205
-margin_top = -19.3816
-margin_right = -54.205
-margin_bottom = 315.618
+offset_left = -220.205
+offset_top = -19.3816
+offset_right = -54.205
+offset_bottom = 315.618
 
 [node name="stats" type="TouchScreenButton" parent="Control/InterractButtons"]
-pause_mode = 2
+process_mode = 3
 position = Vector2( 1110.48, 29.2283 )
 normal = ExtResource( 13 )
 bitmask = ExtResource( 3 )
@@ -783,10 +783,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -149.076
-margin_top = 999.425
-margin_right = -149.076
-margin_bottom = 999.425
+offset_left = -149.076
+offset_top = 999.425
+offset_right = -149.076
+offset_bottom = 999.425
 
 [node name="slash" type="TouchScreenButton" parent="Control/ActionButtons"]
 position = Vector2( 1014.57, 361.592 )
@@ -809,10 +809,10 @@ visibility_mode = 1
 [node name="D-pad" type="Control" parent="."]
 visible = false
 anchor_bottom = 1.0
-margin_left = 173.633
-margin_top = 1469.94
-margin_right = 173.633
-margin_bottom = 1469.94
+offset_left = 173.633
+offset_top = 1469.94
+offset_right = 173.633
+offset_bottom = 1469.94
 __meta__ = {
 "_edit_use_anchors_": true
 }
@@ -859,10 +859,10 @@ visibility_mode = 1
 [node name="Joystick" type="Control" parent="."]
 visible = false
 anchor_bottom = 1.0
-margin_left = 163.651
-margin_top = 1566.8
-margin_right = 203.651
-margin_bottom = 1606.8
+offset_left = 163.651
+offset_top = 1566.8
+offset_right = 203.651
+offset_bottom = 1606.8
 mouse_filter = 1
 script = ExtResource( 5 )
 custom_mapping = true

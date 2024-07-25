@@ -8,7 +8,7 @@ script/source = "extends Node
 
 
 
-export (bool) var shuffle 
+@export (bool) var shuffle 
 
 
 \"\"\"
@@ -16,7 +16,7 @@ Add this to any level and it'll start playing the indicated song
 as soon as the level loads. 
 \"\"\"
 
-export(String, FILE, \"*.ogg\") var music_track = \"\" 
+@export var music_track = \"\"  # (String, FILE, \"*.ogg\")
 
 
 func _ready():

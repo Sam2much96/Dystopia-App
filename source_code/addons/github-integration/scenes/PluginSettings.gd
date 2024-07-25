@@ -13,19 +13,19 @@
 extends Node
 class_name plugin_settings 
 
-export (String) var directory_name = "github_integration"
+@export var directory_name : String = "github_integration"
 var plugin_path : String = ProjectSettings.globalize_path("user://").replace("app_userdata/"+ProjectSettings.get_setting('application/config/name')+"/",directory_name)+"/"
 
-export(String, FILE, "*.cfg") var setting_file  = "settings.cfg"
+@export var setting_file  = "settings.cfg" # (String, FILE, "*.cfg")
 
-export (bool ) var debug = true
-export (bool) var auto_log : bool = false
-export (bool) var darkmode : bool = false
-export (bool) var auto_update_notifications : bool = true
-export(float) var auto_update_timer : float = 300
-export (Array) var owner_affiliations : Array = ["OWNER","COLLABORATOR","ORGANIZATION_MEMBER"]
+@export var debug : bool = true
+@export var auto_log : bool = false
+@export var darkmode : bool = false
+@export var auto_update_notifications : bool = true
+@export var auto_update_timer: float = 300
+@export var owner_affiliations : Array = ["OWNER","COLLABORATOR","ORGANIZATION_MEMBER"]
 
-export(bool) var _loaded : bool = false
+@export var _loaded: bool = false
 var config_file : ConfigFile = ConfigFile.new()
 
 func _check_plugin_path():
@@ -112,9 +112,9 @@ func reset_plugin():
 #
 func delete_all_files(path : String):
 	var directories = []
-	var dir : Directory = Directory.new()
+	var dir : DirAccess #= DirAccess.new()
 	dir.open(path)
-	dir.list_dir_begin(true,false)
+	dir.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 	var file = dir.get_next()
 	while (file != ""):
 		if dir.current_is_dir():

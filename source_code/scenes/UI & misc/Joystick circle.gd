@@ -36,10 +36,10 @@ var colorGrey
 var colorYt
 var colorBlue
 var colorBlck
-export (String) var Default_clr
+@export var Default_clr : String
 
-export (int) var circle_size
-export (Vector2) onready var pos = $Position2D.position
+@export var circle_size : int
+@onready var pos : Vector2 = $Marker2D.position
 
 func _ready():
 	
@@ -54,7 +54,8 @@ func _ready():
 
 func _process(delta):
 	if self.visible:
-		update()
+		#update()
+		pass
 	else : pass
 
 func _draw():

@@ -13,8 +13,10 @@
 
 */source_code/android/
 **/source_code/.imports/
+**/source_code/.godot/
 
 # All Import files
 *.md5
 *.stex
 *.import
+*.ctex

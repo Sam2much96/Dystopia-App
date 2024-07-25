@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://resources/Buttons/tilemap_black_packed.png" type="Texture" id=1]
+[ext_resource path="res://resources/Buttons/tilemap_black_packed.png" type="Texture2D" id=1]
 
 [sub_resource type="TileSet" id=1]
 0/name = "tilemap_black_packed.png 0"
@@ -1340,4 +1340,4 @@
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
 format = 1
-tile_data = PoolIntArray( 131077, 1, 0, 131084, 19, 0, 262149, 10, 0, 262156, 39, 0, 393221, 4, 0, 458756, 93, 0, 458757, 92, 0, 458758, 91, 0, 458764, 94, 0 )
+tile_data = PackedInt32Array( 131077, 1, 0, 131084, 19, 0, 262149, 10, 0, 262156, 39, 0, 393221, 4, 0, 458756, 93, 0, 458757, 92, 0, 458758, 91, 0, 458764, 94, 0 )

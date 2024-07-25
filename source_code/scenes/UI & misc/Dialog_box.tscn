@@ -1,19 +1,19 @@
 [gd_scene load_steps=16 format=2]
 
-[ext_resource path="res://fonts/adamwarrenpro-bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://fonts/adamwarrenpro-bold.ttf" type="FontFile" id=1]
 [ext_resource path="res://scenes/UI & misc/Dialog_box.gd" type="Script" id=2]
-[ext_resource path="res://resources/misc/next_dialog_arrow.png" type="Texture" id=4]
-[ext_resource path="res://fonts/DigitalStripBB_BoldItal.ttf" type="DynamicFontData" id=5]
-[ext_resource path="res://resources/misc/dialog_box_webp.webp" type="Texture" id=6]
+[ext_resource path="res://resources/misc/next_dialog_arrow.png" type="Texture2D" id=4]
+[ext_resource path="res://fonts/DigitalStripBB_BoldItal.ttf" type="FontFile" id=5]
+[ext_resource path="res://resources/misc/dialog_box_webp.webp" type="Texture2D" id=6]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="FontFile" id=1]
 size = 30
 font_data = ExtResource( 5 )
 
-[sub_resource type="StreamTexture" id=10]
+[sub_resource type="CompressedTexture2D" id=10]
 flags = 4
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="FontFile" id=2]
 size = 23
 use_filter = true
 font_data = ExtResource( 1 )
@@ -21,14 +21,14 @@ font_data = ExtResource( 1 )
 [sub_resource type="Animation" id=7]
 resource_name = "MOBILE"
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:rect_position")
+tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( 14.1422, 906.505 ) ]
 }
@@ -36,14 +36,14 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=8]
 resource_name = "PC"
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:rect_position")
+tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( 0, 427 ) ]
 }
@@ -51,26 +51,26 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=9]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:rect_position")
+tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( 0, 988.529 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath(".:rect_size")
+tracks/1/path = NodePath(".:size")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( 1101, 174 ) ]
 }
@@ -85,8 +85,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ 0 ]
 }
@@ -97,8 +97,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.1 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PackedFloat32Array( 0, 0.1 ),
+"transitions": PackedFloat32Array( 1, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
@@ -109,8 +109,8 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ true ]
 }
@@ -121,8 +121,8 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "values": [ {
 "args": [ "dialog_started" ],
 "method": "emit_signal"
@@ -135,8 +135,8 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0.1 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.1 ),
+"transitions": PackedFloat32Array( 1 ),
 "values": [ {
 "args": [ "resized" ],
 "method": "emit_signal"
@@ -152,8 +152,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PackedFloat32Array( 0, 0.1 ),
+"transitions": PackedFloat32Array( 1, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
@@ -164,8 +164,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.1 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.1 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -176,8 +176,8 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "values": [ {
 "args": [ "dialog_ended" ],
 "method": "emit_signal"
@@ -193,8 +193,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 2 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PackedFloat32Array( 0, 2 ),
+"transitions": PackedFloat32Array( 1, 1 ),
 "update": 0,
 "values": [ 0, 150 ]
 }
@@ -205,8 +205,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ false ]
 }
@@ -220,8 +220,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PackedFloat32Array( 0, 0.5 ),
+"transitions": PackedFloat32Array( 1, 1 ),
 "update": 1,
 "values": [ true, false ]
 }
@@ -232,8 +232,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ 150 ]
 }
@@ -242,9 +242,9 @@ tracks/1/keys = {
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 988.529
-margin_right = 1101.0
-margin_bottom = 1162.53
+offset_top = 988.529
+offset_right = 1101.0
+offset_bottom = 1162.53
 texture = ExtResource( 6 )
 expand = true
 stretch_mode = 6
@@ -253,12 +253,12 @@ script = ExtResource( 2 )
 [node name="dialog_text" type="Label" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 168.0
-margin_top = 45.0
-margin_right = -185.0
-margin_bottom = -34.0002
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_fonts/font = SubResource( 1 )
+offset_left = 168.0
+offset_top = 45.0
+offset_right = -185.0
+offset_bottom = -34.0002
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_fonts/font = SubResource( 1 )
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In semper molestie erat, id aliquam nulla iaculis a. Suspendisse consectetur vehicula consequat. Integer mollis libero sed sem convallis, vitae rutrum metus dapibus. Phasellus purus quam, euismod id diam ut, semper sagittis ipsum. Aenean vel mollis lectus, quis placerat eros. Donec elementum vestibulum augue dignissim vehicula. Mauris ultricies lacus id odio aliquet, eu iaculis urna sodales. "
 autowrap = true
 clip_text = true
@@ -273,10 +273,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -121.545
-margin_top = -52.964
-margin_right = -66.5452
-margin_bottom = -6.96399
+offset_left = -121.545
+offset_top = -52.964
+offset_right = -66.5452
+offset_bottom = -6.96399
 texture = ExtResource( 4 )
 expand = true
 stretch_mode = 6
@@ -285,10 +285,10 @@ __meta__ = {
 }
 
 [node name="nametag" type="TextureRect" parent="."]
-margin_left = 31.0
-margin_top = 1.0
-margin_right = 524.0
-margin_bottom = 45.0
+offset_left = 31.0
+offset_top = 1.0
+offset_right = 524.0
+offset_bottom = 45.0
 texture = SubResource( 10 )
 expand = true
 __meta__ = {
@@ -300,12 +300,12 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -226.5
-margin_top = -15.5
-margin_right = 228.5
-margin_bottom = 15.5
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_fonts/font = SubResource( 2 )
+offset_left = -226.5
+offset_top = -15.5
+offset_right = 228.5
+offset_bottom = 15.5
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_fonts/font = SubResource( 2 )
 text = "Character Name"
 align = 1
 clip_text = true

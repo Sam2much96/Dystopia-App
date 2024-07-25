@@ -29,16 +29,16 @@ extends Control
 
 class_name cinematic
 
-export(String, FILE, "*.ogv") var vid_stream = ""
+@export var vid_stream = "" # (String, FILE, "*.ogv")
 
-onready var animation : AnimationPlayer = $"animation player"
-onready var position2d : Position2D = $Position2D
-onready var node : Control = get_node("Node2D") #popup node for centering cinematics
+@onready var animation : AnimationPlayer = $"animation player"
+@onready var position2d : Marker2D = $Marker2D
+@onready var node : Control = get_node("Node2D") #popup node for centering cinematics
 
 #export (String) var anime_pilot : String = "https://github.com/Sam2much96/RenderChan/actions/runs/"
 #export (String) var animatic : String = "https://youtu.be/uzDzAuJVHcI"
 
-onready var videoplayer : VideoPlayer = $VideoPlayer
+@onready var videoplayer : VideoStreamPlayer = $VideoStreamPlayer
 
 
 const Mobile_Platforms : Array = ["Android", "iOS"]
@@ -65,7 +65,7 @@ func _ready(): #create a video player function
 
 	'Cinematics scene'
 	if Globals.curr_scene == 'Cinematics':
-		videoplayer  = get_node('VideoPlayer') #video player node
+		videoplayer  = get_node('VideoStreamPlayer') #video player node
 		videoplayer._set_size((get_viewport_rect().size))
 		
 		
@@ -78,7 +78,7 @@ func _ready(): #create a video player function
 	if Globals.curr_scene == "Shop":
 		# Get the Parent
 		var animationplayer : Control = $AnimationPlayer#get_node("AnimationPlayer")
-		videoplayer = $AnimationPlayer/VideoPlayer
+		videoplayer = $AnimationPlayer/VideoStreamPlayer
 		print ("video player: ", videoplayer)# For Debug puroses only
 		
 		var episode1 : Button = $"africa icon/VBoxContainer/episode"
@@ -124,7 +124,7 @@ func _on_skip_pressed():
 
 
 
-static func Video_Stream(stream : VideoStreamTheora , os: String, video_parent : Control, videoplayer : VideoPlayer): #This code works
+static func Video_Stream(stream : VideoStreamTheora , os: String, video_parent : Control, videoplayer : VideoStreamPlayer): #This code works
 	#Use Position 2d node for Viewport Calibrations
 	if os == "Android":
 		videoplayer.expand = false
@@ -154,7 +154,7 @@ func _on_VideoPlayer_finished():
 
 func _on_Timer_timeout():
 	push_error('Cinematic scene broken')
-	get_tree().change_scene_to(Globals.title_screen)
+	get_tree().change_scene_to_packed(Globals.title_screen)
 	if Globals.curr_scene == 'Cinematics':
 		Function._free_memory(Globals.cinematics)
 	
@@ -180,8 +180,8 @@ func play_opening_cinematic():
 	animation.play("opening_cinematic")
 	# Playes a video stream to the video player in the scenetree
 	
-	return Music.play_track(Music.wind_sfx[0])
-
+	await Music.play_track(Music.wind_sfx[0])
+	return 0
 
 
 func load_OverworldMap():
@@ -221,10 +221,10 @@ THIS IS THE LOGIC FOR THE ANIME VIDEO STREAMER. iT WILL RENDER THE PILOT AND THE
 
 class Function :
 	
-	static func store_video_files(_body : PoolByteArray):
-		var video_file : File = Utils.file #= File.new()
-		video_file.open('user://video.ogv',File.WRITE)
-		var _err = (video_file.open('user://video.ogv', File.WRITE_READ))
+	static func store_video_files(_body : PackedByteArray):
+		var video_file : FileAccess = Utils.file #= File.new()
+		#video_file.open('user://video.ogv',File.WRITE)
+		var _err #= (video_file.open('user://video.ogv', File.WRITE_READ))
 		if _err != OK:
 			push_error(_err)
 		video_file.store_buffer(_body) #store pool byte array as video buffer
@@ -255,7 +255,7 @@ class Function :
 
 
 
-	static func cinematic_debug(videoplayer: VideoPlayer, vid_stream)-> void:
+	static func cinematic_debug(videoplayer: VideoStreamPlayer, vid_stream)-> void:
 		Debug.misc_debug = str(int(videoplayer.stream_position)) + Globals.os + str(videoplayer.is_playing(),
 		str(vid_stream) + videoplayer.get_stream_name()
 		)
@@ -274,10 +274,10 @@ class Function :
 			# Add more error File error checkers
 			
 			#Writes a video file to the godot user's directory from a pool byte array
-			video_file.open('user://video.ogv',File.WRITE)
+			#video_file.open('user://video.ogv',File.WRITE)
 			
 			# Checks the Video file
-			var err = (error_checker.open('user://video.ogv', File.READ))
+			var err #= (error_checker.open('user://video.ogv', File.READ))
 			#Debug.misc_debug = str('VIdeo buffer: ' ,_body) # Debugs the video file
 			 #store pool byte array as video buffer
 			var video_file_path = video_file.get_path_absolute() #gets the file path
@@ -288,7 +288,7 @@ class Function :
 			#Comvert size to MB usingConvertfunctiion
 			
 			 # Gets VIdeo file length in bytes, converts it to MB
-			var __video_file_size_mb = Globals._ram_convert(video_file.get_len())
+			var __video_file_size_mb = Globals._ram_convert(video_file.get_length())
 
 			print ('Video file size: ',__video_file_size_mb, '/',' Est file size: ', size)# For debug purposes only
 			#Stores PoolbyteArray into video file while the video file size is not the user's inputed video size
@@ -300,7 +300,7 @@ class Function :
 				if __video_file_size_mb != size :
 					print ('Video File size is not equal or greater than the inputed video file size 1')
 					print ('Body (poolbytearray)',_body)
-				if error_checker.get_len() != size:
+				if error_checker.get_length() != size:
 					print('Video File size is not equal or greater than the inputed video file size 2')
 				
 

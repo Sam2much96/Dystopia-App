@@ -18,9 +18,9 @@
 
 extends Area2D
 # Pointer to all objects to hurt in explosion
-onready var objects_to_delete : Array = []
+@onready var objects_to_delete : Array = []
 
-onready var anims : AnimationPlayer = $AnimationPlayer
+@onready var anims : AnimationPlayer = $AnimationPlayer
 func _ready():
 	# pay bomb sizzlining sfx and item flash
 	# trigger cam shake

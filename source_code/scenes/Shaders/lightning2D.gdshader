@@ -1,6 +1,6 @@
 shader_type canvas_item;
 
-uniform vec4 lightning_color: hint_color;
+uniform vec4 lightning_color: source_color;
 
 uniform float size: hint_range (0.,1.);
 uniform float width: hint_range (0.,1.);

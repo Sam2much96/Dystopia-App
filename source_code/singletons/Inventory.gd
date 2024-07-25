@@ -31,7 +31,7 @@ It's just a dictionary where items are identified by a string key and hold an in
 # of some item is removed
 signal item_changed(action, type, amount)
 
-export (Dictionary) var inventory : Dictionary = {}
+@export var inventory : Dictionary = {}
 
 
 # Inventory Buffer for Multuiplayer
@@ -49,8 +49,8 @@ var _stats_ui #: Stats
 
 
 # Intanciable items
-onready var bullet : PackedScene = preload("res://scenes/items/Bullet.tscn")
-onready var bomb_explosion : PackedScene = preload("res://scenes/items/bombexplosion.tscn")
+@onready var bullet : PackedScene = preload("res://scenes/items/Bullet.tscn")
+@onready var bomb_explosion : PackedScene = preload("res://scenes/items/bombexplosion.tscn")
 
 # Hard COding Items for 
 # items
@@ -173,7 +173,7 @@ func list() -> Dictionary:
 "RETURNS A DUPLICATE OF THE INVENTORY DICTIONARY AS A JSON STRING"
 func jsonify() -> String:
 	#
-	var inv : String = JSON.print(inventory.duplicate())
+	var inv : String = JSON.stringify(inventory.duplicate())
 	return inv
 
 
@@ -194,7 +194,7 @@ func _get_inventory_buffer() -> String:
 		if i == "Bow":
 			buffer[Bow] = inventory["Bow"]
 	
-	var inv : String = JSON.print(buffer.duplicate())
+	var inv : String = JSON.stringify(buffer.duplicate())
 	return inv
 
 	

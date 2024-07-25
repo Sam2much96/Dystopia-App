@@ -33,7 +33,7 @@ extends PanelContainer
 
 class_name Stats
 
-export (bool) var enabled
+@export var enabled_ : bool
 signal not_enabled
 signal enabled
 
@@ -42,45 +42,45 @@ signal status_hidden
 signal status_showing
 
 # Pointers to Tab Containers for icon implementation
-onready var tab_container : TabContainer = $TabContainer
+@onready var tab_container : TabContainer = $TabContainer
 
 #onready var scroller : ScrollContainer = $ScrollContainer # Depreciated
 
 # Quest Parent Node Pointer
 # Vbox Containter Containing all Inventory Items as children
-onready var _inventory_parent : VBoxContainer = $"TabContainer/3/ScrollContainer3/VBoxContainer" 
+@onready var _inventory_parent : VBoxContainer = $"TabContainer/3/ScrollContainer3/VBoxContainer" 
 
 # Inventory Parent Node
-onready var _inventory_parent_label : Label = $"TabContainer/3/ScrollContainer3/VBoxContainer/Title3"
+@onready var _inventory_parent_label : Label = $"TabContainer/3/ScrollContainer3/VBoxContainer/Title3"
 
 # Inventroy Parent Button
-onready var _inventory_button : Button = $"TabContainer/3/ScrollContainer3/VBoxContainer/Inventory"
+@onready var _inventory_button : Button = $"TabContainer/3/ScrollContainer3/VBoxContainer/Inventory"
 
 
-onready var _coin_label : Label = $"TabContainer/1/VBoxContainer/HBoxContainer/Algos"
-onready var _quest_label : Label = $"TabContainer/2/ScrollContainer2/VBoxContainer/Quests"
+@onready var _coin_label : Label = $"TabContainer/1/VBoxContainer/HBoxContainer/Algos"
+@onready var _quest_label : Label = $"TabContainer/2/ScrollContainer2/VBoxContainer/Quests"
 
 # Backup Pointer to Inventory Singleton
-onready var _inventory : Storage = get_tree().get_root().get_node("/root/Inventory")
+@onready var _inventory : Storage = get_tree().get_root().get_node("/root/Inventory")
 
 # Pointer to GLobal Touch HUD
 
 # Array  pointer containing all QUest parent childeren
 # Should be a dictionary
-onready var _stats_buttons : Array = []
+@onready var _stats_buttons : Array = []
 
 # For Inventory Update
 var regex : RegEx = RegEx.new()
 
 enum {ENABLED, DISABLED, NULL}
 
-export (int) var _state = DISABLED
+@export var _state : int = DISABLED
 
 func _ready():
 	# Connect signals to self?
 	
-	self.connect("not_enabled",self, '_on_status_hidden')
-	self.connect('enabled',self,'_on_status_showing')
+	self.connect("not_enabled", Callable(self, '_on_status_hidden'))
+	self.connect('enabled', Callable(self, '_on_status_showing'))
 	
 	
 	
@@ -112,15 +112,15 @@ func _ready():
 func _input(event):
 	
 	# Enable / DIsable Logic is Buggy
-	if event.is_action_pressed("pause")  && enabled == false:
+	if event.is_action_pressed("pause")  && enabled_ == false:
 		print_debug("enable")
-		enabled = true
+		enabled_ = true
 		_enable()
 	#	#_state = ENABLED
 		Music.play_track(Music.ui_sfx[0])
-		return enabled # _state
-	if event.is_action_pressed("pause") && enabled == true:
-		enabled = false
+		return enabled_ # _state
+	if event.is_action_pressed("pause") && enabled_ == true:
+		enabled_ = false
 		_disable()
 	#	#_state = DISABLED
 		print_debug("disable")
@@ -195,11 +195,11 @@ func _update_inventory_listing():
 	# it'll compate an array of the button names to check if it is already created
 	# if created pass, if not , update inventory listing
 	
-	if inventory.empty():
+	if inventory.is_empty():
 		text += "[Empty]"
 		_inventory_button.text = text
 	
-	elif not inventory.empty() && _inventory_size >= 1 :
+	elif not inventory.is_empty() && _inventory_size >= 1 :
 		
 		if inventory.size() == 1: # Works
 			for item in inventory:
@@ -230,7 +230,7 @@ func _update_inventory_listing():
 					
 					
 					#create new button object anbd or remove exisiting buttons if they exist
-					_inventory_parent.add_child_below_node(_inventory_button, new_item_button)
+					#_inventory_parent.add_sibling(_inventory_button, new_item_button)
 					
 					# connect signal
 					
@@ -243,7 +243,7 @@ func _update_inventory_listing():
 					
 					# connect button to inventory singleton method
 					#
-					new_item_button.connect("pressed", _inventory, "remove_item",[item, 1]) # button presses 
+					new_item_button.connect("pressed", Callable(_inventory, "remove_item").bind(item, 1)) # button presses 
 					
 					# Create a pointer to Inventory ui buttons
 					_stats_buttons.append(new_item_button)
@@ -252,7 +252,7 @@ func _update_inventory_listing():
 
 
 func _notification(what):  #Triggered when the Min Game Loop is exited
-	if (what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST):
+	#if (what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST):
 		print_debug("STATUS NOTIFICATION")
 
 
@@ -286,11 +286,11 @@ func equip(_item):
 
 
 func _enable():
-	enabled = true
-	visible = enabled
+	enabled_ = true
+	visible = enabled_
 	emit_signal('enabled')
 	Music.play_track(Music.ui_sfx[0])
-	get_tree().paused = enabled
+	get_tree().paused = enabled_
 	
 	"Mobile HUD Controller" # NANI?
 	
@@ -307,8 +307,8 @@ func _enable():
 	print_debug(self.name, "disabled") 
 
 func _disable():
-	enabled = false
-	visible = enabled
+	enabled_ = false
+	visible = enabled_
 	emit_signal("not_enabled")
 	Music.play_track(Music.ui_sfx[1])
 	hide()

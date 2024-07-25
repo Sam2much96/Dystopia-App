@@ -21,7 +21,7 @@ extends Node
 
 class_name debug
 
-export (bool) var enabled 
+@export var enabled : bool
 
 
 var error_splash_page : PackedScene = load ('res://New game code and features/Error splash page for crashes.tscn')
@@ -50,7 +50,7 @@ var Autosave_debug =''
 var Music_debug 
 var Player_debug 
 var Ram_debug 
-export (float) var FPS_debug : float 
+@export var FPS_debug : float 
 var Enemy_debug 
 var debug_panel  
 var Comics_debug = ''
@@ -191,7 +191,7 @@ func start_debug_v1():  #Creates multiple instances bug
 
 
 	#creates and loads dynamic fonts
-	var dynamic_font = DynamicFont.new()
+	var dynamic_font = FontFile.new()
 	dynamic_font.font_data = load('res://fonts/adamwarrenpro.ttf')
 	
 	"Changes Font Size for Mobile Ui"
@@ -245,18 +245,18 @@ func start_debug_v1():  #Creates multiple instances bug
 	
 	#add font data #use label.rect_size.x and .y= 100 to manually increase label size
 	#vbox.ALIGN_CENTER #aligns vbox to center #fix code
-	music_label.add_font_override('font', dynamic_font) #adds dynamc font data
-	player_label.add_font_override('font', dynamic_font) #use a forloop for this
-	ram_label.add_font_override('font', dynamic_font)
-	fps_label.add_font_override('font', dynamic_font)
-	enemy_label.add_font_override('font', dynamic_font)
-	network_label.add_font_override('font', dynamic_font)
-	comics_label.add_font_override('font', dynamic_font)
-	autosave_label.add_font_override('font', dynamic_font)
-	misc_label.add_font_override('font', dynamic_font)
-	globals_label.add_font_override('font', dynamic_font)
-	ads_label.add_font_override('font', dynamic_font)
-	avail_thread_label.add_font_override('font', dynamic_font)
+	music_label.add_theme_font_override('font', dynamic_font) #adds dynamc font data
+	player_label.add_theme_font_override('font', dynamic_font) #use a forloop for this
+	ram_label.add_theme_font_override('font', dynamic_font)
+	fps_label.add_theme_font_override('font', dynamic_font)
+	enemy_label.add_theme_font_override('font', dynamic_font)
+	network_label.add_theme_font_override('font', dynamic_font)
+	comics_label.add_theme_font_override('font', dynamic_font)
+	autosave_label.add_theme_font_override('font', dynamic_font)
+	misc_label.add_theme_font_override('font', dynamic_font)
+	globals_label.add_theme_font_override('font', dynamic_font)
+	ads_label.add_theme_font_override('font', dynamic_font)
+	avail_thread_label.add_theme_font_override('font', dynamic_font)
 	
 	_state_ = START_DEBUG
 
@@ -333,11 +333,11 @@ func log_debug(): #improvve logging code run at exit tree  #Copy log files to do
 		var _doc = OS.get_system_dir(2) 
 		var _dir = Utils.dir
 		var _log = Utils.file
-		_log.open('user://logs/godot.log', File.READ_WRITE)
-		_log.store_string ( 'dystopia_app_log'+ str(OS.get_time(true)) +
-			Music_debug + Player_debug + Ram_debug + FPS_debug + Enemy_debug + Network_debug + Comics_debug +
-			Autosave_debug + misc_debug + Globals_debug + Ads_debug + avail_thread
-			) 
+		#_log.open('user://logs/godot.log', File.READ_WRITE)
+		#_log.store_string ( 'dystopia_app_log'+ str(OS.get_time(true)) +
+		#	Music_debug + Player_debug + Ram_debug + FPS_debug + Enemy_debug + Network_debug + Comics_debug +
+		#	Autosave_debug + misc_debug + Globals_debug + Ads_debug + avail_thread
+		#	) 
 		
 		
 		#('user://logs/godot.log' from, _doc to)

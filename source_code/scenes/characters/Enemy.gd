@@ -52,12 +52,12 @@
 # (8) Spawn Randomized Items Upon Despawn
 
 
-extends KinematicBody2D
+extends CharacterBody2D
 
 class_name Enemy
 
 
-export (String, 'Easy', "Intermediate", "Hard") var enemy_type #changes enemy behaviour depending on the enemy tpype # 
+@export var enemy_type : String #changes enemy behaviour depending on the enemy tpype # 
 
 
 
@@ -73,45 +73,45 @@ const FAST_FRAME_RATE = 5
 
 var selected_frame_rate : int
 
-"Enemy Movement & Path Finding"
+"Enemy Movement & Path3D Finding"
 
-export (Vector2) var velocity = Vector2.ZERO #the movement vector
-export (Vector2) var target_speed = Vector2() # used for walking State calculation
+#@export var velocity : Vector2 = Vector2.ZERO #the movement vector
+@export var target_speed : Vector2 = Vector2() # used for walking State calculation
 #var m=0;  #distance variable
 
-export (int) var run_speed : int = 100   #mob runspeeed
+@export var run_speed : int = 100   #mob runspeeed
 
-export (float) var enemy_distance_to_player : float # used to calculate how closely the enemy should follow the layer
+@export var enemy_distance_to_player : float # used to calculate how closely the enemy should follow the layer
 
-onready var player #= get_tree().get_nodes_in_group('player')[0]  #reference to player
-onready var raycast : RayCast2D = $enemy_eyesight/pointer/RayCast2D
-onready var pointer : Node2D = $enemy_eyesight/pointer
-onready var navi : NavigationAgent2D = $NavigationAgent2D
-onready var path : Line2D = $Line2D
+@onready var player #= get_tree().get_nodes_in_group('player')[0]  #reference to player
+@onready var raycast : RayCast2D = $enemy_eyesight/pointer/RayCast2D
+@onready var pointer : Node2D = $enemy_eyesight/pointer
+@onready var navi : NavigationAgent2D = $NavigationAgent2D
+@onready var path : Line2D = $Line2D
 #onready var frame_counter : int = 0
 
-export (Array) var pos_data : Array = []
+@export var pos_data : Array = []
 
 
-export(int) var WALK_SPEED = 350
-export(int) var ROLL_SPEED = 1000
-export(int) var hitpoints = 3 #enemy life
+@export var WALK_SPEED: int = 350
+@export var ROLL_SPEED: int = 1000
+@export var hitpoints: int = 3 #enemy life
 
 
 #var despawn_fx = preload("res://scenes/UI & misc/DespawnFX.tscn")
 #var Bullet = Globals.bullet_fx#load ("res://scenes/items/Bullet.tscn") #null resource
 
 
-export (Vector2) var linear_vel = Vector2.ZERO
-export (Vector2) var enemy_direction = Vector2(0,0)
-export (Vector2) var random_walk_direction : Vector2 = Vector2(100,100)
+@export var linear_vel : Vector2 = Vector2.ZERO
+@export var enemy_direction : Vector2 = Vector2(0,0)
+@export var random_walk_direction : Vector2 = Vector2(100,100)
 
 
 # refactor facing to use int instead of string literals
-export(String, "up", "down", "left", "right") var facing = "down"
+@export var facing : String = "down" # (String, "up", "down", "left", "right")
 
-export (String) var anim = ""
-export (String) var new_anim = ""
+@export var anim : String = ""
+@export var new_anim : String = ""
 
 enum { 
 	STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, # implemented 
@@ -122,10 +122,10 @@ enum {
 
 
 # Enemy Animation Player
-onready var anims : AnimationPlayer = $anims
+@onready var anims : AnimationPlayer = $anims
 
-export (int) var state = STATE_MOB #Fixed
-export (Vector2) var center
+@export var state : int = STATE_MOB #Fixed
+@export var center : Vector2
 
 "Enemy FX"
 var despawn_particles
@@ -256,9 +256,11 @@ func _physics_process(_delta):
 			if facing == "right":
 				random_walk_direction =Vector2(100,0)
 			
-			linear_vel = move_and_slide((random_walk_direction).normalized() * WALK_SPEED) # move and slide to a random direction
+			set_velocity((random_walk_direction).normalized() * WALK_SPEED)
+			move_and_slide()
+			linear_vel = velocity # move and slide to a random direction
 			
-			linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
+			linear_vel = linear_vel.lerp(target_speed, 0.9)
 			
 			
 			# implement Navigation 2d server
@@ -282,7 +284,9 @@ func _physics_process(_delta):
 			new_anim = "slash_" + facing
 			pass
 		STATE_ROLL:
-			linear_vel = move_and_slide(linear_vel)
+			set_velocity(linear_vel)
+			move_and_slide()
+			linear_vel = velocity
 			#var target_speed = Vector2()
 			if facing == "up":
 				target_speed.y = -1
@@ -293,7 +297,7 @@ func _physics_process(_delta):
 			if facing == "right":
 				target_speed.x = 1
 			target_speed *= ROLL_SPEED
-			linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
+			linear_vel = linear_vel.lerp(target_speed, 0.9)
 			new_anim = "roll"
 			pass
 		STATE_DIE:
@@ -336,7 +340,9 @@ func _physics_process(_delta):
 				
 				#print_debug(pos_data, navi.get_final_location())
 				
-				linear_vel = move_and_slide(linear_vel) # updates enemy movement
+				set_velocity(linear_vel)
+				move_and_slide()
+				linear_vel = velocity # updates enemy movement
 				
 				# theres a process method for this
 				# so what?
@@ -422,9 +428,10 @@ func _on_hurtbox_area_entered(area):
 		Music.play_sfx(Music.hit_sfx) # Plays sfx from the Music singleton
 		#print_debug ("enemy hitpoint: "+ str(hitpoints))# for debug purposes only
 		var pushback_direction = (global_position - area.global_position).normalized()
-		move_and_slide( pushback_direction *   kick_back_distance) # Flies back at a random distance
+		set_velocity(pushback_direction *   kick_back_distance)
+		move_and_slide() # Flies back at a random distance
 		state = STATE_HURT
-		blood = Globals.blood_fx.instance()
+		blood = Globals.blood_fx.instantiate()
 		get_parent().add_child(blood) # Instances Blood FX
 		blood.global_position = global_position # Makes the fx position global?
 		
@@ -439,8 +446,8 @@ func despawn()->  void:
 	Globals.kill_count +=1
 	
 	# Create Despawn Particle fx
-	despawn_particles = Globals.despawn_fx.instance()
-	blood = Globals.blood_fx.instance()
+	despawn_particles = Globals.despawn_fx.instantiate()
+	blood = Globals.blood_fx.instantiate()
 	get_parent().add_child(despawn_particles)
 	get_parent().add_child(blood)
 	despawn_particles.global_position = global_position
@@ -506,7 +513,7 @@ func shoot()-> void: #spawns a bullet at a particular position
 	# Method Is Buggy
 	
 	print ('shooting player')
-	var b = Globals.bullet_fx.instance()
+	var b = Globals.bullet_fx.instantiate()
 	self.add_child(b)
 	b.transform = pointer.global_transform
 
@@ -556,7 +563,7 @@ func _on_VisibilityNotifier2D_screen_exited():
 
 
 
-class Behaviour extends Reference:
+class Behaviour extends RefCounted:
 	"""
 	# Enemy AI Behaviour in A  SeparateClass
 	
@@ -620,16 +627,16 @@ class Behaviour extends Reference:
 	static func enemy_navigation(navi : NavigationAgent2D, target_pos : Vector2, curr_pos : Vector2, line : Line2D, pos_data : Array, type: int): 
 		# refactored Navigation agent
 		# Navigation Agent doesn't focus on Player instead focuses on the scene origin's point
-		navi.set_target_location(target_pos) # target location is the player position
+		navi.set_target_position(target_pos) # target location is the player position
 		
 		
 		if Debug.enabled and type == 2: # Debug Navigation path
-			line.add_point(navi.get_final_location())
+			line.add_point(navi.get_final_position())
 			#line.points = [navi.get_final_location(), curr_pos]
 			pos_data.append(line.points)
 
 		if Debug.enabled and type == 1:
-			line.points = [navi.get_final_location(), curr_pos]
+			line.points = [navi.get_final_position(), curr_pos]
 
 
 	static func behaviour_logic(
@@ -667,7 +674,9 @@ class Behaviour extends Reference:
 					var center = Utils.restaVectores(player.position, _position) #Functions.calculate_center(player.position, _position) #calculates distance to plaer
 					
 					
-					_enemy.move_and_slide(center) # moves to player
+					_enemy.set_velocity(center)
+					_enemy.move_and_slide()
+					_enemy.velocity # moves to player
 					state = STATE_MOB
 					# # Calculates the enemy distance to playrer
 					enemy_distance_to_player = abs(_position.distance_to(player_pos )) # Calculates the enemy distance to playrer
@@ -732,7 +741,7 @@ class Behaviour extends Reference:
 
 	# Updates the raycast to the Enemy"s Direction
 	static func rotate_pointer(point_direction: Vector2, pointer) -> void:
-		var temp =rad2deg(atan2(point_direction.x, point_direction.y))
+		var temp =rad_to_deg(atan2(point_direction.x, point_direction.y))
 		pointer.rotation_degrees = temp
 
 

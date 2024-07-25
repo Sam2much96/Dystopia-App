@@ -1,4 +1,4 @@
-tool
+@tool
 extends Control
 
 const package_info = preload('res://addons/NativeLib/package_info.tscn')
@@ -15,7 +15,7 @@ var _name_filter := ''
 var _installed_filter := false
 var _nativelib_path := 'nativelib'
 var _python_path := 'python'
-onready var _home_path := '%s/../'%OS.get_system_dir(OS.SYSTEM_DIR_DESKTOP)
+@onready var _home_path := '%s/../'%OS.get_system_dir(OS.SYSTEM_DIR_DESKTOP)
 
 signal downloading_complete
 
@@ -50,11 +50,11 @@ func check_system() -> int:
 	if python_ver == '':
 		show_global_error('Python not found. You should install python into your system and setup it\'s path.')
 		$view/status/python.text = 'Python not found'
-		$view/status/python.modulate = Color.red
+		$view/status/python.modulate = Color.RED
 		err = Errors.PYTHON_ERROR
 	else:
 		$view/status/python.text = python_ver
-		$view/status/python.modulate = Color.white
+		$view/status/python.modulate = Color.WHITE
 		# get home path
 		var pp = run_command(_python_path, ['-c', "import os; print(os.path.expanduser('~'));"], false)
 		var hp = pp[0].replace('\n', '')
@@ -69,22 +69,22 @@ func check_system() -> int:
 	var output = nativelib(['--version'], false)
 	var ver = output[0].replace('\n', '')
 	var s = ''
-	var col := Color.white
+	var col := Color.WHITE
 	if ver == '':
 		s = 'NativeLib not found'
-		col = Color.red
+		col = Color.RED
 		err = max(err, Errors.NATIVELIB_ERROR)
 		$view/status/InstallSystemButton.visible = true
 		$view/status/UpdateSystemButton.visible = false
 	elif _NL_GLOBAL:
 		s = 'NativeLib'
-		col = Color.lightblue
+		col = Color.LIGHT_BLUE
 		err = Errors.NO_ERROR
 		$view/status/InstallSystemButton.visible = true
 		$view/status/UpdateSystemButton.visible = false
 	else:
 		s = 'NativeLib'
-		col = Color.lightgreen
+		col = Color.LIGHT_GREEN
 		err = Errors.NO_ERROR
 		$view/status/InstallSystemButton.visible = false
 		$view/status/UpdateSystemButton.visible = true
@@ -95,7 +95,7 @@ func check_system() -> int:
 	return err
 
 func set_editor(editor: EditorPlugin) -> void:
-	yield(get_tree(), 'idle_frame')
+	await get_tree().idle_frame
 	var err = check_system()
 	match err:
 		Errors.PYTHON_ERROR:
@@ -103,7 +103,7 @@ func set_editor(editor: EditorPlugin) -> void:
 		Errors.NATIVELIB_ERROR:
 			push_warning('NativeLib not installed in system. Making a local copy...')
 			install_local_nativelib()
-			yield(self, 'downloading_complete')
+			await self.downloading_complete
 			if check_system() != Errors.NO_ERROR:
 				return
 			nativelib(['--update'])
@@ -119,17 +119,17 @@ func set_editor(editor: EditorPlugin) -> void:
 func load_storage() -> void:
 	var _ind = {}
 	var index_path = '%s/.nativelib/meta'%_home_path
-	var dir = Directory.new()
+	var dir = DirAccess.new()
 	if dir.open(index_path) == OK:
-		dir.list_dir_begin()
+		dir.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 		var file_name = dir.get_next()
 		while file_name != '':
 			if dir.current_is_dir() and not file_name.begins_with('.'):
 				_ind[file_name] = {}
 				var pack = dir.get_current_dir() + "/" + file_name
-				var dir2 = Directory.new()
+				var dir2 = DirAccess.new()
 				if dir2.open(pack) == OK:
-					dir2.list_dir_begin()
+					dir2.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 					var pack_var = dir2.get_next()
 					while pack_var != '':
 						if not dir2.current_is_dir() and not pack_var.begins_with('.') and pack_var.ends_with('.json'):
@@ -138,7 +138,9 @@ func load_storage() -> void:
 							if f.open(fname, File.READ) == OK:
 								var content = f.get_as_text()
 								f.close()
-								var result = JSON.parse(content)
+								var test_json_conv = JSON.new()
+								test_json_conv.parse(content)
+								var result = test_json_conv.get_data()
 								if result.error == OK:
 									_ind[file_name][result.result.version] = result.result
 								else:
@@ -159,7 +161,9 @@ func load_project() -> void:
 		return
 	var content = f.get_as_text()
 	f.close()
-	var result = JSON.parse(content)
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(content)
+	var result = test_json_conv.get_data()
 	if result.error == OK:
 		_PROJECT = result.result
 	else:
@@ -190,7 +194,7 @@ func update_plugin_list() -> void:
 	for plugin in keys:
 		var info = _INDEX[plugin]
 		var versions = info.keys()
-		versions.sort_custom(self, '_sort_versions')
+		versions.sort_custom(Callable(self, '_sort_versions'))
 		if versions.size() <= 0:
 			continue
 		var version = versions[0]
@@ -224,11 +228,11 @@ func update_plugin_list() -> void:
 			filtered_out = true
 		if filtered_out:
 			continue
-		var pi = package_info.instance()
+		var pi = package_info.instantiate()
 		pi.init_info(meta, local, platforms)
-		pi.connect('install', self, '_on_plugin_install')
-		pi.connect('uninstall', self, '_on_plugin_uninstall')
-		pi.connect('update', self, '_on_plugin_update')
+		pi.connect('install', Callable(self, '_on_plugin_install'))
+		pi.connect('uninstall', Callable(self, '_on_plugin_uninstall'))
+		pi.connect('update', Callable(self, '_on_plugin_update'))
 		$view/panel/scroll/margin/list.add_child(pi)
 
 func get_installed_packages() -> Array:
@@ -240,15 +244,15 @@ func get_installed_packages() -> Array:
 
 func update_project_info() -> void:
 	if 'platforms' in _PROJECT:
-		$view/project/iOSButton.pressed = 'ios' in _PROJECT.platforms
-		$view/project/AndroidButton.pressed = 'android' in _PROJECT.platforms
-		$view/project/OSXButton.pressed = 'osx' in _PROJECT.platforms
-		$view/project/TVOSButton.pressed = 'tvos' in _PROJECT.platforms
+		$view/project/iOSButton.button_pressed = 'ios' in _PROJECT.platforms
+		$view/project/AndroidButton.button_pressed = 'android' in _PROJECT.platforms
+		$view/project/OSXButton.button_pressed = 'osx' in _PROJECT.platforms
+		$view/project/TVOSButton.button_pressed = 'tvos' in _PROJECT.platforms
 	else:
-		$view/project/iOSButton.pressed = false
-		$view/project/AndroidButton.pressed = false
-		$view/project/OSXButton.pressed = false
-		$view/project/TVOSButton.pressed = false
+		$view/project/iOSButton.button_pressed = false
+		$view/project/AndroidButton.button_pressed = false
+		$view/project/OSXButton.button_pressed = false
+		$view/project/TVOSButton.button_pressed = false
 	if not 'platforms' in _PROJECT or _PROJECT.platforms.size() <= 1:
 		warning_message('No platforms selected!')
 
@@ -260,14 +264,14 @@ func clear_messages() -> void:
 		ch.queue_free()
 
 func warning_message(txt: String) -> void:
-	add_message(txt, Color.yellow)
+	add_message(txt, Color.YELLOW)
 	push_warning(txt)
 
 func error_message(txt: String) -> void:
-	add_message(txt, Color.crimson)
+	add_message(txt, Color.CRIMSON)
 	push_error(txt)
 
-func add_message(txt: String, col:= Color.white) -> void:
+func add_message(txt: String, col:= Color.WHITE) -> void:
 	var l = Label.new()
 	l.text = txt
 	l.modulate = col
@@ -277,7 +281,7 @@ func install_local_nativelib() -> void:
 	var http_request = HTTPRequest.new()
 	http_request.name = 'HTTP'
 	add_child(http_request)
-	http_request.connect('request_completed', self, '_http_request_completed')
+	http_request.connect('request_completed', Callable(self, '_http_request_completed'))
 	var error = http_request.request(_remote_url)
 	if error != OK:
 		push_error('HTTP error %d. Can not download a local copy of NativeLib'%error)
@@ -374,12 +378,12 @@ func run_command(cmd: String, params: Array, show_output: bool = true) -> Array:
 
 func _on_InstallSystemButton_pressed() -> void:
 	install_local_nativelib()
-	yield(self, 'downloading_complete')
+	await self.downloading_complete
 	check_system()
 
 func _on_UpdateSystemButton_pressed() -> void:
 	install_local_nativelib()
-	yield(self, 'downloading_complete')
+	await self.downloading_complete
 	check_system()
 
 func _on_AndroidButton_toggled(button_pressed: bool) -> void:
@@ -422,7 +426,7 @@ func remove_android_module(module: String) -> void:
 			modules = ms.split(',')
 	if module in modules:
 		modules.erase(module)
-		ProjectSettings.set_setting('android/modules', PoolStringArray(modules).join(','))
+		ProjectSettings.set_setting('android/modules', ','.join(PackedStringArray(modules)))
 
 func add_android_module(module: String) -> void:
 	var modules := []
@@ -432,7 +436,7 @@ func add_android_module(module: String) -> void:
 			modules = ms.split(',')
 	if not module in modules:
 		modules.append(module)
-		ProjectSettings.set_setting('android/modules', PoolStringArray(modules).join(','))
+		ProjectSettings.set_setting('android/modules', ','.join(PackedStringArray(modules)))
 
 func _on_FilterUniversal_toggled(button_pressed: bool) -> void:
 	if button_pressed:

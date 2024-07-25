@@ -26,12 +26,12 @@ class_name BrokenShip
 
 
 "SMOKE FX TURNS OFF AND ON DEPENDEING ON THE PLAYER'S POSITION"
-export (int) var counter #= 0 #used to off and on the comics placeholder
+@export (int) var counter #= 0 #used to off and on the comics placeholder
 
-export (bool) var emitting_smoke
+@export (bool) var emitting_smoke
 
-onready var _smoke_fx = $smoke_fx
-onready var _smoke_fx_2 = $smoke_fx2
+@onready var _smoke_fx = $smoke_fx
+@onready var _smoke_fx_2 = $smoke_fx2
 #toggles comics placeholder visible on player contact
 func _on_Area2D_body_entered(body : Player):
 	
@@ -58,7 +58,7 @@ func show_scene_comic() -> void:
 	# Turns on the comic placeholder once the player is near
 	# Disabled for bad UX
 	var comic_placeholder=get_tree().get_nodes_in_group('Cmx_Root') # Calls the comic placeholder node
-	if comic_placeholder.empty() != true && counter == 0: 
+	if comic_placeholder.is_empty() != true && counter == 0: 
 		comic_placeholder = comic_placeholder.pop_front()
 		
 		comic_placeholder.enabled= true

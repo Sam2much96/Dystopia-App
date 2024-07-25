@@ -37,20 +37,20 @@ signal invitations_list_requested(list)
 signal invitation_accepted()
 signal invitation_declined()
 
-export (int) var requesting : int = -1
-export (int) var notifications_requesting : int = -1
-export (int) var connection 
-export (int) var repositories_limit : int = 100
-export (int) var gists_limit : int = 100
-export (String) var owner_affiliations : String
-export (bool) var checking_connection : bool = false
-export (bool) var downloading_file : bool = false
-export (String) var graphql_endpoint : String = "https://api.github.com/graphql"
-onready var client : HTTPRequest = $Client
-onready var notifications_client : HTTPRequest = $NotificationsClient
-onready var _loading : loading = get_parent().get_node("loading")
-onready var PluginSettings = get_parent().get_node("PluginSettings")
-onready var UserData = get_parent().get_node("UserData")
+@export var requesting : int = -1
+@export var notifications_requesting : int = -1
+@export var connection : int
+@export var repositories_limit : int = 100
+@export var gists_limit : int = 100
+@export var owner_affiliations : String
+@export var checking_connection : bool = false
+@export var downloading_file : bool = false
+@export var graphql_endpoint : String = "https://api.github.com/graphql"
+@onready var client : HTTPRequest = $Client
+@onready var notifications_client : HTTPRequest = $NotificationsClient
+@onready var _loading : loading = get_parent().get_node("loading")
+@onready var PluginSettings = get_parent().get_node("PluginSettings")
+@onready var UserData = get_parent().get_node("UserData")
 
 var session : HTTPClient = HTTPClient.new()
 
@@ -61,7 +61,7 @@ var graphql_queries : Dictionary = {
 	'organizations_repositories':'organizations(first:10){nodes{repositories(first:100){nodes{diskUsage name owner { login } description url isFork isPrivate forkCount stargazerCount isInOrganization collaborators(affiliation: DIRECT, first: 100) { nodes {login name avatarUrl} } mentionableUsers(first: 100){ nodes{ login name avatarUrl } } defaultBranchRef { name } refs(refPrefix: "refs/heads/", first: 100){ nodes{ name target { ... on Commit { oid tree { oid } zipballUrl tarballUrl } } } } }}}}'
 }
 
-var header : PoolStringArray = ["Authorization: token "]
+var header : PackedStringArray = ["Authorization: token "]
 var api_endpoints : Dictionary = {
 	"github":"https://github.com/",
 	"user":"https://api.github.com/user",
@@ -94,8 +94,8 @@ enum REQUESTS {
 
 
 func _ready():
-	client.connect("request_completed",self,"_on_request_completed")
-	notifications_client.connect("request_completed",self,"_on_notification_request_completed")
+	client.connect("request_completed", Callable(self, "_on_request_completed"))
+	notifications_client.connect("request_completed", Callable(self, "_on_notification_request_completed"))
 
 
 
@@ -140,16 +140,20 @@ func process_download_file():
 
 	# Print the GraphQL query from a String to a JSON/String for GraphQL endpoint
 func print_query(query : String) -> String:
-	return JSON.print( { "query":query } )
+	return JSON.stringify( { "query":query } )
 
 # Parse the result body to a Dictionary with the requested parameter as the root
-func parse_body_data(body : PoolByteArray) -> Dictionary:
-	return JSON.parse(body.get_string_from_utf8()).result.data
+func parse_body_data(body : PackedByteArray) -> Dictionary:
+	var test_json_conv = JSON.new()
+	#test_json_conv.parse(body.get_string_from_utf8()).result.data
+	return test_json_conv.get_data()
 
-func parse_body(body : PoolByteArray) -> Dictionary:
-	return JSON.parse(body.get_string_from_utf8()).result
+func parse_body(body : PackedByteArray) -> Dictionary:
+	var test_json_conv = JSON.new()
+	#test_json_conv.parse(body.get_string_from_utf8()).result
+	return test_json_conv.get_data()
 
-func _on_notification_request_completed(result: int, response_code: int, headers: PoolStringArray, body: PoolByteArray) -> void:
+func _on_notification_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	if result == 0:
 		match response_code:
 			200:
@@ -172,7 +176,7 @@ func _on_notification_request_completed(result: int, response_code: int, headers
 			422:
 				emit_signal("notification_request_failed", notifications_requesting, parse_body(body))
 
-func _on_request_completed(result: int, response_code: int, headers: PoolStringArray, body: PoolByteArray) -> void:
+func _on_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 #	print(JSON.parse(body.get_string_from_utf8()).result)
 	if result == 0:
 		match response_code:
@@ -222,7 +226,7 @@ func _on_request_completed(result: int, response_code: int, headers: PoolStringA
 func request_user(token : String) -> void:
 	requesting = REQUESTS.USER
 	var temp_header = [header[0] + token]
-	client.request(api_endpoints.user, temp_header, false, HTTPClient.METHOD_GET)
+	#client.request(api_endpoints.user, temp_header, false, HTTPClient.METHOD_GET)
 	
 func request_user_avatar(avatar_url : String) -> void:
 #	client.set_download_file(UserData.directory+UserData.avatar_name)
@@ -246,39 +250,39 @@ func request_user_repositories() -> void:
 		owner_affiliations.erase("ORGANIZATION_MEMBER")
 		is_org_member = true
 	var query : String = graphql_queries.repositories % [UserData.USER.login, owner_affiliations, repositories_limit, graphql_queries.organizations_repositories if is_org_member else ""]
-	client.request(graphql_endpoint, UserData.header, true, HTTPClient.METHOD_POST, print_query(query))
+	#client.request(graphql_endpoint, UserData.header, true, HTTPClient.METHOD_POST, print_query(query))
 
 func request_user_repository(repository_affiliation : String, repository_owner : String, repository_name : String) -> void:
 	requesting = REQUESTS.USER_REPOSITORY
 	var query : String = graphql_queries.repository % [repository_affiliation, repository_owner, repository_name]
-	client.request(graphql_endpoint, UserData.header, true, HTTPClient.METHOD_POST, print_query(query))
+	#client.request(graphql_endpoint, UserData.header, true, HTTPClient.METHOD_POST, print_query(query))
 
 func request_user_gists() -> void:
 	requesting = REQUESTS.USER_GISTS
 	var query : String = graphql_queries.gists % [UserData.USER.login, gists_limit]
-	client.request(graphql_endpoint, UserData.header, true, HTTPClient.METHOD_POST, print_query(query))
+	#client.request(graphql_endpoint, UserData.header, true, HTTPClient.METHOD_POST, print_query(query))
 
 
 func request_commit_gist(body : String) -> void:
 	requesting = REQUESTS.CREATE_GIST
-	client.request(api_endpoints.gist, UserData.header, true, HTTPClient.METHOD_POST, body)
+	#client.request(api_endpoints.gist, UserData.header, true, HTTPClient.METHOD_POST, body)
 
 
 func request_update_gist(gistid : String, body : String) -> void:
 	requesting = REQUESTS.UPDATE_GIST
-	client.request(api_endpoints.gist+"/"+gistid,UserData.header,true,HTTPClient.METHOD_PATCH,body)
+	#client.request(api_endpoints.gist+"/"+gistid,UserData.header,true,HTTPClient.METHOD_PATCH,body)
 
 func request_branch_contents(repository_name : String, repository_owner : String, branch : Dictionary) ->  void:
 	requesting = REQUESTS.BRANCH_CONTENTS
-	client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/git/trees/"+branch.target.tree.oid+"?recursive=1",UserData.header,true,HTTPClient.METHOD_GET)
+	#client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/git/trees/"+branch.target.tree.oid+"?recursive=1",UserData.header,true,HTTPClient.METHOD_GET)
 
 func request_file_content(repository_owner : String, repository_name : String, file_path : String, branch_name : String) -> void:
 	requesting = REQUESTS.FILE_CONTENT
-	client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/contents/"+file_path+"?ref="+branch_name,UserData.header,false,HTTPClient.METHOD_GET)
+	#client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/contents/"+file_path+"?ref="+branch_name,UserData.header,false,HTTPClient.METHOD_GET)
 
 func request_gitignore(repository_owner : String, repository_name : String, branch_name : String) -> void:
 	requesting = REQUESTS.GITIGNORE
-	client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/contents/.gitignore?ref="+branch_name,UserData.header,false,HTTPClient.METHOD_GET)
+	#client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/contents/.gitignore?ref="+branch_name,UserData.header,false,HTTPClient.METHOD_GET)
 
 var disk_usage : float
 func request_pull_branch(ball_path : String, typeball_url: String, repo_disk_usage : float) -> void:
@@ -286,26 +290,26 @@ func request_pull_branch(ball_path : String, typeball_url: String, repo_disk_usa
 	requesting = REQUESTS.PULL_BRANCH
 	downloading_file = true
 	disk_usage = repo_disk_usage
-	client.request(typeball_url, UserData.header, true, HTTPClient.METHOD_GET)
+	#client.request(typeball_url, UserData.header, true, HTTPClient.METHOD_GET)
 	set_process(true)
 	print (typeball_url, "------", repo_disk_usage) # for debug purposes only
 
 func request_collaborator(repository_owner : String, repository_name : String, collaborator_name : String, body : Dictionary) -> void:
 	requesting = REQUESTS.INVITE_COLLABORATOR
-	client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/collaborators/"+collaborator_name, UserData.header, true, HTTPClient.METHOD_PUT, JSON.print(body))
+	#client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/collaborators/"+collaborator_name, UserData.header, true, HTTPClient.METHOD_PUT, JSON.stringify(body))
 
 func request_delete_resource(repository_owner : String, repository_name : String, path : String, body : Dictionary) -> void:
 	requesting = REQUESTS.DELETE_RESOURCE
-	client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/contents/"+path, UserData.header, true, HTTPClient.METHOD_DELETE,JSON.print(body))
+	#client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/contents/"+path, UserData.header, true, HTTPClient.METHOD_DELETE,JSON.stringify(body))
 
 
 func request_delete_repository(repository_owner : String, repository_name : String) -> void:
 	requesting = REQUESTS.DELETE_REPOSITORY
-	client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name, UserData.header, true, HTTPClient.METHOD_DELETE)
+	#client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name, UserData.header, true, HTTPClient.METHOD_DELETE)
 
 func request_create_new_branch(repository_owner : String, repository_name : String, body : Dictionary) -> void:
 	requesting = REQUESTS.NEW_BRANCH
-	client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/git/refs",UserData.header, true, HTTPClient.METHOD_POST, JSON.print(body))
+	#client.request(api_endpoints.repos+"/"+repository_owner+"/"+repository_name+"/git/refs",UserData.header, true, HTTPClient.METHOD_POST, JSON.stringify(body))
 
 func request_invitations_list():
 	notifications_requesting = REQUESTS.INVITATIONS_LIST
@@ -313,9 +317,9 @@ func request_invitations_list():
 
 func request_accept_invitation(invitation_id : int):
 	notifications_requesting = REQUESTS.ACCEPT_INVITATION
-	notifications_client.request(api_endpoints.invitations+"/"+str(invitation_id), UserData.header, true, HTTPClient.METHOD_PATCH)
+	#notifications_client.request(api_endpoints.invitations+"/"+str(invitation_id), UserData.header, true, HTTPClient.METHOD_PATCH)
 
 func request_decline_invitation(invitation_id : int):
 	notifications_requesting = REQUESTS.DECLINE_INVITATION
-	notifications_client.request(api_endpoints.invitations+"/"+str(invitation_id), UserData.header, true, HTTPClient.METHOD_DELETE)
+	#notifications_client.request(api_endpoints.invitations+"/"+str(invitation_id), UserData.header, true, HTTPClient.METHOD_DELETE)
 

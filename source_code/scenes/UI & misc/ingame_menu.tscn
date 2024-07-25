@@ -7,24 +7,24 @@
 script = ExtResource( 2 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-margin_left = -226.289
-margin_top = -280.358
-margin_right = 1.71097
-margin_bottom = 26.6423
-rect_scale = Vector2( 1.9286, 1.9286 )
+offset_left = -226.289
+offset_top = -280.358
+offset_right = 1.71097
+offset_bottom = 26.6423
+scale = Vector2( 1.9286, 1.9286 )
 theme = ExtResource( 4 )
 scroll_horizontal_enabled = false
 
 [node name="HSeparator" type="VBoxContainer" parent="ScrollContainer"]
-margin_right = 198.0
-margin_bottom = 572.0
+offset_right = 198.0
+offset_bottom = 572.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="comics" type="Button" parent="ScrollContainer/HSeparator"]
-margin_right = 198.0
-margin_bottom = 68.0
+offset_right = 198.0
+offset_bottom = 68.0
 focus_next = NodePath("../new game")
 focus_previous = NodePath("../quit")
 theme = ExtResource( 4 )
@@ -32,9 +32,9 @@ text = "comics"
 flat = true
 
 [node name="new game" type="Button" parent="ScrollContainer/HSeparator"]
-margin_top = 72.0
-margin_right = 198.0
-margin_bottom = 140.0
+offset_top = 72.0
+offset_right = 198.0
+offset_bottom = 140.0
 focus_next = NodePath("../continue")
 focus_previous = NodePath("../comics")
 mouse_filter = 1
@@ -42,53 +42,53 @@ text = "new game"
 flat = true
 
 [node name="continue" type="Button" parent="ScrollContainer/HSeparator"]
-margin_top = 144.0
-margin_right = 198.0
-margin_bottom = 212.0
+offset_top = 144.0
+offset_right = 198.0
+offset_bottom = 212.0
 focus_next = NodePath("../multiplayer")
 focus_previous = NodePath("../new game")
 text = "continue"
 flat = true
 
 [node name="multiplayer" type="Button" parent="ScrollContainer/HSeparator"]
-margin_top = 216.0
-margin_right = 198.0
-margin_bottom = 284.0
+offset_top = 216.0
+offset_right = 198.0
+offset_bottom = 284.0
 focus_previous = NodePath("../continue")
 shortcut_in_tooltip = false
 text = "Multiplayer"
 flat = true
 
 [node name="anime" type="Button" parent="ScrollContainer/HSeparator"]
-margin_top = 288.0
-margin_right = 198.0
-margin_bottom = 356.0
+offset_top = 288.0
+offset_right = 198.0
+offset_bottom = 356.0
 focus_next = NodePath("../quit")
 shortcut_in_tooltip = false
 text = "Anime"
 flat = true
 
 [node name="practice" type="Button" parent="ScrollContainer/HSeparator"]
-margin_top = 360.0
-margin_right = 198.0
-margin_bottom = 428.0
+offset_top = 360.0
+offset_right = 198.0
+offset_bottom = 428.0
 text = "practice"
 flat = true
 
 [node name="controls" type="Button" parent="ScrollContainer/HSeparator"]
-margin_top = 432.0
-margin_right = 198.0
-margin_bottom = 500.0
+offset_top = 432.0
+offset_right = 198.0
+offset_bottom = 500.0
 focus_next = NodePath("../quit")
 shortcut_in_tooltip = false
 text = "Controls"
 flat = true
 
 [node name="quit" type="Button" parent="ScrollContainer/HSeparator"]
-margin_top = 504.0
-margin_right = 198.0
-margin_bottom = 572.0
-focus_neighbour_top = NodePath("../controls")
+offset_top = 504.0
+offset_right = 198.0
+offset_bottom = 572.0
+focus_neighbor_top = NodePath("../controls")
 focus_next = NodePath("../comics")
 focus_previous = NodePath("../controls")
 text = "quit"

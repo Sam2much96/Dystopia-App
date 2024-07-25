@@ -43,32 +43,32 @@ var joystick_debug
 var touchInsideJoystick #= false
 var maxlength
 
-onready var __input =InputEventAction.new()
+@onready var __input =InputEventAction.new()
 
 # The Joystick Direction as A Vector 2
-export (int) var x
-export (int) var y
+@export var x : int
+@export var y : int
 
 # Custom Button Mapping
-export(bool) var custom_mapping = false
+@export var custom_mapping: bool = false
 
-export(String) var up = ""
-export(String) var down = ""
-export(String) var left = ""
-export(String) var right = ""
+@export var up: String = ""
+@export var down: String = ""
+@export var left: String = ""
+@export var right: String = ""
 
 
-onready var the_action : String
+@onready var the_action : String
 
-onready var the_event
+@onready var the_event
 
-onready var joystick_circle : JoystickCircle = $joystick_circle
-onready var outer_circle : JoystickCircle = $joystick_circle2
+@onready var joystick_circle : JoystickCircle = $joystick_circle
+@onready var outer_circle : JoystickCircle = $joystick_circle2
 
 enum {MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, RELEASE, NULL}
 
 
-export var state = RELEASE
+@export var state = RELEASE
 
 # Depreciated in favor of Global Input
 var prev_inputs = [] # An aray to store the last two joystick inputs
@@ -86,7 +86,7 @@ func release(): #pass it a variable
 		#print('released digital joystick') #for debug purposes only1
 		
 		#print ('reset digital joystick: ',the_event, the_action )
-		__input.pressed = false
+		__input.button_pressed = false
 		#touchInsideJoystick = false
 		#__input.action = ''
 		#Input.parse_input_event(__input)
@@ -108,10 +108,10 @@ func _ready():
 	"""
 	# Check That Custom Button Mapping is Available
 	if custom_mapping == true:
-		if (up.empty() or
-		down.empty() or
-		left.empty() or
-		right.empty()):
+		if (up.is_empty() or
+		down.is_empty() or
+		left.is_empty() or
+		right.is_empty()):
 			push_error(" CUstom Button Mapping cannot be empty once enabled")
 
 
@@ -184,7 +184,7 @@ func _input(event):
 			return
 
 #######Resets Joystick if event is released##############################
-	if event is InputEventScreenTouch and event.pressed == false:
+	if event is InputEventScreenTouch and event.button_pressed == false:
 		joystick_circle.pos.x = 0
 		joystick_circle.pos.y = 0
 		###### Additional codes
@@ -200,7 +200,7 @@ func _input(event):
 		#release()
 		#stop_debug()
 		return state #__input
-	if event is InputEventScreenTouch and event.pressed == true: #add a douch colision that is the size of joystick outter circle
+	if event is InputEventScreenTouch and event.button_pressed == true: #add a douch colision that is the size of joystick outter circle
 		touchInsideJoystick = true
 		#state = RELEASE #buggy
 		#start_debug()
@@ -249,7 +249,7 @@ func _process(delta):
 					if joystick_circle.is_pressed() == true:
 						#release()
 						__input.action = up
-						__input.pressed =true
+						__input.button_pressed =true
 						
 						# Converts negative values to positive
 						__input.strength = abs(y)
@@ -269,7 +269,7 @@ func _process(delta):
 					if joystick_circle.is_pressed() == true:
 						#release()
 						__input.action = down
-						__input.pressed =true
+						__input.button_pressed =true
 						
 						# Converts negative values to positive
 						__input.strength = abs(y)
@@ -288,7 +288,7 @@ func _process(delta):
 					if joystick_circle.is_pressed() == true:
 						
 						__input.action = right
-						__input.pressed =true
+						__input.button_pressed =true
 						__input.strength = abs(x)
 						#Input.parse_input_event(__input) # The bug is coming from this line of code duplicates
 						
@@ -306,7 +306,7 @@ func _process(delta):
 					if joystick_circle.is_pressed() == true:
 						#release()
 						__input.action = left
-						__input.pressed = true
+						__input.button_pressed = true
 						__input.strength = abs(x)
 						#Input.parse_input_event(__input) # WHy Multiple separate input parse?
 						parse_input_function(__input)
@@ -327,7 +327,7 @@ func _process(delta):
 						#print(the_action) #two actions stacking introduces bug
 						if __input.is_action_pressed(the_action) == true: #if my action pressed is true
 							if __input.get_action_strength(the_action) != 0:
-								__input.pressed =false #stuck button bug
+								__input.button_pressed =false #stuck button bug
 								__input.strength = 0
 								#reset() # The code breaks here
 								#print('The current action',the_action) #for debug purposes only
@@ -365,7 +365,7 @@ func _process(delta):
 				__input.action = _i #uses a for loop to release all previous inputs
 			
 				__input.strength = 0
-				__input.pressed = false
+				__input.button_pressed = false
 				#release_the_action(__input)
 				return parse_input_function(__input)
 				#return #state = NULL
@@ -419,14 +419,16 @@ func parse_input_function(event):
 		prev_inputs.erase(event.action)
 		prev_inputs.append(event.action)
 	
-	return Input.parse_input_event(event)
+	Input.parse_input_event(event)
+	return 0
 
 # Tries Fixing code duplicates in the Joystick logic and state Machine
 func release_the_action(event):
-	return Input.action_release(event)
+	Input.action_release(event)
+	return 0
 
 # Checks if any input action is pressed and returns a boolean
 func check_if_any_Input_action_is_pressed()-> bool:
-	return __input.action.empty() # For debug Purposes only
+	return __input.action.is_empty() # For debug Purposes only
 	
 

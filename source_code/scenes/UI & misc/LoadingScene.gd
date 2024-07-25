@@ -11,9 +11,9 @@ Loading Scene
 
 
 # Exportable loading boolean
-export (bool) var LOADING = false 
+@export var LOADING : bool = false 
 
-onready var loaded_scene_temp : PackedScene
+@onready var loaded_scene_temp : PackedScene
 
 
 	
@@ -25,11 +25,11 @@ func _ready():
 	
 	
 	
-	if Globals.current_level.empty():
+	if Globals.current_level.is_empty():
 		push_error("Error: initial_level shouldn't be empty")
 		LOADING = false
 		
-	if not Globals.current_level.empty():
+	if not Globals.current_level.is_empty():
 		
 		if Globals.os == "Android" or "iOS":
 			# Features:
@@ -42,7 +42,7 @@ func _ready():
 				
 				# Only show long loading scene for overworld scenes 1 and 5 which are resource heavy
 				
-				yield(get_tree().create_timer(5), "timeout")
+				await get_tree().create_timer(5).timeout
 		
 		LOADING = true
 
@@ -61,7 +61,7 @@ func _process(_delta):
 	# (2) Show Loading Icon WHile Scene is being Loaded
 	
 	# Emptry current level initiator
-	if LOADING && not Globals.current_level.empty():
+	if LOADING && not Globals.current_level.is_empty():
 		
 		# this function loads the scene resource into a global script and returns it
 		loaded_scene_temp = Utils.Functions.LoadLargeScene(
@@ -85,7 +85,7 @@ func _process(_delta):
 		LOADING = false
 		
 		print_debug("Loaded Scene Temp: ",loaded_scene_temp)
-		Utils.Functions.change_scene_to( loaded_scene_temp, get_tree())
+		Utils.Functions.change_scene_to_packed( loaded_scene_temp, get_tree())
 
 
 

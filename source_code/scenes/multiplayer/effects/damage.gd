@@ -15,8 +15,8 @@ var total_delta = 0
 
 func _ready():
 	# Offset the explosion a bit
-	position.x = rand_range(-10,10)
-	position.y = rand_range(-10,10)
+	position.x = randf_range(-10,10)
+	position.y = randf_range(-10,10)
 
 
 func _process(delta):

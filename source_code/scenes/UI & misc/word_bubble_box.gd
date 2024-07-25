@@ -22,7 +22,7 @@
 # (2) Convoluted Codebase
 # *************************************************
 
-extends AnimatedSprite
+extends AnimatedSprite2D
 
 # Word Bubble Object
 class_name  WordBubbleBox
@@ -33,26 +33,26 @@ class_name  WordBubbleBox
 #
 
 # Path to Dialogue Script
-export(String, FILE, "*.gd") var dialogue = ""
+@export var dialogue = "" # (String, FILE, "*.gd")
 
 
 # Path to Dialogue Translations
-export (String, FILE, "*.gd") var dialogue_tr 
+@export (String, FILE, "*.gd") var dialogue_tr 
  
-export var enable : bool
-export var enable_multiline : bool
+@export var enable : bool
+@export var enable_multiline : bool
 
 # For Regression testing
-export var debug : bool 
+@export var debug : bool 
 
 # For Script Parser
-export var line_index : int
+@export var line_index : int
 
 # FOr multiline Parser
-export var line_to_end : int
+@export var line_to_end : int
 
 # Toggle word bubble visibility depending on Comics Page Data
-export var visible_on_page : int 
+@export var visible_on_page : int 
 
 # Synchronizes Page Data with Comics Pages
 var Page : int 
@@ -67,7 +67,7 @@ enum {
 	STATE_TALK_LEFT_3 
 	}
 
-export (String, "Narration", "Angry", "Thoughts",
+@export (String, "Narration", "Angry", "Thoughts",
  "Talk Right", "Talk Right 2", "Talk Right 3","Talk Left", 
 "Talk Left 2","Talk Left 3"
 ) var state
@@ -80,7 +80,7 @@ var index : int
 #var lg : String = Dialogs.language
 
 # Word Bubble Object Data as a Struct
-export  var wordbubbleobjectdata : Dictionary = {
+@export  var wordbubbleobjectdata : Dictionary = {
 	"position": Position,
 	"state" : state,
 	"index" : index,
@@ -88,12 +88,12 @@ export  var wordbubbleobjectdata : Dictionary = {
 } # Dictionary containing all object's properties
 #Use a polygon2d to build the word bubbles
 
-onready var word_bubble_label : Label = $Label
-onready var word_bubble_label_2 : Label = $Label2
+@onready var word_bubble_label : Label = $Label
+@onready var word_bubble_label_2 : Label = $Label2
 # Animation Player is for Syncing Label Text with Work Bubble Boundaries.
-onready var anims : AnimationPlayer = $AnimationPlayer
+@onready var anims : AnimationPlayer = $AnimationPlayer
 
-onready var _word_bubble_nodes : Array = [anims, word_bubble_label, word_bubble_label_2]
+@onready var _word_bubble_nodes : Array = [anims, word_bubble_label, word_bubble_label_2]
 
 var bubble_box = self
 

@@ -7,7 +7,7 @@ var text_2 : String ="""
 		Internet and Try Again thank you 
 		"""
 
-onready var label = $Label
+@onready var label = $Label
 
 # Called when the node enters the scene tree for the first time.
 #func _ready():

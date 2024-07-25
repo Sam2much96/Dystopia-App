@@ -1,4 +1,4 @@
-tool
+@tool
 extends Control
 
 signal install(package)
@@ -70,14 +70,14 @@ func init_info(info: Dictionary, local: Dictionary, platforms: Array) -> void:
     $box/right/controls/UpdateButton.visible = not latest and installed
     $box/right/controls/UninstallButton.visible = installed
     if 'dependencies' in _local:
-        $box/right/controls/deps.text = 'Depends on: %s'%PoolStringArray(_local.dependencies).join(', ')
+        $box/right/controls/deps.text = 'Depends on: %s'%PackedStringArray(_local.', '.join(dependencies))
     else:
         $box/right/controls/deps.text = ''
     if 'variables' in _local:
         $box/right/variables_title.show()
         for key in _local.variables:
-            var vh = plugin_variable.instance()
-            $box/right.add_child_below_node($box/right/variables_title, vh)
+            var vh = plugin_variable.instantiate()
+            $box/right.add_sibling($box/right/variables_title, vh)
             _variables.append(vh)
             vh.setup(key, _local.variables[key])
     else:

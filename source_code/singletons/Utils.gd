@@ -24,10 +24,10 @@ var screenOrientation : int
 var viewport_size : Vector2
 var center_of_viewport : Vector2 
 
-export (Array) var EnemyObjPool : Array = [] #Stores shared pointer to enemy Mob instances
+@export var EnemyObjPool : Array = [] #Stores shared pointer to enemy Mob instances
 
-var dir : Directory = Directory.new() # Global FIle And Directory Paths
-var file : File = File.new()
+var dir : DirAccess #= DirAccess.new() # Global FIle And DirAccess Paths
+var file : FileAccess #= File.new()
 
 "Compression and Uncompression Algorithm"
 # Documentation: https://git.sr.ht/~jelle/gdunzip
@@ -35,14 +35,14 @@ var file : File = File.new()
 # Has a problem with saving Text files
 # Has a problem with Large files (Decompression is really slow)
 
-class Zip extends Reference:
-	func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PoolByteArray:
+class Zip extends RefCounted:
+	func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PackedByteArray:
 		# Instance the gdunzip script
 		var gdunzip = load('res://addons/gdunzip/gdunzip.gd').new()
-		var FileCheck1 = File.new()
+		var FileCheck1 #= File.new()
 		
 		#"Compression/Uncompression"
-		var unziped_file : PoolByteArray
+		var unziped_file : PackedByteArray
 		# Singleton GDUNzip is Depreciated
 		#var loaded = Gdunzip.load(FILE)
 		
@@ -95,7 +95,7 @@ class Zip extends Reference:
 
 
 
-class Player_utils extends Reference:
+class Player_utils extends RefCounted:
 	
 	
 	
@@ -106,7 +106,7 @@ class Player_utils extends Reference:
 	# Rewrite into a separate function
 		Globals.players.append( scene_tree.get_nodes_in_group('player') )#gets all player nodes in the scene
 	 #it shows deleted object once player is despawns.
-		if Globals.players.empty() == true: #error catcher 1            
+		if Globals.players.is_empty() == true: #error catcher 1            
 			Globals.players.clear()
 		#
 		if Globals.player == null:
@@ -152,7 +152,7 @@ func int_to_array(data : int)-> Array:
 	return num_array
 
 "Memory Leak/ Orphaned Nodes Management System"
-class MemoryManagement extends Reference :
+class MemoryManagement extends RefCounted :
 	# To-Do: Method Should Implement a THread
 	
 	static func queue_free_children(node: Node) -> void:
@@ -175,12 +175,12 @@ class MemoryManagement extends Reference :
 
 	#prints all orphaned nodes in project
 	static func memory_leak_management(from : Node):
-		return from.print_stray_nodes() 
+		return 1 #from.print_orphan_nodes() 
 
 
 "Functions Class"
 
-class Functions extends Reference:
+class Functions extends RefCounted:
 	# Shared Functions Class
 	
 
@@ -188,11 +188,11 @@ class Functions extends Reference:
 	
 	
 	
-	static func change_scene_to(scene : PackedScene, tree : SceneTree): #Loads scenes faster?
+	static func change_scene_to_packed(scene : PackedScene, tree : SceneTree): #Loads scenes faster?
 		
 		#if scene is PackedScene: 
 			if scene != null: 
-				return tree.change_scene_to(scene)  
+				return tree.change_scene_to_packed(scene)  
 
 			else: print_debug (scene," ", typeof(scene) ,"is not supported in this function")
 	
@@ -203,7 +203,7 @@ class Functions extends Reference:
 	static func LoadLargeScene(
 		_to_load : String, 
 		scene_resource : PackedScene, 
-		_o : ResourceInteractiveLoader, 
+		_o : ResourceLoader, 
 		scene_loader : ResourceLoader, 
 		_loading_resource : bool, 
 		a: int , 
@@ -214,20 +214,17 @@ class Functions extends Reference:
 		#print_debug("Loading Large Scene")
 		if _to_load != "" && scene_resource == null:
 			var time_max = 50000 #sets an estimate maximum time to load scene
-			var t = OS.get_ticks_msec()
+			var t = Time.get_ticks_msec()
 			
-			# play loading anmation 
-			# Play Animation
-			#GlobalAnimation.get_child(0).play("LOADING")
-			#scene_loader.load_interactive(_r) 
 			
-			_o= (scene_loader.load_interactive(_to_load)) #function returns a resourceInteractiveLoader
+			
+			#_o= (scene_loader.load_threaded_request(_to_load)) #function returns a resourceInteractiveLoader
 
-			scene_loader.load_interactive(_to_load) #function returns a resourceInteractiveLoader
+			scene_loader.load_threaded_request(_to_load) #function returns a resourceInteractiveLoader
 			
 		
 			#print (" Loader Debug Outer loop >>> Inner Loop")
-			while OS.get_ticks_msec() < (t + time_max) && _o != null: 
+			while Time.get_ticks_msec() < (t + time_max) && _o != null: 
 
 				var err = _o.poll()
 				#loading_resource = true
@@ -285,29 +282,29 @@ class Functions extends Reference:
 		print_debug ("-------Saving Game -------")
 		var save_dict : Dictionary = {}
 		var save_game = Utils.file 
-		save_game.open("user://savegeme.save", File.WRITE_READ)
-		if !player.empty():
+		#save_game.open("user://savegeme.save", File.WRITE_READ)
+		if !player.is_empty():
 			save_dict.player = player #saves the player node 
 		if spawn_x != 0:
 			save_dict.spawn_x = spawn_x
 		if spawn_y != 0:
 			save_dict.spawn_y =spawn_y
-		if not current_level.empty() :
+		if not current_level.is_empty() :
 			save_dict.current_level = current_level
 		
 		# Inventory List is saved individually
-		if !Inventory.list().empty():
+		if !Inventory.list().is_empty():
 			save_dict.inventory = Inventory.list()
-		if !Quest.get_quest_list().empty():
+		if !Quest.get_quest_list().is_empty():
 			save_dict.quests = Quest.get_quest_list()
-		if not os.empty():
+		if not os.is_empty():
 			save_dict.os = os
 		if kill_count != 0 :
 			save_dict.kill_count = kill_count
 		#save_dict.currency = Suds #should load from encrypted wallet.cfg
 		
 		# For preserving scene changing information
-		if not prev_scene.empty() :
+		if not prev_scene.is_empty() :
 			save_dict.prev_scene = prev_scene
 			
 		if prev_scene_spawnpoint != null: # Depreciate in favor of a singular spawpoint variable
@@ -315,7 +312,7 @@ class Functions extends Reference:
 		
 		if player_hitpoints != 0:
 			save_dict.player_hitpoints = player_hitpoints
-		if not direction_control.empty():
+		if not direction_control.is_empty():
 			save_dict.direction_control = direction_control
 		
 		#Music on settings is a boolean converted to int
@@ -323,14 +320,14 @@ class Functions extends Reference:
 			save_dict.music = int(Music.music_on) #add other variables to save
 		
 		# Language is saved independently
-		if not Dialogs.language.empty():
+		if not Dialogs.language.is_empty():
 			save_dict.languague = Dialogs.language
 		
 		# Control Settings
 		# Vibration
 		save_dict.vibrate = GlobalInput.vibrate
 		
-		save_game.store_line(to_json(save_dict))
+		save_game.store_line(JSON.new().stringify(save_dict))
 		save_game.close()
 		print ("saved gameplay")
 		return true
@@ -341,14 +338,16 @@ class Functions extends Reference:
 	"""
 	static func load_game(check_only : bool, GlobalScript) -> bool:
 		check_only = false
-		print ("-------Loading Game -------")
-		var save_game = File.new()
+		print_debug ("-------Loading Game is buggy in 4.2.2 builds -------")
+		var save_game #= File.new()
 		
 		
-		if not save_game.file_exists("user://savegeme.save"):
-			return false
-		save_game.open("user://savegeme.save", File.READ)
-		var save_dict = parse_json(save_game.get_line())
+		#if not save_game.file_exists("user://savegeme.save"):
+		#	return false
+		#save_game.open("user://savegeme.save", File.READ)
+		var test_json_conv = JSON.new()
+		test_json_conv.parse(save_game.get_line())
+		var save_dict = test_json_conv.get_data()
 		if typeof(save_dict) != TYPE_DICTIONARY:
 			return false
 		if not check_only:
@@ -435,17 +434,19 @@ class Functions extends Reference:
 	static func load_user_data( data: String ):
 		
 		var save_game = Utils.file 
-		if not save_game.file_exists("user://savegeme.save"):
-			return false
-		save_game.open("user://savegeme.save", File.READ)
-		var save_dict = parse_json(save_game.get_line())
-		if typeof(save_dict) != TYPE_DICTIONARY:
-			return false
+		#if not save_game.file_exists("user://savegeme.save"):
+		#	return false
+		#save_game.open("user://savegeme.save", File.READ)
+		#var test_json_conv = JSON.new()
+		#test_json_conv.parse(save_game.get_line())
+		#var save_dict = test_json_conv.get_data()
+		#if typeof(save_dict) != TYPE_DICTIONARY:
+		#	return false
 
-		if save_dict.has(data):
-			print_debug ("Loading user data: ", data)
-			if data == 'languague':
-				Dialogs.language = save_dict.languague
+		#if save_dict.has(data):
+		#	print_debug ("Loading user data: ", data)
+		#	if data == 'languague':
+		#		Dialogs.language = save_dict.languague
 		#	if data == "Music_on_settings":
 		#		Music.Music_on_settings = save_dict.Music_on_settings
 		#		Music._ready()
@@ -476,7 +477,7 @@ class Functions extends Reference:
 
 		return Vector2(length, breadth)
  
-	static func edge_length(point_data: PoolVector2Array) -> Vector2:
+	static func edge_length(point_data: PackedVector2Array) -> Vector2:
 	# Caclulates the Edge Length of a 4 Point Structure
 	# Calculates the distance between 2 points
 	# Source : https://stackoverflow.com/questions/7475004/calculate-width-and-height-from-4-points-of-a-polygon
@@ -489,7 +490,7 @@ class Screen  :
 	
 	
 	var screenOrientation : int
-	var screenOrientationSettings : int = OS.get_screen_orientation()
+	var screenOrientationSettings : int = DisplayServer.screen_get_orientation()
 	
 	# This Apps Global Screen Orientation
 	enum { SCREEN_HORIZONTAL, SCREEN_VERTICAL} 
@@ -499,11 +500,11 @@ class Screen  :
 	# Should Debug this data to the Debug Singleton
 	# Should only be called once
 	static func debug_screen_properties():
-		print ('OS Screen Orientation: ', OS.get_screen_orientation())
+		print ('OS Screen Orientation: ', DisplayServer.screen_get_orientation())
 		print('Global Screen Orientation: ',Globals.screenOrientation)
 		# match this variable to Global Screen Orientation
-		print ('Screen Size 1: ',OS.get_screen_size(-1)) #yes. This variable changes when screen rotates
-		print ('Screen Scale: ',OS.get_screen_scale())
+		print ('Screen Size 1: ',DisplayServer.screen_get_size(-1)) #yes. This variable changes when screen rotates
+		print ('Screen Scale: ',DisplayServer.screen_get_scale())
 		pass
 
 
@@ -523,7 +524,7 @@ class Screen  :
 		# Features:
 		# (1) uses an Integer from the Global Singleton to stroe the calculation
 		# (2) Returns an integer representain an Enumeration of the screen orientation
-		var screen : Vector2 =OS.get_screen_size(-1) # get the current screen size
+		var screen : Vector2 =DisplayServer.screen_get_size(-1) # get the current screen size
 		
 		
 		# screen orientation enum copied from Globals main
@@ -571,7 +572,7 @@ class Screen  :
 			GlobalScript.viewport_size = calculateViewportSize(display)
 			#Globals.center_of_viewport = Globals.calc_center_of_rectangle(Globals.viewport_size)
 			
-		if display is Viewport:
+		if display is SubViewport:
 			GlobalScript.viewport_size = display.size
 		
 		
@@ -678,10 +679,7 @@ class Screen  :
 		else: pass
 	
 	
-	# Deprecoated
-	static func resize_window(x : int,y : int): #resizes the game window
-		Globals.screenSize = Vector2(x,y);
-		return OS.set_window_size(Vector2(x,y));
+
 
 	# Convert bytes to Megabytes
 	static func _ram_convert(bytes) :
@@ -691,11 +689,11 @@ class Screen  :
 
 
 "Procedural Generation"
-class procedural extends Reference:
+class procedural extends RefCounted:
 	# Bug: Maxes Out Static Memory, Refactoring to use dynamic memeory instead
 	#
 	
-	static func genereate(simplex_noise : OpenSimplexNoise, 
+	static func genereate(simplex_noise : FastNoiseLite, 
 	world_seed : String, 
 	noise_octaves : int, 
 	noise_period : int, 
@@ -710,7 +708,7 @@ class procedural extends Reference:
 		simplex_noise.seed = world_seed.hash()
 		
 		# set simplex noise using Editor values
-		simplex_noise.octaves = noise_octaves
+		simplex_noise.fractal_octaves = noise_octaves
 		simplex_noise.period = noise_period
 		simplex_noise.persistence = noise_persistence
 		simplex_noise.lacunarity = noise_lacunarity
@@ -732,15 +730,15 @@ class procedural extends Reference:
 	# Uses the Tilemap's set cell method & the x and y auto tile co-ordinates
 	static func _set_autotile(x : int, y : int, tile_map : TileMap) -> void :
 		if is_instance_valid(tile_map):
-			tile_map.set_cell(
-				x,
-				y, 
-				tile_map.get_tileset().get_tiles_ids()[0], # Tile ID, the first one 
-				false, # Completeley ignore the next three arguments
-				false, 
-				false, 
-				tile_map.get_cell_autotile_coord(x, y ) # co-ordinate of the TileSet
-			)
+			#tile_map.set_cell(
+			#	x,
+			#	y, 
+			#	tile_map.get_tileset().get_tiles_ids()[0], # Tile ID, the first one 
+			#	false, # Completeley ignore the next three arguments
+			#	#false, 
+				#false, 
+			#	tile_map.get_cell_autotile_coord(x, y ) # co-ordinate of the TileSet
+			#)
 			
 			tile_map.update_bitmask_area(Vector2(x, y)) # so the engine knows where to configure the autotiling
 
@@ -780,16 +778,16 @@ func calc_average(list: Array):
 	else : return
 
 func calc_rand_number()-> int:
-	var rando : int = rand_range(2000,10000)
+	var rando : int = randf_range(2000,10000)
 	return rando
 
 "File Checker"
 # Global file checking method for DIrectory path and file name/type
 # Copied from Wallet's Implementation
 func check_files(path_to_dir: String, path_to_file : String)-> bool:
-	var FileCheck1=File.new() # checks wallet mnemonic
-	var FileDirectory=Directory.new() #deletes all theon reset
-	if FileDirectory.dir_exists(path_to_dir):
+	var FileCheck1 #=File.new() # checks wallet mnemonic
+	var FileDirectory=DirAccess #.new() #deletes all theon reset
+	if FileDirectory : #.dir_exists(path_to_dir):
 		#print ("File Exists: ",FileCheck1.file_exists(path_to_file)) # For debug purposes only
 		return FileCheck1.file_exists(path_to_file)
 	else: return false
@@ -800,7 +798,7 @@ func check_files(path_to_dir: String, path_to_file : String)-> bool:
 
 		# Updates the raycast to the Enemy"s Direction
 static func rotate_pointer(point_direction: Vector2, pointer) -> void:
-	var temp =rad2deg(atan2(point_direction.x, point_direction.y))
+	var temp =rad_to_deg(atan2(point_direction.x, point_direction.y))
 	pointer.rotation_degrees = temp
 
 
@@ -812,7 +810,7 @@ func sumaVectores(v1, v2): #vector sum
 	return Vector2(v1.x + v2.x, v1.y + v2.y)
 
 
-class UI extends Reference:
+class UI extends RefCounted:
 	
 	'Upscale UI'
 	static func upscale_ui(node ,size: Vector2, position : Vector2)-> void:
@@ -835,19 +833,19 @@ class Downloader extends Node:
 		var arg_bytes_loaded = {"name":"bytes_loaded","type":TYPE_INT}
 		var arg_bytes_total = {"name":"bytes_total","type":TYPE_INT}
 		add_user_signal("loading",[arg_bytes_loaded,arg_bytes_total])
-		var arg_result = {"name":"result","type":TYPE_RAW_ARRAY}
+		var arg_result = {"name":"result","type":TYPE_PACKED_BYTE_ARRAY}
 		add_user_signal("loaded",[arg_result])
 		pass
 		
 	func __get(domain : String ,url : String ,port: String,ssl : bool):
 		if(t.is_active()):
 			return
-		t.start(self,"_load",{"domain":domain,"url":url,"port":port,"ssl":ssl})
+		t.start(Callable(self, "_load").bind({"domain":domain,"url":url,"port":port,"ssl":ssl}))
 		 
 	func _load(params): # what params?
 		var err = 0
 		var http = HTTPClient.new()
-		err = http.connect(params.domain,params.port,params.ssl)
+		err = http.connect(params.domain, Callable(params.port, params.ssl))
 		 
 		while(http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING):
 			http.poll()
@@ -864,7 +862,7 @@ class Downloader extends Node:
 			http.poll()
 			OS.delay_msec(500)
 		 
-		var rb = PoolByteArray()
+		var rb = PackedByteArray()
 		if(http.has_response()):
 			headers = http.get_response_headers_as_dictionary()
 			while(http.get_status()==HTTPClient.STATUS_BODY):
@@ -929,7 +927,7 @@ class Downloader extends Node:
 			return Networking.request(Networking.url)
 			#play_loading_cinematic() #Plays the Loading cinematic while the video file downloads
 			#downloading_video = true
-			Networking.connect("request_completed", self, "_http_request_completed")
+			Networking.connect("request_completed", Callable(self, "_http_request_completed"))
 			print ('download completed')
 		if not file_exists : #&& downloading_video == true:
 			print('Already Downloading video, Please Wait or Quit and Restart')
@@ -941,22 +939,22 @@ class Downloader extends Node:
 			#stop_playing_laoding_cinematic()
 			#downloading_video = false
 			var err
-			var video_file : File = Utils.file #File.new()
+			var video_file : FileAccess = Utils.file #File.new()
 			var video_file_path = "user://video.ogv"
-			video_file.open(video_file_path, File.READ_WRITE)
-			err = (video_file.open(video_file_path, File.READ))
+			#video_file.open(video_file_path, File.READ_WRITE)
+			#err = (video_file.open(video_file_path, File.READ))
 			print ('Video file is open: ',video_file.is_open(), '/error :', err) #Debugs if file can open
 			
 			var video_file_absolute_path = video_file.get_path_absolute()
-			print ('Video File Path: ',video_file_path)
-			print('Video file size : ', video_file.get_len())
+			print ('Video File Path3D: ',video_file_path)
+			print('Video file size : ', video_file.get_length())
 			
 			# Chhecks if the video is an 0 byte error
-			if video_file.get_len() ==0 :
-				push_error('Video file is corrupted /'+ str(video_file.get_len()))
+			if video_file.get_length() ==0 :
+				push_error('Video file is corrupted /'+ str(video_file.get_length()))
 			
 			if video_file.is_open() && err == 0: #error catcher 2
-				Globals.VIDEO = ResourceLoader.load(video_file_path, 'VideoStreamTheora', false) #Don't make the video a global file
+				#Globals.VIDEO = ResourceLoader.load(video_file_path, 'VideoStreamTheora', false) #Don't make the video a global file
 				#Music.notification(NOTIFICATION_PREDELETE) #. Fix Music off function #not needed
 				print ('Playing Global video File: ', Globals.VIDEO )
 				#_Video_Stream((Globals.AMV)) #Plays the AMV video with Shootback
@@ -969,7 +967,7 @@ class Downloader extends Node:
 	"""
 	# Refactor into proper clas/static function
 	func _http_request_completed(result, response_code, _headers, body): # dOWNLOADS A VIDEO FROM A SERVER
-		if body.empty() != true: #Executes once a Connection is established 
+		if body.is_empty() != true: #Executes once a Connection is established 
 
 			Utils.dir.open ("user://")
 			var file_exists = Utils.dir.file_exists('user://video.webm')
@@ -980,7 +978,7 @@ class Downloader extends Node:
 				Utils.dir.open("user://")
 				var _absolute_path = Utils.dir.get_current_dir ( )
 				
-				print ('Directory //', _absolute_path)
+				print ('DirAccess //', _absolute_path)
 				var err : int
 				var video_file = cinematic.Function.store_video_files(body)
 				print ('Video file is open: ',video_file.is_open(), '/error :', err) #Debugs if file can open
@@ -999,7 +997,7 @@ class Downloader extends Node:
 				#return Globals.video_stream
 			if file_exists:
 				print ('File Exists', file_exists)
-		if body.empty() == true:
+		if body.is_empty() == true:
 			print ('Streaming Site '+ Networking.url+ ' is unavailable ')
 			print ('It could be a myriad of problems. Please debug carefully')
 

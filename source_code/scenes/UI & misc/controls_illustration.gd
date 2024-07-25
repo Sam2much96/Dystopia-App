@@ -19,9 +19,9 @@ class_name ControlIllustrations
 
 #export(String, FILE, "*.webp") var mobile_texture 
 #export(String, FILE, "*.webp") var pc_texture
-export(Texture) var mobile_texture
-export(Texture) var pc_texture
-export(Texture) var backup_texture
+@export var mobile_texture: Texture2D
+@export var pc_texture: Texture2D
+@export var backup_texture: Texture2D
 
 
 # Sets different texture depending on the operating system

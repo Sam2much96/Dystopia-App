@@ -17,7 +17,7 @@
 
 extends CPUParticles2D
 
-class_name BloodSplatter , 'res://resources/FX/Blood splatter fx.webp'
+class_name BloodSplatter #, 'res://resources/FX/Blood splatter fx.webp'
 
 func _ready():
 	emitting = true

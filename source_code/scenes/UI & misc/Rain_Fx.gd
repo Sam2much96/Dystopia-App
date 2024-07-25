@@ -29,8 +29,8 @@ extends CPUParticles2D
 
 class_name RainFX
 
-onready var rain_particles : CPUParticles2D = self #$Particles2D
-onready var timer : Timer = $Timer
+@onready var rain_particles : CPUParticles2D = self #$GPUParticles2D
+@onready var timer : Timer = $Timer
 #export (bool) var enable
 
 

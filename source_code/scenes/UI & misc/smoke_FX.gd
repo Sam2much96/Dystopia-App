@@ -30,8 +30,8 @@ var current_state : bool  # A current state pointer to reduce performance hog
 var frame_counter : int = 0
 
 func _ready():
-	Globals._smoke_fx_ = self
-	#_emit(false) # Triggers off and on
+	# Make Global
+	Simulation.smokeFX = self
 
 
 func _emit(value : bool) -> void: # The reason for this function is to fix the state changer throatling bug

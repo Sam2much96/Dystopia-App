@@ -111,7 +111,7 @@ CPU FX
 
 """
 var rainFX : RainFX
-
+var smokeFX : smoke_fx
 
 
 """

@@ -17,12 +17,13 @@
 # (1) A working zip and unzip function through GDUnzip repurposed as an editor plugin #('insert GDUNzip github address')
 # (2) ArrAnge code base, make it easier to read at a glance (1/2)
 # (3) Use resource oader for video loading script
+
 # Bugs
 # (1) COnnect to GDUNZIP via editor script to zip and unzip 
 # (2) Lacks proper documentation (fixed)
 # (3) Lacks Performance Optimization and Proper variable mnaming conventions (fixed)
 # (4) Causes a performance hog with process functions
-# (5) Causes a ram hog with loaded and preloaded variables
+# (5) Causes a ram hog with loaded and preloaded variables (1/2)
 # *************************************************
 
 extends Node
@@ -31,26 +32,21 @@ class_name GlobalsVar
 
 
 # Load Scenes Programmatically
-var title_screen : PackedScene = load( 'res://scenes/Title screen.tscn')
-var form : PackedScene = load ('res://scenes/UI & misc/form/form.tscn')
-var controls : PackedScene = load ('res://scenes/UI & misc/Controls.tscn')
-var loading : PackedScene = load('res://addons/github-integration/scenes/loading.tscn')
-var github : PackedScene = load("res://addons/github-integration/scenes/GitHub.tscn")
-var _wallet : PackedScene = load('res://scenes/Wallet/Wallet main.tscn')
-var title : PackedScene = load ("res://scenes/Title screen.tscn")
-var cinematics : PackedScene = load('res://scenes/cinematics/cinematics.tscn')
-"Comics  Book Module variables"
-var comics : PackedScene = load ('res://scenes/UI & misc/Comics.tscn')
-var comics___2 : PackedScene = load ('res://scenes/UI & misc/Comics____2.tscn')
-#var comics_chapter 
-#var comics_page 
+# Rewriting to Use Dictionary and only load scene when needed to optimise memory usage
+var global_scenes : Dictionary = {"title": "res://scenes/Title screen.tscn",
+"form":"'res://scenes/UI & misc/form/form.tscn'",
+"controls": 'res://scenes/UI & misc/Controls.tscn',
+"loading" : "res://scenes/UI & misc/LoadingScene.tscn",
+"wallet" : 'res://scenes/Wallet/Wallet main.tscn',
+"cinematics" : "res://scenes/cinematics/cinematics.tscn"
+}
 
+var form : PackedScene 
+var controls : PackedScene 
+var _wallet : PackedScene 
+var title : PackedScene 
+var cinematics : PackedScene 
 
-#var game_loop
-
-#var prev_scene
-#var prev_scene_spawnpoint
-#var next_scene = null
 onready var curr_scene : String = ""
 onready var os: String = OS.get_name()
 onready var kill_count : int = 0 #update to load from savefile
@@ -139,17 +135,14 @@ var despawn_fx: PackedScene = load ("res://scenes/UI & misc/DespawnFX.tscn")
 var bullet_fx : PackedScene
 
 "Node Pointer"
-var _smoke_fx_ 
+#var _smoke_fx_ 
 
 'Temporary variants'
-var temp
+#var temp
 
 "Wallet Algo"
-var NFT: TextureRect #should ideally be an array for multiple NFT's
-var wallet_state  #wallet state global variabe
-
-
-#" File Checkers"
+#var NFT: TextureRect #should ideally be an array for multiple NFT's
+#var wallet_state  #wallet state global variabe
 
 
 
@@ -186,12 +179,15 @@ func _go_to_title():
 	Music.play_track(Music.ui_sfx[1])
 	
 	'changes scene to title_screen'
+	title = load(global_scenes["title"])
 	
-	return Utils.Functions.change_scene_to(title, get_tree())#get_tree().change_scene()
+	Utils.Functions.change_scene_to(title, get_tree())#get_tree().change_scene()
+	return 0
 
 func _go_to_cinematics():
-	return Utils.Functions.change_scene_to(cinematics, get_tree())#get_tree().change_scene() 
-
+	cinematics = load(global_scenes["cinematics"])
+	Utils.Functions.change_scene_to(cinematics, get_tree())#get_tree().change_scene() 
+	return 0
 
 
 

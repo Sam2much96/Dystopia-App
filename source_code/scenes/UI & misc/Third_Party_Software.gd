@@ -4,9 +4,11 @@ extends Control
 
 
 class_name ThirdPartySoftware
+# Temporarily DIsabled for Codebase Refactoring
 
-var github = Globals.github
-var _wallet = Globals._wallet
+
+var github #= Globals.github
+var _wallet #= Globals._wallet
 
 func _ready():
 	pass

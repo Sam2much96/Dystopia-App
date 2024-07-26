@@ -38,8 +38,8 @@ var frame_counter : int = 0
 
 
 
-@export (bool) var HINT #= false # Boolean conditional for hint system
-@export (bool) var triggered #= false # Boolean conditional for controlling signpost activation
+@export var HINT : bool #= false # Boolean conditional for hint system
+@export var triggered : bool #= false # Boolean conditional for controlling signpost activation
 func _ready():
 	
 	if enabled:

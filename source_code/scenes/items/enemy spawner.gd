@@ -29,10 +29,10 @@ extends Marker2D
 class_name enemy_spawner
 
 
-@export (bool) var enabled 
-@export (int) var _hitpoints 
-@export (String, 'Easy', "Intermediate", "Hard") var enemy_type
-@export (PackedScene) var enemy_spawn_1
+@export var enabled : bool
+@export var _hitpoints : int
+@export var enemy_type : Array =[ 'Easy', "Intermediate", "Hard"]# should be exported list string 
+@export var enemy_spawn_1 : PackedScene
 
 
 @onready var position_in_area : Vector2 = self.position #origin point

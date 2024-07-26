@@ -22,7 +22,7 @@ class_name Exit
 Add this to any area2d and it will send the player to the indicated scene and spawnpoint
 """
 
-@export var to_scene # (String, FILE, "*.tscn")
+@export var to_scene : String # (String, FILE, "*.tscn")
 @export var spawnpoint: String = ""
 
 # Called when the node enters the scene tree for the first time.

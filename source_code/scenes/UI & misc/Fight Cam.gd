@@ -48,7 +48,7 @@ func _ready():
 	#Utils._randomize(self)
 	randomize()
 	noise.seed = randi()
-	noise.period = 4
+	#noise.period = 4 
 	noise.fractal_octaves = 2
 
 func _process(delta):

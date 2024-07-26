@@ -28,7 +28,7 @@ which should be an instance of Quest.gd it'll become a quest giver and show what
 text Quest.process() returns
 """
 
-@export (bool)var active
+@export var active : bool
 
 @export var character_name: String = "Nameless NPC"
 @export var dialogs = ["..."] # (Array, String, MULTILINE)
@@ -43,7 +43,7 @@ var __body : Player
 @onready var npc : Area2D = $NPC
 
 # AI API fetches Prompt from server
-@onready var _AI : Llama2API = $AI
+@onready var _AI = $AI#: Llama2API = $AI
 
 var frame_counter : int = 0
 

@@ -253,8 +253,8 @@ func _update_inventory_listing():
 
 func _notification(what):  #Triggered when the Min Game Loop is exited
 	#if (what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST):
-		print_debug("STATUS NOTIFICATION")
-
+	#	print_debug("STATUS NOTIFICATION")
+		pass
 
 
 func _on_status_showing():

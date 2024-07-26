@@ -30,7 +30,7 @@ func _process(delta):
 	total_delta += delta
 	if (total_delta > 0.5):
 		total_delta -= 0.5
-		update()
+		#update() # update method is depreciated
 	
 
 # Draw the players on the minimap

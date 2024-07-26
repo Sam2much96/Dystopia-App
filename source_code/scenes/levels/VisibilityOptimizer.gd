@@ -31,7 +31,7 @@ func _ready():
 	Parent.visible = false
 
 
-func hide():
+func _hide():
 	#print(Parent, "left screen hiding", Parent) # For Debug Purposes only
 	
 	# Hide Parend
@@ -40,7 +40,7 @@ func hide():
 	# HIde Parent Visibility
 	Parent.visible = false
 
-func show():
+func _show():
 	#print(Parent, "entered screen, showing", Parent) # For Debug Purposes only
 	Parent.show()
 	Parent.visible = true

@@ -14,18 +14,18 @@ func _ready():
 	_loaded_comics == false && 
 	comics_sprite == null
 	):
-		print_debug("-----Loading GamePlay Comics-----")
-		comics_sprite =  Functions.load_comics(
-			comics[8], 
-			memory,
-			get_tree(),
-			enabled, 
-			can_drag, 
-			zoom,
-			current_frame, 
-			Kinematic_2d, 
-			self#get_tree().get_root().get_node("root/Outside/GameHUD/Comics")
-			)
+		print_debug("-----Loading GamePlay Comics is Buggy and Depreciated-----")
+#		comics_sprite =  Functions.load_comics(
+#			comics[8], 
+#			memory,
+#			get_tree(),
+#			enabled, 
+#			can_drag, 
+#			zoom,
+#			current_frame, 
+#			Kinematic_2d, 
+#			self#get_tree().get_root().get_node("root/Outside/GameHUD/Comics")
+#			)
 
 		# Show Comics
 		Functions.show_comics(

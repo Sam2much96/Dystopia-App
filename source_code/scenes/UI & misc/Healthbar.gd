@@ -22,7 +22,7 @@
 # *************************************************
 extends HBoxContainer
 
-class_name Healthbar, 'res://resources/misc/Pixel Heart 32x32.png'
+class_name Healthbar#, 'res://resources/misc/Pixel Heart 32x32.png'
 
 """
 Connects to the player node and shows a health bar in the form of hearts
@@ -89,7 +89,7 @@ func _on_health_changed(new_hp : int):
 		# inefficient code
 		for i in new_hp:
 			
-			var heart = heart_instance.instance()
+			var heart = heart_instance.instantiate(0)
 			
 			self.call_deferred('add_child',heart) #adds more life bars
 			

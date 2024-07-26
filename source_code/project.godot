@@ -36,7 +36,6 @@ Simulation="*res://singletons/Simulation.tscn"
 GlobalInput="*res://singletons/Input.tscn"
 FPSGraphOverlay="*res://addons/fps_graph_overlay/FPSGraphOverlay.tscn"
 Android="*res://singletons/Android.gd"
-AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
 
 [debug]
 

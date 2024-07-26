@@ -325,12 +325,13 @@ class Functions extends RefCounted:
 		
 		# Control Settings
 		# Vibration
-		save_dict.vibrate = GlobalInput.vibrate
+		#save_dict.vibrate = GlobalInput.vibrate
 		
-		save_game.store_line(JSON.new().stringify(save_dict))
-		save_game.close()
-		print ("saved gameplay")
-		return true
+		#save_game.store_line(JSON.new().stringify(save_dict))
+		#save_game.close()
+		#print ("saved gameplay")
+		print_debug("Save GamePlay Is Buggy in v 4.2 port")
+		return false
 
 	"""
 	If check_only is true it will only check for a valid save file and return true or false without

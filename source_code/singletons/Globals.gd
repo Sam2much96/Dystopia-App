@@ -22,27 +22,37 @@
 # (2) Lacks proper documentation (fixed)
 # (3) Lacks Performance Optimization and Proper variable mnaming conventions (fixed)
 # (4) Causes a performance hog with process functions
-# (5) Causes a ram hog with loaded and preloaded variables
+# (5) Causes a ram hog with loaded and preloaded variables (1/2)
 # *************************************************
 
 extends Node
 
 class_name GlobalsVar
 
+var global_scenes : Dictionary = {
+	"title_scene" : 'res://scenes/Title screen.tscn',
+	"form" : 'res://scenes/UI & misc/form/form.tscn',
+	"controls" : 'res://scenes/UI & misc/Controls.tscn',
+	"loading" : "res://scenes/UI & misc/LoadingScene.tscn",
+	"wallet": 'res://scenes/Wallet/Wallet main.tscn',
+	"cinematics": 'res://scenes/cinematics/cinematics.tscn'
+}
 
 # Load Scenes Programmatically
 # TO DO : Rewrite to use dictionary strings instead of packed scene to free meme requirements
-var title_screen : PackedScene = load( 'res://scenes/Title screen.tscn')
-var form : PackedScene = load ('res://scenes/UI & misc/form/form.tscn')
-var controls : PackedScene = load ('res://scenes/UI & misc/Controls.tscn')
-var loading : PackedScene = load('res://addons/github-integration/scenes/loading.tscn')
-var github : PackedScene = load("res://addons/github-integration/scenes/GitHub.tscn")
-var _wallet : PackedScene = load('res://scenes/Wallet/Wallet main.tscn')
-var title : PackedScene = load ("res://scenes/Title screen.tscn")
-var cinematics : PackedScene = load('res://scenes/cinematics/cinematics.tscn')
+var title : PackedScene #= load( 'res://scenes/Title screen.tscn')
+var form : PackedScene #= load ('res://scenes/UI & misc/form/form.tscn')
+var controls : PackedScene #= load ('res://scenes/UI & misc/Controls.tscn')
+var loading : PackedScene #= load('res://addons/github-integration/scenes/loading.tscn')
+#var github : PackedScene = load("res://addons/github-integration/scenes/GitHub.tscn")
+var _wallet : PackedScene #= load('res://scenes/Wallet/Wallet main.tscn')
+#var title : PackedScene = load ("res://scenes/Title screen.tscn") #duplicate
+var cinematics : PackedScene #= load('res://scenes/cinematics/cinematics.tscn')
+
 "Comics  Book Module variables"
-var comics : PackedScene = load ('res://scenes/UI & misc/Comics.tscn')
-var comics___2 : PackedScene #= load ('res://scenes/UI & misc/Comics____2.tscn') # disabled for 4.2 port
+# depreciated
+#var comics : PackedScene = load ('res://scenes/UI & misc/Comics.tscn')
+#var comics___2 : PackedScene #= load ('res://scenes/UI & misc/Comics____2.tscn') # disabled for 4.2 port
 #var comics_chapter 
 #var comics_page 
 
@@ -187,10 +197,12 @@ func _go_to_title():
 	Music.play_track(Music.ui_sfx[1])
 	
 	'changes scene to title_screen'
+	title = load(global_scenes["title_scene"])
 	
 	return Utils.Functions.change_scene_to_packed(title, get_tree())#get_tree().change_scene_to_file()
 
 func _go_to_cinematics():
+	cinematics = load(global_scenes["cinematics"])
 	return Utils.Functions.change_scene_to_packed(cinematics, get_tree())#get_tree().change_scene_to_file() 
 
 

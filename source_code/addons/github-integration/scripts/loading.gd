@@ -21,7 +21,7 @@ class_name loading
 @onready var message : Label = $VBoxContainer/Message
 
 
-@onready var  loading2 : TextureRect = $VBoxContainer/loading2
+@onready var  loading2 : TextureRect = get_node("VBoxContainer/loading2")#$VBoxContainer/loading2
 
 
 # related to Github scene
@@ -49,7 +49,8 @@ func _input(_event):
 func _on_loading_visibility_changed():
 	# connects to a Github node signal
 	VISIBLE = visible
-	if visible:
+	if visible && is_instance_valid(loading2): 
+		print_debug("Shader is Broken")
 		loading2.show()
 		loading2.material.set_shader_parameter("speed",5)
 	if not visible:

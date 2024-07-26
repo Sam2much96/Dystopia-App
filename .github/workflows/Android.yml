@@ -1,0 +1,112 @@
+name: Android
+
+env:
+  GODOT_VERSION: 4.2.2
+  EXPORT_NAME: source_code
+
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+# android push can only be used once per day without errors
+on:
+  push:
+    branches: [ v4.2.2 ]
+
+jobs:
+  Android_Push:
+    runs-on: ubuntu-latest
+    needs: container
+    steps:
+      - name: Download-content
+        uses: actions/checkout@v2
+        
+      - uses: actions/download-artifact@v3
+        with: 
+          name: android
+          
+      - name: Verify Download
+        run: ls -al
+        
+      - name: Google play push
+        uses: r0adkll/upload-google-play@v1.0.18
+        with:
+         serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+         packageName: dystopia.app
+         releaseName: v2.0.1__${{ github.run_number }}
+         releaseFiles: ./source_code.apk
+         track: production
+         status: completed
+         inAppUpdatePriority: 3
+      
+
+         
+            
+  
+  container:
+    runs-on: ubuntu-22.04
+    container:
+      image: barichello/godot-ci:4.2.2
+    steps:
+      - name: Dependencies
+        run: |
+          apt-get update -y
+       
+        
+          apt-get install libssl-dev -y 
+         
+          apt-get install default-jdk -y
+          apt-get install android-sdk -y
+          
+          #Error Catcher 1
+          git config --global --add safe.directory /__w/Dystopia-App/Dystopia-App
+          
+        
+      - name: Compile for android    
+        uses: actions/checkout@v2.3.2
+      - run: |
+          #make template
+          mkdir -v -p ~/.local/share/godot/templates
+          mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
+          
+          # Android sdk path
+          sed 's|export/android/android_sdk_path = ".*"|export/android/android_sdk_path = "'/usr/lib/android-sdk'"|g' -i /root/.config/godot/editor_settings-3.tres
+          mkdir -v -p ~/.config/godot
+          cp -v /root/.config/godot/editor_settings-3.tres ~/.config/godot/
+          
+          
+          mkdir -v -p build/android
+          cd $EXPORT_NAME
+          
+          #android version
+          
+          
+          
+          #sets release keystore
+          echo ${{ secrets.SECRET_RELEASE_KEYSTORE_BASE64 }} | base64 --decode > /root/release.keystore 
+          
+          sed 's@keystore/release=".*"@keystore/release="'/root/release.keystore'"@g' -i export_presets.cfg
+          sed 's@keystore/release_user=".*"@keystore/release_user="'${{ secrets.SECRET_RELEASE_KEYSTORE_USER }}'"@g' -i export_presets.cfg
+          sed 's@keystore/release_password=".*"@keystore/release_password="'${{ secrets.SECRET_RELEASE_KEYSTORE_PASSWORD}}'"@g' -i export_presets.cfg
+          
+          #stops a bug. Debug keystore is invalid
+          echo ${{ secrets.SECRET_RELEASE_KEYSTORE_BASE64 }} | base64 --decode > /root/debug.keystore 
+          
+          sed 's@keystore/debug=".*"@keystore/debug="'/root/release.keystore'"@g' -i export_presets.cfg
+          sed 's@keystore/debug_user=".*"@keystore/debug_user="'${{ secrets.SECRET_RELEASE_KEYSTORE_USER }}'"@g' -i export_presets.cfg
+          sed 's@keystore/debug_password=".*"@keystore/debug_password="'${{ secrets.SECRET_RELEASE_KEYSTORE_PASSWORD}}'"@g' -i export_presets.cfg
+          
+          #changes the verion name and number
+          sed 's@version/name=".*"@version/name="'${{ github.run_number }}'"@g' -i export_presets.cfg
+
+          #if the version number is set to "", this line of code works #doens't work disabling
+          #sed 's@version/code=".*"@version/code=${{ github.run_number }}@g' -i export_presets.cfg
+          
+          godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
+          
+     
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: android
+          path: build/android/source_code.apk
+   

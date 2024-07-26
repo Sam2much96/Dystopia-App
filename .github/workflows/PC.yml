@@ -1,0 +1,63 @@
+name: "PC godot-ci export"
+on:
+  push:
+    branches: [ v3.5.3 ]
+  schedule:
+    - cron: "0 0,5 30 * *"   #Runs at 00 and 31 every month # Docs : https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows 
+
+env:
+  GODOT_VERSION: 3.3.4
+  EXPORT_NAME: source_code
+ 
+jobs:
+    
+  Itch_io:
+    runs-on: ubuntu-22.04
+    needs: export-windows
+    steps:
+     - name: Download content
+       uses: actions/download-artifact@v2
+       with: 
+         name: windows
+     - name: Archive site content
+       uses: thedoctor0/zip-release@master
+       with:
+          filename: site.zip
+     - name: Butler Publish
+       uses: manleydev/butler-publish-itchio-action@master
+       env:
+         BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+         BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+         CHANNEL: windows
+         ITCH_GAME: dystopia-app
+         ITCH_USER: inhumanity-arts
+         PACKAGE: ./site.zip
+
+  export-windows:
+    name: Windows Export
+    runs-on: ubuntu-20.04
+    container:
+      image: barichello/godot-ci:3.3.4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Dependencies
+        run: |
+          apt-get update
+          apt-get install libssl-dev -y  
+      - name: Setup
+        run: |
+          mkdir -v -p ~/.local/share/godot/templates
+          mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
+      - name: Windows Build
+        run: |
+          mkdir -v -p build/windows
+          cd $EXPORT_NAME
+          godot -v --path /source_code/project.godot --export "Windows Desktop" ../build/windows/$EXPORT_NAME.exe
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: windows
+          path: build/windows

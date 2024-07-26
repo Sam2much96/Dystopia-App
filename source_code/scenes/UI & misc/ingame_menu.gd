@@ -224,8 +224,8 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 			Globals.direction_control 
 			) == false: push_error("Error saving game")
 
-		return 	Music.play_track(Music.ui_sfx.get(0)) #plays ui sfx in a loop
-
+		Music.play_track(Music.ui_sfx.get(0)) #plays ui sfx in a loop
+		return 0
 
 #Handles Displaying the menu
 func _menu_showing(): #Broken funtions #rewrite with state machine

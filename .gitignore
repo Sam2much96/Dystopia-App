@@ -3,11 +3,10 @@
 */android
 
 # ignore ALL .cfg Export Preset files
-#*.cfg
+
 
 **/source_code/export_presets.cfg
 
-*.cfg
 
 
 

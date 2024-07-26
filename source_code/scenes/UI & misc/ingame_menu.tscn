@@ -1,40 +1,35 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://bggltjgyfwpkc"]
 
-[ext_resource path="res://scenes/UI & misc/ingame_menu.gd" type="Script" id=2]
-[ext_resource path="res://fonts/ingame_menu.tres" type="Theme" id=4]
+[ext_resource type="Script" path="res://scenes/UI & misc/ingame_menu.gd" id="2"]
+[ext_resource type="Theme" uid="uid://bm1761vr0av" path="res://fonts/ingame_menu.tres" id="4"]
 
 [node name="Control" type="Control"]
-script = ExtResource( 2 )
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("2")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
 offset_left = -226.289
 offset_top = -280.358
 offset_right = 1.71097
 offset_bottom = 26.6423
-scale = Vector2( 1.9286, 1.9286 )
-theme = ExtResource( 4 )
-scroll_horizontal_enabled = false
+scale = Vector2(1.9286, 1.9286)
+theme = ExtResource("4")
 
 [node name="HSeparator" type="VBoxContainer" parent="ScrollContainer"]
-offset_right = 198.0
-offset_bottom = 572.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+layout_mode = 2
 
 [node name="comics" type="Button" parent="ScrollContainer/HSeparator"]
-offset_right = 198.0
-offset_bottom = 68.0
+layout_mode = 2
 focus_next = NodePath("../new game")
 focus_previous = NodePath("../quit")
-theme = ExtResource( 4 )
+theme = ExtResource("4")
 text = "comics"
 flat = true
 
 [node name="new game" type="Button" parent="ScrollContainer/HSeparator"]
-offset_top = 72.0
-offset_right = 198.0
-offset_bottom = 140.0
+layout_mode = 2
 focus_next = NodePath("../continue")
 focus_previous = NodePath("../comics")
 mouse_filter = 1
@@ -42,52 +37,40 @@ text = "new game"
 flat = true
 
 [node name="continue" type="Button" parent="ScrollContainer/HSeparator"]
-offset_top = 144.0
-offset_right = 198.0
-offset_bottom = 212.0
+layout_mode = 2
 focus_next = NodePath("../multiplayer")
 focus_previous = NodePath("../new game")
 text = "continue"
 flat = true
 
 [node name="multiplayer" type="Button" parent="ScrollContainer/HSeparator"]
-offset_top = 216.0
-offset_right = 198.0
-offset_bottom = 284.0
+layout_mode = 2
 focus_previous = NodePath("../continue")
 shortcut_in_tooltip = false
 text = "Multiplayer"
 flat = true
 
 [node name="anime" type="Button" parent="ScrollContainer/HSeparator"]
-offset_top = 288.0
-offset_right = 198.0
-offset_bottom = 356.0
+layout_mode = 2
 focus_next = NodePath("../quit")
 shortcut_in_tooltip = false
 text = "Anime"
 flat = true
 
 [node name="practice" type="Button" parent="ScrollContainer/HSeparator"]
-offset_top = 360.0
-offset_right = 198.0
-offset_bottom = 428.0
+layout_mode = 2
 text = "practice"
 flat = true
 
 [node name="controls" type="Button" parent="ScrollContainer/HSeparator"]
-offset_top = 432.0
-offset_right = 198.0
-offset_bottom = 500.0
+layout_mode = 2
 focus_next = NodePath("../quit")
 shortcut_in_tooltip = false
 text = "Controls"
 flat = true
 
 [node name="quit" type="Button" parent="ScrollContainer/HSeparator"]
-offset_top = 504.0
-offset_right = 198.0
-offset_bottom = 572.0
+layout_mode = 2
 focus_neighbor_top = NodePath("../controls")
 focus_next = NodePath("../comics")
 focus_previous = NodePath("../controls")

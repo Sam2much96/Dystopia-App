@@ -10,6 +10,7 @@
 #
 # Bugs : 
 # (1) Has a Bug on Macs
+# (2) Has A Bug in 4.2.2 Port
 #
 # TO DO:
 # (1) Extend The Shader's parameters including warp, et al as Stroy Devices
@@ -20,4 +21,4 @@ extends ColorRect
 
 
 func _ready():
-	pass
+	print_debug("CRT shader is buggy in version 4.2.2")

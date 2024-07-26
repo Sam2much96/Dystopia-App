@@ -25,7 +25,7 @@ class_name Login
 This is a gate-keeper script to keep check user's internet connections, restrict their access
 """
 
-var cinematics = load('res://scenes/cinematics/cinematics.tscn')
+@onready var cinematics : PackedScene =load(Globals.global_scenes["cinematics"])#load('res://scenes/cinematics/cinematics.tscn')
 var index : int = 0
 
 @onready var play_button : Button = $ui/grid/play

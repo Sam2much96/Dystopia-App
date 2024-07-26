@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" path="res://scenes/items/extra life.tscn" id="8"]
 [ext_resource type="PackedScene" path="res://scenes/props/Pond.tscn" id="9"]
 [ext_resource type="PackedScene" path="res://scenes/props/signpost.tscn" id="10"]
-[ext_resource type="PackedScene" path="res://scenes/UI & misc/ingame_menu.tscn" id="11"]
+[ext_resource type="PackedScene" uid="uid://bggltjgyfwpkc" path="res://scenes/UI & misc/ingame_menu.tscn" id="11"]
 [ext_resource type="PackedScene" path="res://scenes/items/coins.tscn" id="12"]
 [ext_resource type="PackedScene" path="res://scenes/items/Item.tscn" id="15"]
 

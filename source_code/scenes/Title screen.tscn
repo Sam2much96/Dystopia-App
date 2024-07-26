@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/UI & misc/Title screen.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://cthlt4bdxeko2" path="res://resources/title animation/Dystopia Logo webp.webp" id="2"]
-[ext_resource type="PackedScene" path="res://scenes/UI & misc/ingame_menu.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://bggltjgyfwpkc" path="res://scenes/UI & misc/ingame_menu.tscn" id="3"]
 [ext_resource type="Texture2D" uid="uid://j2g0p1fsq8d1" path="res://resources/Buttons/menu.png" id="4"]
 [ext_resource type="Script" path="res://scenes/UI & misc/TitleScreenViewport.gd" id="5"]
 [ext_resource type="PackedScene" path="res://scenes/levels/Overworld3D.tscn" id="6"]

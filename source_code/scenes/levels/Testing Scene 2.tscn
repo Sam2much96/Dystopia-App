@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" path="res://scenes/UI & misc/Dialog_box.tscn" id="5"]
 [ext_resource type="PackedScene" path="res://scenes/props/idol.tscn" id="6"]
 [ext_resource type="PackedScene" path="res://scenes/props/broken ship.tscn" id="7"]
-[ext_resource type="PackedScene" path="res://scenes/UI & misc/ingame_menu.tscn" id="8"]
+[ext_resource type="PackedScene" uid="uid://bggltjgyfwpkc" path="res://scenes/UI & misc/ingame_menu.tscn" id="8"]
 [ext_resource type="PackedScene" path="res://scenes/props/BoulderSmall.tscn" id="9"]
 [ext_resource type="PackedScene" path="res://scenes/props/Boulder Big.tscn" id="10"]
 [ext_resource type="PackedScene" path="res://scenes/items/enemy spawner.tscn" id="11"]
@@ -38,9 +38,6 @@ position = Vector2(-504, 1024)
 
 [node name="Dialog_box" parent="CanvasLayer" instance=ExtResource("5")]
 anchors_preset = 12
-offset_top = 340.529
-offset_right = -51.0
-offset_bottom = 514.529
 expand_mode = 1
 
 [node name="Menu " parent="CanvasLayer" instance=ExtResource("8")]

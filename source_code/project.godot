@@ -595,10 +595,8 @@ Comics_v6="*res://singletons/Comics.v6.gd"
 Wallet="*res://scenes/Wallet/Wallet.gd"
 Simulation="*res://singletons/Simulation.tscn"
 GlobalInput="*res://singletons/Input.tscn"
-FPSGraphOverlay="*res://addons/fps_graph_overlay/FPSGraphOverlay.tscn"
-DocsHelper="*res://addons/algodot/Documentation/Scripts/DocsHelper.gd"
-AsyncExecutorDriver="*res://addons/algodot/gdnative/async_executor.gdns"
 Android="*res://singletons/Android.gd"
+FPSGraphOverlay="*res://addons/fps_graph_overlay/FPSGraphOverlay.tscn"
 
 [debug]
 
@@ -617,7 +615,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/fps_graph_overlay/plugin.cfg", "res://addons/orphan_import_file_cleaner/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/fps_graph_overlay/plugin.cfg" )
 
 [gdnative]
 

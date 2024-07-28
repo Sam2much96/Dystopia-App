@@ -42,7 +42,7 @@ func _on_body_entered(body):
 	# Buggy not workinh
 	# Using timer node instead
 	if body is Camera:
-		print("11111111111")
+		print_debug("11111111111")
 		Globals.current_level = to_scene
 		Globals.spawn_x = body.position.x+ 200 
 		Globals.spawn_y = body.position.y +200

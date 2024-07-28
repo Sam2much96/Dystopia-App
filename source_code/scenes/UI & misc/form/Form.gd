@@ -25,7 +25,7 @@ class_name Login
 This is a gate-keeper script to keep check user's internet connections, restrict their access
 """
 
-var cinematics = load('res://scenes/cinematics/cinematics.tscn')
+onready var cinematics : PackedScene = load(Globals.global_scenes["cinematics"])
 var index : int = 0
 
 onready var play_button : Button = $ui/grid/play
@@ -134,6 +134,7 @@ func _on_play_pressed():
 """
 CHECKS IF THE DEVICE IS INTERNET CONNECTED AND GATEKEEPS ACCESS ON MOBILE DEVICES
 """
+# To DO: Port to Individual Platform Singletons
 func _check_if_device_is_online(): 
 	if os == 'Android' or 'iOS' or 'X11': #disable x11 for release build
 		index = index + 1

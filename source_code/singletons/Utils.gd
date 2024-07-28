@@ -811,6 +811,12 @@ func restaVectores(v1, v2): #vector substraction
 func sumaVectores(v1, v2): #vector sum
 	return Vector2(v1.x + v2.x, v1.y + v2.y)
 
+func calc_2d_distance_approx(x : Vector2, y : Vector2) -> int:
+	var distance_float : float = 0.0
+	var distance_int : int = 0
+	distance_float=x.distance_to(y)
+	distance_int = abs(distance_float)
+	return distance_int
 
 class UI extends Reference:
 	

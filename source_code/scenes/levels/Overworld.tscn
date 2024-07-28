@@ -189,7 +189,7 @@ spawn_count = 5
 position = Vector2( -213.881, 1682.51 )
 enabled = true
 _hitpoints = 1
-enemy_type = "Easy"
+enemy_type = "Hard"
 enemy_spawn_1 = ExtResource( 12 )
 spawn_count = 5
 

@@ -558,3 +558,136 @@ REGISTERS PLAYER INPUT AND RELEASES
 			Simulation.simulate(0)
 		
 		# MMO SImulation requires other player Targets
+
+
+
+
+class Enemy_ extends RefCounted:
+	
+	# Enemy States Ruplicated
+	enum {
+	STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, # implemented 
+	STATE_DIE, STATE_HURT, STATE_MOB, # implemented
+	STATE_PROJECTILE, STATE_PLAYER_SIGHTED, # unimplemented
+	STATE_PLAYER_HIDDEN , STATE_NAVIGATION_AI, #unimplemented
+	STATE_ERROR
+	}
+	
+	static func proximity_attack_simulation(
+		hitpoints: int, 
+		raycast : RayCast2D, 
+		player : Player, 
+		player_pos : Vector2, 
+		_position : Vector2,
+		_enemy: Enemy, 
+		enemy_type : String, 
+		state : int, 
+		enemy_distance_to_player : float,
+		center : Vector2
+		) -> int: # Returms the enemy state
+		
+		"Enemy Behaviour Logic"
+		# Provides Predetermined enemy behaviour
+		# Runs as a Process
+		# Uses State Machine in Physics Process 
+		# Expand to Add More Functionalities
+		# Bugs fix:
+		# (1) Nested If's bloc
+		# (2) Export center variable
+		# (3) Clone function to Dynamic singleton function
+		# (4) Organize Error Catchers
+		# (5) Return An Integers from all nexted if's  
+		
+		# TO DO:
+		# (1) Export All Logic parameters for simulation logic e.g enemy_distance to player
+		"Error Catchers"
+		
+		if hitpoints <= 0:
+			return STATE_DIE
+		
+		if raycast.is_enabled() == false:
+			return STATE_IDLE
+			
+		"Enemy Envcounters Player Node"
+		
+		"Calculates Distance to Player"
+		# To Do :
+		# (1) Calculation should be callable from external script (done)
+		if player == null:
+			return STATE_WALKING
+		
+		if raycast.is_colliding():
+			
+			
+			" Calculate distance to Player"
+			# using a co routine
+			#
+			# Features:
+			# (1) Calculates the center to the player using a coroutine
+			# (2) Calculates the approximate distance to the player using enemy position and player position vector calculations
+			# (3)
+			
+			center = Utils.restaVectores(player.position, _position) #Functions.calculate_center(player.position, _position) #calculates distance to plaer
+			
+			_enemy.set_velocity(center)
+			_enemy.move_and_slide() # moves to player center
+			state = STATE_MOB
+			# # Calculates the approximate enemy distance to playrer
+			#enemy_distance_to_player = abs(_position.distance_to(player_pos )) # Calculates the enemy distance to playrer
+			enemy_distance_to_player = Utils.calc_2d_distance_approx(_position, player_pos)
+					
+			"Proximity Attacks"
+			# Features
+			# 
+			# Attack Player when in range
+			# 
+			# Bugs
+			# (1) Bugs out at nu,bers at 200 - 300 on Hard Modes
+			#
+			# To DO:
+			# (1) Expand functionality
+			
+			#print_debug("Enemy Distance To Player: ",enemy_distance_to_player) # uses sprite size directly in calculations
+			
+			# If clase, attack
+			if enemy_distance_to_player < 81: #uses enemy distance to auto attack
+				state = STATE_ATTACK
+				return state 
+				
+				# if far :
+				# Bugs 
+				# (1) Bugs Out On Hard Enemies
+				# (2) Roll State is Buggy
+				# Fix :
+				# (1) SHould recalculate center and roll to pcenter
+			if enemy_distance_to_player > 81:
+				if enemy_type == "Hard":
+					#print_debug("Enemy Distance To Player debug 1: ",enemy_distance_to_player, "/",center, "/ ", state)
+					state = STATE_ROLL
+					return state
+					
+						# TO DO: Implement Shoot State FOr ENemy AI
+				if enemy_type == "Easy":
+					state = STATE_MOB
+					
+					#print_debug("Enemy Distance To Player debug 2: ",enemy_distance_to_player, "/",center)
+					
+					return state
+				if enemy_type == "Intermediate":
+					#state = STATE_PROJECTILE
+					state = STATE_MOB
+					return state
+		return state
+		# If Raycast Detecting and Player is Available
+		# The chances of this is very low except in Multiplayer Gameply
+		#if raycast.is_enabled() == false && player != null:
+			#use state changer timer to turn off processing
+		#	push_error ('Debug Enenmy Behaviour Check')
+		
+		# If Raycast Detecting and Player is not Available
+		# The chances of this is very low except in Multiplayer Gameply
+		#if raycast.is_enabled() == false && player == null:
+		#	#use state changer timer to turn off processing
+		#	push_error ('Debug Enenmy Behaviour Check')
+
+

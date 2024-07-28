@@ -212,7 +212,7 @@ func _process(_delta):
 
 	#	"Enemy Behaviour Logic 1"
 	#	# Creates predictable enemy behaviour depending on certain parameters
-		state = Behaviour.behaviour_logic(hitpoints, raycast, player, player.position, self.position , self, enemy_type, state, enemy_distance_to_player)
+		state = Simulation.Enemy_.proximity_attack_simulation(hitpoints, raycast, player, player.position, self.position , self, enemy_type, state, enemy_distance_to_player, center)
 	#	
 	if player == null:
 		facing = Behaviour.update_facing(self.position, random_walk_direction, null, pointer, facing, Vector2(0,0))
@@ -284,22 +284,25 @@ func _physics_process(_delta):
 			new_anim = "slash_" + facing
 			pass
 		STATE_ROLL:
-			set_velocity(linear_vel)
-			move_and_slide()
-			linear_vel = velocity
-			#var target_speed = Vector2()
-			if facing == "up":
-				target_speed.y = -1
-			if facing == "down":
-				target_speed.y = 1
-			if facing == "left":
-				target_speed.x = -1
-			if facing == "right":
-				target_speed.x = 1
-			target_speed *= ROLL_SPEED
-			linear_vel = linear_vel.lerp(target_speed, 0.9)
-			new_anim = "roll"
-			pass
+			if player != null:
+				linear_vel = Utils.restaVectores(player.position, self.position) 
+				set_velocity(linear_vel)
+				move_and_slide()
+				linear_vel = velocity
+				#var target_speed = Vector2()
+				if facing == "up":
+					target_speed.y = -1
+				if facing == "down":
+					target_speed.y = 1
+				if facing == "left":
+					target_speed.x = -1
+				if facing == "right":
+					target_speed.x = 1
+				target_speed *= ROLL_SPEED
+				linear_vel = linear_vel.lerp(target_speed, 0.9)
+				new_anim = "roll"
+			if player == null:
+				state = STATE_WALKING
 		STATE_DIE:
 			new_anim = "die"
 		STATE_HURT:
@@ -639,86 +642,6 @@ class Behaviour extends RefCounted:
 			line.points = [navi.get_final_position(), curr_pos]
 
 
-	static func behaviour_logic(
-		hitpoints: int, 
-		raycast : RayCast2D, 
-		player : Player, 
-		player_pos , 
-		_position,
-		_enemy, 
-		enemy_type : String, 
-		state, 
-		enemy_distance_to_player
-		):
-		
-		"Enemy Behaviour Logic"
-		# Provides Predetermined enemy behaviour
-		# Runs as a Process
-		# Uses State Machine in Physics Process 
-		# Expand to Add More Functionalities
-		
-		# TO DO:
-		# (1) Export All Logic parameters for simulation logic e.g enemy_distance to player
-		
-		if not hitpoints == 0:
-			if raycast.is_enabled() == true:
-				"Enemy Envcounters Player Node"
-				
-				"Calculates Distance to Player"
-				# To Do :
-				# (1) Calculation should be callable from external script
-				if raycast.is_colliding() && player != null:
-					
-					
-					" Calculate distance to Player"
-					var center = Utils.restaVectores(player.position, _position) #Functions.calculate_center(player.position, _position) #calculates distance to plaer
-					
-					
-					_enemy.set_velocity(center)
-					_enemy.move_and_slide()
-					_enemy.velocity # moves to player
-					state = STATE_MOB
-					# # Calculates the enemy distance to playrer
-					enemy_distance_to_player = abs(_position.distance_to(player_pos )) # Calculates the enemy distance to playrer
-					
-					
-					"Proximity Attacks"
-					#print_debug(enemy_distance_to_player) #
-					# 
-					# Attack Player when in range
-					#
-					# Nested If's?
-					#print_debug(enemy_distance_to_player) # uses sprite size directly in calculations
-					if enemy_distance_to_player < 81: #uses enemy distance to auto attack
-						state = STATE_ATTACK
-						return state 
-					if enemy_distance_to_player > 81:
-						#shoot() #Disabling for now
-						if enemy_type == "Hard":
-							state = STATE_ROLL
-							return state
-							
-						# TO DO: Implement Shoot State FOr ENemy AI
-						if enemy_type == "Easy":
-							state = STATE_MOB
-							return state
-						if enemy_type == "Intermediate":
-							#state = STATE_PROJECTILE
-							state = STATE_MOB
-							return state
-						else: return
-		
-		# If Raycast Detecting and Player is Available
-		# The chances of this is very low except in Multiplayer Gameply
-		if raycast.is_enabled() == false && player != null:
-			#use state changer timer to turn off processing
-			push_error ('Debug Enenmy Behaviour Check')
-		
-		# If Raycast Detecting and Player is not Available
-		# The chances of this is very low except in Multiplayer Gameply
-		if raycast.is_enabled() == false && player == null:
-			#use state changer timer to turn off processing
-			push_error ('Debug Enenmy Behaviour Check')
 
 
 	static func randomize_facing(facing : String, number_of_options : Array) :

@@ -17,7 +17,7 @@
 [ext_resource type="PackedScene" path="res://scenes/UI & misc/GameHUD.tscn" id="15"]
 [ext_resource type="PackedScene" path="res://scenes/props/broken ship.tscn" id="16"]
 [ext_resource type="PackedScene" path="res://scenes/items/Arrow.tscn" id="17"]
-[ext_resource type="PackedScene" path="res://scenes/Shaders/CRT.tscn" id="19"]
+[ext_resource type="PackedScene" uid="uid://bojmk6pwnm71g" path="res://scenes/Shaders/CRT.tscn" id="19"]
 [ext_resource type="PackedScene" path="res://scenes/characters/Npc.tscn" id="20"]
 [ext_resource type="PackedScene" path="res://scenes/UI & misc/Rain_Fx.tscn" id="26"]
 [ext_resource type="Script" path="res://scenes/levels/Overworld_Level_Properties.gd" id="28"]

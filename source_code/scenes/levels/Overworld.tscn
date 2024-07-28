@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" path="res://scenes/levels/Tilemap_1_overworld.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/levels/ForestTilemap.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://scenes/items/enemy spawner.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://bam54v2b010xj" path="res://scenes/items/enemy spawner.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/props/Pond.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/levels/buildings.tscn" id="5"]
 [ext_resource type="PackedScene" path="res://scenes/levels/Exit.tscn" id="6"]
@@ -170,7 +170,7 @@ emission_sphere_radius = 1.0
 visible = false
 
 [node name="Player" parent="." instance=ExtResource("7")]
-position = Vector2(4158, 284)
+position = Vector2(889, -981)
 scale = Vector2(0.55068, 0.55068)
 
 [node name="Enemy" parent="." instance=ExtResource("12")]
@@ -183,31 +183,40 @@ scale = Vector2(0.8, 0.8)
 
 [node name="enemy_spawner" parent="." instance=ExtResource("3")]
 position = Vector2(2522.96, 656.199)
+enabled = true
 _hitpoints = 1
+enemy_type = "Easy"
 enemy_spawn_1 = ExtResource("12")
 spawn_count = 5
 
 [node name="enemy_spawner4" parent="." instance=ExtResource("3")]
 position = Vector2(5516.38, 2138.66)
+enabled = true
 _hitpoints = 1
+enemy_type = "Easy"
 enemy_spawn_1 = ExtResource("12")
 spawn_count = 5
 
 [node name="enemy_spawner5" parent="." instance=ExtResource("3")]
 position = Vector2(-213.881, 1682.51)
+enabled = true
 _hitpoints = 1
+enemy_type = "Easy"
 enemy_spawn_1 = ExtResource("12")
 spawn_count = 5
 
 [node name="enemy_spawner2" parent="." instance=ExtResource("3")]
 position = Vector2(6833.48, -4887.52)
 _hitpoints = 2
+enemy_type = "Easy"
 enemy_spawn_1 = ExtResource("12")
 spawn_count = 5
 
 [node name="enemy_spawner3" parent="." instance=ExtResource("3")]
 position = Vector2(17739.9, -4751.76)
+enabled = true
 _hitpoints = 3
+enemy_type = "Easy"
 enemy_spawn_1 = ExtResource("12")
 spawn_count = 5
 

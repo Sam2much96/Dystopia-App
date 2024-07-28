@@ -23,12 +23,19 @@ extends VisibleOnScreenNotifier2D
 func _ready():
 	
 	# Connect Signals
-	connect("screen_entered", Callable(self, "_show"))
-	connect("screen_exited", Callable(self, "_hide"))
+	self.connect("screen_entered", Callable(self, "_show"))
+	self.connect("screen_exited", Callable(self, "_hide"))
+	
+	# check if signals are connected
+	if not (is_connected("screen_entered", Callable(self, "_show")) &&
+	is_connected("screen_exited", Callable(self, "_hide"))
+	):
+		print_debug("Visibility Optimizer DeBug : ", is_connected("screen_entered", Callable(self, "_show")),"/",is_connected("screen_exited", Callable(self, "_hide")))
+	
 	
 	# Hide when first entering scene 
 	Parent.hide()
-	Parent.visible = false
+	Parent.visible = true
 
 
 func _hide():

@@ -31,7 +31,8 @@ class_name enemy_spawner
 
 @export var enabled : bool
 @export var _hitpoints : int
-@export var enemy_type : Array =[ 'Easy', "Intermediate", "Hard"]# should be exported list string 
+
+@export_enum ("Easy", "Intermediate", "Hard") var enemy_type : String
 @export var enemy_spawn_1 : PackedScene
 
 

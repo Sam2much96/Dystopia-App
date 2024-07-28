@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bggltjgyfwpkc" path="res://scenes/UI & misc/ingame_menu.tscn" id="8"]
 [ext_resource type="PackedScene" path="res://scenes/props/BoulderSmall.tscn" id="9"]
 [ext_resource type="PackedScene" path="res://scenes/props/Boulder Big.tscn" id="10"]
-[ext_resource type="PackedScene" path="res://scenes/items/enemy spawner.tscn" id="11"]
+[ext_resource type="PackedScene" uid="uid://bam54v2b010xj" path="res://scenes/items/enemy spawner.tscn" id="11"]
 [ext_resource type="PackedScene" path="res://scenes/props/signpost.tscn" id="12"]
 [ext_resource type="PackedScene" uid="uid://bgdyojs4v5loi" path="res://scenes/characters/Aarin.tscn" id="13"]
 [ext_resource type="PackedScene" path="res://scenes/props/Grass.tscn" id="14"]

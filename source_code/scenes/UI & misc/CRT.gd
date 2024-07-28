@@ -21,4 +21,5 @@ extends ColorRect
 
 
 func _ready():
-	print_debug("CRT shader is buggy in version 4.2.2")
+	#print_debug("CRT shader is buggy in version 4.2.2")
+	pass

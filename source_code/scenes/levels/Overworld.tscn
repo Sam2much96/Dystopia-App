@@ -11,7 +11,7 @@
 [ext_resource type="Script" path="res://scenes/levels/VisibilityOptimizer.gd" id="9"]
 [ext_resource type="PackedScene" path="res://scenes/props/flowers.tscn" id="10"]
 [ext_resource type="PackedScene" path="res://scenes/props/Temple exterior.tscn" id="11"]
-[ext_resource type="PackedScene" path="res://scenes/characters/Enemy.tscn" id="12"]
+[ext_resource type="PackedScene" uid="uid://cjf61rupws4pu" path="res://scenes/characters/Enemy.tscn" id="12"]
 [ext_resource type="PackedScene" path="res://scenes/items/extra life.tscn" id="13"]
 [ext_resource type="PackedScene" path="res://scenes/props/signpost.tscn" id="14"]
 [ext_resource type="PackedScene" path="res://scenes/UI & misc/GameHUD.tscn" id="15"]
@@ -170,7 +170,7 @@ emission_sphere_radius = 1.0
 visible = false
 
 [node name="Player" parent="." instance=ExtResource("7")]
-position = Vector2(4157, 284)
+position = Vector2(4158, 284)
 scale = Vector2(0.55068, 0.55068)
 
 [node name="Enemy" parent="." instance=ExtResource("12")]

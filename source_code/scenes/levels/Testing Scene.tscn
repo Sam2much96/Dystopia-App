@@ -49,8 +49,6 @@ position = Vector2(-11, 617)
 
 [node name="Menu " parent="." instance=ExtResource("11")]
 visible = false
-layout_mode = 3
-anchors_preset = 0
 offset_left = -779.956
 offset_top = -1145.02
 offset_right = 402.044

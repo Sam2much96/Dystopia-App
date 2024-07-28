@@ -1466,7 +1466,7 @@ autoplay = "reset"
 
 [node name="camera" type="Camera2D" parent="."]
 position = Vector2(6.30249, -86.9744)
-zoom = Vector2(1.8, 1.8)
+scale = Vector2(1.76752, 1.57384)
 script = ExtResource("6")
 min_zoom = 0.5
 max_zoom = 2

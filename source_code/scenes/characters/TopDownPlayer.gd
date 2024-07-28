@@ -183,7 +183,7 @@ func state_machine_logic(node, peer_id : int):
 				#emit_signal("state_changed")
 			
 			set_velocity(linear_vel)
-			set_up_direction(Vector2(0,0))
+			#set_up_direction(Vector2(0,0))
 			move_and_slide()
 			linear_vel = velocity
 			

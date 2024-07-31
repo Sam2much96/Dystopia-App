@@ -161,7 +161,7 @@ func simulate(id : int): # playerclass controls all player networkinf objects
 		print_debug("Simulation Debug 5: ", all_player_objects, "/", id) # For Debug Purposes Only
 		player = all_player_objects[2] # Breaks Here in Server Builds
 	
-	if Simulation.player_info.has(id):
+	if player_info.has(id):
 		
 		
 		
@@ -188,12 +188,12 @@ func simulate(id : int): # playerclass controls all player networkinf objects
 			player.new_anim = "walk_left"
 		
 		# Data packet Lost
-		player.move_and_slide(Vector2(float(Simulation.player_info[id]["vel"]["x"]), float(Simulation.player_info[id]["vel"]["y"])))
+		player.move_and_slide(Vector2(float(player_info[id]["vel"]["x"]), float(player_info[id]["vel"]["y"])))
 		
 		"TWEEN ANIMATION"
 		# Position
 		var tween := create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
-		tween.tween_property(player, "global_position", Vector2(float(Simulation.player_info[id]["pos"]["x"]), float(Simulation.player_info[id]["pos"]["y"])), 0.5)
+		tween.tween_property(player, "global_position", Vector2(float(player_info[id]["pos"]["x"]), float(player_info[id]["pos"]["y"])), 0.5)
 		
 		
 		# PARALLEL ANIMATION
@@ -362,7 +362,7 @@ func register_player(id : int)-> Dictionary:
 	return player_info
 
 func get_all_player_ids()-> Array:
-	return Simulation.player_info.keys()
+	return player_info.keys()
 
 static func set_position(x : Vector2):
 	pass
@@ -535,7 +535,7 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 		# id is fpr local client, id as string is for server's client # for debug purposes only
 		#print(id, "/", id_as_string) # id is client id  # for debug purposes only
 		
-		if not Simulation.player_info.has(Simulation.get_all_player_ids().pop_back()):
+		if not player_info.has(get_all_player_ids().pop_back()):
 			return
 		
 		if Networking.GamePlay == Networking.LOCAL_COOP:
@@ -546,14 +546,14 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 			"Update the Clients Player Info"
 			# Where Server is ID 0 and Client is Id 1
 			# Update the Server Player' Positional data On the Client
-			Simulation.player_info[0]["pos"] = i["0"]["pos"]
+			player_info[0]["pos"] = i["0"]["pos"]
 			
 			
 			# Server Player Simulation
 			# I avoid updating the client positional data but for 3-4 players, this code need to be impemented
 			# Run SImulation for Server peer on client
 			# Bug: Causes a stuck player bug in Online MMO where 0 is the Client Player's Object
-			Simulation.simulate(0)
+			simulate(0)
 		
 		# MMO SImulation requires other player Targets
 

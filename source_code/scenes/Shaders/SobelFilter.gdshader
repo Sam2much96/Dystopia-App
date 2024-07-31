@@ -9,7 +9,8 @@ shader_type spatial;
 render_mode unshaded;
 
 const vec3 MONOCHROME_SCALE = vec3( 0.298912, 0.586611, 0.114478 );
-
+uniform sampler2D DEPTH_TEXTURE : hint_depth_texture, filter_linear_mipmap;
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture , filter_linear_mipmap;
 uniform vec4 outline_color : source_color = vec4( 0.0, 0.0, 0.0, 1.0 );
 uniform float luma_coef = 0.1;
 uniform float color_coef = 0.1;

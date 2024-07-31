@@ -224,8 +224,7 @@ offset_bottom = 449.804
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("5")
 
-[node name="ColorRect" parent="." instance=ExtResource("7")]
-visible = false
+[node name="CRT" parent="." instance=ExtResource("7")]
 layout_mode = 0
 offset_left = 0.0
 offset_top = 0.0

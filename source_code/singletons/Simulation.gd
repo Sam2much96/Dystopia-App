@@ -190,7 +190,7 @@ func simulate(id : int): # playerclass controls all player networkinf objects
 		# Data packet Lost
 		player.set_velocity(Vector2(float(player_info[id]["vel"]["x"]), float(player_info[id]["vel"]["y"])))
 		player.move_and_slide()
-		player.velocity
+		#player.velocity
 		
 		"TWEEN ANIMATION"
 		# Position

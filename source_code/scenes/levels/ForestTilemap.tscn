@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://be4qc06gvhyo3"]
 
-[ext_resource type="TileSet" path="res://scenes/Map & Environment/Tree_Tilemap_1.tres" id="10"]
+[ext_resource type="TileSet" uid="uid://m62hg3u5y4n2" path="res://scenes/Map & Environment/Tree_Tilemap_1.tres" id="10"]
 
 [node name="Trees_TileMap" type="TileMap"]
 light_mask = 0

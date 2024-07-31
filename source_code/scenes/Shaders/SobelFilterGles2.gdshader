@@ -6,7 +6,8 @@
 
 shader_type spatial;
 render_mode unshaded;
-
+uniform sampler2D DEPTH_TEXTURE: hint_depth_texture, filter_linear_mipmap;
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap; 
 uniform int _thickness : hint_range(0,3) = 1;
 uniform float _detail : hint_range(0.0,256.0) = 256.0;
 

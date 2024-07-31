@@ -20,5 +20,5 @@ void fragment( )
 	vec2 uv = UV + speed * TIME;
 	NORMAL_MAP = normalize( vec3( cos( sin( uv.y * wave_power ) * wave_scale + uv.x * wave_interval ) * 0.25 + 0.5, 1.0, 0.5 ) );
 	NORMAL_MAP_DEPTH = normal_depth;
-	ALBEDO = sand_color.rgb;
+	ALBEDO = sand_color.rgb ;
 }

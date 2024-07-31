@@ -34,51 +34,12 @@ script = ExtResource("28")
 [node name="Node2D" type="Node2D" parent="."]
 
 [node name="Trees_TileMap" parent="Node2D" instance=ExtResource("2")]
+visible = false
 layer_0/tile_data = PackedInt32Array(-393133, 0, 0, -393132, 0, 0, -393131, 0, 0, -393130, 0, 0, -393129, 0, 0, -327597, 0, 0, -327596, 0, 0, -327595, 0, 0, -327594, 0, 0, -327593, 0, 0, -262058, 0, 0, -262057, 0, 0, -196522, 0, 0, -196521, 0, 0, -130986, 0, 0, -130985, 0, 0, -65450, 0, 0, -65449, 0, 0, 86, 0, 0, 87, 0, 0, 65622, 0, 0, 65623, 0, 0)
 
 [node name="VisibilityNotifier2D2" type="VisibleOnScreenNotifier2D" parent="Node2D/Trees_TileMap"]
 position = Vector2(7217.91, -106.122)
 scale = Vector2(16.3521, 30.3082)
-script = ExtResource("9")
-
-[node name="Trees_TileMap2" parent="Node2D" instance=ExtResource("2")]
-layer_0/tile_data = PackedInt32Array(131145, 0, 0, 131146, 0, 0, 131147, 0, 0, 131148, 0, 0, 131149, 0, 0, 131150, 0, 0, 131151, 0, 0, 131152, 0, 0, 131153, 0, 0, 131154, 0, 0, 131155, 0, 0, 131156, 0, 0, 131157, 0, 0, 131158, 0, 0, 131159, 0, 0, 196681, 0, 0, 196682, 0, 0, 196683, 0, 0, 196684, 0, 0, 196685, 0, 0, 196686, 0, 0, 196687, 0, 0, 196688, 0, 0, 196689, 0, 0, 196690, 0, 0, 196691, 0, 0, 196692, 0, 0, 196693, 0, 0, 196694, 0, 0, 196695, 0, 0)
-
-[node name="VisibilityNotifier2D3" type="VisibleOnScreenNotifier2D" parent="Node2D/Trees_TileMap2"]
-position = Vector2(6836.93, 170.721)
-scale = Vector2(63.3392, 7.19565)
-script = ExtResource("9")
-
-[node name="Trees_TileMap3" parent="Node2D" instance=ExtResource("2")]
-layer_0/tile_data = PackedInt32Array(-393143, 0, 0, -393142, 0, 0, -393141, 0, 0, -393140, 0, 0, -393139, 0, 0, -393138, 0, 0, -327607, 0, 0, -327606, 0, 0, -327605, 0, 0, -327604, 0, 0, -327603, 0, 0, -327602, 0, 0, -262071, 0, 0, -262070, 0, 0, -196535, 0, 0, -196534, 0, 0, -130999, 0, 0, -130998, 0, 0, -65463, 0, 0, -65462, 0, 0, 73, 0, 0, 74, 0, 0, 65609, 0, 0, 65610, 0, 0, 131145, 0, 0, 131146, 0, 0)
-
-[node name="VisibilityNotifier2D4" type="VisibleOnScreenNotifier2D" parent="Node2D/Trees_TileMap3"]
-position = Vector2(6463.57, -80.7232)
-scale = Vector2(13.3043, 33.864)
-script = ExtResource("9")
-
-[node name="Trees_TileMap4" parent="Node2D" instance=ExtResource("2")]
-layer_0/tile_data = PackedInt32Array(-720817, 0, 0, -720816, 0, 0, -720815, 0, 0, -720814, 0, 0, -720813, 0, 0, -720812, 0, 0, -720811, 0, 0, -720810, 0, 0, -720809, 0, 0, -655282, 0, 0, -655281, 0, 0, -655280, 0, 0, -655279, 0, 0, -655278, 0, 0, -655277, 0, 0, -655276, 0, 0, -655275, 0, 0, -655274, 0, 0, -655273, 0, 0, -655272, 0, 0, -655271, 0, 0, -589746, 0, 0, -589745, 0, 0, -524210, 0, 0, -524209, 0, 0, -524207, 0, 0, -524206, 0, 0, -524205, 0, 0, -524204, 0, 0, -524203, 0, 0, -524202, 0, 0, -524201, 0, 0, -524200, 0, 0, -524199, 0, 0, -458674, 0, 0, -458673, 0, 0, -458671, 0, 0, -458670, 0, 0, -458668, 0, 0, -458667, 0, 0, -458666, 0, 0, -458665, 0, 0, -458664, 0, 0, -458663, 0, 0, -393138, 0, 0, -393137, 0, 0, -393135, 0, 0, -393134, 0, 0, -393130, 0, 0, -393129, 0, 0, -327602, 0, 0, -327601, 0, 0, -327599, 0, 0, -327598, 0, 0, -327597, 0, 0, -327594, 0, 0, -327593, 0, 0, -786331, 0, 0)
-
-[node name="VisibilityNotifier2D5" type="VisibleOnScreenNotifier2D" parent="Node2D/Trees_TileMap4"]
-position = Vector2(7109.06, -539.752)
-scale = Vector2(46.6596, 31.0177)
-script = ExtResource("9")
-
-[node name="Trees_TileMap5" parent="Node2D" instance=ExtResource("2")]
-layer_0/tile_data = PackedInt32Array(-458663, 0, 0, -851869, 0, 0, -851868, 0, 0, -851867, 0, 0, -851866, 0, 0, -786331, 0, 0, -786330, 0, 0, -720793, 0, 0, -655258, 0, 0, -655257, 0, 0, -589722, 0, 0, -524186, 0, 0)
-
-[node name="VisibilityNotifier2D6" type="VisibleOnScreenNotifier2D" parent="Node2D/Trees_TileMap5"]
-position = Vector2(8596.84, -841.402)
-scale = Vector2(12.0439, 21.5264)
-script = ExtResource("9")
-
-[node name="Trees_TileMap6" parent="Node2D" instance=ExtResource("2")]
-layer_0/tile_data = PackedInt32Array(-458649, 0, 0, -393113, 0, 0, -327577, 0, 0, -327576, 0, 0, -262041, 0, 0, -262040, 0, 0, -196505, 0, 0, -130969, 0, 0, -65433, 0, 0)
-
-[node name="VisibilityNotifier2D7" type="VisibleOnScreenNotifier2D" parent="Node2D/Trees_TileMap6"]
-position = Vector2(8680.35, -308.008)
-scale = Vector2(11.5949, 25.8366)
 script = ExtResource("9")
 
 [node name="grass" parent="Node2D" instance=ExtResource("8")]

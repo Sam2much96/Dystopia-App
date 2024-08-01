@@ -50,16 +50,16 @@ func _ready():
 func _process(_delta):
 	
 	
-	#Globals._to_load = Globals.current_level
 	"Loads Large Scene"
 	# Bug :
 	# (1) Take too long (Performance Lag)
 	# (2) Bad UX
-	
+	# (3) Returns a Null resource load on Vulkan Godot 4.2.2
+	#
 	# Fix
 	# (1) Hide Loading Screen
 	# (2) Show Loading Icon WHile Scene is being Loaded
-	
+	# (3) Implement Redundancy loading code
 	# Emptry current level initiator
 	if LOADING && not Globals.current_level.empty():
 		
@@ -73,20 +73,18 @@ func _process(_delta):
 		Globals.a, 
 		Globals.b, 
 		Globals.progress)
-		#return
-	# Null resource load
-	#if LOADING && Globals.scene_resource == null:
-		#play loading animation
-	#	pass
 		
-	#if LOADING && Globals.scene_resource != null: # scene re resource must be a packed scene
-
+	# Null resource load
+	#
 		
 		LOADING = false
 		
 		print_debug("Loaded Scene Temp: ",loaded_scene_temp)
-		Utils.Functions.change_scene_to( loaded_scene_temp, get_tree())
-
+		if loaded_scene_temp != null: # successful load
+			Utils.Functions.change_scene_to( loaded_scene_temp, get_tree())
+		if loaded_scene_temp == null : # unsuccessfull load redundancy code backported from 4.2.2 Vulkan
+			get_tree().change_scene_to(load(Globals.current_level))
+			
 
 
 func _exit_tree():

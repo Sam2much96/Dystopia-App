@@ -153,6 +153,7 @@ translations=PackedStringArray("res://Translation/Translation_1.en_US.translatio
 
 [rendering]
 
+renderer/rendering_method.web="mobile"
 quality/driver/driver_name="GLES2"
 threads/thread_model=2
 vram_compression/import_etc=true

@@ -70,7 +70,7 @@ func show_scene_comic() -> void:
 func _on_Area2D_body_exited(body : Player): 
 	#if body is Player:
 		#print ('Called From Broken Ship>>>>sdbasjgbasgbasigbasgubs') # Works # For debug purposes only
-	emitting_smoke == false
+	emitting_smoke = false
 
 		# it saves cpu performance
 	_smoke_fx._emit(false) # Stops smoke Emits Programmatically

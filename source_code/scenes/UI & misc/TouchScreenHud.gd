@@ -542,7 +542,7 @@ func hide_buttons() :
 	
 	
 	for i in direction_buttons :
-		#if i.visible() :
+		
 		i.hide()
 	for x in action_buttons:
 		if x.visible:

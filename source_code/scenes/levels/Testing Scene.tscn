@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://h3q0gdhdbo2q"]
 
 [ext_resource type="PackedScene" path="res://scenes/props/idol.tscn" id="1"]
-[ext_resource type="PackedScene" path="res://scenes/UI & misc/TouchScreen HUD.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://b7kq33w3m12sj" path="res://scenes/UI & misc/TouchScreen HUD.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/props/BoulderSmall.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/props/Boulder Big.tscn" id="5"]
 [ext_resource type="PackedScene" path="res://scenes/props/broken ship.tscn" id="6"]

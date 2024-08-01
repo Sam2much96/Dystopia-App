@@ -1,4 +1,4 @@
-//Outline shader
+//Outline shader ;
 shader_type canvas_item;
 
 uniform vec4 line_color : source_color = vec4(1);

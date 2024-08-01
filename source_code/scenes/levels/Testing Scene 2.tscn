@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://wlovieqdg4yj"]
 
-[ext_resource type="PackedScene" path="res://scenes/UI & misc/TouchScreen HUD.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://b7kq33w3m12sj" path="res://scenes/UI & misc/TouchScreen HUD.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/items/coins.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/items/extra life.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/props/Pond.tscn" id="4"]

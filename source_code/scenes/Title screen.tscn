@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bggltjgyfwpkc" path="res://scenes/UI & misc/ingame_menu.tscn" id="3"]
 [ext_resource type="Texture2D" uid="uid://j2g0p1fsq8d1" path="res://resources/Buttons/menu.png" id="4"]
 [ext_resource type="Script" path="res://scenes/UI & misc/TitleScreenViewport.gd" id="5"]
-[ext_resource type="PackedScene" path="res://scenes/levels/Overworld3D.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://cyr2guyycxmrf" path="res://scenes/levels/Overworld3D.tscn" id="6"]
 [ext_resource type="Texture2D" uid="uid://b4q3127j1paqd" path="res://resources/illustrations/cover 1.png" id="7"]
 [ext_resource type="Shader" path="res://scenes/Shaders/softedge.gdshader" id="8"]
 [ext_resource type="Texture2D" uid="uid://d1p2utqogl57" path="res://icon.png" id="9"]

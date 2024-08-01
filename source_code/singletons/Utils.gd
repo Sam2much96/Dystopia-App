@@ -211,7 +211,7 @@ class Functions extends RefCounted:
 		progress: float
 		) -> PackedScene:
 		
-		#print_debug("Loading Large Scene")
+		print_debug("Loading Large Scene :", _to_load, "/", scene_resource)
 		if _to_load != "" && scene_resource == null:
 			var time_max = 50000 #sets an estimate maximum time to load scene
 			var t = Time.get_ticks_msec()
@@ -229,7 +229,7 @@ class Functions extends RefCounted:
 				var err = _o.poll()
 				#loading_resource = true
 				
-				#print_debug ("_q: ",scene_resource," _r: ",_to_load," Error: ",str(err),"Loop Debug") #Debugger
+				print_debug ("_q: ",scene_resource," _r: ",_to_load," Error: ",str(err),"Loop Debug") #Debugger
 				
 				
 				

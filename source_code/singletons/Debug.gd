@@ -14,6 +14,10 @@
 	# use is_instance_valid(debug) with set-get functions as a runtime parameter
 #(8) Implement font size increase
 # *************************************************
+# To DO:
+# (1) Refactor to use one RichText Label for all debug parameters
+#
+# *************************************************
 
 
 
@@ -32,42 +36,42 @@ var logging = false
 var __label  
 
 #lists of labels being used by the debug panel
-var music_label 
-var player_label 
-var ram_label
-var fps_label
-var enemy_label
-var network_label
-var comics_label
-var autosave_label
-var misc_label
-var globals_label
-var ads_label
-var avail_thread_label
+var music_label : Label
+var player_label : Label 
+var ram_label : Label
+var fps_label : Label
+var enemy_label : Label
+var network_label : Label
+var comics_label : Label
+var autosave_label : Label
+var misc_label : Label
+var globals_label : Label
+var ads_label : Label
+var avail_thread_label : Label
 #
 
-var Autosave_debug ='' 
-var Music_debug 
-var Player_debug 
-var Ram_debug 
+var Autosave_debug : String ='' 
+var Music_debug : String
+var Player_debug : String
+var Ram_debug : String
 export (float) var FPS_debug : float 
-var Enemy_debug 
-var debug_panel  
-var Comics_debug = ''
-var misc_debug = ''
-var kill_count = 0
-var enemy = ''
-var Network_debug =''
-var Globals_debug
-var Ads_debug = ''
-var avail_thread = 0
+var Enemy_debug : String
+var debug_panel  : Node
+var Comics_debug : String = ''
+var misc_debug : String = ''
+var kill_count : int = 0
+var enemy : String = ''
+var Network_debug : String = ''
+var Globals_debug : String
+var Ads_debug : String = ''
+var avail_thread : String = "0"
 
 # State Machine Variables
 enum {START_DEBUG, STOP_DEBUG}
 var _state_ = START_DEBUG
 
 # Debug panel cannot be more than 1
-var debug_panels_cr8ted = [] # append the debug pannel to this array to stop double instance bug
+var debug_panels_cr8ted : Array = [] # append the debug pannel to this array to stop double instance bug
 
 
 """
@@ -81,7 +85,7 @@ THE DEBUG SINGLETON
 	#start_debug_v1()
 	#return
 
-var frame_counter = 0
+var frame_counter : int = 0
 
 
 func _input(event): 
@@ -138,15 +142,15 @@ func _process(_delta):
 						
 						debug_panel = null # Null instance bug from the debug panel
 						enabled = false
-						Music_debug = null
-						Player_debug = null
-						Ram_debug= null
-						FPS_debug #= null
-						Enemy_debug= null
-						Network_debug = null
-						misc_debug = null
-						avail_thread = null
-						enabled = false
+						Music_debug = ""
+						Player_debug = ""
+						Ram_debug= ""
+						FPS_debug = 0.0
+						Enemy_debug= ""
+						Network_debug = ""
+						misc_debug = ""
+						avail_thread = ""
+						
 						return
 					if debug_panel == null:
 						return
@@ -335,7 +339,7 @@ func log_debug(): #improvve logging code run at exit tree  #Copy log files to do
 		var _log = Utils.file
 		_log.open('user://logs/godot.log', File.READ_WRITE)
 		_log.store_string ( 'dystopia_app_log'+ str(OS.get_time(true)) +
-			Music_debug + Player_debug + Ram_debug + FPS_debug + Enemy_debug + Network_debug + Comics_debug +
+			Music_debug + Player_debug + Ram_debug + str(FPS_debug) + Enemy_debug + Network_debug + Comics_debug +
 			Autosave_debug + misc_debug + Globals_debug + Ads_debug + avail_thread
 			) 
 		

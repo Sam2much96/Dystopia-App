@@ -145,7 +145,7 @@ func _input(event):
 		if menu_state == HIDDEN:
 			menu_state = SHOWING
 			set_focus_mode(Control.FOCUS_CLICK)
-			Music.play_track(Music.ui_sfx[0])
+			Music.play_track(Music.ui_sfx.get(0))
 			
 			return menu_state
 		if menu_state== SHOWING:

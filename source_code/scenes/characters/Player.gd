@@ -76,6 +76,14 @@ enum { UP, DOWN, LEFT, RIGHT}
 
 @export var peer_id : int = -99 # Dummpy Placeholder Peer id
 
+# For Despawn and Hit Collission Fx
+@onready var blood : BloodSplatter = Globals.blood_fx.instantiate()
+@onready var despawn_particles : DeSpawnFX = Globals.despawn_fx.instantiate()
+
+@onready var die_sfx : String = Music.nokia_soundpack[27]
+@onready var hurt_sfx : String = Music.nokia_soundpack[20]
+
+
 
 func _enter_tree():
 	Globals.update_curr_scene()
@@ -117,10 +125,9 @@ func goto_idle():
 
 
 
-func despawn():  #this code breaks
-	var blood = Globals.blood_fx.instantiate()
-	var despawn_particles = Globals.despawn_fx.instantiate()
-	
+func despawn(): 
+	#this code breaks and is under refactoring
+
 	
 	get_parent().add_child(despawn_particles)
 	get_parent().add_child(blood) 
@@ -149,26 +156,23 @@ func shake(): # Shaky Cam FX
 
 func hurt(from_position : Vector2):
 	# Duplicate of _on_hurtbox_area_entered
+	# To DO: Move To Separate Hit Collisionb CLass
 	if state != STATE_DIE :
 		hitpoints -= 1
 		emit_signal("health_changed", hitpoints)
-		var pushback_direction = (global_position - from_position).normalized()
+		var pushback_direction : Vector2 = (global_position - from_position).normalized()
 		set_velocity(pushback_direction * pushback)
 		move_and_slide()
 		state = STATE_HURT
-		var blood = Globals.blood_fx.instantiate()
+		#var blood = Globals.blood_fx.instantiate()
 		blood.global_position = global_position
 		get_parent().add_child(blood)
 		
-		Music.play_track(Music.nokia_soundpack[20])
+		await Music.play_track(hurt_sfx)
 		
 		if hitpoints <= 0:
 			state = STATE_DIE
-			Music.play_track(Music.nokia_soundpack[27])
-
-
-#func start_timer(time: float):
-#	timer.start(time)
+			await Music.play_track(die_sfx)
 
 
 

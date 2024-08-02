@@ -35,6 +35,8 @@
 THERE ARE TWO FUNCTIONS FOR PLAYING MUSIC TRACKS AND MUSIC PLAYLISTS
 """
 extends Node
+
+class_name music_singleton
 #add more controls to this script, it breaks the singleton
 @export var music_on : bool
 @export var sfx_on : bool

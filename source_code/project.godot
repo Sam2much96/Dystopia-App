@@ -445,6 +445,11 @@ _global_script_classes=[ {
 "path": "res://scenes/UI & misc/minimap.gd"
 }, {
 "base": "Node",
+"class": "music_singleton",
+"language": "GDScript",
+"path": "res://singletons/Music.gd"
+}, {
+"base": "Node",
 "class": "plugin_settings",
 "language": "GDScript",
 "path": "res://addons/github-integration/scenes/PluginSettings.gd"
@@ -562,6 +567,7 @@ _global_script_class_icons={
 "loading": "",
 "lobbyV2": "",
 "minimap": "",
+"music_singleton": "",
 "plugin_settings": "",
 "projectile": "",
 "quest": "",

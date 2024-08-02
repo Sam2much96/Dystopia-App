@@ -84,6 +84,9 @@ onready var despawn_particles : DeSpawnFX = Globals.despawn_fx.instance()
 onready var die_sfx : String = Music.nokia_soundpack[27]
 onready var hurt_sfx : String = Music.nokia_soundpack[20]
 
+# Get Music Singleton
+onready var music_singleton_ : music_singleton = get_node("/root/Music")
+
 func _enter_tree():
 	Globals.update_curr_scene()
 	Globals.players.append(self)  #saves player to the Global player variable
@@ -165,11 +168,11 @@ func hurt(from_position : Vector2):
 		blood.global_position = global_position
 		get_parent().add_child(blood)
 		
-		Music.play_track(hurt_sfx)
+		music_singleton_.play_track(hurt_sfx)
 		
 		if hitpoints <= 0:
 			state = STATE_DIE
-			Music.play_track(die_sfx)
+			music_singleton_.play_track(die_sfx)
 
 
 

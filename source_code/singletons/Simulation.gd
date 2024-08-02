@@ -659,7 +659,7 @@ class Enemy_ extends Reference:
 				# (1) SHould recalculate center and roll to pcenter
 			if enemy_distance_to_player > 81:
 				if enemy_type == "Hard":
-					print_debug("Enemy Distance To Player debug 1: ",enemy_distance_to_player, "/",center, "/ ", state)
+					#print_debug("Enemy Distance To Player debug 1: ",enemy_distance_to_player, "/",center, "/ ", state)
 					state = STATE_ROLL
 					return state
 					

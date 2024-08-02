@@ -19,9 +19,13 @@ extends CPUParticles2D
 
 class_name BloodSplatter , 'res://resources/FX/Blood splatter fx.webp'
 onready var blood_splatter_sfx : String = Music.blood_fx[0]
+
+# Get Music Singleton
+onready var music_singleton_ : music_singleton = get_node("/root/Music")
+
 func _ready():
 	emitting = true
-	Music.play_track(blood_splatter_sfx) # Calls the music singleton to play this track
+	music_singleton_.play_track(blood_splatter_sfx) # Calls the music singleton to play this track
 
 	#print ('Update to play sfx from Music singleton') # FOr debug purposes only
 	

@@ -1,7 +1,7 @@
 name: "PC godot-ci export"
 on:
   push:
-    branches: [ v3.5.3 ]
+    branches: [ main ]
   schedule:
     - cron: "0 0,5 30 * *"   #Runs at 00 and 31 every month # Docs : https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows 
 
@@ -54,6 +54,7 @@ jobs:
       - name: Windows Build
         run: |
           mkdir -v -p build/windows
+          ls -al
           cd $EXPORT_NAME
           godot -v --path /source_code/project.godot --export "Windows Desktop" ../build/windows/$EXPORT_NAME.exe
       - name: Upload Artifact

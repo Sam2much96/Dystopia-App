@@ -667,7 +667,7 @@ class Enemy_ extends Reference:
 				if enemy_type == "Easy":
 					state = STATE_MOB
 					
-					print_debug("Enemy Distance To Player debug 2: ",enemy_distance_to_player, "/",center)
+					#print_debug("Enemy Distance To Player debug 2: ",enemy_distance_to_player, "/",center)
 					
 					return state
 				if enemy_type == "Intermediate":

@@ -289,8 +289,8 @@ func _on_quit_pressed():
 	else:
 		Music.play_track(Music.ui_sfx[1])
 		#Globals.memory_leak_management()
-		Utils.Functions.change_scene_to(Globals.title_screen, get_tree())
-
+		#Utils.Functions.change_scene_to(Globals.title_screen, get_tree())
+		Globals._go_to_title()
 
 
 func _on_multiplayer_pressed(): # Experimental feature

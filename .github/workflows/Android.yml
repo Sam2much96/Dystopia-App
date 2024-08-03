@@ -101,6 +101,9 @@ jobs:
 
           #if the version number is set to "", this line of code works #doens't work disabling
           #sed 's@version/code=".*"@version/code=${{ github.run_number }}@g' -i export_presets.cfg
+
+          # Check for project.godot
+          ls -al
           
           godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.aab
           

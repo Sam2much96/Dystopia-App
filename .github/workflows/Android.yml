@@ -103,7 +103,7 @@ jobs:
           #sed 's@version/code=".*"@version/code=${{ github.run_number }}@g' -i export_presets.cfg
 
           
-          godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.aab
+          godot -v --export "Android" ../build/android/$EXPORT_NAME.aab
           
      
       - name: Upload Artifact

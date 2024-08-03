@@ -111,6 +111,6 @@ jobs:
         with:
           name: android
           path: |
-            build/android/source_code.apk
+            build/android/source_code.aab
           compression-level: 9 # Best compression
    

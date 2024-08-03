@@ -104,8 +104,11 @@ jobs:
 
           # Check for project.godot
           ls -al
+
+          # reset  folder path
+          cd && ls -al
           
-          godot -v --path project.godot --export "Android" ../build/android/$EXPORT_NAME.aab
+          godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.aab
           
      
       - name: Upload Artifact

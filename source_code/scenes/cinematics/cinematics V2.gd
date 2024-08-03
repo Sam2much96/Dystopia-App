@@ -25,6 +25,9 @@ extends Control
 # (2) Reorganise code into classes (Done)
 # (3) Fix video Positionig on multiple devices
 # (4) Guidebook SHould Use HTML Parser
+###export your video as ogv format
+#update code to reference all in game animations
+
 # *************************************************
 
 class_name cinematic
@@ -40,16 +43,11 @@ class_name cinematic
 
 @onready var videoplayer : VideoStreamPlayer = $VideoStreamPlayer
 
-
-const Mobile_Platforms : Array = ["Android", "iOS"]
-const Pc_Platforms : Array = ["X11", "Windows", "macOS"]
-const Console_Platforms : Array = [""]
+@onready var local_globals : GlobalsVar = get_node("/root/Globals")
 
 """
 CINEMATICS
 """
-###export your video as ogv format
-#update code to reference all in game animations
 
 func _ready(): #create a video player function
 
@@ -124,26 +122,26 @@ func _on_skip_pressed():
 
 
 
-static func Video_Stream(stream : VideoStreamTheora , os: String, video_parent : Control, videoplayer : VideoStreamPlayer): #This code works
-	#Use Position 2d node for Viewport Calibrations
-	if os == "Android":
-		videoplayer.expand = false
-		
-		#True Center of Screen
-		video_parent.set_position(Vector2(0,0))
-		
-		print_debug("Video Player Position: ",videoplayer.get_position()) # For Debug Purposes only
+#static func Video_Stream(stream : VideoStreamTheora , os: String, video_parent : Control, videoplayer : VideoStreamPlayer): #This code works
+#	#Use Position 2d node for Viewport Calibrations
+#	if os == "Android":
+#		videoplayer.expand = false
+#		
+#		#True Center of Screen
+#		video_parent.set_position(Vector2(0,0))
+#		
+#		print_debug("Video Player Position: ",videoplayer.get_position()) # For Debug Purposes only
 
-	if os == "X11" or "Windows":
-		
-		#True Center of Screen
-		videoplayer.set_position(Vector2((Globals.center_of_viewport.x/20),100)) # Globals.ceter_of_viewport calculation is off
+#	if os == "X11" or "Windows":
+#		
+#		#True Center of Screen
+#		videoplayer.set_position(Vector2((Globals.center_of_viewport.x/20),100)) # Globals.ceter_of_viewport calculation is off
 	
 	
-	if stream != null: 
-		videoplayer.visible = true
-		videoplayer.set_stream(stream) 
-		videoplayer.play() 
+#	if stream != null: 
+#		videoplayer.visible = true
+#		videoplayer.set_stream(stream) 
+#		videoplayer.play() 
 		
 
 

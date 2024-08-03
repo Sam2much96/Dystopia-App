@@ -1,7 +1,7 @@
 name: Android # Compiles the v4.2.2 vulkan branch to Development Pipeline on play console
 
 env:
-  GODOT_VERSION: 4.1.1
+  GODOT_VERSION: 4.1.3
   EXPORT_NAME: source_code
 
 
@@ -43,7 +43,7 @@ jobs:
   container:
     runs-on: ubuntu-22.04
     container:
-      image: barichello/godot-ci:4.1.1
+      image: barichello/godot-ci:4.1.3
     steps:
       - name: Dependencies
         run: |
@@ -102,14 +102,6 @@ jobs:
           #if the version number is set to "", this line of code works #doens't work disabling
           #sed 's@version/code=".*"@version/code=${{ github.run_number }}@g' -i export_presets.cfg
 
-          # Check for project.godot
-          ls -al
-
-          # reset  folder path
-          #cd && ls -al
-          
-          #go up 1 dir
-          cd .. && ls -al
           
           godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.aab
           

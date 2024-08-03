@@ -1,4 +1,4 @@
-name: "PC godot-ci export"
+name: "Linux PC godot-ci export"
 on:
   push:
     branches: [ main ]
@@ -38,7 +38,7 @@ jobs:
         run: |
           mkdir -v -p build/linux
           cd $EXPORT_NAME
-          godot -v --path /source_code/project.godot --export "Windows Desktop" ../build/windows/$EXPORT_NAME.x86_64
+          godot -v --path /source_code/project.godot --export "Linux/X11" ../build/windows/$EXPORT_NAME.x86_64
       
  
       - name: Upload Windows Artifact

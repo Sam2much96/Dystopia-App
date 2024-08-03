@@ -26,8 +26,8 @@ jobs:
      - name: Butler Publish
        uses: manleydev/butler-publish-itchio-action@master
        env:
-         BUTLER_CREDENTIALS: ${{ ACTIONS_SECRETS.BUTLER_API_KEY }}
-         BUTLER_API_KEY: ${{ ACTIONS_SECRETS.BUTLER_API_KEY }}
+         BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+         BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
          CHANNEL: windows
          ITCH_GAME: dystopia-app
          ITCH_USER: inhumanity-arts

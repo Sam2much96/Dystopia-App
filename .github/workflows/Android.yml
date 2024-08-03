@@ -69,10 +69,10 @@ jobs:
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
           
           # Android sdk path
-          sed 's|export/android/android_sdk_path = ".*"|export/android/android_sdk_path = "'/usr/lib/android-sdk'"|g' -i /root/.config/godot/editor_settings-3.tres
+          # sed 's|export/android/android_sdk_path = ".*"|export/android/android_sdk_path = "'/usr/lib/android-sdk'"|g' -i /root/.config/godot/editor_settings-3.tres
           mkdir -v -p ~/.config/godot
           
-          #cp -v /root/.config/godot/editor_settings-3.tres ~/.config/godot/
+          # cp -v /root/.config/godot/editor_settings-3.tres ~/.config/godot/
           
           
           mkdir -v -p build/android
@@ -102,7 +102,7 @@ jobs:
           #if the version number is set to "", this line of code works #doens't work disabling
           #sed 's@version/code=".*"@version/code=${{ github.run_number }}@g' -i export_presets.cfg
           
-          godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
+          godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.aab
           
      
       - name: Upload Artifact

@@ -44,6 +44,7 @@ class_name cinematic
 @onready var videoplayer : VideoStreamPlayer = $VideoStreamPlayer
 
 @onready var local_globals : GlobalsVar = get_node("/root/Globals")
+@onready var local_dialoges : DialogsVar = get_node("/root/Dialogs")
 
 """
 CINEMATICS
@@ -54,7 +55,7 @@ func _ready(): #create a video player function
 
 
 	#use current scene to trigger cinematic
-	Globals.update_curr_scene()
+	local_globals.update_curr_scene()
 	
 	'Screen Display Calculations'
 	# Get Viewport Size, Make it Globally accessible
@@ -62,7 +63,7 @@ func _ready(): #create a video player function
 	# Display calculations are now being run in Global Screen Class
 
 	'Cinematics scene'
-	if Globals.curr_scene == 'Cinematics':
+	if local_globals.curr_scene == 'Cinematics':
 		videoplayer  = get_node('VideoStreamPlayer') #video player node
 		videoplayer._set_size((get_viewport_rect().size))
 		
@@ -73,7 +74,7 @@ func _ready(): #create a video player function
 		play_opening_cinematic() #Plays this video only on cinematics node
 	
 	" Anime Shop Scene "
-	if Globals.curr_scene == "Shop":
+	if local_globals.curr_scene == "Shop":
 		# Get the Parent
 		var animationplayer : Control = $AnimationPlayer#get_node("AnimationPlayer")
 		videoplayer = $AnimationPlayer/VideoStreamPlayer
@@ -89,7 +90,7 @@ func _ready(): #create a video player function
 		
 		#print_debug("UI buttons: ",UI_buttons_2) #For Debug purposes only
 		
-		Dialogs.set_font(UI_buttons_2, 44, "",2)
+		local_dialoges.set_font(UI_buttons_2, 44, "",2)
 		
 		# Manually Translate UI
 		# Disabled for testing 
@@ -114,35 +115,11 @@ func _ready(): #create a video player function
 func _on_skip_pressed():
 	videoplayer.stop()
 
-	Globals._go_to_title()
+	local_globals._go_to_title()
 	#get_tree().change_scene_to(Globals.title_screen)
-	if Globals.curr_scene == 'Cinematics':
-			Function._free_memory(Globals.cinematics)
+	if local_globals.curr_scene == 'Cinematics':
+			Function._free_memory(local_globals.cinematics)
 
-
-
-
-#static func Video_Stream(stream : VideoStreamTheora , os: String, video_parent : Control, videoplayer : VideoStreamPlayer): #This code works
-#	#Use Position 2d node for Viewport Calibrations
-#	if os == "Android":
-#		videoplayer.expand = false
-#		
-#		#True Center of Screen
-#		video_parent.set_position(Vector2(0,0))
-#		
-#		print_debug("Video Player Position: ",videoplayer.get_position()) # For Debug Purposes only
-
-#	if os == "X11" or "Windows":
-#		
-#		#True Center of Screen
-#		videoplayer.set_position(Vector2((Globals.center_of_viewport.x/20),100)) # Globals.ceter_of_viewport calculation is off
-	
-	
-#	if stream != null: 
-#		videoplayer.visible = true
-#		videoplayer.set_stream(stream) 
-#		videoplayer.play() 
-		
 
 
 
@@ -161,16 +138,16 @@ func _on_Timer_timeout():
 
 func _go_to_title():
 	
-	if Globals.curr_scene == 'Cinematics': #I use this bool to define two states
+	if local_globals.curr_scene == 'Cinematics': #I use this bool to define two states
 		
 		
 		
 		#get_tree().change_scene_to(Globals.title_screen)
-		Globals._go_to_title()
-	if is_instance_valid(Globals.cinematics):
+		local_globals._go_to_title()
+	if is_instance_valid(local_globals.cinematics):
 		# Free the Cinematics file from the Stack if loaded
 		
-		Function._free_memory(Globals.cinematics)
+		Function._free_memory(local_globals.cinematics)
 
 func play_opening_cinematic():
 	#Plays the opening cinematic 
@@ -182,20 +159,6 @@ func play_opening_cinematic():
 	return 0
 
 
-func load_OverworldMap():
-	
-	print (" Emitting signal--loading game--", Globals.current_level)
-	"Load Overworld Map TO Memory"
-	Globals.OverWorld = Utils.Functions.LoadLargeScene(
-		Globals.current_level, 
-		Globals.scene_resource, 
-		Globals._o, 
-		Globals.scene_loader, 
-		Globals.loading_resource, 
-		Globals.a, 
-		Globals.b, 
-		Globals.progress
-		) 
 
 
 

@@ -10,32 +10,13 @@ env:
   EXPORT_NAME: source_code
  
 jobs:
-    
-  Itch_io:
-    runs-on: ubuntu-22.04
-    needs: export-windows
-    steps:
-     - name: Download content
-       uses: actions/download-artifact@v2
-       with: 
-         name: windows
-     - name: Archive site content
-       uses: thedoctor0/zip-release@master
-       with:
-          filename: site.zip
-     - name: Butler Publish
-       uses: manleydev/butler-publish-itchio-action@master
-       env:
-         BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
-         BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
-         CHANNEL: windows
-         ITCH_GAME: dystopia-app
-         ITCH_USER: inhumanity-arts
-         PACKAGE: ./site.zip
 
-  export-windows:
+  export-binary:
     name: Windows Export
-    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        os: [ ubuntu-latest]
+    runs-on: ${{ matrix.os }}
     container:
       image: barichello/godot-ci:3.3.4
     steps:
@@ -47,18 +28,48 @@ jobs:
         run: |
           apt-get update
           apt-get install libssl-dev -y  
+      
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/templates
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
+      
       - name: Windows Build
         run: |
           mkdir -v -p build/windows
-          ls -al
           cd $EXPORT_NAME
           godot -v --path /source_code/project.godot --export "Windows Desktop" ../build/windows/$EXPORT_NAME.exe
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v1
+      
+ 
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v4
         with:
           name: windows
-          path: build/windows
+          path: |
+            build/windows
+          compression-level: 9 # Best compression
+      
+  Itch_io:
+    runs-on: ubuntu-22.04
+    needs: export-binary
+    steps:
+     - name: Download content
+       uses: actions/download-artifact@v4
+       with: 
+         name: windows
+
+     
+     - name: Archive site content
+       uses: thedoctor0/zip-release@master
+       with:
+          filename: site.zip
+     
+     - name: Butler Publish
+       uses: manleydev/butler-publish-itchio-action@master
+       env:
+         BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+         BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+         CHANNEL: windows
+         ITCH_GAME: dystopia-app
+         ITCH_USER: inhumanity-arts
+         PACKAGE: ./site.zip

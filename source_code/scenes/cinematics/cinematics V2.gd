@@ -25,6 +25,7 @@ extends Control
 # (2) Reorganise code into classes (Done)
 # (3) Fix video Positionig on multiple devices
 # (4) Guidebook SHould Use HTML Parser
+# (5) 
 # *************************************************
 
 class_name cinematic
@@ -40,23 +41,21 @@ onready var node : Control = get_node("Node2D") #popup node for centering cinema
 
 onready var videoplayer : VideoPlayer = $VideoPlayer
 
-
-const Mobile_Platforms : Array = ["Android", "iOS"]
-const Pc_Platforms : Array = ["X11", "Windows", "macOS"]
-const Console_Platforms : Array = [""]
-
 """
 CINEMATICS
 """
 ###export your video as ogv format
 #update code to reference all in game animations
 
+onready var local_globals : GlobalsVar = get_node("/root/Globals")
+onready var local_dialogs : DialogsVar = get_node("/root/Dialogs")
+
 func _ready(): #create a video player function
 
 
 
 	#use current scene to trigger cinematic
-	Globals.update_curr_scene()
+	local_globals.update_curr_scene()
 	
 	'Screen Display Calculations'
 	# Get Viewport Size, Make it Globally accessible
@@ -64,7 +63,7 @@ func _ready(): #create a video player function
 	# Display calculations are now being run in Global Screen Class
 
 	'Cinematics scene'
-	if Globals.curr_scene == 'Cinematics':
+	if local_globals.curr_scene == 'Cinematics':
 		videoplayer  = get_node('VideoPlayer') #video player node
 		videoplayer._set_size((get_viewport_rect().size))
 		
@@ -75,7 +74,7 @@ func _ready(): #create a video player function
 		play_opening_cinematic() #Plays this video only on cinematics node
 	
 	" Anime Shop Scene "
-	if Globals.curr_scene == "Shop":
+	if local_globals.curr_scene == "Shop":
 		# Get the Parent
 		var animationplayer : Control = $AnimationPlayer#get_node("AnimationPlayer")
 		videoplayer = $AnimationPlayer/VideoPlayer
@@ -91,7 +90,7 @@ func _ready(): #create a video player function
 		
 		#print_debug("UI buttons: ",UI_buttons_2) #For Debug purposes only
 		
-		Dialogs.set_font(UI_buttons_2, 44, "",2)
+		local_dialogs.set_font(UI_buttons_2, 44, "",2)
 		
 		# Manually Translate UI
 		# Disabled for testing 
@@ -109,42 +108,27 @@ func _ready(): #create a video player function
 	
 	
 	pass
-	
-	
-	
+
+
+# Changes Scene Tree to Title Screen After Intro Finished Playing
+func _on_animation_player_animation_finished(anim_name):
+	if anim_name ==  "opening_cinematic":
+		_go_to_title()
+
+
+
+
+func _on_back_pressed():
+	_go_to_title()
+
+
 
 func _on_skip_pressed():
 	videoplayer.stop()
+	local_globals._go_to_title()
+	if local_globals.curr_scene == 'Cinematics':
+			Function._free_memory(local_globals.cinematics) # Self
 
-	Globals._go_to_title()
-	#get_tree().change_scene_to(Globals.title_screen)
-	if Globals.curr_scene == 'Cinematics':
-			Function._free_memory(Globals.cinematics)
-
-
-
-
-static func Video_Stream(stream : VideoStreamTheora , os: String, video_parent : Control, videoplayer : VideoPlayer): #This code works
-	#Use Position 2d node for Viewport Calibrations
-	if os == "Android":
-		videoplayer.expand = false
-		
-		#True Center of Screen
-		video_parent.set_position(Vector2(0,0))
-		
-		print_debug("Video Player Position: ",videoplayer.get_position()) # For Debug Purposes only
-
-	if os == "X11" or "Windows":
-		
-		#True Center of Screen
-		videoplayer.set_position(Vector2((Globals.center_of_viewport.x/20),100)) # Globals.ceter_of_viewport calculation is off
-	
-	
-	if stream != null: 
-		videoplayer.visible = true
-		videoplayer.set_stream(stream) 
-		videoplayer.play() 
-		
 
 
 
@@ -184,23 +168,6 @@ func play_opening_cinematic():
 
 
 
-func load_OverworldMap():
-	
-	print (" Emitting signal--loading game--", Globals.current_level)
-	"Load Overworld Map TO Memory"
-	Globals.OverWorld = Utils.Functions.LoadLargeScene(
-		Globals.current_level, 
-		Globals.scene_resource, 
-		Globals._o, 
-		Globals.scene_loader, 
-		Globals.loading_resource, 
-		Globals.a, 
-		Globals.b, 
-		Globals.progress
-		) 
-
-
-
 
 
 # *************************************************
@@ -233,7 +200,7 @@ class Function :
 		Globals.VIDEO = video_file_path
 		video_file.close()
 
-	
+	# huh ?
 	static func _free_memory(_items): # A Generic function to clear global variables once they've been used
 		_items = null
 
@@ -314,20 +281,3 @@ class Function :
 			return video_file
 		return video_file
 
-
-
-
-
-
-
-
-# Changes Scene Tree to Title Screen After Intro Finished Playing
-func _on_animation_player_animation_finished(anim_name):
-	if anim_name ==  "opening_cinematic":
-		_go_to_title()
-
-
-
-
-func _on_back_pressed():
-	Globals._go_to_title()

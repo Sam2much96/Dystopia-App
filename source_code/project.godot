@@ -64,6 +64,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Dialog_box.gd"
 }, {
+"base": "Node",
+"class": "DialogsVar",
+"language": "GDScript",
+"path": "res://singletons/Dialogs.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Enemy",
 "language": "GDScript",
@@ -491,6 +496,7 @@ _global_script_class_icons={
 "DeSpawnFX": "",
 "DebugCharacter": "",
 "DialogBox": "res://resources/misc/dialoguebox 32x32.png",
+"DialogsVar": "",
 "Enemy": "",
 "Exit": "",
 "Exit3D": "",

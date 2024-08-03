@@ -4,7 +4,7 @@
 
 # ignore ALL .cfg Export Preset file updates
 
-#**/source_code/export_presets.cfg
+**/source_code/export_presets.cfg
 
 
 

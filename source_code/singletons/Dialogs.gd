@@ -18,7 +18,8 @@
 
 extends Node
 
-#####INSTRUCTIONALS___________________#######
+class_name DialogsVar
+
 """
 This is the Dialogs system. Any object can send text to it by doing Dialogs.show_dialog(text, speaker)
 

@@ -1,16 +1,14 @@
-name: Android
+name: Android # Compiles the v4.2.2 vulkan branch to Development Pipeline on play console
 
 env:
   GODOT_VERSION: 4.2.2
   EXPORT_NAME: source_code
 
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 # android push can only be used once per day without errors
 on:
   push:
-    branches: [ v4.2.2 ]
+    branches: [ main ]
 
 jobs:
   Android_Push:
@@ -32,9 +30,9 @@ jobs:
         with:
          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
          packageName: dystopia.app
-         releaseName: v2.0.1__${{ github.run_number }}
+         releaseName: v4.0.0_${{ github.run_number }}
          releaseFiles: ./source_code.apk
-         track: production
+         track: beta
          status: completed
          inAppUpdatePriority: 3
       
@@ -62,7 +60,9 @@ jobs:
           
         
       - name: Compile for android    
-        uses: actions/checkout@v2.3.2
+        uses: actions/checkout@v4
+        with:
+          ref: "v4.2.2"
       - run: |
           #make template
           mkdir -v -p ~/.local/share/godot/templates
@@ -105,8 +105,10 @@ jobs:
           
      
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: android
-          path: build/android/source_code.apk
+          path: |
+            build/android/source_code.apk
+          compression-level: 9 # Best compression
    

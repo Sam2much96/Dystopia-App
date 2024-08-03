@@ -106,7 +106,10 @@ jobs:
           ls -al
 
           # reset  folder path
-          cd && ls -al
+          #cd && ls -al
+          
+          #go up 1 dir
+          cd .. && ls -al
           
           godot -v --path /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.aab
           

@@ -43,7 +43,7 @@ jobs:
   container:
     runs-on: ubuntu-22.04
     container:
-      image: barichello/godot-ci:4.2.2
+      image: barichello/godot-ci:4.1.1
     steps:
       - name: Dependencies
         run: |

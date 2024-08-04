@@ -19,36 +19,36 @@
 extends CanvasLayer
 
 
-class_name Login
+#class_name Login:
 
-"""
-This is a gate-keeper script to keep check user's internet connections, restrict their access
-"""
+#"""
+#This is a gate-keeper script to keep check user's internet connections, restrict their access
+#"""
 
-onready var cinematics : PackedScene = load(Globals.global_scenes["cinematics"])
-var index : int = 0
+#onready var cinematics : PackedScene = load(Globals.global_scenes["cinematics"])
+#var index : int = 0
 
-onready var play_button : Button = $ui/grid/play
-onready var dialgue_box = $Dialog_box
-onready var language = $ui/grid/language
+#onready var play_button : Button = $ui/grid/play
+#onready var dialgue_box = $Dialog_box
+#onready var language = $ui/grid/language
 
 ########Label Spacer Codes Are Used For Aesthetics#########
-onready var label_spacer = $ui/grid/label_spacer
-onready var label_spacer2 = $ui/grid/label_spacer2
-onready var label_spacer3 =$ui/grid/label_spacer3
+#onready var label_spacer = $ui/grid/label_spacer
+#onready var label_spacer2 = $ui/grid/label_spacer2
+#onready var label_spacer3 =$ui/grid/label_spacer3
 
-onready var timer = $Timer
-onready var _debug =get_tree().get_root().get_node("/root/Debug")
+#onready var timer = $Timer
+#onready var _debug =get_tree().get_root().get_node("/root/Debug")
 
 var os = Globals.os # Pointer
 
-onready var UI_buttons : Array = [
-	play_button, dialgue_box, 
-	language, label_spacer, 
-	label_spacer2, label_spacer3
-	]
+#onready var UI_buttons : Array = [
+#	play_button, dialgue_box, 
+#	language, label_spacer, 
+#	label_spacer2, label_spacer3
+#	]
 
-onready var _hide_dialogue_box : bool = false
+#onready var _hide_dialogue_box : bool = false
 
 func _ready():
 # Described Above
@@ -131,9 +131,9 @@ func _on_play_pressed():
 	Utils.Functions.change_scene_to(cinematics, get_tree())
 
 
-"""
-CHECKS IF THE DEVICE IS INTERNET CONNECTED AND GATEKEEPS ACCESS ON MOBILE DEVICES
-"""
+#"""
+#CHECKS IF THE DEVICE IS INTERNET CONNECTED AND GATEKEEPS ACCESS ON MOBILE DEVICES
+#"""
 # To DO: Port to Individual Platform Singletons
 func _check_if_device_is_online(): 
 	if os == 'Android' or 'iOS' or 'X11': #disable x11 for release build
@@ -184,12 +184,12 @@ func hide_play_button():
 	label_spacer3.hide()
 	label_spacer2.show()
 
-"""
-TRANSLATES THE ENTIRE APP TO ONE OF THE PRESELECTED lANGUAGUES INDICATED
-"""
+#"""
+#TRANSLATES THE ENTIRE APP TO ONE OF THE PRESELECTED lANGUAGUES INDICATED
+#"""
 #Documentation: https://www.gotut.net/localisation-godot/
 
-func translate()-> void:
+func translate():
 
 	# For Debug Purposes only
 	print ("En: ",Dialogs.translate_to("char3", "en_US")) 

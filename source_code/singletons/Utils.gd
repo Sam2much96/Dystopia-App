@@ -38,8 +38,11 @@ var file : File = File.new()
 class Zip extends Reference:
 	func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PoolByteArray:
 		# Instance the gdunzip script
-		var gdunzip = load('res://addons/gdunzip/gdunzip.gd').new()
-		var FileCheck1 = File.new()
+		var gdunzip_script : GDScript = load('res://addons/gdunzip/gdunzip.gd')
+		var gdunzip : GDunzip = gdunzip_script.new()
+		assert(gdunzip.get_script() == gdunzip_script) # Check if script loaded is valid
+		
+		var FileCheck1 : File = File.new()
 		
 		#"Compression/Uncompression"
 		var unziped_file : PoolByteArray

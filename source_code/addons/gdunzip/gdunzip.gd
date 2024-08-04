@@ -63,6 +63,8 @@
 
 extends Node
 
+class_name GDunzip
+
 # The path of the currently loaded zip file
 var path
 

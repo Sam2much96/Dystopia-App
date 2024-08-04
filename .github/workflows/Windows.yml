@@ -6,7 +6,7 @@ on:
     - cron: "0 0,5 30 * *"   #Runs at 00 and 31 every month # Docs : https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows 
 
 env:
-  GODOT_VERSION: 3.3.4
+  GODOT_VERSION: 3.5.3
   EXPORT_NAME: source_code
  
 jobs:
@@ -18,7 +18,7 @@ jobs:
         os: [ ubuntu-latest]
     runs-on: ${{ matrix.os }}
     container:
-      image: barichello/godot-ci:3.3.4
+      image: razzlegames/godot-ci:3.5.3_fixed
     steps:
       - name: Checkout
         uses: actions/checkout@v4

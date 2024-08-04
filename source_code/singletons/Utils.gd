@@ -339,7 +339,7 @@ class Functions extends Reference:
 	If check_only is true it will only check for a valid save file and return true or false without
 	restoring any data
 	"""
-	static func load_game(check_only : bool, GlobalScript) -> bool:
+	static func load_game(check_only : bool, GlobalScript : GlobalsVar) -> bool:
 		check_only = false
 		print ("-------Loading Game -------")
 		var save_game = File.new()
@@ -360,7 +360,7 @@ class Functions extends Reference:
 	"""
 	Restores data from the JSON dictionary inside the save files
 	"""
-	static func _restore_data(save_dict : Dictionary, GlobalScript ):
+	static func _restore_data(save_dict : Dictionary, GlobalScript : GlobalsVar ):
 		
 		"Quest Loader"
 		

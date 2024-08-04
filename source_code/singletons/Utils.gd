@@ -281,8 +281,8 @@ class Functions extends RefCounted:
 		
 		print_debug ("-------Saving Game -------")
 		var save_dict : Dictionary = {}
-		var save_game = Utils.file 
-		#save_game.open("user://savegeme.save", File.WRITE_READ)
+		var save_game : FileAccess = Utils.file 
+		save_game.open("user://savegeme.save", FileAccess.WRITE_READ)
 		if !player.is_empty():
 			save_dict.player = player #saves the player node 
 		if spawn_x != 0:
@@ -325,11 +325,11 @@ class Functions extends RefCounted:
 		
 		# Control Settings
 		# Vibration
-		#save_dict.vibrate = GlobalInput.vibrate
+		save_dict.vibrate = GlobalInput.vibrate
 		
-		#save_game.store_line(JSON.new().stringify(save_dict))
-		#save_game.close()
-		#print ("saved gameplay")
+		save_game.store_line(JSON.new().stringify(save_dict))
+		save_game.close()
+		print ("saved gameplay")
 		print_debug("Save GamePlay Is Buggy in v 4.2 port")
 		return false
 
@@ -337,15 +337,15 @@ class Functions extends RefCounted:
 	If check_only is true it will only check for a valid save file and return true or false without
 	restoring any data
 	"""
-	static func load_game(check_only : bool, GlobalScript) -> bool:
+	static func load_game(check_only : bool, GlobalScript : GlobalsVar) -> bool:
 		check_only = false
-		print_debug ("-------Loading Game is buggy in 4.2.2 builds -------")
-		var save_game #= File.new()
+		print_debug ("-------Loading Game-------")
+		var save_game : FileAccess =Utils.file
 		
 		
-		#if not save_game.file_exists("user://savegeme.save"):
-		#	return false
-		#save_game.open("user://savegeme.save", File.READ)
+		if not save_game.file_exists("user://savegeme.save"):
+			return false
+		save_game.open("user://savegeme.save", FileAccess.READ)
 		var test_json_conv = JSON.new()
 		test_json_conv.parse(save_game.get_line())
 		var save_dict = test_json_conv.get_data()
@@ -434,25 +434,23 @@ class Functions extends RefCounted:
 	# Should allow for loading individual variables from Local
 	static func load_user_data( data: String ):
 		
-		var save_game = Utils.file 
-		#if not save_game.file_exists("user://savegeme.save"):
-		#	return false
-		#save_game.open("user://savegeme.save", File.READ)
-		#var test_json_conv = JSON.new()
-		#test_json_conv.parse(save_game.get_line())
-		#var save_dict = test_json_conv.get_data()
-		#if typeof(save_dict) != TYPE_DICTIONARY:
-		#	return false
+		var save_game : FileAccess = Utils.file 
+		if not save_game.file_exists("user://savegeme.save"):
+			return false
+		save_game.open("user://savegeme.save", FileAccess.READ)
+		var test_json_conv : JSON = JSON.new()
+		test_json_conv.parse(save_game.get_line())
+		var save_dict : Dictionary = test_json_conv.get_data()
+		if typeof(save_dict) != TYPE_DICTIONARY:
+			return false
 
-		#if save_dict.has(data):
-		#	print_debug ("Loading user data: ", data)
-		#	if data == 'languague':
-		#		Dialogs.language = save_dict.languague
-		#	if data == "Music_on_settings":
-		#		Music.Music_on_settings = save_dict.Music_on_settings
-		#		Music._ready()
-		#pass
-		#ljpoj]-ju
+		if save_dict.has(data):
+			print_debug ("Loading user data: ", data)
+			if data == 'languague':
+				Dialogs.language = save_dict.languague
+			if data == "Music_on_settings":
+				Music.Music_on_settings = save_dict.Music_on_settings
+				Music._ready()
 
 
 

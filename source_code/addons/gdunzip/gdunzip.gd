@@ -102,12 +102,12 @@ func load(path):
 	self.path = path
 	self.pos = 0
 
-	var file = File.new()
+	var file : FileAccess #= File.new()
 
 	if !file.file_exists(path):
 		return false
-
-	file.open(path, File.READ)
+	
+	file.open(path, FileAccess.WRITE)
 	var file_length = file.get_length()
 	if file.get_32() != 0x04034B50:
 		return false
@@ -193,7 +193,7 @@ func _get_files():
 		if raw[10] == 0 && raw[11] == 0:
 			header['compression_method'] = -1
 		else:
-			header['compression_method'] = File.COMPRESSION_DEFLATE
+			header['compression_method'] = FileAccess.COMPRESSION_DEFLATE
 
 		header['compressed_size'] = (
 			raw[23] << 24
@@ -510,9 +510,9 @@ class Tinf:
 				17:
 					length = tinf_read_bits(d, 3, 3)
 					while length != 0:
-					   lengths[num] = 0
-					   num += 1
-					   length -= 1
+						lengths[num] = 0
+						num += 1
+						length -= 1
 				18:
 					length = tinf_read_bits(d, 7, 11)
 					while length != 0:
@@ -624,16 +624,16 @@ class Tinf:
 	# ----------------------
 
 	func _init():
-	   # build fixed huffman trees
-	   tinf_build_fixed_trees(sltree, sdtree)
+		# build fixed huffman trees
+		tinf_build_fixed_trees(sltree, sdtree)
 
-	   # build extra bits and base tables
-	   tinf_build_bits_base('length', 4, 3)
-	   tinf_build_bits_base('dist', 2, 1)
+		# build extra bits and base tables
+		tinf_build_bits_base('length', 4, 3)
+		tinf_build_bits_base('dist', 2, 1)
 
-	   # fix a special case
-	   base_tables['length_bits'][28] = 0
-	   base_tables['length_base'][28] = 258
+		# fix a special case
+		base_tables['length_bits'][28] = 0
+		base_tables['length_base'][28] = 258
 
 
 	# inflate stream from source to dest

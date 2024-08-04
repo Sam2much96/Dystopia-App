@@ -46,6 +46,9 @@ class_name cinematic
 @onready var local_globals : GlobalsVar = get_node("/root/Globals")
 @onready var local_dialoges : DialogsVar = get_node("/root/Dialogs")
 
+@onready var local_music : music_singleton = get_node("/root/Music")
+@onready var wind_sfx : String = local_music.wind_sfx.get(0)
+
 """
 CINEMATICS
 """
@@ -129,14 +132,14 @@ func _on_VideoPlayer_finished():
 
 func _on_Timer_timeout():
 	push_error('Cinematic scene broken')
-	get_tree().change_scene_to_packed(Globals.title_screen)
+	_go_to_title()
 	if Globals.curr_scene == 'Cinematics':
-		Function._free_memory(Globals.cinematics)
+		Function._free_memory(local_globals.cinematics)
 	
 	#self.queue_free() #autodelete
 
 
-func _go_to_title():
+func _go_to_title() -> void:
 	
 	if local_globals.curr_scene == 'Cinematics': #I use this bool to define two states
 		
@@ -149,13 +152,13 @@ func _go_to_title():
 		
 		Function._free_memory(local_globals.cinematics)
 
-func play_opening_cinematic():
+func play_opening_cinematic() -> int:
 	#Plays the opening cinematic 
 	#loads resource into memory 
 	animation.play("opening_cinematic")
 	# Playes a video stream to the video player in the scenetree
 	
-	await Music.play_track(Music.wind_sfx[0])
+	await local_music.play_track(wind_sfx)
 	return 0
 
 
@@ -249,7 +252,7 @@ class Function :
 			#Comvert size to MB usingConvertfunctiion
 			
 			 # Gets VIdeo file length in bytes, converts it to MB
-			var __video_file_size_mb = Globals._ram_convert(video_file.get_length())
+			var __video_file_size_mb = Utils.Screen._ram_convert(video_file.get_length())
 
 			print ('Video file size: ',__video_file_size_mb, '/',' Est file size: ', size)# For debug purposes only
 			#Stores PoolbyteArray into video file while the video file size is not the user's inputed video size

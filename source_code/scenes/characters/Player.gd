@@ -142,7 +142,7 @@ func respawn():
 	# Reusing the preloaded scene resource
 	# Triggered with animation player
 	if Globals.scene_resource != null:
-		Globals.change_scene_to_packed(Globals.scene_resource)
+		Utils.Functions.change_scene_to_packed(Globals.scene_resource, get_tree())
 	else: 
 		return get_tree().reload_current_scene()
 

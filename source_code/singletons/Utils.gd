@@ -37,14 +37,16 @@ var file : FileAccess #= File.new()
 
 class Zip extends RefCounted:
 	func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PackedByteArray:
-		# Instance the gdunzip script
-		var gdunzip = load('res://addons/gdunzip/gdunzip.gd').new()
-		var FileCheck1 #= File.new()
+		# Instance the gdunzip script and Check if it is valid
+		var gdunzip_script : GDScript = load('res://addons/gdunzip/gdunzip.gd')
+		var gdunzip : GDunzip = gdunzip_script.new()
+		
+		assert(gdunzip.get_script() == gdunzip_script)
+		
+		var FileCheck1 : FileAccess = Utils.file
 		
 		#"Compression/Uncompression"
 		var unziped_file : PackedByteArray
-		# Singleton GDUNzip is Depreciated
-		#var loaded = Gdunzip.load(FILE)
 		
 		var loaded = gdunzip.load(FILE)
 		if loaded:
@@ -77,7 +79,7 @@ class Zip extends RefCounted:
 					# save the file's uncompressed Pool Byte Array
 					unziped_file = gdunzip.uncompress(f["file_name"])
 
-					#Uncompresses files locally
+		 			#Uncompresses files locally
 					print("saving", f["file_name"], "Locally", unziped_file.size(), "to: ", concat)
 				#for t in gdunzip.files.keys():
 				#	print ("Type of " + f['file_name'] + " ",typeof(gdunzip.get_compressed(t))) # for debug purposes only

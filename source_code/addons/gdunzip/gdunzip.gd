@@ -63,6 +63,8 @@
 
 extends Node
 
+class_name GDunzip
+
 # The path of the currently loaded zip file
 var path
 
@@ -95,7 +97,7 @@ func _init():
 	self.tinf = Tinf.new()
 
 # Load a zip file with the given path. Returns a boolean denoting success.
-func load(path):
+func load(path : String):
 	if path == null:
 		return false
 

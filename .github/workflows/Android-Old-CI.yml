@@ -71,8 +71,8 @@ jobs:
           
           
           mkdir -v -p build/android
-          cd $EXPORT_NAME
-          
+          #cd $EXPORT_NAME
+          ls -al
           #android version
           
           

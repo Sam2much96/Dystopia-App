@@ -28,7 +28,7 @@ extends CanvasLayer
 #onready var cinematics : PackedScene = load(Globals.global_scenes["cinematics"])
 #var index : int = 0
 
-#onready var play_button : Button = $ui/grid/play
+onready var play_button  = get_node(ui/grid/play) #: Button
 #onready var dialgue_box = $Dialog_box
 #onready var language = $ui/grid/language
 

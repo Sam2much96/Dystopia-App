@@ -641,15 +641,22 @@ class Screen  :
 		
 	
 	
-	static func scroll(direction : bool , visible : bool, _scroller : ScrollContainer) : #-> void:
-		
-		
+	static func scroll(
+	direction , 
+	visible , 
+	_scroller
+	) : #-> void:
+		# some type checks
+		assert(_scroller == ScrollContainer)
+		assert(typeof(direction) &&
+		typeof(visible) == TYPE_BOOL
+		)
 		
 		# DOCS : https://godotengine.org/qa/92054/how-programmatically-scroll-horizontal-list-texturerects
 		# using a boolean because it allows for only two options in it's data structure
 		# True is up, false is down
 		# Max is 449
-		var scroll_constant : int = 4
+		var scroll_constant = 4 #: int 
 		# Requires Delta Parameter for smooth scrolling 
 		# but running this function as a static function means
 		# it scrolls choppily
@@ -663,24 +670,37 @@ class Screen  :
 			#print (scroller.scroll_vertical )#= scroll_constant  * delta
 	
 	
-	static func calculate_button_positional_data(menu, _interract,stats, roll, slash, comics, joystick, D_pad)-> Array:
+	static func calculate_button_positional_data(menu, _interract,stats, roll, slash, comics, joystick, D_pad) :# -> Array:
+		# Some Type Checks
+		assert(menu &&
+		_interract &&
+		stats &&
+		roll &&
+		slash &&
+		comics &&
+		joystick &&
+		D_pad == TouchScreenButton)
+		
+		# OS Check
+		assert(Globals.os == "Android") 
+		
 		# Returns an Array containing the position of all Touch HUD items
 		# Only Used in Mobile devices for adjusting TOuchscreen HUD
 		# Rewrite as Static function under utils screen class (Done)
 	# *************************************************
-		var buttons_positional_data : Array = []
+		var buttons_positional_data = [] #: Array 
 		
 		# Create Variabls
 		
 		
-		var menu_position : Vector2
-		var _interract_position : Vector2
-		var stats_position : Vector2
-		var roll_position : Vector2
-		var slash_position : Vector2
-		var comics_position : Vector2
-		var joystick_position : Vector2
-		var D_pad_position : Vector2
+		var menu_position = Vector2(0,0) #: Vector2
+		var _interract_position = Vector2(0,0)
+		var stats_position = Vector2(0,0)
+		var roll_position = Vector2(0,0)
+		var slash_position = Vector2(0,0)
+		var comics_position = Vector2(0,0)
+		var joystick_position = Vector2(0,0)
+		var D_pad_position = Vector2(0,0)
 		
 		
 		# BUTTONS POSITIONAL DATA 
@@ -708,7 +728,10 @@ class Screen  :
 		return buttons_positional_data
 	
 	
-	static func _adjust_touchHUD_length(Anim : AnimationPlayer):
+	static func _adjust_touchHUD_length(Anim ): #: AnimationPlayer
+		
+		
+		assert(Anim == AnimationPlayer)
 		
 		# *************************************************
 		"Touch Screen UI"
@@ -739,25 +762,24 @@ class Screen  :
 			Anim.play("SCREEN_HORIZONTAL");
 		else: pass
 	
-	
-	# Deprecoated
-	static func resize_window(x : int,y : int): #resizes the game window
-		Globals.screenSize = Vector2(x,y);
-		return OS.set_window_size(Vector2(x,y));
+
 
 	# Convert bytes to Megabytes
 	static func _ram_convert(bytes) :
+		# bytes is float
+		
 		if bytes >= int(1):
-			var _mb = String(round(float(bytes) / 1_048_576))
+			var _mb = str(round(float(bytes) / 1048576))
 			return _mb
 
 
-"Procedural Generation"
+#"Procedural Generation"
 class procedural extends Reference:
-	# Bug: Maxes Out Static Memory, Refactoring to use dynamic memeory instead
-	#
-	
-	static func genereate(simplex_noise : OpenSimplexNoise, 
+	# Bugs: 
+	# (1) Maxes Out Static Memory, Refactoring to use dynamic memeory instead
+	# (2) OpenSimplex Noise Not available out the box in godot v2.0 builds
+	# 
+	static func genereate(simplex_noise , #: OpenSimplexNoise, 
 	world_seed : String, 
 	noise_octaves : int, 
 	noise_period : int, 
@@ -768,6 +790,9 @@ class procedural extends Reference:
 	map_width : int,
 	tile_map : TileMap
 	):
+		
+		# Some Type Checks
+		
 		# generate a seed using a string and the hash of that string
 		simplex_noise.seed = world_seed.hash()
 		

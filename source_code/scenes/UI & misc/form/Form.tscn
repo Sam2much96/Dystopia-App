@@ -83,7 +83,7 @@ shortcut = null
 text = "Play"
 flat = false
 
-[node name="OptionButton" type="OptionButton" parent="ui/GridContainer"]
+[node name="language" type="OptionButton" parent="ui/GridContainer"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true

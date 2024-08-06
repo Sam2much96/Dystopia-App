@@ -375,8 +375,10 @@ class Functions extends Reference:
 	#If check_only is true it will only check for a valid save file and return true or false without
 	#restoring any data
 	#"""
-	static func load_game(check_only : bool, GlobalScript) -> bool:
+	static func load_game(check_only, GlobalScript) : # -> bool:
 		
+		# Type Checks
+		assert(typeof(check_only) == TYPE_BOOL )
 		
 		
 		check_only = false
@@ -396,12 +398,16 @@ class Functions extends Reference:
 		save_game.close()
 		return true
 
-	"""
-	Restores data from the JSON dictionary inside the save files
-	"""
-	static func _restore_data(save_dict : Dictionary, GlobalScript ):
+	#"""
+	#Restores data from the JSON dictionary inside the save files
+	#"""
+	
+	static func _restore_data(save_dict , GlobalScript ):
 		
 		"Quest Loader"
+		
+		# Some Type Checks
+		assert(typeof(save_dict) == TYPE_DICTIONARY)
 		
 		if save_dict.has('quests'):
 			# JSON numbers are always parsed as floats. In this case we need to turn them into ints
@@ -471,7 +477,10 @@ class Functions extends Reference:
 	# Loads Singular User Data from local storage
 	# Version 2 of Load_game function
 	# Should allow for loading individual variables from Local
-	static func load_user_data( data: String ):
+	static func load_user_data( data ):
+		
+		# Type Checks
+		assert(typeof(data) == TYPE_STRING)
 		
 		var save_game = Utils.file 
 		if not save_game.file_exists("user://savegeme.save"):
@@ -494,7 +503,11 @@ class Functions extends Reference:
 
 
 
-	static func calculate_length_breadth(point_positions: Array) -> Vector2:
+	static func calculate_length_breadth(point_positions) : #-> Vector2:
+		
+		# Some Type Checks
+		assert(typeof(point_positions)== TYPE_ARRAY)
+		
 		# Calculates the Length and Breadth of a 2Dimensional Vector
 		
 		var min_x = float('inf')
@@ -515,20 +528,24 @@ class Functions extends Reference:
 
 		return Vector2(length, breadth)
  
-	static func edge_length(point_data: PoolVector2Array) -> Vector2:
-	# Caclulates the Edge Length of a 4 Point Structure
-	# Calculates the distance between 2 points
-	# Source : https://stackoverflow.com/questions/7475004/calculate-width-and-height-from-4-points-of-a-polygon
+	static func edge_length(point_data) : # -> Vector2:
+		# some type checks
+		assert(typeof(point_data) == TYPE_VECTOR2_ARRAY)
+	
+	
+		# Caclulates the Edge Length of a 4 Point Structure
+		# Calculates the distance between 2 points
+		# Source : https://stackoverflow.com/questions/7475004/calculate-width-and-height-from-4-points-of-a-polygon
 		var width = sqrt(pow(point_data[1].x - point_data[0].x, 2) + pow( point_data[1].y - point_data[0].y,2)) 
 		var height = sqrt(pow(point_data[2].x - point_data[1].x, 2) + pow( point_data[2].y - point_data[1].y,2)) 
 		return Vector2(width, height)
 
-"Screen Class "
+#"Screen Class "
 class Screen  :
 	
 	
-	var screenOrientation : int
-	var screenOrientationSettings : int = OS.get_screen_orientation()
+	var screenOrientation  = -99 # default screen orientation placeholder #: int
+	var screenOrientationSettings  = OS.get_screen_orientation() #: int
 	
 	# This Apps Global Screen Orientation
 	enum { SCREEN_HORIZONTAL, SCREEN_VERTICAL} 
@@ -546,23 +563,24 @@ class Screen  :
 		pass
 
 
-	"""
-	SCREEN ORIENTATION ALGORITHM
-	"""
+	#"""
+	#SCREEN ORIENTATION ALGORITHM
+	#"""
 	# (1) Checks Device  Screen orentation
 	# (2) Sets the Global Script for Screen Orientation
 	#(3) This ALgorithm should be run periodically on a separate device like mobile
-	static func Orientation() -> int:
+	static func Orientation() : #-> int:
 		'Screen Size Resolution'
-		var screenSize : Vector2
+		var screenSize = Vector2(0,0) # Default placeholder#: Vector2
+		var screen = Vector2(0,0)
+		var screenOrientation = -99 # default placeholder #: int
 		
-		var screenOrientation : int
 		
 		'Algorithm for Calculating Screen Orientation'
 		# Features:
 		# (1) uses an Integer from the Global Singleton to stroe the calculation
 		# (2) Returns an integer representain an Enumeration of the screen orientation
-		var screen : Vector2 =OS.get_screen_size(-1) # get the current screen size
+		screen =OS.get_screen_size(-1) # get the current screen size
 		
 		
 		# screen orientation enum copied from Globals main
@@ -598,19 +616,21 @@ class Screen  :
 		
 		return screenOrientation
 		
-	static func calculateViewportSize( t : CanvasItem ) -> Vector2 :
+	static func calculateViewportSize( t ): #: CanvasItem  -> Vector2 :
+		assert(t == CanvasItem)
 		return t.get_viewport_rect().size
 
 
 
 	static func display_calculations( display, GlobalScript):
-		'Screen Display Calculations'
-		if display is CanvasItem:
+		#'Screen Display Calculations'
+		
+		if display == CanvasItem :
 			# Get Viewport Size, Make it Globally accessible
 			GlobalScript.viewport_size = calculateViewportSize(display)
 			#Globals.center_of_viewport = Globals.calc_center_of_rectangle(Globals.viewport_size)
 			
-		if display is Viewport:
+		if display == Viewport:
 			GlobalScript.viewport_size = display.size
 		
 		
@@ -621,7 +641,10 @@ class Screen  :
 		
 	
 	
-	static func scroll(direction : bool , visible : bool, _scroller : ScrollContainer)-> void:
+	static func scroll(direction : bool , visible : bool, _scroller : ScrollContainer) : #-> void:
+		
+		
+		
 		# DOCS : https://godotengine.org/qa/92054/how-programmatically-scroll-horizontal-list-texturerects
 		# using a boolean because it allows for only two options in it's data structure
 		# True is up, false is down

@@ -189,11 +189,11 @@ class MemoryManagement extends Reference :
 				i.queue_free()
 
 	#prints all orphaned nodes in project
-	static func memory_leak_management(from : Node):
+	static func memory_leak_management(from): # From is a type node
 		return from.print_stray_nodes() 
 
 
-"Functions Class"
+#"Functions Class"
 
 class Functions extends Reference:
 	# Shared Functions Class
@@ -203,28 +203,34 @@ class Functions extends Reference:
 	
 	
 	
-	static func change_scene_to(scene : PackedScene, tree : SceneTree): #Loads scenes faster?
-		
+	static func change_scene_to(scene , tree ): #Loads scenes faster?
+			assert(scene.can_instance())
 		#if scene is PackedScene: 
-			if scene != null: 
-				return tree.change_scene_to(scene)  
+			#if scene != null: 
+			return tree.change_scene_to(scene)  
 
-			else: print_debug (scene," ", typeof(scene) ,"is not supported in this function")
+			#else: print_debug (scene," ", typeof(scene) ,"is not supported in this function")
 	
-	'Resource Loader FOr Large Scenes'
+	#'''Resource Loader FOr Large Scenes'''
 	# Bugs
 	# (11 Performance Hog on Low powered devices
 	# (2) Progress Debug is not exportable
 	static func LoadLargeScene(
-		_to_load : String, 
-		scene_resource : PackedScene, 
-		_o : ResourceInteractiveLoader, 
-		scene_loader : ResourceLoader, 
-		_loading_resource : bool, 
-		a: int , 
-		b : int, 
-		progress: float
-		) -> PackedScene:
+		_to_load, # : String, 
+		scene_resource,# : PackedScene, 
+		_o ,#: ResourceInteractiveLoader, 
+		scene_loader , #: ResourceLoader, 
+		_loading_resource ,#: bool, 
+		a ,#: int , 
+		b , #: int, 
+		progress #: float
+		) : #-> PackedScene:
+		
+		# Some Type Checks
+		assert(typeof(_to_load)== TYPE_STRING)
+		assert(typeof( _loading_resource) == TYPE_BOOL)
+		assert(typeof(a) && typeof(b) ==TYPE_INT)
+		
 		
 		#print_debug("Loading Large Scene")
 		if _to_load != "" && scene_resource == null:
@@ -278,27 +284,42 @@ class Functions extends Reference:
 
 
 
-	"""
-	Really simple save file implementation. Just saving some variables to a dictionary
-	"""
+	#"""
+	#Really simple save file implementation. Just saving some variables to a dictionary
+	#"""
 	# Can Save individual parameters by setting other parameters to Null
 	#
 	#
 	static func save_game(
-		player: Array, 
-		player_hitpoints : int, 
-		spawn_x : int, 
-		spawn_y : int, 
-		current_level : String, 
-		os : String, 
-		kill_count : int, 
-		prev_scene : String, 
+		player , #: Array, 
+		player_hitpoints, # : int, 
+		spawn_x, # : int, 
+		spawn_y , #: int, 
+		current_level, # : String, 
+		os , #: String, 
+		kill_count, # : int, 
+		prev_scene, # : String, 
 		prev_scene_spawnpoint,
-		direction_control : String
-		)-> bool: 
+		direction_control # : String
+		) : #-> bool: 
+		
+		#Some Type Checks
+		assert(typeof(player) == TYPE_ARRAY)
+		assert(typeof(player_hitpoints) &&
+		typeof(spawn_x) &&
+		typeof(spawn_y) &&
+		typeof(kill_count) == TYPE_INT)
+		
+		assert(typeof(current_level) &&
+		typeof(os) &&
+		typeof(prev_scene) && 
+		typeof(prev_scene_spawnpoint) &&
+		typeof(direction_control) == TYPE_STRING)
+		
+		
 		
 		print_debug ("-------Saving Game -------")
-		var save_dict : Dictionary = {}
+		var save_dict = {} #: Dictionary 
 		var save_game = Utils.file 
 		save_game.open("user://savegeme.save", File.WRITE_READ)
 		if !player.empty():
@@ -350,11 +371,14 @@ class Functions extends Reference:
 		print ("saved gameplay")
 		return true
 
-	"""
-	If check_only is true it will only check for a valid save file and return true or false without
-	restoring any data
-	"""
+	#"""
+	#If check_only is true it will only check for a valid save file and return true or false without
+	#restoring any data
+	#"""
 	static func load_game(check_only : bool, GlobalScript) -> bool:
+		
+		
+		
 		check_only = false
 		print ("-------Loading Game -------")
 		var save_game = File.new()

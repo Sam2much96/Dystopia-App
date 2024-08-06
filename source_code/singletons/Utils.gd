@@ -20,9 +20,9 @@
 extends Node
 
 
-var screenOrientation : int
-var viewport_size : Vector2
-var center_of_viewport : Vector2 
+export(int) var screenOrientation : int
+export (Vector2) var viewport_size : Vector2
+export (Vector2) var center_of_viewport : Vector2 
 
 export (Array) var EnemyObjPool : Array = [] #Stores shared pointer to enemy Mob instances
 
@@ -611,7 +611,7 @@ class Screen  :
 	slash : TouchScreenButton, 
 	comics : TouchScreenButton, 
 	joystick : TouchScreenButton,
-	 D_pad : TouchScreenButton
+	 D_pad : Control
 	)-> Array:
 		
 		assert(Globals.os =="Android")
@@ -819,10 +819,10 @@ static func rotate_pointer(point_direction: Vector2, pointer : Node2D) -> void:
 
 
 
-func restaVectores(v1 : Vector2, v2 : Vector2): #vector substraction
+func restaVectores(v1 : Vector2, v2 : Vector2) -> Vector2: #vector substraction
 	return Vector2(v1.x - v2.x, v1.y - v2.y)
 
-func sumaVectores(v1 : Vector2, v2 : Vector2): #vector sum
+func sumaVectores(v1 : Vector2, v2 : Vector2) -> Vector2: #vector sum
 	return Vector2(v1.x + v2.x, v1.y + v2.y)
 
 func calc_2d_distance_approx(x : Vector2, y : Vector2) -> int:

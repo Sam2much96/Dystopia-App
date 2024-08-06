@@ -16,18 +16,18 @@
 
 extends Control
 
-class_name TitleScreen
+#class_name TitleScreen
 
-"""
-The purpose of this code is to beautify the UI programmatically
-"""
+#"""
+#The purpose of this code is to beautify the UI programmatically
+#"""
 
 
 
 #changes Title Screen Art using Global Screen Orientation
 onready var art1 :  TextureRect = $TextureRect2
 
-onready var art3 :  TextureRect = $Sprite
+	onready var art3 :  TextureRect = $Sprite
 
 onready var menu : TouchScreenButton = $menu
 #onready var notifications : Popup = $Notification2

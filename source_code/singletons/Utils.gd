@@ -20,29 +20,31 @@
 extends Node
 
 
-var screenOrientation : int
-var viewport_size : Vector2
-var center_of_viewport : Vector2 
+var screenOrientation = -99
+var viewport_size = Vector2(0,0)
+var center_of_viewport = Vector2(0,0) 
 
-export (Array) var EnemyObjPool : Array = [] #Stores shared pointer to enemy Mob instances
+export (Array) var EnemyObjPool = [] #Stores shared pointer to enemy Mob instances
 
-var dir : Directory = Directory.new() # Global FIle And Directory Paths
-var file : File = File.new()
+var dir = Directory.new() # Global FIle And Directory Paths
+var file = File.new()
 
-"Compression and Uncompression Algorithm"
+#"Compression and Uncompression Algorithm"
 # Documentation: https://git.sr.ht/~jelle/gdunzip
 # Reads Data from a Zip File
 # Has a problem with saving Text files
 # Has a problem with Large files (Decompression is really slow)
 
 class Zip extends Reference:
-	func uncompress(FILE: String, Uncompressd_rooot_dir: String) : #-> PoolByteArray:
+	func uncompress(FILE, Uncompressd_rooot_dir) : # file path and root directory
+		assert(typeof(FILE) && typeof(Uncompressd_rooot_dir) == TYPE_STRING)
+		
 		# Instance the gdunzip script
 		var gdunzip = load('res://addons/gdunzip/gdunzip.gd').new()
 		var FileCheck1 = File.new()
 		
 		#"Compression/Uncompression"
-		var unziped_file : PoolByteArray
+		var unziped_file = RawArray([])
 		# Singleton GDUNzip is Depreciated
 		#var loaded = Gdunzip.load(FILE)
 		
@@ -70,7 +72,7 @@ class Zip extends Reference:
 				
 				
 				
-				var concat : String = Uncompressd_rooot_dir+f['file_name']
+				var concat = str(Uncompressd_rooot_dir+f['file_name'])
 				
 				"Checks if Zipped File is present at file path" 
 				if not FileCheck1.file_exists(Uncompressd_rooot_dir + f['file_name']):
@@ -99,11 +101,13 @@ class Player_utils extends Reference:
 	
 	
 	
-	func _get_player(scene_tree : SceneTree) :
+	func _get_player(scene_tree) :
+	#
 	#
 	# Gets the Player Object in the Scene Tree if Player unavailable 
 	#	
 	# Rewrite into a separate function
+		assert(scene_tree == get_tree())
 		Globals.players.append( scene_tree.get_nodes_in_group('player') )#gets all player nodes in the scene
 	 #it shows deleted object once player is despawns.
 		if Globals.players.empty() == true: #error catcher 1            
@@ -115,11 +119,12 @@ class Player_utils extends Reference:
 		pass
 
 # Calculates the center of a Rectangle
-func calc_center_of_rectangle(rect : Vector2) -> Vector2:
+func calc_center_of_rectangle(rect) :
+	assert(typeof(rect) == TYPE_VECTOR2)
 	return Vector2((rect.x/2), (rect.y/2))
 
 # Produces Truely Randomized Results
-func randomize_enemy_type() -> String:
+func randomize_enemy_type():
 	randomize()
 	#_randomize(self)
 	return ['Easy', "Intermediate", "Hard"][randi()%3]
@@ -130,7 +135,9 @@ func randomize_enemy_type() -> String:
 	#node.get_script().
 #	return randomize()
 
-func array_to_string(arr: Array) -> String:
+func array_to_string(arr) : # -> String:
+	
+	assert(typeof(arr) == TYPE_ARRAY)
 	# Used For Multiplayer data Encoding
 	# Converts an array to a string and concatonates it
 	# The result s is then converted to an integer
@@ -140,22 +147,24 @@ func array_to_string(arr: Array) -> String:
 		s += String(i)
 	return s
 
-func int_to_array(data : int)-> Array:
+func int_to_array(data) : #-> Array:
 	# Used For Multiplayer Data decoding
 	# converts a large integer into separate value and encodes the result into an array
 	# essentialy decoding the data that array_to_string encodes
 	# used in simulation logic
+	assert (typeof(data) == TYPE_INT)
 	var num_str = str(data)
 	var num_array = []
 	for i in range(num_str.length()):
 		num_array.append(int(num_str[i]))
 	return num_array
 
-"Memory Leak/ Orphaned Nodes Management System"
+#""""Memory Leak/ Orphaned Nodes Management System"""
 class MemoryManagement extends Reference :
 	# To-Do: Method Should Implement a THread
 	
 	static func queue_free_children(node: Node) -> void:
+
 		for idx in node.get_child_count():
 			node.queue_free()
 			

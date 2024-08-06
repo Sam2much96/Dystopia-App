@@ -163,20 +163,26 @@ func int_to_array(data) : #-> Array:
 class MemoryManagement extends Reference :
 	# To-Do: Method Should Implement a THread
 	
-	static func queue_free_children(node: Node) -> void:
-
+	static func queue_free_children(node) : #-> void:
+		
+		assert(node.is_inside_tree() == true)
+		
 		for idx in node.get_child_count():
 			node.queue_free()
 			
-	static func free_children(node: Node) -> void:
+	static func free_children(node) : #-> void:
+		assert(node.is_inside_tree() == true)
 		for idx in node.get_child_count():
 			node.free()
 
-	static func free_object (object: Object) -> void:
+	static func free_object (_object) : #-> void:
+		assert(typeof(_object) == TYPE_OBJECT)
 		object.free()
 
-	static func queue_free_array(nodes: Array) -> void:
-		# SHould Ideally Spawn a THread
+	static func queue_free_array(nodes) : #-> void:
+		assert(typeof(nodes) == TYPE_ARRAY &&
+		nodes.empty() != true
+		)
 		
 		for i in nodes:
 			if i != null:

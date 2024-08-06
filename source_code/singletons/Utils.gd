@@ -604,14 +604,25 @@ class Screen  :
 			#print (scroller.scroll_vertical )#= scroll_constant  * delta
 	
 	
-	static func calculate_button_positional_data(menu, _interract,stats, roll, slash, comics, joystick, D_pad)-> Array:
+	static func calculate_button_positional_data(menu : TouchScreenButton, 
+	_interract : TouchScreenButton,
+	stats : TouchScreenButton, 
+	roll : TouchScreenButton, 
+	slash : TouchScreenButton, 
+	comics : TouchScreenButton, 
+	joystick : TouchScreenButton,
+	 D_pad : TouchScreenButton
+	)-> Array:
+		
+		assert(Globals.os =="Android")
+		
 		# Returns an Array containing the position of all Touch HUD items
 		# Only Used in Mobile devices for adjusting TOuchscreen HUD
 		# Rewrite as Static function under utils screen class (Done)
 	# *************************************************
 		var buttons_positional_data : Array = []
 		
-		# Create Variabls
+		# Create Variable
 		
 		
 		var menu_position : Vector2
@@ -802,16 +813,16 @@ func check_files(path_to_dir: String, path_to_file : String)-> bool:
 
 
 		# Updates the raycast to the Enemy"s Direction
-static func rotate_pointer(point_direction: Vector2, pointer) -> void:
+static func rotate_pointer(point_direction: Vector2, pointer : Node2D) -> void:
 	var temp =rad2deg(atan2(point_direction.x, point_direction.y))
 	pointer.rotation_degrees = temp
 
 
 
-func restaVectores(v1, v2): #vector substraction
+func restaVectores(v1 : Vector2, v2 : Vector2): #vector substraction
 	return Vector2(v1.x - v2.x, v1.y - v2.y)
 
-func sumaVectores(v1, v2): #vector sum
+func sumaVectores(v1 : Vector2, v2 : Vector2): #vector sum
 	return Vector2(v1.x + v2.x, v1.y + v2.y)
 
 func calc_2d_distance_approx(x : Vector2, y : Vector2) -> int:

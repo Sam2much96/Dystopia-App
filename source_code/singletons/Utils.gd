@@ -74,18 +74,20 @@ class Zip extends Reference:
 				
 				
 				var concat : String = Uncompressd_rooot_dir+f['file_name']
+				var filename : String = f['file_name']
+				var file_size : int = f['uncompressed_size']
 				
 				"Checks if Zipped File is present at file path" 
-				if not FileCheck1.file_exists(Uncompressd_rooot_dir + f['file_name']):
+				if not FileCheck1.file_exists(concat):
 					# save the file's uncompressed Pool Byte Array
-					unziped_file = gdunzip.uncompress(f["file_name"])
+					unziped_file = gdunzip.uncompress(filename)
 
 					#Uncompresses files locally
-					print("saving", f["file_name"], "Locally", unziped_file.size(), "to: ", concat)
+					print("saving", filename, "Locally", unziped_file.size(), "to: ", concat)
 				#for t in gdunzip.files.keys():
 				#	print ("Type of " + f['file_name'] + " ",typeof(gdunzip.get_compressed(t))) # for debug purposes only
 				
-					Networking.save_file_(unziped_file, concat, int(f['uncompressed_size']))
+					Networking.save_file_(unziped_file, concat, file_size)
 
 
 				# "compression_method" will be either -1 for uncompressed data, or
@@ -115,7 +117,7 @@ class Player_utils extends Reference:
 		if Globals.player == null:
 			Globals.player = Globals.players[0] # Incase there are more than 1 players
 		return Globals.player
-		pass
+
 
 # Calculates the center of a Rectangle
 func calc_center_of_rectangle(rect : Vector2) -> Vector2:

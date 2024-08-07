@@ -33,28 +33,28 @@
 
 extends HTTPRequest
 
-class_name Internet
+#class_name Internet
 
-"""
-NETWORKING SINGLETON 4.0
+#"""
+#NETWORKING SINGLETON 4.0
 
-To query if there's internet access and connect to various websites
-"""
+#To query if there's internet access and connect to various websites
+#"""
 export (bool) var enabled
 export(String) var connection_debug
 export (String) var cfg_server_ip 
 export (String) var cfg_client_ip 
 #########################  Web browser codes  ############################3
-export (String) var url : String = ''
+export (String) var url = '' # : String 
 var check_timer 
 var debug = ''
-var WORLD_SIZE : int = 40000.0
+export (int) var WORLD_SIZE = 40000 #  : int
 
 
 
 
 
-var peer_id : int
+export (int) var peer_id #: int
 
 var my_peer : NetworkedMultiplayerENet
 export (Array) var ip : Array = []

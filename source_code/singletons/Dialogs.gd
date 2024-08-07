@@ -165,13 +165,13 @@ func reset() : # -> void:
 
 # Dynamic function
 # Creates a CUstom Font Pack for UI with different Paramenters
-func create_font_pack(Size : int, prefered_font_pack : String, OutlineSize : int ) -> DynamicFont:
+func create_font_pack(Size, prefered_font_pack , OutlineSize ) : # -> DynamicFont:
 	# Type Checks 
 	assert(typeof(Size) &&
 	typeof(OutlineSize) == TYPE_INT
 	)
 	
-	assert()
+	assert(typeof(prefered_font_pack) == TYPE_STRING)
 	
 	# Loads A Custom Font Pack For Hindi, Telugu, Jpanese, Mandarin Languages
 	# (1) Should take Language as a parameter
@@ -182,7 +182,7 @@ func create_font_pack(Size : int, prefered_font_pack : String, OutlineSize : int
 		# Uses font pack path dictionary to create custom languague packs per languague
 		# IF Language is not supported, English is the deefault
 		# Fetches the Used front from the Font Pack by Matching Dialgues.language with it
-		var used_font : String = font_pack.get(language, "en")
+		var used_font = font_pack.get(language, "en") # : String 
 		
 		custom_font.font_data = load(used_font)  # English is the default backup font
 		
@@ -209,7 +209,13 @@ func create_font_pack(Size : int, prefered_font_pack : String, OutlineSize : int
 	return custom_font
 
 #Dynamic function
-func set_font(nodes:  Array, size : int, prefered_font_pack : String, OutlineSize : int) :
+func set_font(nodes , size , prefered_font_pack , OutlineSize) :
+	# Type Checks
+	assert(typeof(nodes) == TYPE_ARRAY)
+	assert(typeof(size) && typeof(OutlineSize) == TYPE_INT)
+	assert(typeof(prefered_font_pack) == TYPE_STRING)
+	
+	
 	#TO DO
 	# (1) Match Dialogues Language to Font Pack dictionary
 	# (2) Causes Translations Bug in Game Menu for Mandarin, Hindu, Telugu
@@ -221,15 +227,18 @@ func set_font(nodes:  Array, size : int, prefered_font_pack : String, OutlineSiz
 		OutlineSize
 		)
 
+
 	# Font Overide simple state machine
 	if not nodes.empty():
 		for i in nodes:
-			if i is Button:
+			if i == Button:
 				#print (i.name) # for debug purposes only	
 				i.add_font_override('font', Dialogs.custom_font)
-			if i is StatusText:
-				i.add_font_override('font', Dialogs.custom_font)
-			if i is Label:
+			
+			#if i == StatusText: # Status Text? Temporarily diabling
+			#	i.add_font_override('font', Dialogs.custom_font)
+			
+			if i == Label:
 				i.add_font_override('font', Dialogs.custom_font)
 
 # *************************************************
@@ -249,23 +258,29 @@ func set_font(nodes:  Array, size : int, prefered_font_pack : String, OutlineSiz
 
 class Parser extends Reference :
 	
-	"""
-	THE PURPOSE OF THIS CODE IS TO PARSE TEXT DATA FROM A JSON FILE AND DISPLAY IT IN A DIALOGUE BOX
-	"""
+	#"""
+	#THE PURPOSE OF THIS CODE IS TO PARSE TEXT DATA FROM A JSON FILE AND DISPLAY IT IN A DIALOGUE BOX
+	#"""
 	#Godot has greater finese in parsing json files
 	
 	# Determines what lines to show
-	const test_index : int = 8 
+	const test_index = 8 # : int
 
 
 	# Parses a Script file and returns a line
 	#
 	#
-	static func parse_script(line_to_return : int, _script : String ) -> String: #Places Dialogue in wordbubbles with Dialogue singleton-aid
+	static func parse_script(line_to_return , _script ) :# -> String: #Places Dialogue in wordbubbles with Dialogue singleton-aid
+		
+		# Run Type Checks
+		assert(typeof(line_to_return) == TYPE_INT)
+		assert(typeof(_script) == TYPE_STRING)
+		
+		
 		#Parse gd script
-		var _f = File.new()
-		var line_string : String
-		var index : int = 0 # used for numbering each line in the parsed script
+		var _f = Utils.file #File.new()
+		var line_string #: String
+		var index = 0 #: int  # used for numbering each line in the parsed script
 		if _f.file_exists(_script): 
 			#print ('File Exists')
 			_f.open (_script, File.READ)
@@ -301,14 +316,21 @@ class Parser extends Reference :
 
 	# Parses a script from one line to another line
 	# Simplifies Dialogs 2 Implementation
-	static func parse_script_from(line_to_start: int, line_to_end: int, _script: String) -> String:
-
+	static func parse_script_from(line_to_start, line_to_end, _script) : #-> String:
+		
+		# Type Checks
+		assert(typeof(line_to_start) &&
+		typeof(line_to_end) == TYPE_INT
+		)
+		
+		assert(typeof(_script) == TYPE_STRING)
+		
 		# Parse gd script
 		var _f = Utils.file #File.new()
 		
-		var line_string: String
-		var line_passage: String = ""
-		var index: int = 0
+		var line_string = "" #: String
+		var line_passage = "" # : String
+		var index = 0 #: int
 		
 		if _f.file_exists(_script): 
 			print('File Exists')

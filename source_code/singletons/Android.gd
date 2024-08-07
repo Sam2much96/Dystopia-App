@@ -25,18 +25,34 @@ var ingameMenu : Game_Menu
 
 @export var _is_android : bool 
 
+# Get Debug Singleton for Debugging
+@onready var _debug : Debug = get_node("/root/Debug")
+
 # To reduce memory over write of Global scerenn orientation integer unless necessary
 # and reduce memory calls between singletons unless necessary
 var local_screen_orientation : int 
-var initial_screen_orientation : int  # for comparison
+var initial_screen_orientation : int  = Utils.Screen.Orientation()# for comparison
 
 func _ready():
+	"""
+	Enable & Disable
+	"""
+	# Features
+	# (1) Disable if not on android
+	# (2) Enable on Native ANdroid
+	#(3) Enable on Mobile Browser
 	
-	# Disable if not on android
 	
+	# Android Native
 	if Globals.os == "Android":
 		_is_android = true
-		initial_screen_orientation = Utils.Screen.Orientation()
+		
+	if Globals.os == "HTML5" && initial_screen_orientation == 1: # Mobile Browser
+		# Check Screen Dimensions to estimate if it is a mobile browser
+		
+		print_debug("Device Is Mobile Browser")
+		_debug.misc_debug  += "Device is Mobile Browser"
+		_is_android = true
 	else:
 		_is_android = false
 		self.set_process(false)
@@ -44,7 +60,7 @@ func _ready():
 
 func is_android() -> bool:
 	# Returns script state as boolean if is android or isnt safely
-	
+	# checks if game is running on mobile browser or native android
 	return _is_android
 
 func _process(_delta):

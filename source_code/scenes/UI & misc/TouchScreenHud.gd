@@ -153,7 +153,7 @@ func _ready():
 	# (3) Fix hud auto orientation for mobile
 	
 	# Turn off this setup script if not running on Android
-	if ( Globals.os == "Android" or Android.is_android()):
+	if enabled:
 		_menu = $menu
 		_interract = $Control/InterractButtons/interact
 		stats_ = $Control/InterractButtons/stats
@@ -175,11 +175,11 @@ func _ready():
 		"Set Button Arraqys for easy on/off"
 		action_buttons = [
 			_menu ,
-			stats,
+			stats_,
 			_interract,
 			roll, 
 			slash,
-			comics
+			comics_
 			]
 		
 		# Select Users Preferred Direction Controls 
@@ -210,10 +210,10 @@ func _ready():
 		Utils.Screen.calculate_button_positional_data(
 			_menu, 
 			_interract,
-			stats, 
+			stats_, 
 			roll, 
 			slash, 
-			comics, 
+			comics_, 
 			_joystick, 
 			D_pad
 			)

@@ -28,15 +28,32 @@ export (bool) var is_android
 # To reduce memory over write of Global scerenn orientation integer unless necessary
 # and reduce memory calls between singletons unless necessary
 var local_screen_orientation : int 
-var initial_screen_orientation : int  # for comparison
+export (int) var initial_screen_orientation = Utils.Screen.Orientation()#: int  # for comparison
+
+# Get Debug Singleton for Debugging
+onready var _debug : Debug = get_node("/root/Debug"
 
 func _ready():
 	
-	# Disable if not on android
 	
-	if Globals.os == "Android":
+	#"""
+	#Enable & Disable
+	#"""
+	# Features
+	# (1) Disable if not on android
+	# (2) Enable on Native ANdroid
+	#(3) Enable on Mobile Browser
+	
+	# Android Native
+	if Globalss.os == "Android":
 		is_android = true
-		initial_screen_orientation = Utils.Screen.Orientation()
+		#initial_screen_orientation = Utils.Screen.Orientation()
+	if Globalss.os =="HTML5" && && initial_screen_orientation == 1: # Mobile Browser:
+		# Check Screen Dimensions to estimate if it is a mobile browser
+		print_debug("Device Is Mobile Browser")
+		_debug.misc_debug += "Device is Mobile Browser"
+		_is_android = true
+		
 	else:
 		is_android = false
 		self.set_process(false)

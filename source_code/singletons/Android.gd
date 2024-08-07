@@ -6,7 +6,7 @@
 # (2) SHould Implement Android Specific Perfoormance OPtimization for different Mobiles
 # (3) Should Contain All Mobile Optimizations In a single script
 # (4) Should COntain Admob implementation when possible
-
+# (5) SHould Map to Debug Signleton for Web Browser Debug
 
 
 extends Node
@@ -23,29 +23,49 @@ var TouchInterface : TouchScreenHUD
 
 var ingameMenu : Game_Menu
 
-export (bool) var is_android  
+export (bool) var _is_android  
 
 # To reduce memory over write of Global scerenn orientation integer unless necessary
 # and reduce memory calls between singletons unless necessary
 var local_screen_orientation : int 
-var initial_screen_orientation : int  # for comparison
+onready var initial_screen_orientation : int = Utils.Screen.Orientation() # for comparison
+
+# Get Debug Singleton for Debugging
+onready var _debug : Debug = get_node("/root/Debug")
 
 func _ready():
 	
-	# Disable if not on android
+	"""
+	Enable & Disable
+	"""
+	# Features
+	# (1) Disable if not on android
+	# (2) Enable on Native ANdroid
+	#(3) Enable on Mobile Browser
 	
-	if Globals.os == "Android":
-		is_android = true
-		initial_screen_orientation = Utils.Screen.Orientation()
+	if Globals.os == "Android": # Android Native
+		_is_android = true
+		#initial_screen_orientation = Utils.Screen.Orientation()
+	if Globals.os == "HTML5" && initial_screen_orientation == 1: # Mobile Browser
+		# Check Screen Dimensions to estimate if it is a mobile browser
+		#initial_screen_orientation = Utils.Screen.Orientation()
+		#if initial_screen_orientation == 0: # Vertical Screen is 1, it's set to 0 for local testing
+		print_debug("Device Is Mobile Browser")
+		_debug.misc_debug += "Device is Mobile Browser"
+		_is_android = true
 	else:
-		is_android = false
+		_is_android = false
 		self.set_process(false)
 		self.set_physics_process(false)
+	
+	print_debug("Android :", _is_android)
+	
 
 func is_android() -> bool:
 	# Returns script state as boolean if is android or isnt safely
+	# checks if game is running on mobile browser or native android
 	
-	return is_android
+	return _is_android
 
 func _process(_delta):
 	
@@ -116,7 +136,7 @@ func _process(_delta):
 	"""
 	SCREEN ORIENTATION ALGORITHM
 	"""
-	# Mobile Implemnentation
+	# Mobile Native Implemnentation
 	#
 	# (1) Checks Device  Screen orentation
 	# (2) Sets the Global Script for Screen Orientation

@@ -1,8 +1,7 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Joystick circle.tscn" type="PackedScene" id=1]
 [ext_resource path="res://resources/Buttons/menu white.png" type="Texture" id=2]
-[ext_resource path="res://resources/misc/btn-mask.png" type="BitMap" id=3]
 [ext_resource path="res://scenes/UI & misc/TouchScreenHud.gd" type="Script" id=4]
 [ext_resource path="res://scenes/UI & misc/joystick v2.gd" type="Script" id=5]
 [ext_resource path="res://resources/misc/btn-hands.png" type="Texture" id=6]
@@ -758,7 +757,6 @@ margin_bottom = 315.618
 pause_mode = 2
 position = Vector2( 1110.48, 29.2283 )
 normal = ExtResource( 13 )
-bitmask = ExtResource( 3 )
 action = "pause"
 visibility_mode = 1
 
@@ -767,14 +765,12 @@ position = Vector2( 1103.5, 113.137 )
 rotation = 0.370864
 scale = Vector2( 0.9, 0.9 )
 normal = ExtResource( 12 )
-bitmask = ExtResource( 3 )
 action = "comics"
 visibility_mode = 1
 
 [node name="interact" type="TouchScreenButton" parent="Control/InterractButtons"]
 position = Vector2( 1073.75, 245.527 )
 normal = ExtResource( 11 )
-bitmask = ExtResource( 3 )
 action = "interact"
 visibility_mode = 1
 
@@ -792,7 +788,6 @@ margin_bottom = 999.425
 position = Vector2( 1014.57, 361.592 )
 scale = Vector2( 1.64391, 1.64391 )
 normal = ExtResource( 6 )
-bitmask = ExtResource( 3 )
 passby_press = true
 action = "attack"
 visibility_mode = 1
@@ -801,13 +796,11 @@ visibility_mode = 1
 position = Vector2( 904.39, 476.15 )
 scale = Vector2( 1.29269, 1.29269 )
 normal = ExtResource( 14 )
-bitmask = ExtResource( 3 )
 passby_press = true
 action = "roll"
 visibility_mode = 1
 
 [node name="D-pad" type="Control" parent="."]
-visible = false
 anchor_bottom = 1.0
 margin_left = 173.633
 margin_top = 1469.94

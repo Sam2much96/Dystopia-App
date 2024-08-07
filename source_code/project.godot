@@ -94,6 +94,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/characters/3DPlayer.gd"
 }, {
+"base": "Node",
+"class": "GDunzip",
+"language": "GDScript",
+"path": "res://addons/gdunzip/gdunzip.gd"
+}, {
 "base": "Control",
 "class": "GameControls",
 "language": "GDScript",
@@ -502,6 +507,7 @@ _global_script_class_icons={
 "Exit3D": "",
 "FightCam": "",
 "FreeLookCamera": "",
+"GDunzip": "",
 "GameControls": "",
 "GameHUD": "",
 "Game_Menu": "",

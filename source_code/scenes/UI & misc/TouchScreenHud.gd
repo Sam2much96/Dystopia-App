@@ -18,6 +18,7 @@
 #
 # Bugs :
 #(1) using animation player resets the Joystick/D-pad optionality
+#(2) Doesnt run code cuz of low priority on thread, rewrite to use static fucnctions
 
 
 # TO DO:
@@ -38,6 +39,7 @@
 # (11) TOuch Interface Format and Scaling should be exported function to android singleton (DOne)
 # (12) Implement Drag and Drop Customization using state machines and postion registers
 # (13) Vibration Bug when Rescaling
+# (14) Touch HUD Scaling is buggy on Mobile Browsers
 # *************************************************
 
 
@@ -81,11 +83,11 @@ signal reset
 
 var _menu : TouchScreenButton 
 var _interract : TouchScreenButton 
-var stats : TouchScreenButton
+var stats_ : TouchScreenButton
 var roll : TouchScreenButton 
 var slash  : TouchScreenButton 
 
-var comics : TouchScreenButton 
+var comics_ : TouchScreenButton 
 var _joystick : TouchScreenButton 
 var joystick2 : TouchScreenButton 
 var D_pad : Control 
@@ -134,11 +136,22 @@ func _ready():
 	#
 	GlobalInput.TouchInterface = self
 	Android.TouchInterface = self
+	# Bug: Android Intializer is buggy
 	
-	
-	self.hide() if not Android.is_android() else print_debug("Showing Touch Interface")
+	if Android.is_android() == false:
+		self.hide()
+	if Android.is_android() == true: 
+		self.show()
+		print_debug("Showing Touch Interface")
+	if Globals.os == "Android":
+		self.show()
+	if Globals.os == "HTML5" && Utils.initial_screen_orientation == 0: # Mobile Browser
+		self.show()
+	#self.hide() if not Android.is_android() else print_debug("Showing Touch Interface")
 	
 	enabled = Android.is_android()
+	
+	
 	
 	# Update scene Temporarily Disabled
 	#Globals.update_curr_scene()
@@ -151,13 +164,13 @@ func _ready():
 	# (3) Fix hud auto orientation for mobile
 	
 	# Turn off this setup script if not running on Android
-	if ( Globals.os == "Android" or Android.is_android()):
+	if enabled:
 		_menu = $menu
 		_interract = $Control/InterractButtons/interact
-		stats = $Control/InterractButtons/stats
+		stats_ = $Control/InterractButtons/stats
 		roll = $Control/ActionButtons/roll
 		slash = $Control/ActionButtons/slash
-		comics = $Control/InterractButtons/comics
+		comics_ = $Control/InterractButtons/comics
 		_joystick = $Joystick/joystick_circle
 		joystick2 = $Joystick/joystick_circle2
 		 
@@ -173,11 +186,11 @@ func _ready():
 		"Set Button Arraqys for easy on/off"
 		action_buttons = [
 			_menu ,
-			stats,
+			stats_,
 			_interract,
 			roll, 
 			slash,
-			comics
+			comics_
 			]
 		
 		# Select Users Preferred Direction Controls 
@@ -208,10 +221,10 @@ func _ready():
 		Utils.Screen.calculate_button_positional_data(
 			_menu, 
 			_interract,
-			stats, 
+			stats_, 
 			roll, 
 			slash, 
-			comics, 
+			comics_, 
 			_joystick, 
 			D_pad
 			)
@@ -318,7 +331,7 @@ func reset():  #resets node visibility statuses
 func status():  #used by ui scene when status is clicked
 	
 	hide_buttons()
-	stats.show()
+	stats_.show()
 
 
 func comics():  #used by ui scene when comics is clicked
@@ -511,12 +524,12 @@ func _physics_process(delta):
 			_STATS:
 				hide_buttons()
 				
-				stats.show()
+				stats_.show()
 			_COMICS:
 				#kj;kn;k
 				#Anim.play("COMICS")
 				hide_buttons()
-				comics.show()
+				comics_.show()
 			
 			_RESET: 
 				"shows all the UI options"

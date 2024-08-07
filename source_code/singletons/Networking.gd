@@ -8,7 +8,7 @@
 # also used as a networking node singleton
 # Bugs
 # (1) Singleton's start and stop state is not properly defined
-# 
+# (2) Multiplayer Networking Mesh is entirely different in godot 2.0 branch
 # ************************************************* 
 # Contains Logic for querying internet access and Web3 Access.
 # ************************************************* 
@@ -55,7 +55,7 @@ export (int) var WORLD_SIZE = 40000 #  : int
 
 
 export (int) var peer_id #: int
-
+# Bugs : Multiplayer Networking Mesh is entirely different in godot 2.0 branch
 var my_peer : NetworkedMultiplayerENet
 export (Array) var ip : Array = []
 

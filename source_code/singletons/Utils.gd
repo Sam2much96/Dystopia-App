@@ -1,5 +1,5 @@
 # *************************************************
-# godot3-Dystopia-game by INhumanity_arts
+# godot2-Dystopia-game by INhumanity_arts
 # Released under MIT License
 # *************************************************
 # Utils
@@ -41,7 +41,7 @@ class Zip extends Reference:
 		
 		# Instance the gdunzip script
 		var gdunzip = load('res://addons/gdunzip/gdunzip.gd').new()
-		var FileCheck1 = File.new()
+		var FileCheck1 = Utils.file #= File.new()
 		
 		#"Compression/Uncompression"
 		var unziped_file = RawArray([])
@@ -73,18 +73,22 @@ class Zip extends Reference:
 				
 				
 				var concat = str(Uncompressd_rooot_dir+f['file_name'])
+				var filename  = f['file_name'] #: String
+				var file_size = f['uncompressed_size'] #: int
+
+				
 				
 				"Checks if Zipped File is present at file path" 
-				if not FileCheck1.file_exists(Uncompressd_rooot_dir + f['file_name']):
+				if not FileCheck1.file_exists(concat):
 					# save the file's uncompressed Pool Byte Array
-					unziped_file = gdunzip.uncompress(f["file_name"])
+					unziped_file = gdunzip.uncompress(filename)
 
 					#Uncompresses files locally
-					print("saving", f["file_name"], "Locally", unziped_file.size(), "to: ", concat)
+					print("saving", filename, "Locally", unziped_file.size(), "to: ", concat)
 				#for t in gdunzip.files.keys():
 				#	print ("Type of " + f['file_name'] + " ",typeof(gdunzip.get_compressed(t))) # for debug purposes only
 				
-					Networking.save_file_(unziped_file, concat, int(f['uncompressed_size']))
+					Networking.save_file_(unziped_file, concat, file_size)
 
 
 				# "compression_method" will be either -1 for uncompressed data, or
@@ -116,7 +120,7 @@ class Player_utils extends Reference:
 		if Globalss.player == null:
 			Globalss.player = Globalss.players[0] # Incase there are more than 1 players
 		return Globalss.player
-		pass
+
 
 # Calculates the center of a Rectangle
 func calc_center_of_rectangle(rect) :

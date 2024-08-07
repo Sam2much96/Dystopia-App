@@ -14,7 +14,7 @@
 #
 # 
 # Bugs 
-# (1) 
+# (1) # File Access should be called directlly from server class FileAccess without an instance
 # *************************************************
 
 extends Node
@@ -27,7 +27,7 @@ extends Node
 @export var EnemyObjPool : Array = [] #Stores shared pointer to enemy Mob instances
 
 var dir : DirAccess #= DirAccess.new() # Global FIle And DirAccess Paths
-var file : FileAccess #= File.new()
+var file #: FileAccess #= File.new() # depreciated in 4.0 branch
 
 "Compression and Uncompression Algorithm"
 # Documentation: https://git.sr.ht/~jelle/gdunzip
@@ -43,7 +43,7 @@ class Zip extends RefCounted:
 		
 		assert(gdunzip.get_script() == gdunzip_script)
 		
-		var FileCheck1 : FileAccess = Utils.file
+		#var FileCheck1 : FileAccess = Utils.file #File instance is depreciated in 4.0 branch
 		
 		#"Compression/Uncompression"
 		var unziped_file : PackedByteArray
@@ -73,18 +73,20 @@ class Zip extends RefCounted:
 				
 				
 				var concat : String = Uncompressd_rooot_dir+f['file_name']
+				var filename : String = f['file_name']
+				var file_size : int = f['uncompressed_size']
 				
 				"Checks if Zipped File is present at file path" 
-				if not FileCheck1.file_exists(Uncompressd_rooot_dir + f['file_name']):
+				if not FileAccess.file_exists(concat):
 					# save the file's uncompressed Pool Byte Array
-					unziped_file = gdunzip.uncompress(f["file_name"])
+					unziped_file = gdunzip.uncompress(filename)
 
 		 			#Uncompresses files locally
-					print("saving", f["file_name"], "Locally", unziped_file.size(), "to: ", concat)
+					print("saving", filename, "Locally", unziped_file.size(), "to: ", concat)
 				#for t in gdunzip.files.keys():
 				#	print ("Type of " + f['file_name'] + " ",typeof(gdunzip.get_compressed(t))) # for debug purposes only
 				
-					Networking.save_file_(unziped_file, concat, int(f['uncompressed_size']))
+					Networking.save_file_(unziped_file, concat, file_size)
 
 
 				# "compression_method" will be either -1 for uncompressed data, or
@@ -93,7 +95,7 @@ class Zip extends RefCounted:
 
 				print('Compressed size: ' + str(f['compressed_size']))
 
-				print('Uncompressed size: ' + str(f['uncompressed_size']))
+				print('Uncompressed size: ' + str(file_size))
 
 
 
@@ -114,7 +116,7 @@ class Player_utils extends RefCounted:
 		if Globals.player == null:
 			Globals.player = Globals.players[0] # Incase there are more than 1 players
 		return Globals.player
-		pass
+
 
 # Calculates the center of a Rectangle
 func calc_center_of_rectangle(rect : Vector2) -> Vector2:

@@ -51,7 +51,7 @@ margin/top = 300.0
 margin/right = -503.0
 margin/bottom = -298.0
 
-[node name="GridContainer" type="GridContainer" parent="ui"]
+[node name="grid" type="GridContainer" parent="ui"]
 
 anchor/left = 3
 anchor/top = 3
@@ -61,13 +61,13 @@ focus/ignore_mouse = false
 focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 20.0
-margin/top = 20.0
-margin/right = -1007.0
-margin/bottom = -578.0
+margin/left = 25.5
+margin/top = 40.0
+margin/right = -1001.5
+margin/bottom = -558.0
 columns = 1
 
-[node name="play" type="Button" parent="ui/GridContainer"]
+[node name="play" type="Button" parent="ui/grid"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -83,7 +83,7 @@ shortcut = null
 text = "Play"
 flat = false
 
-[node name="language" type="OptionButton" parent="ui/GridContainer"]
+[node name="language" type="OptionButton" parent="ui/grid"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -101,6 +101,6 @@ align = 0
 selected = -1
 items = [  ]
 
-[connection signal="pressed" from="ui/GridContainer/play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="ui/grid/play" to="." method="_on_play_pressed"]
 
 

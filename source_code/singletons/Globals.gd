@@ -28,12 +28,12 @@
 
 extends Node
 
-class_name GlobalsVar
+#class_name GlobalsVar
 
 
 # Load Scenes Programmatically
 # Rewriting to Use Dictionary and only load scene when needed to optimise memory usage
-var global_scenes : Dictionary = {"title": "res://scenes/Title screen.tscn",
+export (Dictionary) var global_scenes  = {"title": "res://scenes/Title screen.tscn",
 "form":"'res://scenes/UI & misc/form/form.tscn'",
 "controls": 'res://scenes/UI & misc/Controls.tscn',
 "loading" : "res://scenes/UI & misc/LoadingScene.tscn",
@@ -41,67 +41,68 @@ var global_scenes : Dictionary = {"title": "res://scenes/Title screen.tscn",
 "cinematics" : "res://scenes/cinematics/cinematics.tscn"
 }
 
-var form : PackedScene 
-var controls : PackedScene 
-var _wallet : PackedScene 
-var title : PackedScene 
-var cinematics : PackedScene 
+export( PackedScene ) var form
+export ( PackedScene ) var controls  
+export ( PackedScene ) var _wallet 
+export ( PackedScene ) var title 
+export ( PackedScene ) var cinematics 
 
-onready var curr_scene : String = ""
-onready var os: String = OS.get_name()
-onready var kill_count : int = 0 #update to load from savefile
+onready var curr_scene = "" # String
+onready var os = OS.get_name() # String
+export(int) var kill_count = 0 #update to load from savefile
 
 # 
-var players : Array = [] # All Players
-var player : Player # My Player
+export (Array) var players  = [] # All Players
+var player #: Player # My Player
 
 # Player cam
 var player_cam 
 
 #var _p # Player placeholder
-var player_hitpoints : int
+export (int) var player_hitpoints #: int
 var enemy = null
-var enemy_debug : String 
-var initial_level : String = "res://scenes/levels/Overworld.tscn"  # loading outside environment bug fixed
+export (String) var enemy_debug #: String 
+export (String) var initial_level = "res://scenes/levels/Overworld.tscn"  # loading outside environment bug fixed
 
 var video_stream #for the video streamers
 
 
 
 # warning-ignore:unused_class_variable
-var spawnpoint : Vector2
-var spawn_x : int 
-var spawn_y : int 
-var current_level : String
+export (Vector2) var spawnpoint = Vector2(0,0)
+export (int ) var spawn_x# : int 
+export (int ) var spawn_y #: int 
+export (String) var current_level #: String
 
 
 # Music
 
 
 
-var _controller_type : Dictionary = {1:'modern', 2:'classic'}
-var direction_control  : String = _controller_type[2]  #toggles btw analogue and d-pad
+export (Dictionary) var _controller_type = {1:'modern', 2:'classic'} # : Dictionary 
+export (String) var direction_control   = _controller_type[2] # : String #toggles btw analogue and d-pad
 
 var uncompressed # Varible holds uncompressed zip files
 
 
-'ingame Environment Variables'
-var near_interractible_objects #which objects use this?
+#'ingame Environment Variables'
+export (bool) var near_interractible_objects #which objects use this? # signposts
 
-'Scene Loading variables'
-var scene_resource : PackedScene # Large Resouce Scene Placeholder
-var _to_load : String  # Large Resource Placeholder Variable
-var _o : ResourceInteractiveLoader#for polling resource loader
-var err
-var a : int # Loader progress variable (a/b) 
-var b : int
-var loading_resource : bool = false
+#'Scene Loading variables'
+export (PackedScene) var scene_resource #: PackedScene # Large Resouce Scene Placeholder
+export (String) var _to_load #: String  # Large Resource Placeholder Variable
+var _o = ResourceInteractiveLoader#for polling resource loader
+export (int) var err
+export (int) var a #: int # Loader progress variable (a/b) 
+export (int) var b #: int
+export (bool) var loading_resource = false
 onready var scene_loader= ResourceLoader
-onready var progress : float
+export (float) var progress #: float
 
-var loading_scene : PackedScene = preload("res://scenes/UI & misc/LoadingScene.tscn")
+# Loading scene preloading temporarilily disabled for Back porting
+export (PackedScene) var loading_scene = load("res://scenes/UI & misc/LoadingScene.tscn")
 
-var Overworld_Scenes : Dictionary = {0 : "res://scenes/levels/Temple interior.tscn",
+export (Dictionary) var Overworld_Scenes = {0 : "res://scenes/levels/Temple interior.tscn",
 1 : "res://scenes/levels/DuneProcedural.tscn",
 2: "res://scenes/levels/Building3.tscn",
 3: "res://scenes/levels/Overworld3D.tscn",
@@ -109,51 +110,40 @@ var Overworld_Scenes : Dictionary = {0 : "res://scenes/levels/Temple interior.ts
 5: "res://scenes/levels/Overworld.tscn"
 } # for simplifying loading and scene changes states
 
-"Crypto Variables" 
-var address : String
-var mnemonic : String
-var player_name : String
+#"Crypto Variables" 
+export (String) var address #: String
+export (String) var mnemonic #: String
+export(String) var player_name #: String
 
 # Buggy
-onready var algos : int  #=  Wallet.Wallet.load_account_info(false, Wallet.token_write_path, Wallet.FileCheck3, Wallet.UserData).get("_wallet_algos")
+export(int) var algos #=  Wallet.Wallet.load_account_info(false, Wallet.token_write_path, Wallet.FileCheck3, Wallet.UserData).get("_wallet_algos")
 	#MicroAlgos 
 
 
-"Device Variables"
-var user_data_dir : String =OS.get_user_data_dir()
+#"Device Variables"
+export (String) var user_data_dir =OS.get_user_data_dir()
 
 
-"Screen Orientation"
+#"Screen Orientation"
 # for upscaling and wonscaling UI
-onready var screenOrientation : int = Utils.Screen.Orientation() 
-var viewport_size : Vector2
-var center_of_viewport : Vector2 
+onready var screenOrientation = Utils.Screen.Orientation() #  : int
+export (Vector2) var viewport_size #: Vector2
+export (Vector2) var center_of_viewport #: Vector2 
 
-"In Game FX"
-var blood_fx: PackedScene = load ('res://scenes/UI & misc/Blood_Splatter_FX.tscn') #only load this once gameplay is on (optimization)
-var despawn_fx: PackedScene = load ("res://scenes/UI & misc/DespawnFX.tscn")
-var bullet_fx : PackedScene
-
-"Node Pointer"
-#var _smoke_fx_ 
-
-'Temporary variants'
-#var temp
-
-"Wallet Algo"
-#var NFT: TextureRect #should ideally be an array for multiple NFT's
-#var wallet_state  #wallet state global variabe
+#"In Game FX"
+export (PackedScene) var blood_fx = load ('res://scenes/UI & misc/Blood_Splatter_FX.tscn') #: PackedScene #only load this once gameplay is on (optimization)
+export (PackedScene) var despawn_fx = load ("res://scenes/UI & misc/DespawnFX.tscn")
+export (PackedScene) var bullet_fx # Is this being Used by bullet instance?
 
 
 
 
 
-"Game Map"
+#"Game Map"
 # Features
 # (1) Speeds up loading times by hiding it behind cinematics
-# Depreciated
-#var tile_map : TileMap
-var OverWorld : PackedScene
+
+export (PackedScene) var OverWorld #: PackedScene
 func _ready():
 	#print_debug('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	#print_debug("Despawn Fx:", despawn_fx)
@@ -166,7 +156,7 @@ func _ready():
 	
 	
 
-func update_curr_scene() -> void:
+func update_curr_scene() : #-> void:
 	curr_scene= get_tree().get_current_scene().get_name() 
 	
 	#print_debug ("current scene is: ", curr_scene)

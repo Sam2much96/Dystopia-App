@@ -20,9 +20,9 @@
 extends Node
 
 
-var screenOrientation = -99
-var viewport_size = Vector2(0,0)
-var center_of_viewport = Vector2(0,0) 
+export (int) var screenOrientation #= -99 #default placeholder
+export (Vector2) var viewport_size = Vector2(0,0)
+export (Vector2) var center_of_viewport = Vector2(0,0) 
 
 export (Array) var EnemyObjPool = [] #Stores shared pointer to enemy Mob instances
 
@@ -108,14 +108,14 @@ class Player_utils extends Reference:
 	#	
 	# Rewrite into a separate function
 		assert(scene_tree == get_tree())
-		Globals.players.append( scene_tree.get_nodes_in_group('player') )#gets all player nodes in the scene
+		Globalss.players.append( scene_tree.get_nodes_in_group('player') )#gets all player nodes in the scene
 	 #it shows deleted object once player is despawns.
-		if Globals.players.empty() == true: #error catcher 1            
-			Globals.players.clear()
+		if Globalss.players.empty() == true: #error catcher 1            
+			Globalss.players.clear()
 		#
-		if Globals.player == null:
-			Globals.player = Globals.players[0] # Incase there are more than 1 players
-		return Globals.player
+		if Globalss.player == null:
+			Globalss.player = Globalss.players[0] # Incase there are more than 1 players
+		return Globalss.player
 		pass
 
 # Calculates the center of a Rectangle
@@ -556,7 +556,7 @@ class Screen  :
 	# Should only be called once
 	static func debug_screen_properties():
 		print ('OS Screen Orientation: ', OS.get_screen_orientation())
-		print('Global Screen Orientation: ',Globals.screenOrientation)
+		print('Global Screen Orientation: ',Globalss.screenOrientation)
 		# match this variable to Global Screen Orientation
 		print ('Screen Size 1: ',OS.get_screen_size(-1)) #yes. This variable changes when screen rotates
 		print ('Screen Scale: ',OS.get_screen_scale())
@@ -753,12 +753,12 @@ class Screen  :
 		#'Changes the button Layout depending on the screen orientation for Mobile UI'
 		#implement joystick and D-pad variations
 		
-		if Globals.screenOrientation == 1 && Globals.direction_control == Globals._controller_type[2]: #worksif _action_button_showing == false
+		if Globalss.screenOrientation == 1 && Globalss.direction_control == Globalss._controller_type[2]: #worksif _action_button_showing == false
 			Anim.play("SCREEN_VERTICAL_1");
-		if Globals.screenOrientation == 1 && Globals.direction_control == Globals._controller_type[1]: #works
+		if Globalss.screenOrientation == 1 && Globalss.direction_control == Globalss._controller_type[1]: #works
 			Anim.play("SCREEN_VERTICAL_2");
 		##If screen Is Horizontal, it would be PC UI, making this code obsolete
-		elif Globals.screenOrientation == 0:
+		elif Globalss.screenOrientation == 0:
 			Anim.play("SCREEN_HORIZONTAL");
 		else: pass
 	
@@ -780,21 +780,27 @@ class procedural extends Reference:
 	# (2) OpenSimplex Noise Not available out the box in godot v2.0 builds
 	# 
 	static func genereate(simplex_noise , #: OpenSimplexNoise, 
-	world_seed : String, 
-	noise_octaves : int, 
-	noise_period : int, 
-	noise_persistence : float, 
-	noise_lacunarity : float, 
-	noise_threshold : float,
-	map_height : int,
-	map_width : int,
-	tile_map : TileMap
+	world_seed, # : String, 
+	noise_octaves , #: int, 
+	noise_period , #: int, 
+	noise_persistence, # : float, 
+	noise_lacunarity , #: float, 
+	noise_threshold, # : float,
+	map_height , #: int,
+	map_width , #: int,
+	tile_map  #: TileMap
 	):
 		
 		# Some Type Checks
+		assert(typeof(world_seed) == TYPE_STRING)
+		assert(typeof(noise_octaves) &&
+		typeof(noise_period) &&
+		typeof(map_height) &&
+		typeof(map_width) == TYPE_INT)
+		
 		
 		# generate a seed using a string and the hash of that string
-		simplex_noise.seed = world_seed.hash()
+		#simplex_noise.seed = world_seed.hash()
 		
 		# set simplex noise using Editor values
 		simplex_noise.octaves = noise_octaves
@@ -817,7 +823,13 @@ class procedural extends Reference:
 
 	# Sets the scenes autotile programmatically
 	# Uses the Tilemap's set cell method & the x and y auto tile co-ordinates
-	static func _set_autotile(x : int, y : int, tile_map : TileMap) -> void :
+	static func _set_autotile(x , y, tile_map ): # -> void :
+		# Type Checks
+		assert(typeof(x) &&
+		typeof(y) == TYPE_INT)
+		
+		assert(tilemap == TileMap)
+		
 		if is_instance_valid(tile_map):
 			tile_map.set_cell(
 				x,
@@ -831,15 +843,19 @@ class procedural extends Reference:
 			
 			tile_map.update_bitmask_area(Vector2(x, y)) # so the engine knows where to configure the autotiling
 
-	static func clear(tile_map : TileMap):
+	static func clear(tile_map):
+		assert(tile_map == TileMap)
+		
 		if is_instance_valid(tile_map):
 			# Completely clearts the current tilemap
 			tile_map.clear()
 		else: push_error("TileMap Error: TIlemap not found")
 
-'Delete Files'
-func delete_local_file(path_to_file: String) -> void:
-	
+#'Delete Files'
+func delete_local_file(path_to_file): # -> void:
+	# Type Checks
+	assert(typeof(path_to_file) == TYPE_STRING)
+	assert(path_to_file.empty() == false) # Empty String Check
 	if dir.file_exists(path_to_file):
 		dir.remove(path_to_file)
 		dir.queue_free()
@@ -850,13 +866,18 @@ func delete_local_file(path_to_file: String) -> void:
 
 
 
-"Calculate the Average of an Array"
+#"Calculate the Average of an Array"
 # assuming that it's an array of numbers
-func calc_average(list: Array):
+func calc_average(list):
+	
+	assert(typeof(list) == TYPE_ARRAY)
+	
 	if list.pop_front() != null:
-		var numerator :int 
-		var average : int 
-		var denominator : int = list.size() + 1
+		var numerator  = 0 #:int 
+		var average = 0 #: int 
+		var denominator = 0 
+		
+		denominator = list.size() + 1
 		if numerator != null and denominator > 2:
 			for i in list:
 				numerator = numerator + i
@@ -866,16 +887,28 @@ func calc_average(list: Array):
 			return average
 	else : return
 
-func calc_rand_number()-> int:
-	var rando : int = rand_range(2000,10000)
+func calc_rand_number() : #-> int:
+	var rando = 0#: int 
+	rando = rand_range(2000,10000)
 	return rando
 
-"File Checker"
+#"File Checker"
 # Global file checking method for DIrectory path and file name/type
 # Copied from Wallet's Implementation
-func check_files(path_to_dir: String, path_to_file : String)-> bool:
-	var FileCheck1=File.new() # checks wallet mnemonic
-	var FileDirectory=Directory.new() #deletes all theon reset
+func check_files(path_to_dir, path_to_file) : #-> bool:
+	
+	# type checks
+	assert(typeof(path_to_dir) &&
+	typeof(path_to_file) == TYPE_STRING
+	)
+	
+	# Check for empty string
+	assert(path_to_file.empty() && path_to_dir.empty() != true)
+	
+	# Use Utils Pointers to Global FIle and Directory Class
+	
+	var FileCheck1= Utils.file #File.new() # checks wallet mnemonic
+	var FileDirectory= Utils.dir #Directory.new() #deletes all theon reset
 	if FileDirectory.dir_exists(path_to_dir):
 		#print ("File Exists: ",FileCheck1.file_exists(path_to_file)) # For debug purposes only
 		return FileCheck1.file_exists(path_to_file)
@@ -886,7 +919,11 @@ func check_files(path_to_dir: String, path_to_file : String)-> bool:
 
 
 		# Updates the raycast to the Enemy"s Direction
-static func rotate_pointer(point_direction: Vector2, pointer) -> void:
+static func rotate_pointer(point_direction, pointer) : #-> void:
+	# Type Checks
+	assert(typeof(point_direction) == TYPE_VECTOR2 )
+	assert(pointer == Node2D)
+	
 	var temp =rad2deg(atan2(point_direction.x, point_direction.y))
 	pointer.rotation_degrees = temp
 
@@ -898,17 +935,27 @@ func restaVectores(v1, v2): #vector substraction
 func sumaVectores(v1, v2): #vector sum
 	return Vector2(v1.x + v2.x, v1.y + v2.y)
 
-func calc_2d_distance_approx(x : Vector2, y : Vector2) -> int:
-	var distance_float : float = 0.0
-	var distance_int : int = 0
+func calc_2d_distance_approx(x , y) : #-> int:
+	
+	# Type Checks
+	assert(typeof(x) && typeof(y) == TYPE_VECTOR2)
+	
+	var distance_float = 0.0 #: float
+	var distance_int = 0 # : int 
 	distance_float=x.distance_to(y)
 	distance_int = abs(distance_float)
 	return distance_int
 
 class UI extends Reference:
 	
-	'Upscale UI'
-	static func upscale_ui(node ,size: Vector2, position : Vector2)-> void:
+	#'Upscale UI'
+	static func upscale_ui(node ,size, position) : #-> void:
+		# assert type checks
+		assert(typeof(size) &&
+		typeof(position) == TYPE_VECTOR2)
+		
+		assert(node == Node)
+		
 		#Upscales the UI elements of Nodes
 		
 		node.set_scale(size) 
@@ -932,7 +979,16 @@ class Downloader extends Node:
 		add_user_signal("loaded",[arg_result])
 		pass
 		
-	func __get(domain : String ,url : String ,port: String,ssl : bool):
+	func __get(domain ,url ,port ,ssl ):
+		
+		# Assert Type Checks
+		assert(typeof (domain) && 
+		typeof(url) &&
+		typeof(port) == TYPE_STRING
+		)
+		
+		assert(typeof(ssl) == TYPE_BOOL)
+		
 		if(t.is_active()):
 			return
 		t.start(self,"_load",{"domain":domain,"url":url,"port":port,"ssl":ssl})
@@ -981,39 +1037,15 @@ class Downloader extends Node:
 		emit_signal("loaded",r)
 		pass
 
-			
-		# Enables Polymorphism of Cinematics Yt Downloader & Streamer
-		# Disabled for Refactoring and Debugging
-		"""
-		for i in Mobile_Platforms:
-			# PC Platforms
-			if Globals.os != i && Globals.check_files(Globals.user_data_dir, cinematic[parameters]):  
-				
-				if Networking.good_internet:
-					
-					# PC platforms
-					var stream := VideoStreamWebm.new()
-					stream.set_file(cinematic[parameters])
-					dialgue_box.show_dialog("Playing " + parameters + ".webm" , "admin" )
-					Video_Stream(stream, Globals.os)
-					
-					
-				elif !Networking.good_internet:
-					return OS.shell_open(youtube[parameters])
-			
-			if Globals.os == i: # Mobile Platforms
-				return OS.shell_open(youtube[parameters])
-		"""
-
 
 	# Rewrite this code
 	func _verify_Online_downloaded_video():
 		# Verifies if the downloaded video is valid
 		Utils.dir.open ("user://")
 		var file_exists
-		if Globals.os != str ('Android'):
+		if Globalss.os != str ('Android'):
 			file_exists = Utils.dir.file_exists('user://video.webm')
-		if Globals.os == str ('Android'):
+		if Globalss.os == str ('Android'):
 			file_exists = Utils.dir.file_exists('user://video.ogv')
 		
 		print ('Video File Exists: ', file_exists)
@@ -1034,7 +1066,7 @@ class Downloader extends Node:
 			#stop_playing_laoding_cinematic()
 			#downloading_video = false
 			var err
-			var video_file : File = Utils.file #File.new()
+			var video_file = Utils.file #File.new()
 			var video_file_path = "user://video.ogv"
 			video_file.open(video_file_path, File.READ_WRITE)
 			err = (video_file.open(video_file_path, File.READ))
@@ -1049,17 +1081,17 @@ class Downloader extends Node:
 				push_error('Video file is corrupted /'+ str(video_file.get_len()))
 			
 			if video_file.is_open() && err == 0: #error catcher 2
-				Globals.VIDEO = ResourceLoader.load(video_file_path, 'VideoStreamTheora', false) #Don't make the video a global file
+				Globalss.VIDEO = ResourceLoader.load(video_file_path, 'VideoStreamTheora', false) #Don't make the video a global file
 				#Music.notification(NOTIFICATION_PREDELETE) #. Fix Music off function #not needed
-				print ('Playing Global video File: ', Globals.VIDEO )
+				print ('Playing Global video File: ', Globalss.VIDEO )
 				#_Video_Stream((Globals.AMV)) #Plays the AMV video with Shootback
 
 
 
 
-	"""
-	parses the poopbyte array as a video stream
-	"""
+	#"""
+	#parses the poopbyte array as a video stream
+	#"""
 	# Refactor into proper clas/static function
 	func _http_request_completed(result, response_code, _headers, body): # dOWNLOADS A VIDEO FROM A SERVER
 		if body.empty() != true: #Executes once a Connection is established 
@@ -1074,9 +1106,11 @@ class Downloader extends Node:
 				var _absolute_path = Utils.dir.get_current_dir ( )
 				
 				print ('Directory //', _absolute_path)
-				var err : int
+				var err = -99 # Default int plaecholder
 				var video_file = cinematic.Function.store_video_files(body)
 				print ('Video file is open: ',video_file.is_open(), '/error :', err) #Debugs if file can open
+				
+				# err is unused?
 				if video_file.is_open() && err == 0: #error catcher 2
 					
 					#download_video_size = Networking.get_body_size()#8gets video size from servers
@@ -1098,13 +1132,17 @@ class Downloader extends Node:
 
 
 
-	"""
-	STORES A POOL BYTE ARRAY TO A VIDEO FILE AND PUBLISHES IT AS A GLOBAL VARIABLE
-	"""
+	#"""
+	#STORES A POOL BYTE ARRAY TO A VIDEO FILE AND PUBLISHES IT AS A GLOBAL VARIABLE
+	#"""
 
 
 
-func check_screen_orientation(orientation : int):
+func check_screen_orientation(orientation ): # : int
+	
+	#  Type Checks
+	assert( typeof(orientation) == TYPE_INT) 
+	
 	"""
 	SCREEN ORIENTATION ALGORITHM
 	"""

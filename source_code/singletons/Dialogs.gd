@@ -18,22 +18,22 @@
 
 extends Node
 
-class_name DialogsVar
+#class_name DialogsVar
 
-"""
-This is the Dialogs system. Any object can send text to it by doing Dialogs.show_dialog(text, speaker)
-
-Before using it 'dialog_box' should be set to some node that implements the following
-signal dialog_started
-signal dialog_ended
-func show_dialog(text, speaker)
-
-This script will connect to those signals and use them to set 'active' to true or false and forward them to other nodes, 
-so they can react to the dialog system being active(showing dialog) or inactive
-
-Calls to show_dialog will be forwarded to the dialog_box which is free to implement them in any way (showing the text on screen,
-using text to speech, etc)
-"""
+#"""
+#This is the Dialogs system. Any object can send text to it by doing Dialogs.show_dialog(text, speaker)
+#
+#Before using it 'dialog_box' should be set to some node that implements the following
+#signal dialog_started
+#signal dialog_ended
+#func show_dialog(text, speaker)
+#
+#This script will connect to those signals and use them to set 'active' to true or false and forward them to other nodes, 
+#so they can react to the dialog system being active(showing dialog) or inactive
+#
+#Calls to show_dialog will be forwarded to the dialog_box which is free to implement them in any way (showing the text on screen,
+#using text to speech, etc)
+#"""
 
 
 
@@ -44,15 +44,15 @@ var active = false
 
 var dialog_box = null setget _set_dialog_box
 
-var word_bubble_box : AnimatedSprite = null  setget _set_wordbubble_box
-var language : String = ""# stores the current language the user selects
+var word_bubble_box = null  setget _set_wordbubble_box # : AnimatedSprite 
+export(String) var language = ""# stores the current language the user selects
 
 #var _script_testing : String = 'res://resources/dialogues/script_testing.gd'
 
 const WAIT_TIME = 6 # Wait time before hiding dialogue box
 
 # Contains path to supported languague paired with supported language packs
-export (Dictionary) var font_pack : Dictionary = {
+export (Dictionary) var font_pack = {
 "en":"res://fonts/Comic_Andy.ttf",
 "en_US": "res://fonts/Comic_Andy.ttf",
 "pt_BR": "res://fonts/Comic_Andy.ttf",
@@ -70,7 +70,7 @@ var custom_font = DynamicFont.new()
 
 # Hints
 # To Do: Implement Multiple Translations for Hint System using Spreadsheets
-var hints : Dictionary = {0: "hint1",
+export(Dictionary) var hints = {0: "hint1",
 1: "hint2",
 2: "hint3",
 3: "hint4",
@@ -80,7 +80,12 @@ var hints : Dictionary = {0: "hint1",
 }
 
 
-func show_dialog(text:String, speaker:String):
+func show_dialog(text, speaker):
+	# Type Checks
+	assert(typeof(text) &&
+	typeof(speaker) == TYPE_STRING)
+	
+	
 	if is_instance_valid(dialog_box): # If an instance of dialogue box hasn't been deleted from memory?
 		dialog_box.show_dialog(text, speaker)
 		#Networking.start_check(1)
@@ -92,7 +97,10 @@ func hide_dialogue(): #can be used to hide the dialogue box. Not best Practice
 
 
 func _set_dialog_box(node):
-	if not node is DialogBox: # if not node is not of type node?
+	# Type checks and error catcher
+	
+	assert(node == DialgoBox)
+	if not node == DialogBox : # if not node is not of type node?
 		push_error("provided node doesn't extend Dialogue Box") # push error
 		return 
 	
@@ -139,14 +147,18 @@ func _on_dialog_ended():
 
 # should implement Language Based Font
 #Documentation: https://www.gotut.net/localisation-godot/
-func translate_to(_language : String, locale: String)-> String:
+func translate_to(_language, locale) : #-> String:
+	# Type Checks
+	assert(typeof(_language) && 
+	typeof(locale) == TYPE_STRING
+	)
 	
 	TranslationServer.set_locale(locale)
 	return (tr(_language))
 	#else: return ("sdgdsdhdh") # returns an empty string
 
 
-func reset() -> void:
+func reset() : # -> void:
 	# Resets Dialogue Key Variables
 	language = ""
 
@@ -154,9 +166,15 @@ func reset() -> void:
 # Dynamic function
 # Creates a CUstom Font Pack for UI with different Paramenters
 func create_font_pack(Size : int, prefered_font_pack : String, OutlineSize : int ) -> DynamicFont:
+	# Type Checks 
+	assert(typeof(Size) &&
+	typeof(OutlineSize) == TYPE_INT
+	)
+	
+	assert()
+	
 	# Loads A Custom Font Pack For Hindi, Telugu, Jpanese, Mandarin Languages
 	# (1) Should take Language as a parameter
-	
 	
 	
 	# Default Languague Font Pack is English

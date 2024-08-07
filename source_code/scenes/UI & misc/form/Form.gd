@@ -28,9 +28,9 @@ extends CanvasLayer
 #onready var cinematics : PackedScene = load(Globals.global_scenes["cinematics"])
 #var index : int = 0
 
-onready var play_button  = get_node(ui/grid/play) #: Button
-#onready var dialgue_box = $Dialog_box
-#onready var language = $ui/grid/language
+onready var play_button  = get_node('ui/grid/play') #: Button
+#onready var dialgue_box = $Dialog_box # Dialog box is still a WIP
+onready var language = get_node('ui/grid/language')
 
 ########Label Spacer Codes Are Used For Aesthetics#########
 #onready var label_spacer = $ui/grid/label_spacer
@@ -42,11 +42,10 @@ onready var play_button  = get_node(ui/grid/play) #: Button
 
 var os = Globals.os # Pointer
 
-#onready var UI_buttons : Array = [
-#	play_button, dialgue_box, 
-#	language, label_spacer, 
-#	label_spacer2, label_spacer3
-#	]
+onready var UI_buttons  = [ # : Array
+	play_button, #dialgue_box, 
+	language #label_spacer, 
+	]
 
 #onready var _hide_dialogue_box : bool = false
 

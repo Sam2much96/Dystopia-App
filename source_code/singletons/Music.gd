@@ -49,7 +49,7 @@ export (int) var volume # volume controller code is not yet written
 
 export(String, FILE, "*.ogg") var music_track = ""
 
-var default_playlist : Dictionary ={
+export (Dictionary) var default_playlist : Dictionary ={
 	0:"res://music/310-world-map-loop.ogg",
 	1:"res://music/Astrolife chike san.ogg",
 	2:"res://music/chike san afro 1.ogg",
@@ -64,7 +64,7 @@ var default_playlist : Dictionary ={
 
 # Files Hosted on AWS S3 Bucket
 # file checker should loop through playlist
-var local_playlist_one : Dictionary = {
+export (Dictionary) var local_playlist_one : Dictionary = {
 	0:'res://music/310-world-map-loop.ogg', 
 	1:'user://Music/Dystopia-App/source_code/music/chike san afro 1.ogg',
 	2:'user://Music/Dystopia-App/source_code/music/chike san afro 2.ogg',
@@ -79,7 +79,8 @@ var local_playlist_one : Dictionary = {
 	11:'user://Music/Dystopia-App/source_code/music/Turn up.ogg',
 	12:'user://Music/Dystopia-App/source_code/music/310-world-map-loop.ogg',
 }
-var comic_sfx : Dictionary = {
+
+export (Dictionary) var comic_sfx : Dictionary = {
 	0: 'res://sounds/book_flip.1.ogg',
 	1:'res://sounds/book_flip.10.ogg',
 	2:'res://sounds/book_flip.2.ogg',
@@ -92,17 +93,17 @@ var comic_sfx : Dictionary = {
 	9:'res://sounds/book_flip.9.ogg'
 }
 
-var ui_sfx : Dictionary = {
+export (Dictionary) var ui_sfx : Dictionary = {
 	0:'res://sounds/Menu1A.ogg',
 	1:'res://sounds/Menu1B.ogg',
 }
 
-var blood_fx : Dictionary = {
+export (Dictionary) var blood_fx : Dictionary = {
 	0 :"res://sounds/blood-spilling.ogg" 
 	
 }
 
-var hit_sfx : Dictionary = {
+export (Dictionary) var hit_sfx : Dictionary = {
 	0:'res://sounds/hit01.ogg',
 	1:'res://sounds/hit02.ogg',
 	2:'res://sounds/hit03.ogg',
@@ -114,11 +115,11 @@ var hit_sfx : Dictionary = {
 
 }
 
-var grass_sfx : Dictionary  = {0:'res://sounds/Fantozzi-SandR3.ogg'}
+export (Dictionary) var grass_sfx : Dictionary  = {0:'res://sounds/Fantozzi-SandR3.ogg'}
 
-var wind_sfx : Dictionary = {0:'res://sounds/wind_2.ogg'}
+export (Dictionary) var wind_sfx : Dictionary = {0:'res://sounds/wind_2.ogg'}
 
-var nokia_soundpack : Dictionary = {
+export (Dictionary) var nokia_soundpack : Dictionary = {
 	0: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/bad_melody.ogg",
 	1: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip1.ogg",
 	2: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip2.ogg",

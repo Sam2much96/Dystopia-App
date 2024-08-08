@@ -347,13 +347,13 @@ class Functions extends Reference:
 	static func load_game(check_only : bool, GlobalScript : GlobalsVar) -> bool:
 		check_only = false
 		print ("-------Loading Game -------")
-		var save_game = File.new()
+		var save_game : File = Utils.file #= File.new()
 		
 		
 		if not save_game.file_exists("user://savegeme.save"):
 			return false
 		save_game.open("user://savegeme.save", File.READ)
-		var save_dict = parse_json(save_game.get_line())
+		var save_dict : Dictionary = parse_json(save_game.get_line())
 		if typeof(save_dict) != TYPE_DICTIONARY:
 			return false
 		if not check_only:

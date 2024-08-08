@@ -118,11 +118,9 @@ sfx_on = true
 volume = 10
 
 [node name="A" type="AudioStreamPlayer" parent="."]
-bus = "Music"
 
 [node name="B" type="AudioStreamPlayer" parent="."]
 volume_db = -30.0
-bus = "Music"
 
 [node name="C" type="AudioStreamPlayer" parent="."]
 
@@ -138,4 +136,3 @@ anims/play = SubResource( 5 )
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 
 [connection signal="finished" from="A" to="." method="_on_A_finished"]
-[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]

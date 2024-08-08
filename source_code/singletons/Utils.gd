@@ -352,7 +352,7 @@ class Functions extends RefCounted:
 		save_game.open("user://savegeme.save", FileAccess.READ)
 		var test_json_conv = JSON.new()
 		test_json_conv.parse(save_game.get_line())
-		var save_dict = test_json_conv.get_data()
+		var save_dict : Dictionary = test_json_conv.get_data()
 		if typeof(save_dict) != TYPE_DICTIONARY:
 			return false
 		if not check_only:
@@ -438,10 +438,10 @@ class Functions extends RefCounted:
 	# Should allow for loading individual variables from Local
 	static func load_user_data( data: String ):
 		
-		var save_game : FileAccess = Utils.file 
-		if not save_game.file_exists("user://savegeme.save"):
+		#var save_game : FileAccess = Utils.file 
+		if not FileAccess.file_exists("user://savegeme.save"):
 			return false
-		save_game.open("user://savegeme.save", FileAccess.READ)
+		var save_game = FileAccess.open("user://savegeme.save", FileAccess.READ)
 		var test_json_conv : JSON = JSON.new()
 		test_json_conv.parse(save_game.get_line())
 		var save_dict : Dictionary = test_json_conv.get_data()

@@ -20,23 +20,23 @@
 extends Node
 
 
-class_name Storage
+#class_name Storage
 
-"""
-Minimal inventory system implementation. 
-It's just a dictionary where items are identified by a string key and hold an int amount
-"""
+#"""
+#Minimal inventory system implementation. 
+#It's just a dictionary where items are identified by a string key and hold an int amount
+#"""
 
 # action can be 'added' some amount of some items is added and 'removed' when some amount
 # of some item is removed
 signal item_changed(action, type, amount)
 
-export (Dictionary) var inventory : Dictionary = {}
+export (Dictionary) var inventory = {}
 
 
 # Inventory Buffer for Multuiplayer
 
-var buffer : Dictionary = {
+export (Dictionary) var buffer = {
 	Generic_Item : 0,
 	Magic_Sword : 0,
 	health_potion : 0,
@@ -48,19 +48,22 @@ var buffer : Dictionary = {
 var _stats_ui #: Stats 
 
 
-# Intanciable items
-onready var bullet : PackedScene = preload("res://scenes/items/Bullet.tscn")
-onready var bomb_explosion : PackedScene = preload("res://scenes/items/bombexplosion.tscn")
+# Instanciable items
+# Temporarily disabled for porting
+onready var bullet #= preload("res://scenes/items/Bullet.tscn") # : PackedScene 
+onready var bomb_explosion #= preload("res://scenes/items/bombexplosion.tscn") #: PackedScene 
 
 # Hard COding Items for 
 # items
 enum {Generic_Item, Magic_Sword, health_potion, Bow, Arrow, Bomb}
 
 
-"""
-CHECKS IF THE INVENTROY HAS AN ITEM
-"""
-func get_item(type:String) -> int:
+#"""
+#CHECKS IF THE INVENTROY HAS AN ITEM
+#"""
+func get_item(type) : #-> int:
+	# Type Checks
+	assert(typeof(type) == TYPE_STRING)
 	if inventory.has(type):
 		return inventory[type]
 	else:
@@ -68,11 +71,15 @@ func get_item(type:String) -> int:
 	pass
 
 
-"""
-ADDS ITEMS TO THE INVENTORY DICTIONARY
-"""
+#"""
+#ADDS ITEMS TO THE INVENTORY DICTIONARY
+#"""
 # TO DO : Modify to store inventory items with enums rathewr than string keys() for multiplayer
-func add_item(type:String, amount:int) -> bool:
+func add_item(type, amount) : #-> bool:
+	# Type Checks
+	assert(typeof(type) == TYPE_STRING)
+	assert(typeof(amount) == TYPE_INT)
+	
 	if inventory.has(type):
 		inventory[type] += amount
 		emit_signal("item_changed", "added", type, amount)
@@ -82,15 +89,17 @@ func add_item(type:String, amount:int) -> bool:
 		emit_signal("item_changed", "added", type, amount)
 		return true
 
-"""
-REMOVES ITEMS FROM THE INVENTORY DICTIONARY
-"""
+#"""
+#REMOVES ITEMS FROM THE INVENTORY DICTIONARY
+#"""
 # Logic : Uses INventory keys as a parameter
-func remove_item(type:String, amount:int) -> bool:
+func remove_item(type, amount) : #-> bool:
 	# Refactor remove item to connect to Stats amd Update properly
 	#print_debug("Inventory button pressed", type, amount)
 	
-	
+	# Type Checks
+	assert(typeof(type) == TYPE_STRING)
+	assert(typeof(amount) == TYPE_INT)
 	
 	Music.play_track("res://sounds/item_collected.ogg")
 	var player = get_tree().get_nodes_in_group("player")[0] 
@@ -166,18 +175,18 @@ func remove_item(type:String, amount:int) -> bool:
 		return false
 	pass
 
-"RETURNS A DUPLICATE OF THE INVENTORY DICTIONARY"
-func list() -> Dictionary:
+#"RETURNS A DUPLICATE OF THE INVENTORY DICTIONARY"
+func list() : #-> Dictionary:
 	return inventory.duplicate()
 
-"RETURNS A DUPLICATE OF THE INVENTORY DICTIONARY AS A JSON STRING"
-func jsonify() -> String:
+#"RETURNS A DUPLICATE OF THE INVENTORY DICTIONARY AS A JSON STRING"
+func jsonify() : #-> String:
 	#
-	var inv : String = JSON.print(inventory.duplicate())
+	var inv = inventory.duplicate().to_json() #: String 
 	return inv
 
 
-func _get_inventory_buffer() -> String:
+func _get_inventory_buffer() : #-> String:
 	# Converts String Dictionary to Integer DIctionary as Data Optimization
 	
 	for i in inventory.keys(): 
@@ -194,7 +203,7 @@ func _get_inventory_buffer() -> String:
 		if i == "Bow":
 			buffer[Bow] = inventory["Bow"]
 	
-	var inv : String = JSON.print(buffer.duplicate())
+	var inv = buffer.duplicate().to_json() # : String 
 	return inv
 
 	

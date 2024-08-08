@@ -31,12 +31,12 @@
 # (5) Music Unzip takes too long (Hours) to unzip, take s up half the FPS in core game loop
 # (6) Music sfx plays on the wrong Track
 # *************************************************
-"""
-THERE ARE TWO FUNCTIONS FOR PLAYING MUSIC TRACKS AND MUSIC PLAYLISTS
-"""
+#"""
+#THERE ARE TWO FUNCTIONS FOR PLAYING MUSIC TRACKS AND MUSIC PLAYLISTS
+#"""
 extends Node
 
-class_name music_singleton
+#class_name music_singleton
 
 #add more controls to this script, it breaks the singleton
 export (bool) var music_on 
@@ -49,7 +49,7 @@ export (int) var volume # volume controller code is not yet written
 
 export(String, FILE, "*.ogg") var music_track = ""
 
-var default_playlist : Dictionary ={
+export (Dictionary) var default_playlist ={
 	0:"res://music/310-world-map-loop.ogg",
 	1:"res://music/Astrolife chike san.ogg",
 	2:"res://music/chike san afro 1.ogg",
@@ -64,7 +64,7 @@ var default_playlist : Dictionary ={
 
 # Files Hosted on AWS S3 Bucket
 # file checker should loop through playlist
-var local_playlist_one : Dictionary = {
+export (Dictionary) var local_playlist_one = {
 	0:'res://music/310-world-map-loop.ogg', 
 	1:'user://Music/Dystopia-App/source_code/music/chike san afro 1.ogg',
 	2:'user://Music/Dystopia-App/source_code/music/chike san afro 2.ogg',
@@ -79,7 +79,8 @@ var local_playlist_one : Dictionary = {
 	11:'user://Music/Dystopia-App/source_code/music/Turn up.ogg',
 	12:'user://Music/Dystopia-App/source_code/music/310-world-map-loop.ogg',
 }
-var comic_sfx : Dictionary = {
+
+export (Dictionary) var comic_sfx = {
 	0: 'res://sounds/book_flip.1.ogg',
 	1:'res://sounds/book_flip.10.ogg',
 	2:'res://sounds/book_flip.2.ogg',
@@ -92,17 +93,17 @@ var comic_sfx : Dictionary = {
 	9:'res://sounds/book_flip.9.ogg'
 }
 
-var ui_sfx : Dictionary = {
+export (Dictionary) var ui_sfx = {
 	0:'res://sounds/Menu1A.ogg',
 	1:'res://sounds/Menu1B.ogg',
 }
 
-var blood_fx : Dictionary = {
+export (Dictionary) var blood_fx  = {
 	0 :"res://sounds/blood-spilling.ogg" 
 	
 }
 
-var hit_sfx : Dictionary = {
+export (Dictionary) var hit_sfx = {
 	0:'res://sounds/hit01.ogg',
 	1:'res://sounds/hit02.ogg',
 	2:'res://sounds/hit03.ogg',
@@ -114,11 +115,11 @@ var hit_sfx : Dictionary = {
 
 }
 
-var grass_sfx : Dictionary  = {0:'res://sounds/Fantozzi-SandR3.ogg'}
+export (Dictionary) var grass_sfx = {0:'res://sounds/Fantozzi-SandR3.ogg'}
 
-var wind_sfx : Dictionary = {0:'res://sounds/wind_2.ogg'}
+export (Dictionary) var wind_sfx = {0:'res://sounds/wind_2.ogg'}
 
-var nokia_soundpack : Dictionary = {
+export (Dictionary) var nokia_soundpack = {
 	0: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/bad_melody.ogg",
 	1: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip1.ogg",
 	2: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip2.ogg",
@@ -158,44 +159,45 @@ var nokia_soundpack : Dictionary = {
 
 
 #create all your music actions here as animated nodes
-"""
-I put in an automatic music shuffling script in here. Feel free to update it 
-and map the buttons to the game's UI when finished
-"""
+#"""
+#I put in an automatic music shuffling script in here. Feel free to update it 
+#and map the buttons to the game's UI when finished
+#"""
 
 
 
-"""
-Music singleton that handles crossfading when a new song starts
-and applies a low pass filter when the game is paused. Nothing too wise
-"""
+#"""
+#Music singleton that handles crossfading when a new song starts
+#and applies a low pass filter when the game is paused. Nothing too wise
+#"""
+
 var music_debug =''
 onready var current_track
 
-onready var music_bus_2 = AudioServer.get_bus_index($B.bus)
-onready var music_bus = AudioServer.get_bus_index($A.bus)
+onready var music_bus_2 = AudioServer.get_bus_index(get_node(B).bus)
+onready var music_bus = AudioServer.get_bus_index(get_node(A).bus)
 
 
-onready var A : AudioStreamPlayer = $A
-onready var B : AudioStreamPlayer = $B
-onready var C : AudioStreamPlayer = $C
-onready var D : AudioStreamPlayer = $D 
+onready var A  = get_node('A') # : AudioStreamPlayer
+onready var B  = get_node('B') # : AudioStreamPlayer
+onready var C  = get_node('C') # : AudioStreamPlayer
+onready var D  = get_node('D') #: AudioStreamPlayer
 
-onready var requests : HTTPRequest = $HTTPRequest
-onready var timer : Timer #= $Timer
+onready var requests  = get_node('HTTPRequest') #: HTTPRequest
+onready var timer # TIme Is Depreciated in favour of simulation timer: Timer #= $Timer
 
 
 var _music
-onready var Music_streamer : AudioStreamPlayer = get_node_or_null("A")  #Refrences the music player node
-onready var  Music_streamer_2  : AudioStreamPlayer=get_node_or_null("D")
+onready var Music_streamer  = get_node_or_null("A") # : AudioStreamPlayer  #Refrences the music player node
+onready var  Music_streamer_2 =get_node_or_null("D") # : AudioStreamPlayer
 onready var sfx_streamer 
 onready var track
 
 
-onready var transitions : AnimationPlayer = $anims
+onready var transitions  = get_node('anims') #: AnimationPlayer
 
 # Pointers to Node for Memory Mgmt
-onready var my_nodes : Array = [Music_streamer,B,C,Music_streamer_2,transitions,requests]
+onready var my_nodes = [Music_streamer,B,C,Music_streamer_2,transitions,requests] # : Array
 
 
 # THis URL fetches a Zip file from an AWS s3 buzket
@@ -207,10 +209,10 @@ onready var FileDirectory=Utils.dir #checks Music Irectory
 
 
 # Debug Variables
-var stream : AudioStream
-var stream_length : int
-var Playback_position : int
-var _track : String
+export (AudioStream) var stream #: AudioStream
+export (int) var stream_length #: int
+export (int) var Playback_position #: int
+export (String ) var _track #: String
 
 
 func _ready():
@@ -221,13 +223,14 @@ func _ready():
 	# connect signals
 	requests.connect("request_completed", self , "_http_request_completed")
 	
+	# Temporarily disabling for porting
 	# Check if Local Music Directory exists & Makes directory
-	if not wallet.Functions.check_local_wallet_directory(FileDirectory,"user://Music") :
-		FileDirectory.make_dir("user://Music")
+	#if not wallet.Functions.check_local_wallet_directory(FileDirectory,"user://Music") :
+	#	FileDirectory.make_dir("user://Music")
 		
 	# Check if Music Unzip root folder exists
-	if not wallet.Functions.check_local_wallet_directory(FileDirectory, "user://Music/Dystopia-App/source_code/music"):
-		FileDirectory.make_dir_recursive("user://Music/Dystopia-App/source_code/music")
+	#if not wallet.Functions.check_local_wallet_directory(FileDirectory, "user://Music/Dystopia-App/source_code/music"):
+	#	FileDirectory.make_dir_recursive("user://Music/Dystopia-App/source_code/music")
 	
 	
 	
@@ -296,7 +299,7 @@ func _music_debug(): #Breaks
 	if  music_on == true && get_tree().get_root().get_node("/root/Debug") != null: #Only Debugs if the debug singleton is running
 		if music_track != null:
 			for child in get_children() :
-				if child is AudioStreamPlayer:
+				if child == StreamPlayer:
 					if child.stream != null: 
 						stream = Music_streamer.get_stream()
 						stream_length = int(stream.get_length())
@@ -307,7 +310,10 @@ func _music_debug(): #Breaks
 
 
 
-func play(_stream: String):
+func play(_stream ):
+	# Type Checks
+	assert(typeof(_stream) == TYPE_STRING)
+	
 	#kinda works
 	#it bugs out when the music track node is added to a scene
 	if _stream != null or !stream.empty(): #null error
@@ -362,7 +368,10 @@ func clear():# triggers an autodelete in music track nodes
 
 
 # Simple 'muffled music' effect on pause using a low pass filter
-func _notification(what : int):
+func _notification(what):
+	# Type Checks
+	assert (typeof(what) == TYPE_INT)
+	
 	# Docs: This code bloc calls uses multiple node states to Alter the State of this Music Object
 	
 	#print_debug(what) # for debug purposes only
@@ -379,13 +388,13 @@ func _notification(what : int):
 		AudioServer.set_bus_volume_db(music_bus_2,-100)
 		
 
-	if what == NOTIFICATION_APP_PAUSED:
+	if what == NOTIFICATION_PAUSED:
 		
 		AudioServer.set_bus_mute(music_bus, true)
 		AudioServer.set_bus_mute(music_bus_2, true)
 		
 		clear()
-	if what == NOTIFICATION_APP_RESUMED:
+	if what == NOTIFICATION_PROCESS:
 		AudioServer.set_bus_mute(music_bus, false)
 		AudioServer.set_bus_mute(music_bus_2, false)
 		
@@ -395,11 +404,14 @@ func _notification(what : int):
 		
 
 
-"""
-MUSIC SHUFFLE
-"""
+#"""
+#MUSIC SHUFFLE
+#"""
 # Shuffles A Dictionary, Returns a string
-static func shuffle (playlist : Dictionary) -> String:
+static func shuffle (playlist) : #-> String:
+	# Type Checks
+	assert(typeof(playlist) == TYPE_DICTIONARY)
+	
 	# Debug SHuffled Items 
 	#print_debug("shuffling" ,playlist)
 	
@@ -417,10 +429,12 @@ func _on_A_finished(): #This  signals when the music has finished and autoshuffl
 	print_debug('music finished--music singleton') #code block works
 
 
-func play_sfx(list : Dictionary): #a separate bus channel for sfx using dictionary playlist
-	# 
+func play_sfx(list): #a separate bus channel for sfx using dictionary playlist
+	# Type Checks
+	assert (typeof(list) == TYPE_DICTIONARY)
+	
 	if sfx_on== true:
-		var sfx : String = shuffle(list) 
+		var sfx = shuffle(list) # : String 
 		
 		C.stream = load(sfx)
 		C.play()
@@ -428,7 +442,10 @@ func play_sfx(list : Dictionary): #a separate bus channel for sfx using dictiona
 		yield(get_tree().create_timer(0.8), "timeout")
 		C.stop()
 
-func play_track(_track : String): 
+func play_track(_track): 
+	# Type Checks
+	assert(typeof(_track) == TYPE_STRING)
+	
 	#for playing single sample tracks
 	#_track is a pointer to the music file path
 	if _track != null  and Music_streamer_2 != null :

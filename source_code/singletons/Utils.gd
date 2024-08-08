@@ -85,10 +85,9 @@ class Zip extends Reference:
 
 					#Uncompresses files locally
 					print("saving", filename, "Locally", unziped_file.size(), "to: ", concat)
-				#for t in gdunzip.files.keys():
-				#	print ("Type of " + f['file_name'] + " ",typeof(gdunzip.get_compressed(t))) # for debug purposes only
 				
-					Networking.save_file_(unziped_file, concat, file_size)
+					#Temporarily disabling for porting
+					#Networking.save_file_(unziped_file, concat, file_size)
 
 
 				# "compression_method" will be either -1 for uncompressed data, or
@@ -179,9 +178,11 @@ class MemoryManagement extends Reference :
 		for idx in node.get_child_count():
 			node.free()
 
-	static func free_object (_object) : #-> void:
-		assert(typeof(_object) == TYPE_OBJECT)
-		object.free()
+	# Temporarily disabled for porting
+	#static func free_object (_object) : #-> void:
+	#	assert(typeof(_object) == TYPE_OBJECT)
+	#	if (_object != null):
+	#		object.free()
 
 	static func queue_free_array(nodes) : #-> void:
 		assert(typeof(nodes) == TYPE_ARRAY &&

@@ -45,8 +45,10 @@ func _ready():
 	if enabled:
 		
 		#Connect All Signals
-		connect("area_entered", Callable(self, "_on_player_area_entered"))
-		connect("area_exited", Callable(self, "_on_player_area_exited"))
+		
+		# non existent signals
+		#connect("area_entered", Callable(self, "_on_player_area_entered"))
+		#connect("area_exited", Callable(self, "_on_player_area_exited"))
 		
 		if not (is_connected("body_entered", Callable(self, "_on_signpost_body_entered")) &&
 		is_connected("body_exited", Callable(self, "_on_signpost_body_exited"))
@@ -105,10 +107,11 @@ func _on_signpost_body_entered(body):
 		#print(" Player Body Entered ")
 		print_debug ('player near signpost: ', Globals.near_interractible_objects)
 
-func _on_player_area_exited(area):
-	if area.is_in_group("player_hurtbox"):
-		print(" Player Exited Area3D ")
-		#activate(false)
+#depreciated method
+#func _on_player_area_exited(area):
+#	if area.is_in_group("player_hurtbox"):
+#		print(" Player Exited Area3D ")
+#		#activate(false)
 
 
 func _on_dialog_started():

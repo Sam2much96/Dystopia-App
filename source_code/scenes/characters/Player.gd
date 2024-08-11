@@ -128,7 +128,8 @@ func despawn():
 	
 	get_parent().add_child(despawn_particles)
 	get_parent().add_child(blood) 
-	despawn_particles.global_position = global_position
+	if is_instance_valid(despawn_particles): # Error Catcher 1
+		despawn_particles.global_position = global_position
 	blood.global_position = global_position
 	
 	

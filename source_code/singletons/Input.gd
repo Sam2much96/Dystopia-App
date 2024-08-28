@@ -30,7 +30,7 @@
 
 extends Control
 
-class_name Input_Buffer
+#class_name Input_Buffer
 
 # For Storing An Array of Input Data FOr Networking Multiplayer
 export (Array) var input_buffer = []
@@ -46,7 +46,7 @@ export (int) var _state
 # Frame Counter
 #var _frame_counter : int = 0
 
-var pressed : bool = false
+export (bool) var pressed = false
 
 # Vibration Settings
 export (bool) var vibrate = true
@@ -57,15 +57,17 @@ export (bool) var vibrate = true
 # Each of these Objects Use/ REquire Player input
 # Having them always in memory is a good thing
 # *************************************************
-var menu : Game_Menu
-var TouchInterface : TouchScreenHUD
-var _Comics = Comics_v6 #$Comics
+# Temporarily disabling Type Parameters for porting
 
-var _Stats : Stats
-var _Status_text : StatusText 
+var menu #: Game_Menu
+var TouchInterface #: TouchScreenHUD
+var _Comics #= Comics_v6 #$Comics # Temporarily disabled for porting
+
+var _Stats #: Stats
+var _Status_text #: StatusText 
 
 
-var gameHUD : GameHUD
+var gameHUD #: GameHUD
 #"Ingame HUD"
 ## Mobiles
 #var _TouchScreenHUD : TouchScreenHUD
@@ -151,9 +153,10 @@ func _input(event):
 		
 		_state = COMICS
 		#pass
-	if event is InputEventScreenDrag : 
+		
+	if InputEvent.SCREEN_DRAG : 
 		_state = DRAG
-
+	
 	# Ingame Menu
 	if event.is_action_pressed("menu"):
 		_state = MENU
@@ -213,17 +216,28 @@ func _input(event):
 
 
 
-func parse_input( action : String, _pressed : bool):
+func parse_input( action , _pressed ):
+	#Type Checks
+	assert(typeof(action) == TYPE_STRING)
+	assert(typeof(_pressed) == TYPE_BOOL)
+	
 	#This Logic Creates and Parses Input actions programmatically
 	
-	var a = InputEventAction.new()
+	var a =  InputEvent.ACTION.new()
+	
+	
 	a.action = action
 	a.pressed = _pressed
 	Input.parse_input_event(a)
 
 
-func vibrate(duration_ms : int, os : String):
+func vibrate(duration_ms ,os ):
+	# Type Checks
+	assert(typeof(duration_ms) == TYPE_INT)
+	assert(typeof(os) == TYPE_STRING)
+	
 	# Nested if?
+	# To Do : Port TO ANdroid Singletion
 	if Globals.os == "Android" && vibrate : #or "iOS" or "HTML5":
 		
 		if joystick == null :# Fixes Mobile joystick spamm vibration bug
@@ -231,20 +245,22 @@ func vibrate(duration_ms : int, os : String):
 			
 			# Vibration on Mobile Devices
 			Input.vibrate_handheld(duration_ms)
+			
+			# Temporarily disabled for Porting
 			# 2 seconds wait time before next vibratino
-			Networking.start_check_v2(5)
+			#Networking.start_check_v2(5)
 
 
-func roll_direction_calculation()-> Vector2:
+func roll_direction_calculation() : #-> Vector2:
 	var calc = Vector2(- int( Input.is_action_pressed("move_left") ) + int( Input.is_action_pressed("move_right") ), -int( Input.is_action_pressed("move_up") ) + int( Input.is_action_pressed("move_down") )).normalized()
 	return calc
 
 
 # Returns an Input Buffer for simulations calculations
 # concats the input buffer array into a string
-func _get_input_buffer() -> int:
+func _get_input_buffer() : #-> int:
 	return int(Utils.array_to_string(input_buffer.duplicate()))
 
 
-func show_loading():
-	gameHUD._loading.show()
+#func show_loading(): # Depreciated
+#	gameHUD._loading.show()

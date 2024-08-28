@@ -833,7 +833,7 @@ class procedural extends Reference:
 		assert(typeof(x) &&
 		typeof(y) == TYPE_INT)
 		
-		assert(tilemap == TileMap)
+		assert(tile_map == TileMap)
 		
 		if is_instance_valid(tile_map):
 			tile_map.set_cell(

@@ -1,5 +1,5 @@
 # *************************************************
-# godot3-Dystopia-game by INhumanity_arts
+# godot2-Dystopia-game by INhumanity_arts
 # Released under MIT License
 # *************************************************
 #
@@ -56,8 +56,8 @@ export (int) var WORLD_SIZE = 40000 #  : int
 
 export (int) var peer_id #: int
 # Bugs : Multiplayer Networking Mesh is entirely different in godot 2.0 branch
-var my_peer : NetworkedMultiplayerENet
-export (Array) var ip : Array = []
+var my_peer = StreamPeer#: NetworkedMultiplayerENet
+export (Array) var ip = []
 
 #var camera #stores general camera variables
 ###############################multiplayer codes########################
@@ -67,8 +67,8 @@ var multiplayer_server_debug
 
 # Those variables are only used by the client-side application
 
-var cfg_color : String = ""
-var cfg_player_name : String = ""
+export (String) var cfg_color = ""
+export (String) var cfg_player_name = ""
 
 
 
@@ -83,7 +83,7 @@ signal Timeout
 onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
 
-onready var timer :Timer  = $Timer2
+onready var timer = get_node("Timer2")  #:Timer
 onready var _reference_to_self =get_node('/root/Networking') #formerly _y
 onready var _reference_to_debug =get_node('/root/Debug') #formerly _y
 
@@ -93,7 +93,7 @@ const DEFAULT_HOSTNAME = "ws://localhost" # depreciated
 const BACKUP_HOSTNAME = "127.0.0.1" # depreciated
 const SERVER_PORT = 9080
 const MAX_PLAYERS = 4
-export (String) var CLIENT_IP : String  
+export (String) var CLIENT_IP = ""
 
 const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
 
@@ -105,32 +105,32 @@ const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
 
 
 #**********Helper Booleans***********#
-var running_request : bool = false
-var Timeout : bool = false
+export (bool) var running_request= false
+export (bool) var Timeout = false
 
 
 #*********IPFS Gateway***************#
 # from https://ipfs.github.io/public-gateway-checker/
 # 1 ,2 , 3 work
-export (Array) var gateway : Array = [
+export (Array) var gateway = [
 	'gateway.ipfs.io', "dweb.link", "ipfs.io",
 	"ipfs.runfission.com", "jorropo.net", "via0.com", 
 	"cloudflare-ipfs.com", "hardbin.com"
 	]
 
-var random : int
-var selected_gateway : String
+export (int) var random
+export (String) var selected_gateway 
 
-export (bool) var good_internet : bool
+export (bool) var good_internet 
 
 # Lobby UI
-var UserInterface : Control
+var UserInterface #: Control
 
 # Multiplayer map
-var map_instance : Node2D
+var map_instance #: Node2D
 
 # Server Update ID
-var update_id : int = -1
+export (int) var update_id = -1
 
 # Raw Player Info Data
 
@@ -138,10 +138,10 @@ var RawJson
 #var peer_ids : Array
 
 # World Root Node
-var WorldRoot : Node
+var WorldRoot #: Node
 
 
-"Local Play or Multiplayer Parameters"
+#"Local Play or Multiplayer Parameters"
 enum {OFFLINE, LOCAL_COOP, MMO_SERVER}
 export (int) var GamePlay = OFFLINE
 
@@ -177,11 +177,11 @@ func _process(_delta):
 	
 	"Checks Nodes Connections"
 	for child in _reference_to_self.get_children():
-		if child is Timer:
+		if child == Timer :
 			check_timer = child
 			if not child.is_connected("timeout",self, '_check_connection') :
 				child.connect("timeout",self, '_check_connection') # connects timeout signal to check connection 
-		if child is HTTPRequest:
+		if child == HTTPRequest:
 			#
 			# Checks connection status -> Force connect HTTP request's signals
 			#
@@ -211,8 +211,8 @@ func _init_timer() :
 
 
 
-"Stops a check using Check timer Node"
-func stop_check()-> bool: #Stops timer check
+#"Stops a check using Check timer Node"
+func stop_check() : #-> bool: #Stops timer check
 	connection_debug = ' stop check ' # Debug Variable
 	if not check_timer.is_stopped():
 		
@@ -226,8 +226,9 @@ func stop_check()-> bool: #Stops timer check
 	else: return true
 
 
-"Starts a check using Timer Node for 3 Seconds"
-func start_check(time: int): 
+#"Starts a check using Timer Node for 3 Seconds"
+func start_check(time):
+	assert(typeof(time) == TYPE_INT) 
 	connection_debug = str('start check') # Debug Variable
 	Timeout = false
 	if time != null:
@@ -238,23 +239,29 @@ func start_check(time: int):
 	check_timer.start()
 
 
-func start_check_v2(wait_time : int):
+func start_check_v2(wait_time):
+	assert(typeof(wait_time) == TYPE_INT) 
 	yield(get_tree().create_timer(wait_time),"timeout")
 
 # Check http unsecured Url connection
 # fix multiple check bug
-static func _check_connection(url, request_node: HTTPRequest): 
+static func _check_connection(url, request_node): 
+	assert(typeof(url) == TYPE_STRING)
+	assert (request_node == HTTPRequest)
+	
 	#Ignore Warning
 	#Request Node must be in the SceneTree
 	print  ("Is Request Noode inside scene tree:", request_node.is_inside_tree())
-	var error = request_node.request(url,PoolStringArray(),false,0,"") 
+	var error = request_node.request(url,StringArray(),false,0,"") 
 	print (' Networking Request Error: ',error) #for debug purposes only
 
 
 func _check_connection_secured(url): # Check http secured Url connection
 	#Ignore Warning
+	assert(typeof(url) == TYPE_STRING) 
+	
 	url =url.http_escape()
-	var error = .request(url,PoolStringArray(),false,HTTPClient.METHOD_GET) 
+	var error = .request(url,StringArray(),false,HTTPClient.METHOD_GET) 
 	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
 	print (' Networking Request Error: ',error) #for debug purposes only
 
@@ -267,9 +274,14 @@ func genrate_random_gateway():
 # List of valid IPFS web 2.0 Gateways
 # An array may be a better fit
 #https://ipfs.github.io/public-gateway-checker/
-static func _connect_to_ipfs_gateway(parse : bool, url : String, selected_gateway: String ,request_node: HTTPRequest): # Check http secured Url connection
-	#Ignore Warning
-	
+static func _connect_to_ipfs_gateway(parse, url , selected_gateway, request_node): # Check http secured Url connection
+		# Type Check parameters
+		assert(request_node == HTTPRequest)
+		assert(typeof(parse) == TYPE_BOOL)
+		assert(typeof(url) == TYPE_STRING)
+		assert(typeof(selected_gateway) == TYPE_STRING)
+		#Ignore Warning
+		
 		# parse Url
 		if parse:
 			url = _parse(url) 
@@ -292,15 +304,20 @@ static func _connect_to_ipfs_gateway(parse : bool, url : String, selected_gatewa
 
 
 
-'Removes IPFS Domain from Asset url'
-static func _parse(_url : String)-> String: #works
+#'Removes IPFS Domain from Asset url'
+static func _parse(_url) : #-> String: #works
+	# Type Check Parameters
+	assert(typeof(_url) == TYPE_STRING)
+	
 	_url=_url.replace('ipfs://', '')
 	#print (_url) # for debug purposes only
 	return _url
 
 
-'Internet COnnectivity Check'
-static func _check_if_device_is_online(node: HTTPRequest):
+#'Internet COnnectivity Check'
+static func _check_if_device_is_online(node):
+	# Type Check Parameters
+	assert(node == HTTPRequest)
 	
 	_check_connection('https://mfts.io', node)
 
@@ -310,56 +327,57 @@ func on_request_result(result, response_code, headers, body): # I need to pass v
 	"HTTP REQUEST RESULT'S STATE MACHINE"
 	#resets result if completed successfully
 	running_request = false
+	# Temporarily disabled for Godot 2 Backport
 	#connected to results and works as an auto emitter
-	match result:
-		RESULT_SUCCESS: #what happens to body? #always write a http request cmpleted function in the connecting script
-			emit_signal("connection_success") 
-			#_connection =(str ('connection success')) # Debugs to the Debug singleton # Depreciated--Delete
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body))  
-		RESULT_CHUNKED_BODY_SIZE_MISMATCH:
-			emit_signal("error_connection_failed", RESULT_CHUNKED_BODY_SIZE_MISMATCH,'RESULT_CHUNKED_BODY_SIZE_MISMATCH')
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
-		RESULT_CANT_CONNECT:
-			emit_signal("error_connection_failed",RESULT_CANT_CONNECT,'RESULT_CANT_CONNECT')
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
-		RESULT_CANT_RESOLVE:
-			emit_signal("error_connection_failed",RESULT_CANT_RESOLVE,'RESULT_CANT_RESOLVE')
-			#_connection = (str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
-		RESULT_CONNECTION_ERROR:
-			emit_signal("error_connection_failed",RESULT_CONNECTION_ERROR,'RESULT_CONNECTION_ERROR')
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
-		RESULT_SSL_HANDSHAKE_ERROR:
-			emit_signal("error_ssl_handshake")
-			#_connection = (str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
-		RESULT_NO_RESPONSE:
-			emit_signal("error_connection_failed",RESULT_NO_RESPONSE,'RESULT_NO_RESPONSE')
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
-		RESULT_BODY_SIZE_LIMIT_EXCEEDED:
-			emit_signal("error_connection_failed", RESULT_BODY_SIZE_LIMIT_EXCEEDED,'RESULT_BODY_SIZE_LIMIT_EXCEEDED')
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
-		RESULT_REQUEST_FAILED:
-			emit_signal("error_connection_failed", RESULT_REQUEST_FAILED, 'RESULT_REQUEST_FAILED')
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
-		RESULT_DOWNLOAD_FILE_CANT_OPEN:
-			emit_signal("error_connection_failed",RESULT_DOWNLOAD_FILE_CANT_OPEN,'RESULT_DOWNLOAD_FILE_CANT_OPEN')
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
-		RESULT_DOWNLOAD_FILE_WRITE_ERROR:
-			emit_signal("error_connection_failed", RESULT_DOWNLOAD_FILE_WRITE_ERROR, 'RESULT_DOWNLOAD_FILE_WRITE_ERROR')
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
-		RESULT_REDIRECT_LIMIT_REACHED:
-			emit_signal("error_connection_failed",RESULT_REDIRECT_LIMIT_REACHED, 'RESULT_REDIRECT_LIMIT_REACHED')
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
+	#match result:
+	#	RESULT_SUCCESS: #what happens to body? #always write a http request cmpleted function in the connecting script
+	#		emit_signal("connection_success") 
+	#		#_connection =(str ('connection success')) # Debugs to the Debug singleton # Depreciated--Delete
+	#		connection_debug = (str(result) + str(response_code) + str(headers)+ str (body))  
+	#	RESULT_CHUNKED_BODY_SIZE_MISMATCH:
+	#		emit_signal("error_connection_failed", RESULT_CHUNKED_BODY_SIZE_MISMATCH,'RESULT_CHUNKED_BODY_SIZE_MISMATCH')
+	#		#_connection =(str ('connection failed')) # Debugs to the Debug singleton
+	#		connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+	#	RESULT_CANT_CONNECT:
+	#		emit_signal("error_connection_failed",RESULT_CANT_CONNECT,'RESULT_CANT_CONNECT')
+	#		#_connection =(str ('connection failed')) # Debugs to the Debug singleton
+	#		connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+	#	RESULT_CANT_RESOLVE:
+	#		emit_signal("error_connection_failed",RESULT_CANT_RESOLVE,'RESULT_CANT_RESOLVE')
+	#		#_connection = (str ('connection failed')) # Debugs to the Debug singleton
+	#		connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+	#	RESULT_CONNECTION_ERROR:
+	#		emit_signal("error_connection_failed",RESULT_CONNECTION_ERROR,'RESULT_CONNECTION_ERROR')
+	#		#_connection =(str ('connection failed')) # Debugs to the Debug singleton
+	#		connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+	#	RESULT_SSL_HANDSHAKE_ERROR:
+	#		emit_signal("error_ssl_handshake")
+	#		#_connection = (str ('connection failed')) # Debugs to the Debug singleton
+	#		connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+	#	RESULT_NO_RESPONSE:
+	#		emit_signal("error_connection_failed",RESULT_NO_RESPONSE,'RESULT_NO_RESPONSE')
+	#		#_connection =(str ('connection failed')) # Debugs to the Debug singleton
+	#		connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+	#	RESULT_BODY_SIZE_LIMIT_EXCEEDED:
+	#		emit_signal("error_connection_failed", RESULT_BODY_SIZE_LIMIT_EXCEEDED,'RESULT_BODY_SIZE_LIMIT_EXCEEDED')
+	#		#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
+	#		connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+	#	RESULT_REQUEST_FAILED:
+	#		emit_signal("error_connection_failed", RESULT_REQUEST_FAILED, 'RESULT_REQUEST_FAILED')
+	#		#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
+	#		connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
+	#	RESULT_DOWNLOAD_FILE_CANT_OPEN:
+	#		emit_signal("error_connection_failed",RESULT_DOWNLOAD_FILE_CANT_OPEN,'RESULT_DOWNLOAD_FILE_CANT_OPEN')
+	#		#_connection =(str ('connection failed')) # Debugs to the Debug singleton
+	#		connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
+	#	RESULT_DOWNLOAD_FILE_WRITE_ERROR:
+	#		emit_signal("error_connection_failed", RESULT_DOWNLOAD_FILE_WRITE_ERROR, 'RESULT_DOWNLOAD_FILE_WRITE_ERROR')
+	#		#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
+	#		connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
+	#	RESULT_REDIRECT_LIMIT_REACHED:
+	#		emit_signal("error_connection_failed",RESULT_REDIRECT_LIMIT_REACHED, 'RESULT_REDIRECT_LIMIT_REACHED')
+	#		#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
+	#		connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
 	#stop_check() # Disabled
 	
 	
@@ -377,9 +395,13 @@ func _on_fail_ssl_handshake():
 	print('SSL Handshake Error!!')
 	#_connection = str ('ssl handshake error!!') # Debug Variable # Depreciated--Delete
 
-'Downloads a Json file and Stores it Locally'
+#'Downloads a Json file and Stores it Locally'
 #consider running 2 operations here. A read operation and a write operation
-func download_json_(body: PoolByteArray, Save_path: String) -> File:
+func download_json_(body, Save_path) : # -> File:
+	# Type Check Parameters
+	assert(typeof(body) == TYPE_RAW_ARRAY) # pool byte array?
+	assert(typeof(Save_path) == TYPE_STRING)
+	
 	var json = Utils.file
 	var cunt = []
 	if body != null:
@@ -410,12 +432,18 @@ func download_json_(body: PoolByteArray, Save_path: String) -> File:
 		push_error("Problem fetching json download")
 	return json
 
-"""
-download a given image from a given http request
-returns a PNG texture file, saves image file
-"""
-static func download_image_(body: PoolByteArray, Save_path: String, node : HTTPRequest) -> ImageTexture:
-	var image = Image.new()
+#"""
+#download a given image from a given http request
+#returns a PNG texture file, saves image file
+#"""
+static func download_image_(body, Save_path, node) : #-> ImageTexture:
+	# Type Check Parameters
+	assert(typeof(body) == TYPE_RAW_ARRAY) # pool byte array
+	assert(typeof(Save_path) == TYPE_STRING)
+	assert(node == HTTPRequest)
+	
+	
+	var image = Image()#.new()
 	var texture = ImageTexture.new()
 	
 	if body != null:
@@ -446,10 +474,16 @@ static func download_image_(body: PoolByteArray, Save_path: String, node : HTTPR
 		push_error("Problem fetching image download")
 	return texture
 
-'Downloads A File and Stores it Locally'
+#'Downloads A File and Stores it Locally'
 #consider running 2 operations here. A read operation and a write operation
 # works
-static func download_file_(node : HTTPRequest,body: PoolByteArray, Save_path: String, file_type: String) -> File:
+static func download_file_(node ,body, Save_path, file_type) : # -> File:
+	# Type Check Parameters
+	assert(typeof(body) == TYPE_RAW_ARRAY) # pool byte array
+	assert(typeof(Save_path) == TYPE_STRING)
+	assert(typeof(file_type) == TYPE_STRING)
+	assert(node == HTTPRequest)
+	
 	var file = File.new()
 	#var cunt = []
 	if body != null:
@@ -487,10 +521,16 @@ static func download_file_(node : HTTPRequest,body: PoolByteArray, Save_path: St
 
 
 
-'Saves A File and Stores it Locally'
+#'Saves A File and Stores it Locally'
 #consider running 2 operations here. A read operation and a write operation
 # works
-static func save_file_(body: PoolByteArray, Save_path: String, file_size: int ) -> File:
+static func save_file_(body, Save_path, file_size) : # -> File:
+	# Type Check Parameters
+	assert(typeof(body) == TYPE_RAW_ARRAY) # pool byte array
+	assert(typeof(Save_path) == TYPE_STRING)
+	assert(typeof(file_size) == TYPE_INT)
+	assert(node == HTTPRequest)
+	
 	var file = File.new()
 	
 	#var Dir = Directory.new()
@@ -541,12 +581,14 @@ func _on_Timer2_timeout():
 
 	emit_signal("Timeout")
 	stop_check()
+	# Auto Stops Swipe Check 
+	# Temporarily Disabled for backport
 	if is_instance_valid(Comics_v6): # Error Catcher
 		Comics_v6.SwipeLocked = false#!Comics_v6.SwipeLocked
 
-"""
-MULTIPLAYER SIGNALS
-"""
+#"""
+#MULTIPLAYER SIGNALS
+#"""
 # Executes Multiplayer Logic In the Lobby Class
 func _server_disconnected():
 	#emit_signal("game_finished")
@@ -554,8 +596,10 @@ func _server_disconnected():
 	Lobby._on_server_disconnected(peer_id, get_tree(), UserInterface)
 
 
-func _player_disconnected(_id : int):
-	 # _id, Lobby: SceneTree, UI : Control)
+func _player_disconnected(_id):
+	# Type Check Parameters
+	assert(typeof(_id) == TYPE_INT)
+	# _id, Lobby: SceneTree, UI : Control)
 	#emit_signal("game_finished")
 	Lobby._on_player_disconnected(_id, get_tree(), UserInterface)
 	#_end_game()
@@ -563,7 +607,9 @@ func _player_disconnected(_id : int):
 	Lobby._set_status((str (_id )+ " Disconnected"), Dialogs.dialog_box, true)
 	# SHould Ideally Only Delete the player that is disconnected
 
-func _player_connected(_id : int):
+func _player_connected(_id):
+	
+	assert(typeof(_id) == TYPE_INT)
 	# Calls Player Logic in the Lobby Class
 	# Method is called with the Noe's Unique ID
 	# Idenftifying the player. This ID Should Be Saved
@@ -605,7 +651,8 @@ func _player_connected(_id : int):
 	if map_instance == null:
 		Globals.current_level = "res://scenes/levels/OverworldOnline.tscn"#"res://scenes/levels/Testing Scene.tscn"
 		# Someone connected, start the game!
-		var Map : PackedScene = Utils.Functions.LoadLargeScene(
+		#: PackedScene
+		var Map = Utils.Functions.LoadLargeScene(
 			Globals.current_level, 
 			Globals.scene_resource, 
 			Globals._o, 
@@ -644,16 +691,19 @@ func _player_connected(_id : int):
 	
 
 
-" Instance Players in a Loop"
+#" Instance Players in a Loop"
 # Bug:
 # (1) Does not run on MMO server
-func _instance_players(id : int ):
+func _instance_players(id):
+	# Type Checks
+	assert(typeof(id) == TYPE_INT)
+	
 	# Instance Player Logic 
 	# Logic : Where Zero is the Server Player ID
 	# (1) Get all Online Player Objects in scene tree
 	# (2) Get all Player ID's
 	#var player_objects_spawned : Array =get_tree().get_nodes_in_group("online_player")
-	var player_ids_stored : Array = Simulation.get_all_player_ids()
+	var player_ids_stored = Array(Simulation.get_all_player_ids())
 	
 	print_debug("Server Type: ",GamePlay)
 	"Spawns Two Players FOr LOcal Coop"
@@ -759,24 +809,30 @@ func _end_game():
 		
 		#host_button.set_disabled(false)
 		#join_button.set_disabled(false)
-	var with_error : String = "End Game! Server Disconnected"
+	var with_error = "End Game! Server Disconnected"
 	#print_debug(with_error , false)
 	Lobby._set_status(with_error, Dialogs.dialog_box , false)
 
 
-"Multiplayer NetCode Functions"
+#"Multiplayer NetCode Functions"
 
 # Converts an Array to poolbyre
-func array2poolByte( data_from : Array) -> PoolByteArray: 
+func array2poolByte( data_from ): # -> PoolByteArray: 
+	assert(typeof(data_from) == TYPE_ARRAY)
+	
+	
 	#	if frame_counter % 6_000 == 0:
 	# To Do:
 	# (1) update to check for data continuity
 	# (2) Implement Algorithm to reduce Data size to < 1000 bytes 
 	Simulation.RawData = var2bytes([to_json(data_from)])
-	return PoolByteArray(Simulation.RawData)
+	return RawArray(Simulation.RawData)
 
 # Converts a Poolbyte ro a Dictionary /String data type
-func poolByte2Array(data_from: PoolByteArray) -> Array:
+func poolByte2Array(data_from) : #-> Array:
+	# Type Checks
+	assert(typeof(data_from) == TYPE_RAW_ARRAY)
+	
 	if data_from.size() > 5:
 		Simulation.RawDataArray = bytes2var(data_from, true)
 		# Iterate through raw data
@@ -792,9 +848,9 @@ func poolByte2Array(data_from: PoolByteArray) -> Array:
 
 
 
-"""
-PLAYER UPDATE
-"""
+#"""
+#PLAYER UPDATE
+#"""
 # Player update function
 # This function is named "pu" to lower the network bandwidth usage, sending something
 # like "player_update" will use an extra 220 bytes / second for each connected player. 
@@ -806,12 +862,12 @@ PLAYER UPDATE
 # receives player info from sever object
 
 
-"""
-PING
-"""
+#"""
+#PING
+#"""
 # Calculates Ping Rate
 
-func ping() -> Array:
+func ping() : #-> Array:
 	# For Debug Purposes Only
 	
 	var output = []
@@ -820,13 +876,13 @@ func ping() -> Array:
 		print(line)
 	return output
 
-"""
-BROADCAST WORLD POSITIONS
-"""
+#"""
+#BROADCAST WORLD POSITIONS
+#"""
 #Broadcats world position from server to all peers using player update methods
 
 
-remote func broadcast_world_positions():
+func broadcast_world_positions():
 	# Server Call
 	# Calls the pu Method in all Renote peers
 	# can only be called by Server
@@ -861,8 +917,9 @@ class Player_v3_networking extends KinematicBody2D:
 	var _motion = 0
 	var _you_hidden = false
 
+	var position = Vector2(0,0) #placeholder position
 	onready var _screen_size_y = get_viewport_rect().size.y
-
+	
 
 	func ___process___(delta): # Depreciated
 		# Is the master of the paddle.
@@ -887,11 +944,11 @@ class Player_v3_networking extends KinematicBody2D:
 		# Set screen limits.
 		position.y = clamp(position.y, 16, _screen_size_y - 16)
 
-	"""
-	GAME SYNCHRONIZER
-	"""
+	#"""
+	#GAME SYNCHRONIZER
+	#"""
 	#Synchronize position and speed to the other peers.
-	puppet func set_pos_and_motion(pos, motion):
+	func set_pos_and_motion(pos, motion):
 		position = pos
 		_motion = motion
 		
@@ -916,11 +973,11 @@ class SceneManager extends Node2D:
 	var score_left = 0
 	var score_right = 0
 
-	onready var player2 = $Player2
-	onready var score_left_node = $ScoreLeft
-	onready var score_right_node = $ScoreRight
-	onready var winner_left = $WinnerLeft
-	onready var winner_right = $WinnerRight
+	onready var player2 = get_node("Player2")
+	onready var score_left_node = get_node("ScoreLeft")
+	onready var score_right_node = get_node("ScoreRight")
+	onready var winner_left = get_node("WinnerLeft")
+	onready var winner_right = get_node("WinnerRight")
 
 	func _ready():
 		# By default, all nodes in server inherit from master,
@@ -936,7 +993,7 @@ class SceneManager extends Node2D:
 		print("Unique id: ", get_tree().get_network_unique_id())
 
 
-	remotesync func update_score(add_to_left):
+	func update_score(add_to_left):
 		if add_to_left:
 			score_left += 1
 			score_left_node.set_text(str(score_left))
@@ -953,8 +1010,8 @@ class SceneManager extends Node2D:
 			game_ended = true
 
 		if game_ended:
-			$ExitGame.show()
-			$Ball.rpc("stop")
+			get_node("ExitGame").show()
+			get_node("Ball").rpc("stop")
 
 
 	func _on_exit_game_pressed():
@@ -962,11 +1019,11 @@ class SceneManager extends Node2D:
 
 
 
-"""
+#"""
 
-All Multiplayer Networking Logics in One FIle
-Client, Server and Lobby
-"""
+#All Multiplayer Networking Logics in One FIle
+#Client, Server and Lobby
+#"""
 # Lobby 
 
 class Lobby extends Control:
@@ -990,7 +1047,11 @@ class Lobby extends Control:
 	var peer = null
 
 	# FOrmerly Ready Method
-	static func ConnectSignal(scene_tree_obj : SceneTree, Lobby : Node) -> void:
+	static func ConnectSignal(scene_tree_obj, Lobby ) :
+		# Type Checks
+		assert(scene_tree_obj == SceneTree)
+		assert(Lobby == Node)
+		
 		# Connect all the callbacks related to networking.
 		# Inernet Class Contains Logic for the Implmentations Requiring Parameters
 		
@@ -1013,7 +1074,12 @@ class Lobby extends Control:
 
 
 
-	static func _on_player_disconnected(_id, Lobby: SceneTree, UI : Control):
+	static func _on_player_disconnected(_id, Lobby, UI):
+		# Type Checks
+		assert(typeof(_id) == TYPE_INT)
+		assert(Lobby == SceneTree)
+		assert(UI == Control)
+		
 		if Lobby.is_network_server():
 			# with_error : String , Lobby : SceneTree, UI: Control ,Map = "/root/Pong"
 			_end_game("Client disconnected", Lobby, UI)
@@ -1030,8 +1096,9 @@ class Lobby extends Control:
 		print_debug("Connection Fail")
 
 	# Callback from SceneTree, only for clients (not server).
-	static func _on_connected_fail(Lobby : SceneTree):
-		
+	static func _on_connected_fail(Lobby):
+		# Type Checks
+		assert(Lobby == SceneTree)
 		print_debug("Couldn't Connect")
 		#_set_status("Couldn't connect", false)
 
@@ -1043,7 +1110,12 @@ class Lobby extends Control:
 		#join_button.set_disabled(false)
 
 
-	static func _on_server_disconnected(_id : int, Lobby : SceneTree, UI : Control):
+	static func _on_server_disconnected(_id, Lobby, UI):
+		# Type Checks
+		assert(typeof(_id) == TYPE_INT)
+		assert(Lobby == SceneTree)
+		assert(UI == Control)
+		
 		_end_game( str(_id) + " Server disconnected", Lobby)
 		UI.show()
 
@@ -1051,7 +1123,14 @@ class Lobby extends Control:
 	# Change Map Parameter To Game Level (Map) Position in the Scene Trees 
 	# End Game is Buggy
 	# Moving to Networking Singleton Implementation
-	static func _end_game(with_error : String , Lobby : SceneTree, Map = Networking.map_instance, error = Networking._reference_to_debug.error_splash_page):
+	static func _end_game(with_error, Lobby):
+		
+		# Type Checks
+		assert(typeof(with_error) == TYPE_STRING)
+		assert(Lobby == SceneTree)
+		
+		var Map = Networking.map_instance 
+		var error = Networking._reference_to_debug.error_splash_page
 		if is_instance_valid(Map):
 			
 			# Debug Loobby Map Instance
@@ -1075,7 +1154,12 @@ class Lobby extends Control:
 
 	# SHows ingame Status
 	# Connect to Dialogue Box
-	static func _set_status(text : String, status : DialogBox, isok : bool):
+	static func _set_status(text, status, isok):
+		# Type Checks
+		assert(typeof(text) == TYPE_STRING)
+		assert(is_inside_tree(status)) # status is a diablogue box instance
+		assert(typeof(isok) == TYPE_BOOL)
+		
 		Networking. start_check(2)
 		# Simple way to show status.
 		#
@@ -1087,10 +1171,16 @@ class Lobby extends Control:
 
 	# Starts Server Connections
 	# Connects to UI Buttons
-	static func _on_host_pressed( peer : NetworkedMultiplayerENet, Lobby : SceneTree, host_button : Button, join_button : Button , dialog_box : DialogBox) -> bool:
-		peer = NetworkedMultiplayerENet.new()
-		peer.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER)
-		var err = peer.create_server(DEFAULT_PORT, Networking.MAX_PLAYERS) # Maximum of % peers
+	static func _on_host_pressed( peer , Lobby, host_button, join_button, dialog_box) : #-> bool:
+		# Type Checks
+		assert(is_inside_tree(dialog_box))
+		assert(Lobby == SceneTree)
+		assert(host_button == Button)
+		assert(join_button == Button)
+		
+		peer = StreamPeer #NetworkedMultiplayerENet.new()
+		#peer.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER)
+		var err = !OK #peer.create_server(DEFAULT_PORT, Networking.MAX_PLAYERS) # Maximum of % peers
 		
 		# If Bad COnnection
 		if err != OK:
@@ -1121,7 +1211,12 @@ class Lobby extends Control:
 		return true
 
 	# Connects to Server From Client
-	static func _on_join_pressed( address: LineEdit, ClientPeer: NetworkedMultiplayerENet, Lobby : SceneTree ) -> bool :
+	static func _on_join_pressed( address, ClientPeer, Lobby ): # -> bool :
+		# Type Checks 
+		assert(address == LineEdit)
+		# client peer check
+		assert(Lobby == SceneTree)
+		
 		var ip = address.get_text()
 		if not ip.is_valid_ip_address():
 			print_debug("IP Address Is Invalid")
@@ -1129,8 +1224,8 @@ class Lobby extends Control:
 			return true
 
 		#peer = NetworkedMultiplayerENet.new()
-		ClientPeer.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER)
-		ClientPeer.create_client(ip, DEFAULT_PORT)
+		#ClientPeer.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER)
+		#ClientPeer.create_client(ip, DEFAULT_PORT)
 		Lobby.set_network_peer(ClientPeer)
 
 		_set_status("Connecting...", Dialogs.dialog_box, true)
@@ -1145,7 +1240,8 @@ class NetworkedObject extends Area2D:
 
 	const DEFAULT_SPEED = 100
 
-	var direction = Vector2.LEFT
+	var direction = Vector2(1,0)
+	var position = Vector2(0,0)
 	var stopped = false
 	var _speed = DEFAULT_SPEED
 
@@ -1184,23 +1280,25 @@ class NetworkedObject extends Area2D:
 				rpc("_reset_ball", true)
 
 
-	remotesync func bounce(left, random):
+	func bounce(left, random):
 		# Using sync because both players can make it bounce.
 		pass
 
 
-	remotesync func stop():
+	func stop():
 		stopped = true
 
 
-	remotesync func _reset_ball(for_left):
+	func _reset_ball(for_left):
 		position = _screen_size / 2
 		if for_left:
-			direction = Vector2.LEFT
+			direction = Vector2(1,0)
 		else:
-			direction = Vector2.RIGHT
+			direction = Vector2(-1,0)
 		_speed = DEFAULT_SPEED
 
 
-func open_browser(url : String):
+func open_browser(url):
+	# Type Checks
+	assert(typeof(url) == TYPE_STRING)
 	return OS.shell_open(url)

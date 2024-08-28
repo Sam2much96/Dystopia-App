@@ -29,7 +29,10 @@ signal quest_changed(quest_name, status)
 export (Dictionary) var quest_list = {} # : Dictionary 
 
 # Get the status of a quest. If it's not found it returns STATUS.NONEXISTENT
-func get_status(quest_name:String) -> int:
+func get_status(quest_name) : # -> int:
+	# Type Checks
+	assert(typeof(quest_name) == TYPE_STRING)
+	
 	if quest_list.has(quest_name):
 		return quest_list[quest_name]
 	else:
@@ -37,13 +40,20 @@ func get_status(quest_name:String) -> int:
 	pass
 
 
-func get_status_as_text(quest_name:String) -> int:
+func get_status_as_text(quest_name): # -> int:
+	# Type Checks
+	assert(typeof(quest_name) == TYPE_STRING)
+	
 	var status = get_status(quest_name)
 	return STATUS.keys()[status]
 
 
 # Change the state of some quest. status should be Quests.STATUS.<some status>
-func change_status(quest_name:String, status:int) -> bool:
+func change_status(quest_name, status): # -> bool:
+	# Type Checks
+	assert(typeof(quest_name) == TYPE_STRING)
+	assert(typeof(status) == TYPE_INT)
+	
 	if quest_list.has(quest_name):
 		quest_list[quest_name] = status
 		emit_signal("quest_changed", quest_name, status)
@@ -53,7 +63,10 @@ func change_status(quest_name:String, status:int) -> bool:
 	pass
 
 # Start a new quest
-func accept_quest(quest_name:String) -> bool:
+func accept_quest(quest_name) : #-> bool:
+	# Type Checks
+	assert(typeof(quest_name) == TYPE_STRING)
+	
 	if quest_list.has(quest_name):
 		return false
 	else:
@@ -64,7 +77,9 @@ func accept_quest(quest_name:String) -> bool:
 
 
 # List all the quest in a certain status
-func list(status:int) -> Array:
+func list(status) : #-> Array:
+	# Type checks
+	assert(typeof(status) == TYPE_INT)
 	if status == -1:
 		return quest_list.keys()
 	var result = []
@@ -75,12 +90,15 @@ func list(status:int) -> Array:
 	pass
 	
 	
-func get_quest_list() -> Dictionary:
+func get_quest_list() : #-> Dictionary:
 	return quest_list.duplicate()
 
 
 # Remove a quest from the list of quests
-func remove_quest(quest_name:String) -> bool:
+func remove_quest(quest_name) : #-> bool:
+	# Type Checks
+	assert(typeof(quest_name) == TYPE_STRING)
+	
 	if quest_list.has(quest_name):
 		quest_list.erase(quest_name)
 		emit_signal("quest_changed", quest_name, STATUS.NONEXISTENT)

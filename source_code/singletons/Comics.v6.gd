@@ -57,30 +57,30 @@
 
 extends Control
 
-class_name Comics
+#class_name Comics
 
 
-export (bool) var enabled : bool 
-export (bool) var LastPage : bool = false 
+export (bool) var enabled #: bool 
+export (bool) var LastPage  = false 
 # Web 3 Activator for Downloading Content
 #export (bool) var web3 : bool 
-export (bool) var _loaded_comics : bool = false
-export (bool) var SwipeLocked  : bool   = true # Temporarily disabling for testing
-export (int) var  current_frame : int   = 0 # Global Frame Variable
+export (bool) var _loaded_comics = false
+export (bool) var SwipeLocked    = true # Temporarily disabling for testing
+export (int) var  current_frame    = 0 # Global Frame Variable
 
 #Stores comics current page as a global variable 
 #export var current_page : int  = -2# Global page variable, same as above, but differentiating for testing
 
 
 
-export (PackedScene) var current_comics : PackedScene
+export (PackedScene) var current_comics #: PackedScene
 
 
 #************File Checkers*************#
 
 #************Wallet Save Path**********************#
 
-export (Dictionary) var comics : Dictionary = {
+export (Dictionary) var comics = {
 	1: 'res://scenes/Comics/chapter 1/chapter 1.tscn',
 	2:'res://scenes/Comics/chapter 2/chapter 2.tscn',
 	3:'res://scenes/Comics/chapter 3/chapter 3.tscn',
@@ -97,7 +97,7 @@ export (Dictionary) var comics : Dictionary = {
 
 
 
-var memory : Array = [] #use this variable to store current frame and comics info
+export (Array) var memory = [] #use this variable to store current frame and comics info
 
 var current_chapter : int
 var next_scene : PackedScene

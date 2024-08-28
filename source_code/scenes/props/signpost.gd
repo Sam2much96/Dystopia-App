@@ -20,13 +20,13 @@
 
 extends Area2D
 
-class_name SignPost
+#class_name SignPost
 
-"""
-Displays A Dialogue Text When the Player comes near
-"""
+#"""
+#Displays A Dialogue Text When the Player comes near
+#"""
 
-var interract : bool = false
+export (bool) var interract = false
 
 export(bool) var enabled
 export(String) var dialogue = ""
@@ -34,7 +34,7 @@ export(String) var dialogue = ""
 
 
 
-var frame_counter : int = 0
+export (int) var frame_counter = 0
 
 
 
@@ -45,8 +45,9 @@ func _ready():
 	if enabled:
 		
 		#Connect All Signals
-		connect("area_entered", self, "_on_player_area_entered")
-		connect("area_exited", self, "_on_player_area_exited")
+		# Signals Not Available
+		#connect("area_entered", self, "_on_player_area_entered")
+		#connect("area_exited", self, "_on_player_area_exited")
 		
 		if not (is_connected("body_entered",self, "_on_signpost_body_entered") &&
 		is_connected("body_exited",self, "_on_signpost_body_exited")
@@ -97,18 +98,18 @@ func hide_signpost():
 
 # Detect Player
 func _on_signpost_body_entered(body):
-	if not body is Player:
+	if not body == KinematicBody2D:
 		pass
-	if body is Player:
+	if body == Player:
 		show_signpost()
 		#activate(true)
 		#print(" Player Body Entered ")
 		print_debug ('player near signpost: ', Globals.near_interractible_objects)
 
-func _on_player_area_exited(area):
-	if area.is_in_group("player_hurtbox"):
-		print(" Player Exited Area ")
-		#activate(false)
+#func _on_player_area_exited(area):
+#	if area.is_in_group("player_hurtbox"):
+#		print(" Player Exited Area ")
+#		#activate(false)
 
 
 func _on_dialog_started():
@@ -121,10 +122,10 @@ func _on_dialog_ended():
 	pass
 
 func _on_signpost_body_exited(body):
-	if not body is Player:
+	if not body == Player:
 		return
 	
-	if body is Player:
+	if body == Player:
 		print_debug ('player near signpost: ', Globals.near_interractible_objects)
 	
 

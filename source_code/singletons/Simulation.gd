@@ -48,32 +48,32 @@ export (int) var frame_counter = 0
 var last_update = -1
 
 # Placeholder variables ported from another multiplayer template
-var SIMULATING_1: bool = false
-var v : Vector2
-var world_radius : int
-var player_data : PoolByteArray
-export (PoolByteArray) var RawData : PoolByteArray # Raw Data Sent Every Player Input
-export (PoolByteArray) var RawDataArray : Array # Raw Data Sent Every Player Input
-var id_as_string : String #= Networking.id_as_string
+export (bool) var SIMULATING_1 = false
+export (Vector2) var v = Vector2()
+export (int) var world_radius 
+export (RawArray) var player_data #: PoolByteArray
+export (RawArray) var RawData #: PoolByteArray # Raw Data Sent Every Player Input
+export (Array) var RawDataArray #: Array # Raw Data Sent Every Player Input
+export (String) var id_as_string #: String #= Networking.id_as_string
 
 
 # My Player Networking object
 # for simulation calculations
 # 
-var player : Player_v2_networking
+var player #: Player_v2_networking
 
 export (Array) var all_player_objects = [] # kinematic2d and integers
 export (Array) var player_IDs = [] # IDs
 
 
-"""
-Player Data + Game State
+#"""
+#Player Data + Game State
 
-0 is the Server's Data 
-"""
+#0 is the Server's Data 
+#"""
 # (1) Depreciating Inventory data until it is optimized
 
-export (Dictionary) var player_info : Dictionary = { 0 : { # server peer id
+export (Dictionary) var player_info = { 0 : { # server peer id
 		"pos": {"x": 0, "y":0}, # updated positional data, 
 		"vel":{"x": 0, "y": 0},
 		"fr": 0, #frame data
@@ -96,27 +96,27 @@ export (Dictionary) var player_info : Dictionary = { 0 : { # server peer id
 # Fpr Uptimizzing Player Info 
 # Currently unimplemented
 # Would only Send Players Updated Data rather than the whole information
-var data_packet : Dictionary = {}
+export (Dictionary) var data_packet = {}
 
 # Input & State Buffer
 # Used for simulation logic
 # decoded from player info updates
-var _input_buffer_decoded : Array
-var _state_buffer_decoded : Array
+export (Array) var _input_buffer_decoded = []
+export (Array) var _state_buffer_decoded = []
 
 
-"""
+#"""
 
-CPU FX
+#CPU FX
 
-"""
-var rainFX : RainFX
-var smokeFX : smoke_fx
+#"""
+var rainFX #: RainFX
+var smokeFX #: smoke_fx
 
 
-"""
-SIMULATION LOGIC
-"""
+#"""
+#SIMULATION LOGIC
+#"""
 # Simulates player position on Kinematic body 2d using player id and player info
 
 # Was Refactored to A Simulation Singleton on Nov 20, 23
@@ -129,7 +129,10 @@ SIMULATION LOGIC
 # (5) Should Implement Animation Player Into Logic 
 # (6) Implement Enemy Simulation into Data Packet
 #(7) SHould Ideally be run as a physics process
-func simulate(id : int): # playerclass controls all player networkinf objects
+func simulate(id): # playerclass controls all player networkinf objects
+	# Type Checks
+	assert(typeof(id) == TYPE_INT)
+	
 	
 	"Server & Client Simulation Logic"
 	# Bugs : Data is corrupted with Integer additions
@@ -192,7 +195,7 @@ func simulate(id : int): # playerclass controls all player networkinf objects
 		
 		"TWEEN ANIMATION"
 		# Position
-		var tween := create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+		var tween = create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 		tween.tween_property(player, "global_position", Vector2(float(player_info[id]["pos"]["x"]), float(player_info[id]["pos"]["y"])), 0.5)
 		
 		
@@ -294,7 +297,7 @@ func _physics_process(_delta):
 
 class projectiles:
 	# THe Projectile Class's TimeStamp
-	var timestamp : float = 0
+	var timestamp = 0.0
 	# SHould Implement Some Form of Projectiles that update with the server
 	
 	# Simulates Projectile Calculations
@@ -302,9 +305,10 @@ class projectiles:
 	func SimulateProjectile():
 		# We spawn projectiles based on required timestamp (received from server)
 		var target_timestamp = OS.get_ticks_msec() 
+		var projectiles = [0] # placeholder
 		for projectile in projectiles:
 			if projectile.timestamp <= target_timestamp:
-				var preload_projectile : String = ""
+				var preload_projectile = ""
 				var node_projectile = load(preload_projectile).instance()
 				var info = Networking.player_info[projectile.id]
 				var projectile_os = Vector2(projectile.position.x,projectile.position.y)
@@ -321,21 +325,24 @@ class projectiles:
 
 
 
-"Player Info"
+#"Player Info"
 # Features: 
 # (1) should store Non-threathening Crypto and Multiplayerinfo too
 # (2) Data Integrity can be checked using hash
 # (3) Stores Data FOr Synchronizing Player Data Among Multiple Peers
 # (4) converted to poolbyte array before sent over Network
 # (5) synchronizes game states across player network mesh
-"""
-REGISTERS PLAYERS INITIALLY
-"""
-func register_player(id : int)-> Dictionary:
+#"""
+#REGISTERS PLAYERS INITIALLY
+#"""
+func register_player(id) : #-> Dictionary:
 	# To Do:
 	# (1) Optimize Dictionary size to Max 1000 bytes
 	# (2) Implewment Data Optimization for  Data packet (gdunzip/zip)
 	# (3) Depreciating Inventory Item for data optimization
+	
+	# Type Checks
+	assert(typeof(id) == TYPE_INT)
 	
 	player_info[id] = {
 		 #id : { # server peer id
@@ -361,28 +368,31 @@ func register_player(id : int)-> Dictionary:
 	 
 	return player_info
 
-func get_all_player_ids()-> Array:
+func get_all_player_ids() : #-> Array:
 	return player_info.keys()
 
-static func set_position(x : Vector2):
-	pass
+#static func set_position(x : Vector2):
+#	pass
 
 
-func get_frame_counter()-> int:
+func get_frame_counter() : #-> int:
 	return frame_counter 
 
 
-"""
-REGISTERS PLAYER INPUT AND RELEASES
-"""
+#"""
+#REGISTERS PLAYER INPUT AND RELEASES
+#"""
 # Debugs Player Data
 # Also updates the server object with player data from respective peers
-remote func pi(id : int,player_data : PoolByteArray):
+func pi(id ,player_data):
 	# Remote Calls Player Input From Client Peer for each client peer
 	# Should Connect to Physics Process Simulation Logic
 	# Bug: Player positional data is not sent properly (Fixed)
-
-
+	
+	# Type Checks
+	assert(typeof(id) == TYPE_INT)
+	assert(typeof(player_data) == TYPE_RAW_ARRAY)
+	
 	"""
 	SERVER LOGIC
 	"""
@@ -488,7 +498,11 @@ remote func pi(id : int,player_data : PoolByteArray):
 
 
 
-remote func pu(id : int, update_id : int, updates: PoolByteArray):
+func pu(id, update_id, updates):
+	# Type Checks
+	assert(typeof(id) == TYPE_INT)
+	assert(typeof(update_id) == TYPE_INT)
+	assert(typeof(updates) == TYPE_RAW_ARRAY)
 	
 	"Client Logic"
 	#Client Side Database Update & Simulation
@@ -508,7 +522,7 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
 
 	
-	var id_as_string : String = var2str(Networking.peer_id) 
+	var id_as_string = var2str(Networking.peer_id) 
 	
 	# Maintain an Updated Timeline so older packets are discarded
 #	last_update = update_id
@@ -571,17 +585,28 @@ class Enemy_ extends Reference:
 	}
 	
 	static func proximity_attack_simulation(
-		hitpoints: int, 
-		raycast : RayCast2D, 
-		player : Player, 
-		player_pos : Vector2, 
-		_position : Vector2,
-		_enemy: Enemy, 
-		enemy_type : String, 
-		state : int, 
-		enemy_distance_to_player : float,
-		center : Vector2
-		) -> int: # Returms the enemy state
+		hitpoints, 
+		raycast, 
+		player, 
+		player_pos, 
+		_position,
+		_enemy, 
+		enemy_type , 
+		state, 
+		enemy_distance_to_player, # : float,
+		center
+		) : # -> int: # Returms the enemy state
+		
+		# Type Checks
+		assert(typeof(hitpoints) == TYPE_INT)
+		assert(raycast == RayCast2D)
+		assert(player == KinematicBody2D)
+		assert(_enemy == KinematicBody2D)
+		assert(typeof(enemy_type) == TYPE_STRING)
+		assert(typeof(player_pos) == TYPE_VECTOR2)
+		assert(typeof(_position) == TYPE_VECTOR2)
+		assert(typeof(state) == TYPE_INT)
+		assert(typeof(center) == TYPE_VECTOR2)
 		
 		"Enemy Behaviour Logic"
 		# Provides Predetermined enemy behaviour

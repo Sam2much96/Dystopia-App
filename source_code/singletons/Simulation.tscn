@@ -5,5 +5,19 @@
 [node name="Node" type="Node"]
 
 script/script = ExtResource( 1 )
+frame_counter = 0
+SIMULATING_1 = false
+v = Vector2( 0, 0 )
+world_radius = null
+player_data = null
+RawData = null
+RawDataArray = null
+id_as_string = null
+all_player_objects = null
+player_IDs = null
+player_info = null
+data_packet = null
+_input_buffer_decoded = null
+_state_buffer_decoded = null
 
 

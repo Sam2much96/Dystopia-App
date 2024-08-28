@@ -529,7 +529,7 @@ static func save_file_(body, Save_path, file_size) : # -> File:
 	assert(typeof(body) == TYPE_RAW_ARRAY) # pool byte array
 	assert(typeof(Save_path) == TYPE_STRING)
 	assert(typeof(file_size) == TYPE_INT)
-	assert(node == HTTPRequest)
+	#assert(node == HTTPRequest)
 	
 	var file = File.new()
 	
@@ -838,8 +838,10 @@ func poolByte2Array(data_from) : #-> Array:
 		# Iterate through raw data
 		for i in Simulation.RawDataArray:
 			#Returns a String. Converting to Dictionary
+			var parser = {} # dictionary class parses json
+			RawJson = parser.parse_json(i)
 			
-			RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary
+			#RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary
 		return RawJson.get_result()
  
 	else: 

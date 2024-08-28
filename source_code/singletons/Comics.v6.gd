@@ -254,25 +254,25 @@ func _input(event):
 	CONSOLE CONTROLS
 	
 	"""
-	if event == InputEventJoystickMotion && self.visible == true:
+	# Temporarily disabled for back porting
+	if event == InputEvent.JOYSTICK_MOTION && self.visible == true:
 		var axis = event.get_axis_value()
 		print('JoyStick Axis Value' ,axis)
-		
+	#	
 		#Changes Page Panels
 		if round(axis) == 1:
 			next_panel(comics_sprite)
 		if round(axis) == -1:
 			prev_panel(comics_sprite)
-		pass
+	#	pass
 
 	"Stops From Processing Mouse Inputs"
-	if event == InputEventMouse:
-		pass
-		
+	
+	
 
-	if event == InputEventMouseButton:
+	if event == InputEvent.MOUSE_BUTTON:
 		pass
-	if event == InputEventMouseMotion:
+	if event == InputEvent.MOUSE_MOTION:
 		pass
 
 
@@ -289,7 +289,7 @@ func _input(event):
 	# Can only drag is Swipe Locked
 	# SwipeLocked is buggy
 	# Switched between True and False
-	if (event == InputEventScreenDrag && comics_sprite != null) : 
+	if (event == InputEvent.SCREEN_DRAG && comics_sprite != null) : 
 			Functions.drag_v2(comics_sprite,event.get_position())
 
 
@@ -368,7 +368,7 @@ func _input(event):
 	#print("_state Debug: ",_state) #for debug purposes only
 	" Zoom 2"
 	# works
-	if event == InputEventScreenTouch :
+	if event == InputEvent.SCREEN_TOUCH :
 		
 		target =  event.get_position()
 		if event.get_index() == int(2): # and event is InputEventScreenPinch : #zoom if screentouch is 2 fingers & uses input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases
@@ -381,7 +381,7 @@ func _input(event):
 
 
 
-	if event == InputEventMouseButton && event.doubleclick :
+	if event == InputEvent.MOUSE_BUTTON && event.doubleclick :
 		Functions._zoom(comics_placeholder, zoom)
 
 
@@ -828,11 +828,11 @@ class Swipe : #extends Reference:
 			if abs (direction.x) > abs(direction.y):
 				
 				print_debug ('Direction on X: ', direction.x, "/", direction.y) #horizontal swipe debug purposs
-			if -sign(direction.x) < Swipe.swipe_parameters:
+			if -sign(direction.x) < swipe_parameters:
 				print_debug('left swipe') #for debug purposes
 				
 			
-			if -sign(direction.x) > Swipe.swipe_parameters:
+			if -sign(direction.x) > swipe_parameters:
 				print_debug('right swipe') #for debug purposes
 				
 				# Play Animation
@@ -846,7 +846,7 @@ class Swipe : #extends Reference:
 			"Up & Down"
 			
 			# Works
-			if -sign(direction.y) < -Swipe.swipe_parameters:
+			if -sign(direction.y) < -swipe_parameters:
 				print('up swipe 2') #for debug purposes
 				
 				#direction_var = "Up"
@@ -871,7 +871,7 @@ class Swipe : #extends Reference:
 				#	print ('poot poot poot') 
 		
 		if swipe_target_memory_x.size() && swipe_target_memory_y.size() > 50:
-			Swipe.clear_memory( swipe_target_memory_x, swipe_target_memory_y)
+			clear_memory( swipe_target_memory_x, swipe_target_memory_y)
 
 		else: return
 
@@ -897,19 +897,23 @@ class Swipe : #extends Reference:
 
 
 	static func next_panel():
-		var a = InputEventAction.new()
-		a.action = "next_panel"
-		a.pressed = true
-		a.strength = 1
+		# Temporarily disabled for backporting
+		var a = {"action": "next_paned", "pressed": true, "strength": 1} 
+		#a.action = "next_panel"
+		#a.pressed = true
+		#a.strength = 1
 		
-		Input.parse_input_event(a)
+		#InputEventAction.set_as_action(a["action"], a["pressed"])
+		
+		#Input.parse_input_event(a)
 
 
 	static func prev_panel():
-		var a = InputEventAction.new()
-		a.action = "prev_panel"
-		a.pressed = true
-		a.strength = 1
+		# Temporarily disabled for backporting
+		var a = 0#InputEventAction.new()
+		#a.action = "prev_panel"
+		#a.pressed = true
+		#a.strength = 1
 		
 		Input.parse_input_event(a)
 
@@ -950,7 +954,7 @@ class Functions extends Reference:
 		assert(typeof(can_drag) == TYPE_BOOL)
 		assert(typeof(zoom) == TYPE_BOOL)
 		assert(typeof(current_frame) == TYPE_INT)
-		assert(Kinematic_3d == KinematicBody2D)
+		assert(Kinematic_2d == KinematicBody2D)
 		assert(comics_placeholder == Control)
 		
 		var err = PackedScene
@@ -1027,7 +1031,7 @@ class Functions extends Reference:
 					node.name = Local.comic_names[1]
 					
 					#load comics extension script
-					node.set_script(Extensions)
+					node.set_script(Comics_v6.Extensions)
 					
 					node.set_frame(Comics_v6.current_frame)
 					
@@ -1204,7 +1208,7 @@ class Functions extends Reference:
 
 	static func _zoom(comics_placeholder, zoom) : #-> bool:
 		# Type Checks
-		assert(comics_plaeholder == Control)
+		assert(comics_placeholder == Control)
 		assert(typeof(zoom) == TYPE_BOOL)
 		
 		if comics_placeholder != null:
@@ -1328,7 +1332,7 @@ static func load_local_image_texture_from_global(node , _local_image_path, expan
 	assert(typeof(expand) == TYPE_BOOL)
 	assert(typeof(stretch_mode) == TYPE_INT)
 	
-	print_debug ("NFT debug: ", NFT) #for debug purposes only
+	#print_debug ("NFT debug: ", NFT) #for debug purposes only
 	var texture = ImageTexture.new()
 	var image = Texture.new() #Image.new()
 	image.load(_local_image_path)

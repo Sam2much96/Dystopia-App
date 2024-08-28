@@ -34,13 +34,13 @@
 
 extends Node
 
-class_name Simulationv1
+#class_name Simulationv1
 
 
 enum {SIMULATING, NON_SIMULATING}
 
 # Frame ID
-onready var frame_id : int 
+onready var frame_id = 0#: int 
 
 # Frame Counter
 export (int) var frame_counter = 0

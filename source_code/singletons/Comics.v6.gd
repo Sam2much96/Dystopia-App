@@ -99,24 +99,24 @@ export (Dictionary) var comics = {
 
 export (Array) var memory = [] #use this variable to store current frame and comics info
 
-var current_chapter : int
-var next_scene : PackedScene
+export (int) var current_chapter
+export (PackedScene) var next_scene
 
-var can_drag : bool = false
-var zoom : bool = false
-var comics_placeholder : Control = Control.new()
+export (bool) var can_drag = false
+export (bool) var zoom = false
+var comics_placeholder = Control.new()
 
 #var buttons
 
-onready var Kinematic_2d :  KinematicBody2D = KinematicBody2D.new()
+onready var Kinematic_2d = KinematicBody2D.new()
 #onready var camera2d = $Kinematic_2D/placeholder/Camera2D 
 #var _position : Vector2 
-var center : Vector2 # should be used in a center comics method
+var center = Vector2(0,0) # should be used in a center comics method
 var target =Vector2(0,0) 
 #onready var origin : Vector2 = get_viewport_rect().size/2#set origin point to the center of the viewport
 
 # Can Use a Tween Node to implement Drag and Drop
-var comics_sprite : AnimatedSprite
+var comics_sprite = AnimatedSprite
 
 
 #var _input_device
@@ -125,38 +125,38 @@ var _comics_root = self
 
 
 
-"Bug FIx from <200 absolute Distances"
+#"Bug FIx from <200 absolute Distances"
 
-export (Array) var target_memory_x: Array = [] #stores vector 2 of previous targets
-export (Array) var target_memory_y: Array = [] #stores vector 2 of previous targets
+export (Array) var target_memory_x= [] #stores vector 2 of previous targets
+export (Array) var target_memory_y= [] #stores vector 2 of previous targets
 
 
 
 
 
 #**********Swipe Detection Direction Calculation Parameters************#
-export (Array) var swipe_target_memory_x : Array = [] # for swipe direction x calculation
-export (Array) var swipe_target_memory_y : Array = [] # for swipe direction y calculation
-var direction : Vector2
-export (float) var swipe_parameters : float = 1.0 # is 1 in Dystopia-App
-export (float) var x1 : float = 0.0
-export (float) var x2 : float = 0.0
-export (float) var y1 : float = 0.0
-export (float) var y2 : float = 0.0
+export (Array) var swipe_target_memory_x  = [] # for swipe direction x calculation
+export (Array) var swipe_target_memory_y  = [] # for swipe direction y calculation
+var direction = Vector2(0,0)
+export (float) var swipe_parameters = 1.0 # is 1 in Dystopia-App
+export (float) var x1 = 0.0
+export (float) var x2 = 0.0
+export (float) var y1 = 0.0
+export (float) var y2 = 0.0
 #export(float,0.5,1.5) var MAX_DIAGONAL_SLOPE  = 1.3
-var SwipeSpeed : Vector2
-var SwipeCounter : int = 0 # for limiting swipe detection.registration
+var SwipeSpeed = Vector2()
+export(int) var SwipeCounter = 0 # for limiting swipe detection.registration
 
 
 const SWIPE_AWAIT = 0.4
 
 onready var _debug_= get_tree().get_root().get_node("/root/Debug")
-onready var cmx_root : Control = get_tree().get_nodes_in_group("Cmx_Root").pop_front()
+onready var cmx_root = get_tree().get_nodes_in_group("Cmx_Root").pop_front()
 
 # Timer Needed for Detecting Swipe Stopped Directions
 
 #onready var _e : Timer = $Timer# Use Manual Timer
-onready var _e : Timer = Timer.new()
+onready var _e = Timer.new()
 
 func _ready():
 	
@@ -195,7 +195,7 @@ func _ready():
 
 
 
-"INPUT "
+#"INPUT "
 # multiplatform inputs
 # Input class has Multiple Bugs
 # UnOptimized Codes
@@ -254,7 +254,7 @@ func _input(event):
 	CONSOLE CONTROLS
 	
 	"""
-	if event is InputEventJoypadMotion and self.visible == true:
+	if event == InputEventJoystickMotion && self.visible == true:
 		var axis = event.get_axis_value()
 		print('JoyStick Axis Value' ,axis)
 		
@@ -266,13 +266,13 @@ func _input(event):
 		pass
 
 	"Stops From Processing Mouse Inputs"
-	if event is InputEventMouse:
+	if event == InputEventMouse:
 		pass
 		
 
-	if event is InputEventMouseButton:
+	if event == InputEventMouseButton:
 		pass
-	if event is InputEventMouseMotion:
+	if event == InputEventMouseMotion:
 		pass
 
 
@@ -289,7 +289,7 @@ func _input(event):
 	# Can only drag is Swipe Locked
 	# SwipeLocked is buggy
 	# Switched between True and False
-	if (event is InputEventScreenDrag && comics_sprite != null) : 
+	if (event == InputEventScreenDrag && comics_sprite != null) : 
 			Functions.drag_v2(comics_sprite,event.get_position())
 
 
@@ -368,7 +368,7 @@ func _input(event):
 	#print("_state Debug: ",_state) #for debug purposes only
 	" Zoom 2"
 	# works
-	if event is InputEventScreenTouch :
+	if event == InputEventScreenTouch :
 		
 		target =  event.get_position()
 		if event.get_index() == int(2): # and event is InputEventScreenPinch : #zoom if screentouch is 2 fingers & uses input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases
@@ -381,7 +381,7 @@ func _input(event):
 
 
 
-	if event is InputEventMouseButton && event.doubleclick :
+	if event == InputEventMouseButton && event.doubleclick :
 		Functions._zoom(comics_placeholder, zoom)
 
 
@@ -468,7 +468,7 @@ func _on_Timer_timeout():
 	SwipeCounter = 0
 
 
-func close_comic()-> void:
+func close_comic(): #-> void:
 	print_debug("Closing COmic")
 	#comics_sprite.hide() 
 	comics_placeholder.hide()
@@ -478,12 +478,14 @@ func close_comic()-> void:
 	current_frame = 0 # working buggy
 	emit_signal("freed_comics")
 
-'sets comic page to center of screen'
+#'sets comic page to center of screen'
 
 
-func next_panel(comics_sprite : AnimatedSprite) -> int:
+func next_panel(comics_sprite) : #-> int:
+	# Type Checks
+	assert(comics_sprite == AnimatedSprite)
 	
-# Works
+	# Works
 	if (
 		!can_drag && 
 		!SwipeLocked && 
@@ -507,8 +509,11 @@ func next_panel(comics_sprite : AnimatedSprite) -> int:
 
 
 
-func prev_panel(comics_sprite : AnimatedSprite)-> int:
-# Works
+func prev_panel(comics_sprite) : #-> int:
+	# Type Checks
+	assert(comics_sprite == AnimatedSprite)
+	
+	# Works
 	if !can_drag && !SwipeLocked && Input.is_action_pressed("prev_panel") && comics_sprite != null: #&& !Timemout:
 	#if comics_sprite != null && !Timemout:
 		
@@ -539,12 +544,12 @@ func prev_panel(comics_sprite : AnimatedSprite)-> int:
 class Local extends Reference:
 
 	# Comics Name as Strings
-	const comic_names : Dictionary = {
+	const comic_names = {
 		1 : "Neo Sud, the new south"
 	} 
 
 	# Comic Scene paths & WebP Images
-	const comics_ : Dictionary = {
+	const comics_ = {
 	"Chap1 Scene": "user://Comics/chapter 1/chapter 1.tscn",
 	"Chap1 Panel": "user://Comics/Comics/chapter 1/chapter 1 Neo sud, the new south webp.webp",
 		3:'res://scenes/Comics/chapter 3/chapter 3.tscn',
@@ -557,7 +562,7 @@ class Local extends Reference:
 	}
 
 
-	const comics_local_path : Dictionary = {
+	const comics_local_path = {
 		1: "user://Comics/chapter 1/",
 		2: "user://Comics/chapter 2/"
 	}
@@ -580,13 +585,16 @@ class Swipe : #extends Reference:
 	# (6) Update Documentation
 	
 	#**********Swipe Detection Direction Calculation Parameters************#
-	const swipe_start_position : Vector2 = Vector2()
-	const swipe_parameters : float = 0.1
-	const MAX_DIAGONAL_SLOPE : float = 1.3
+	const swipe_start_position = Vector2()
+	const swipe_parameters  = 0.1
+	const MAX_DIAGONAL_SLOPE  = 1.3
 
-	" Swipe Direction Detection"
+	#" Swipe Direction Detection"
 	# Configures Swipe Timer settings
-	static func _init_(_e : Timer): # Not tested yet
+	static func _init_(_e): # Not tested yet
+			# Type Checks
+			assert(_e == Timer)
+			assert(_e.is_inside_tree())
 			
 			# Redundancy Code
 			if _e == null: # Error Catcher
@@ -619,26 +627,30 @@ class Swipe : #extends Reference:
 	#Buggy swipe direction
 	# Use an Array to store the first position and all end positions
 	# Difference between both extremes is the swipe position
-	static func clear_memory(swipe_target_memory_x: Array, swipe_target_memory_y :Array)-> void:
+	static func clear_memory(swipe_target_memory_x, swipe_target_memory_y) : #-> void:
+		# Type Checks
+		assert(typeof(swipe_target_memory_y) == TYPE_ARRAY)
+		assert(typeof(swipe_target_memory_x) == TYPE_ARRAY)
+		
 		swipe_target_memory_x.clear()
 		swipe_target_memory_y.clear()
 
 
 	# Bug: Does not Save Proper Swiper Start Position thus breaking the Positional Calibration when ending detection
 	static func _start_detection(
-		_position : Vector2, 
-		#enabled: bool, 
-		_e : Timer ,
-		swipe_target_memory_x : Array, 
-		swipe_target_memory_y : Array 
+		_position ,  
+		_e ,
+		swipe_target_memory_x , 
+		swipe_target_memory_y 
 		): #for swipe detection
 		
-		#use current scene to trigger cinematic
-		#Globals.update_curr_scene() # depreciated
+		# Type Checks
+		assert(typeof(swipe_target_memory_y) == TYPE_ARRAY)
+		assert(typeof(swipe_target_memory_x) == TYPE_ARRAY)
+		assert(_e == Timer)
+		assert(_e.is_inside_tree() == true)
+		assert(typeof(_position) == TYPE_VECTOR2)
 		
-		#if enabled == true:
-			#swipe_start_position = _position
-			
 		"Saves Initial Swipe Position to Memory"
 		if not swipe_target_memory_x.has(_position.x): 
 			swipe_target_memory_x.append(_position.x)
@@ -650,26 +662,37 @@ class Swipe : #extends Reference:
 		#print_debug ('started swipe detection :', "/", "x: ", swipe_target_memory_x, "y: ", swipe_target_memory_y ) #for debug purposes delete later
 	
 	
-	"Only Two Swipe Directions Are Currently Implemented" # (fixing)
+	#"Only Two Swipe Directions Are Currently Implemented" # (fixing)
 	# Contains a Calibration Bug (fixing)
 	# Swipe start position is buggy
 	static func _end_detection(
-		final_position : Vector2, 
-		direction : Vector2, # a memory location for storing direction calculation 
-		#direction_var : String, 
-		#_state : int, 
-		_e : Timer, 
-		swipe_target_memory_x : Array, 
-		swipe_target_memory_y : Array, 
-		swipe_start_position : Vector2, 
-		swipe_parameters: float, 
-		x1 : float,
-		x2 : float,
-		y1 : float,
-		y2 : float,
+		final_position , 
+		direction , # a memory location for storing direction calculation 
+		_e, 
+		swipe_target_memory_x, 
+		swipe_target_memory_y, 
+		swipe_start_position, 
+		swipe_parameters, 
+		x1,
+		x2,
+		y1,
+		y2,
 		MAX_DIAGONAL_SLOPE
 		):
-	
+		
+		# Type Checks
+		assert(typeof(final_position) == TYPE_VECTOR2)
+		assert(typeof(direction) == TYPE_VECTOR2)
+		assert(_e == Timer)
+		assert(_e.is_inside_tree() == true)
+		assert(typeof(swipe_target_memory_x) == TYPE_ARRAY)
+		assert(typeof(swipe_target_memory_y) == TYPE_ARRAY)
+		assert(typeof(swipe_start_position) == TYPE_VECTOR2)
+		#assert(x1 == float)
+		#assert(x2 == float)
+		#assert(y1 == float)
+		#assert(y2 == float)
+		
 		direction = (final_position - swipe_start_position).normalized()
 		"""
 		SWIPE CALIBRATOR
@@ -769,7 +792,8 @@ class Swipe : #extends Reference:
 				
 				#calculate averages got x and y
 				
-				var x_average: int = Utils.calc_average(swipe_target_memory_x)
+				var x_average = 0 #initialise with integer 
+				x_average = Utils.calc_average(swipe_target_memory_x)
 				
 				print_debug ("X average: ",x_average)
 				print (x1, "/",x2)
@@ -783,7 +807,8 @@ class Swipe : #extends Reference:
 			
 			"Vertical Swipe"
 			if y1 && y2 != null && swipe_target_memory_y.size() > 2:
-				var y_average: int = Utils.calc_average(swipe_target_memory_y)
+				var y_average = 0 
+				y_average = Utils.calc_average(swipe_target_memory_y)
 				
 				#print ("Y average: ",y_average) #*********For Debug purposes only
 				#print (y1, "/",y2) #*********For Debug purposes only
@@ -850,11 +875,16 @@ class Swipe : #extends Reference:
 
 		else: return
 
-	"""
-	Visualises swipe data onsreen for Easier 
-	Swipe Debugging and Caliberation
-	"""
-	static func _visualize_swipe(swipe_positional_data : Array , LineDebug : Line2D, tree : SceneTree): # works
+	#"""
+	#Visualises swipe data onsreen for Easier 
+	#Swipe Debugging and Caliberation
+	#"""
+	static func _visualize_swipe(swipe_positional_data, LineDebug, tree): # works
+		# Type Checks
+		assert(typeof(swipe_positional_data) == TYPE_ARRAY)
+		assert(tree == SceneTree)
+		assert(LineDebug == LineShape2D)
+		
 		if (LineDebug != null && Debug.enabled):
 			for i in swipe_positional_data:
 				LineDebug.add_point(i)
@@ -887,7 +917,13 @@ class Swipe : #extends Reference:
 class Functions extends Reference:
 	
 	
-	static func show_comics (comics_chap : Node, cmx_root : Control, comic_main  )-> Control:
+	static func show_comics (comics_chap, cmx_root, comic_main  ) : #-> Control:
+		# Type Checks
+		assert(comics_chap == Node)
+		assert(cmx_root == Control)
+		assert(cmx_root.is_inside_tree())
+		assert(comics_chap.is_inside_tree())
+		
 		comic_main.emit_signal("loaded_comics")
 		#comic_main.add_child(comics_chap)
 		comic_main.call_deferred("add_child", comics_chap)
@@ -895,20 +931,30 @@ class Functions extends Reference:
 		return cmx_root
 	
 	static func load_comics(
-		current_comics : String, 
-		memory : Array ,
-		scenetree: SceneTree, 
-		enabled : bool, 
-		can_drag : bool, 
-		zoom : bool , 
-		current_frame : int, 
-		Kinematic_2d: KinematicBody2D, 
-		comics_placeholder : Control
-		) -> AnimatedSprite: 
+		current_comics, 
+		memory ,
+		scenetree, 
+		enabled , 
+		can_drag , 
+		zoom, 
+		current_frame, 
+		Kinematic_2d, 
+		comics_placeholder 
+		) : #-> AnimatedSprite: 
 
+		# Type Checks
+		assert(typeof(current_comics) == TYPE_STRING)
+		assert(typeof(memory) == TYPE_ARRAY)
+		assert(scenetree == SceneTree)
+		assert(typeof(enabled) == TYPE_BOOL)
+		assert(typeof(can_drag) == TYPE_BOOL)
+		assert(typeof(zoom) == TYPE_BOOL)
+		assert(typeof(current_frame) == TYPE_INT)
+		assert(Kinematic_3d == KinematicBody2D)
+		assert(comics_placeholder == Control)
 		
-		
-		var err : PackedScene = Utils.Functions.LoadLargeScene(
+		var err = PackedScene
+		err = Utils.Functions.LoadLargeScene(
 					current_comics, 
 					Globals.scene_resource, 
 					Globals._o, 
@@ -918,7 +964,7 @@ class Functions extends Reference:
 					Globals.b, 
 					Globals.progress
 					)
-		var node : AnimatedSprite
+		var node = AnimatedSprite
 		
 		
 		if current_comics != null && err.can_instance() == true:
@@ -1022,15 +1068,24 @@ class Functions extends Reference:
 
 
 	#******************************Drag 1 is Buggy , v2 works Best**********************#
-	static func drag(_target : Vector2, 
-	_position : Vector2, 
-	_body :  KinematicBody2D, 
-	center : Vector2, 
-	target_memory_x : Array, 
-	target_memory_y: Array
+	static func drag(_target, 
+	_position , 
+	_body , 
+	center, 
+	target_memory_x , 
+	target_memory_y
 	) : 
+		
+		# Type Parameters Check
+		assert(typeof(_target) == TYPE_VECTOR2)
+		assert(typeof(_position) == TYPE_VECTOR2)
+		assert(typeof(center) == TYPE_VECTOR2)
+		assert(_body == KinematicBody2D)
+		assert(typeof(target_memory_x) == TYPE_ARRAY)
+		assert(typeof(target_memory_y) == TYPE_ARRAY)
+		
 		#add more parameters
-	# Input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases 
+		# Input manager from https://github.com/Federico-Ciuffardi/Godot-Touch-Input-Manager/releases 
 		print ("-----------Dragging------------")
 		
 		#center = Globals.sumaVectores(_target, _position)
@@ -1066,8 +1121,12 @@ class Functions extends Reference:
 				if the previous target position is different by a large amount, discard it and wait for next target input
 				"""
 					
-				var x : int = _target.x
-				var y : int = _target.y
+				var x = 0 # initialise memory with integer pointer
+				var y = 0 
+				
+				x= _target.x
+				y= _target.y
+				
 				target_memory_x.append(x) #works
 				target_memory_y.append(y) #works
 				
@@ -1133,11 +1192,20 @@ class Functions extends Reference:
 
 
 
-	static func drag_v2(comics_sprite : AnimatedSprite, target : Vector2)-> void:
+	static func drag_v2(comics_sprite, target) : #-> void:
+		
+		# Type Checks
+		assert(typeof(target) == TYPE_VECTOR2)
+		assert(comics_sprite == AnimatedSprite)
+		
+		
 		if comics_sprite != null: # Error Catcher 1
 			comics_sprite.set_position(target)
 
-	static func _zoom(comics_placeholder : Control, zoom : bool)-> bool:
+	static func _zoom(comics_placeholder, zoom) : #-> bool:
+		# Type Checks
+		assert(comics_plaeholder == Control)
+		assert(typeof(zoom) == TYPE_BOOL)
 		
 		if comics_placeholder != null:
 			var scale =comics_placeholder.get_scale()
@@ -1153,9 +1221,11 @@ class Functions extends Reference:
 				zoom = false
 		return zoom 
 
-	static func _zoom_2(comics_placeholder : Node, zoom : bool)-> bool:
+	static func _zoom_2(comics_placeholder, zoom ) : #-> bool:
+		# Type Checks
+		assert(comics_placeholder == Node)
+		assert(typeof(zoom) == TYPE_BOOL)
 		
-		#if _loaded_comics == true:
 		var scale =comics_placeholder.get_scale()
 		print (scale)
 		if scale == Vector2(1,1)  :
@@ -1173,10 +1243,10 @@ class Functions extends Reference:
 
 
 class Extensions extends AnimatedSprite:
-	"""
-	The goal of this script is to store and send comic page details 
-	to the comic class script from the Comics Animated Sprite. 
-	"""
+	#"""
+	#The goal of this script is to store and send comic page details 
+	#to the comic class script from the Comics Animated Sprite. 
+	#"""
 	# TO DO: Implement Polymorphism for all Chapter pages
 	# It should also synconize data with the word bubble in a way that is playable 
 	# IS a port of Comics_panels_extensions script v1
@@ -1184,17 +1254,17 @@ class Extensions extends AnimatedSprite:
 	# Features
 	# (1) Loads into comics node Programmatically
 	# (2) Syncs Comics node info to Singleton
-	export var panel : Vector2
-	export var word_buble_count : int 
+	export (Vector2) var panel = Vector2()
+	export (int) var word_buble_count = 0
 
-	var TotalPageCount : int = 0
-	var CurrentPage : int = 0
+	var TotalPageCount = 0
+	var CurrentPage = 0
 
 	#const PageData : Array = [0,1,2,3,4,5,6] # total page count
 
 
 
-	export var Chapter_Data : Dictionary = {
+	export (Dictionary) var Chapter_Data = {
 		"Word Bubbles": word_buble_count,
 		"All Pages" : TotalPageCount,
 		"Name" : "Neo Sud, the New South",
@@ -1251,10 +1321,16 @@ func _on_Rotate_pressed():#Page Rotation #Rewrite this function as a module
 			comics_placeholder.set_position ( center)
 
 
-static func load_local_image_texture_from_global(node : TextureRect, _local_image_path: String, expand: bool, stretch_mode: int)-> void:
-	#print ("NFT debug: ", NFT) #for debug purposes only
+static func load_local_image_texture_from_global(node , _local_image_path, expand, stretch_mode) : #-> void:
+	# Type checks
+	assert (node == TextureFrame)
+	assert(typeof(_local_image_path) == TYPE_STRING)
+	assert(typeof(expand) == TYPE_BOOL)
+	assert(typeof(stretch_mode) == TYPE_INT)
+	
+	print_debug ("NFT debug: ", NFT) #for debug purposes only
 	var texture = ImageTexture.new()
-	var image = Image.new()
+	var image = Texture.new() #Image.new()
 	image.load(_local_image_path)
 	texture.create_from_image(image)
 	node.show()
@@ -1269,9 +1345,9 @@ static func load_local_image_texture_from_global(node : TextureRect, _local_imag
 
 
 
-"""
-button connections 
-"""
+#"""
+#button connections 
+#"""
 
 
 func _on_chap_1_pressed():
@@ -1320,7 +1396,10 @@ func _on_chap_7_pressed():
 	OS.shell_open("https://inhumanity-arts.itch.io/dystopia-app")# placeholder url's
 
 	# Polymorphic synamic code for loading Conics Sprite via Static functions
-func _load_comics(chapter_no : int):
+func _load_comics(chapter_no):
+	# Type Checks
+	assert(typeof(chapter_no) == TYPE_INT)
+	
 	return Functions.show_comics(
 		Functions.load_comics(comics[chapter_no], 
 		memory,get_tree(),
@@ -1332,7 +1411,7 @@ func _load_comics(chapter_no : int):
 		), cmx_root, self)
 
 
-func connect_signals()-> bool: #connects all required signals in the parent node
+func connect_signals() : #-> bool: #connects all required signals in the parent node
 	
 	
 	if not Kinematic_2d.is_connected("mouse_entered", self, "mouse_entered"):

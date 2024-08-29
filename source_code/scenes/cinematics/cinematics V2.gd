@@ -120,8 +120,8 @@ func _on_skip_pressed():
 
 	local_globals._go_to_title()
 	#get_tree().change_scene_to(Globals.title_screen)
-	if local_globals.curr_scene == 'Cinematics':
-		pass
+	#if local_globals.curr_scene == 'Cinematics':
+	#	pass
 
 
 
@@ -132,8 +132,8 @@ func _on_VideoPlayer_finished():
 func _on_Timer_timeout():
 	push_error('Cinematic scene broken')
 	_go_to_title()
-	if Globals.curr_scene == 'Cinematics':
-		pass
+	#if Globals.curr_scene == 'Cinematics':
+	#	pass
 	
 	#self.queue_free() #autodelete
 

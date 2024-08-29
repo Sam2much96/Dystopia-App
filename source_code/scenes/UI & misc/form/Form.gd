@@ -136,11 +136,12 @@ CHECKS IF THE DEVICE IS INTERNET CONNECTED AND GATEKEEPS ACCESS ON MOBILE DEVICE
 """
 # To DO: Port to Individual Platform Singletons
 func _check_if_device_is_online(): 
-	if os == 'Android' or 'iOS' or 'X11': #disable x11 for release build
-		index = index + 1
-		dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
-		#Networking.url = 
-		Networking._check_connection( 'https://mfts.io', Networking)#url('https://play.google.com/store/apps/details?id=dystopia.app')
+	#if os == 'Android' or 'iOS' or 'X11': #disable x11 for release build
+	#	index = index + 1
+	#	dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
+	#	#Networking.url = 
+	#	Networking._check_connection( 'https://mfts.io', Networking)#url('https://play.google.com/store/apps/details?id=dystopia.app')
+	print_debug("Port Code to Indicvidual Platform Singletons")
 
 
 func _http_request_completed(result, response_code, headers, body):

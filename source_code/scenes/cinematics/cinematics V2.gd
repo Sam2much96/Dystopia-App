@@ -129,8 +129,6 @@ func _on_back_pressed():
 func _on_skip_pressed():
 	videoplayer.stop()
 	local_globals._go_to_title()
-	if local_globals.curr_scene == 'Cinematics':
-			Function._free_memory(local_globals.cinematics) # Self
 
 
 
@@ -143,23 +141,14 @@ func _on_Timer_timeout():
 	push_error('Cinematic scene broken')
 	_go_to_title()
 	if local_globals.curr_scene == 'Cinematics':
-		Function._free_memory(local_globals.cinematics)
-	
-	#self.queue_free() #autodelete
+		pass
 
 
 func _go_to_title() -> void: 
 	
 	if local_globals.curr_scene == 'Cinematics': #I use this bool to define two states
-		
-		
-		
-		#get_tree().change_scene_to(Globals.title_screen)
 		local_globals._go_to_title()
-	if is_instance_valid(local_globals.cinematics):
-		# Free the Cinematics file from the Stack if loaded
-		
-		Function._free_memory(local_globals.cinematics)
+
 
 func play_opening_cinematic() -> int :
 	#Plays the opening cinematic 
@@ -168,117 +157,9 @@ func play_opening_cinematic() -> int :
 	local_music.play_track(wind_sfx)
 	return 0
 
-
-
-
-# *************************************************
-# godot3-Dystopia-game by INhumanity_arts
-# Released under MIT License
-# *************************************************
-# Description:
-# Anime Streamer Code
-# Features
-# (1) It Plays video through a global variable
-# (2)It triggers an error splash page in the debug script if user is offline
-# (3) It aids monetization through online advertising on Mobile
-# *************************************************
-# 
-"""
-THIS IS THE LOGIC FOR THE ANIME VIDEO STREAMER. iT WILL RENDER THE PILOT AND THE OPENING IN GODOT GAME ENGINE
-"""
-
-class Function :
+func _exit_tree():
+	# Free Memory
 	
-	static func store_video_files(_body : PoolByteArray):
-		var video_file : File = Utils.file #= File.new()
-		video_file.open('user://video.ogv',File.WRITE)
-		var _err = (video_file.open('user://video.ogv', File.WRITE_READ))
-		if _err != OK:
-			push_error(_err)
-		video_file.store_buffer(_body) #store pool byte array as video buffer
-		var video_file_path = video_file.get_path_absolute() #gets the file path
-		print ('Video File path: ', video_file_path)
-		Globals.VIDEO = video_file_path
-		video_file.close()
-
-	# huh ?
-	static func _free_memory(_items): # A Generic function to clear global variables once they've been used
-		_items = null
-
-	
-	static func _check_download_size(loaded,total, downloading_video: bool, download_video_size : float): #Kinda works. Sort this code out first
-		if downloading_video == true:
-			if download_video_size == 0 or loaded == 0 or total == 0: #Error catcher 2
-				#print ('Download video size:/', download_video_size, 'Loaded:/',loaded,'Total:/',total) #for debug purposes
-				total = 1
-			if download_video_size != null && total != 0 : # Error catcher 1
-				var percent = (loaded)/total
-				#while percent != 100:
-				print('Downloading.../ ', percent, '%')
-
-			if loaded == total and Globals.VIDEO != null:
-				print (' Download Completed') 
-		if downloading_video == false:
-			pass
-
-
-
-	static func cinematic_debug(videoplayer: VideoPlayer, vid_stream)-> void:
-		Debug.misc_debug = str(int(videoplayer.stream_position)) + Globals.os + str(videoplayer.is_playing(),
-		str(vid_stream) + videoplayer.get_stream_name()
-		)
-
-		
-	"""
-	CREATES AN VideoStreamTheora  .OGV  VIDEO FILE FROM A POOLBYE ARRAY
-	"""
-
-	# It needs a video file size and it will run as a loop as long as both aren't equal
-	func _store_video_files(_body, size) -> VideoStreamTheora: # FUnvtion breaks here
-		var video_file = Utils.file #File.new()
-		var error_checker = Utils.file #File.new()
-		
-		if _body != null:
-			# Add more error File error checkers
-			
-			#Writes a video file to the godot user's directory from a pool byte array
-			video_file.open('user://video.ogv',File.WRITE)
-			
-			# Checks the Video file
-			var err = (error_checker.open('user://video.ogv', File.READ))
-			#Debug.misc_debug = str('VIdeo buffer: ' ,_body) # Debugs the video file
-			 #store pool byte array as video buffer
-			var video_file_path = video_file.get_path_absolute() #gets the file path
-			print ('Video File path: ', video_file_path)
-			var VIDEO = load(video_file_path)
-			
-			#return print ('Video FIle Path',video_file_path)
-			#Comvert size to MB usingConvertfunctiion
-			
-			 # Gets VIdeo file length in bytes, converts it to MB
-			var __video_file_size_mb = Globals._ram_convert(video_file.get_len())
-
-			print ('Video file size: ',__video_file_size_mb, '/',' Est file size: ', size)# For debug purposes only
-			#Stores PoolbyteArray into video file while the video file size is not the user's inputed video size
-			if not error_checker.eof_reached() : # Original code uses a while loop. CHanging it because code breaks
-				if _body != null:
-					print ('Storing video buffer')
-					video_file.store_buffer(_body.get_buffer())
-			# Error checkers
-				if __video_file_size_mb != size :
-					print ('Video File size is not equal or greater than the inputed video file size 1')
-					print ('Body (poolbytearray)',_body)
-				if error_checker.get_len() != size:
-					print('Video File size is not equal or greater than the inputed video file size 2')
-				
-
-				if error_checker.eof_reached(): # If the error checker has read through the body
-					#break
-					return video_file
-				if __video_file_size_mb != null :
-					if __video_file_size_mb >= size: 
-						print ('STORAGE SUCCESS')
-			video_file.close()
-			return video_file
-		return video_file
+	local_globals.cinematics = null
+	self.queue_free()
 

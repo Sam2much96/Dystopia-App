@@ -214,7 +214,7 @@ position = Vector2( 8881.06, -4751.42 )
 scale = Vector2( 0.641414, 0.771429 )
 
 [node name="signpost" parent="." instance=ExtResource( 14 )]
-position = Vector2( 3429.35, 145.337 )
+position = Vector2( 297, 840 )
 enabled = true
 dialogue = "dir3"
 HINT = true

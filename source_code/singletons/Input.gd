@@ -246,5 +246,5 @@ func _get_input_buffer() -> int:
 	return int(Utils.array_to_string(input_buffer.duplicate()))
 
 
-func show_loading():
-	gameHUD._loading.show()
+#func show_loading(): # depreciated
+#	gameHUD._loading.show()

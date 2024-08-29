@@ -24,18 +24,18 @@ class_name Login
 """
 This is a gate-keeper script to keep check user's internet connections, restrict their access
 """
-
-@onready var cinematics : PackedScene =load(Globals.global_scenes["cinematics"])#load('res://scenes/cinematics/cinematics.tscn')
+var film : String = Globals.global_scenes["cinematics"]
+@onready var cinematics : PackedScene =load(film)#load('res://scenes/cinematics/cinematics.tscn')
 var index : int = 0
 
 @onready var play_button : Button = $ui/grid/play
 @onready var dialgue_box = $Dialog_box
-@onready var language = $ui/grid/language
+@onready var language : OptionButton = $ui/grid/language
 
 ########Label Spacer Codes Are Used For Aesthetics#########
-@onready var label_spacer = $ui/grid/label_spacer
-@onready var label_spacer2 = $ui/grid/label_spacer2
-@onready var label_spacer3 =$ui/grid/label_spacer3
+@onready var label_spacer : Label = $ui/grid/label_spacer
+@onready var label_spacer2 : Label = $ui/grid/label_spacer2
+@onready var label_spacer3 : Label =$ui/grid/label_spacer3
 
 @onready var timer = $Timer
 @onready var _debug =get_tree().get_root().get_node("/root/Debug")
@@ -135,11 +135,13 @@ func _on_play_pressed():
 CHECKS IF THE DEVICE IS INTERNET CONNECTED AND GATEKEEPS ACCESS ON MOBILE DEVICES
 """
 func _check_if_device_is_online(): 
-	if os == 'Android' or 'iOS' or 'X11': #disable x11 for release build
-		index = index + 1
-		dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
+	#if os == 'Android' or 'iOS' or 'X11': #disable x11 for release build
+	#	index = index + 1
+	#	dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
 		#Networking.url = 
-		Networking._check_connection( 'https://mfts.io', Networking)#url('https://play.google.com/store/apps/details?id=dystopia.app')
+	#	Networking._check_connection( 'https://mfts.io', Networking)#url('https://play.google.com/store/apps/details?id=dystopia.app')
+	#	print_debug("Port To Individual Platform Singleton Scripts")
+	pass
 
 
 func _http_request_completed(result, response_code, headers, body):

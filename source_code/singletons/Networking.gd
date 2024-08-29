@@ -83,7 +83,7 @@ signal Timeout
 onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
 
-onready var timer = get_node("Timer2")  #:Timer
+onready var timer = get_node("Timer")  #:Timer
 onready var _reference_to_self =get_node('/root/Networking') #formerly _y
 onready var _reference_to_debug =get_node('/root/Debug') #formerly _y
 
@@ -152,7 +152,7 @@ onready var PlayerObject  = load("res://scenes/characters/Aarin_networking.tscn"
 # I Need a way of keeping access to Player Object instancess
 
 func _ready():
-	_init_timer()
+	_init_timer() 
 	
 	
 	if cfg_server_ip == '':
@@ -207,7 +207,7 @@ func _init_timer() :
 	if not timer.is_connected("timeout",self, "_on_Timer2_timeout"):
 		timer.connect("timeout",self, "_on_Timer2_timeout")
 	
-	print_debug ('Check_timer :' , check_timer, " Is connected: ", timer.is_connected("timeout",self, "_on_Timer2_timeout")) #code breaks here and gives cant resolve hostname errors
+	print ('Networking.gd line 210:  Check_timer :' , check_timer, " Is connected: ", timer.is_connected("timeout",self, "_on_Timer2_timeout")) #code breaks here and gives cant resolve hostname errors
 
 
 

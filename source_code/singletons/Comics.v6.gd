@@ -164,7 +164,7 @@ func _ready():
 	connect_signals()
 	
 	# Update current scene 
-	Globals.update_curr_scene()
+	Globalss.update_curr_scene()
 	
 	#Kinematic_2d = KinematicBody2D.new()  #the kinematic 2d node for drag and drop
 	
@@ -180,7 +180,7 @@ func _ready():
 	_comics_root.call_deferred('add_child',_e)
 	
 	# Make Timer Accessible to Swipe Class
-	Swipe._init_(_e)
+	#Swipe._init_(_e) # Buggy Inititaliser. Swipe Timer Node is not inside Tree and needs refactor
 	
 	# Connect signals
 	_e.connect("timeout",self, "_on_Timer_timeout")
@@ -593,7 +593,9 @@ class Swipe : #extends Reference:
 	# Configures Swipe Timer settings
 	static func _init_(_e): # Not tested yet
 			# Type Checks
-			assert(_e == Timer)
+			assert(typeof(_e) != TYPE_NIL)
+			assert(typeof(_e) == TYPE_OBJECT)
+			#assert(_e == Timer)
 			assert(_e.is_inside_tree())
 			
 			# Redundancy Code

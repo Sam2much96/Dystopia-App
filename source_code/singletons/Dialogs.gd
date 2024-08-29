@@ -99,8 +99,8 @@ func hide_dialogue(): #can be used to hide the dialogue box. Not best Practice
 func _set_dialog_box(node):
 	# Type checks and error catcher
 	
-	assert(node == DialgoBox)
-	if not node == DialogBox : # if not node is not of type node?
+	assert(typeof(node) != TYPE_NIL)
+	if typeof(node) != TYPE_OBJECT : # if not node is not of type node?
 		push_error("provided node doesn't extend Dialogue Box") # push error
 		return 
 	

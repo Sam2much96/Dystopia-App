@@ -1,12 +1,38 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=2 format=1]
 
 [ext_resource path="res://singletons/Networking.gd" type="Script" id=1]
 
 [node name="Networking" type="HTTPRequest"]
-script = ExtResource( 1 )
-enabled = true
 
-[node name="Timer2" type="Timer" parent="."]
-wait_time = 10.0
+use_threads = false
+body_size_limit = -1
+max_redirects = 8
+script/script = ExtResource( 1 )
+enabled = null
+connection_debug = null
+cfg_server_ip = null
+cfg_client_ip = null
+url = ""
+WORLD_SIZE = 40000
+peer_id = null
+ip = null
+cfg_color = ""
+cfg_player_name = ""
+CLIENT_IP = ""
+running_request = false
+Timeout = false
+gateway = null
+random = null
+selected_gateway = null
+good_internet = null
+update_id = -1
+GamePlay = null
 
-[connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]
+[node name="Timer" type="Timer" parent="."]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
+
+

@@ -121,7 +121,7 @@ export(int) var algos #=  Wallet.Wallet.load_account_info(false, Wallet.token_wr
 
 
 #"Device Variables"
-export (String) var user_data_dir =OS.get_user_data_dir()
+export (String) var user_data_dir = "res://" #OS.get_user_data_dir()
 
 
 #"Screen Orientation"

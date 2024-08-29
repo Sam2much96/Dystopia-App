@@ -174,8 +174,8 @@ export (Dictionary) var nokia_soundpack = {
 var music_debug =''
 onready var current_track
 
-onready var music_bus_2 = AudioServer.get_bus_index(get_node(B).bus)
-onready var music_bus = AudioServer.get_bus_index(get_node(A).bus)
+onready var music_bus_2 = AudioServer.get_bus_index(get_node("B").bus)
+onready var music_bus = AudioServer.get_bus_index(get_node("A").bus)
 
 
 onready var A  = get_node('A') # : AudioStreamPlayer

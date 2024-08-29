@@ -25,8 +25,8 @@ extends CanvasLayer
 #This is a gate-keeper script to keep check user's internet connections, restrict their access
 #"""
 
-#onready var cinematics : PackedScene = load(Globals.global_scenes["cinematics"])
-#var index : int = 0
+onready var cinematics = load(Globals.global_scenes["cinematics"]) #: PackedScene 
+export (int) var index = 0
 
 onready var play_button  = get_node('ui/grid/play') #: Button
 #onready var dialgue_box = $Dialog_box # Dialog box is still a WIP
@@ -40,7 +40,7 @@ onready var language = get_node('ui/grid/language')
 #onready var timer = $Timer
 #onready var _debug =get_tree().get_root().get_node("/root/Debug")
 
-var os = Globals.os # Pointer
+var os = Globalss.os # Pointer
 
 onready var UI_buttons  = [ # : Array
 	play_button, #dialgue_box, 
@@ -54,7 +54,7 @@ func _ready():
 #	if _debug != null:
 #		_debug = get_tree().get_root().get_node("/root/Debug")
 
-	dialgue_box.hide_dialogue()
+	#dialgue_box.hide_dialogue()
 
 	# Load Users Prefered DIalogue 
 	Utils.Functions.load_user_data('languague')
@@ -135,20 +135,21 @@ func _on_play_pressed():
 #"""
 # To DO: Port to Individual Platform Singletons
 func _check_if_device_is_online(): 
-	if os == 'Android' or 'iOS' or 'X11': #disable x11 for release build
-		index = index + 1
-		dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
-		#Networking.url = 
-		Networking._check_connection( 'https://mfts.io', Networking)#url('https://play.google.com/store/apps/details?id=dystopia.app')
+	#if os == 'Android' or 'iOS' or 'X11': #disable x11 for release build
+	#	index = index + 1
+	#	dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
+	#	#Networking.url = 
+	#	Networking._check_connection( 'https://mfts.io', Networking)#url('https://play.google.com/store/apps/details?id=dystopia.app')
+	print("Form.gd line 139 >> Port to Individual Platform singletons")
 
-
+#"Checks if device is online and handles it"
 func _http_request_completed(result, response_code, headers, body):
 	if body.empty() != true:
 		show_play_button()
 		
 		Networking.good_internet = true #aves the internet status as a global variable
 		
-		dialgue_box.show_dialog('Device is internet connected','Admin')
+		#dialgue_box.show_dialog('Device is internet connected','Admin')
 		print ('Device is internet connected', result, response_code)
 		return
 	# Loop
@@ -158,30 +159,30 @@ func _http_request_completed(result, response_code, headers, body):
 		_check_if_device_is_online()
 		#if _debug != null:
 		
-		get_tree().change_scene_to( _debug.error_splash_page)
+		#get_tree().change_scene_to( _debug.error_splash_page)
 		
 		#Resets Networking node
 		Networking.stop_check()
 		# Error splash page
 		if index == 10:
 			#dialgue_box.show_dialog('No Internet Connection','Admin') #not needed
-			get_tree().change_scene_to(_debug.error_splash_page)
+			#get_tree().change_scene_to(_debug.error_splash_page)
 			break
 
 
 func show_play_button() :
 	play_button.show()
-	label_spacer.show()
-	label_spacer3.show()
-	label_spacer2.hide()
+	#label_spacer.show()
+	#label_spacer3.show()
+	#label_spacer2.hide()
 	
 	#dialgue_box.hide()
 
 func hide_play_button():
 	play_button.hide()
-	label_spacer.hide()
-	label_spacer3.hide()
-	label_spacer2.show()
+	#label_spacer.hide()
+	#label_spacer3.hide()
+	#label_spacer2.show()
 
 #"""
 #TRANSLATES THE ENTIRE APP TO ONE OF THE PRESELECTED lANGUAGUES INDICATED

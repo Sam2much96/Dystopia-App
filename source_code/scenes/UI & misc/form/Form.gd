@@ -24,13 +24,14 @@ class_name Login
 """
 This is a gate-keeper script to keep check user's internet connections, restrict their access
 """
+var film : String = Globals.global_scenes["cinematics"]
 
-onready var cinematics : PackedScene = load(Globals.global_scenes["cinematics"])
+onready var cinematics : PackedScene = load(film)
 var index : int = 0
 
 onready var play_button : Button = $ui/grid/play
 onready var dialgue_box = $Dialog_box
-onready var language = $ui/grid/language
+onready var language : OptionButton = $ui/grid/language
 
 ########Label Spacer Codes Are Used For Aesthetics#########
 onready var label_spacer = $ui/grid/label_spacer

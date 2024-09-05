@@ -46,7 +46,7 @@ class_name music_singleton
 # Music COntrol Settings
 #var Music_on_settings : int = 0
 
-@export var music_track = "" # (String, FILE, "*.ogg")
+@export var music_track : String = "" # (String, FILE, "*.ogg")
 
 var default_playlist : Dictionary ={
 	0:"res://music/310-world-map-loop.ogg",
@@ -171,16 +171,16 @@ and applies a low pass filter when the game is paused. Nothing too wise
 var music_debug =''
 @onready var current_track
 
-@onready var music_bus_2 = AudioServer.get_bus_index($B.bus)
-@onready var music_bus = AudioServer.get_bus_index($A.bus)
-
-
 @onready var A : AudioStreamPlayer = $A
 @onready var B : AudioStreamPlayer = $B
 @onready var C : AudioStreamPlayer = $C
 @onready var D : AudioStreamPlayer = $D 
 
-@onready var requests : HTTPRequest = $HTTPRequest
+@onready var music_bus_2 = AudioServer.get_bus_index(B.bus)
+@onready var music_bus = AudioServer.get_bus_index(A.bus)
+
+
+@onready var requests : HTTPRequest = $HTTPRequest # for downloading musio files
 @onready var timer : Timer #= $Timer
 
 
@@ -262,7 +262,7 @@ func _ready():
 
 
 
-func _process(delta):
+func _process(_delta):
 	
 	#_music_debug()
 	

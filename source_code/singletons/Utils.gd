@@ -285,8 +285,8 @@ class Functions extends RefCounted:
 		
 		print_debug ("-------Saving Game -------")
 		var save_dict : Dictionary = {}
-		var save_game : FileAccess = Utils.file 
-		save_game.open("user://savegeme.save", FileAccess.WRITE_READ)
+		var _save_game : FileAccess = Utils.file 
+		_save_game.open("user://savegeme.save", FileAccess.WRITE_READ)
 		if !player.is_empty():
 			save_dict.player = player #saves the player node 
 		if spawn_x != 0:
@@ -331,8 +331,8 @@ class Functions extends RefCounted:
 		# Vibration
 		save_dict.vibrate = GlobalInput.vibrate
 		
-		save_game.store_line(JSON.new().stringify(save_dict))
-		save_game.close()
+		_save_game.store_line(JSON.new().stringify(save_dict))
+		_save_game.close()
 		print ("saved gameplay")
 		print_debug("Save GamePlay Is Buggy in v 4.2 port")
 		return false

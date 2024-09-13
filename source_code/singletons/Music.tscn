@@ -140,6 +140,4 @@ libraries = {
 "": SubResource("AnimationLibrary_u7p04")
 }
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
-
 [connection signal="finished" from="A" to="." method="_on_A_finished"]

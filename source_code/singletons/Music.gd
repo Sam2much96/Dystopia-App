@@ -310,7 +310,7 @@ func _music_debug(): #Breaks
 func play(_stream: String):
 	#kinda works
 	#it bugs out when the music track node is added to a scene
-	if _stream != null or !stream.is_empty(): #null error
+	if _stream != null or !_stream.is_empty(): #null error
 		if current_track == "a":
 			B.stream = load(_stream) #invalid funtion load, cannot convert arguement from nil to string
 			transitions.play("AtoB")

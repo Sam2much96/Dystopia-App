@@ -26,10 +26,8 @@ extends Control
 
 class_name Game_Menu
 
-var selector = 0
 signal menu_hidden
 signal menu_showing
-signal loading_game
 export (bool) var enabled 
 
 #var shop = load('res://scenes/UI & misc/Shop.tscn')
@@ -65,9 +63,11 @@ var scroller : ScrollContainer
 
 var MenuButtons : Array = []
 
-var initialScale : Vector2 =self.get_scale()
-export (Vector2) var newScale : Vector2 = Vector2(2,2)
+#var initialScale : Vector2 =self.get_scale()
+#export (Vector2) var newScale : Vector2 = Vector2(2,2)
 
+onready var _ui_sfx : String = Music.ui_sfx[0]
+onready var _ui_sfx_1 : String = Music.ui_sfx[1]
 
 func _ready():
 	
@@ -145,7 +145,7 @@ func _input(event):
 		if menu_state == HIDDEN:
 			menu_state = SHOWING
 			set_focus_mode(Control.FOCUS_CLICK)
-			Music.play_track(Music.ui_sfx.get(0))
+			Music.play_track(_ui_sfx)
 			
 			return menu_state
 		if menu_state== SHOWING:
@@ -164,7 +164,7 @@ func _input(event):
 
 func _on_continue_pressed():
 	print_debug("continue game pressed")
-	Music.play_track(Music.ui_sfx[0])
+	Music.play_track(_ui_sfx)
 	#Utils.Functions.load_game(false, Globals)
 	if Globals.current_level != null:
 		
@@ -183,7 +183,7 @@ func _on_continue_pressed():
 		
 
 	else:
-		$ScrollContainer/HSeparator/continue.hide()
+		continue_game.hide()
 		push_error("Error: current_level shouldn't be empty")
 	pass # Replace with function body.
 
@@ -224,7 +224,7 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 			Globals.direction_control 
 			) == false: push_error("Error saving game")
 
-		Music.play_track(Music.ui_sfx.get(0)) #plays ui sfx in a loop
+		Music.play_track(_ui_sfx) #plays ui sfx in a loop
 		return 0
 
 #Handles Displaying the menu
@@ -270,31 +270,31 @@ func _menu_pause_and_play(boolean): #pass it a boolean to custom pause and play
 
 func _on_comics_pressed():
 	print_debug ('comics pressed')
-	Music.play_track(Music.ui_sfx[0])
+	Music.play_track(_ui_sfx)
 	Utils.Functions.change_scene_to(Globals.comics___2, get_tree())
 
 func _on_controls_pressed():
-	Music.play_track(Music.ui_sfx[0])
+	Music.play_track(_ui_sfx)
 	return Utils.Functions.change_scene_to(Globals.controls, get_tree())
 
 
 func _on_quit_pressed():
 	if get_tree().get_current_scene().get_name() == 'Menu': # Title Screen Custom Quit
-		Music.play_track(Music.ui_sfx[1])
+		Music.play_track(_ui_sfx_1)
 		get_tree().quit()
 	
 	if get_tree().get_current_scene().get_name() == 'form': # Mutiplayer Login Custom Quit
-		Music.play_track(Music.ui_sfx[1])
+		Music.play_track(_ui_sfx_1)
 		get_tree().quit()
 	else:
-		Music.play_track(Music.ui_sfx[1])
+		Music.play_track(_ui_sfx_1)
 		#Globals.memory_leak_management()
 		#Utils.Functions.change_scene_to(Globals.title_screen, get_tree())
 		Globals._go_to_title()
 
 
 func _on_multiplayer_pressed(): # Experimental feature
-	Music.play_track(Music.ui_sfx[0])
+	Music.play_track(_ui_sfx)
 	return get_tree().change_scene_to(load ('res://scenes/multiplayer/login.tscn'))
 
 func _exit_tree():
@@ -314,12 +314,12 @@ func _exit_tree():
 
 
 func _on_anime_pressed():
-	Music.play_track(Music.ui_sfx[0])
+	Music.play_track(_ui_sfx)
 	return get_tree().change_scene_to((load('res://scenes/UI & misc/Shop.tscn')))
 
 
 func _on_wallet_pressed():
-	Music.play_track(Music.ui_sfx[0])
+	Music.play_track(_ui_sfx)
 	return get_tree().change_scene_to((load('res://scenes/Wallet/Wallet main.tscn')))
 
 

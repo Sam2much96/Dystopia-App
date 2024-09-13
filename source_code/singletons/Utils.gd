@@ -87,8 +87,8 @@ class Zip extends Reference:
 				#for t in gdunzip.files.keys():
 				#	print ("Type of " + f['file_name'] + " ",typeof(gdunzip.get_compressed(t))) # for debug purposes only
 				
-					Networking.save_file_(unziped_file, concat, file_size)
-
+					FileCheck1 = Networking.save_file_(unziped_file, concat, file_size)
+					print_debug("File Debug: ",FileCheck1.get_len())
 
 				# "compression_method" will be either -1 for uncompressed data, or
 				# File.COMPRESSION_DEFLATE for deflate streams
@@ -348,18 +348,20 @@ class Functions extends Reference:
 		check_only = false
 		print ("-------Loading Game -------")
 		var save_game : File = Utils.file #= File.new()
-		
+		var save_dict : Dictionary
 		
 		if not save_game.file_exists("user://savegeme.save"):
 			return false
-		save_game.open("user://savegeme.save", File.READ)
-		var save_dict : Dictionary = parse_json(save_game.get_line())
-		if typeof(save_dict) != TYPE_DICTIONARY:
-			return false
-		if not check_only:
-			_restore_data(save_dict, GlobalScript)
+		var err = save_game.open("user://savegeme.save", File.READ)
+		if err == OK:
 		
-		save_game.close()
+			save_dict = parse_json(save_game.get_line())
+			if typeof(save_dict) != TYPE_DICTIONARY:
+				return false
+			if not check_only:
+				_restore_data(save_dict, GlobalScript)
+		
+			save_game.close()
 		return true
 
 	"""

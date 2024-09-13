@@ -22,8 +22,10 @@ extends Area
 class_name Exit3D
 
 """
-Add this to any area2d and it will send the player to the indicated scene and spawnpoint
+Add this to any area3d and it will send the player to the indicated scene and spawnpoint
 """
+export(bool) var Enabled
+
 
 export(String, FILE, "*.tscn") var to_scene
 export(String) var spawnpoint = ""

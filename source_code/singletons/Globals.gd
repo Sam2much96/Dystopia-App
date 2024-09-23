@@ -173,10 +173,11 @@ func update_curr_scene() -> void:
 
 
 func _go_to_title():
+	update_curr_scene()
 	'Quits if already at title screen'
-	if get_tree().get_current_scene().get_name() == 'Menu':
+	if curr_scene == 'Menu':
 		get_tree().quit()
-	Music.play_track(Music.ui_sfx[1])
+	#Music.play_track(Music.ui_sfx[1])
 	
 	'changes scene to title_screen'
 	title = load(global_scenes["title"])

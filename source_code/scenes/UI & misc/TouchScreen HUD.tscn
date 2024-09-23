@@ -1,7 +1,8 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Joystick circle.tscn" type="PackedScene" id=1]
 [ext_resource path="res://resources/Buttons/menu white.png" type="Texture" id=2]
+[ext_resource path="res://scenes/UI & misc/ActionButtons.gd" type="Script" id=3]
 [ext_resource path="res://scenes/UI & misc/TouchScreenHud.gd" type="Script" id=4]
 [ext_resource path="res://scenes/UI & misc/joystick v2.gd" type="Script" id=5]
 [ext_resource path="res://resources/misc/btn-hands.png" type="Texture" id=6]
@@ -738,6 +739,7 @@ position = Vector2( 6, 44 )
 scale = Vector2( 0.607283, 0.565069 )
 normal = ExtResource( 2 )
 action = "menu"
+visibility_mode = 1
 
 [node name="Control" type="Control" parent="."]
 anchor_bottom = 1.0
@@ -783,6 +785,7 @@ margin_left = -149.076
 margin_top = 999.425
 margin_right = -149.076
 margin_bottom = 999.425
+script = ExtResource( 3 )
 
 [node name="slash" type="TouchScreenButton" parent="Control/ActionButtons"]
 position = Vector2( 1014.57, 361.592 )
@@ -869,12 +872,14 @@ visible = false
 position = Vector2( 0, 0 )
 shape = SubResource( 2 )
 shape_centered = false
+visibility_mode = 1
 circle_size = 80
 
 [node name="joystick_circle2" parent="Joystick" instance=ExtResource( 1 )]
 visible = false
 modulate = Color( 1, 1, 1, 0.454902 )
 position = Vector2( 0, 4 )
+visibility_mode = 1
 circle_size = 156
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

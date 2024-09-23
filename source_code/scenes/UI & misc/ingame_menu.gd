@@ -150,7 +150,7 @@ func _input(event):
 			return menu_state
 		if menu_state== SHOWING:
 			menu_state = HIDDEN
-			#Music.play_track(Music.ui_sfx[1])
+			Music.play_track(Music.ui_sfx[1])
 			return menu_state
 
 #input functions for gamepad

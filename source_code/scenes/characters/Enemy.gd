@@ -442,8 +442,11 @@ func _on_hurtbox_area_entered(area):
 		move_and_slide( pushback_direction *   kick_back_distance) # Flies back at a random distance
 		state = STATE_HURT
 		blood = Globals.blood_fx.instance()
-		get_parent().add_child(blood) # Instances Blood FX
+		#get_parent().add_child(blood) # Instances Blood FX
+		
+		get_parent().call_deferred("add_child", blood)
 		blood.global_position = global_position # Makes the fx position global?
+		
 		
 		#$state_changer.start() # Disabled Random State Changer For Debugging
 		

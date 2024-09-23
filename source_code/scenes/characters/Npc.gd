@@ -14,7 +14,8 @@
 # TO do:
 # (1) Copy Mob code from enemy and implement it for NPC to follow Player (Done)
 # (2) Add walking Animation
-# (3) Implement Navigation AI
+# (3) Connect to Navigation AI Server using tween
+# (4) Fetch NPC DIalogue from CSV file
 # *************************************************
 
 
@@ -28,27 +29,27 @@ which should be an instance of Quest.gd it'll become a quest giver and show what
 text Quest.process() returns
 """
 
-export (bool)var active
+export (bool) var active # Turns NPC Node ON / OFF
 
 export(String) var character_name = "Nameless NPC"
 export(Array, String, MULTILINE) var dialogs = ["..."]
 var current_dialog = 0
-
-
-var Kinematic_Body : KinematicBody2D = get_parent()
 var root : Node2D = get_parent()
 
-var __body : Player
+
+onready var Kinematic_Body : KinematicBody2D = self
+
+onready var __body : Player
 
 onready var npc : Area2D = $NPC
 
-# AI API fetches Prompt from server
-onready var _AI : Llama2API = $AI
+onready var simulation_ = get_node_or_null("/root/Simulation")
 
-var frame_counter : int = 0
+
 
 func _ready():
 	if active:
+		
 		Utils._randomize(self)
 		
 		# Adds a Kinematic Body for Move and SLide
@@ -62,19 +63,16 @@ func _ready():
 			# warning-ignore:return_value_discarded
 			npc.connect("body_exited", self, "_on_NPC_body_exited")
 
-	#print_debug(_AI.name)
+	
 
 
 func _process(delta : float):
 	
 	if active:
-		frame_counter += 1
 		
-		# stops interger overflow from frame counter variable 
-		if frame_counter >= 1000: frame_counter = 0 # Reset frame counter
 		
 		# calculated every 5th frame
-		if frame_counter % 5 == 0:
+		if simulation_.frame_counter % 5 == 0:
 			
 			if __body != null:
 			 
@@ -91,15 +89,18 @@ func _process(delta : float):
 				# Follow Player
 				move_and_slide( Behaviour.EscapePlayer(self, __body))
 				
-				pass
+
 		
+		"""
+		Sets Custom NPC Dialogue
+		"""
 		# Fetched Durrent Dialouge from AI Prompy
-		if frame_counter % 10 == 0 && _AI != null &&_AI.output != "":
-			if not dialogs.has(_AI.output):
-				current_dialog = 0
-				dialogs[current_dialog] =_AI.output
-				#print_debug(dialogs[current_dialog])
-			else : pass
+		#if frame_counter % 10 == 0 && _AI != null &&_AI.output != "":
+		#	if not dialogs.has(_AI.output):
+		#		current_dialog = 0
+		#		dialogs[current_dialog] =_AI.output
+		#		#print_debug(dialogs[current_dialog])
+		#	else : pass
 
 
 func _input(event):

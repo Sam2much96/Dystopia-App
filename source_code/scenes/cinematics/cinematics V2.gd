@@ -148,7 +148,7 @@ func _go_to_title() -> void:
 	
 	if local_globals.curr_scene == 'Cinematics': #I use this bool to define two states
 		local_globals._go_to_title()
-
+		#animation.play("titlescreen")
 
 func play_opening_cinematic() -> int :
 	#Plays the opening cinematic 

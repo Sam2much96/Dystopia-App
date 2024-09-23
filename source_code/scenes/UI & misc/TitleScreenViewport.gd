@@ -15,6 +15,18 @@ extends Viewport
 export (ViewportTexture )var viewport_image : ViewportTexture = get_texture()
 #onready var image : image
 
+onready var model = $Spatial
+const SPEED = 30
+
 func _ready():
+
 	#get_parent().get_node("Sprite").set_texture(viewport_image)
 	get_parent().set_texture(viewport_image)
+
+
+
+
+func _process(delta):
+	# auto rotate
+	model.rotation_degrees.y += delta * SPEED
+	

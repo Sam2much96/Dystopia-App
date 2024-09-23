@@ -180,9 +180,24 @@ func _go_to_title():
 	#Music.play_track(Music.ui_sfx[1])
 	
 	'changes scene to title_screen'
-	title = load(global_scenes["title"])
+	# Refactoring to use Large Level Scene Loader
+	#title = load(global_scenes["title"])
 	
-	Utils.Functions.change_scene_to(title, get_tree())#get_tree().change_scene()
+	
+	"Loads Large Scene"
+	
+	Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
+	global_scenes["title"], 
+	scene_resource, 
+	_o, 
+	scene_loader, 
+	loading_resource, 
+	a, 
+	b, 
+	progress
+	), get_tree())
+	
+	#Utils.Functions.change_scene_to(title, get_tree())#get_tree().change_scene()
 	return 0
 
 func _go_to_cinematics():

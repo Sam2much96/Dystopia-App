@@ -75,7 +75,7 @@ func _ready():
 
 	$ScrollContainer/VBoxContainer/back.grab_focus() #Back button grabs focus
 
-	$TextureRect.hide()
+	#$TextureRect.hide()
 
 
 	if Globals.screenOrientation == 1 && Globals.os == "Android":

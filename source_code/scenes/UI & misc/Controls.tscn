@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Controls.gd" type="Script" id=1]
 [ext_resource path="res://scenes/UI & misc/Help.tscn" type="PackedScene" id=2]
 [ext_resource path="res://fonts/scroll_bar_theme.tres" type="Theme" id=3]
-[ext_resource path="res://scenes/Comics/chapter 4/Cover 2.webp" type="Texture" id=4]
 [ext_resource path="res://scenes/UI & misc/generic_joystick_ui_selector.gd" type="Script" id=6]
 [ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=8]
 [ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=14]
@@ -18,31 +17,14 @@ __meta__ = {
 "_edit_horizontal_guides_": [  ]
 }
 
-[node name="TextureRect" type="TextureRect" parent="."]
-margin_left = 74.065
-margin_top = -5.66075
-margin_right = 3098.06
-margin_bottom = 3230.34
-rect_rotation = -1.54681
-rect_scale = Vector2( 0.277108, 0.190609 )
-
-[node name="TextureRect2" type="TextureRect" parent="."]
-margin_left = 236.512
-margin_top = -59.7258
-margin_right = 1516.51
-margin_bottom = 1714.27
-rect_rotation = 0.411034
-rect_scale = Vector2( 0.433765, 0.433765 )
-texture = ExtResource( 4 )
-
 [node name="ColorRect" type="ColorRect" parent="."]
+visible = false
 margin_top = -321.0
 margin_right = 1064.0
 margin_bottom = 1185.0
 color = Color( 1, 1, 1, 0.611765 )
 
 [node name="Help popup" type="Popup" parent="."]
-visible = true
 margin_right = 1285.0
 margin_bottom = 741.0
 script = ExtResource( 14 )

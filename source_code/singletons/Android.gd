@@ -60,8 +60,10 @@ func _ready():
 		print_debug("Device Is Mobile Browser")
 		_debug.misc_debug += "Device is Mobile Browser"
 		_is_android = true
+		
 	if _globals.os != "Android":
 		_is_android = false
+		push_warning("Device Is Not Android!")
 		self.set_process(false)
 		self.set_physics_process(false)
 	

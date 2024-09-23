@@ -557,7 +557,7 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 		
 		# MMO SImulation requires other player Targets
 
-
+"Enemy Collision Hit Detection & STATE "
 
 class Enemy_ extends Reference:
 	
@@ -686,3 +686,72 @@ class Enemy_ extends Reference:
 		#if raycast.is_enabled() == false && player == null:
 		#	#use state changer timer to turn off processing
 		#	push_error ('Debug Enenmy Behaviour Check')
+
+	static func hit_collision_detected(
+		area : Area2D, 
+		state : int, 
+		hitpoints : int, 
+		pushback_direction : Vector2, 
+		_body : Enemy,
+		_global_position : Vector2,
+		kick_back_distance : int
+		):
+		# Features
+		# (1) Hit Detection
+		# (2) Hit Registration
+		# (3) RPC Call for multiplayer mesh
+		print_debug("Fix ENemy Player Collision Spammer")
+		if not state == STATE_DIE && area.name == "player_sword": #if it's not dead and it's hit by the player"s sword collisssion
+			print_debug("Enemy Struck, Implement Make RPC CAll if error > 0")
+			_body.hitpoints -= 1
+			Music.play_sfx(Music.hit_sfx) # Plays sfx from the Music singleton
+			#print_debug ("enemy hitpoint: "+ str(hitpoints))# for debug purposes only
+			pushback_direction = (_global_position - area.global_position).normalized()
+			_body.move_and_slide( pushback_direction *   kick_back_distance) # Flies back at a random distance
+			state = STATE_HURT
+			var blood = Globals.blood_fx.instance()
+			#get_parent().add_child(blood) # Instances Blood FX
+			
+			_body.get_parent().call_deferred("add_child", blood)
+			blood.global_position = _global_position # Makes the fx position to the Kinematic object position
+			
+
+
+class Player_ extends Reference:
+	
+	# DUplicate of Player States
+	enum { 
+	STATE_BLOCKED, STATE_IDLE, STATE_WALKING, 
+	STATE_ATTACK, STATE_ROLL, STATE_DIE, 
+	STATE_HURT, STATE_DANCE 
+	}
+		
+	static func hit_collision_detected(
+		area : Area2D, 
+		state : int, 
+		hitpoints : int, 
+		_body : Player,
+		_global_position : Vector2
+		):
+		
+		if state != STATE_DIE and area.is_in_group("enemy_weapons"):
+			_body.hitpoints -= 1
+			_body.emit_signal("health_changed", _body.hitpoints)
+			#
+			# Kick back code for Top DOwn Player script
+			# Temporarily disabling for debugging
+			#
+			#var pushback_direction = (global_position - area.global_position).normalized()
+			#move_and_slide( pushback_direction * pushback)
+			
+			_body.state = STATE_HURT
+			var blood = Globals.blood_fx.instance()
+			blood.global_position = _global_position
+			_body.get_parent().add_child(blood)
+			
+			Music.play_track(Music.nokia_soundpack[20]) # Hurt Sound Track
+			
+			if _body.hitpoints <= 0:
+				_body.state = STATE_DIE
+				Music.play_track(Music.nokia_soundpack[27]) # Death Sound Track
+		#pass

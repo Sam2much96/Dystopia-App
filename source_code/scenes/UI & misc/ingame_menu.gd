@@ -69,6 +69,9 @@ var MenuButtons : Array = []
 onready var _ui_sfx : String = Music.ui_sfx[0]
 onready var _ui_sfx_1 : String = Music.ui_sfx[1]
 
+const newScale = Vector2 (2,2)
+const initialScale = Vector2(1,1)
+
 func _ready():
 	
 	# Make Global

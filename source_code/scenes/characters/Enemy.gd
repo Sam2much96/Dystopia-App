@@ -133,6 +133,7 @@ var despawn_particles
 var blood : BloodSplatter
 
 var kick_back_distance : int 
+var pushback_direction : Vector2
 
 func _enter_tree():
 	# Create A Global reference to self
@@ -432,20 +433,30 @@ func _get_player() -> Player :
 # Bugs:
 # (1) Triggers Prematurely by Spawn Area 
 func _on_hurtbox_area_entered(area):
-	print_debug("Fix ENemy Player Collision Spammer")
-	if not state == STATE_DIE && area.name == "player_sword": #if it's not dead and it's hit by the player"s sword collisssion
-		print_debug("Enemy Struck, Implement Make RPC CAll if error > 0")
-		hitpoints -= 1
-		Music.play_sfx(Music.hit_sfx) # Plays sfx from the Music singleton
-		#print_debug ("enemy hitpoint: "+ str(hitpoints))# for debug purposes only
-		var pushback_direction = (global_position - area.global_position).normalized()
-		move_and_slide( pushback_direction *   kick_back_distance) # Flies back at a random distance
-		state = STATE_HURT
-		blood = Globals.blood_fx.instance()
-		#get_parent().add_child(blood) # Instances Blood FX
-		
-		get_parent().call_deferred("add_child", blood)
-		blood.global_position = global_position # Makes the fx position global?
+	Simulation.Enemy_.hit_collision_detected(
+		area, 
+		state, 
+		hitpoints, 
+		pushback_direction, 
+		self,
+		global_position,
+		kick_back_distance
+		)
+	
+	#print_debug("Fix ENemy Player Collision Spammer")
+	#if not state == STATE_DIE && area.name == "player_sword": #if it's not dead and it's hit by the player"s sword collisssion
+	#	print_debug("Enemy Struck, Implement Make RPC CAll if error > 0")
+	#	hitpoints -= 1
+	#	Music.play_sfx(Music.hit_sfx) # Plays sfx from the Music singleton
+	#	#print_debug ("enemy hitpoint: "+ str(hitpoints))# for debug purposes only
+	#	var pushback_direction = (global_position - area.global_position).normalized()
+	#	move_and_slide( pushback_direction *   kick_back_distance) # Flies back at a random distance
+	#	state = STATE_HURT
+	#	blood = Globals.blood_fx.instance()
+	#	#get_parent().add_child(blood) # Instances Blood FX
+	#	
+	#	get_parent().call_deferred("add_child", blood)
+	#	blood.global_position = global_position # Makes the fx position global?
 		
 		
 		#$state_changer.start() # Disabled Random State Changer For Debugging

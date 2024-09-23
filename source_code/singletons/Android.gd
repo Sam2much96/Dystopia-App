@@ -23,7 +23,7 @@ var TouchInterface : TouchScreenHUD
 
 var ingameMenu : Game_Menu
 
-export (bool) var _is_android  
+export (bool) var _is_android = true
 
 # To reduce memory over write of Global scerenn orientation integer unless necessary
 # and reduce memory calls between singletons unless necessary
@@ -31,7 +31,12 @@ var local_screen_orientation : int
 onready var initial_screen_orientation : int = Utils.Screen.Orientation() # for comparison
 
 # Get Debug Singleton for Debugging
-onready var _debug : Debug = get_node("/root/Debug")
+onready var _debug = get_node("/root/Debug")
+
+# SImulation SIngleton Pointer
+onready var _simulation = get_node("/root/Simulation")
+
+onready var _globals = get_node("/root/Globals")
 
 func _ready():
 	
@@ -43,22 +48,24 @@ func _ready():
 	# (2) Enable on Native ANdroid
 	#(3) Enable on Mobile Browser
 	
-	if Globals.os == "Android": # Android Native
+	if _globals.os == "Android": # Android Native
 		_is_android = true
+		
+		
 		#initial_screen_orientation = Utils.Screen.Orientation()
-	if Globals.os == "HTML5" && initial_screen_orientation == 1: # Mobile Browser
+	if _globals.os == "HTML5" && initial_screen_orientation == 1: # Mobile Browser
 		# Check Screen Dimensions to estimate if it is a mobile browser
 		#initial_screen_orientation = Utils.Screen.Orientation()
 		#if initial_screen_orientation == 0: # Vertical Screen is 1, it's set to 0 for local testing
 		print_debug("Device Is Mobile Browser")
 		_debug.misc_debug += "Device is Mobile Browser"
 		_is_android = true
-	else:
+	if _globals.os != "Android":
 		_is_android = false
 		self.set_process(false)
 		self.set_physics_process(false)
 	
-	print_debug("Android :", _is_android)
+	print_debug("Android :", _is_android, "/", _globals.os)
 	
 
 func is_android() -> bool:
@@ -67,7 +74,7 @@ func is_android() -> bool:
 	
 	return _is_android
 
-func _process(_delta):
+func _process(delta):
 	
 	
 	" Rain Fx Optimizations "
@@ -89,23 +96,23 @@ func _process(_delta):
 	RAIN FX OPTIMIZATION
 	"""
 	
-	if Simulation.frame_counter % 200 == 0 && is_instance_valid(Simulation.rainFX): 
+	if _simulation.frame_counter % 200 == 0 && is_instance_valid(_simulation.rainFX): 
 
 		# Rain Logic In A Single Function
-		if Debug.fps_debug_() > MINUMUM_FPS:
-			Simulation.rainFX.emitting = true
+		if _debug.fps_debug_() > MINUMUM_FPS:
+			_simulation.rainFX.emitting = true
 			#print ('Emitting Rain Particles') #-introducees a bug
 			
 		#if !enable:
 		#	rain_particles.emitting = false
 		
-		if  Debug.fps_debug_() < MINUMUM_FPS:
-			Simulation.rainFX.emitting = false
+		if  _debug.fps_debug_() < MINUMUM_FPS:
+			_simulation.rainFX.emitting = false
 
 		
 		# Attempt to Update GLobal screen orientation
-		if Globals.screenOrientation != local_screen_orientation:
-			Globals.screenOrientation  = local_screen_orientation
+		if _globals.screenOrientation != local_screen_orientation:
+			_globals.screenOrientation  = local_screen_orientation
 	
 		if local_screen_orientation == 0: #.SCREEN_HORIZONTAL:
 			Simulation.rainFX.lifetime = Short_lifetime
@@ -141,12 +148,12 @@ func _process(_delta):
 	# (1) Checks Device  Screen orentation
 	# (2) Sets the Global Script for Screen Orientation
 	#(3) This ALgorithm should be run periodically on a separate device like mobile every 100th frame
-	if Simulation.frame_counter % 250 == 0:
+	if _simulation.frame_counter % 250 == 0:
 		# update local screen orientation 
 		local_screen_orientation = Utils.Screen.Orientation()
 	
 	# Sets Screen Orientation 
-	if Simulation.frame_counter % 120 == 0 && is_instance_valid(TouchInterface):
+	if _simulation.frame_counter % 120 == 0 && is_instance_valid(TouchInterface):
 		
 		# compare previous orientation and adjust hud
 		#if local_screen_orientation != initial_screen_orientation:
@@ -158,7 +165,7 @@ func _process(_delta):
 
 		#elif local_screen_orientation == initial_screen_orientation:
 		#	pass
-	if Simulation.frame_counter % 130 == 00 && is_instance_valid(ingameMenu):
+	if _simulation.frame_counter % 130 == 00 && is_instance_valid(ingameMenu):
 		"""
 		
 		UPSCALING && DOWNSCALING MENU

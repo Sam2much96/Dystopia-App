@@ -41,6 +41,9 @@ var list: Array = ["player_sword", "enemy_sword"]
 
 var similar_names : Array = [] #list comparer
 
+onready var _music_singleton = get_node_or_null("/root/Music")
+onready var _grass_sfx : String = _music_singleton.grass_sfx.get(0)
+
 func _ready():
 	#anim.play("idle",-1,1.0,0.0) 
 	
@@ -82,7 +85,7 @@ func _destroy_if (area: Array)-> void: # Works
 			anim.play("destroy")
 			
 			
-			Music.play_track(Music.grass_sfx[0])
+			_music_singleton.play_track(_grass_sfx)
 			#queue_free()
 			
 			# Spawn Item If able to
@@ -141,7 +144,8 @@ func debug_grass( area_name : String)-> void:
 func destroy():
 	# Exported Destroy FUnction for Scenetree Objects
 	anim.play("destroy")
-	Music.play_track(Music.grass_sfx[0])
+	#Music.play_track(Music.grass_sfx[0])
+	_music_singleton.play_track(_grass_sfx)
 
 func _auto_delete():
 	# An Autodelete method called in the Destroy Animation as an animated function

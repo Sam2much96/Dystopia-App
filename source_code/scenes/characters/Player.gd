@@ -136,7 +136,8 @@ func despawn():
 	if is_instance_valid(despawn_particles) : # Check if the desapawn particle is available
 		despawn_particles.global_position = global_position
 	
-	blood.global_position = global_position
+	if is_instance_valid(blood) : # Check if the blood particle is available
+		blood.global_position = global_position
 	
 	
 	

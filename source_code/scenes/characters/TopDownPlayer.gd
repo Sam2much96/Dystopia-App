@@ -68,29 +68,36 @@ func _physics_process(delta):
 
 
 func _on_hurtbox_area_entered(area):
-	"""Enemy Weapon Collision"""
+	"""Player Hit Collision Detection"""
+	Simulation.Player_.hit_collision_detected(
+		area , 
+		state, 
+		hitpoints, 
+		self,
+		global_position
+		)
 	
-	if state != STATE_DIE and area.is_in_group("enemy_weapons"):
-		hitpoints -= 1
-		emit_signal("health_changed", hitpoints)
-		#
-		# Kick back code for Top DOwn Player script
-		# Temporarily disabling for debugging
-		#
-		#var pushback_direction = (global_position - area.global_position).normalized()
-		#move_and_slide( pushback_direction * pushback)
-		
-		state = STATE_HURT
-		var blood = Globals.blood_fx.instance()
-		blood.global_position = global_position
-		get_parent().add_child(blood)
-		
-		Music.play_track(Music.nokia_soundpack[20])
-		
-		if hitpoints <= 0:
-			state = STATE_DIE
-			Music.play_track(Music.nokia_soundpack[27])
-	pass
+	#if state != STATE_DIE and area.is_in_group("enemy_weapons"):
+	#	hitpoints -= 1
+	#	emit_signal("health_changed", hitpoints)
+	#	#
+	#	# Kick back code for Top DOwn Player script
+	#	# Temporarily disabling for debugging
+	#	#
+	#	#var pushback_direction = (global_position - area.global_position).normalized()
+	#	#move_and_slide( pushback_direction * pushback)
+	#	
+	#	state = STATE_HURT
+	#	var blood = Globals.blood_fx.instance()
+	#	blood.global_position = global_position
+	#	get_parent().add_child(blood)
+	#	
+	#	Music.play_track(Music.nokia_soundpack[20])
+	#	
+	#	if hitpoints <= 0:
+	#		state = STATE_DIE
+	#		Music.play_track(Music.nokia_soundpack[27])
+	#pass
 
 func facing_logic(node : Player, peed_id : int):
 	# Called in the Input Process

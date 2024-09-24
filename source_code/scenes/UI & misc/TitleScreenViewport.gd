@@ -16,7 +16,8 @@ export (ViewportTexture )var viewport_image : ViewportTexture = get_texture()
 #onready var image : image
 
 onready var model = $Spatial
-const SPEED = 30
+const SPEED = 20
+
 
 func _ready():
 
@@ -29,4 +30,8 @@ func _ready():
 func _process(delta):
 	# auto rotate
 	model.rotation_degrees.y += delta * SPEED
-	
+
+func _exit_tree():
+	model.queue_free()
+	self.queue_free()
+	self.queue_free()

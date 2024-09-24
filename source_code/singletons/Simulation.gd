@@ -704,6 +704,7 @@ class Enemy_ extends Reference:
 		if not state == STATE_DIE && area.name == "player_sword": #if it's not dead and it's hit by the player"s sword collisssion
 			print_debug("Enemy Struck, Implement Make RPC CAll if error > 0")
 			_body.hitpoints -= 1
+			
 			Music.play_sfx(Music.hit_sfx) # Plays sfx from the Music singleton
 			#print_debug ("enemy hitpoint: "+ str(hitpoints))# for debug purposes only
 			pushback_direction = (_global_position - area.global_position).normalized()
@@ -748,7 +749,7 @@ class Player_ extends Reference:
 			var blood = Globals.blood_fx.instance()
 			blood.global_position = _global_position
 			_body.get_parent().add_child(blood)
-			
+			Globals.player_cam.shake()
 			Music.play_track(Music.nokia_soundpack[20]) # Hurt Sound Track
 			
 			if _body.hitpoints <= 0:

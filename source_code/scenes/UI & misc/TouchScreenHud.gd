@@ -140,16 +140,19 @@ func _ready():
 	
 	if Android.is_android() == false:
 		self.hide()
+		enabled = false
 	if Android.is_android() == true: 
 		self.show()
 		print_debug("Showing Touch Interface")
 	if Globals.os == "Android":
 		self.show()
+		enabled = true
 	if Globals.os == "HTML5" && Utils.initial_screen_orientation == 0: # Mobile Browser
 		self.show()
+		enabled = true
 	#self.hide() if not Android.is_android() else print_debug("Showing Touch Interface")
 	
-	enabled = Android.is_android()
+	#enabled = Android.is_android()
 	
 	
 	

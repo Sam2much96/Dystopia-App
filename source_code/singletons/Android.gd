@@ -38,6 +38,10 @@ onready var _simulation = get_node("/root/Simulation")
 
 onready var _globals = get_node("/root/Globals")
 
+# Godot Chrome
+var Chrome = null
+
+
 func _ready():
 	
 	"""
@@ -50,6 +54,10 @@ func _ready():
 	
 	if _globals.os == "Android": # Android Native
 		_is_android = true
+		
+		# load Godot Chrome Browser
+		  
+		Chrome = Engine.get_singleton("GodotChrome")#load("res://New game code and features/GodotChrome.gd")
 		
 		
 		#initial_screen_orientation = Utils.Screen.Orientation()
@@ -75,6 +83,7 @@ func is_android() -> bool:
 	# checks if game is running on mobile browser or native android
 	
 	return _is_android
+
 
 func _process(delta):
 	

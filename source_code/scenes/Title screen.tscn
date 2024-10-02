@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Title screen.gd" type="Script" id=1]
 [ext_resource path="res://resources/title animation/Dystopia Logo webp.webp" type="Texture" id=2]
-[ext_resource path="res://scenes/UI & misc/ingame_menu.tscn" type="PackedScene" id=3]
 [ext_resource path="res://resources/Buttons/menu.png" type="Texture" id=4]
 [ext_resource path="res://scenes/UI & misc/3d in 2d.tscn" type="PackedScene" id=5]
 [ext_resource path="res://resources/illustrations/cover 1.png" type="Texture" id=7]
@@ -55,12 +54,6 @@ rect_scale = Vector2( 1.03307, 1.03307 )
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 6
-
-[node name="Menu " parent="." instance=ExtResource( 3 )]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
 
 [node name="Position2D" type="Position2D" parent="."]
 position = Vector2( -755.147, 113.871 )

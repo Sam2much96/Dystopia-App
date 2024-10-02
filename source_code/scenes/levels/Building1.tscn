@@ -1,11 +1,10 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/building1.webp" type="Texture" id=1]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/buildingbush.webp" type="Texture" id=2]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/trashcanitem.webp" type="Texture" id=3]
 [ext_resource path="res://scenes/UI & misc/Exit.gd" type="Script" id=4]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/items/enemy spawner.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/levels/Exit.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=9]
@@ -63,9 +62,9 @@ spawn_count = 2
 position = Vector2( 374.058, 769.142 )
 scale = Vector2( 0.114768, 0.114768 )
 
-[node name="GameHUD" parent="." instance=ExtResource( 6 )]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="CRT" parent="GameHUD" instance=ExtResource( 10 )]
+[node name="CRT" parent="CanvasLayer" instance=ExtResource( 10 )]
 visible = false
 margin_left = -231.561
 margin_top = -467.218

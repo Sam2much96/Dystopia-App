@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/temple interior.webp" type="Texture" id=1]
 [ext_resource path="res://scenes/characters/Npc CHIEFPRIEST.tscn" type="PackedScene" id=2]
@@ -6,7 +6,6 @@
 [ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=5]
 [ext_resource path="res://resources/FX/flame_fx_webp.webp" type="Texture" id=6]
-[ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/UI & misc/Quest.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/levels/Temple interior.gd" type="Script" id=9]
 [ext_resource path="res://scenes/items/enemy spawner.tscn" type="PackedScene" id=10]
@@ -219,9 +218,9 @@ scale = Vector2( 1.35126, 3.93491 )
 polygon = PoolVector2Array( -1628.68, 654.043, -1620.78, 789.735, 789.568, 795.163, 797.471, 635.046 )
 vertex_colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0 )
 
-[node name="GameHUD" parent="." instance=ExtResource( 7 )]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="CRT" parent="GameHUD" instance=ExtResource( 12 )]
+[node name="CRT" parent="CanvasLayer" instance=ExtResource( 12 )]
 visible = false
 
 [node name="Bow" parent="." instance=ExtResource( 11 )]

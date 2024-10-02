@@ -1,3 +1,20 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Web Browser
+# SHared COnde Between Grass/Flower Objects Within the Scene Tree
+#
+# Features:
+#
+# TO DO :
+# (1) Parse To Image Hosting Site
+#
+#
+#
+# *************************************************
+
+
 extends Control
 
 class_name WebBrowser
@@ -7,6 +24,7 @@ export (bool) var image
 export (String) var website_url #= '' 
 
 
+ 
 
 func _ready():
 	get_node("LineEdit").set_text(website_url)

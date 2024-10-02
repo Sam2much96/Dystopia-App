@@ -18,6 +18,7 @@
 # (3) Fix UI misalignment
 # (4) Refactor into state machines
 # (5) Implement Attack Button As Inventory item UI
+# (6) Make Child Of Global Input SIngleton To Remove Multiple Instance and and update curr scene every loop
 
 # *************************************************
 # Bugs :
@@ -49,8 +50,17 @@ onready var ingame_comics_placeholer = $Comics
 
 onready var children : Array = [menu, TouchInterface,_Comics, _Stats, _Status_text]
 
+onready var globalInput = get_parent()
+
 
 func _ready():
-	# make self Global
-	GlobalInput.gameHUD = self
+	# make self Global via singleton
+	# Unsafe
+	#GlobalInput.gameHUD = self
+	
+	# Make Self global via scene Tree
+	# Safe
+	globalInput.gameHUD = self
 
+	#Update Current Scene Whenever Scene Tree Changes
+	Globals.update_curr_scene()

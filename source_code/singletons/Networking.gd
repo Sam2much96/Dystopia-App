@@ -1203,4 +1203,17 @@ class NetworkedObject extends Area2D:
 
 
 func open_browser(url : String):
-	return OS.shell_open(url)
+	# To Do: Implement gdCEF godot CHrome Embedded Framework for Linux and Windows Platform
+	
+	if Globals.os == "Android":
+		Android.Chrome.helloWorld(url) # Open Chrome Embedded Browser To Url
+	if Globals.os == "X11":
+		return OS.shell_open(url)
+	if Globals.os == "Windows":
+		return OS.shell_open(url)
+	if Globals.os == "macOS":
+		return OS.shell_open(url)
+	if Globals.os == "Html5":
+		return OS.shell_open(url)
+
+	#return OS.shell_open(url)

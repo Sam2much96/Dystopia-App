@@ -274,7 +274,10 @@ func _menu_pause_and_play(boolean): #pass it a boolean to custom pause and play
 func _on_comics_pressed():
 	print_debug ('comics pressed')
 	Music.play_track(_ui_sfx)
-	Utils.Functions.change_scene_to(Globals.comics___2, get_tree())
+	#Utils.Functions.change_scene_to(Globals.comics___2, get_tree())
+	
+	# SHould Open URL to ItchIO Page On Mobile & PC
+	Networking.open_browser("https://inhumanity-arts.itch.io/dystopia-app")
 
 func _on_controls_pressed():
 	Music.play_track(_ui_sfx)
@@ -318,7 +321,11 @@ func _exit_tree():
 
 func _on_anime_pressed():
 	Music.play_track(_ui_sfx)
-	return get_tree().change_scene_to((load('res://scenes/UI & misc/Shop.tscn')))
+	#return get_tree().change_scene_to((load('res://scenes/UI & misc/Shop.tscn')))
+
+	# SHould Open URL to CHannel Page On Youtube
+	Networking.open_browser("https://www.youtube.com/@inhumanitystudios")
+
 
 
 func _on_wallet_pressed():

@@ -735,8 +735,8 @@ _control = "modern"
 
 [node name="menu" type="TouchScreenButton" parent="."]
 self_modulate = Color( 0, 0, 0, 1 )
-position = Vector2( 6, 44 )
-scale = Vector2( 0.607283, 0.565069 )
+position = Vector2( 4, 33 )
+scale = Vector2( 0.954459, 0.888112 )
 normal = ExtResource( 2 )
 action = "menu"
 visibility_mode = 1

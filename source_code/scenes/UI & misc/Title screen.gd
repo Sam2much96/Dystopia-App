@@ -29,14 +29,10 @@ onready var art1 :  TextureRect = $TextureRect2
 
 onready var art3 :  TextureRect = $Sprite
 
-onready var menu : TouchScreenButton = $menu
-#onready var notifications : Popup = $Notification2
 onready var logo : TextureRect = $logo
 onready var _ad_placeholder #: Appodeal = $Appodeal
-onready var _comic_placehlder : Control = $Control
-onready var _menu : Game_Menu = $"Menu "
-onready var _viewport : Viewport = $Viewport
-onready var title_nodes : Array = [art1, art3,_viewport,menu,logo,_ad_placeholder,_menu, _comic_placehlder]
+
+onready var title_nodes : Array = [art1, art3,logo,_ad_placeholder]
 
 #res://scenes/UI & misc/controls_illustration.gd
 # 3D in 2D
@@ -58,7 +54,8 @@ func _ready():
 	if Globals.screenOrientation == 0:
 		art1.hide()
 
-
+	# Should Trigger Ads Inititialasation
+	Android.ads()
 
 
 func _exit_tree():

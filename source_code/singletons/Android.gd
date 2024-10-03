@@ -85,6 +85,22 @@ func is_android() -> bool:
 	return _is_android
 
 
+func ads() -> void:
+	# Should Config and Inititalise Ads Programmatically
+	# Ads Experience SHould Be Cached ANd Timed To SHow & Disappear uppon Player Death
+	# Only Implement Banner Ads For This Game
+	var _ads = AdMob.new()
+	get_tree().get_root().add_child(_ads)
+
+	# config ads
+	_ads.banner_id = "ca-app-pub-3900377589557710/5127703243"
+	_ads.is_real_set(false) # Test Ads & Ads Initialisation
+	#_ads._init()
+	_ads.load_banner()
+	_ads.show_banner()
+	_ads.move_banner(false)
+	
+
 func _process(delta):
 	
 	

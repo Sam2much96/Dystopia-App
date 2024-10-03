@@ -277,7 +277,10 @@ func _on_comics_pressed():
 	#Utils.Functions.change_scene_to(Globals.comics___2, get_tree())
 	
 	# SHould Open URL to ItchIO Page On Mobile & PC
-	Networking.open_browser("https://inhumanity-arts.itch.io/dystopia-app")
+	Networking.open_browser("https://www.webtoons.com/en/canvas/dystopia-app/chap-2-the-money-heist/viewer?title_no=997712&episode_no=1&serviceZone=GLOBAL")
+
+
+
 
 func _on_controls_pressed():
 	Music.play_track(_ui_sfx)

@@ -1,12 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Title screen.gd" type="Script" id=1]
 [ext_resource path="res://resources/title animation/Dystopia Logo webp.webp" type="Texture" id=2]
-[ext_resource path="res://resources/Buttons/menu.png" type="Texture" id=4]
 [ext_resource path="res://scenes/UI & misc/3d in 2d.tscn" type="PackedScene" id=5]
 [ext_resource path="res://resources/illustrations/cover 1.png" type="Texture" id=7]
-
-[sub_resource type="ShaderMaterial" id=7]
 
 [node name="Menu" type="Control"]
 light_mask = 0
@@ -33,12 +30,6 @@ rect_scale = Vector2( 2.42217, 2.42217 )
 texture = ExtResource( 7 )
 
 [node name="Sprite" parent="." instance=ExtResource( 5 )]
-
-[node name="menu" type="TouchScreenButton" parent="."]
-material = SubResource( 7 )
-position = Vector2( -5, 9 )
-normal = ExtResource( 4 )
-action = "menu"
 
 [node name="logo" type="TextureRect" parent="."]
 show_behind_parent = true

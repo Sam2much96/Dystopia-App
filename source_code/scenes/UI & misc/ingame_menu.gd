@@ -228,6 +228,10 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 			) == false: push_error("Error saving game")
 
 		Music.play_track(_ui_sfx) #plays ui sfx in a loop
+		
+		#Android._no_ads() # Hide Android Ads
+
+		
 		return 0
 
 #Handles Displaying the menu
@@ -327,7 +331,7 @@ func _on_anime_pressed():
 	#return get_tree().change_scene_to((load('res://scenes/UI & misc/Shop.tscn')))
 
 	# SHould Open URL to CHannel Page On Youtube
-	Networking.open_browser("https://www.youtube.com/@inhumanitystudios")
+	Networking.open_browser("https://youtube.com/shorts/BjjU6sRYzI0?feature=share")
 
 
 

@@ -239,6 +239,7 @@ tracks/1/keys = {
 }
 
 [node name="Dialog_box" type="TextureRect"]
+visible = false
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0

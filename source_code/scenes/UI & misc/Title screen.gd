@@ -30,15 +30,17 @@ onready var art1 :  TextureRect = $TextureRect2
 onready var art3 :  TextureRect = $Sprite
 
 onready var logo : TextureRect = $logo
-onready var _ad_placeholder #: Appodeal = $Appodeal
 
-onready var title_nodes : Array = [art1, art3,logo,_ad_placeholder]
+
 
 #res://scenes/UI & misc/controls_illustration.gd
 # 3D in 2D
 # To Do : 
 #  (1) Play Animation rendered to 2D
-onready var viewport = $Viewport
+onready var viewport = $Sprite
+
+
+onready var title_nodes : Array = [art1, art3,logo, viewport]
 
 onready var position : Position2D = $Position2D 
 
@@ -55,12 +57,14 @@ func _ready():
 		art1.hide()
 
 	# Should Trigger Ads Inititialasation
-	#Android.ads()
+	# Title Screen Is Solely Responsible for Triggering and Removing android ads
+	# Temporary implementation for UX testing
+	Android.ads()
 
 
 func _exit_tree():
 	# Memory Leak Management
 	Utils.MemoryManagement.queue_free_array(title_nodes)
 #	_menu.queue_free()
-
+	Android._no_ads()
 

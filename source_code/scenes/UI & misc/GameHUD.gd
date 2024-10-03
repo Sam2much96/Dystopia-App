@@ -61,6 +61,10 @@ func _ready():
 	# Make Self global via scene Tree
 	# Safe
 	globalInput.gameHUD = self
-
+	
 	#Update Current Scene Whenever Scene Tree Changes
 	Globals.update_curr_scene()
+	
+	
+	# Hide Game HUD WHen Ready
+	

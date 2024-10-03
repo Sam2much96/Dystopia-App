@@ -55,7 +55,7 @@ func _ready():
 		art1.hide()
 
 	# Should Trigger Ads Inititialasation
-	Android.ads()
+	#Android.ads()
 
 
 func _exit_tree():

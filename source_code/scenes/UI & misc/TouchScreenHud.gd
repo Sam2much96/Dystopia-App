@@ -151,7 +151,8 @@ func _ready():
 		self.show()
 		enabled = true
 	#self.hide() if not Android.is_android() else print_debug("Showing Touch Interface")
-	
+	if Globals.os == "X11":
+		self.hide()
 	#enabled = Android.is_android()
 	
 	

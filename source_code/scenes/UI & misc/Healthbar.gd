@@ -92,11 +92,14 @@ func _ready():
 func _on_health_changed(new_hp : int):
 	# Buggy Logic
 	print_debug("Health Change Function Called")
-	# Clears Previous HP
-	#for child in get_children():
-	#	child.queue_free() #removes life
 	
 	var _no_of_hearts = self.get_child_count() -2 # -1 for The unimplemented Empty Heart Scene & tween node
+	
+	if new_hp == 0:
+		# Clears Children Nodes
+		for i in self.get_children():
+			i.queue_free() 
+	
 	
 	if new_hp == _no_of_hearts:
 		return
@@ -121,4 +124,4 @@ func _on_health_changed(new_hp : int):
 			
 	
 	# Debug Heart Update
-	print_debug("Heart Update Debug: ", (self.get_child_count() -2), "/",new_hp)
+	print_debug("Heart Update Debug: ", (self.get_child_count() -2), "/", "New HP : ",new_hp)

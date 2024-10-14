@@ -1418,13 +1418,14 @@ __meta__ = {
 WALK_SPEED = 400
 
 [node name="sprite" type="Sprite" parent="."]
+modulate = Color( 0, 0, 0, 1 )
 position = Vector2( -14.72, -115.004 )
 scale = Vector2( 0.676, 0.676 )
 texture = ExtResource( 2 )
 flip_h = true
 hframes = 8
 vframes = 7
-frame = 27
+frame = 34
 
 [node name="hitbox" type="CollisionShape2D" parent="."]
 position = Vector2( -0.882385, -27.9806 )

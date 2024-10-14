@@ -115,13 +115,13 @@ func remove_item(type:String, amount:int) -> bool:
 		# (6) Bow
 		if type == "health potion":
 		
-			#print("aksdfjabnfo;giSHip")
+			print_debug("Updating Player Heart is Buggy")
 			
 			# Update player object body
 			player.hitpoints += 1
 			
 			# emit signal
-			player.emit_signal("health_changed", player.hitpoints)
+			player.emit_signal("health_changed")
 		
 		if type == "Generic Item":
 			# increases player speed and attack power

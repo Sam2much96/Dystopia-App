@@ -42,8 +42,7 @@ onready var _spawn : Array = [spawn_1,spawn_2,spawn_3, spawn_4, spawn_5]
 
 func _ready():
 	if random_spawn == false:
-		print('loading default item')
-		print ('Default item: ',item_scene)
+		print_debug ('loading default item/ Default item: ',item_scene)
 
 
 func spawn(): #organize this code to switch btw random spawn and single spawn

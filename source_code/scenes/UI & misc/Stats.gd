@@ -108,9 +108,11 @@ func _ready():
 	#	)
 	
 
-
 func _input(event):
-	
+	# Satus UI Only Listens to The Pause Input
+	if not event.is_action_pressed("pause"): # Guard Clause
+		return 
+		
 	# Enable / DIsable Logic is Buggy
 	if event.is_action_pressed("pause")  && enabled == false:
 		print_debug("enable")

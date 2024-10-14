@@ -229,8 +229,7 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 
 		Music.play_track(_ui_sfx) #plays ui sfx in a loop
 		
-		#Android._no_ads() # Hide Android Ads
-
+		menu_state = HIDDEN
 		
 		return 0
 

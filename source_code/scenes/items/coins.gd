@@ -47,32 +47,33 @@ func _ready():
 func _on_timer_timeout():
 	anims.play("idle")
 
-func _on_Item_body_entered(body : Player): # Priority Process
-	if amount != null:
-		call_deferred("disconnect", "body_entered", self, "_on_Item_body_entered")
-		#Inventory.add_item(item_type, amount)
-		Globals.algos = Globals.algos + amount #should be Algos instead
+func _on_Item_body_entered(body): # Priority Process
+	if not body is Player: # Guard Clause For Non Player Objects
+		return
 		
-		
-		anims.play("collected")
-		Music.play_track("res://sounds/item_collected.ogg")
-		
-		
-		# Only Calls if user has created an Algo account
-		if Wallet.address && Wallet.mnemonic != null:
-			# Withdraw from Escrow SmartContract
-			Wallet.WITHDRAW = true
-		# Run Wallet Checks & process withdrawal
-		
-			Wallet.run_wallet_checks()
-		
-		# Update Global Algos with 0.005 MIcroAlgos
-		Globals.algos += 5000
-		
-		self.queue_free()
-		
-	else :pass
+		if amount != null:
+			call_deferred("disconnect", "body_entered", self, "_on_Item_body_entered")
+			#Inventory.add_item(item_type, amount)
+			Globals.algos = Globals.algos + amount #should be Algos instead
+			
+			
+			anims.play("collected")
+			Music.play_track("res://sounds/item_collected.ogg")
+			
+			# Triggers An Escrow Withdrawal - Depreciated for Refactoring
+			# Only Calls if user has created an Algo account
+			#if Wallet.address && Wallet.mnemonic != null:
+			#	# Withdraw from Escrow SmartContract
+			#	Wallet.WITHDRAW = true
+			## Run Wallet Checks & process withdrawal
+			#
+			#	Wallet.run_wallet_checks()
+			
+			# Update Global Algos with 0.005 MIcroAlgos
+			Globals.algos += 5000
+			
+			self.queue_free()
 
 
-func _exit_tree():
-	Utils.MemoryManagement.queue_free_array(sub_nodes)
+#func _exit_tree():
+#	Utils.MemoryManagement.queue_free_array(sub_nodes)

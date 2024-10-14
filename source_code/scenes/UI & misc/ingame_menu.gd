@@ -330,8 +330,9 @@ func _on_anime_pressed():
 	Music.play_track(_ui_sfx)
 	#return get_tree().change_scene_to((load('res://scenes/UI & misc/Shop.tscn')))
 
-	# SHould Open URL to CHannel Page On Youtube
-	Networking.open_browser("https://youtube.com/shorts/BjjU6sRYzI0?feature=share")
+	# SHould Open URL to CHannel Playlist On Youtube
+	# using screen orientation as a parameter
+	Networking.open_browser("https://www.youtube.com/playlist?list=PLYvZuLwGpTn89vzTTgIypeEDuEIeVuNaW")
 
 
 

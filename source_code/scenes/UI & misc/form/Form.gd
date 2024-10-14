@@ -57,7 +57,9 @@ func _ready():
 #		_debug = get_tree().get_root().get_node("/root/Debug")
 
 	dialgue_box.hide_dialogue()
-
+	
+	Android.hide_touch_interface()
+	
 	# Load Users Prefered DIalogue 
 	Utils.Functions.load_user_data('languague')
 	

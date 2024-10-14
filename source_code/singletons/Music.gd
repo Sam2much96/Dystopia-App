@@ -219,15 +219,15 @@ func _ready():
 	#print_debug(my_nodes)
 	
 	# connect signals
-	requests.connect("request_completed", self , "_http_request_completed")
+	#requests.connect("request_completed", self , "_http_request_completed")
 	
 	# Check if Local Music Directory exists & Makes directory
-	if not wallet.Functions.check_local_wallet_directory(FileDirectory,"user://Music") :
-		FileDirectory.make_dir("user://Music")
+	#if not wallet.Functions.check_local_wallet_directory(FileDirectory,"user://Music") :
+	#	FileDirectory.make_dir("user://Music")
 		
 	# Check if Music Unzip root folder exists
-	if not wallet.Functions.check_local_wallet_directory(FileDirectory, "user://Music/Dystopia-App/source_code/music"):
-		FileDirectory.make_dir_recursive("user://Music/Dystopia-App/source_code/music")
+	#if not wallet.Functions.check_local_wallet_directory(FileDirectory, "user://Music/Dystopia-App/source_code/music"):
+	#	FileDirectory.make_dir_recursive("user://Music/Dystopia-App/source_code/music")
 	
 	
 	
@@ -292,17 +292,17 @@ func _process(_delta):
 
 
 
-func _music_debug(): #Breaks
-	if  music_on == true && get_tree().get_root().get_node("/root/Debug") != null: #Only Debugs if the debug singleton is running
-		if music_track != null:
-			for child in get_children() :
-				if child is AudioStreamPlayer:
-					if child.stream != null: 
-						stream = Music_streamer.get_stream()
-						stream_length = int(stream.get_length())
-						_track = music_track.get_file()
-						Playback_position = int(Music_streamer.get_playback_position())
-						music_debug = str(stream , _track, Playback_position , '/', stream_length, sfx_streamer)
+#func _music_debug(): #Breaks # Depreciated : Should Ideally Self Debug To Exported Integers If Necessary
+#	if  music_on == true && get_tree().get_root().get_node("/root/Debug") != null: #Only Debugs if the debug singleton is running
+#		if music_track != null:
+#			for child in get_children() :
+#				if child is AudioStreamPlayer:
+#					if child.stream != null: 
+#						stream = Music_streamer.get_stream()
+#						stream_length = int(stream.get_length())
+#						_track = music_track.get_file()
+#						Playback_position = int(Music_streamer.get_playback_position())
+#						music_debug = str(stream , _track, Playback_position , '/', stream_length, sfx_streamer)
 
 
 

@@ -77,6 +77,9 @@ func _ready():
 
 
 func show_signpost():
+	if not is_instance_valid(Dialogs.dialog_box): # Error Catcher 1
+		return
+	
 	#if interract && Globals.near_interractible_objects:
 	print_debug("showing signpost")
 	

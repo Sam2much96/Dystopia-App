@@ -133,6 +133,4 @@ anims/BtoA = SubResource( 2 )
 anims/pause = SubResource( 4 )
 anims/play = SubResource( 5 )
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
-
 [connection signal="finished" from="A" to="." method="_on_A_finished"]

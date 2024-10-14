@@ -570,16 +570,7 @@ func _process(_delta):
 				self.state_controller.select(7)
 					
 				return self.set_process(false)
-				#state = SHOW_ACCOUNT
-				#wallet_check += 1
-				#if FileDirectory.file_exists(token_dir) :
-					#state = SHOW_ACCOUNT
-					
-					# Exit Process Loop
-				#	return self.state_controller.select(0)
-				
-				# Exit Process Loop to SHow Menm
-				#return self.state_controller.select(0)
+
 		CHECK_ACCOUNT:  #Works 
 			
 			if wallet_check == 0: # stops overflow bug from running processes
@@ -852,26 +843,12 @@ func _process(_delta):
 					Asset_UI_amount.text = "100,000"
 					
 					
-					
-					Comics_v6.load_local_image_texture_from_global(self.pfp, local_image_file, true, 7)
+					# Make Call to Comics Scripts from GLobal Input
+					#Comics.load_local_image_texture_from_global(self.pfp, local_image_file, true, 7)
 					
 					# Disabling Collectibes UI thumbnails
-					return Comics_v6.load_local_image_texture_from_global(self.NFT, local_image_file, true,1)
+					return 0#Comics.load_local_image_texture_from_global(self.NFT, local_image_file, true,1)
 					
-				"NFT PFP"
-				#if is_image_available_at_local_storage:
-					# set image texture
-				
-					
-				#if Asset_UI.is_visible_in_tree():
-					# Set Asset ID variables
-				
-				#pass
-					
-				#if Comics_v5.is_swiping == true:
-				#	collectibles_UI.hide()
-				#	Asset_UI.show()
-				#else: return
 			#opts into smart contracts with wallet
 		SMARTCONTRACTS: # doesnt work 
 			#hide other ui states
@@ -1263,107 +1240,16 @@ func _on_Copy_mnemonic_pressed():
 	OS.set_clipboard(mnemonic) 
 
 # State Controller Methods
-func off_processing(): 
-	return set_process(false)
+#func off_processing(): 
+#	return set_process(false)
 
-func on_processing(): 
-	return set_process(true)
+#func on_processing(): 
+#	return set_process(true)
 
 
 "Parses Input frm UI buttons"
-func _input(event):
+#func _input(event):
 	
-	if Globals.curr_scene == "Wallet_scene":
-		"Collectibles multitouch"
-		# (1) Rewrite Zoom to take parameters like drag()
-		# (2) Map Pinch , Twist and Tap iput actions in Comics script
-		# (3) Upgrade Comics v 5.1 to implement proper gestures and global Swipe Dir indicator
-		# (4) Depreciate Wallet Animation for Comics Animation Structure
-
-		
-		"Swipe Direction Debug"
-		# Should Ideally be in COmics script. Requires rewrite for better structure
-		# The current implementation is a fast hack
-		if event is InputEventScreenDrag : #kinda works, for NFT Drag & Drop #Disbled for refactoring
-			#Networking.start_check(4) #should take a timer as a parameter
-			#if Networking.Timeout == false:
-			
-			
-			#Networking.start_check(4)
-			
-			
-			"Swipe Detection"
-			
-			#Comics_v5.enabled = true
-			#_position, enabled: bool, _e : Timer ,swipe_target_memory_x : Array, swipe_target_memory_y : Array 
-			
-			
-			#Comics_v6.Swipe._start_detection(event.position, true, Comics_v6._e ,Comics_v6.swipe_target_memory_x, Comics_v6.swipe_target_memory_y )
-			
-			
-			# End Detection once Networking check has timedout
-			
-			#sdfhsdfhsdhsdg
-			# Swipe Detection SHould SHow A new Aset UI with NFT PFP
-			#__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array, swipe_start_position : Vector2, swipe_parameters: float, x1,x2,y1,y2,MAX_DIAGONAL_SLOPE
-			#__position, direction : Vector2, direction_var, _state, _e : Timer, swipe_target_memory_x : Array, swipe_target_memory_y : Array, swipe_start_position : Vector2, swipe_parameters: float, x1,x2,y1,y2,MAX_DIAGONAL_SLOPE
-			
-			
-			#Comics_v6.Swipe._end_detection(event.position, Comics_v6.direction, Comics_v6.direction_var , Comics_v6._state, Comics_v6._e ,Comics_v6.swipe_target_memory_x, Comics_v6.swipe_target_memory_y,Comics_v6.swipe_start_position, Comics_v6.swipe_parameters, Comics_v6.x1, Comics_v6.x2, Comics_v6.y1, Comics_v6.y2, Comics_v6.MAX_DIAGONAL_SLOPE)
-			
-			
-			"NFT drag and drop"
-			#works
-			# Disabled for debugging
-			#if self.NFT.visible:
-				#print ("NFT visible: ",self.NFT.visible)
-				
-				#Comics_v6.can_drag = self.NFT.visible
-				
-				# Activates Zoom
-				#Comics_v6.loaded_comics = self.NFT.visible
-				#Comics_v6.comics_placeholder = self.NFT
-				#Comics_v6.drag(event.position, event.position, kinematic2d)
-				
-				#print_debug("NFT Visible: %s" % [self.NFT.visible])
-		
-		
-			pass
-		
-		
-		#Depreciated
-		#
-		# Turns on and Off Wallet Processing with Single screen touches
-		# 
-		# Uses a Timer of 4 seconds to turn processing off
-		
-		if event is InputEventScreenTouch:#InputEventSingleScreenTouch:
-			Networking.start_check(4) #should take a timer as a parameter
-			
-			
-			#Turns processing off for 20 secs
-			#if Networking.Timeout == false :
-				
-			#	print ('Wallet Processing')
-			#	self.set_process(true)
-			#	processing = false
-			#	return processing
-			
-			
-			
-			#if Networking.Timeout == true :
-			#	
-			#	print ('Stopping Wallet Processing')
-			#	
-			#	self.set_process(false)
-			#	processing = false
-			#	return processing
-		
-		
-		"BUTTON PRESSES"
-		
-		# Disabling for Debugging
-		# Rewriten as signats to _ready() method
 
 
 'Processes Algo and Asset Transactions'

@@ -728,13 +728,14 @@ tracks/6/keys = {
 }
 
 [node name="TouchInterface" type="Node2D"]
-modulate = Color( 1, 1, 1, 0.698039 )
+modulate = Color( 1, 1, 1, 0.67451 )
 script = ExtResource( 4 )
 _state_controller = 4
 _control = "modern"
 
 [node name="menu" type="TouchScreenButton" parent="."]
 self_modulate = Color( 0, 0, 0, 1 )
+show_behind_parent = true
 position = Vector2( 4, 33 )
 scale = Vector2( 0.954459, 0.888112 )
 normal = ExtResource( 2 )

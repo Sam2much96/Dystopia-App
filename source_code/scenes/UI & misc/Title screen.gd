@@ -55,7 +55,10 @@ func _ready():
 		art1.show()
 	if Globals.screenOrientation == 0:
 		art1.hide()
-
+	
+	# SHow THe Menu Button On Android
+	Android.show_only_menu()
+	
 	# Should Trigger Ads Inititialasation
 	# Title Screen Is Solely Responsible for Triggering and Removing android ads
 	# Temporary implementation for UX testing
@@ -68,3 +71,8 @@ func _exit_tree():
 #	_menu.queue_free()
 	Android._no_ads()
 
+
+
+
+func _on_AdMob_banner_failed_to_load(error_code):
+	push_error("Admob Banner Failed Load")

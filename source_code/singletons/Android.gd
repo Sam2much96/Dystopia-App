@@ -42,7 +42,7 @@ onready var _globals = get_node("/root/Globals")
 var Chrome = null
 
 # Ad Mob Ads Node
-var _ads = null
+onready var _ads : AdMob = self.get_child(0)
 
 func _ready():
 	
@@ -61,6 +61,7 @@ func _ready():
 		  
 		Chrome = Engine.get_singleton("GodotChrome")#load("res://New game code and features/GodotChrome.gd")
 		
+		#_ads = AdMob.new()
 		
 		#initial_screen_orientation = Utils.Screen.Orientation()
 	if _globals.os == "HTML5" && initial_screen_orientation == 1: # Mobile Browser
@@ -91,23 +92,37 @@ func ads() -> void:
 	# Should Config and Inititalise Ads Programmatically
 	# Ads Experience SHould Be Cached ANd Timed To SHow & Disappear uppon Player Death
 	# Only Implement Banner Ads For This Game`
-	_ads = AdMob.new()
+	
 	#if is_instance_valid(_ads) : 
 		
 	#get_tree().get_root().get_node("/root/Android").add_child(_ads)
-	self.add_child(_ads)
+	#self.add_child(_ads)
 		
 	# config ads
 	_ads.banner_id = "ca-app-pub-3900377589557710/5127703243"
-	_ads.is_real_set(false) # Test Ads & Ads Initialisation
+	_ads.is_real_set(true) # Test Ads & Ads Initialisation
+	_ads.is_real = true
 	#_ads._init()
 	_ads.load_banner()
 	_ads.show_banner()
 	_ads.move_banner(false)
 
+
+
 func _no_ads() -> void:
 	if is_instance_valid(_ads):
 		_ads.hide_banner()
+
+
+func hide_touch_interface():
+	
+	# Hide Game HUD
+	# TO DO: Port TO Touch HUD Inspector Tab
+	GlobalInput.TouchInterface.enabled = false
+	
+func show_only_menu():
+	GlobalInput.TouchInterface.__menu()
+
 
 
 

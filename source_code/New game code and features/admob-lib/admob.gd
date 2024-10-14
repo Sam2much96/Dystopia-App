@@ -32,10 +32,10 @@ signal consent_app_can_request_ad(consent_status)
 
 # properties
 export var is_real:bool setget is_real_set
-export var banner_on_top:bool = true
+export var banner_on_top:bool = false
 # SMART_BANNER is deprecated
 export(String, "ADAPTIVE_BANNER", "SMART_BANNER", "BANNER", "LARGE_BANNER", "MEDIUM_RECTANGLE", "FULL_BANNER", "LEADERBOARD") var banner_size = "ADAPTIVE_BANNER"
-export var banner_id:String
+export var banner_id:String = "ca-app-pub-3900377589557710/5127703243"
 export var interstitial_id:String
 export var rewarded_id:String
 export var rewarded_interstitial_id:String

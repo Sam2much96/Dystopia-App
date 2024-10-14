@@ -558,7 +558,7 @@ class Screen  :
 			screenOrientation = SCREEN_VERTICAL
 
 		# for debug purposes only
-		print_debug("Screen orientation is: ", screenOrientation, "/",'screen size :',screen)
+		#print_debug("Screen orientation is: ", screenOrientation, "/",'screen size :',screen)
 
 
 		

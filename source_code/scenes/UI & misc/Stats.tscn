@@ -58,7 +58,6 @@ custom_fonts/font = ExtResource( 3 )
 script = ExtResource( 6 )
 
 [node name="0" type="Tabs" parent="TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 74.0
@@ -188,7 +187,7 @@ scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/3/ScrollContainer3"]
 margin_right = 103.0
-margin_bottom = 117.0
+margin_bottom = 181.0
 
 [node name="Title3" type="Label" parent="TabContainer/3/ScrollContainer3/VBoxContainer"]
 margin_right = 103.0
@@ -209,6 +208,7 @@ text = "Item 1
 flat = true
 
 [node name="4" type="Tabs" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0

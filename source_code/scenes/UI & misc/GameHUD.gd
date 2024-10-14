@@ -20,6 +20,7 @@
 # (5) Implement Attack Button As Inventory item UI
 # (6) Make Child Of Global Input SIngleton To Remove Multiple Instance and and update curr scene every loop
 
+
 # *************************************************
 # Bugs :
 #(1) Ingame menu bug (fixed)
@@ -31,6 +32,7 @@
 #		#-Icons Do not hide when dialogue ia triggered
 # (8) Breaks when in scene with player networking v2
 # (9) Dialogue Box positioning for mobiles is Buggy in GameHUD.tscn
+# (10) Dialogue Box is Buggy
 # *************************************************
 
 
@@ -41,7 +43,7 @@ class_name GameHUD
 
 onready var menu : Game_Menu = $"Menu "
 onready var TouchInterface : TouchScreenHUD =  $TouchInterface
-onready var _Comics = Comics_v6 #$Comics
+onready var _Comics = GlobalInput.get_child(1) #Comics Node Pointer
 onready var _Stats : Stats = $Stats
 onready var _Status_text : StatusText = $Status_text
 

@@ -21,7 +21,7 @@
 # (5) 
 # (6) Implement Tab Icons with code (1/2)
 #		-(a) Done with TabIcon Subclass
-# (7) Item Button should ideally be low poly texture buttons
+# (7) Item Button should ideally be low poly texture buttons (1/2)
 #
 # *************************************************
 # Bugs:

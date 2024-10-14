@@ -41,6 +41,7 @@ __meta__ = {
 }
 
 [node name="TouchInterface" parent="." instance=ExtResource( 8 )]
+_control = "classic"
 
 [node name="Healthbar" parent="." instance=ExtResource( 4 )]
 margin_right = 239.0

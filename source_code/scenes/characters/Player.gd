@@ -67,7 +67,7 @@ export (int) var facing = DOWN
 
 #********Miscellaneous***********#
 onready var player_camera : Camera2D = $camera #the player's camera
-onready var animation : AnimationPlayer = $anims
+onready var animation : AnimationPlayer = $AnimationTree/anims
 
 
 # Multiplayer #Depreciated for Networking Enumerator

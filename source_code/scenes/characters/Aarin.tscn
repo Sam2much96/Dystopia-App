@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://scenes/characters/TopDownPlayer.gd" type="Script" id=1]
 [ext_resource path="res://resources/Aarin/spritesheet_4.webp" type="Texture" id=2]
@@ -9,6 +9,12 @@
 
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 35.8589
+
+[sub_resource type="CapsuleShape2D" id=19]
+radius = 60.225
+height = 162.07
+
+[sub_resource type="AnimationNodeAnimation" id=23]
 
 [sub_resource type="Animation" id=21]
 resource_name = "dance"
@@ -1402,10 +1408,6 @@ tracks/2/keys = {
 "values": [ null ]
 }
 
-[sub_resource type="CapsuleShape2D" id=19]
-radius = 60.225
-height = 162.07
-
 [node name="Player" type="KinematicBody2D" groups=["player"]]
 position = Vector2( 585.638, 309.087 )
 scale = Vector2( 0.72, 0.72 )
@@ -1438,27 +1440,6 @@ position = Vector2( -15.5219, -3.42419 )
 rotation = -0.0236131
 polygon = PoolVector2Array( -91.5168, 17.4712, -49.7053, 33.7712, -36.5348, 110.047, 35.867, 113.696, 44.7355, 32.9416, 90.0337, 28.9744, 135.867, -41.8589, 45.4412, -44.8453, 33.0892, -126.582, -28.0219, -121.026, -35.1723, -51.082, -122.466, -43.2478 )
 
-[node name="anims" type="AnimationPlayer" parent="."]
-autoplay = "reset"
-anims/dance = SubResource( 21 )
-anims/die = SubResource( 3 )
-anims/fall = SubResource( 22 )
-anims/hurt = SubResource( 4 )
-anims/idle_down = SubResource( 5 )
-anims/idle_left = SubResource( 6 )
-anims/idle_right = SubResource( 7 )
-anims/idle_up = SubResource( 8 )
-anims/reset = SubResource( 9 )
-anims/roll = SubResource( 10 )
-anims/slash_down = SubResource( 11 )
-anims/slash_left = SubResource( 12 )
-anims/slash_right = SubResource( 13 )
-anims/slash_up = SubResource( 14 )
-anims/walk_down = SubResource( 15 )
-anims/walk_left = SubResource( 16 )
-anims/walk_right = SubResource( 17 )
-anims/walk_up = SubResource( 18 )
-
 [node name="camera" type="Camera2D" parent="."]
 position = Vector2( 6.30249, -86.9744 )
 current = true
@@ -1487,5 +1468,31 @@ wait_time = 0.1
 [node name="Impact" parent="." instance=ExtResource( 5 )]
 position = Vector2( 20.7633, -48.054 )
 _impact = true
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( 23 )
+anim_player = NodePath("anims")
+
+[node name="anims" type="AnimationPlayer" parent="AnimationTree"]
+root_node = NodePath("../..")
+autoplay = "reset"
+anims/dance = SubResource( 21 )
+anims/die = SubResource( 3 )
+anims/fall = SubResource( 22 )
+anims/hurt = SubResource( 4 )
+anims/idle_down = SubResource( 5 )
+anims/idle_left = SubResource( 6 )
+anims/idle_right = SubResource( 7 )
+anims/idle_up = SubResource( 8 )
+anims/reset = SubResource( 9 )
+anims/roll = SubResource( 10 )
+anims/slash_down = SubResource( 11 )
+anims/slash_left = SubResource( 12 )
+anims/slash_right = SubResource( 13 )
+anims/slash_up = SubResource( 14 )
+anims/walk_down = SubResource( 15 )
+anims/walk_left = SubResource( 16 )
+anims/walk_right = SubResource( 17 )
+anims/walk_up = SubResource( 18 )
 
 [connection signal="area_entered" from="hurtbox" to="." method="_on_hurtbox_area_entered"]

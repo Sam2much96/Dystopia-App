@@ -55,7 +55,8 @@ onready var wind_sfx : String = Music.wind_sfx.get(0)
 
 func _ready(): #create a video player function
 
-
+	Android.hide_touch_interface()
+	
 
 	#use current scene to trigger cinematic
 	local_globals.update_curr_scene()

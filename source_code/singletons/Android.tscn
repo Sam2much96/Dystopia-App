@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://New game code and features/admob-lib/admob.gd" type="Script" id=1]
+[ext_resource path="res://singletons/Android.gd" type="Script" id=2]
+
+[node name="Android" type="Node"]
+script = ExtResource( 2 )
+
+[node name="AdMob" type="Node" parent="."]
+script = ExtResource( 1 )
+is_real = true
+banner_on_top = true

@@ -12,14 +12,14 @@
 #
 #(1) Loads, Zooms and Drags Comic Pages
 #(2) Uses New multitouch gestures by implementing a touch input manager
-#(3) Decentralized Storage IPFS module (1/2)
+#(3) Decentralized Storage IPFS module (1/2) # Depreciated
 #(4) Swipe Gestures as Global Events (done)
 #(5) Uses Networking Timer as await parameters for changing Panel
 # **************************************************************************************************
 #
 # To-Do:
 #
-# (0) Organize code for better readability (done)
+# (0) Organize code for better readability (1/3)
 #(1) connect this script with  the dialogue singleton for translation and wordbubble fx co-ordination
 #(2) Update Logic to be used by Texture React nodes NFT
 # (3) Add more parameters to the drag() function to be reusable in other scripts (done)
@@ -39,6 +39,7 @@
 # (16) Should SHow Swipe Paths
 # (17) Comics Singleton is now a global object
 # (18) Implement Global COmics as Title Screen Art (Comics UI)
+# (19) Expand Functionality To Other Scripts and Reorganise for plugin form
 # **************************************************************************************************
 #
 # Bugs:
@@ -81,14 +82,7 @@ export (PackedScene) var current_comics : PackedScene
 #************Wallet Save Path**********************#
 
 export (Dictionary) var comics : Dictionary = {
-	1: 'res://scenes/Comics/chapter 1/chapter 1.tscn',
-	2:'res://scenes/Comics/chapter 2/chapter 2.tscn',
-	3:'res://scenes/Comics/chapter 3/chapter 3.tscn',
-	4:"res://scenes/Comics/chapter 4/chapter 4.tscn",
-	5:"res://scenes/Comics/chapter 5/chapter 5.tscn",
-	6:"res://scenes/Comics/chapter 6/chapter 6.tscn",
-	7:"res://scenes/Comics/chapter 7/chapter 7.tscn",
-	8: 'res://scenes/Comics/Outside/outside.tscn'
+	0: 'res://scenes/Comics/Outside/outside.tscn'
 	
 }
 
@@ -164,7 +158,7 @@ func _ready():
 	connect_signals()
 	
 	# Update current scene 
-	Globals.update_curr_scene()
+	#Globals.update_curr_scene()
 	
 	#Kinematic_2d = KinematicBody2D.new()  #the kinematic 2d node for drag and drop
 	
@@ -526,7 +520,7 @@ func prev_panel(comics_sprite : AnimatedSprite)-> int:
 		
 		
 		# Centers Comic page
-		comics_sprite.position = Comics_v6.origin
+		comics_sprite.position = Vector2 (0,0) #Comics_v6.origin
 			#center_page()
 		#	return int(current_frame) 
 	" Play SFX "
@@ -604,11 +598,11 @@ class Swipe : #extends Reference:
 
 			
 			
-	static func _on_Timer_timeout():
+	func _on_Timer_timeout():
 		#if self.visible : # Only Swipe Detect once visible
-		Comics_v6.emit_signal('swiped_canceled', swipe_start_position)
-		Comics_v6.SwipeCounter = 0 # reset swipe counter
-		print_debug ('on timer timeout: ', Comics_v6.SwipeCounter) #for debug purposes delete later
+		self.emit_signal('swiped_canceled', swipe_start_position)
+		self.SwipeCounter = 0 # reset swipe counter
+		print_debug ('on timer timeout: ', self.SwipeCounter) #for debug purposes delete later
 
 
 	#func connect_signals(_c : Timer, _e : Timer)-> bool:
@@ -952,6 +946,7 @@ class Functions extends Reference:
 				#Kinematic Body 2D
 				Kinematic_2d.add_child(collision_shape) #set the collision shape
 				
+				# Load The Main Script Singleton
 				var comics_main = scenetree.get_root().get_node("/root/Comics_v6")
 				
 				"connect signals"
@@ -964,7 +959,7 @@ class Functions extends Reference:
 				
 				
 				#Loaded Comic Signal
-				Comics_v6.emit_signal("loaded_comics")
+				comics_main.emit_signal("loaded_comics")
 				
 				
 				
@@ -983,7 +978,7 @@ class Functions extends Reference:
 					#load comics extension script
 					node.set_script(Extensions)
 					
-					node.set_frame(Comics_v6.current_frame)
+					node.set_frame(comics_main.current_frame)
 					
 					Kinematic_2d.add_child(node) 
 					#collision_shape.add_child(node)
@@ -1007,14 +1002,14 @@ class Functions extends Reference:
 				if memory.empty() == true && current_comics == "": #error catcher 2
 					push_error('current comics empty')
 					
-					print ("Loading Default comic" + Comics_v6.comics[1])
+					print ("Loading Default comic" + comics_main.comics[1])
 					
-					current_comics = Comics_v6.comics[1] #default comic
+					current_comics = comics_main.comics[1] #default comic
 
 
-				Comics_v6._loaded_comics = true
-				Comics_v6.comics_placeholder.show()
-				Comics_v6.emit_signal("comics_showing")
+				comics_main._loaded_comics = true
+				comics_main.comics_placeholder.show()
+				comics_main.emit_signal("comics_showing")
 				#center_page()
 
 				return node
@@ -1192,7 +1187,7 @@ class Extensions extends AnimatedSprite:
 
 	#const PageData : Array = [0,1,2,3,4,5,6] # total page count
 
-
+	var Comics_v6 = null # null pointer to Comics Singleton Main Script. Needs Refactoring
 
 	export var Chapter_Data : Dictionary = {
 		"Word Bubbles": word_buble_count,
@@ -1211,7 +1206,7 @@ class Extensions extends AnimatedSprite:
 
 		"Last Page Conditionals"
 		# Bug: Invalid get index 'LastPage' (on base: 'Control (Comics.v6.gd)').
-		if (CurrentPage + 1) == (TotalPageCount) && bool(Comics_v6.LastPage) == false: # Make Practical 
+		if (CurrentPage + 1) == (TotalPageCount) && bool(self.LastPage) == false: # Make Practical 
 			Comics_v6.LastPage = true
 			return Comics_v6.LastPage
 
@@ -1279,45 +1274,6 @@ func _on_chap_1_pressed():
 	_load_comics(1)
 	
 
-func _on_chap_2_pressed(): #Simplify this function
-	print ("loading chapter 2")
-	# works
-	#_load_comics(2)
-	OS.shell_open("https://inhumanity-arts.itch.io/dystopia-app")
-
-func _on_chap_3_pressed(): #Simplify this function
-	print ("loading chapter 3")
-	# works
-	#_load_comics(3)
-	OS.shell_open("https://inhumanity-arts.itch.io/dystopia-app")
-
-
-
-func _on_chap_4_pressed():
-	print ("loading chapter 4")
-	
-	# works
-	#_load_comics(4)
-	OS.shell_open("https://inhumanity-arts.itch.io/dystopia-app")
-
-func _on_chap_5_pressed():
-	print ("loading chapter 5")
-	# works
-	#_load_comics(5)
-	OS.shell_open("https://inhumanity-arts.itch.io/dystopia-app")
-
-
-func _on_chap_6_pressed():
-	print ("loading chapter 6")
-	# works
-	#_load_comics(6)
-	OS.shell_open("https://inhumanity-arts.itch.io/dystopia-app") # placeholder url's
-
-func _on_chap_7_pressed():
-	print ("loading chapter 7")
-	# works
-	#_load_comics(7)
-	OS.shell_open("https://inhumanity-arts.itch.io/dystopia-app")# placeholder url's
 
 	# Polymorphic synamic code for loading Conics Sprite via Static functions
 func _load_comics(chapter_no : int):

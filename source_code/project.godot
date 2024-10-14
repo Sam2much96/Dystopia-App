@@ -42,7 +42,7 @@ _global_script_classes=[ {
 "base": "Control",
 "class": "Comics",
 "language": "GDScript",
-"path": "res://singletons/Comics.v6.gd"
+"path": "res://scenes/UI & misc/Comics.v7.gd"
 }, {
 "base": "HBoxContainer",
 "class": "ContributorClass",
@@ -615,11 +615,9 @@ Globals="*res://singletons/Globals.gd"
 Music="*res://singletons/Music.tscn"
 Networking="*res://singletons/Networking.tscn"
 Utils="*res://singletons/Utils.gd"
-Comics_v6="*res://singletons/Comics.v6.gd"
-Wallet="*res://scenes/Wallet/Wallet.gd"
 Simulation="*res://singletons/Simulation.tscn"
 GlobalInput="*res://singletons/Input.tscn"
-Android="*res://singletons/Android.gd"
+Android="*res://singletons/Android.tscn"
 FPSGraphOverlay="*res://addons/fps_graph_overlay/FPSGraphOverlay.tscn"
 
 [debug]
@@ -639,7 +637,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/fps_graph_overlay/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/fps_graph_overlay/plugin.cfg", "res://addons/orphan_import_file_cleaner/plugin.cfg" )
 
 [gdnative]
 

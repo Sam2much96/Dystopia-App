@@ -541,8 +541,7 @@ func _on_Timer2_timeout():
 
 	emit_signal("Timeout")
 	stop_check()
-	if is_instance_valid(Comics_v6): # Error Catcher
-		Comics_v6.SwipeLocked = false#!Comics_v6.SwipeLocked
+
 
 """
 MULTIPLAYER SIGNALS

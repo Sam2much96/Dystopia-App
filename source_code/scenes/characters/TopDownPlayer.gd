@@ -12,6 +12,7 @@
 # To Do:
 # (1) Refactor Player animation Logic into core Player class (DOne)
 # (2) Player Animation Script Needs refactoring to Play animation as an extended method 
+# (3) Refactor Animation State Machine To Use Animation Tree Blend States Locally and In Simulation Logic
 # *************************************************
 
 extends Player

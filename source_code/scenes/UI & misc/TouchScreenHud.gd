@@ -32,14 +32,16 @@
 # (7) Should Resize to fit Screen Diameters using Global Scripts & Variables
 # # (a) Write a Resize function using Global Screen Orientation Calculation and Screen Size
 #	#	# (b) Variables available : Globals.os, Globals.screen Orientation, Globals.screenSize,Globals.viewport_size, GLobals.center_of_viewport
-#		#(c) set grouped buttons positioning programmatically
+#		#(c) set grouped buttons positioning programmatically (Done)
 # (8) ReWrite Logic Using Animation Player Nodes to fix Stuck Button Bug
 # (9) State machine is not optimized at all (processor hog) (1/2)
 # (10) TOuch Interface should be adjustible on mobile using drag and drop
 # (11) TOuch Interface Format and Scaling should be exported function to android singleton (DOne)
 # (12) Implement Drag and Drop Customization using state machines and postion registers
 # (13) Vibration Bug when Rescaling
-# (14) Touch HUD Scaling is buggy on Mobile Browsers
+# (14) Touch HUD Scaling is buggy on Mobile Browsers (fixed)
+# (15) Shoud Export An Inspector Item String List THat Triggers Different HUD States 
+# (16) Implement Stylus and Swipe COntrolls for Mobile Devices like LOZ Phantom Hourglass
 # *************************************************
 
 
@@ -68,7 +70,8 @@ onready var menu3 = GlobalInput.menu
 enum { _MENU, _INTERRACT, _ATTACK, _STATS, _COMICS, _RESET }
 
 export (int) var _state_controller = _STATS
-export (String, 'modern', 'classic') var _control # Dupli9cate of Globals._controller_type
+export (String, 'modern', 'classic', "stylus") var _control # Dupli9cate of Globals._controller_type
+export (String, 'menu', 'interract', "attack", "stats", "comics", "reset") var _state_inspector : String # State machine Debugger from inspector Tab
 var _Debug_Run : bool = false
 
 export (bool) var enabled # Local Variant for stroing if device is android from adnroid singleton
@@ -94,7 +97,10 @@ var D_pad : Control
 
 var Anim : AnimationPlayer 
 
-
+var _up : TouchScreenButton
+var _down : TouchScreenButton
+var _left : TouchScreenButton
+var _right : TouchScreenButton
 
 
 
@@ -115,7 +121,8 @@ onready var joystick_parent: Control = $Joystick
 'UI button as arrays'
 onready var action_buttons : Array 
 onready var direction_buttons : Array 
-
+onready var analogue_joystick : Array
+onready var d_pad : Array
 
 # debug COunter counts how many times a mehtod has been called
 var counter : int = 0
@@ -138,24 +145,72 @@ func _ready():
 	Android.TouchInterface = self
 	# Bug: Android Intializer is buggy
 	
-	if Android.is_android() == false:
-		self.hide()
-		enabled = false
-	if Android.is_android() == true: 
-		self.show()
-		print_debug("Showing Touch Interface")
-	if Globals.os == "Android":
-		self.show()
-		enabled = true
-	if Globals.os == "HTML5" && Utils.initial_screen_orientation == 0: # Mobile Browser
-		self.show()
-		enabled = true
-	#self.hide() if not Android.is_android() else print_debug("Showing Touch Interface")
-	if Globals.os == "X11":
-		self.hide()
+	#if Android.is_android() == false:
+	#	self.hide()
+	#	enabled = false
+	#if Android.is_android() == true: 
+	#	self.show()
+	#	print_debug("Showing Touch Interface")
+	#if Globals.os == "Android":
+	#	self.show()
+	#	enabled = true
+	#if Globals.os == "HTML5" && Utils.initial_screen_orientation == 0: # Mobile Browser
+	#	self.show()
+	#	enabled = true
+	##self.hide() if not Android.is_android() else print_debug("Showing Touch Interface")
+	#if Globals.os == "X11":
+	#	self.hide()
 	#enabled = Android.is_android()
+	enabled = false
 	
+	######## Begin Setting Nodes #
+	_menu = $menu
+	_interract = $Control/InterractButtons/interact
+	stats_ = $Control/InterractButtons/stats
+	roll = $Control/ActionButtons/roll
+	slash = $Control/ActionButtons/slash
+	comics_ = $Control/InterractButtons/comics
+	_joystick = $Joystick/joystick_circle
+	joystick2 = $Joystick/joystick_circle2
+	 
+	Anim = $AnimationPlayer
+	D_pad = $"D-pad"
+	LineDebug = $Line2D
+	#touch_interface_debug() disabling for now
 	
+	_up = $"D-pad/up"
+	_down = $"D-pad/down"
+	_left = $"D-pad/left"
+	_right = $"D-pad/right"
+	
+
+	action_interract_buttons = $Control/ActionButtons 
+	interract_buttons = $Control/InterractButtons
+
+	"Set Button Arraqys for easy on/off"
+	action_buttons = [
+		_menu ,
+		stats_,
+		_interract,
+		roll, 
+		slash,
+		comics_
+		]
+	
+	analogue_joystick  = [ _joystick, joystick2]
+	d_pad = [D_pad, _up, _down, _left, _right]
+	
+		# Select Users Preferred Direction Controls 
+		
+	if str(Globals.direction_control )== "classic" :
+		direction_buttons = d_pad
+	elif str(Globals.direction_control) == "modern" :
+		direction_buttons = analogue_joystick
+		
+	# Default Direction Button should be Analgue
+	else: direction_buttons = analogue_joystick
+
+	#### Done Setting Nodes
 	
 	# Update scene Temporarily Disabled
 	#Globals.update_curr_scene()
@@ -163,56 +218,21 @@ func _ready():
 	#print_debug( " Global Touch HUD: ", GlobalInput.TouchInterface)
 	
 	# To DO  : 
-	# (1) Improve Touch HUD for mobile players
+	# (1) Improve Touch HUD for mobile players (Done)
 	# (2) Add touch hud drag and drop using refactored comics script
 	# (3) Fix hud auto orientation for mobile
 	
 	# Turn off this setup script if not running on Android
 	if enabled:
-		_menu = $menu
-		_interract = $Control/InterractButtons/interact
-		stats_ = $Control/InterractButtons/stats
-		roll = $Control/ActionButtons/roll
-		slash = $Control/ActionButtons/slash
-		comics_ = $Control/InterractButtons/comics
-		_joystick = $Joystick/joystick_circle
-		joystick2 = $Joystick/joystick_circle2
-		 
-		Anim = $AnimationPlayer
-		D_pad = $"D-pad"
 
-		LineDebug = $Line2D
-		#touch_interface_debug() disabling for now
-
-		action_interract_buttons = $Control/ActionButtons 
-		interract_buttons = $Control/InterractButtons
-
-		"Set Button Arraqys for easy on/off"
-		action_buttons = [
-			_menu ,
-			stats_,
-			_interract,
-			roll, 
-			slash,
-			comics_
-			]
 		
-		# Select Users Preferred Direction Controls 
-		
-		if str(Globals.direction_control )== "classic" :
-			direction_buttons = [D_pad]
-		elif str(Globals.direction_control) == "modern" :
-			direction_buttons = [ _joystick, joystick2]
-			
-			# Default Direction Button should be Analgue
-		else: direction_buttons = [ _joystick, joystick2]
-
-	#print_debug(direction_buttons, Globals.direction_control)
+		#print_debug(direction_buttons, Globals.direction_control)
 
 		"Touch UI Visibility"
 		# moved to ANdroid singleton
 		# Disabling for debugging
 		#hide_self(Globals.os, Globals.screenOrientation, _Hide_touch_interface, self)
+		
 		
 		"Touch Menu Button Customization"
 		# Customizes 
@@ -299,7 +319,7 @@ func _ready():
 		# TO DO:
 		# (1) Debug Code
 		# (2) Update Documentation
-		if is_instance_valid(Dialogs && Comics_v6 && menu3 && Networking):
+		if is_instance_valid(Dialogs && menu3 && Networking):
 			if not (Dialogs.is_connected("dialog_started", self, "interract") &&
 				Dialogs.is_connected("dialog_ended", self, "reset") &&
 				_comics.is_connected( 'comics_showing', self, '_on_comics_showing') &&
@@ -319,8 +339,9 @@ func _ready():
 					Networking.timer.is_connected("timeout", self, "reset") 
 					)
 
-
-
+	if not enabled:
+		__disappear()
+		
 
 # I wrote all the states within functions. I should'vve instead written them within a process fucntion
 """
@@ -390,23 +411,6 @@ func touch_interface_debug(): #Debug singleton is broken
 			
 			
 
-	#update Globals Direction Control variable to Local Variable
-	# Should Fix  Broken Joystick/ Direction Changer
-	#Changes D-pad Controls from control once the Touch Interface is ready
-	#placeholder method
-#func set_controller(_control):
-# Unused Code, depreciated
-#	if Globals.direction_control.empty():
-#		print("COntroller Type: :",Globals.direction_control)
-#		_control == Globals.direction_control
-		#return
-	
-
-#func _RepositionButtonsHUD()-> void:
-#	#pass
-#	action_interract_buttons.set_position(action_interract_buttons.get_position() + dimensional_diff)
-#	interract_buttons.set_position(action_interract_buttons.get_position() + dimensional_diff)
-	
 
 
 func _input(event):
@@ -479,69 +483,70 @@ func _input(event):
 
 
 
-func _physics_process(delta):
-	
-
-
-	
-	#write a rule that Joystick and Dpad cannot be visible at the same time
-	
-	"""
-	State Machine For the TOuch interface
-	"""
-	# TO DO : 
-	# (1) Reformat to Physcis Processs to reduce process calls in main scene tree
-	if enabled:
-			# calls to state machine work
-		match _state_controller:
-			_MENU:
-				
-				hide_buttons()
-				
-				_menu.show()
-				
-			_INTERRACT:
-				#The interract state should only show when it's close to an interactible object 
-				#if _Hide_touch_interface == false:
-				
-				hide_buttons()
-				
-				_menu.show()
-				_interract.show()
-					
-			_ATTACK:
-				
-				emit_signal('attack')
-			
-				hide_buttons()
-				
-				_menu.show()
-				slash.show()
-				roll.show()
-				if _control == Globals._controller_type[1]: # modern
-					D_pad.hide()
-					joystick_parent.show()
-					
-				if _control == Globals._controller_type[2]: # classic
-					joystick_parent.hide()
-					D_pad.show()
-			_STATS:
-				hide_buttons()
-				
-				stats_.show()
-			_COMICS:
-				#kj;kn;k
-				#Anim.play("COMICS")
-				hide_buttons()
-				comics_.show()
-			
-			_RESET: 
-				"shows all the UI options"
-				show_action_buttons()
-				
-				show_direction_buttons()
-
-
+#func _process(_delta): # Depreciated
+#	
+#
+#
+#	
+#	#write a rule that Joystick and Dpad cannot be visible at the same time
+#	
+#	"""
+#	State Machine For the TOuch interface
+#	"""
+#	# TO DO : 
+#	# (1) Reformat to Physcis Processs to reduce process calls in main scene tree
+#	# (2) Remove Statemachine entirely. Use Exported FUntions To Change Node State
+#	if enabled:
+#			# calls to state machine work
+#		match _state_controller:
+#			_MENU:
+#				
+#				hide_buttons()
+#				
+#				_menu.show()
+#				
+#			_INTERRACT:
+#				#The interract state should only show when it's close to an interactible object 
+#				#if _Hide_touch_interface == false:
+#				
+#				hide_buttons()
+#				
+#				_menu.show()
+#				_interract.show()
+#					
+#			_ATTACK:
+#				
+#				emit_signal('attack')
+#			
+#				hide_buttons()
+#				
+#				_menu.show()
+#				slash.show()
+#				roll.show()
+#				if _control == Globals._controller_type[1]: # modern
+#					D_pad.hide()
+#					joystick_parent.show()
+#					
+#				if _control == Globals._controller_type[2]: # classic
+#					joystick_parent.hide()
+#					D_pad.show()
+#			_STATS:
+#				hide_buttons()
+#				
+#				stats_.show()
+#			_COMICS:
+#				#kj;kn;k
+#				#Anim.play("COMICS")
+#				hide_buttons()
+#				comics_.show()
+#			
+#			_RESET: 
+#				"shows all the UI options"
+#				show_action_buttons()
+#				
+#				show_direction_buttons()
+#
+#
 
 func hide_buttons() :
 	# Beware:  Hide Buttons FUnctions Clashes with UI Animation NOde player. The Animation node player Takes priority and canels 
@@ -608,3 +613,33 @@ func _on_comics_hidden():
 	print_debug("Comics Hidden")
 	reset()
 
+
+
+##### External Method TO Be Called Form Other Scripts
+func __menu():
+	_menu.show()
+	_interract.hide()
+	stats_.hide()
+	roll.hide()
+	slash.hide()
+	comics_.hide()
+	_joystick.hide()
+	joystick2.hide()
+	_up.hide()
+	_down.hide()
+	_left.hide()
+	_right.hide()
+
+func __disappear():
+	_menu.hide()
+	_interract.hide()
+	stats_.hide()
+	roll.hide()
+	slash.hide()
+	comics_.hide()
+	_joystick.hide()
+	joystick2.hide()
+	_up.hide()
+	_down.hide()
+	_left.hide()
+	_right.hide()

@@ -43,6 +43,10 @@ func _ready():
 				# Only show long loading scene for overworld scenes 1 and 5 which are resource heavy
 				
 				yield(get_tree().create_timer(5), "timeout")
+				
+					# Enable TOuch HuD
+				GlobalInput.TouchInterface.enabled = true
+		
 		
 		LOADING = true
 

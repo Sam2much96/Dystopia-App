@@ -45,7 +45,7 @@ export (Vector2) var roll_direction = Vector2.DOWN
 
 export(Array) var StateBuffer : Array = []
 export(String) var item_equip = "" # Unused Item Equip Variant
-signal health_changed(current_hp)
+signal health_changed(hitpoints)
 
 export(String, "up", "down", "left", "right") var _facing = "down" # used as a parameter for the player animation state machine
 
@@ -70,9 +70,10 @@ onready var player_camera : Camera2D = $camera #the player's camera
 onready var animation : AnimationPlayer = $AnimationTree/anims
 
 
+var local_heart_box = null # Pointer To Heart Box HUD
+
 # Multiplayer #Depreciated for Networking Enumerator
 # Check if Player is playing a multipplayer game
-#export (bool) var OFFLINE : bool = true 
 
 export (int) var peer_id : int = -99 # Dummpy Placeholder Peer id
 
@@ -103,14 +104,29 @@ func _ready():
 	# Buggy check ln 74
 	#Behaviour.AutoSpawn(self)
 	
+	# Connect To Dialogue Singleton
 	
 	if not (
 			Dialogs.connect("dialog_started", self, "_on_dialog_started") == OK and
 			Dialogs.connect("dialog_ended", self, "_on_dialog_ended") == OK ):
-		printerr("Error connecting to dialog system")
+		push_error("Error Connecting To The Dialog System")
+		print_debug("Error connecting to dialog system")
 	
-	pass
-
+	# COnnect To Health Bar Node via Global Input Singleton
+	if not is_instance_valid(GlobalInput.gameHUD.heart_box):
+		push_error("Error Connecting To The Heart Box System")
+		print_debug("Error Connecting To The Heart Box System")
+	
+	if is_instance_valid(GlobalInput.gameHUD.heart_box):
+		local_heart_box = GlobalInput.gameHUD.heart_box
+		self.connect("health_changed", local_heart_box, "_on_health_changed")
+		
+		update_heart_box()
+	
+		# Debug Connection
+		if not self.is_connected("health_changed", local_heart_box, "_on_health_changed") == true:
+			print_debug("Heart Box Node Not Connected")
+			push_error("Heart Box Node Not Connected")
 
 func _on_dialog_started():
 	state = STATE_BLOCKED
@@ -142,6 +158,13 @@ func despawn():
 	
 	
 	self.hide()
+
+# Exposed Dynamic Function To Upate The Game HUD Heart Box 
+# From ANother Scen Throught THe Player
+ 
+func update_heart_box():
+	# Call The Method With My HP To Register Current Player HP
+	local_heart_box._on_health_changed(hitpoints)
 
 
 func respawn():

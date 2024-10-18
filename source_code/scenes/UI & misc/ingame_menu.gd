@@ -140,9 +140,9 @@ func _process(_delta):
 
 
 func _input(event): 
-	#Toggles menu visibility on/off
-	# Bug: 
-	# (1) Causes Laggy Audio On Title Screen Loads
+	if not event.is_action_pressed("menu"): # Guard Clause
+		return
+		
 	if event.is_action_pressed("menu") == true :# 
 		print_debug("Menu Is Pressed")
 		if menu_state == HIDDEN:

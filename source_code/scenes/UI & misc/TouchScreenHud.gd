@@ -145,6 +145,8 @@ func _ready():
 	Android.TouchInterface = self
 	# Bug: Android Intializer is buggy
 	
+	print_debug("OS Debug: ",Globals.os)
+	# COde Mutates ENabled
 	#if Android.is_android() == false:
 	#	self.hide()
 	#	enabled = false
@@ -160,8 +162,7 @@ func _ready():
 	##self.hide() if not Android.is_android() else print_debug("Showing Touch Interface")
 	#if Globals.os == "X11":
 	#	self.hide()
-	#enabled = Android.is_android()
-	enabled = false
+
 	
 	######## Begin Setting Nodes #
 	_menu = $menu
@@ -348,8 +349,12 @@ func _ready():
 THE STATE MACHINE CALLS WITH FUNCTIONS
 """
 func reset():  #resets node visibility statuses
-	_state_controller = _RESET
-	return _state_controller 
+	#_state_controller = _RESET
+	#return _state_controller 
+	"shows all the UI options"
+	show_action_buttons()
+	
+	show_direction_buttons()
 
 #Enumerate each of the following states
 
@@ -360,23 +365,19 @@ func status():  #used by ui scene when status is clicked
 
 
 func comics():  #used by ui scene when comics is clicked
-	_state_controller = _COMICS
-	return _state_controller 
-
+	#_state_controller = _COMICS
+	#return _state_controller 
+	hide_buttons()
+	comics_.show()
 
 func menu(): #used by ui scene when menu is clicked
-	_state_controller = _MENU
-	return _state_controller 
+	#_state_controller = _MENU
+	#return _state_controller 
+	hide_buttons()
+	_menu.show()
 
 func interract(): #used by ui scene when interract is clicked
-	print_debug("interract")
-	_state_controller = _INTERRACT
 	
-	# Note: 
-	# Duplicate of State Machine Commands
-	# TOuch Interface State machine is buggy
-	# This might be due to the Scene Tree Pause that
-	# Is triggered by certain Game HUD Modules
 	hide_buttons()
 	_menu.show()
 	_interract.show()
@@ -384,10 +385,23 @@ func interract(): #used by ui scene when interract is clicked
 
 
 func attack(): #used by ui scene when attack is clicked 
-	_state_controller = _ATTACK
-	return _state_controller 
+	#_state_controller = _ATTACK
+	#return _state_controller 
 
+	emit_signal('attack')
 
+	hide_buttons()
+
+	_menu.show()
+	slash.show()
+	roll.show()
+	if _control == Globals._controller_type[1]: # modern
+		D_pad.hide()
+		joystick_parent.show()
+
+	if _control == Globals._controller_type[2]: # classic
+		joystick_parent.hide()
+		D_pad.show()
 
 
 
@@ -483,70 +497,6 @@ func _input(event):
 
 
 
-#func _process(_delta): # Depreciated
-#	
-#
-#
-#	
-#	#write a rule that Joystick and Dpad cannot be visible at the same time
-#	
-#	"""
-#	State Machine For the TOuch interface
-#	"""
-#	# TO DO : 
-#	# (1) Reformat to Physcis Processs to reduce process calls in main scene tree
-#	# (2) Remove Statemachine entirely. Use Exported FUntions To Change Node State
-#	if enabled:
-#			# calls to state machine work
-#		match _state_controller:
-#			_MENU:
-#				
-#				hide_buttons()
-#				
-#				_menu.show()
-#				
-#			_INTERRACT:
-#				#The interract state should only show when it's close to an interactible object 
-#				#if _Hide_touch_interface == false:
-#				
-#				hide_buttons()
-#				
-#				_menu.show()
-#				_interract.show()
-#					
-#			_ATTACK:
-#				
-#				emit_signal('attack')
-#			
-#				hide_buttons()
-#				
-#				_menu.show()
-#				slash.show()
-#				roll.show()
-#				if _control == Globals._controller_type[1]: # modern
-#					D_pad.hide()
-#					joystick_parent.show()
-#					
-#				if _control == Globals._controller_type[2]: # classic
-#					joystick_parent.hide()
-#					D_pad.show()
-#			_STATS:
-#				hide_buttons()
-#				
-#				stats_.show()
-#			_COMICS:
-#				#kj;kn;k
-#				#Anim.play("COMICS")
-#				hide_buttons()
-#				comics_.show()
-#			
-#			_RESET: 
-#				"shows all the UI options"
-#				show_action_buttons()
-#				
-#				show_direction_buttons()
-#
-#
 
 func hide_buttons() :
 	# Beware:  Hide Buttons FUnctions Clashes with UI Animation NOde player. The Animation node player Takes priority and canels 

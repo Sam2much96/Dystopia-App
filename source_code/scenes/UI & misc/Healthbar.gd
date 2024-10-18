@@ -15,6 +15,7 @@
 # (4) Implement Empty Heart Animation
 # (5) Implement Heart Box Scaling For Mobile Devices
 # (6) Implement Tweening for healthbar animation
+# (7) Re-draw Empty heart Sprite
 # *************************************************
 # Bugs:
 # 
@@ -36,12 +37,14 @@ var networkPlayer : Player_v2_networking
 var player_group : Array = []
 
 # Idea:  Rather Than Instancing the scene, why not duplicate?
+onready var HeartScene : PackedScene = load("res://scenes/UI & misc/Heart.tscn")
 onready var heart_instance : TextureRect = $heart #: PackedScene = preload("res://scenes/UI & misc/Heart.tscn")
 onready var heart_empty : TextureRect = $heart_empty #: PackedScene = preload ("res://scenes/UI & misc/HeartEmpty.tscn")
 
 const MAX_HEALTH = 23 # Max Health Constant
-var initial_health : int 
 
+export (int) var HEALTH_COUNT : int = 0
+export (int) var HEALTH_LOST : int = 0 # Use
 
 # Placeholder HeartBox
 onready var h2 : TextureRect = $heart2
@@ -53,75 +56,108 @@ onready var placeholder_hearts : Array = [h2,h3] # For Holding memory pointer to
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Try to get the player node. If null wait till next frame, rinse, repeat.
-	while (Globals.players.empty()):#(player == null):
-		
-		# use a global function instead
-		#player_group = Globals.players #get_tree().get_nodes_in_group("player")
-		
-		
-		## Too much Nested Ifs?
-		#if not player_group.empty():
-		#	for i in player_group:
-		#		if i is Player: # Local Player Code Bloc
-		#			player = i #player = player_group.pop_front()
-		#			initial_health = player.hitpoints
-		#			print_debug("Health Bar Debug")
-		#			
-		#		if i is Player_v2_networking: pass # Online Player Code Bloc
-		#else:
-		#	
-		# Emitted befor Node._process()
-		yield(get_tree(), "idle_frame")
 	
-	player = Globals.players.pop_back() # Doesnt account for player changing scene resulting in null variable
-	
-	# Connect Signals to Player Object
-	player.connect("health_changed", self, "_on_health_changed")
-	
-	# Debug SIgnals
-	print_debug("Is Player Ok: ",player.is_connected("health_changed", self, "_on_health_changed"), "/", player.hitpoints)
-	
+	# Store Heart Count TO Inspector
+	HEALTH_COUNT = get_heart_count()
 
+
+
+func get_heart_count() -> int:
+	# Gets The Number Of Heart Nodes Created
+	# Updates It To The Inspector Tab
+	# Parses Through It's Childern and Gets a Count of Certain Types
+	# Updates Health Count TO Inspector Tab and Houts Hidden Health Tabs
+	# *************************************************
+	var hp_child : Array = self.get_children()
 	
-	# Set Hitpoint to Player Object Hitpoints
-	_on_health_changed(player.hitpoints)
+	# Initialize with Zero 
+	HEALTH_COUNT = 0 # Clear Prev Health COunt
+	
+	for i in hp_child:
+		if i is Tween:
+			pass
+		if i is TextureRect :
+			if i.visible == true: # Counts Only Visible Heart Boxes
+				HEALTH_COUNT +=1
+			if i.visible == false:
+				HEALTH_LOST +=1
+		else:
+			pass
+	#print_debug("Heart Count Debug: ",HEALTH_COUNT)
+	return HEALTH_COUNT
 
 
 # Should Implement a New Constant for Max Health
 func _on_health_changed(new_hp : int):
 	# Buggy Logic
-	print_debug("Health Change Function Called")
+	print_debug("Health Change Function Called: ", new_hp)
 	
-	var _no_of_hearts = self.get_child_count() -2 # -1 for The unimplemented Empty Heart Scene & tween node
+	# Update THe Heart COunt Variables
+	get_heart_count() # -1 for The unimplemented Empty Heart Scene & tween node
 	
 	if new_hp == 0:
-		# Clears Children Nodes
-		for i in self.get_children():
-			i.queue_free() 
+		# Hide The Last Heart If Player Life Updates As Zero
+		
+		# Clears Children Nodes and hides the heart instance for duplicating
+		
+		#h2.queue_free()
+		#h3.queue_free() # Code Breaks Here
+		heart_instance.hide()
 	
-	
-	if new_hp == _no_of_hearts:
+	# If THe Plaer HP is THe same As The current Viible Hearts on Screen Return
+	# It is a Guard Clause
+	if new_hp == HEALTH_COUNT:
 		return
 	
-	# Health Increase
-	if new_hp > _no_of_hearts:
-		var _to_add_hearts = new_hp - _no_of_hearts # get the difference
+	"""
+	HEALTH INCREASE Logic
+	"""
+	# To Do : Implement Tweening for animation
+	
+	# Health Increase past 3 with No Health Lost
+	if new_hp > HEALTH_COUNT && HEALTH_LOST == 0 :
+		var hearts_to_add = new_hp - HEALTH_COUNT # get the difference
+		# Debug the difference and show HP
+		print_debug("health Box Increase 111: ", hearts_to_add)
 		
-		# Run A Recursive Loop
-		for i in _to_add_hearts:
-			heart_instance.duplicate()
+		# Run A Recursive Loop TO Duplicate Additional Hearts
+		for i in hearts_to_add:
+			var t = h3.duplicate()# HeartScene.instance()
+			self.call_deferred("add_child", t)
+			#self.add_child(t)
+	
+	# Health Increase past 3 with Some Health Lost
+	if new_hp > HEALTH_COUNT && HEALTH_LOST > 0 :
+		var hearts_to_add = new_hp - HEALTH_COUNT # get the difference
+		# Debug the difference and show HP
+		print_debug("health Box Increase222 : ", hearts_to_add)
+		
+		# Run A Recursive Loop TO Duplicate Additional Hearts
+		for i in hearts_to_add:
+			#self.get_child(hearts_to_add).show() # get a child and show it
+			HEALTH_LOST =-1
+			for u in self.get_children():
+				u.show()
+	"""
+	HEALTH DECREASE Logic
+	"""
 	
 	# Health Decrese
-	# To Do : Implement Tweening for animation
-	if new_hp < _no_of_hearts:
-		var _to_remove_hearts = _no_of_hearts - new_hp
+	# State : Works
+	
+	# If The New Health is Lower Than THe Current Health Count
+	if new_hp < HEALTH_COUNT:
+		var _to_remove_hearts = HEALTH_COUNT - new_hp
 		
-		# Recursively Delete all heart childern
+		# Recursively HIde all heart childern
 		while (_to_remove_hearts > 0):
-			self.get_child(_to_remove_hearts).queue_free()
+			self.get_child(_to_remove_hearts).hide()
 			_to_remove_hearts -= 1
+			HEALTH_LOST +=1 # Increase THe health lost variable
 			
 	
 	# Debug Heart Update
-	print_debug("Heart Update Debug: ", (self.get_child_count() -2), "/", "New HP : ",new_hp)
+	#print_debug("Heart Update Debug: ", (self.get_child_count() -2), "/", "New HP : ",new_hp)
+
+
+

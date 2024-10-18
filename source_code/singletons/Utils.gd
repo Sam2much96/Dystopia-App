@@ -618,7 +618,7 @@ class Screen  :
 	 D_pad : Control
 	)-> Array:
 		
-		assert(Globals.os =="Android")
+		assert(Globals.os =="Android", "Test Device is Not Android")
 		
 		# Returns an Array containing the position of all Touch HUD items
 		# Only Used in Mobile devices for adjusting TOuchscreen HUD

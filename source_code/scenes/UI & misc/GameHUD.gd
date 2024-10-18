@@ -2,10 +2,13 @@
 # godot3-Dystopia-game by INhumanity_arts
 # Released under MIT License
 # *************************************************
-#
+# Is a SIngleton Child Of GLobal Input SIngleton and Exposes its Childern To THe Scene Tree
 # This is an Ingame UI (Separate from Ingame Menu) containing
 # information used by the player's Dialogue, Inventory, Health bar,.
 # Kill count, Directional, Comics.
+#
+#
+#
 #
 # Features: 
 # (1) SHows All Game Data from Different Singletons to player
@@ -40,17 +43,18 @@ extends CanvasLayer
 
 class_name GameHUD
 
+# Exposes Sub Nodes TO Scene Tree Via Global Input Singleton
 
 onready var menu : Game_Menu = $"Menu "
 onready var TouchInterface : TouchScreenHUD =  $TouchInterface
 onready var _Comics = GlobalInput.get_child(1) #Comics Node Pointer
 onready var _Stats : Stats = $Stats
 onready var _Status_text : StatusText = $Status_text
-
+onready var heart_box : Healthbar = $Healthbar
 onready var ingame_comics_placeholer = $Comics
 
 
-onready var children : Array = [menu, TouchInterface,_Comics, _Stats, _Status_text]
+onready var children : Array = [menu, TouchInterface,_Comics, _Stats, _Status_text, heart_box]
 
 onready var globalInput = get_parent()
 

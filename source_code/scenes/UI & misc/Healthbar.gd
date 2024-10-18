@@ -20,7 +20,7 @@
 # Bugs:
 # 
 # (1) Currently Only Works in Local Player not Networked Multiplayer (fixed)
-# (2) Does'nt scale well on Mobile Devices
+# (2) Does'nt scale well on Mobile Devices (Fixed)
 # (3) Requires Reimplementation and Animation Player (Full Refactor)
 # *************************************************
 extends HBoxContainer

@@ -608,12 +608,13 @@ class Screen  :
 			#print (scroller.scroll_vertical )#= scroll_constant  * delta
 	
 	
-	static func calculate_button_positional_data(menu : TouchScreenButton, 
-	_interract : TouchScreenButton,
-	stats : TouchScreenButton, 
-	roll : TouchScreenButton, 
-	slash : TouchScreenButton, 
-	comics : TouchScreenButton, 
+	static func calculate_button_positional_data(
+	menu : TextureButton, 
+	_interract : TextureButton,
+	stats : TextureButton, 
+	roll : TextureButton, 
+	slash : TextureButton, 
+	comics : TextureButton, 
 	joystick : TouchScreenButton,
 	 D_pad : Control
 	)-> Array:

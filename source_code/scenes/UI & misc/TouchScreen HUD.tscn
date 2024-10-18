@@ -1,19 +1,16 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Joystick circle.tscn" type="PackedScene" id=1]
-[ext_resource path="res://resources/Buttons/menu white.png" type="Texture" id=2]
+[ext_resource path="res://resources/Buttons/menu.png" type="Texture" id=2]
 [ext_resource path="res://scenes/UI & misc/ActionButtons.gd" type="Script" id=3]
 [ext_resource path="res://scenes/UI & misc/TouchScreenHud.gd" type="Script" id=4]
 [ext_resource path="res://scenes/UI & misc/joystick v2.gd" type="Script" id=5]
-[ext_resource path="res://resources/misc/btn-hands.png" type="Texture" id=6]
-[ext_resource path="res://resources/misc/btn-interact.png" type="Texture" id=11]
+[ext_resource path="res://resources/Buttons/btn-hands.png" type="Texture" id=6]
+[ext_resource path="res://resources/Buttons/btn-interact.png" type="Texture" id=11]
 [ext_resource path="res://resources/Buttons/comics.png" type="Texture" id=12]
-[ext_resource path="res://resources/misc/btn-stats.png" type="Texture" id=13]
-[ext_resource path="res://resources/misc/btn-roll.png" type="Texture" id=14]
+[ext_resource path="res://resources/Buttons/btn-stats.png" type="Texture" id=13]
+[ext_resource path="res://resources/Buttons/btn-roll.png" type="Texture" id=14]
 [ext_resource path="res://resources/misc/arrow.png" type="Texture" id=15]
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 30, 100 )
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 50.0
@@ -727,20 +724,16 @@ tracks/6/keys = {
 "values": [ true ]
 }
 
-[node name="TouchInterface" type="Node2D"]
+[node name="TouchInterface" type="Control"]
 modulate = Color( 1, 1, 1, 0.67451 )
 script = ExtResource( 4 )
 _state_controller = 4
 _control = "modern"
 
-[node name="menu" type="TouchScreenButton" parent="."]
+[node name="menu" type="TextureButton" parent="."]
 self_modulate = Color( 0, 0, 0, 1 )
 show_behind_parent = true
-position = Vector2( 4, 33 )
-scale = Vector2( 0.954459, 0.888112 )
-normal = ExtResource( 2 )
-action = "menu"
-visibility_mode = 1
+texture_normal = ExtResource( 2 )
 
 [node name="Control" type="Control" parent="."]
 anchor_bottom = 1.0
@@ -748,61 +741,82 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="InterractButtons" type="Control" parent="Control"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -220.205
-margin_top = -19.3816
-margin_right = -54.205
-margin_bottom = 315.618
+[node name="InterractButtons" type="VBoxContainer" parent="Control"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 852.0
+margin_top = 10.0
+margin_right = 1018.0
+margin_bottom = 367.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
-[node name="stats" type="TouchScreenButton" parent="Control/InterractButtons"]
+[node name="stats" type="TextureButton" parent="Control/InterractButtons"]
 pause_mode = 2
-position = Vector2( 1110.48, 29.2283 )
-normal = ExtResource( 13 )
-action = "pause"
-visibility_mode = 1
+margin_right = 166.0
+margin_bottom = 103.0
+texture_normal = ExtResource( 13 )
 
-[node name="comics" type="TouchScreenButton" parent="Control/InterractButtons"]
-position = Vector2( 1103.5, 113.137 )
-rotation = 0.370864
-scale = Vector2( 0.9, 0.9 )
-normal = ExtResource( 12 )
-action = "comics"
-visibility_mode = 1
+[node name="Label_Spacer" type="Label" parent="Control/InterractButtons"]
+margin_top = 107.0
+margin_right = 166.0
+margin_bottom = 138.0
+text = "
+"
 
-[node name="interact" type="TouchScreenButton" parent="Control/InterractButtons"]
-position = Vector2( 1073.75, 245.527 )
-normal = ExtResource( 11 )
-action = "interact"
-visibility_mode = 1
+[node name="comics" type="TextureButton" parent="Control/InterractButtons"]
+margin_top = 142.0
+margin_right = 166.0
+margin_bottom = 285.0
+texture_normal = ExtResource( 12 )
 
-[node name="ActionButtons" type="Control" parent="Control"]
+[node name="interact" type="TextureButton" parent="Control/InterractButtons"]
+margin_top = 289.0
+margin_right = 166.0
+margin_bottom = 392.0
+texture_normal = ExtResource( 11 )
+
+[node name="ActionButtons" type="HBoxContainer" parent="Control"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -149.076
-margin_top = 999.425
-margin_right = -149.076
-margin_bottom = 999.425
+margin_left = 799.0
+margin_top = 1323.0
+margin_right = 1023.0
+margin_bottom = 1529.0
 script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
-[node name="slash" type="TouchScreenButton" parent="Control/ActionButtons"]
-position = Vector2( 1014.57, 361.592 )
-scale = Vector2( 1.64391, 1.64391 )
-normal = ExtResource( 6 )
-passby_press = true
-action = "attack"
-visibility_mode = 1
+[node name="Spacer" type="VBoxContainer" parent="Control/ActionButtons"]
+margin_right = 110.0
+margin_bottom = 206.0
 
-[node name="roll" type="TouchScreenButton" parent="Control/ActionButtons"]
-position = Vector2( 904.39, 476.15 )
-scale = Vector2( 1.29269, 1.29269 )
-normal = ExtResource( 14 )
-passby_press = true
-action = "roll"
-visibility_mode = 1
+[node name="Label_Spacer" type="Label" parent="Control/ActionButtons/Spacer"]
+margin_right = 110.0
+margin_bottom = 99.0
+text = "
+
+
+
+
+"
+
+[node name="roll" type="TextureButton" parent="Control/ActionButtons/Spacer"]
+margin_top = 103.0
+margin_right = 110.0
+margin_bottom = 206.0
+texture_normal = ExtResource( 14 )
+
+[node name="slash" type="TextureButton" parent="Control/ActionButtons"]
+margin_left = 114.0
+margin_right = 224.0
+margin_bottom = 206.0
+texture_normal = ExtResource( 6 )
 
 [node name="D-pad" type="Control" parent="."]
 anchor_bottom = 1.0
@@ -814,44 +828,37 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="right" type="TouchScreenButton" parent="D-pad"]
-position = Vector2( 34.2971, -58.3689 )
-scale = Vector2( 1.6, 1.6 )
-normal = ExtResource( 15 )
-shape = SubResource( 1 )
-passby_press = true
-action = "move_right"
-visibility_mode = 1
+[node name="right" type="TextureButton" parent="D-pad"]
+margin_left = 17.367
+margin_top = -2.93994
+margin_right = 104.367
+margin_bottom = 84.0601
+rect_rotation = 0.834126
+texture_normal = ExtResource( 15 )
 
-[node name="up" type="TouchScreenButton" parent="D-pad"]
-position = Vector2( -74.4889, -35.1759 )
-rotation = -1.5708
-scale = Vector2( 1.6, 1.6 )
-normal = ExtResource( 15 )
-shape = SubResource( 1 )
-passby_press = true
-action = "move_up"
-visibility_mode = 1
+[node name="up" type="TextureButton" parent="D-pad"]
+margin_left = -60.6329
+margin_top = 6.06006
+margin_right = 26.3671
+margin_bottom = 93.0601
+rect_rotation = -89.0955
+texture_normal = ExtResource( 15 )
 
-[node name="left" type="TouchScreenButton" parent="D-pad"]
-position = Vector2( -50.7429, 75.4691 )
-rotation = -3.14159
-scale = Vector2( 1.6, 1.6 )
-normal = ExtResource( 15 )
-shape = SubResource( 1 )
-passby_press = true
-action = "move_left"
-visibility_mode = 1
+[node name="left" type="TextureButton" parent="D-pad"]
+margin_left = -47.633
+margin_top = 80.0601
+margin_right = 39.367
+margin_bottom = 167.06
+rect_rotation = 179.682
+texture_normal = ExtResource( 15 )
 
-[node name="down" type="TouchScreenButton" parent="D-pad"]
-position = Vector2( 57.1331, 49.5271 )
-rotation = 1.5708
-scale = Vector2( 1.6, 1.6 )
-normal = ExtResource( 15 )
-shape = SubResource( 1 )
-passby_press = true
-action = "move_down"
-visibility_mode = 1
+[node name="down" type="TextureButton" parent="D-pad"]
+margin_left = 23.3671
+margin_top = 80.0601
+margin_right = 110.367
+margin_bottom = 167.06
+rect_rotation = 90.343
+texture_normal = ExtResource( 15 )
 
 [node name="Joystick" type="Control" parent="."]
 visible = false
@@ -894,3 +901,14 @@ anims/SCREEN_VERTICAL_2 = SubResource( 6 )
 anims/STATUS = SubResource( 7 )
 
 [node name="Line2D" type="Line2D" parent="."]
+
+[connection signal="pressed" from="menu" to="." method="_on_menu_pressed"]
+[connection signal="pressed" from="Control/InterractButtons/stats" to="." method="_on_stats_pressed"]
+[connection signal="pressed" from="Control/InterractButtons/comics" to="." method="_on_comics_pressed"]
+[connection signal="pressed" from="Control/InterractButtons/interact" to="." method="_on_interact_pressed"]
+[connection signal="pressed" from="Control/ActionButtons/Spacer/roll" to="." method="_on_roll_pressed"]
+[connection signal="pressed" from="Control/ActionButtons/slash" to="." method="_on_slash_pressed"]
+[connection signal="pressed" from="D-pad/right" to="." method="_on_right_pressed"]
+[connection signal="pressed" from="D-pad/up" to="." method="_on_up_pressed"]
+[connection signal="pressed" from="D-pad/left" to="." method="_on_left_pressed"]
+[connection signal="pressed" from="D-pad/down" to="." method="_on_down_pressed"]

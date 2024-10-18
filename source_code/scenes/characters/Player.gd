@@ -85,7 +85,7 @@ onready var despawn_particles : DeSpawnFX = Globals.despawn_fx.instance()
 onready var die_sfx : String = Music.nokia_soundpack[27]
 onready var hurt_sfx : String = Music.nokia_soundpack[20]
 
-# Get Music Singleton
+# Get Singletons
 onready var music_singleton_ : music_singleton = get_node("/root/Music")
 
 func _enter_tree():
@@ -95,6 +95,11 @@ func _enter_tree():
 	'Makes Player Hitpoint a Global Variable'
 	Globals.player_hitpoints = hitpoints
 
+	# Enable TOuch HuD
+	print_debug("Enabling Touch HUD For Player Input")
+	GlobalInput.TouchInterface.enabled = true
+	GlobalInput.TouchInterface.reset() # Reset Touch HUD UI
+	
 	#"Check If Online" #Depreciated for Networking Enumerator
 	#OFFLINE = Simulation.all_player_objects.empty()
 

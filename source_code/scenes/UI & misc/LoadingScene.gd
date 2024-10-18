@@ -44,10 +44,7 @@ func _ready():
 				
 				yield(get_tree().create_timer(5), "timeout")
 				
-					# Enable TOuch HuD
-				GlobalInput.TouchInterface.enabled = true
-		
-		
+				
 		LOADING = true
 
 	

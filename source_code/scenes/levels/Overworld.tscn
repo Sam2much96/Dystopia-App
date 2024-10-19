@@ -150,11 +150,13 @@ scale = Vector2( 6.26556, 1.62012 )
 to_scene = "res://scenes/levels/Building1.tscn"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 0
 
 [node name="Rain_Fx" parent="CanvasLayer" instance=ExtResource( 26 )]
 
 [node name="CRT" parent="CanvasLayer" instance=ExtResource( 19 )]
 visible = false
+input_pass_on_modal_close_click = false
 
 [node name="Player" parent="." instance=ExtResource( 7 )]
 position = Vector2( 672.514, 418.212 )

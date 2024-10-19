@@ -839,6 +839,15 @@ func calc_2d_distance_approx(x : Vector2, y : Vector2) -> int:
 	return distance_int
 
 class UI extends Reference:
+	"""
+	ALL UI Helper Nodes In A Single Class
+	"""
+	
+	static func check_for_broken_links(nodes_array : Array) -> void:
+		for i in nodes_array:
+			if not is_instance_valid(i):
+				push_error(" Node Path Broken : " + str(i))
+				print_stack()
 	
 	'Upscale UI'
 	static func upscale_ui(node ,size: Vector2, position : Vector2)-> void:
@@ -846,7 +855,9 @@ class UI extends Reference:
 		
 		node.set_scale(size) 
 		node.set_position(position)
-
+	
+	
+	
 
 
 

@@ -51,7 +51,73 @@ margin_left = 32.0
 margin_top = 48.0
 margin_right = 1002.0
 margin_bottom = 1673.0
+input_pass_on_modal_close_click = false
+
+[node name="D-pad" type="Control" parent="MarginContainer"]
+margin_right = 970.0
+margin_bottom = 1625.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="right" type="TextureButton" parent="MarginContainer/D-pad"]
+margin_left = 129.482
+margin_top = 1828.99
+margin_right = 216.482
+margin_bottom = 1915.99
+rect_rotation = 0.834126
+texture_normal = ExtResource( 15 )
+
+[node name="up" type="TextureButton" parent="MarginContainer/D-pad"]
+margin_left = 51.4816
+margin_top = 1837.99
+margin_right = 138.482
+margin_bottom = 1924.99
+rect_rotation = -89.0955
+texture_normal = ExtResource( 15 )
+
+[node name="left" type="TextureButton" parent="MarginContainer/D-pad"]
+margin_left = 64.4815
+margin_top = 1911.99
+margin_right = 151.482
+margin_bottom = 1998.99
+rect_rotation = 179.682
+texture_normal = ExtResource( 15 )
+
+[node name="down" type="TextureButton" parent="MarginContainer/D-pad"]
+margin_left = 135.482
+margin_top = 1911.99
+margin_right = 222.482
+margin_bottom = 1998.99
+rect_rotation = 90.343
+texture_normal = ExtResource( 15 )
+
+[node name="Joystick" type="Control" parent="MarginContainer"]
+visible = false
+margin_right = 970.0
+margin_bottom = 1625.0
 mouse_filter = 2
+script = ExtResource( 5 )
+custom_mapping = true
+up = "move_up"
+down = "move_down"
+left = "move_left"
+right = "move_right"
+
+[node name="joystick_circle" parent="MarginContainer/Joystick" instance=ExtResource( 1 )]
+visible = false
+position = Vector2( 0, 0 )
+shape = SubResource( 2 )
+shape_centered = false
+visibility_mode = 1
+circle_size = 80
+
+[node name="joystick_circle2" parent="MarginContainer/Joystick" instance=ExtResource( 1 )]
+visible = false
+modulate = Color( 1, 1, 1, 0.454902 )
+position = Vector2( 0, 4 )
+visibility_mode = 1
+circle_size = 156
 
 [node name="Control" type="Control" parent="MarginContainer"]
 margin_right = 970.0
@@ -143,72 +209,6 @@ margin_right = 224.0
 margin_bottom = 206.0
 texture_normal = ExtResource( 6 )
 
-[node name="D-pad" type="Control" parent="MarginContainer"]
-margin_right = 970.0
-margin_bottom = 1625.0
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="right" type="TextureButton" parent="MarginContainer/D-pad"]
-margin_left = 129.482
-margin_top = 1828.99
-margin_right = 216.482
-margin_bottom = 1915.99
-rect_rotation = 0.834126
-texture_normal = ExtResource( 15 )
-
-[node name="up" type="TextureButton" parent="MarginContainer/D-pad"]
-margin_left = 51.4816
-margin_top = 1837.99
-margin_right = 138.482
-margin_bottom = 1924.99
-rect_rotation = -89.0955
-texture_normal = ExtResource( 15 )
-
-[node name="left" type="TextureButton" parent="MarginContainer/D-pad"]
-margin_left = 64.4815
-margin_top = 1911.99
-margin_right = 151.482
-margin_bottom = 1998.99
-rect_rotation = 179.682
-texture_normal = ExtResource( 15 )
-
-[node name="down" type="TextureButton" parent="MarginContainer/D-pad"]
-margin_left = 135.482
-margin_top = 1911.99
-margin_right = 222.482
-margin_bottom = 1998.99
-rect_rotation = 90.343
-texture_normal = ExtResource( 15 )
-
-[node name="Joystick" type="Control" parent="MarginContainer"]
-visible = false
-margin_right = 970.0
-margin_bottom = 1625.0
-mouse_filter = 1
-script = ExtResource( 5 )
-custom_mapping = true
-up = "move_up"
-down = "move_down"
-left = "move_left"
-right = "move_right"
-
-[node name="joystick_circle" parent="MarginContainer/Joystick" instance=ExtResource( 1 )]
-visible = false
-position = Vector2( 0, 0 )
-shape = SubResource( 2 )
-shape_centered = false
-visibility_mode = 1
-circle_size = 80
-
-[node name="joystick_circle2" parent="MarginContainer/Joystick" instance=ExtResource( 1 )]
-visible = false
-modulate = Color( 1, 1, 1, 0.454902 )
-position = Vector2( 0, 4 )
-visibility_mode = 1
-circle_size = 156
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/COMICS = SubResource( 10 )
 anims/DIALOGUE = SubResource( 11 )
@@ -231,13 +231,13 @@ margin_right = 198.0
 margin_bottom = 191.0
 texture_normal = ExtResource( 2 )
 
+[connection signal="pressed" from="MarginContainer/D-pad/right" to="." method="_on_right_pressed"]
+[connection signal="pressed" from="MarginContainer/D-pad/up" to="." method="_on_up_pressed"]
+[connection signal="pressed" from="MarginContainer/D-pad/left" to="." method="_on_left_pressed"]
+[connection signal="pressed" from="MarginContainer/D-pad/down" to="." method="_on_down_pressed"]
 [connection signal="pressed" from="MarginContainer/Control/InterractButtons/stats" to="." method="_on_stats_pressed"]
 [connection signal="pressed" from="MarginContainer/Control/InterractButtons/comics" to="." method="_on_comics_pressed"]
 [connection signal="pressed" from="MarginContainer/Control/InterractButtons/interact" to="." method="_on_interact_pressed"]
 [connection signal="pressed" from="MarginContainer/Control/ActionButtons/Spacer/roll" to="." method="_on_roll_pressed"]
 [connection signal="pressed" from="MarginContainer/Control/ActionButtons/slash" to="." method="_on_slash_pressed"]
-[connection signal="pressed" from="MarginContainer/D-pad/right" to="." method="_on_right_pressed"]
-[connection signal="pressed" from="MarginContainer/D-pad/up" to="." method="_on_up_pressed"]
-[connection signal="pressed" from="MarginContainer/D-pad/left" to="." method="_on_left_pressed"]
-[connection signal="pressed" from="MarginContainer/D-pad/down" to="." method="_on_down_pressed"]
 [connection signal="pressed" from="menu" to="." method="_on_menu_pressed"]

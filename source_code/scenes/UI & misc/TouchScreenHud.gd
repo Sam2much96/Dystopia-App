@@ -138,6 +138,7 @@ var LineDebug : Line2D
 onready var joystick_parent: Control = $Joystick
 
 'UI button as arrays'
+onready var all_UI_Nodes : Array
 onready var action_buttons : Array 
 onready var direction_buttons : Array 
 onready var analogue_joystick : Array
@@ -206,7 +207,18 @@ func _ready():
 
 	action_interract_buttons = $MarginContainer/Control/ActionButtons 
 	interract_buttons = $MarginContainer/Control/InterractButtons
-
+	
+	# Debug Broken Lins
+	
+	all_UI_Nodes = [_menu ,stats_, _interract, roll, slash,comics_,_joystick, joystick2,D_pad, _up, _down, _left, _right ]
+	
+	# Error Catcher For Broken UI Links
+	Utils.UI.check_for_broken_links(all_UI_Nodes)
+	
+	# Check For Broken signal connections
+	
+	
+	
 	"Set Button Arraqys for easy on/off"
 	action_buttons = [
 		_menu ,
@@ -219,6 +231,7 @@ func _ready():
 	
 	analogue_joystick  = [ _joystick, joystick2]
 	d_pad = [D_pad, _up, _down, _left, _right]
+	
 	
 		# Select Users Preferred Direction Controls 
 		
@@ -650,26 +663,32 @@ func _on_menu_pressed():
 
 
 func _on_stats_pressed():
+	print_debug("Stats Button Pressed")
 	_Input.parse_input("pause", true)
 
 
 func _on_comics_pressed():
+	print_debug("Comics Button Pressed")
 	_Input.parse_input("comics", true)
 
 
 func _on_interact_pressed():
+	print_debug("Interract Button Pressed")
 	_Input.parse_input("interact", true)
 
 
 func _on_roll_pressed():
+	print_debug("Roll Button Pressed")
 	_Input.parse_input("roll", true)
 
 
 func _on_slash_pressed():
+	print_debug("Attack Button Pressed")
 	_Input.parse_input("attack", true)
 
 
 func _on_right_pressed():
+	
 	_Input.parse_input("move_right", true)
 
 

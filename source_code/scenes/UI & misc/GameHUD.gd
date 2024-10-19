@@ -46,21 +46,38 @@ class_name GameHUD
 
 # Exposes Sub Nodes TO Scene Tree Via Global Input Singleton
 
-onready var menu : Game_Menu = $"Menu "
-onready var TouchInterface : TouchScreenHUD =  $TouchInterface
-onready var _Comics = GlobalInput.get_child(1) #Comics Node Pointer
-onready var _Stats : Stats = $Stats
-onready var _Status_text : StatusText = $Status_text
-onready var heart_box : Healthbar = $MarginContainer/Healthbar
-#onready var ingame_comics_placeholer = $Comics # depreciated in favour of minimap sub system
-
-
-onready var children : Array = [menu, TouchInterface,_Comics, _Stats, _Status_text, heart_box]
 
 onready var globalInput = get_tree().get_root().get_node("/root/GlobalInput")
 
+# Export Null Pointer TO Other Scene Setters
+var menu : Game_Menu
+var TouchInterface : TouchScreenHUD
+var _Comics  #Comics Node Pointer Safe
+var _Stats : Stats
+var _Status_text : StatusText
+var heart_box : Healthbar
+#onready var ingame_comics_placeholer = $Comics # depreciated in favour of minimap sub system
+
+
+var children : Array
+
 
 func _ready():
+
+	menu = $"Menu "
+	TouchInterface =  $TouchInterface
+	_Comics = GlobalInput.get_child(1) #Comics Node Pointer
+	_Stats = $Stats
+	_Status_text = $Status_text
+	heart_box = $MarginContainer/Healthbar
+#onready var ingame_comics_placeholer = $Comics # depreciated in favour of minimap sub system
+	
+	
+	children = [menu, TouchInterface,_Comics, _Stats, _Status_text, heart_box]
+	
+	# Check For Broken Links
+	Utils.UI.check_for_broken_links(children)
+	
 	# make self Global via singleton
 	# Unsafe
 	#GlobalInput.gameHUD = self

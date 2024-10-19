@@ -103,14 +103,13 @@ func _enter_tree():
 	'Makes Player Hitpoint a Global Variable'
 	Globals.player_hitpoints = hitpoints
 	
-	# Set Player Object To The Minimap
-	GlobalInput.gameHUD._Stats._Mini_map.player_node = self
+
 	
 	
 	# Enable TOuch HuD
 	#print_debug("Enabling Touch HUD For Player Input")
-	GlobalInput.TouchInterface.enabled = true
-	Android.show_all_buttons() # Show Touch HUD UI
+	
+	
 	
 	#"Check If Online" #Depreciated for Networking Enumerator
 	#OFFLINE = Simulation.all_player_objects.empty()
@@ -120,7 +119,10 @@ func _ready():
 	
 	# Buggy check ln 74
 	#Behaviour.AutoSpawn(self)
-	
+	# Set Player Object To The Minimap
+	GlobalInput.gameHUD._Stats._Mini_map.player_node = self # TO Do : Fix Onready var bug
+	GlobalInput.TouchInterface.enabled = true
+	Android.show_all_buttons() # Show Touch HUD UI
 	# Connect To Dialogue Singleton
 	
 	if not (

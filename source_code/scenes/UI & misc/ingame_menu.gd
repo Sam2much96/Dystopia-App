@@ -270,7 +270,7 @@ func _menu_not_showing():
 	#Music.play_track(Music.ui_sfx[1]) #introduces a sound bug
 	#Music._notification(NOTIFICATION_UNPAUSED) #introduces a sound bug
 	
-	set_focus_mode(0)
+	set_focus_mode(Control.FOCUS_NONE)
 	
 	# Ignore All Mouse UI Inputs WHen Hidden
 	set_mouse_filter(Control.MOUSE_FILTER_IGNORE)

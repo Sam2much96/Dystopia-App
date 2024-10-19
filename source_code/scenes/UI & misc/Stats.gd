@@ -100,12 +100,14 @@ func _ready():
 	]
 	
 	
-	for i in _Stats_UI_Elements:
-		
-		if not is_instance_valid(i):
-			push_error(" Node Path Broken : " + str(i))
-			print_stack()
-	# Connect signals to self?
+	Utils.UI.check_for_broken_links(_Stats_UI_Elements)
+	
+	#for i in _Stats_UI_Elements:
+	#	
+	#	if not is_instance_valid(i):
+	#		push_error(" Node Path Broken : " + str(i))
+	#		print_stack()
+	## Connect signals to self?
 	
 	self.connect("not_enabled",self, '_on_status_hidden')
 	self.connect('enabled',self,'_on_status_showing')
@@ -291,15 +293,20 @@ func _on_status_showing():
 	# upadate inventory button lising
 	#_update_inventory_button_cache() #  Depreciated Buggy NFT?
 	
+	# Grab Focus
+	
 	
 	#resets Mobile Touch HUD
-	emit_signal("status_hidden")
+	emit_signal("status_hidden") # SIgnals trigger opposite effect
 	#GlobalInput.TouchInterface.reset()
 	
 	print_debug("TC Status:",GlobalInput.TouchInterface._Hide_touch_interface, " SC: ", GlobalInput.TouchInterface._state_controller) # Touch Interface Debug
 	print_debug('status hidden') #for debug purposes
 
 func _on_status_hidden():
+	
+	# Ignore Inp
+	
 	# shows status UI only
 	# Buggy Method Triggers Status state on Mobile Devices
 	# TO DO: Implement In Android SIngleton

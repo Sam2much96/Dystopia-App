@@ -42,23 +42,23 @@ signal status_hidden
 signal status_showing
 
 # Pointers to Tab Containers for icon implementation
-onready var tab_container : TabContainer = $TabContainer
+var tab_container : TabContainer
 
 #onready var scroller : ScrollContainer = $ScrollContainer # Depreciated
 
 # Quest Parent Node Pointer
 # Vbox Containter Containing all Inventory Items as children
-onready var _inventory_parent : VBoxContainer = $"TabContainer/3/ScrollContainer3/VBoxContainer" 
+var _inventory_parent : VBoxContainer 
 
 # Inventory Parent Node
-onready var _inventory_parent_label : Label = $"TabContainer/3/ScrollContainer3/VBoxContainer/Title3"
+var _inventory_parent_label : Label 
 
 # Inventroy Parent Button
-onready var _inventory_button : Button = $"TabContainer/3/ScrollContainer3/VBoxContainer/Inventory"
+var _inventory_button : Button 
 
 
-onready var _coin_label : Label = $"TabContainer/1/VBoxContainer/HBoxContainer/Algos"
-onready var _quest_label : Label = $"TabContainer/2/ScrollContainer2/VBoxContainer/Quests"
+var _coin_label : Label 
+var _quest_label : Label
 
 # Backup Pointer to Inventory Singleton
 onready var _inventory : Storage = get_tree().get_root().get_node("/root/Inventory")
@@ -67,10 +67,12 @@ onready var _inventory : Storage = get_tree().get_root().get_node("/root/Invento
 
 # Array  pointer containing all QUest parent childeren
 # Should be a dictionary
-onready var _stats_buttons : Array = []
+var _stats_buttons : Array = []
+
+var _Stats_UI_Elements : Array = []
 
 # Mini Map
-onready var _Mini_map : minimap = $"TabContainer/4/MarginContainer/minimap"
+var _Mini_map : minimap 
 
 
 # For Inventory Update
@@ -81,6 +83,28 @@ enum {ENABLED, DISABLED, NULL}
 export (int) var _state = DISABLED
 
 func _ready():
+	
+	# Get UI Node Pointer
+	_Mini_map = $"TabContainer/4/MarginContainer/minimap"
+	_quest_label = $"TabContainer/2/ScrollContainer2/VBoxContainer/Quests"
+	_coin_label = $"TabContainer/1/VBoxContainer/HBoxContainer/Algos"
+	_inventory_button = $"TabContainer/3/MarginContainer/ScrollContainer3/VBoxContainer/Inventory"
+	_inventory_parent_label = $"TabContainer/3/MarginContainer/ScrollContainer3/VBoxContainer/Title3"
+	tab_container = $TabContainer
+	
+	# Check That THe UI Nodes are OK
+	_Stats_UI_Elements = [
+		_Mini_map, _quest_label, _coin_label, 
+		_inventory_button, _inventory_parent_label,
+		tab_container
+	]
+	
+	
+	for i in _Stats_UI_Elements:
+		
+		if not is_instance_valid(i):
+			push_error(" Node Path Broken : " + str(i))
+			print_stack()
 	# Connect signals to self?
 	
 	self.connect("not_enabled",self, '_on_status_hidden')

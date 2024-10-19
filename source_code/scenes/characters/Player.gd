@@ -94,6 +94,9 @@ Update Global Scripts SO Other Nodes Are Aware Of Player
 	
 func _enter_tree():
 	
+	# IF THis Code Bloc Breaks Its cuz youre running the scene from Overworld
+	# so it doesnt have time to load game hud scene into memeory and provide a safe pointer
+	
 	Globals.update_curr_scene()
 	Globals.players.append(self)  #saves player to the Global player variable
 	
@@ -107,7 +110,7 @@ func _enter_tree():
 	# Enable TOuch HuD
 	#print_debug("Enabling Touch HUD For Player Input")
 	GlobalInput.TouchInterface.enabled = true
-	GlobalInput.TouchInterface.reset() # Reset Touch HUD UI
+	Android.show_all_buttons() # Show Touch HUD UI
 	
 	#"Check If Online" #Depreciated for Networking Enumerator
 	#OFFLINE = Simulation.all_player_objects.empty()

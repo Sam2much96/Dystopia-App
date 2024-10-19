@@ -16,7 +16,7 @@
 # *************************************************
 # To DO:
 # (1) Refactor to use one RichText Label for all debug parameters
-#
+# (2) Refactor TO Fetch And Read Previous Data Logs from user://logs folder
 # *************************************************
 
 

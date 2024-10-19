@@ -38,3 +38,5 @@ func _ready():
 		_loaded_comics =true
 		return _loaded_comics
 	
+
+

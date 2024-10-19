@@ -51,8 +51,8 @@ onready var TouchInterface : TouchScreenHUD =  $TouchInterface
 onready var _Comics = GlobalInput.get_child(1) #Comics Node Pointer
 onready var _Stats : Stats = $Stats
 onready var _Status_text : StatusText = $Status_text
-onready var heart_box : Healthbar = $Healthbar
-onready var ingame_comics_placeholer = $Comics
+onready var heart_box : Healthbar = $MarginContainer/Healthbar
+#onready var ingame_comics_placeholer = $Comics # depreciated in favour of minimap sub system
 
 
 onready var children : Array = [menu, TouchInterface,_Comics, _Stats, _Status_text, heart_box]

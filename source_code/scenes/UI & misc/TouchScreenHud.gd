@@ -85,6 +85,7 @@ onready var menu3 = _Input.menu
 #State Machine
 # Use A Match Conditional for differentiating Input Types
 # Stylus Should Only Catch TOuch Screen Inputs
+# add functions to state machine
 enum { D_PAD_, JOYSTICK, STYLUS , CONFIG, DEBUG } # Config State for Drag ANd Drop Mode
 
 export (int) var _state_controller = D_PAD_
@@ -391,6 +392,9 @@ func reset():  #resets node visibility statuses
 	#show_direction_buttons()
 
 #Enumerate each of the following states
+
+
+
 
 func status():  #used by ui scene when status is clicked
 	

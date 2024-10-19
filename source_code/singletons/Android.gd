@@ -123,7 +123,9 @@ func hide_touch_interface():
 func show_only_menu():
 	TouchInterface.__menu()
 
-
+func show_all_buttons():
+	TouchInterface.show_action_buttons()
+	TouchInterface.show_direction_buttons()
 
 
 func _process(delta):

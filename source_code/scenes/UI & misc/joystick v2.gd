@@ -4,6 +4,9 @@
 # Released under MIT License
 # *************************************************
 # Joystick version 2
+#
+# Controls 2 Touch Screen Buttons As Child Nodes And Can Map TO Different FUnctionalitiys
+#
 # The purpose of this code is to expand the Directional options to the Player
 # It runs as a child of the touch interface node and is enabled & disabled via a global variable (bool) linked to the TOuch Interface
 # It can be turned off and un in the game's Control scene, but it's buggy nature has made it unusable
@@ -36,7 +39,7 @@ extends Control
 class_name JoystickV2
 
 
-
+export (bool) var enabled 
 
 ###############JoyStick Controller################
 var joystick_debug
@@ -78,6 +81,8 @@ var prev_inputs = [] # An aray to store the last two joystick inputs
 func _unhandled_input(event):
 	if event:
 		return
+	
+	
 # tHIS FUNCTION IS BEING CALLED NON-STOP
 func release(): #pass it a variable
 	#######reseting functionr#########   #it is the release state as a function 
@@ -116,8 +121,10 @@ func _ready():
 
 
 func _input(event):
+	if not enabled: # Guard Clause 1
+		return
 	
-	if not self.visible:
+	if not self.visible: # GUard Clause 2
 		return
 	
 	
@@ -212,24 +219,26 @@ func _input(event):
 
 # UnOptimized Code Bloc?
 func _process(delta):
-	
-	if not self.visible:
+	if not enabled: # Guard Clause 1 
 		return
 	
-	if self.visible:
+	if not self.visible: # GUard Clause 2
+		return
+	
+	#if self.visible:
 		
 		# Dwpreciated for Global Input Singleton
-		if prev_inputs.size() >= 10: # Stores only 2 input values max
-			prev_inputs.erase(prev_inputs.pop_front()) # Removes the first values
-			# Remove values that already exist
-		
-		"""
-		DEBYG INPUT ACTIONS
-		"""
-		var debug_ = false
-		#print (state) # For debug purposes only 
-		if debug_ == true: # For Debug Purposes Only 
-			print (x,y, check_if_any_Input_action_is_pressed(), str(__input.action), " Pressed:",str(__input.pressed)) # For debug Purposes only
+	if prev_inputs.size() >= 10: # Stores only 2 input values max
+		prev_inputs.erase(prev_inputs.pop_front()) # Removes the first values
+		# Remove values that already exist
+	
+	"""
+	DEBYG INPUT ACTIONS
+	"""
+	var debug_ = false
+	#print (state) # For debug purposes only 
+	if debug_ == true: # For Debug Purposes Only 
+		print (x,y, check_if_any_Input_action_is_pressed(), str(__input.action), " Pressed:",str(__input.pressed)) # For debug Purposes only
 		
 
 	###################Input Action State Machine#####################################
@@ -243,7 +252,7 @@ func _process(delta):
 	# (1) Stuck state : Statemachine does not allow switing states per frame  
 	# (2) Bad Code requires refactoring to fix multiple returns and Export variables (1/2)
 	# *************************************************
-		if self.visible: # Performance Optimizer
+		if self.visible && enabled: # Performance Optimizer
 			match state:
 				MOVE_UP: #improve your state machine
 					if joystick_circle.is_pressed() == true:

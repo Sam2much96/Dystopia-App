@@ -357,11 +357,11 @@ func _ready():
 
 		# Connects Stats Ui Signals To Touchscreen HUD for Mobile
 		_Stats_.connect("enabled", self ,"status")
-		_Stats_.connect("disabled", self ,"show_all_buttons")
+		_Stats_.connect("not_enabled", self ,"show_all_buttons")
 		
 		if (
 			_Stats_.is_connected("enabled", self ,"status") &&
-			_Stats_.is_connected("disabled", self ,"show_all_buttons") != true 
+			_Stats_.is_connected("not_enabled", self ,"show_all_buttons") != true 
 		) :
 			push_error("Stats x TouchHUD signal is broken")
 		
@@ -565,6 +565,7 @@ func touch_interface_debug(): #Debug singleton is broken
 	#		_state_controller = _INTERRACT
 
 func show_all_buttons():
+	print_debug("Showing All Buttons")
 	show_action_buttons()
 	show_direction_buttons()
 

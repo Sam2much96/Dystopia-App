@@ -46,6 +46,7 @@ onready var position : Position2D = $Position2D
 
 func _ready():
 	
+	
 	# Fix Menu Positioning on Mobile Devices
 	
 	#art3.set_texture(viewport.viewport_image)
@@ -76,3 +77,11 @@ func _exit_tree():
 
 func _on_AdMob_banner_failed_to_load(error_code):
 	push_error("Admob Banner Failed Load")
+
+
+func _on_start_pressed():
+	GlobalInput.parse_input("menu", true)
+
+
+func _on_start_gui_input(event):
+	print("zsdofsdpfioguhsepfogsenhpgbofishfo")

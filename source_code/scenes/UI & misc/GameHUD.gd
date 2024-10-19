@@ -35,7 +35,8 @@
 #		#-Icons Do not hide when dialogue ia triggered
 # (8) Breaks when in scene with player networking v2
 # (9) Dialogue Box positioning for mobiles is Buggy in GameHUD.tscn
-# (10) Dialogue Box is Buggy
+# (10) Dialogue Box is Buggy (fixed)
+# (11) Node and Sub Nodes Do Not Handle Or Register Inputs Well
 # *************************************************
 
 
@@ -56,7 +57,7 @@ onready var ingame_comics_placeholer = $Comics
 
 onready var children : Array = [menu, TouchInterface,_Comics, _Stats, _Status_text, heart_box]
 
-onready var globalInput = get_parent()
+onready var globalInput = get_tree().get_root().get_node("/root/GlobalInput")
 
 
 func _ready():
@@ -66,7 +67,8 @@ func _ready():
 	
 	# Make Self global via scene Tree
 	# Safe
-	globalInput.gameHUD = self
+	if is_instance_valid(globalInput):
+		globalInput.gameHUD = self
 	
 	#Update Current Scene Whenever Scene Tree Changes
 	Globals.update_curr_scene()

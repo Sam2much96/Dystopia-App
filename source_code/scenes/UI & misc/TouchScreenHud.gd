@@ -162,8 +162,8 @@ func _ready():
 	GlobalInput.TouchInterface = self
 	Android.TouchInterface = self
 	# Bug: Android Intializer is buggy
-	print_debug("Connect Texture Button Signals Here")
-	print_debug("OS Debug: ",Globals.os)
+	#print_debug("Connect Texture Button Signals Here")
+	#print_debug("OS Debug: ",Globals.os)
 	# COde Mutates ENabled
 	#if Android.is_android() == false:
 	#	self.hide()
@@ -184,27 +184,27 @@ func _ready():
 	
 	######## Begin Setting Nodes #
 	_menu = $menu
-	_interract = $Control/InterractButtons/interact
-	stats_ = $Control/InterractButtons/stats
-	roll = $Control/ActionButtons/Spacer/roll
-	slash = $Control/ActionButtons/slash
-	comics_ = $Control/InterractButtons/comics
-	_joystick = $Joystick/joystick_circle
-	joystick2 = $Joystick/joystick_circle2
+	_interract = $MarginContainer/Control/InterractButtons/interact
+	stats_ = $MarginContainer/Control/InterractButtons/stats
+	roll = $MarginContainer/Control/ActionButtons/Spacer/roll
+	slash = $MarginContainer/Control/ActionButtons/slash
+	comics_ = $MarginContainer/Control/InterractButtons/comics
+	_joystick = $MarginContainer/Joystick/joystick_circle
+	joystick2 = $MarginContainer/Joystick/joystick_circle2
 	 
 	Anim = $AnimationPlayer
-	D_pad = $"D-pad"
+	D_pad = $MarginContainer/"D-pad"
 	LineDebug = $Line2D
 	#touch_interface_debug() disabling for now
 	
-	_up = $"D-pad/up"
-	_down = $"D-pad/down"
-	_left = $"D-pad/left"
-	_right = $"D-pad/right"
+	_up = $MarginContainer/"D-pad/up"
+	_down = $MarginContainer/"D-pad/down"
+	_left = $MarginContainer/"D-pad/left"
+	_right = $MarginContainer/"D-pad/right"
 	
 
-	action_interract_buttons = $Control/ActionButtons 
-	interract_buttons = $Control/InterractButtons
+	action_interract_buttons = $MarginContainer/Control/ActionButtons 
+	interract_buttons = $MarginContainer/Control/InterractButtons
 
 	"Set Button Arraqys for easy on/off"
 	action_buttons = [
@@ -235,8 +235,11 @@ func _ready():
 	#Globals.update_curr_scene()
 	
 	#print_debug( " Global Touch HUD: ", GlobalInput.TouchInterface)
+	# Auto Hides All UI Interfaces
+		
+	#__menu()
+	reset()
 	
-	#dgsgsgsdg
 	# Turn off this setup script if not running on Android
 	if enabled:
 		
@@ -263,31 +266,35 @@ func _ready():
 		else: _menu.self_modulate = Color(0,0,0) # black
 		
 		"Auto sets the controller button"
-		reset()
-		Utils.Screen.calculate_button_positional_data(
-			_menu, 
-			_interract,
-			stats_, 
-			roll, 
-			slash, 
-			comics_, 
-			_joystick, 
-			D_pad
-			)
+		
+		
+		
+		
+		# Depreciated for Refoactoring
+		#Utils.Screen.calculate_button_positional_data(
+		#	_menu, 
+		#	_interract,
+		#	stats_, 
+		#	roll, 
+		#	slash, 
+		#	comics_, 
+		#	_joystick, 
+		#	D_pad
+		#	)
 		
 		"Set Initial Touch HUD Layout"
-		Utils.Screen._adjust_touchHUD_length(Anim)
+		#Utils.Screen._adjust_touchHUD_length(Anim)
 		
 		
 		
 		"Display Screen Calculations"
-		Utils.Screen.display_calculations(get_tree().get_root(), Utils)
+		#Utils.Screen.display_calculations(get_tree().get_root(), Utils)
 		
 		# Calculates the Length and Breadth of All Touchscreen HUD buttons
-		dimensions = Utils.Functions.calculate_length_breadth(buttons_positional_data)
+		#dimensions = Utils.Functions.calculate_length_breadth(buttons_positional_data)
 		
 		# calculates a dimensional difference between the center of the vuewport aand the Button onscreen positions 
-		dimensional_diff = dimensions - Globals.center_of_viewport 
+		#dimensional_diff = dimensions - Globals.center_of_viewport 
 	
 	#For debug purposes only
 	#print_debug("HUD Dimensions:", dimensions) # Breath of the wild lmao
@@ -317,14 +324,15 @@ func _ready():
 			menu2.connect("menu_showing", self, "menu") 
 			menu2.connect("menu_hidden", self, "reset")
 		
+		# Disablef for refactor
 		# REdundancy code
 		# connects menu from global pointer
 		if is_instance_valid(menu2):
-			if not (menu3.is_connected("menu_showing", self, "menu") &&
-			menu3.is_connected("menu_hidden", self, "reset")
+			if not (menu2.is_connected("menu_showing", self, "menu") &&
+			menu2.is_connected("menu_hidden", self, "reset")
 			):
-				menu3.connect("menu_showing", self, "menu") 
-				menu3.connect("menu_hidden", self, "reset")
+				menu2.connect("menu_showing", self, "menu") 
+				menu2.connect("menu_hidden", self, "reset")
 		# Networking TImer to Touch Interface
 		# Resets Using Networking timer
 		Networking.timer.connect("timeout", self, "reset") 
@@ -370,12 +378,17 @@ func _ready():
 THE STATE MACHINE CALLS WITH FUNCTIONS
 """
 func reset():  #resets node visibility statuses
+	
+	#print_stack()
+	#assert(Globals.os == "Android")
+	hide_buttons()
+	
 	#_state_controller = _RESET
 	#return _state_controller 
-	"shows all the UI options"
-	show_action_buttons()
+	#"shows all the UI options"
+	#show_action_buttons()
 	
-	show_direction_buttons()
+	#show_direction_buttons()
 
 #Enumerate each of the following states
 
@@ -448,12 +461,12 @@ func touch_interface_debug(): #Debug singleton is broken
 
 
 
-func _input(event):
-	" UI logic" # 
+#func _input(event):
+#	" UI logic" # 
 	# SHould Export Global Input SIngleton
 	
 	# State Machine Logic
-	" UI Animation"
+#	" UI Animation"
 	# Controls the Touch interface state machine from the player's input 
 	# Refactored
 	# Processed every frame? (1/2)
@@ -590,6 +603,9 @@ func _on_comics_hidden():
 
 ##### External Method TO Be Called Form Other Scripts
 func __menu():
+	#print_stack()
+	#assert(Globals.os == "Android")
+	print_debug("Touch Interface External Menu")
 	_menu.show()
 	_interract.hide()
 	stats_.hide()
@@ -602,6 +618,8 @@ func __menu():
 	_down.hide()
 	_left.hide()
 	_right.hide()
+	# Debug Menu
+	print_debug(_menu.visible, "/", _interract.visible)
 
 func __disappear():
 	_menu.hide()
@@ -620,8 +638,10 @@ func __disappear():
 """
 UI Button Connections
 """
+
+# Buggy : Introduces Stuct Input Bug On Mobile Devices
 func _on_menu_pressed():
-	#print_debug("111111111111111111111111111") # Works
+	print_debug("111111111111111111111111111") # Doesnt Works
 	_Input.parse_input("menu", true)
 
 
@@ -660,3 +680,8 @@ func _on_left_pressed():
 
 func _on_down_pressed():
 	_Input.parse_input("move_down", true)
+
+
+#func _on_menu_gui_input(event):
+#	print_debug("22222222222222") # Doesnt'tWorks
+#	_Input.parse_input("menu", true)

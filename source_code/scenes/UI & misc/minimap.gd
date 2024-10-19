@@ -7,30 +7,57 @@
 # Display current player and other objects (players)
 # on a 128x128 minimap (bottom-right)
 #
+# Minimap Is Present In THe Status Tab and Not As A Separate Scene Because I Want To Always Have Access TO THe player ideally
+#
+#
+#
+#
+#
 # Bug:
 # (1) Doesn't work. Currently Disabled for debugging
 # (2) Doesnt implement polymorphism
 # *************************************************
-extends TextureRect
+extends NinePatchRect
 
 
 class_name minimap
 
+var player_node : KinematicBody2D # Player Node
+
 #tweak code for multiplayer
-onready var texture_object : StreamTexture = preload("res://scenes/multiplayer/images/minimap/object.png")
-onready var texture_player : StreamTexture = preload("res://scenes/multiplayer/images/minimap/player.png")
-onready var label_position #= $label_position
-onready var node_root #= get_node("/root/world")
+#onready var texture_object : StreamTexture = preload("res://scenes/multiplayer/images/minimap/object.png")
+#onready var texture_player : StreamTexture = preload("res://scenes/multiplayer/images/minimap/player.png")
+#onready var label_position #= $label_position
+#onready var node_root #= get_node("/root/world")
+export (float) var zoom : float = 1.5
+onready var player_marker : Sprite = $Sprite
+onready var player2_marker : Sprite = $Sprite2
+onready var grid_scale
+
+
 var total_delta = 0
 
 #onready var Networking = GDScript.new() 
 
+onready var grid = self
+
+func _ready():
+	player_marker.position = grid.rect_size / 2
+	grid_scale = grid.rect_size / (get_viewport_rect().size * zoom)
+
 # Redraw the minimap once per 1/2 second
-func _process(delta):
-	total_delta += delta
-	if (total_delta > 0.5):
-		total_delta -= 0.5
-		update()
+func _process(_delta): # Should Ideally Use The SImulation COunter
+	#if Globals.players.empty(): # Guard Glause Incase THe Player is not Instanced
+	#	return
+	if not player_node:
+		return
+	
+	
+	
+	#total_delta += delta
+	#if (total_delta > 0.5):
+	#	total_delta -= 0.5
+	#	update()
 	
 
 # Draw the players on the minimap

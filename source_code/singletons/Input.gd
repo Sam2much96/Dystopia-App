@@ -215,11 +215,13 @@ func _input(event):
 
 func parse_input( action : String, _pressed : bool):
 	#This Logic Creates and Parses Input actions programmatically
-	
+	# Bugs: Holds Input, Should Press and Release Input
 	var a = InputEventAction.new()
 	a.action = action
 	a.pressed = _pressed
 	Input.parse_input_event(a)
+	
+	get_tree().set_input_as_handled()
 
 
 func vibrate(duration_ms : int, os : String):

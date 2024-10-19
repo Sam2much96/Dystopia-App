@@ -118,10 +118,10 @@ func hide_touch_interface():
 	
 	# Hide Game HUD
 	# TO DO: Port TO Touch HUD Inspector Tab
-	GlobalInput.TouchInterface.enabled = false
+	TouchInterface.reset()
 	
 func show_only_menu():
-	GlobalInput.TouchInterface.__menu()
+	TouchInterface.__menu()
 
 
 

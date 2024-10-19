@@ -64,7 +64,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/characters/debug_character.gd"
 }, {
-"base": "TextureRect",
+"base": "NinePatchRect",
 "class": "DialogBox",
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Dialog_box.gd"
@@ -330,11 +330,6 @@ _global_script_classes=[ {
 "path": "res://scenes/levels/Temple interior.gd"
 }, {
 "base": "Control",
-"class": "ThirdPartySoftware",
-"language": "GDScript",
-"path": "res://scenes/UI & misc/Third_Party_Software.gd"
-}, {
-"base": "Control",
 "class": "TitleScreen",
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Title screen.gd"
@@ -454,7 +449,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/multiplayer/lobby.gd"
 }, {
-"base": "TextureRect",
+"base": "NinePatchRect",
 "class": "minimap",
 "language": "GDScript",
 "path": "res://scenes/UI & misc/minimap.gd"
@@ -559,7 +554,6 @@ _global_script_class_icons={
 "TabIcons": "",
 "TempleExterior": "",
 "TempleInterior": "",
-"ThirdPartySoftware": "",
 "TitleScreen": "",
 "TouchScreenHUD": "res://resources/misc/Android 32x32.png",
 "User_Data": "",
@@ -616,8 +610,8 @@ Music="*res://singletons/Music.tscn"
 Networking="*res://singletons/Networking.tscn"
 Utils="*res://singletons/Utils.gd"
 Simulation="*res://singletons/Simulation.tscn"
-GlobalInput="*res://singletons/Input.tscn"
 Android="*res://singletons/Android.tscn"
+GlobalInput="*res://singletons/Input.tscn"
 FPSGraphOverlay="*res://addons/fps_graph_overlay/FPSGraphOverlay.tscn"
 
 [debug]
@@ -726,10 +720,6 @@ reset={
 "deadzone": 0.5,
 "events": [  ]
 }
-
-[input_devices]
-
-pointing/emulate_touch_from_mouse=true
 
 [locale]
 

@@ -242,3 +242,14 @@ func _on_CRT_toggled(button_pressed):
 	"""
 	
 	pass
+
+"""
+THIRD PARTY SOFTWARE
+"""
+
+func _on_github_pressed():
+	Utils.Functions.change_scene_to(Globals.github, get_tree())
+
+
+func _on_wallet_pressed():
+	Utils.Functions.change_scene_to(Globals._wallet, get_tree())

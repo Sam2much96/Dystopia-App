@@ -40,6 +40,7 @@
 # (17) Comics Singleton is now a global object
 # (18) Implement Global COmics as Title Screen Art (Comics UI)
 # (19) Expand Functionality To Other Scripts and Reorganise for plugin form
+# (20) Use Flow Containter For Comics Impementation with Control Nodes
 # **************************************************************************************************
 #
 # Bugs:

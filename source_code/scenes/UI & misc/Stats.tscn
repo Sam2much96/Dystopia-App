@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Stats.gd" type="Script" id=1]
 [ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=2]
@@ -11,7 +11,8 @@
 [ext_resource path="res://resources/misc/compass.webp" type="Texture" id=9]
 [ext_resource path="res://resources/misc/rupees.webp" type="Texture" id=10]
 [ext_resource path="res://resources/misc/map ui 64x64.webp" type="Texture" id=11]
-[ext_resource path="res://scenes/UI & misc/Third_Party_Software.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/multiplayer/images/minimap/player.png" type="Texture" id=13]
+[ext_resource path="res://scenes/multiplayer/images/minimap/object.png" type="Texture" id=14]
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.792157, 0.792157, 0.792157, 0.415686 )
@@ -94,7 +95,6 @@ text = "KC
 align = 1
 
 [node name="1" type="Tabs" parent="TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -107,23 +107,33 @@ margin_right = 77.0
 margin_bottom = 224.0
 
 [node name="TextureRect" type="TextureRect" parent="TabContainer/1/VBoxContainer"]
-margin_right = 77.0
+margin_right = 156.0
 margin_bottom = 32.0
-rect_scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 10 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/1/VBoxContainer"]
 margin_top = 36.0
-margin_right = 77.0
+margin_right = 156.0
 margin_bottom = 167.0
 
 [node name="Algos" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
-margin_right = 77.0
+margin_right = 74.0
 margin_bottom = 131.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
 text = "Coins
+"
+align = 1
+
+[node name="price" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
+margin_left = 78.0
+margin_right = 156.0
+margin_bottom = 131.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 3 )
+text = "Price
 "
 align = 1
 
@@ -177,29 +187,32 @@ margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
 
-[node name="ScrollContainer3" type="ScrollContainer" parent="TabContainer/3"]
-margin_left = 3.07108
-margin_top = 3.35535
-margin_right = 991.071
-margin_bottom = 905.355
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/3"]
+margin_top = -34.0
+margin_right = 989.0
+margin_bottom = 536.0
+
+[node name="ScrollContainer3" type="ScrollContainer" parent="TabContainer/3/MarginContainer"]
+margin_right = 989.0
+margin_bottom = 570.0
 theme = ExtResource( 5 )
 scroll_horizontal_enabled = false
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/3/ScrollContainer3"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/3/MarginContainer/ScrollContainer3"]
 margin_right = 103.0
 margin_bottom = 181.0
 
-[node name="Title3" type="Label" parent="TabContainer/3/ScrollContainer3/VBoxContainer"]
+[node name="Title3" type="Label" parent="TabContainer/3/MarginContainer/ScrollContainer3/VBoxContainer"]
 margin_right = 103.0
 margin_bottom = 43.0
 custom_fonts/font = ExtResource( 2 )
 text = "Inventory"
 align = 1
 
-[node name="Inventory" type="Button" parent="TabContainer/3/ScrollContainer3/VBoxContainer"]
+[node name="Inventory" type="Button" parent="TabContainer/3/MarginContainer/ScrollContainer3/VBoxContainer"]
 margin_top = 47.0
 margin_right = 103.0
-margin_bottom = 117.0
+margin_bottom = 181.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
@@ -216,17 +229,39 @@ margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
 
-[node name="minimap" type="TextureRect" parent="TabContainer/4"]
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/4"]
+anchor_right = 0.178
+anchor_bottom = 0.195
+margin_left = 246.0
+margin_top = 50.0
+margin_right = 793.56
+margin_bottom = 405.82
+
+[node name="minimap" type="NinePatchRect" parent="TabContainer/4/MarginContainer"]
 modulate = Color( 1, 1, 1, 0.411765 )
-margin_left = 180.164
-margin_top = 8.13399
-margin_right = 246.164
-margin_bottom = 72.134
-rect_scale = Vector2( 6, 6 )
+margin_right = 722.0
+margin_bottom = 458.0
 texture = ExtResource( 11 )
+region_rect = Rect2( 0, -0.176746, 66.9581, 63.1219 )
+patch_margin_left = 2
+patch_margin_top = 14
+patch_margin_right = 4
+patch_margin_bottom = 12
 script = ExtResource( 7 )
 
+[node name="Sprite2" type="Sprite" parent="TabContainer/4/MarginContainer/minimap"]
+modulate = Color( 0, 0, 0, 1 )
+position = Vector2( 225, 243 )
+scale = Vector2( 9, 9 )
+texture = ExtResource( 14 )
+
+[node name="Sprite" type="Sprite" parent="TabContainer/4/MarginContainer/minimap"]
+position = Vector2( 202, 231 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 13 )
+
 [node name="Sprite" type="Sprite" parent="TabContainer/4"]
+visible = false
 position = Vector2( 791.076, 258.768 )
 scale = Vector2( 0.623425, 0.623425 )
 texture = ExtResource( 8 )
@@ -241,9 +276,3 @@ margin_right = 52.3471
 margin_bottom = 99.4905
 rect_scale = Vector2( 4, 4 )
 texture = ExtResource( 9 )
-
-[node name="Third Party Software" parent="TabContainer/4" instance=ExtResource( 12 )]
-margin_left = 40.6463
-margin_top = 199.975
-margin_right = -1010.35
-margin_bottom = 71.9753

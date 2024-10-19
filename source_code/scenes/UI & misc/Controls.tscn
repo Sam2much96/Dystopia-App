@@ -51,7 +51,7 @@ theme = ExtResource( 3 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_right = 352.0
-margin_bottom = 816.0
+margin_bottom = 980.0
 script = ExtResource( 6 )
 
 [node name="back" type="Button" parent="ScrollContainer/VBoxContainer"]
@@ -130,10 +130,38 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="CRT" type="Button" parent="ScrollContainer/VBoxContainer"]
+[node name="github" type="Button" parent="ScrollContainer/VBoxContainer"]
 margin_top = 410.0
 margin_right = 352.0
 margin_bottom = 488.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = true
+shortcut_in_tooltip = false
+text = "Git Config"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="wallet" type="Button" parent="ScrollContainer/VBoxContainer"]
+margin_top = 492.0
+margin_right = 352.0
+margin_bottom = 570.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = true
+shortcut_in_tooltip = false
+text = "Wallet Config"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="CRT" type="Button" parent="ScrollContainer/VBoxContainer"]
+margin_top = 574.0
+margin_right = 352.0
+margin_bottom = 652.0
 custom_fonts/font = ExtResource( 8 )
 toggle_mode = true
 shortcut_in_tooltip = false
@@ -145,26 +173,26 @@ __meta__ = {
 }
 
 [node name="help" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 492.0
+margin_top = 656.0
 margin_right = 352.0
-margin_bottom = 570.0
+margin_bottom = 734.0
 custom_fonts/font = ExtResource( 8 )
 text = "Hold to Show Help"
 flat = true
 
 [node name="change controller" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 574.0
+margin_top = 738.0
 margin_right = 352.0
-margin_bottom = 652.0
+margin_bottom = 816.0
 custom_fonts/font = ExtResource( 8 )
 toggle_mode = true
 text = "Direction/controls"
 flat = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-margin_top = 656.0
+margin_top = 820.0
 margin_right = 352.0
-margin_bottom = 734.0
+margin_bottom = 898.0
 
 [node name="vibration" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer"]
 margin_right = 185.0
@@ -187,9 +215,9 @@ margin_bottom = 656.0
 toggle_mode = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-margin_top = 738.0
+margin_top = 902.0
 margin_right = 352.0
-margin_bottom = 816.0
+margin_bottom = 980.0
 
 [node name="multiplayer" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer3"]
 margin_right = 217.0
@@ -209,6 +237,8 @@ __meta__ = {
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/debug" to="." method="_on_Debug_toggled"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/languague" to="." method="_on_languague_pressed"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/shuffle" to="." method="_on_Shuffle_pressed"]
+[connection signal="pressed" from="ScrollContainer/VBoxContainer/github" to="." method="_on_github_pressed"]
+[connection signal="pressed" from="ScrollContainer/VBoxContainer/wallet" to="." method="_on_wallet_pressed"]
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/CRT" to="." method="_on_CRT_toggled"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/help" to="." method="_on_Help_pressed"]
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/change controller" to="." method="_on_Direction_controls_toggled"]

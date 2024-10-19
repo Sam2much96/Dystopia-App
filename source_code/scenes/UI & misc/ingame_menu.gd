@@ -142,27 +142,30 @@ func _process(_delta):
 func _input(event): 
 	if not event.is_action_pressed("menu"): # Guard Clause
 		return
-		
-	if event.is_action_pressed("menu") == true :# 
-		print_debug("Menu Is Pressed")
-		if menu_state == HIDDEN:
-			menu_state = SHOWING
-			set_focus_mode(Control.FOCUS_CLICK)
-			Music.play_track(_ui_sfx)
-			
-			return menu_state
-		if menu_state== SHOWING:
-			menu_state = HIDDEN
-			Music.play_track(_ui_sfx_1)
-			return menu_state
-
-#input functions for gamepad
-
-
-		if event.is_action_pressed("ui_cancel") && visible == true:
-			Globals._go_to_title()
-	else : pass 
 	
+	#if event.is_action_pressed("menu") == true :# 
+		#print_stack()
+	print_debug("Menu Is Pressed")
+	if menu_state == HIDDEN:
+		menu_state = SHOWING
+		self.grab_focus()
+		set_focus_mode(Control.FOCUS_CLICK)
+		Music.play_track(_ui_sfx)
+		
+		return menu_state
+	if menu_state== SHOWING:
+		menu_state = HIDDEN
+		Music.play_track(_ui_sfx_1)
+		return menu_state
+		
+#input functions for gamepad
+# Temporarily Disabled for refactor
+
+#		if event.is_action_pressed("ui_cancel") && visible == true:
+#			Globals._go_to_title()
+#	else : pass 
+	
+	get_tree().set_input_as_handled()
 
 
 func _on_continue_pressed():
@@ -234,13 +237,13 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 		return 0
 
 #Handles Displaying the menu
-func _menu_showing(): #Broken funtions #rewrite with state machine
+func _menu_showing(): 
 	"Menu Logic"
 	
 	
 	enabled = true 
 	
-
+	
 	
 	
 	if counter < 2: # Stops overflow of Menu Logic freeing up the main thread for oher core tasks
@@ -250,6 +253,8 @@ func _menu_showing(): #Broken funtions #rewrite with state machine
 		## Temp Disabling for debugging
 		#print_debug("UI downslacling is unimplemented")# For Debug Purposes only
 		
+		# Catch All Mouse UI Inputs WHen Showing
+		set_mouse_filter(Control.MOUSE_FILTER_STOP)
 		
 		emit_signal("menu_showing")
 		counter += 1
@@ -266,6 +271,9 @@ func _menu_not_showing():
 	#Music._notification(NOTIFICATION_UNPAUSED) #introduces a sound bug
 	
 	set_focus_mode(0)
+	
+	# Ignore All Mouse UI Inputs WHen Hidden
+	set_mouse_filter(Control.MOUSE_FILTER_IGNORE)
 	emit_signal("menu_hidden")
 	
 	return

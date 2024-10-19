@@ -619,6 +619,7 @@ class Screen  :
 	 D_pad : Control
 	)-> Array:
 		
+		print_stack()
 		assert(Globals.os =="Android", "Test Device is Not Android")
 		
 		# Returns an Array containing the position of all Touch HUD items

@@ -69,6 +69,10 @@ onready var _inventory : Storage = get_tree().get_root().get_node("/root/Invento
 # Should be a dictionary
 onready var _stats_buttons : Array = []
 
+# Mini Map
+onready var _Mini_map : minimap = $"TabContainer/4/MarginContainer/minimap"
+
+
 # For Inventory Update
 var regex : RegEx = RegEx.new()
 

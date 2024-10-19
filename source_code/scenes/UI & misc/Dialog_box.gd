@@ -10,8 +10,8 @@
 # (3) Fetches Global Screen Orientation calculated from cinematics class and uses it for Self Positioning
 
 # Bugs:
-#(1) Broken Alignment with long texts
-#(2) Broken Alignment on Mobiles with Horizontal UI
+#(1) Broken Alignment with long texts (fixed)
+#(2) Broken Alignment on Mobiles with Horizontal UI (fixed)
 # (3) Doesn't work sometimes
 # (4) Press "E" interract to Hide is not intuitive
 
@@ -24,7 +24,7 @@
 # (5) Add dialogue box Icon (Done)
 # *************************************************
 
-extends TextureRect
+extends NinePatchRect
 class_name DialogBox, "res://resources/misc/dialoguebox 32x32.png"
 
 """

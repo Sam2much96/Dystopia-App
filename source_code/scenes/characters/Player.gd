@@ -88,15 +88,24 @@ onready var hurt_sfx : String = Music.nokia_soundpack[20]
 # Get Singletons
 onready var music_singleton_ : music_singleton = get_node("/root/Music")
 
+"""
+Update Global Scripts SO Other Nodes Are Aware Of Player
+"""
+	
 func _enter_tree():
+	
 	Globals.update_curr_scene()
 	Globals.players.append(self)  #saves player to the Global player variable
 	
 	'Makes Player Hitpoint a Global Variable'
 	Globals.player_hitpoints = hitpoints
-
+	
+	# Set Player Object To The Minimap
+	GlobalInput.gameHUD._Stats._Mini_map.player_node = self
+	
+	
 	# Enable TOuch HuD
-	print_debug("Enabling Touch HUD For Player Input")
+	#print_debug("Enabling Touch HUD For Player Input")
 	GlobalInput.TouchInterface.enabled = true
 	GlobalInput.TouchInterface.reset() # Reset Touch HUD UI
 	

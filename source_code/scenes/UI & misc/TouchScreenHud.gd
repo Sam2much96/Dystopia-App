@@ -155,6 +155,8 @@ var _action_button_showing : bool
 var _direction_button_showing : bool
 
 
+# Local Pointer TO Stats Node
+onready var _Stats_ : Stats = get_parent().get_child(1)
 
 
 func _ready():
@@ -163,6 +165,8 @@ func _ready():
 	#
 	GlobalInput.TouchInterface = self
 	Android.TouchInterface = self
+	
+	
 	# Bug: Android Intializer is buggy
 	#print_debug("Connect Texture Button Signals Here")
 	#print_debug("OS Debug: ",Globals.os)
@@ -328,33 +332,42 @@ func _ready():
 		Dialogs.connect("dialog_ended", self, "reset")
 
 		# Comics to Touch Interface
-		if is_instance_valid(_comics): # Buggy Singleton Instance
-			_comics.connect( 'comics_showing', self, '_on_comics_showing')
-			_comics.connect( 'comics_showing', self, '_on_comics_hidden'  )
+		#if is_instance_valid(_comics): # Buggy Singleton Instance
+		#	_comics.connect( 'comics_showing', self, '_on_comics_showing')
+		#	_comics.connect( 'comics_showing', self, '_on_comics_hidden'  )
 
-		# Menu to Touch Interface
+		# Menu to Touch Interface Connection
 		# Quick Hacky Fiz
-		if is_instance_valid(menu2): # Error Catcher 1
-			menu2.connect("menu_showing", self, "menu") 
-			menu2.connect("menu_hidden", self, "reset")
+		# It Connects THe TOuch interface to self inplemented methods
+		#if is_instance_valid(menu2): # Error Catcher 1
+		#	menu2.connect("menu_showing", self, "menu") 
+		#	menu2.connect("menu_hidden", self, "show_all_buttons")
 		
-		# Disablef for refactor
-		# REdundancy code
+		
 		# connects menu from global pointer
-		if is_instance_valid(menu2):
-			if not (menu2.is_connected("menu_showing", self, "menu") &&
-			menu2.is_connected("menu_hidden", self, "reset")
-			):
-				menu2.connect("menu_showing", self, "menu") 
-				menu2.connect("menu_hidden", self, "reset")
-		# Networking TImer to Touch Interface
+		#if is_instance_valid(menu2):
+		#	if not (menu2.is_connected("menu_showing", self, "menu") &&
+		#	menu2.is_connected("menu_hidden", self, "show_all_buttons")
+		#	):
+		#		menu2.connect("menu_showing", self, "menu") 
+		#		menu2.connect("menu_hidden", self, "show_all_buttons")
+		## Networking TImer to Touch Interface
 		# Resets Using Networking timer
-		Networking.timer.connect("timeout", self, "reset") 
+		#Networking.timer.connect("timeout", self, "show_all_buttons") 
 
 		# Connects Stats Ui Signals To Touchscreen HUD for Mobile
-		if is_instance_valid(Inventory._stats_ui):
-			Inventory._stats_ui.connect("status_showing",self,"status")
-			Inventory._stats_ui.connect("status_hidden",self,"reset")
+		_Stats_.connect("enabled", self ,"status")
+		_Stats_.connect("disabled", self ,"show_all_buttons")
+		
+		if (
+			_Stats_.is_connected("enabled", self ,"status") &&
+			_Stats_.is_connected("disabled", self ,"show_all_buttons") != true 
+		) :
+			push_error("Stats x TouchHUD signal is broken")
+		
+		#if is_instance_valid(Inventory._stats_ui):
+		#	Inventory._stats_ui.connect("status_showing",self,"status")
+		#	Inventory._stats_ui.connect("status_hidden",self,"reset")
 			
 			# Debug Signals
 
@@ -365,22 +378,24 @@ func _ready():
 		# (2) Update Documentation
 		if is_instance_valid(Dialogs && menu3 && Networking):
 			if not (Dialogs.is_connected("dialog_started", self, "interract") &&
-				Dialogs.is_connected("dialog_ended", self, "reset") &&
-				_comics.is_connected( 'comics_showing', self, '_on_comics_showing') &&
-				_comics.is_connected( 'comics_showing', self, '_on_comics_hidden'  ) &&
-				menu3.is_connected("menu_showing", self, "menu") &&
-				menu3.is_connected("menu_hidden", self, "reset") &&
-				Networking.timer.is_connected("timeout", self, "reset")) == true:
+				Dialogs.is_connected("dialog_ended", self, "reset") # &&
+				#_comics.is_connected( 'comics_showing', self, '_on_comics_showing') &&
+				#_comics.is_connected( 'comics_showing', self, '_on_comics_hidden'  ) &&
+				#menu3.is_connected("menu_showing", self, "menu") &&
+				#menu3.is_connected("menu_hidden", self, "reset") &&
+				#Networking.timer.is_connected("timeout", self, "reset")
+				
+				) == true:
 
 				# Debug Node Signal Connections
 				print_debug(
 					Dialogs.is_connected("dialog_started", self, "interract"),
-					Dialogs.is_connected("dialog_ended", self, "reset"),
-					_comics.is_connected( 'comics_showing', self, '_on_comics_showing'),
-					_comics.is_connected( 'comics_showing', self, '_on_comics_hidden'  ),
-					menu3.is_connected("menu_showing", self, "menu"), 
-					menu3.is_connected("menu_hidden", self, "reset"),
-					Networking.timer.is_connected("timeout", self, "reset") 
+					Dialogs.is_connected("dialog_ended", self, "reset")
+					#_comics.is_connected( 'comics_showing', self, '_on_comics_showing'),
+					#_comics.is_connected( 'comics_showing', self, '_on_comics_hidden'  ),
+					#menu3.is_connected("menu_showing", self, "menu"), 
+					#menu3.is_connected("menu_hidden", self, "reset"),
+					#Networking.timer.is_connected("timeout", self, "reset") 
 					)
 
 	if not enabled:
@@ -410,7 +425,8 @@ func reset():  #resets node visibility statuses
 
 
 func status():  #used by ui scene when status is clicked
-	
+	#print_debug("dkjasbfiajsdbfiadb")
+	#print_stack()
 	hide_buttons()
 	stats_.show()
 
@@ -548,17 +564,13 @@ func touch_interface_debug(): #Debug singleton is broken
 	#	if Input.is_action_pressed("interact"):
 	#		_state_controller = _INTERRACT
 
-
+func show_all_buttons():
+	show_action_buttons()
+	show_direction_buttons()
 
 
 func hide_buttons() :
-	# Beware:  Hide Buttons FUnctions Clashes with UI Animation NOde player. The Animation node player Takes priority and canels 
-	#	#	#GDScript Calls to this method
-	
-	#print_debug("ACTION BUTTONS: ",action_buttons)# for debug purposes only
-	#print_debug('Global Controller;',Globals.direction_control)
-	#print_debug("DIRECTION BUTTONS ", direction_buttons)
-	
+
 	# Reset Helper Booleans
 	_action_button_showing = false
 	_direction_button_showing = false
@@ -577,18 +589,19 @@ func hide_buttons() :
 
 func show_action_buttons() :
 	# SHows the Action buttons recursively
-	
-	if _action_button_showing == false:
-		for j in action_buttons:
-			if j != null:
-				j.show()
-		_action_button_showing = true
-		return _action_button_showing
-	if _action_button_showing:
-		pass
+	print_debug("Showing Action Buttons")
+	#if _action_button_showing == false:
+	for j in action_buttons:
+		#	if j != null:
+		j.show()
+		#_action_button_showing = true
+		#return _action_button_showing
+#	if _action_button_showing:
+#		pass
 
 
 func show_direction_buttons():
+	print_debug("Showing Direction Buttons")
 	# 
 	# Shows direction Button
 	
@@ -599,14 +612,14 @@ func show_direction_buttons():
 		
 	for j in direction_buttons:
 		j.show()
-	_direction_button_showing = true
+	#_direction_button_showing = true
 	
-	return _direction_button_showing
+	#return _direction_button_showing
 	
 	#if _direction_button_showing == true:
 	#	pass
 
-func _on_comics_showing(): # Doesnt Work
+func _on_comics_showing(): # Refactoring For Minimap UI
 	print_debug("Comics SHowing")
 	
 	comics() 
@@ -655,7 +668,7 @@ func __disappear():
 """
 UI Button Connections
 """
-
+# via Global Input Singleton
 # Buggy : Introduces Stuct Input Bug On Mobile Devices
 func _on_menu_pressed():
 	print_debug("111111111111111111111111111") # Doesnt Works

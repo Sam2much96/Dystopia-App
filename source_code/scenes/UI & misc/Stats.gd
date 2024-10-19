@@ -37,9 +37,9 @@ export (bool) var enabled
 signal not_enabled
 signal enabled
 
-# Signals TO Connect To Android SIngleton For Controulling Touch HUD
-signal status_hidden
-signal status_showing
+# Signals TO Connect To Android SIngleton For Controulling Touch HUD (Done)
+#signal status_hidden
+#signal status_showing
 
 # Pointers to Tab Containers for icon implementation
 var tab_container : TabContainer
@@ -139,6 +139,8 @@ func _ready():
 	
 
 func _input(event):
+	"Status UI Visibility Is Entirely Self Controlled From Here"
+	
 	# Satus UI Only Listens to The Pause Input
 	if not event.is_action_pressed("pause"): # Guard Clause
 		return 
@@ -149,14 +151,14 @@ func _input(event):
 		enabled = true
 		_enable()
 	#	#_state = ENABLED
-		Music.play_track(Music.ui_sfx[0])
+		#Music.play_track(Music.ui_sfx[0])
 		return enabled # _state
 	if event.is_action_pressed("pause") && enabled == true:
 		enabled = false
 		_disable()
 	#	#_state = DISABLED
 		print_debug("disable")
-		Music.play_track(Music.ui_sfx[1])
+		#Music.play_track(Music.ui_sfx[1])
 		return enabled #_state
 
 
@@ -288,39 +290,44 @@ func _notification(what):  #Triggered when the Min Game Loop is exited
 		print_debug("STATUS NOTIFICATION")
 
 
+# Debugging Status Signals
+# Depreicated Signals
 
-func _on_status_showing():
-	# upadate inventory button lising
-	#_update_inventory_button_cache() #  Depreciated Buggy NFT?
-	
-	# Grab Focus
-	
-	
-	#resets Mobile Touch HUD
-	emit_signal("status_hidden") # SIgnals trigger opposite effect
-	#GlobalInput.TouchInterface.reset()
-	
-	print_debug("TC Status:",GlobalInput.TouchInterface._Hide_touch_interface, " SC: ", GlobalInput.TouchInterface._state_controller) # Touch Interface Debug
-	print_debug('status hidden') #for debug purposes
+#func _on_status_showing():
+#	# upadate inventory button lising
+#	#_update_inventory_button_cache() #  Depreciated Buggy NFT?
+#	
+#	# Grab Focus
+#	print_debug("2222222222222222")
+#	
+#	#resets Mobile Touch HUD
+#	emit_signal("status_hidden") # SIgnals trigger opposite effect
+#	#GlobalInput.TouchInterface.reset()
+#	
+#	#print_debug("TC Status:",GlobalInput.TouchInterface._Hide_touch_interface, " SC: ", GlobalInput.TouchInterface._state_controller) # Touch Interface Debug
+#	print_debug('status hidden') #for debug purposes
 
-func _on_status_hidden():
-	
-	# Ignore Inp
-	
-	# shows status UI only
-	# Buggy Method Triggers Status state on Mobile Devices
-	# TO DO: Implement In Android SIngleton
-	#GlobalInput.TouchInterface.status()
-	emit_signal("status_showing")
-	print_debug("TC hidden:",GlobalInput.TouchInterface._Hide_touch_interface, " SC: ", GlobalInput.TouchInterface._state_controller) # Touch Interface Debug
-	print_debug('status showing')
-
+#func _on_status_hidden():
+#	
+#	# Ignore Inp
+#	print_debug("11111111111")
+#	# shows status UI only
+#	# Buggy Method Triggers Status state on Mobile Devices
+#	# TO DO: Implement In Android SIngleton
+#	#GlobalInput.TouchInterface.status()
+#	emit_signal("status_showing")
+#	#print_debug("TC hidden:",GlobalInput.TouchInterface._Hide_touch_interface, " SC: ", GlobalInput.TouchInterface._state_controller) # Touch Interface Debug
+#	print_debug('status showing')
+#	#print_stack()
 
 
 func equip(_item):
 	# Placeholder method for Triggering an Equip method on the Player Script of an Inventroy Oject 
 	pass
 
+"""
+Enable And Disable Stats UI
+"""
 
 func _enable():
 	enabled = true
@@ -341,7 +348,7 @@ func _enable():
 	_update_quest_listing()
 	_update_inventory_listing() # Refactor
 	_update_wallet_stats()
-	print_debug(self.name, "disabled") 
+	print_debug("Stats UI disabled") 
 
 func _disable():
 	enabled = false
@@ -350,6 +357,6 @@ func _disable():
 	Music.play_track(Music.ui_sfx[1])
 	hide()
 	get_tree().paused = false
-	print (self.name, "enabled") # For debug purposes only
-
+	print_debug ("Stats UI enabled") # For debug purposes only
+	#print_stack()
 

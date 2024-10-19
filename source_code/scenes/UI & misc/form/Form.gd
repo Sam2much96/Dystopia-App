@@ -30,7 +30,7 @@ onready var cinematics : PackedScene = load(film)
 var index : int = 0
 
 onready var play_button : Button = $ui/grid/play
-onready var dialgue_box = $Dialog_box
+#onready var dialgue_box = $Dialog_box
 onready var language : OptionButton = $ui/grid/language
 
 ########Label Spacer Codes Are Used For Aesthetics#########
@@ -44,7 +44,7 @@ onready var _debug =get_tree().get_root().get_node("/root/Debug")
 var os = Globals.os # Pointer
 
 onready var UI_buttons : Array = [
-	play_button, dialgue_box, 
+	play_button,  
 	language, label_spacer, 
 	label_spacer2, label_spacer3
 	]
@@ -56,7 +56,7 @@ func _ready():
 #	if _debug != null:
 #		_debug = get_tree().get_root().get_node("/root/Debug")
 
-	dialgue_box.hide_dialogue()
+	#dialgue_box.hide_dialogue()
 	
 	Android.hide_touch_interface()
 	
@@ -147,13 +147,18 @@ func _check_if_device_is_online():
 	print_debug("Port Code to Indicvidual Platform Singletons")
 
 
+"""
+SHould Make A Http Request To Get All GamePlay Data From THe net once
+"""
+# Depreciated for refactoring
+# Should Iealy Be A Self Contained Method In The Networking SIngleton
 func _http_request_completed(result, response_code, headers, body):
 	if body.empty() != true:
 		show_play_button()
 		
 		Networking.good_internet = true #aves the internet status as a global variable
 		
-		dialgue_box.show_dialog('Device is internet connected','Admin')
+		#dialgue_box.show_dialog('Device is internet connected','Admin')
 		print ('Device is internet connected', result, response_code)
 		return
 	# Loop

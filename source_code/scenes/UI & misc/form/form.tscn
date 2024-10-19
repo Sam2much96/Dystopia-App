@@ -1,19 +1,20 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/UI & misc/form/Form.gd" type="Script" id=2]
 [ext_resource path="res://resources/illustrations/coins silver.png" type="Texture" id=3]
-[ext_resource path="res://fonts/dialog.tres" type="DynamicFont" id=4]
-[ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=5]
 [ext_resource path="res://themes/Buttons_white+Black.tres" type="Theme" id=6]
 [ext_resource path="res://themes/option+button_Red.tres" type="Theme" id=7]
 
 [node name="form" type="CanvasLayer"]
+layer = 2
 script = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
+visible = false
 margin_left = -218.0
 margin_right = 1272.0
 margin_bottom = 417.0
+mouse_filter = 2
 color = Color( 0.686275, 0.686275, 0.686275, 1 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
@@ -22,6 +23,7 @@ margin_left = 486.445
 margin_top = 51.7433
 margin_right = 899.445
 margin_bottom = 394.743
+mouse_filter = 2
 texture = ExtResource( 3 )
 
 [node name="ui" type="Control" parent="."]
@@ -34,6 +36,7 @@ margin_top = -370.556
 margin_right = 149.143
 margin_bottom = 229.444
 rect_scale = Vector2( 2, 2 )
+mouse_filter = 2
 
 [node name="grid" type="GridContainer" parent="ui"]
 margin_left = 316.0
@@ -41,6 +44,7 @@ margin_top = 149.0
 margin_right = 416.0
 margin_bottom = 219.0
 rect_scale = Vector2( 2.12613, 2.12613 )
+mouse_filter = 2
 columns = 2
 
 [node name="label_spacer3" type="Label" parent="ui/grid"]
@@ -55,39 +59,21 @@ margin_bottom = 14.0
 [node name="play" type="Button" parent="ui/grid"]
 margin_top = 18.0
 margin_right = 117.0
-margin_bottom = 44.0
+margin_bottom = 49.0
 theme = ExtResource( 6 )
 text = "Play!"
 
 [node name="label_spacer2" type="Label" parent="ui/grid"]
 margin_left = 121.0
-margin_top = 24.0
+margin_top = 26.0
 margin_right = 121.0
-margin_bottom = 38.0
+margin_bottom = 40.0
 
 [node name="language" type="OptionButton" parent="ui/grid"]
-margin_top = 48.0
+margin_top = 53.0
 margin_right = 117.0
-margin_bottom = 68.0
+margin_bottom = 73.0
 theme = ExtResource( 7 )
 text = "Languague"
-
-[node name="instructions" type="Label" parent="ui"]
-visible = false
-margin_left = 75.0638
-margin_top = 389.842
-margin_right = 336.064
-margin_bottom = 570.842
-custom_colors/font_color = Color( 0.992157, 1, 0, 1 )
-custom_fonts/font = ExtResource( 4 )
-text = "Use WASD keys to move, SPACEBAR to fire on PC. You will respawn upon death."
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Dialog_box" parent="." instance=ExtResource( 5 )]
-
-[node name="Timer" type="Timer" parent="."]
 
 [connection signal="pressed" from="ui/grid/play" to="." method="_on_play_pressed"]

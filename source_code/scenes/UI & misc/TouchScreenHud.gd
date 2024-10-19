@@ -585,7 +585,9 @@ func hide_buttons() :
 			x.hide()
 	# hackky bug fix for D-pad UI showing Bug
 	D_pad.hide()
-
+	
+	
+	# Release UI FOus
 
 
 func show_action_buttons() :

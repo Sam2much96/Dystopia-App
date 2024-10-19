@@ -148,13 +148,18 @@ func _input(event):
 	print_debug("Menu Is Pressed")
 	if menu_state == HIDDEN:
 		menu_state = SHOWING
-		self.grab_focus()
+		
 		set_focus_mode(Control.FOCUS_CLICK)
+		set_mouse_filter(Control.MOUSE_FILTER_STOP)
 		Music.play_track(_ui_sfx)
 		
 		return menu_state
 	if menu_state== SHOWING:
 		menu_state = HIDDEN
+		
+		set_focus_mode(Control.FOCUS_NONE)
+		set_mouse_filter(Control.MOUSE_FILTER_IGNORE)
+		
 		Music.play_track(_ui_sfx_1)
 		return menu_state
 		

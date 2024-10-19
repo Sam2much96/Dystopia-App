@@ -326,7 +326,7 @@ func equip(_item):
 	pass
 
 """
-Enable And Disable Stats UI
+Enable And Disable Stats UI & CHildern
 """
 
 func _enable():
@@ -338,9 +338,16 @@ func _enable():
 	
 	"Mobile HUD Controller" # NANI?
 	
+	tab_container.set_focus_mode(Control.FOCUS_CLICK)
+	
+	# Ignore All Mouse UI Inputs WHen Hidden
+	tab_container.set_mouse_filter(Control.MOUSE_FILTER_STOP)
+
+	
+	
 	if is_instance_valid(Android.TouchInterface):
 		print_debug("Touch HUD Instance valid, this code bloc should be moved to Android singletnon")
-		emit_signal("status_showing") # sihnal connected at touch interface
+		#emit_signal("status_showing") # sihnal connected at touch interface
 		#GlobalInput.TouchInterface.status()
 		#"Grab Focus ?"
 		#grab_focus()
@@ -348,7 +355,7 @@ func _enable():
 	_update_quest_listing()
 	_update_inventory_listing() # Refactor
 	_update_wallet_stats()
-	print_debug("Stats UI disabled") 
+	print_debug("Stats UI Enabled") 
 
 func _disable():
 	enabled = false
@@ -357,6 +364,10 @@ func _disable():
 	Music.play_track(Music.ui_sfx[1])
 	hide()
 	get_tree().paused = false
-	print_debug ("Stats UI enabled") # For debug purposes only
+	print_debug ("Stats UI disabled") # For debug purposes only
 	#print_stack()
 
+	set_focus_mode(Control.FOCUS_NONE)
+	
+	# Ignore All Mouse UI Inputs WHen Hidden
+	set_mouse_filter(Control.MOUSE_FILTER_IGNORE)

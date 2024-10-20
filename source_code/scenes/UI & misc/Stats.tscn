@@ -45,6 +45,7 @@ margin_right = 4.0
 focus_neighbour_top = NodePath("VBoxContainer/Exit")
 focus_neighbour_bottom = NodePath("VBoxContainer/Exit")
 focus_mode = 2
+mouse_filter = 1
 custom_styles/panel = ExtResource( 4 )
 script = ExtResource( 1 )
 enabled = true
@@ -54,7 +55,7 @@ margin_left = 20.0
 margin_top = 20.0
 margin_right = 1008.0
 margin_bottom = 580.0
-mouse_filter = 2
+mouse_filter = 1
 theme = SubResource( 3 )
 custom_colors/font_color_bg = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 3 )
@@ -64,7 +65,7 @@ script = ExtResource( 6 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 74.0
-input_pass_on_modal_close_click = false
+mouse_filter = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/0"]
 margin_left = 3.07108
@@ -105,6 +106,7 @@ margin_left = 4.0
 margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
+mouse_filter = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/1"]
 margin_right = 77.0
@@ -149,6 +151,7 @@ margin_left = 4.0
 margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
+mouse_filter = 1
 
 [node name="ScrollContainer2" type="ScrollContainer" parent="TabContainer/2"]
 margin_left = 3.07108
@@ -225,12 +228,14 @@ text = "Item 1
 flat = true
 
 [node name="4" type="Tabs" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
 margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
+mouse_filter = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="TabContainer/4"]
 anchor_right = 0.178
@@ -239,6 +244,7 @@ margin_left = 246.0
 margin_top = 50.0
 margin_right = 793.56
 margin_bottom = 405.82
+mouse_filter = 1
 
 [node name="minimap" type="NinePatchRect" parent="TabContainer/4/MarginContainer"]
 modulate = Color( 1, 1, 1, 0.411765 )

@@ -128,6 +128,7 @@ func _on_back_pressed():
 
 
 func _on_skip_pressed():
+	print_debug("Skip Button Pressed")
 	videoplayer.stop()
 	local_globals._go_to_title()
 

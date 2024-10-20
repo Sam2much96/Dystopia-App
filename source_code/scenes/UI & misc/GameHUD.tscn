@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/UI & misc/Stats.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/UI & misc/StatusText.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/UI & misc/Healthbar.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/UI & misc/Rain_Fx.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/UI & misc/ingame_menu.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/UI & misc/TouchScreen HUD.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/UI & misc/GameHUD.gd" type="Script" id=9]
@@ -13,10 +14,6 @@ process_priority = 1
 script = ExtResource( 9 )
 
 [node name="Dialog_box" parent="." instance=ExtResource( 1 )]
-input_pass_on_modal_close_click = false
-
-[node name="Stats" parent="." instance=ExtResource( 2 )]
-mouse_filter = 2
 input_pass_on_modal_close_click = false
 
 [node name="Status_text" parent="." instance=ExtResource( 3 )]
@@ -41,6 +38,8 @@ input_pass_on_modal_close_click = false
 _control = "classic"
 enabled = true
 
+[node name="Stats" parent="." instance=ExtResource( 2 )]
+
 [node name="Menu " parent="." instance=ExtResource( 6 )]
 anchor_left = 0.5
 anchor_top = 0.5
@@ -54,3 +53,7 @@ mouse_filter = 1
 __meta__ = {
 "_edit_use_anchors_": true
 }
+
+[node name="RainFx" parent="." instance=ExtResource( 5 )]
+modulate = Color( 0, 0, 0, 0.611765 )
+emitting = false

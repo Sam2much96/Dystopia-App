@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://scenes/levels/Tilemap_1_overworld.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/levels/ForestTilemap.tscn" type="PackedScene" id=2]
@@ -16,9 +16,7 @@
 [ext_resource path="res://scenes/props/signpost.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/props/broken ship.tscn" type="PackedScene" id=16]
 [ext_resource path="res://scenes/items/Arrow.tscn" type="PackedScene" id=17]
-[ext_resource path="res://scenes/Shaders/CRT.tscn" type="PackedScene" id=19]
 [ext_resource path="res://scenes/characters/Npc.tscn" type="PackedScene" id=20]
-[ext_resource path="res://scenes/UI & misc/Rain_Fx.tscn" type="PackedScene" id=26]
 [ext_resource path="res://scenes/levels/Overworld_Level_Properties.gd" type="Script" id=28]
 
 [sub_resource type="NavigationPolygon" id=1]
@@ -148,15 +146,6 @@ position = Vector2( 5010.28, -1093.29 )
 rotation = 1.01254
 scale = Vector2( 6.26556, 1.62012 )
 to_scene = "res://scenes/levels/Building1.tscn"
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = 0
-
-[node name="Rain_Fx" parent="CanvasLayer" instance=ExtResource( 26 )]
-
-[node name="CRT" parent="CanvasLayer" instance=ExtResource( 19 )]
-visible = false
-input_pass_on_modal_close_click = false
 
 [node name="Player" parent="." instance=ExtResource( 7 )]
 position = Vector2( 672.514, 418.212 )

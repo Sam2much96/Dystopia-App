@@ -156,7 +156,7 @@ var _direction_button_showing : bool
 
 
 # Local Pointer TO Stats Node
-onready var _Stats_ : Stats = get_parent().get_child(1)
+onready var _Stats_ : Stats = get_parent().get_child(4)
 
 
 func _ready():
@@ -356,8 +356,8 @@ func _ready():
 		#Networking.timer.connect("timeout", self, "show_all_buttons") 
 
 		# Connects Stats Ui Signals To Touchscreen HUD for Mobile
-		_Stats_.connect("enabled", self ,"status")
-		_Stats_.connect("not_enabled", self ,"show_all_buttons")
+		_Stats_.connect("_enabled", self ,"status")
+		_Stats_.connect("_not_enabled", self ,"show_all_buttons")
 		
 		if (
 			_Stats_.is_connected("enabled", self ,"status") &&
@@ -494,76 +494,6 @@ func touch_interface_debug(): #Debug singleton is broken
 
 
 
-#func _input(event):
-#	" UI logic" # 
-	# SHould Export Global Input SIngleton
-	
-	# State Machine Logic
-#	" UI Animation"
-	# Controls the Touch interface state machine from the player's input 
-	# Refactored
-	# Processed every frame? (1/2)
-	
-	# nested If Statements?
-	
-	#"Touch Interface State Machine?"
-	# Depreicated for SIgnal Impementation Instead
-	#if enabled:
-	#	 
-	#	# Duplicate of Input.gd GLobal Input SIngleton
-	#	if GlobalInput._state == GlobalInput.COMICS or Input.is_action_just_pressed("comics"):
-	#		if _comics.enabled == true:
-	#			
-	#			#if _state_controller != _COMICS : # and _Comics.loaded_comics == true:
-	#				comics()
-	#			
-	#		if not _comics.enabled : #or _Comics.loaded_comics == false:
-	#			reset()
-	#	if GlobalInput._state == GlobalInput.PAUSE or Input.is_action_just_pressed("pause"):
-	#		if GlobalInput._Stats.enabled == true : # GLobal Pointer to Stats HUD
-	#			status() #calls a display function int the touch interface scene
-	#			
-	#	if GlobalInput._state == GlobalInput.MENU or Input.is_action_just_pressed('menu'):
-	#		if GlobalInput.menu.enabled :
-	#			
-	#			menu()
-	#		if not GlobalInput.menu.enabled:
-	#			reset()
-	#	if GlobalInput._state == GlobalInput.ATTACK or Input.is_action_just_pressed('attack'):
-	#		if _state_controller != _ATTACK:
-	#			attack()
-	#			
-	#			# Uses Networking Timer to Reset Touch Interface
-	#			# Use Local TImer Instead
-	#			Networking.start_check(3)
-	#	if GlobalInput._state == GlobalInput.COMICS or Input.is_action_just_pressed('comics'):
-	#		if GlobalInput._Comics.enabled :
-	#			comics()
-	#	else : 
-	#		reset()
-		
-	#	'Interract UI'
-	#	# Disabled for Debugging
-	#	#
-	#	# Hard connects to all interractible objects connected via the global variable
-	#	#if Globals.near_interractible_objects == true : #&& Input.is_action_just_pressed("interact"):
-	#		#TouchInterface.status()
-	#	#	print_debug("Player near Interractible Object", Globals.near_interractible_objects)
-	#	#elif Globals.near_interractible_objects == null or false:
-	#	#	# if Input.is_action_just_pressed("interact") : return TouchInterface.reset()
-	#	#	#return TouchInterface.reset()
-	#	#	print_debug("PLayer Left Interactibe object")
-#
-		# *************************************************
-
-
-	#	if Input.is_action_pressed("pause"):
-	#		_state_controller = _STATS
-	#	if Input.is_action_pressed("comics"):
-	#		_state_controller = _COMICS
-	#	if Input.is_action_pressed("interact"):
-	#		_state_controller = _INTERRACT
-
 func show_all_buttons():
 	print_debug("Showing All Buttons")
 	show_action_buttons()
@@ -603,24 +533,11 @@ func show_action_buttons() :
 #		pass
 
 
-func show_direction_buttons():
+func show_direction_buttons() -> void:
 	print_debug("Showing Direction Buttons")
-	# 
-	# Shows direction Button
-	
-	#if _direction_button_showing == false:
-		
-	#	print_debug("Direction Buttons : ",direction_buttons)
-	#	print_debug("Direction COntrols : ",Globals.direction_control)
-		
 	for j in direction_buttons:
 		j.show()
-	#_direction_button_showing = true
-	
-	#return _direction_button_showing
-	
-	#if _direction_button_showing == true:
-	#	pass
+
 
 func _on_comics_showing(): # Refactoring For Minimap UI
 	print_debug("Comics SHowing")
@@ -674,7 +591,7 @@ UI Button Connections
 # via Global Input Singleton
 # Buggy : Introduces Stuct Input Bug On Mobile Devices
 func _on_menu_pressed():
-	print_debug("111111111111111111111111111") # Doesnt Works
+	#print_debug("111111111111111111111111111") #Works
 	_Input.parse_input("menu", true)
 
 
@@ -724,3 +641,14 @@ func _on_down_pressed():
 #func _on_menu_gui_input(event):
 #	print_debug("22222222222222") # Doesnt'tWorks
 #	_Input.parse_input("menu", true)
+
+
+func _on_stats_gui_input(event):
+	print_debug("Stats GUI Input")
+	stats_.grab_focus()
+	#print_debug("Stats Button Pressed")
+	#_Input.parse_input("pause", true)
+
+
+#func _on_stats_mouse_entered():
+#	print("1111111111111")

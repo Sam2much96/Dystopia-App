@@ -618,7 +618,6 @@ Utils="*res://singletons/Utils.gd"
 Simulation="*res://singletons/Simulation.tscn"
 Android="*res://singletons/Android.tscn"
 GlobalInput="*res://singletons/Input.tscn"
-FPSGraphOverlay="*res://addons/fps_graph_overlay/FPSGraphOverlay.tscn"
 
 [debug]
 
@@ -639,7 +638,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/fps_graph_overlay/plugin.cfg", "res://addons/orphan_import_file_cleaner/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/orphan_import_file_cleaner/plugin.cfg" )
 
 [gdnative]
 

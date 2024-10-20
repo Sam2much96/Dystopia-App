@@ -51,13 +51,11 @@ margin_left = 32.0
 margin_top = 48.0
 margin_right = 1015.0
 margin_bottom = 1624.0
-input_pass_on_modal_close_click = false
 
 [node name="D-pad" type="Control" parent="MarginContainer"]
 margin_right = 983.0
 margin_bottom = 1576.0
 mouse_filter = 2
-input_pass_on_modal_close_click = false
 __meta__ = {
 "_edit_use_anchors_": true
 }
@@ -147,28 +145,30 @@ __meta__ = {
 
 [node name="stats" type="TextureButton" parent="MarginContainer/Control/InterractButtons"]
 pause_mode = 2
+visible = false
+show_behind_parent = true
 margin_right = 166.0
 margin_bottom = 103.0
+mouse_filter = 1
 texture_normal = ExtResource( 13 )
 
 [node name="Label_Spacer" type="Label" parent="MarginContainer/Control/InterractButtons"]
-margin_top = 107.0
 margin_right = 166.0
-margin_bottom = 138.0
+margin_bottom = 31.0
 input_pass_on_modal_close_click = false
 text = "
 "
 
 [node name="comics" type="TextureButton" parent="MarginContainer/Control/InterractButtons"]
-margin_top = 142.0
+margin_top = 35.0
 margin_right = 166.0
-margin_bottom = 285.0
+margin_bottom = 178.0
 texture_normal = ExtResource( 12 )
 
 [node name="interact" type="TextureButton" parent="MarginContainer/Control/InterractButtons"]
-margin_top = 289.0
+margin_top = 182.0
 margin_right = 166.0
-margin_bottom = 392.0
+margin_bottom = 285.0
 texture_normal = ExtResource( 11 )
 
 [node name="ActionButtons" type="HBoxContainer" parent="MarginContainer/Control"]
@@ -238,7 +238,7 @@ texture_normal = ExtResource( 2 )
 [connection signal="pressed" from="MarginContainer/D-pad/left" to="." method="_on_left_pressed"]
 [connection signal="pressed" from="MarginContainer/D-pad/down" to="." method="_on_down_pressed"]
 [connection signal="pressed" from="MarginContainer/Control/InterractButtons/stats" to="." method="_on_stats_pressed"]
-[connection signal="pressed" from="MarginContainer/Control/InterractButtons/comics" to="." method="_on_comics_pressed"]
+[connection signal="mouse_entered" from="MarginContainer/Control/InterractButtons/comics" to="." method="_on_comics_mouse_entered"]
 [connection signal="pressed" from="MarginContainer/Control/InterractButtons/interact" to="." method="_on_interact_pressed"]
 [connection signal="pressed" from="MarginContainer/Control/ActionButtons/Spacer/roll" to="." method="_on_roll_pressed"]
 [connection signal="pressed" from="MarginContainer/Control/ActionButtons/slash" to="." method="_on_slash_pressed"]

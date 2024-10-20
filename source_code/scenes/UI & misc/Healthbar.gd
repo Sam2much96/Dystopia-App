@@ -39,7 +39,7 @@ var player_group : Array = []
 # Idea:  Rather Than Instancing the scene, why not duplicate?
 onready var HeartScene : PackedScene = load("res://scenes/UI & misc/Heart.tscn")
 onready var heart_instance : TextureRect = $heart #: PackedScene = preload("res://scenes/UI & misc/Heart.tscn")
-onready var heart_empty : TextureRect = $heart_empty #: PackedScene = preload ("res://scenes/UI & misc/HeartEmpty.tscn")
+onready var heart_empty : TextureRect #= $heart_empty #: PackedScene = preload ("res://scenes/UI & misc/HeartEmpty.tscn")
 
 const MAX_HEALTH = 23 # Max Health Constant
 

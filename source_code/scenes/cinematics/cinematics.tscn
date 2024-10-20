@@ -161,9 +161,8 @@ margin_left = 8.48529
 margin_top = 8.48523
 margin_right = 8.48529
 margin_bottom = 8.48523
-
-[node name="Node2D" type="Control" parent="."]
-rect_scale = Vector2( 0.65, 0.65 )
+mouse_filter = 2
+input_pass_on_modal_close_click = false
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 20.0
@@ -211,6 +210,9 @@ texture = ExtResource( 5 )
 mouse_filter = 2
 input_pass_on_modal_close_click = false
 
+[node name="ColorRect" parent="." instance=ExtResource( 7 )]
+input_pass_on_modal_close_click = false
+
 [node name="skip" type="TextureButton" parent="."]
 modulate = Color( 0.584314, 0.152941, 0.152941, 1 )
 margin_left = 364.443
@@ -219,9 +221,6 @@ margin_right = 724.443
 margin_bottom = 867.112
 rect_scale = Vector2( 0.488382, 0.469212 )
 texture_normal = ExtResource( 3 )
-
-[node name="ColorRect" parent="." instance=ExtResource( 7 )]
-input_pass_on_modal_close_click = false
 
 [connection signal="finished" from="VideoPlayer" to="." method="_on_VideoPlayer_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

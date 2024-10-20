@@ -34,8 +34,8 @@ extends PanelContainer
 class_name Stats
 
 export (bool) var enabled
-signal not_enabled
-signal enabled
+signal _not_enabled
+signal _enabled
 
 # Signals TO Connect To Android SIngleton For Controulling Touch HUD (Done)
 #signal status_hidden
@@ -332,16 +332,16 @@ Enable And Disable Stats UI & CHildern
 func _enable():
 	enabled = true
 	visible = enabled
-	emit_signal('enabled')
+	emit_signal('_enabled')
 	Music.play_track(Music.ui_sfx[0])
 	get_tree().paused = enabled
 	
 	"Mobile HUD Controller" # NANI?
 	
-	tab_container.set_focus_mode(Control.FOCUS_CLICK)
+	#tab_container.set_focus_mode(Control.FOCUS_CLICK)
 	
 	# Ignore All Mouse UI Inputs WHen Hidden
-	tab_container.set_mouse_filter(Control.MOUSE_FILTER_STOP)
+	#tab_container.set_mouse_filter(Control.MOUSE_FILTER_STOP)
 
 	
 	
@@ -360,14 +360,14 @@ func _enable():
 func _disable():
 	enabled = false
 	visible = enabled
-	emit_signal("not_enabled")
+	emit_signal("_not_enabled")
 	Music.play_track(Music.ui_sfx[1])
 	hide()
 	get_tree().paused = false
 	print_debug ("Stats UI disabled") # For debug purposes only
 	#print_stack()
 
-	set_focus_mode(Control.FOCUS_NONE)
+	#set_focus_mode(Control.FOCUS_NONE)
 	
 	# Ignore All Mouse UI Inputs WHen Hidden
-	set_mouse_filter(Control.MOUSE_FILTER_IGNORE)
+	#set_mouse_filter(Control.MOUSE_FILTER_IGNORE)

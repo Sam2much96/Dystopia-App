@@ -71,5 +71,5 @@ jobs:
          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
          CHANNEL: linux
          ITCH_GAME: dystopia-app
-         ITCH_USER: inhumanity-arts
+         ITCH_USER: inhumanity_arts
          PACKAGE: ./site.zip

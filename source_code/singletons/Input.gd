@@ -73,6 +73,9 @@ var gameHUD : GameHUD
 # Mobile Joystick
 var joystick 
 
+
+var NodeInput = Input # Generates this nodes Node _input()
+
 func _input(event):
 	# Player Input
 	# Implement Player Objects Movement State Machine Simplified
@@ -212,17 +215,40 @@ func _input(event):
 			return
 
 
-
-func parse_input( action : String, _pressed : bool):
+# Add More Parameters To Determine Button Press Length
+static func parse_input(node_input : Input ,tree: SceneTree, action : String, _pressed : bool) -> int:
 	#This Logic Creates and Parses Input actions programmatically
 	# Bugs: Holds Input, Should Press and Release Input
 	var a = InputEventAction.new()
+	var end_frame : int = (Simulation.get_frame_counter() + 50)
 	a.action = action
-	a.pressed = _pressed
-	Input.parse_input_event(a)
 	
-	get_tree().set_input_as_handled()
-
+	
+	
+	# Handle Input
+	# Node Imput Is used TO generate Node._input() methods
+	if (Simulation.get_frame_counter() < end_frame):
+		print_debug("Input Debug: ",Simulation.get_frame_counter(), "/", end_frame)
+		a.pressed = _pressed
+		node_input.parse_input_event(a)
+	
+	# Release Input
+	elif (Simulation.get_frame_counter() >= end_frame):
+		a.pressed = false
+		print_debug("Input Debug: ",Simulation.get_frame_counter(), "/", end_frame)
+		World.parse_input_event(a)
+	
+	
+	
+	tree.set_input_as_handled()
+	
+	#a.action = action
+	#a.pressed = false
+	
+	# stop button Press
+	#Input.parse_input_event(a)
+	
+	return 0
 
 func vibrate(duration_ms : int, os : String):
 	# Nested if?

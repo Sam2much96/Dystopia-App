@@ -144,6 +144,9 @@ onready var direction_buttons : Array
 onready var analogue_joystick : Array
 onready var d_pad : Array
 
+"Scene Tree"
+onready var __scene_tree : SceneTree = get_tree()
+
 # debug COunter counts how many times a mehtod has been called
 var counter : int = 0
 #func _enter_tree():
@@ -156,7 +159,7 @@ var _direction_button_showing : bool
 
 
 # Local Pointer TO Stats Node
-onready var _Stats_ : Stats = get_parent().get_child(4)
+onready var _Stats_ : Stats = get_parent().get_child(3)
 
 
 func _ready():
@@ -190,31 +193,33 @@ func _ready():
 	
 	######## Begin Setting Nodes #
 	_menu = $menu
-	_interract = $MarginContainer/Control/InterractButtons/interact
-	stats_ = $MarginContainer/Control/InterractButtons/stats
-	roll = $MarginContainer/Control/ActionButtons/Spacer/roll
-	slash = $MarginContainer/Control/ActionButtons/slash
-	comics_ = $MarginContainer/Control/InterractButtons/comics
-	_joystick = $MarginContainer/Joystick/joystick_circle
-	joystick2 = $MarginContainer/Joystick/joystick_circle2
+	_interract = $Control/InterractButtons/interact
+	stats_ = $Control/InterractButtons/stats
+	roll = $Control/ActionButtons/Spacer/roll
+	slash = $Control/ActionButtons/slash
+	comics_ = $Control/InterractButtons/comics
+	#_joystick = $Joystick/joystick_circle
+	#joystick2 = $Joystick/joystick_circle2
 	 
 	Anim = $AnimationPlayer
-	D_pad = $MarginContainer/"D-pad"
+	D_pad = $"D-pad"
 	LineDebug = $Line2D
 	#touch_interface_debug() disabling for now
 	
-	_up = $MarginContainer/"D-pad/up"
-	_down = $MarginContainer/"D-pad/down"
-	_left = $MarginContainer/"D-pad/left"
-	_right = $MarginContainer/"D-pad/right"
+	_up = $"D-pad/up"
+	_down = $"D-pad/down"
+	_left = $"D-pad/left"
+	_right = $"D-pad/right"
 	
 
-	action_interract_buttons = $MarginContainer/Control/ActionButtons 
-	interract_buttons = $MarginContainer/Control/InterractButtons
+	action_interract_buttons = $Control/ActionButtons 
+	interract_buttons = $Control/InterractButtons
 	
 	# Debug Broken Lins
 	
-	all_UI_Nodes = [_menu ,stats_, _interract, roll, slash,comics_,_joystick, joystick2,D_pad, _up, _down, _left, _right ]
+	all_UI_Nodes = [_menu ,stats_, _interract, roll, slash,comics_,
+	#_joystick, joystick2,
+	D_pad, _up, _down, _left, _right ]
 	
 	# Error Catcher For Broken UI Links
 	Utils.UI.check_for_broken_links(all_UI_Nodes)
@@ -233,7 +238,7 @@ func _ready():
 		comics_
 		]
 	
-	analogue_joystick  = [ _joystick, joystick2]
+	#analogue_joystick  = [ _joystick, joystick2]
 	d_pad = [D_pad, _up, _down, _left, _right]
 	
 	
@@ -242,10 +247,10 @@ func _ready():
 	if str(Globals.direction_control )== "classic" :
 		direction_buttons = d_pad
 	elif str(Globals.direction_control) == "modern" :
-		direction_buttons = analogue_joystick
-		
+		#direction_buttons = analogue_joystick
+		print_debug("Joystick Inputs Require Refactoring")
 	# Default Direction Button should be Analgue
-	else: direction_buttons = analogue_joystick
+	else: pass #direction_buttons = analogue_joystick
 
 	#### Done Setting Nodes
 	
@@ -553,6 +558,7 @@ func _on_comics_hidden():
 
 ##### External Method TO Be Called Form Other Scripts
 func __menu():
+	# Hudes All Button Except The Mebnu Button
 	#print_stack()
 	#assert(Globals.os == "Android")
 	print_debug("Touch Interface External Menu")
@@ -562,8 +568,8 @@ func __menu():
 	roll.hide()
 	slash.hide()
 	comics_.hide()
-	_joystick.hide()
-	joystick2.hide()
+	#_joystick.hide()
+	#joystick2.hide()
 	_up.hide()
 	_down.hide()
 	_left.hide()
@@ -578,8 +584,8 @@ func __disappear():
 	roll.hide()
 	slash.hide()
 	comics_.hide()
-	_joystick.hide()
-	joystick2.hide()
+	#_joystick.hide()
+	#joystick2.hide()
 	_up.hide()
 	_down.hide()
 	_left.hide()
@@ -592,50 +598,50 @@ UI Button Connections
 # Buggy : Introduces Stuct Input Bug On Mobile Devices
 func _on_menu_pressed():
 	#print_debug("111111111111111111111111111") #Works
-	_Input.parse_input("menu", true)
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"menu", true)
 
 
 func _on_stats_pressed():
 	print_debug("Stats Button Pressed")
-	_Input.parse_input("pause", true)
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"pause", true)
 
 
 func _on_comics_pressed():
 	print_debug("Comics Button Pressed")
-	_Input.parse_input("comics", true)
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"comics", true)
 
 
 func _on_interact_pressed():
 	print_debug("Interract Button Pressed")
-	_Input.parse_input("interact", true)
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"interact", true)
 
 
 func _on_roll_pressed():
 	print_debug("Roll Button Pressed")
-	_Input.parse_input("roll", true)
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"roll", true)
 
 
 func _on_slash_pressed():
 	print_debug("Attack Button Pressed")
-	_Input.parse_input("attack", true)
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"attack", true)
 
 
 func _on_right_pressed():
 	
-	_Input.parse_input("move_right", true)
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_right", true)
 
 
 func _on_up_pressed():
-	_Input.parse_input("move_up", true)
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_up", true)
 
 
 func _on_left_pressed():
-	_Input.parse_input("move_left", true)
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_left", true)
 
 
 
 func _on_down_pressed():
-	_Input.parse_input("move_down", true)
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_down", true)
 
 
 #func _on_menu_gui_input(event):

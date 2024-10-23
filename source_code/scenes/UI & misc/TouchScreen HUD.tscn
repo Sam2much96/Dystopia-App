@@ -1,19 +1,14 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=18 format=2]
 
-[ext_resource path="res://scenes/UI & misc/Joystick circle.tscn" type="PackedScene" id=1]
 [ext_resource path="res://resources/Buttons/menu.png" type="Texture" id=2]
 [ext_resource path="res://scenes/UI & misc/ActionButtons.gd" type="Script" id=3]
 [ext_resource path="res://scenes/UI & misc/TouchScreenHud.gd" type="Script" id=4]
-[ext_resource path="res://scenes/UI & misc/joystick v2.gd" type="Script" id=5]
 [ext_resource path="res://resources/Buttons/btn-hands.png" type="Texture" id=6]
 [ext_resource path="res://resources/Buttons/btn-interact.png" type="Texture" id=11]
 [ext_resource path="res://resources/Buttons/comics.png" type="Texture" id=12]
 [ext_resource path="res://resources/Buttons/btn-stats.png" type="Texture" id=13]
 [ext_resource path="res://resources/Buttons/btn-roll.png" type="Texture" id=14]
 [ext_resource path="res://resources/misc/arrow.png" type="Texture" id=15]
-
-[sub_resource type="CircleShape2D" id=2]
-radius = 50.0
 
 [sub_resource type="Animation" id=10]
 resource_name = "COMICS"
@@ -46,89 +41,80 @@ script = ExtResource( 4 )
 _state_controller = 4
 _control = "modern"
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/COMICS = SubResource( 10 )
+anims/DIALOGUE = SubResource( 11 )
+anims/MENU = SubResource( 9 )
+anims/RESET = SubResource( 8 )
+anims/SCREEN_HORIZONTAL = SubResource( 3 )
+anims/SCREEN_VERTICAL_1 = SubResource( 5 )
+anims/SCREEN_VERTICAL_2 = SubResource( 6 )
+anims/STATUS = SubResource( 7 )
+
+[node name="Line2D" type="Line2D" parent="."]
+position = Vector2( -8, 48 )
+
+[node name="D-pad" type="Control" parent="."]
+visible = false
 margin_left = 32.0
 margin_top = 48.0
 margin_right = 1015.0
 margin_bottom = 1624.0
-
-[node name="D-pad" type="Control" parent="MarginContainer"]
-margin_right = 983.0
-margin_bottom = 1576.0
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="right" type="TextureButton" parent="MarginContainer/D-pad"]
-margin_left = 129.482
-margin_top = 1828.99
-margin_right = 216.482
-margin_bottom = 1915.99
+[node name="right" type="TextureButton" parent="D-pad"]
+margin_left = 170.0
+margin_top = 1794.0
+margin_right = 257.0
+margin_bottom = 1881.0
 rect_rotation = 0.834126
+rect_scale = Vector2( 2, 2 )
 texture_normal = ExtResource( 15 )
 
-[node name="up" type="TextureButton" parent="MarginContainer/D-pad"]
+[node name="up" type="TextureButton" parent="D-pad"]
 margin_left = 51.4816
 margin_top = 1837.99
 margin_right = 138.482
 margin_bottom = 1924.99
 rect_rotation = -89.0955
+rect_scale = Vector2( 2, 2 )
+action_mode = 0
 texture_normal = ExtResource( 15 )
 
-[node name="left" type="TextureButton" parent="MarginContainer/D-pad"]
-margin_left = 64.4815
-margin_top = 1911.99
-margin_right = 151.482
-margin_bottom = 1998.99
+[node name="left" type="TextureButton" parent="D-pad"]
+margin_left = 90.0
+margin_top = 1972.0
+margin_right = 177.0
+margin_bottom = 2059.0
 rect_rotation = 179.682
+rect_scale = Vector2( 2, 2 )
 texture_normal = ExtResource( 15 )
 
-[node name="down" type="TextureButton" parent="MarginContainer/D-pad"]
-margin_left = 135.482
-margin_top = 1911.99
-margin_right = 222.482
-margin_bottom = 1998.99
+[node name="down" type="TextureButton" parent="D-pad"]
+margin_left = 211.0
+margin_top = 1917.0
+margin_right = 298.0
+margin_bottom = 2004.0
 rect_rotation = 90.343
+rect_scale = Vector2( 2, 2 )
+action_mode = 0
 texture_normal = ExtResource( 15 )
 
-[node name="Joystick" type="Control" parent="MarginContainer"]
-visible = false
-margin_right = 983.0
-margin_bottom = 1576.0
-mouse_filter = 2
-script = ExtResource( 5 )
-custom_mapping = true
-up = "move_up"
-down = "move_down"
-left = "move_left"
-right = "move_right"
-
-[node name="joystick_circle" parent="MarginContainer/Joystick" instance=ExtResource( 1 )]
-visible = false
-position = Vector2( 0, 0 )
-shape = SubResource( 2 )
-shape_centered = false
-visibility_mode = 1
-circle_size = 80
-
-[node name="joystick_circle2" parent="MarginContainer/Joystick" instance=ExtResource( 1 )]
-visible = false
-modulate = Color( 1, 1, 1, 0.454902 )
-position = Vector2( 0, 4 )
-visibility_mode = 1
-circle_size = 156
-
-[node name="Control" type="Control" parent="MarginContainer"]
-margin_right = 983.0
-margin_bottom = 1576.0
+[node name="Control" type="Control" parent="."]
+margin_left = 32.0
+margin_top = 48.0
+margin_right = 1015.0
+margin_bottom = 1624.0
 mouse_filter = 2
 input_pass_on_modal_close_click = false
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="InterractButtons" type="VBoxContainer" parent="MarginContainer/Control"]
+[node name="InterractButtons" type="VBoxContainer" parent="Control"]
 anchor_left = -0.117271
 anchor_top = -0.0196923
 anchor_right = -0.117271
@@ -143,7 +129,7 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="stats" type="TextureButton" parent="MarginContainer/Control/InterractButtons"]
+[node name="stats" type="TextureButton" parent="Control/InterractButtons"]
 pause_mode = 2
 visible = false
 show_behind_parent = true
@@ -152,26 +138,26 @@ margin_bottom = 103.0
 mouse_filter = 1
 texture_normal = ExtResource( 13 )
 
-[node name="Label_Spacer" type="Label" parent="MarginContainer/Control/InterractButtons"]
+[node name="Label_Spacer" type="Label" parent="Control/InterractButtons"]
 margin_right = 166.0
 margin_bottom = 31.0
 input_pass_on_modal_close_click = false
 text = "
 "
 
-[node name="comics" type="TextureButton" parent="MarginContainer/Control/InterractButtons"]
+[node name="comics" type="TextureButton" parent="Control/InterractButtons"]
 margin_top = 35.0
 margin_right = 166.0
 margin_bottom = 178.0
 texture_normal = ExtResource( 12 )
 
-[node name="interact" type="TextureButton" parent="MarginContainer/Control/InterractButtons"]
+[node name="interact" type="TextureButton" parent="Control/InterractButtons"]
 margin_top = 182.0
 margin_right = 166.0
 margin_bottom = 285.0
 texture_normal = ExtResource( 11 )
 
-[node name="ActionButtons" type="HBoxContainer" parent="MarginContainer/Control"]
+[node name="ActionButtons" type="HBoxContainer" parent="Control"]
 anchor_left = -0.190832
 anchor_top = 0.254154
 anchor_right = -0.190832
@@ -185,11 +171,11 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="Spacer" type="VBoxContainer" parent="MarginContainer/Control/ActionButtons"]
+[node name="Spacer" type="VBoxContainer" parent="Control/ActionButtons"]
 margin_right = 110.0
 margin_bottom = 206.0
 
-[node name="Label_Spacer" type="Label" parent="MarginContainer/Control/ActionButtons/Spacer"]
+[node name="Label_Spacer" type="Label" parent="Control/ActionButtons/Spacer"]
 margin_right = 110.0
 margin_bottom = 99.0
 text = "
@@ -199,30 +185,17 @@ text = "
 
 "
 
-[node name="roll" type="TextureButton" parent="MarginContainer/Control/ActionButtons/Spacer"]
+[node name="roll" type="TextureButton" parent="Control/ActionButtons/Spacer"]
 margin_top = 103.0
 margin_right = 110.0
 margin_bottom = 206.0
 texture_normal = ExtResource( 14 )
 
-[node name="slash" type="TextureButton" parent="MarginContainer/Control/ActionButtons"]
+[node name="slash" type="TextureButton" parent="Control/ActionButtons"]
 margin_left = 114.0
 margin_right = 224.0
 margin_bottom = 206.0
 texture_normal = ExtResource( 6 )
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/COMICS = SubResource( 10 )
-anims/DIALOGUE = SubResource( 11 )
-anims/MENU = SubResource( 9 )
-anims/RESET = SubResource( 8 )
-anims/SCREEN_HORIZONTAL = SubResource( 3 )
-anims/SCREEN_VERTICAL_1 = SubResource( 5 )
-anims/SCREEN_VERTICAL_2 = SubResource( 6 )
-anims/STATUS = SubResource( 7 )
-
-[node name="Line2D" type="Line2D" parent="."]
-position = Vector2( -8, 48 )
 
 [node name="menu" type="TextureButton" parent="."]
 self_modulate = Color( 0, 0, 0, 1 )
@@ -233,13 +206,13 @@ margin_right = 198.0
 margin_bottom = 191.0
 texture_normal = ExtResource( 2 )
 
-[connection signal="pressed" from="MarginContainer/D-pad/right" to="." method="_on_right_pressed"]
-[connection signal="pressed" from="MarginContainer/D-pad/up" to="." method="_on_up_pressed"]
-[connection signal="pressed" from="MarginContainer/D-pad/left" to="." method="_on_left_pressed"]
-[connection signal="pressed" from="MarginContainer/D-pad/down" to="." method="_on_down_pressed"]
-[connection signal="pressed" from="MarginContainer/Control/InterractButtons/stats" to="." method="_on_stats_pressed"]
-[connection signal="mouse_entered" from="MarginContainer/Control/InterractButtons/comics" to="." method="_on_comics_mouse_entered"]
-[connection signal="pressed" from="MarginContainer/Control/InterractButtons/interact" to="." method="_on_interact_pressed"]
-[connection signal="pressed" from="MarginContainer/Control/ActionButtons/Spacer/roll" to="." method="_on_roll_pressed"]
-[connection signal="pressed" from="MarginContainer/Control/ActionButtons/slash" to="." method="_on_slash_pressed"]
+[connection signal="pressed" from="D-pad/right" to="." method="_on_right_pressed"]
+[connection signal="pressed" from="D-pad/up" to="." method="_on_up_pressed"]
+[connection signal="pressed" from="D-pad/left" to="." method="_on_left_pressed"]
+[connection signal="pressed" from="D-pad/down" to="." method="_on_down_pressed"]
+[connection signal="pressed" from="Control/InterractButtons/stats" to="." method="_on_stats_pressed"]
+[connection signal="mouse_entered" from="Control/InterractButtons/comics" to="." method="_on_comics_mouse_entered"]
+[connection signal="pressed" from="Control/InterractButtons/interact" to="." method="_on_interact_pressed"]
+[connection signal="pressed" from="Control/ActionButtons/Spacer/roll" to="." method="_on_roll_pressed"]
+[connection signal="pressed" from="Control/ActionButtons/slash" to="." method="_on_slash_pressed"]
 [connection signal="pressed" from="menu" to="." method="_on_menu_pressed"]

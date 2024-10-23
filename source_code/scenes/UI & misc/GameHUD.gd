@@ -66,14 +66,14 @@ func _ready():
 
 	menu = $"Menu "
 	TouchInterface =  $TouchInterface
-	_Comics = GlobalInput.get_child(1) #Comics Node Pointer
+	#_Comics = GlobalInput.get_child(1) #Comics Node Pointer
 	_Stats = $Stats
 	_Status_text = $Status_text
 	heart_box = $MarginContainer/Healthbar
 #onready var ingame_comics_placeholer = $Comics # depreciated in favour of minimap sub system
 	
 	
-	children = [menu, TouchInterface,_Comics, _Stats, _Status_text, heart_box]
+	children = [menu, TouchInterface, _Stats, _Status_text, heart_box]
 	
 	# Check For Broken Links
 	Utils.UI.check_for_broken_links(children)

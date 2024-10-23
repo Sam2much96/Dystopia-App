@@ -181,8 +181,8 @@ onready var D : AudioStreamPlayer = $D
 onready var music_bus_2 = AudioServer.get_bus_index(B.bus)
 onready var music_bus = AudioServer.get_bus_index(A.bus)
 
-onready var requests : HTTPRequest = $HTTPRequest
-onready var timer : Timer #= $Timer
+#onready var requests : HTTPRequest = $HTTPRequest
+#onready var timer : Timer #= $Timer
 
 
 var _music
@@ -195,7 +195,7 @@ onready var track
 onready var transitions : AnimationPlayer = $anims
 
 # Pointers to Node for Memory Mgmt
-onready var my_nodes : Array = [Music_streamer,B,C,Music_streamer_2,transitions,requests]
+onready var my_nodes : Array = [Music_streamer,B,C,Music_streamer_2,transitions]
 
 
 # THis URL fetches a Zip file from an AWS s3 buzket

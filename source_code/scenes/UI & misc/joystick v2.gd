@@ -46,7 +46,7 @@ var joystick_debug
 var touchInsideJoystick #= false
 var maxlength
 
-onready var __input =InputEventAction.new()
+
 
 # The Joystick Direction as A Vector 2
 export (int) var x
@@ -60,7 +60,7 @@ export(String) var down = ""
 export(String) var left = ""
 export(String) var right = ""
 
-
+var __input = null
 onready var the_action : String
 
 onready var the_event
@@ -108,6 +108,9 @@ func release(): #pass it a variable
 		return state
 
 func _ready():
+	if enabled:
+		__input =InputEventAction.new()
+	
 	"""
 	ERROR CHECKERS
 	"""
@@ -428,7 +431,11 @@ func parse_input_function(event):
 		prev_inputs.erase(event.action)
 		prev_inputs.append(event.action)
 	
-	return Input.parse_input_event(event)
+	# TO Do : 
+	# (1) Refactor TO Use Global Input SIngleton
+	#Input.parse_input_event(event)
+	
+	return 0
 
 # Tries Fixing code duplicates in the Joystick logic and state Machine
 func release_the_action(event):

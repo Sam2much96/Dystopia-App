@@ -80,7 +80,7 @@ func _on_AdMob_banner_failed_to_load(error_code):
 
 
 func _on_start_pressed():
-	GlobalInput.parse_input("menu", true)
+	GlobalInput.parse_input(GlobalInput.NodeInput,get_tree(),"menu", true)
 
 
 func _on_start_gui_input(event):

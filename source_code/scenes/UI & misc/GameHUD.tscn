@@ -34,11 +34,12 @@ margin_bottom = 101.0
 mouse_filter = 2
 input_pass_on_modal_close_click = false
 
+[node name="Stats" parent="." instance=ExtResource( 2 )]
+visible = false
+
 [node name="TouchInterface" parent="." instance=ExtResource( 8 )]
 _control = "classic"
 enabled = true
-
-[node name="Stats" parent="." instance=ExtResource( 2 )]
 
 [node name="Menu " parent="." instance=ExtResource( 6 )]
 anchor_left = 0.5

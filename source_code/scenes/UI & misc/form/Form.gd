@@ -38,7 +38,6 @@ onready var label_spacer = $ui/grid/label_spacer
 onready var label_spacer2 = $ui/grid/label_spacer2
 onready var label_spacer3 =$ui/grid/label_spacer3
 
-onready var timer = $Timer
 onready var _debug =get_tree().get_root().get_node("/root/Debug")
 
 var os = Globals.os # Pointer
@@ -58,7 +57,7 @@ func _ready():
 
 	#dialgue_box.hide_dialogue()
 	
-	Android.hide_touch_interface()
+	#Android.hide_touch_interface()
 	
 	# Load Users Prefered DIalogue 
 	Utils.Functions.load_user_data('languague')

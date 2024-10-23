@@ -19,7 +19,7 @@ const Short_lifetime : int = 3
 const MINUMUM_FPS : int = 25
 
 
-var TouchInterface : TouchScreenHUD
+onready var TouchInterface : TouchScreenHUD #= GlobalInput.gameHUD.TouchInterface
 
 var ingameMenu : Game_Menu
 
@@ -119,7 +119,9 @@ func hide_touch_interface():
 	# Hide Game HUD
 	# TO DO: Port TO Touch HUD Inspector Tab
 	TouchInterface.reset()
-	
+
+
+
 func show_only_menu():
 	TouchInterface.__menu()
 

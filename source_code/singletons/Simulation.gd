@@ -756,3 +756,5 @@ class Player_ extends Reference:
 				_body.state = STATE_DIE
 				Music.play_track(Music.nokia_soundpack[27]) # Death Sound Track
 		#pass
+
+

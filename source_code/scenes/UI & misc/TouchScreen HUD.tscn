@@ -131,7 +131,6 @@ __meta__ = {
 
 [node name="stats" type="TextureButton" parent="Control/InterractButtons"]
 pause_mode = 2
-visible = false
 show_behind_parent = true
 margin_right = 166.0
 margin_bottom = 103.0
@@ -139,22 +138,23 @@ mouse_filter = 1
 texture_normal = ExtResource( 13 )
 
 [node name="Label_Spacer" type="Label" parent="Control/InterractButtons"]
+margin_top = 107.0
 margin_right = 166.0
-margin_bottom = 31.0
+margin_bottom = 138.0
 input_pass_on_modal_close_click = false
 text = "
 "
 
 [node name="comics" type="TextureButton" parent="Control/InterractButtons"]
-margin_top = 35.0
+margin_top = 142.0
 margin_right = 166.0
-margin_bottom = 178.0
+margin_bottom = 285.0
 texture_normal = ExtResource( 12 )
 
 [node name="interact" type="TextureButton" parent="Control/InterractButtons"]
-margin_top = 182.0
+margin_top = 289.0
 margin_right = 166.0
-margin_bottom = 285.0
+margin_bottom = 392.0
 texture_normal = ExtResource( 11 )
 
 [node name="ActionButtons" type="HBoxContainer" parent="Control"]
@@ -206,13 +206,28 @@ margin_right = 198.0
 margin_bottom = 191.0
 texture_normal = ExtResource( 2 )
 
+[connection signal="button_down" from="D-pad/right" to="." method="_on_right_button_down"]
+[connection signal="button_up" from="D-pad/right" to="." method="_on_right_button_up"]
 [connection signal="pressed" from="D-pad/right" to="." method="_on_right_pressed"]
+[connection signal="button_down" from="D-pad/up" to="." method="_on_up_button_down"]
+[connection signal="button_up" from="D-pad/up" to="." method="_on_up_button_up"]
 [connection signal="pressed" from="D-pad/up" to="." method="_on_up_pressed"]
+[connection signal="button_down" from="D-pad/left" to="." method="_on_left_button_down"]
+[connection signal="button_up" from="D-pad/left" to="." method="_on_left_button_up"]
 [connection signal="pressed" from="D-pad/left" to="." method="_on_left_pressed"]
+[connection signal="button_down" from="D-pad/down" to="." method="_on_down_button_down"]
+[connection signal="button_up" from="D-pad/down" to="." method="_on_down_button_up"]
 [connection signal="pressed" from="D-pad/down" to="." method="_on_down_pressed"]
+[connection signal="button_down" from="Control/InterractButtons/stats" to="." method="_on_stats_button_down"]
+[connection signal="button_up" from="Control/InterractButtons/stats" to="." method="_on_stats_button_up"]
 [connection signal="pressed" from="Control/InterractButtons/stats" to="." method="_on_stats_pressed"]
-[connection signal="mouse_entered" from="Control/InterractButtons/comics" to="." method="_on_comics_mouse_entered"]
+[connection signal="button_down" from="Control/InterractButtons/interact" to="." method="_on_interact_button_down"]
+[connection signal="button_up" from="Control/InterractButtons/interact" to="." method="_on_interact_button_up"]
 [connection signal="pressed" from="Control/InterractButtons/interact" to="." method="_on_interact_pressed"]
+[connection signal="button_down" from="Control/ActionButtons/Spacer/roll" to="." method="_on_roll_button_down"]
+[connection signal="button_up" from="Control/ActionButtons/Spacer/roll" to="." method="_on_roll_button_up"]
 [connection signal="pressed" from="Control/ActionButtons/Spacer/roll" to="." method="_on_roll_pressed"]
+[connection signal="button_down" from="Control/ActionButtons/slash" to="." method="_on_slash_button_down"]
+[connection signal="button_up" from="Control/ActionButtons/slash" to="." method="_on_slash_button_up"]
 [connection signal="pressed" from="Control/ActionButtons/slash" to="." method="_on_slash_pressed"]
 [connection signal="pressed" from="menu" to="." method="_on_menu_pressed"]

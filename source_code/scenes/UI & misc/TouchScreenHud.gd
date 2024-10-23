@@ -602,8 +602,8 @@ func _on_menu_pressed():
 
 
 func _on_stats_pressed():
-	print_debug("Stats Button Pressed")
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"pause", true)
+	#print_debug("Stats Button Pressed")
+	return 0#_Input.parse_input(_Input.NodeInput,__scene_tree,"pause", true)
 
 
 func _on_comics_pressed():
@@ -612,36 +612,36 @@ func _on_comics_pressed():
 
 
 func _on_interact_pressed():
-	print_debug("Interract Button Pressed")
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"interact", true)
+	#print_debug("Interract Button Pressed")
+	return 0 #_Input.parse_input(_Input.NodeInput,__scene_tree,"interact", true)
 
 
 func _on_roll_pressed():
-	print_debug("Roll Button Pressed")
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"roll", true)
+	#print_debug("Roll Button Pressed")
+	return 0#_Input.parse_input(_Input.NodeInput,__scene_tree,"roll", true)
 
 
 func _on_slash_pressed():
-	print_debug("Attack Button Pressed")
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"attack", true)
+	#print_debug("Attack Button Pressed")
+	return 0#_Input.parse_input(_Input.NodeInput,__scene_tree,"attack", true)
 
 
 func _on_right_pressed():
 	
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_right", true)
+	return 0 #_Input.parse_input(_Input.NodeInput,__scene_tree,"move_right", true)
 
 
 func _on_up_pressed():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_up", true)
+	return 0#_Input.parse_input(_Input.NodeInput,__scene_tree,"move_up", true)
 
 
 func _on_left_pressed():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_left", true)
+	return 0#_Input.parse_input(_Input.NodeInput,__scene_tree,"move_left", true)
 
 
 
 func _on_down_pressed():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_down", true)
+	return 0
 
 
 #func _on_menu_gui_input(event):
@@ -658,3 +658,69 @@ func _on_stats_gui_input(event):
 
 #func _on_stats_mouse_entered():
 #	print("1111111111111")
+
+
+func _on_down_button_down():
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_down", true)
+
+
+func _on_down_button_up():
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_down", false)
+
+
+func _on_left_button_down():
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_left", true)
+
+
+func _on_left_button_up():
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_left", false)
+
+
+func _on_up_button_up():
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_up", true)
+
+
+func _on_up_button_down():
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_up", false)
+
+
+
+
+func _on_right_button_up():
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_right", false)
+
+
+func _on_right_button_down():
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_right", true)
+
+
+func _on_stats_button_up():
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"pause", false)
+
+
+func _on_stats_button_down():
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"pause", true)
+
+
+
+func _on_interact_button_up():
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"interact", false)
+
+
+
+func _on_interact_button_down():
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"interact", true)
+
+
+func _on_roll_button_up():
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"roll", false)
+
+func _on_roll_button_down():
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"roll", true)
+
+func _on_slash_button_up():
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"attack", false)
+
+
+func _on_slash_button_down():
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"attack", true)

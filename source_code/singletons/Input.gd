@@ -39,6 +39,8 @@ enum {LEFT,RIGHT,UP,DOWN,ATTACK,ROLL,BLOCK, RESET,
 COMICS, NEXTPANEL, PREVPANEL, DRAG, PAUSE, MENU, 
 INTERRACT, DIALOGUE
 }
+var reg_inputs : Array = ["move_left", "move_right","move_up", "move_down", "attack", "roll", "interact", "menu", "pause"]
+
 
 # State Machine
 export (int) var _state  
@@ -76,7 +78,8 @@ var joystick
 
 var NodeInput = Input # Generates this nodes Node _input()
 
-func _input(event):
+
+func _unhandled_input(event):
 	# Player Input
 	# Implement Player Objects Movement State Machine Simplified
 	
@@ -186,19 +189,7 @@ func _input(event):
 	# Connects to Global Comics Swipe Feature and Game Menu Scroller function
 	#'AutoScroller'
 	# Implemented but Requires Proper Swipe Gesture Callibration
-	# 
-	# Depreciated State Machibne
-	#if Comics_v6._state == Comics_v6.SWIPE_RIGHT:
-		
-		
-		# Scroll Down
-		#Game_Menu.scroll(false, true,scroller)
-	#	pass
-	#if Comics_v6._state == Comics_v6.SWIPE_DOWN:
-		
-		# Scroll Up
-		#Game_Menu.scroll(true, true,scroller)
-	#	pass
+
 
 	if input_buffer.empty() == true && pressed:
 		input_buffer.append(_state)
@@ -212,7 +203,7 @@ func _input(event):
 	if input_buffer.size() > 12:
 		#	print(input_buffer, _state, input_buffer.pop_front())
 			input_buffer.clear()
-			return
+			#return
 
 
 # Add More Parameters To Determine Button Press Length
@@ -222,8 +213,6 @@ static func parse_input(node_input : Input ,tree: SceneTree, action : String, _p
 	var a = InputEventAction.new()
 	var end_frame : int = (Simulation.get_frame_counter() + 50)
 	a.action = action
-	
-	
 	
 	# Handle Input
 	# Node Imput Is used TO generate Node._input() methods
@@ -236,11 +225,19 @@ static func parse_input(node_input : Input ,tree: SceneTree, action : String, _p
 	elif (Simulation.get_frame_counter() >= end_frame):
 		a.pressed = false
 		print_debug("Input Debug: ",Simulation.get_frame_counter(), "/", end_frame)
-		World.parse_input_event(a)
+		node_input.parse_input_event(a)
 	
 	
 	
 	tree.set_input_as_handled()
+	
+	# Save Input Action To Array
+	if action == "roll":
+		pass
+	if action == "attack":
+		pass
+	if action == "attack":
+		pass
 	
 	#a.action = action
 	#a.pressed = false
@@ -276,3 +273,6 @@ func _get_input_buffer() -> int:
 
 #func show_loading(): # depreciated
 #	gameHUD._loading.show()
+
+
+

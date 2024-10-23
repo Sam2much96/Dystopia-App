@@ -55,7 +55,6 @@ anims/STATUS = SubResource( 7 )
 position = Vector2( -8, 48 )
 
 [node name="D-pad" type="Control" parent="."]
-visible = false
 margin_left = 32.0
 margin_top = 48.0
 margin_right = 1015.0
@@ -66,38 +65,38 @@ __meta__ = {
 }
 
 [node name="right" type="TextureButton" parent="D-pad"]
-margin_left = 170.0
-margin_top = 1794.0
-margin_right = 257.0
-margin_bottom = 1881.0
+margin_left = 213.964
+margin_top = 1742.99
+margin_right = 300.964
+margin_bottom = 1829.99
 rect_rotation = 0.834126
 rect_scale = Vector2( 2, 2 )
 texture_normal = ExtResource( 15 )
 
 [node name="up" type="TextureButton" parent="D-pad"]
-margin_left = 51.4816
-margin_top = 1837.99
-margin_right = 138.482
-margin_bottom = 1924.99
+margin_left = 95.4456
+margin_top = 1786.98
+margin_right = 182.446
+margin_bottom = 1873.98
 rect_rotation = -89.0955
 rect_scale = Vector2( 2, 2 )
 action_mode = 0
 texture_normal = ExtResource( 15 )
 
 [node name="left" type="TextureButton" parent="D-pad"]
-margin_left = 90.0
-margin_top = 1972.0
-margin_right = 177.0
-margin_bottom = 2059.0
+margin_left = 133.964
+margin_top = 1920.99
+margin_right = 220.964
+margin_bottom = 2007.99
 rect_rotation = 179.682
 rect_scale = Vector2( 2, 2 )
 texture_normal = ExtResource( 15 )
 
 [node name="down" type="TextureButton" parent="D-pad"]
-margin_left = 211.0
-margin_top = 1917.0
-margin_right = 298.0
-margin_bottom = 2004.0
+margin_left = 254.964
+margin_top = 1865.99
+margin_right = 341.964
+margin_bottom = 1952.99
 rect_rotation = 90.343
 rect_scale = Vector2( 2, 2 )
 action_mode = 0
@@ -166,6 +165,7 @@ margin_left = 799.0
 margin_top = 1323.0
 margin_right = 1023.0
 margin_bottom = 1529.0
+rect_scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": true
@@ -230,4 +230,6 @@ texture_normal = ExtResource( 2 )
 [connection signal="button_down" from="Control/ActionButtons/slash" to="." method="_on_slash_button_down"]
 [connection signal="button_up" from="Control/ActionButtons/slash" to="." method="_on_slash_button_up"]
 [connection signal="pressed" from="Control/ActionButtons/slash" to="." method="_on_slash_pressed"]
+[connection signal="button_down" from="menu" to="." method="_on_menu_button_down"]
+[connection signal="button_up" from="menu" to="." method="_on_menu_button_up"]
 [connection signal="pressed" from="menu" to="." method="_on_menu_pressed"]

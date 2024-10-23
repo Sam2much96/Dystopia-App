@@ -91,12 +91,13 @@ func _ready():
 	_inventory_button = $"TabContainer/3/MarginContainer/ScrollContainer3/VBoxContainer/Inventory"
 	_inventory_parent_label = $"TabContainer/3/MarginContainer/ScrollContainer3/VBoxContainer/Title3"
 	tab_container = $TabContainer
+	_inventory_parent = $"TabContainer/3/MarginContainer/ScrollContainer3/VBoxContainer"
 	
 	# Check That THe UI Nodes are OK
 	_Stats_UI_Elements = [
 		_Mini_map, _quest_label, _coin_label, 
 		_inventory_button, _inventory_parent_label,
-		tab_container
+		tab_container, _inventory_parent
 	]
 	
 	

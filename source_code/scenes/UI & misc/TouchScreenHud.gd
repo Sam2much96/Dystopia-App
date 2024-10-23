@@ -161,6 +161,7 @@ var _direction_button_showing : bool
 # Local Pointer TO Stats Node
 onready var _Stats_ : Stats = get_parent().get_child(3)
 
+onready var TouchInput = Input 
 
 func _ready():
 	
@@ -598,7 +599,8 @@ UI Button Connections
 # Buggy : Introduces Stuct Input Bug On Mobile Devices
 func _on_menu_pressed():
 	#print_debug("111111111111111111111111111") #Works
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"menu", true)
+	return 0#_Input.parse_input(_Input.NodeInput,__scene_tree,"menu", true)
+
 
 
 func _on_stats_pressed():
@@ -661,66 +663,91 @@ func _on_stats_gui_input(event):
 
 
 func _on_down_button_down():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_down", true)
+	return _Input.parse_input(TouchInput,__scene_tree,"move_down", true)
 
 
 func _on_down_button_up():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_down", false)
+	return _Input.parse_input(TouchInput,__scene_tree,"move_down", false)
 
 
 func _on_left_button_down():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_left", true)
+	return _Input.parse_input(TouchInput,__scene_tree,"move_left", true)
 
 
 func _on_left_button_up():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_left", false)
+	return _Input.parse_input(TouchInput,__scene_tree,"move_left", false)
 
 
 func _on_up_button_up():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_up", true)
+	return _Input.parse_input(TouchInput,__scene_tree,"move_up", false)
 
 
 func _on_up_button_down():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_up", false)
+	return _Input.parse_input(TouchInput,__scene_tree,"move_up", true)
 
 
 
 
 func _on_right_button_up():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_right", false)
+	return _Input.parse_input(TouchInput,__scene_tree,"move_right", false)
 
 
 func _on_right_button_down():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"move_right", true)
+	return _Input.parse_input(TouchInput,__scene_tree,"move_right", true)
 
 
 func _on_stats_button_up():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"pause", false)
+	return _Input.parse_input(TouchInput,__scene_tree,"pause", false)
 
 
 func _on_stats_button_down():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"pause", true)
+	return _Input.parse_input(TouchInput,__scene_tree,"pause", true)
 
 
 
 func _on_interact_button_up():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"interact", false)
+	return _Input.parse_input(TouchInput,__scene_tree,"interact", false)
 
 
 
 func _on_interact_button_down():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"interact", true)
+	return _Input.parse_input(TouchInput,__scene_tree,"interact", true)
 
 
 func _on_roll_button_up():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"roll", false)
+	return _Input.parse_input(TouchInput,__scene_tree,"roll", false)
 
 func _on_roll_button_down():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"roll", true)
+	return _Input.parse_input(TouchInput,__scene_tree,"roll", true)
 
 func _on_slash_button_up():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"attack", false)
+	return _Input.parse_input(TouchInput,__scene_tree,"attack", false)
 
 
 func _on_slash_button_down():
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"attack", true)
+	return _Input.parse_input(TouchInput,__scene_tree,"attack", true)
+
+
+func _on_menu_button_up():
+	return _Input.parse_input(TouchInput,__scene_tree,"menu", false)
+
+
+func _on_menu_button_down():
+	return _Input.parse_input(TouchInput,__scene_tree,"menu", true)
+
+"""
+Unhandled Inputs
+"""
+# (1) For Debugging Stuck Input Bugs which are unhandled inputs with no node responsibility
+
+#func _unhandled_input(event):
+#	# Fixed Stuck Input Bug / Unhandled Input From This node can be debugged here
+#	if event is InputEventScreenTouch:
+#		return
+#	if event is InputEventMouseButton:
+#		return
+#	
+#	if _Input.reg_inputs.has(event.action):
+	#
+#		print_debug("Unhandled Input Debug: ",event.action, event.is_pressed())
+#

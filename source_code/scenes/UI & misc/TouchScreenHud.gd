@@ -77,7 +77,7 @@ onready var _Input = get_tree().get_root().get_node("/root/GlobalInput")
 onready var parent = get_parent()
 
 # Pointer to menu node from Parent
-onready var menu2 = parent.get_child(4)
+onready var menuObj : Game_Menu = parent.get_child(6)
 
 # Pointer to Global Menu Pointer
 onready var menu3 = _Input.menu
@@ -351,12 +351,12 @@ func _ready():
 		
 		
 		# connects menu from global pointer
-		#if is_instance_valid(menu2):
-		#	if not (menu2.is_connected("menu_showing", self, "menu") &&
-		#	menu2.is_connected("menu_hidden", self, "show_all_buttons")
-		#	):
-		#		menu2.connect("menu_showing", self, "menu") 
-		#		menu2.connect("menu_hidden", self, "show_all_buttons")
+		if is_instance_valid(menuObj):
+			if not (menuObj.is_connected("menu_showing", self, "menu") &&
+			menuObj.is_connected("menu_hidden", self, "menu")
+			):
+				menuObj.connect("menu_showing", self, "menu") 
+				#menuObj.connect("menu_hidden", self, "menu") # temporarily disabled for ux refactoring
 		## Networking TImer to Touch Interface
 		# Resets Using Networking timer
 		#Networking.timer.connect("timeout", self, "show_all_buttons") 

@@ -57,7 +57,6 @@ func _ready():
 
 	#dialgue_box.hide_dialogue()
 	
-	#Android.hide_touch_interface()
 	
 	# Load Users Prefered DIalogue 
 	Utils.Functions.load_user_data('languague')

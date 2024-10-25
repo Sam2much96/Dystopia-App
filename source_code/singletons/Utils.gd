@@ -687,11 +687,11 @@ class Screen  :
 		
 		#'Changes the button Layout depending on the screen orientation for Mobile UI'
 		#implement joystick and D-pad variations
-		
-		if Globals.screenOrientation == 1 && Globals.direction_control == Globals._controller_type[2]: #worksif _action_button_showing == false
+		#print_stack() # for debugging multiple method calls
+		if Globals.screenOrientation == 1 : #&& Globals.direction_control == Globals._controller_type[2]: #worksif _action_button_showing == false
 			Anim.play("SCREEN_VERTICAL");
-		if Globals.screenOrientation == 1 && Globals.direction_control == Globals._controller_type[1]: #works
-			Anim.play("SCREEN_VERTICAL");
+		#if Globals.screenOrientation == 1 && Globals.direction_control == Globals._controller_type[1]: #works
+		#	Anim.play("SCREEN_VERTICAL");
 		##If screen Is Horizontal, it would be PC UI, making this code obsolete
 		elif Globals.screenOrientation == 0:
 			Anim.play("SCREEN_HORIZONTAL");

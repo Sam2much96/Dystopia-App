@@ -135,7 +135,7 @@ var buttons_positional_data : Array
 
 var LineDebug : Line2D 
 
-onready var joystick_parent: Control = $Joystick
+onready var joystick_parent: Control # = $Joystick
 
 'UI button as arrays'
 onready var all_UI_Nodes : Array

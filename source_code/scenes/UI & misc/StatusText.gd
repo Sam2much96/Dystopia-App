@@ -54,7 +54,7 @@ func _ready():
 		)
 	
 	
-	Dialogs.set_font(nodes, 42, "", 4)
+	#Dialogs.set_font(nodes, 42, "", 4)
 	hide()
 	
 	

@@ -78,6 +78,7 @@ var joystick
 
 var NodeInput = Input # Generates this nodes Node _input()
 
+onready var children : Array = self.get_children()
 
 func _unhandled_input(event):
 	# Player Input
@@ -224,7 +225,7 @@ static func parse_input(node_input : Input ,tree: SceneTree, action : String, _p
 	# Release Input
 	elif (Simulation.get_frame_counter() >= end_frame):
 		a.pressed = false
-		print_debug("Input Debug: ",Simulation.get_frame_counter(), "/", end_frame)
+		#print_debug("Input Debug: ",Simulation.get_frame_counter(), "/", end_frame)
 		node_input.parse_input_event(a)
 	
 	
@@ -275,4 +276,9 @@ func _get_input_buffer() -> int:
 #	gameHUD._loading.show()
 
 
-
+func _exit_tree():
+	# Memory Leak Management
+	#
+	# Clears all ui buttons
+	
+	Utils.MemoryManagement.queue_free_array(children)

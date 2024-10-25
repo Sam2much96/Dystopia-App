@@ -95,3 +95,9 @@ func _ready():
 	
 	# Hide Game HUD WHen Ready
 	
+func _exit_tree():
+	# Memory Leak Management
+	#
+	# Clears all ui buttons
+	
+	Utils.MemoryManagement.queue_free_array(children)

@@ -28,7 +28,8 @@ signal state_changed(state_)
 # Checks if Peer Id can be called and Network Is Set up
 onready var err = Networking.GamePlay
 
-func _input(event):
+func _unhandled_input(event):
+#func _input(event):
 	# Node Individual Input Processes were depreciated in favor of GlobalInput Singleton
 	"""
 	Facing State Machine
@@ -77,28 +78,7 @@ func _on_hurtbox_area_entered(area):
 		self,
 		global_position
 		)
-	
-	#if state != STATE_DIE and area.is_in_group("enemy_weapons"):
-	#	hitpoints -= 1
-	#	emit_signal("health_changed", hitpoints)
-	#	#
-	#	# Kick back code for Top DOwn Player script
-	#	# Temporarily disabling for debugging
-	#	#
-	#	#var pushback_direction = (global_position - area.global_position).normalized()
-	#	#move_and_slide( pushback_direction * pushback)
-	#	
-	#	state = STATE_HURT
-	#	var blood = Globals.blood_fx.instance()
-	#	blood.global_position = global_position
-	#	get_parent().add_child(blood)
-	#	
-	#	Music.play_track(Music.nokia_soundpack[20])
-	#	
-	#	if hitpoints <= 0:
-	#		state = STATE_DIE
-	#		Music.play_track(Music.nokia_soundpack[27])
-	#pass
+
 
 func facing_logic(node : Player, peed_id : int):
 	# Called in the Input Process

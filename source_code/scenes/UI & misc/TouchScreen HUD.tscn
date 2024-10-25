@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://resources/Buttons/menu.png" type="Texture" id=2]
 [ext_resource path="res://scenes/UI & misc/ActionButtons.gd" type="Script" id=3]
@@ -10,46 +10,12 @@
 [ext_resource path="res://resources/Buttons/btn-roll.png" type="Texture" id=14]
 [ext_resource path="res://resources/misc/arrow.png" type="Texture" id=15]
 
-[sub_resource type="Animation" id=10]
-resource_name = "COMICS"
-
-[sub_resource type="Animation" id=11]
-resource_name = "DIALOGUE"
-
-[sub_resource type="Animation" id=9]
-resource_name = "MENU"
-
-[sub_resource type="Animation" id=8]
-length = 0.001
-
-[sub_resource type="Animation" id=3]
-resource_name = "SCREEN_HORIZONTAL"
-
-[sub_resource type="Animation" id=5]
-resource_name = "SCREEN_VERTICAL_1"
-
-[sub_resource type="Animation" id=6]
-resource_name = "SCREEN_VERTICAL_2"
-
-[sub_resource type="Animation" id=7]
-resource_name = "STATUS"
-
 [node name="TouchInterface" type="Control"]
 modulate = Color( 1, 1, 1, 0.67451 )
 mouse_filter = 2
 script = ExtResource( 4 )
 _state_controller = 4
 _control = "modern"
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/COMICS = SubResource( 10 )
-anims/DIALOGUE = SubResource( 11 )
-anims/MENU = SubResource( 9 )
-anims/RESET = SubResource( 8 )
-anims/SCREEN_HORIZONTAL = SubResource( 3 )
-anims/SCREEN_VERTICAL_1 = SubResource( 5 )
-anims/SCREEN_VERTICAL_2 = SubResource( 6 )
-anims/STATUS = SubResource( 7 )
 
 [node name="Line2D" type="Line2D" parent="."]
 position = Vector2( -8, 48 )
@@ -65,40 +31,36 @@ __meta__ = {
 }
 
 [node name="right" type="TextureButton" parent="D-pad"]
-margin_left = 213.964
-margin_top = 1742.99
-margin_right = 300.964
-margin_bottom = 1829.99
+margin_left = 127.482
+margin_top = 372.99
+margin_right = 214.482
+margin_bottom = 459.99
 rect_rotation = 0.834126
-rect_scale = Vector2( 2, 2 )
 texture_normal = ExtResource( 15 )
 
 [node name="up" type="TextureButton" parent="D-pad"]
-margin_left = 95.4456
-margin_top = 1786.98
-margin_right = 182.446
-margin_bottom = 1873.98
+margin_left = 69.4815
+margin_top = 392.99
+margin_right = 156.482
+margin_bottom = 479.99
 rect_rotation = -89.0955
-rect_scale = Vector2( 2, 2 )
 action_mode = 0
 texture_normal = ExtResource( 15 )
 
 [node name="left" type="TextureButton" parent="D-pad"]
-margin_left = 133.964
-margin_top = 1920.99
-margin_right = 220.964
-margin_bottom = 2007.99
+margin_left = 83.4815
+margin_top = 453.99
+margin_right = 170.482
+margin_bottom = 540.99
 rect_rotation = 179.682
-rect_scale = Vector2( 2, 2 )
 texture_normal = ExtResource( 15 )
 
 [node name="down" type="TextureButton" parent="D-pad"]
-margin_left = 254.964
-margin_top = 1865.99
-margin_right = 341.964
-margin_bottom = 1952.99
+margin_left = 147.482
+margin_top = 440.989
+margin_right = 234.482
+margin_bottom = 527.989
 rect_rotation = 90.343
-rect_scale = Vector2( 2, 2 )
 action_mode = 0
 texture_normal = ExtResource( 15 )
 
@@ -114,14 +76,15 @@ __meta__ = {
 }
 
 [node name="InterractButtons" type="VBoxContainer" parent="Control"]
-anchor_left = -0.117271
-anchor_top = -0.0196923
-anchor_right = -0.117271
-anchor_bottom = 0.00184615
+anchor_left = -0.0122075
+anchor_top = -0.0145939
+anchor_right = -0.0122075
+anchor_bottom = 0.00761421
 margin_left = 852.0
 margin_top = 10.0
 margin_right = 1018.0
 margin_bottom = 367.0
+rect_scale = Vector2( 0.7, 0.7 )
 mouse_filter = 2
 input_pass_on_modal_close_click = false
 __meta__ = {
@@ -137,6 +100,7 @@ mouse_filter = 1
 texture_normal = ExtResource( 13 )
 
 [node name="Label_Spacer" type="Label" parent="Control/InterractButtons"]
+visible = false
 margin_top = 107.0
 margin_right = 166.0
 margin_bottom = 138.0
@@ -145,27 +109,26 @@ text = "
 "
 
 [node name="comics" type="TextureButton" parent="Control/InterractButtons"]
-margin_top = 142.0
+margin_top = 107.0
 margin_right = 166.0
-margin_bottom = 285.0
+margin_bottom = 250.0
 texture_normal = ExtResource( 12 )
 
 [node name="interact" type="TextureButton" parent="Control/InterractButtons"]
-margin_top = 289.0
+margin_top = 254.0
 margin_right = 166.0
-margin_bottom = 392.0
+margin_bottom = 357.0
 texture_normal = ExtResource( 11 )
 
 [node name="ActionButtons" type="HBoxContainer" parent="Control"]
-anchor_left = -0.190832
-anchor_top = 0.254154
-anchor_right = -0.190832
-anchor_bottom = 0.254154
+anchor_left = -0.0966429
+anchor_top = -0.65165
+anchor_right = -0.0966429
+anchor_bottom = -0.65165
 margin_left = 799.0
 margin_top = 1323.0
 margin_right = 1023.0
 margin_bottom = 1529.0
-rect_scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": true

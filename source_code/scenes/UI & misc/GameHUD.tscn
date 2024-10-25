@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/UI & misc/Stats.tscn" type="PackedScene" id=2]
@@ -9,16 +9,108 @@
 [ext_resource path="res://scenes/UI & misc/TouchScreen HUD.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/UI & misc/GameHUD.gd" type="Script" id=9]
 
+[sub_resource type="Animation" id=1]
+resource_name = "SCREEN_HORIZONTAL"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Status_text:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 451 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Dialog_box:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 7, 440 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath("TouchInterface")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "Horizontal"
+} ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "SCREEN_VERTICAL"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Status_text:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 7, 1178 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Dialog_box:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 1086 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath("TouchInterface")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "Vertical"
+} ]
+}
+
 [node name="GameHUD" type="CanvasLayer"]
 process_priority = 1
 script = ExtResource( 9 )
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/SCREEN_HORIZONTAL = SubResource( 1 )
+anims/SCREEN_VERTICAL = SubResource( 2 )
+
 [node name="Dialog_box" parent="." instance=ExtResource( 1 )]
+margin_top = 388.529
+margin_right = 77.0
+margin_bottom = 562.529
 input_pass_on_modal_close_click = false
+region_rect = Rect2( 30, 19, 1840, 269 )
 
 [node name="Status_text" parent="." instance=ExtResource( 3 )]
-margin_top = 151.0
-margin_bottom = 265.0
+margin_left = 7.0
+margin_top = 878.0
+margin_right = 7.0
+margin_bottom = 992.0
 input_pass_on_modal_close_click = false
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -35,7 +127,6 @@ mouse_filter = 2
 input_pass_on_modal_close_click = false
 
 [node name="Stats" parent="." instance=ExtResource( 2 )]
-visible = false
 
 [node name="TouchInterface" parent="." instance=ExtResource( 8 )]
 _control = "classic"

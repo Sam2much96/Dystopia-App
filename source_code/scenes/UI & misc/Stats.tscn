@@ -41,7 +41,6 @@ TabContainer/styles/tab_fg = SubResource( 6 )
 pause_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = 4.0
 focus_neighbour_top = NodePath("VBoxContainer/Exit")
 focus_neighbour_bottom = NodePath("VBoxContainer/Exit")
 focus_mode = 2
@@ -53,7 +52,7 @@ enabled = true
 [node name="TabContainer" type="TabContainer" parent="."]
 margin_left = 20.0
 margin_top = 20.0
-margin_right = 1008.0
+margin_right = 1004.0
 margin_bottom = 580.0
 mouse_filter = 1
 theme = SubResource( 3 )
@@ -186,7 +185,6 @@ Quest 2
 align = 1
 
 [node name="3" type="Tabs" parent="TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -195,13 +193,12 @@ margin_right = -4.0
 margin_bottom = -4.0
 
 [node name="MarginContainer" type="MarginContainer" parent="TabContainer/3"]
-margin_top = -34.0
-margin_right = 989.0
-margin_bottom = 536.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="ScrollContainer3" type="ScrollContainer" parent="TabContainer/3/MarginContainer"]
-margin_right = 989.0
-margin_bottom = 570.0
+margin_right = 976.0
+margin_bottom = 524.0
 theme = ExtResource( 5 )
 scroll_horizontal_enabled = false
 
@@ -248,7 +245,7 @@ mouse_filter = 1
 
 [node name="minimap" type="NinePatchRect" parent="TabContainer/4/MarginContainer"]
 modulate = Color( 1, 1, 1, 0.411765 )
-margin_right = 722.0
+margin_right = 721.0
 margin_bottom = 458.0
 texture = ExtResource( 11 )
 region_rect = Rect2( 0, -0.176746, 66.9581, 63.1219 )

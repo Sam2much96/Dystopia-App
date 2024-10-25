@@ -48,6 +48,7 @@ class_name GameHUD
 
 
 onready var globalInput = get_tree().get_root().get_node("/root/GlobalInput")
+onready var android_ = get_tree().get_root().get_node("/root/Android")
 
 # Export Null Pointer TO Other Scene Setters
 var menu : Game_Menu
@@ -58,7 +59,7 @@ var _Status_text : StatusText
 var heart_box : Healthbar
 #onready var ingame_comics_placeholer = $Comics # depreciated in favour of minimap sub system
 
-
+var Anim : AnimationPlayer
 var children : Array
 
 
@@ -72,8 +73,8 @@ func _ready():
 	heart_box = $MarginContainer/Healthbar
 #onready var ingame_comics_placeholer = $Comics # depreciated in favour of minimap sub system
 	
-	
-	children = [menu, TouchInterface, _Stats, _Status_text, heart_box]
+	Anim = $AnimationPlayer
+	children = [menu, TouchInterface, _Stats, _Status_text, heart_box, Anim]
 	
 	# Check For Broken Links
 	Utils.UI.check_for_broken_links(children)
@@ -86,7 +87,8 @@ func _ready():
 	# Safe
 	if is_instance_valid(globalInput):
 		globalInput.gameHUD = self
-	
+	if is_instance_valid(android_):
+		android_.GameHUD_ = self
 	#Update Current Scene Whenever Scene Tree Changes
 	Globals.update_curr_scene()
 	

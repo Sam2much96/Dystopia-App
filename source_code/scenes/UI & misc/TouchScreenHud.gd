@@ -54,7 +54,7 @@
 # (18) Improve Touch HUD for mobile players (Done)
 # (19) Add touch hud drag and drop using refactored comics script (1/2)
 # (20) Fix hud auto orientation for mobile (Done)
-
+# (21) Implement procedural animation for Touch Interface Via Functions to be called from Game HUD -> Android Setup
 # *************************************************
 
 
@@ -159,7 +159,7 @@ var _direction_button_showing : bool
 
 
 # Local Pointer TO Stats Node
-onready var _Stats_ : Stats = get_parent().get_child(3)
+onready var _Stats_ : Stats = get_parent().get_child(4)
 
 onready var TouchInput = Input 
 
@@ -335,7 +335,7 @@ func _ready():
 		# COnnect signals from dialogue
 		# DIalogues to self
 		Dialogs.connect("dialog_started", self, "interract")
-		Dialogs.connect("dialog_ended", self, "reset")
+		Dialogs.connect("dialog_ended", self, "show_all_buttons")
 
 		# Comics to Touch Interface
 		#if is_instance_valid(_comics): # Buggy Singleton Instance
@@ -384,7 +384,7 @@ func _ready():
 		# (2) Update Documentation
 		if is_instance_valid(Dialogs && menu3 && Networking):
 			if not (Dialogs.is_connected("dialog_started", self, "interract") &&
-				Dialogs.is_connected("dialog_ended", self, "reset") # &&
+				Dialogs.is_connected("dialog_ended", self, "show_all_buttons") # &&
 				#_comics.is_connected( 'comics_showing', self, '_on_comics_showing') &&
 				#_comics.is_connected( 'comics_showing', self, '_on_comics_hidden'  ) &&
 				#menu3.is_connected("menu_showing", self, "menu") &&
@@ -396,7 +396,7 @@ func _ready():
 				# Debug Node Signal Connections
 				print_debug(
 					Dialogs.is_connected("dialog_started", self, "interract"),
-					Dialogs.is_connected("dialog_ended", self, "reset")
+					Dialogs.is_connected("dialog_ended", self, "show_all_buttons")
 					#_comics.is_connected( 'comics_showing', self, '_on_comics_showing'),
 					#_comics.is_connected( 'comics_showing', self, '_on_comics_hidden'  ),
 					#menu3.is_connected("menu_showing", self, "menu"), 
@@ -591,6 +591,87 @@ func __disappear():
 	_down.hide()
 	_left.hide()
 	_right.hide()
+
+"""
+PROCEDURAL ANIMATION FOR UI POSITIONING
+"""
+#
+# (1) Methods Are TO Be called from GameHUD animation player Via ANdroid Singleton for Screen Orientation Positioning
+func Horizontal():
+	# Position UI Nodes For Horizontal Screens
+	_left.rect_position =Vector2(83.482,453.99)
+	_left.rect_size =Vector2(87,87)
+	_left.rect_rotation =179.7
+	_left.rect_scale = Vector2(1,1)
+	
+	_up.rect_position = Vector2(69.482,392.99)
+	_up.rect_size = Vector2(87,87)
+	_up.rect_rotation = -89.1
+	_up.rect_scale =Vector2(1,1)
+	
+	_right.rect_position = Vector2(127.482,372.99)
+	_right.rect_size = Vector2(87,87)
+	_right.rect_rotation = 0.8
+	_right.rect_scale = Vector2(1,1)
+	
+	_down.rect_position =Vector2(147.482,440.989)
+	_down.rect_size = Vector2(87,87)
+	_down.rect_rotation = 90.3
+	_down.rect_scale = Vector2(1,1)
+	
+	
+	_menu.rect_position = Vector2(32,48)
+	_menu.rect_size = Vector2(166,143)
+	_menu.rect_scale = Vector2(0.5,0.5)
+	
+	$Control/InterractButtons/Label_Spacer.hide()
+	$Control/InterractButtons.rect_scale = Vector2(0.7,0.7)
+	$Control/InterractButtons.rect_position = Vector2(840,-13)
+	
+	$Control/ActionButtons.rect_scale = Vector2(1,1)
+	$Control/ActionButtons.rect_position = Vector2(704,296)
+	$Control/ActionButtons.rect_size = Vector2(224,206)
+	return 0
+
+
+func Vertical():
+	# Position UI Nodes HFor Horizontal Screens
+	_left.rect_position =Vector2(133.964,1920.99)
+	_left.rect_size =Vector2(87,87)
+	_left.rect_rotation =179.7
+	_left.rect_scale = Vector2(2,2)
+	
+	_up.rect_position = Vector2(95.446,1786.98)
+	_up.rect_size = Vector2(87,87)
+	_up.rect_rotation = -89.1
+	_up.rect_scale =Vector2(2,2)
+	
+	_right.rect_position = Vector2(213.964,1742.99)
+	_right.rect_size = Vector2(87,87)
+	_right.rect_rotation = 0.8
+	_right.rect_scale = Vector2(2,2)
+	
+	_down.rect_position =Vector2(254.964,1865.99)
+	_down.rect_size = Vector2(87,87)
+	_down.rect_rotation = 90.3
+	_down.rect_scale = Vector2(2,2)
+	
+	
+	_menu.rect_position = Vector2(32,48)
+	_menu.rect_size = Vector2(166,143)
+	_menu.rect_scale = Vector2(1,1)
+	
+	
+	$Control/InterractButtons/Label_Spacer.show()
+	$Control/InterractButtons.rect_scale = Vector2(1,1)
+	$Control/InterractButtons.rect_position = Vector2(736.723,-21.035)
+	
+	$Control/ActionButtons.rect_scale = Vector2(1.5,1.5)
+	$Control/ActionButtons.rect_position = Vector2(611.412,1723.547)
+	$Control/ActionButtons.rect_size = Vector2(224,206)
+	
+	
+	return 0
 
 """
 UI Button Connections

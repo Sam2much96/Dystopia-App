@@ -62,6 +62,7 @@ anchor_right = 1.0
 anchor_bottom = 0.5
 margin_top = 90.609
 margin_bottom = 121.609
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 1 )
 text = "Got x thingie"
 align = 1
@@ -69,9 +70,10 @@ script = ExtResource( 2 )
 
 [node name="Panel" type="Panel" parent="."]
 show_behind_parent = true
-margin_left = 114.491
-margin_right = 1140.49
-margin_bottom = 59.0
+margin_left = -1.0
+margin_top = 0.390991
+margin_right = 1025.0
+margin_bottom = 59.391
 theme = SubResource( 3 )
 
 [node name="anims" type="AnimationPlayer" parent="."]

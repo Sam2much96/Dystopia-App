@@ -20,7 +20,7 @@ const MINUMUM_FPS : int = 25
 
 
 onready var TouchInterface : TouchScreenHUD #= GlobalInput.gameHUD.TouchInterface
-
+onready var GameHUD_ : GameHUD
 var ingameMenu : Game_Menu
 
 export (bool) var _is_android = true
@@ -209,12 +209,12 @@ func _process(delta):
 		local_screen_orientation = Utils.Screen.Orientation()
 	
 	# Sets Screen Orientation 
-	if _simulation.frame_counter % 120 == 0 && is_instance_valid(TouchInterface):
+	if _simulation.frame_counter % 120 == 0 && is_instance_valid(GameHUD_):
 		
 		# compare previous orientation and adjust hud
 		#if local_screen_orientation != initial_screen_orientation:
 			
-		Utils.Screen._adjust_touchHUD_length(TouchInterface.Anim) # sets touch interface layout
+		Utils.Screen._adjust_touchHUD_length(GameHUD_.Anim) # sets touch interface layout
 			
 			# update initial screen orientation
 		#	initial_screen_orientation = local_screen_orientation

@@ -67,11 +67,15 @@ onready var ControlButtons : Array =  [
 # COntroller Help
 onready var _controller_help : Help = $"Help popup/Control"
 
+onready var debug__ = get_tree().get_root().get_node("/root/Debug")
+onready var music_ = get_tree().get_root().get_node("/root/Music")
+onready var GInput_ = get_tree().get_root().get_node("/root/GlobalInput")
+
 func _ready():
-	if get_tree().get_root().has_node("/root/Debug") == true:
-		
-		# OK bloc
-		var debug__ = get_tree().get_root().get_node("/root/Debug")
+	#if get_tree().get_root().has_node("/root/Debug") == true:
+	#	
+	#	# OK bloc
+	#	
 
 	$ScrollContainer/VBoxContainer/back.grab_focus() #Back button grabs focus
 
@@ -122,8 +126,8 @@ Turns Music on and off & shuffles current track. Fix code later
 func _on_Debug_toggled(button_pressed): 
 	if get_tree().get_root().get_node("/root/Debug") != null:
 		if button_pressed:
-		
-			GlobalInput.parse_input("Debug", true)
+			# node_input : Input ,tree: SceneTree, action : String, _pressed : bool
+			GInput_.parse_input(GInput_.gameHUD.TouchInterface.TouchInput, get_tree(),"Debug", true)
 			$TextureRect2.show() #Shows Debug hint when in debug mode
 			$TextureRect.hide()
 
@@ -157,6 +161,7 @@ func _on_Help_pressed():
 func _on_Direction_controls_toggled(button_pressed):
 	if button_pressed:
 		#'direction'
+		# To Do : Should Connect To TOuchScreenHUD Directly for changing controller values
 		Globals.direction_control = Globals._controller_type[1]
 		Change_Controller_type.set_text(Globals.direction_control)
 	else:

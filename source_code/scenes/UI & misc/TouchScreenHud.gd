@@ -178,18 +178,18 @@ func _ready():
 	#if Android.is_android() == false:
 	#	self.hide()
 	#	enabled = false
-	#if Android.is_android() == true: 
-	#	self.show()
+	if Android.is_android() == true: 
+		self.show()
 	#	print_debug("Showing Touch Interface")
-	#if Globals.os == "Android":
-	#	self.show()
-	#	enabled = true
-	#if Globals.os == "HTML5" && Utils.initial_screen_orientation == 0: # Mobile Browser
-	#	self.show()
-	#	enabled = true
+	if Globals.os == "Android":
+		self.show()
+		enabled = true
+	if Globals.os == "HTML5" && Utils.initial_screen_orientation == 0: # Mobile Browser
+		self.show()
+		enabled = true
 	##self.hide() if not Android.is_android() else print_debug("Showing Touch Interface")
-	#if Globals.os == "X11":
-	#	self.hide()
+	if Globals.os == "X11":
+		self.hide()
 
 	
 	######## Begin Setting Nodes #
@@ -202,7 +202,7 @@ func _ready():
 	#_joystick = $Joystick/joystick_circle
 	#joystick2 = $Joystick/joystick_circle2
 	 
-	Anim = $AnimationPlayer
+	#Anim = $AnimationPlayer
 	D_pad = $"D-pad"
 	LineDebug = $Line2D
 	#touch_interface_debug() disabling for now
@@ -366,8 +366,8 @@ func _ready():
 		_Stats_.connect("_not_enabled", self ,"show_all_buttons")
 		
 		if (
-			_Stats_.is_connected("enabled", self ,"status") &&
-			_Stats_.is_connected("not_enabled", self ,"show_all_buttons") != true 
+			_Stats_.is_connected("_enabled", self ,"status") &&
+			_Stats_.is_connected("_not_enabled", self ,"show_all_buttons") != true 
 		) :
 			push_error("Stats x TouchHUD signal is broken")
 		

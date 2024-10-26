@@ -34,7 +34,7 @@ export(String, FILE, "*.ogv") var vid_stream = ""
 
 onready var animation : AnimationPlayer = $"animation player"
 onready var position2d : Position2D = $Position2D
-onready var node : Control = get_node("Node2D") #popup node for centering cinematics
+#onready var node : Control = get_node("Node2D") #popup node for centering cinematics
 
 #export (String) var anime_pilot : String = "https://github.com/Sam2much96/RenderChan/actions/runs/"
 #export (String) var animatic : String = "https://youtu.be/uzDzAuJVHcI"

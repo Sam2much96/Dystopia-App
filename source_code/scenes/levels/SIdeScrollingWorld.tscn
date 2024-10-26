@@ -9,10 +9,10 @@ extents = Vector2( 15.709, 2364.37 )
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Node2D" parent="." instance=ExtResource( 3 )]
-
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 scroll_offset = Vector2( 5, 0 )
+
+[node name="Node2D" parent="ParallaxBackground" instance=ExtResource( 3 )]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 242.552, 309.087 )

@@ -57,6 +57,10 @@ func _ready():
 	if Globals.screenOrientation == 0:
 		art1.hide()
 	
+	if Globals.os != "Android":
+		$start.show()
+	else : $start.hide()
+	
 	# SHow THe Menu Button On Android
 	Android.show_only_menu()
 	
@@ -80,8 +84,8 @@ func _on_AdMob_banner_failed_to_load(error_code):
 
 
 func _on_start_pressed():
+	return 0
+
+
+func _on_start_button_down():
 	GlobalInput.parse_input(GlobalInput.NodeInput,get_tree(),"menu", true)
-
-
-func _on_start_gui_input(event):
-	print("zsdofsdpfioguhsepfogsenhpgbofishfo")

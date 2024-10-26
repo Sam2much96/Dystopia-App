@@ -1216,10 +1216,11 @@ class Extensions extends AnimatedSprite:
 		TotalPageCount = self.frames.get_frame_count('default')
 		
 		" Mobile OS Conditionals"
-		if Globals.screenOrientation == Globals.SCREEN_VERTICAL:
-			
-			# Upscale on Mobile Devices
-			self.set_scale(Vector2(1.3,1.3))
+		# Depreciated In favour of Android SIngleton Pattern
+		#if Globals.screenOrientation == Globals.SCREEN_VERTICAL:
+		#	
+		#	# Upscale on Mobile Devices
+		#	self.set_scale(Vector2(1.3,1.3))
 		
 		#print_debug("Extension Script Initialized" + str(Comics_v6.comics_sprite) )
 

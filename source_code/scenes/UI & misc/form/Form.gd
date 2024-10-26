@@ -26,21 +26,21 @@ This is a gate-keeper script to keep check user's internet connections, restrict
 """
 var film : String = Globals.global_scenes["cinematics"]
 
-onready var cinematics : PackedScene = load(film)
-var index : int = 0
+var cinematics : PackedScene = load(film) # Bug : 
+#var index : int = 0
 
 onready var play_button : Button = $ui/grid/play
 #onready var dialgue_box = $Dialog_box
 onready var language : OptionButton = $ui/grid/language
 
 ########Label Spacer Codes Are Used For Aesthetics#########
-onready var label_spacer = $ui/grid/label_spacer
-onready var label_spacer2 = $ui/grid/label_spacer2
-onready var label_spacer3 =$ui/grid/label_spacer3
+onready var label_spacer : Label = $ui/grid/label_spacer
+onready var label_spacer2 : Label = $ui/grid/label_spacer2
+onready var label_spacer3 : Label =$ui/grid/label_spacer3
 
-onready var _debug =get_tree().get_root().get_node("/root/Debug")
+#onready var _debug =get_tree().get_root().get_node("/root/Debug")
 
-var os = Globals.os # Pointer
+#var os : String = Globals.os # Pointer
 
 onready var UI_buttons : Array = [
 	play_button,  
@@ -48,7 +48,7 @@ onready var UI_buttons : Array = [
 	label_spacer2, label_spacer3
 	]
 
-onready var _hide_dialogue_box : bool = false
+#onready var _hide_dialogue_box : bool = false
 
 func _ready():
 # Described Above
@@ -150,31 +150,31 @@ SHould Make A Http Request To Get All GamePlay Data From THe net once
 """
 # Depreciated for refactoring
 # Should Iealy Be A Self Contained Method In The Networking SIngleton
-func _http_request_completed(result, response_code, headers, body):
-	if body.empty() != true:
-		show_play_button()
-		
-		Networking.good_internet = true #aves the internet status as a global variable
-		
-		#dialgue_box.show_dialog('Device is internet connected','Admin')
-		print ('Device is internet connected', result, response_code)
-		return
-	# Loop
-	while body.empty() == true && index < 30:
-		print ('No Internet Connection', result, response_code)
-		index += 1
-		_check_if_device_is_online()
-		#if _debug != null:
-		
-		get_tree().change_scene_to( _debug.error_splash_page)
-		
-		#Resets Networking node
-		Networking.stop_check()
-		# Error splash page
-		if index == 10:
-			#dialgue_box.show_dialog('No Internet Connection','Admin') #not needed
-			get_tree().change_scene_to(_debug.error_splash_page)
-			break
+#func _http_request_completed(result, response_code, headers, body):
+#	if body.empty() != true:
+#		show_play_button()
+#		
+#		Networking.good_internet = true #aves the internet status as a global variable
+#		
+#		#dialgue_box.show_dialog('Device is internet connected','Admin')
+#		print ('Device is internet connected', result, response_code)
+#		return
+#	# Loop
+#	while body.empty() == true && index < 30:
+#		print ('No Internet Connection', result, response_code)
+#		index += 1
+#		_check_if_device_is_online()
+#		#if _debug != null:
+#		
+#		get_tree().change_scene_to( _debug.error_splash_page)
+#		
+#		#Resets Networking node
+#		Networking.stop_check()
+#		# Error splash page
+#		if index == 10:
+#			#dialgue_box.show_dialog('No Internet Connection','Admin') #not needed
+#			get_tree().change_scene_to(_debug.error_splash_page)
+#			break
 
 
 func show_play_button() :

@@ -38,14 +38,14 @@ var _vel_multiplier = 4
 # Keyboard state
 # Movement body states
 # used in camera movement calculations
-var _w = false
-var _s = false
-var _a = false
-var _d = false
-var _q = false
-var _e = false
-var _shift = false
-var _alt = false
+var _w : bool = false
+var _s : bool = false
+var _a : bool = false
+var _d : bool = false
+var _q : bool = false
+var _e : bool = false
+var _shift : bool = false
+var _alt : bool = false
 #
 func _input(event):
 	# Refactor input to use Dpad instead
@@ -72,7 +72,7 @@ func _input(event):
 				# captures move input and Makes Mouse Invisible COnditionals
 				if event.pressed :
 					Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-				else: Input.MOUSE_MODE_VISIBLE
+				#else: Input.MOUSE_MODE_VISIBLE
 
 			BUTTON_WHEEL_UP: # Increases max velocity
 				_vel_multiplier = clamp(_vel_multiplier * 1.1, 0.2, 20)

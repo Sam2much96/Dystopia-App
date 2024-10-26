@@ -233,12 +233,13 @@ static func parse_input(node_input : Input ,tree: SceneTree, action : String, _p
 	tree.set_input_as_handled()
 	
 	# Save Input Action To Array
-	if action == "roll":
-		pass
-	if action == "attack":
-		pass
-	if action == "attack":
-		pass
+	# is done in unhandled input method
+	#if action == "roll":
+	#	pass
+	#if action == "attack":
+	#	pass
+	#if action == "attack":
+	#	pass
 	
 	#a.action = action
 	#a.pressed = false

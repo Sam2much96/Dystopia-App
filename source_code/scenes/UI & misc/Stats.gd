@@ -110,8 +110,8 @@ func _ready():
 	#		print_stack()
 	## Connect signals to self?
 	
-	self.connect("not_enabled",self, '_on_status_hidden')
-	self.connect('enabled',self,'_on_status_showing')
+	#self.connect("not_enabled",self, '_on_status_hidden')
+	#self.connect('enabled',self,'_on_status_showing')
 	
 	
 	

@@ -26,42 +26,66 @@ resource_name = "Limiter"
 
 [sub_resource type="AudioEffectLowPassFilter" id=19]
 resource_name = "LowPassFilter"
+resonance = 0.82
 
 [sub_resource type="AudioEffectLowShelfFilter" id=20]
 resource_name = "LowShelfFilter"
+resonance = 0.75
 
 [sub_resource type="AudioEffectNotchFilter" id=21]
 resource_name = "NotchFilter"
+resonance = 0.81
+gain = 2.09
 
 [sub_resource type="AudioEffectPanner" id=22]
 resource_name = "Panner"
+pan = 1.0
 
 [sub_resource type="AudioEffectBandPassFilter" id=5]
 resource_name = "BandPassFilter"
 
 [sub_resource type="AudioEffectPhaser" id=23]
 resource_name = "Phaser"
+range_max_hz = 3643.41
+depth = 1.8
 
 [sub_resource type="AudioEffectPitchShift" id=24]
 resource_name = "PitchShift"
+pitch_scale = 4.0
 
 [sub_resource type="AudioEffectRecord" id=25]
 resource_name = "Record"
+format = 0
 
 [sub_resource type="AudioEffectReverb" id=26]
 resource_name = "Reverb"
 
 [sub_resource type="AudioEffectSpectrumAnalyzer" id=27]
 resource_name = "SpectrumAnalyzer"
+buffer_length = 4.0
 
 [sub_resource type="AudioEffectStereoEnhance" id=28]
 resource_name = "StereoEnhance"
+pan_pullout = 4.0
 
 [sub_resource type="AudioEffectCapture" id=6]
 resource_name = "Capture"
 
 [sub_resource type="AudioEffectChorus" id=7]
 resource_name = "Chorus"
+voice_count = 4
+voice/3/delay_ms = 12.0
+voice/3/rate_hz = 1.0
+voice/3/depth_ms = 0.0
+voice/3/level_db = 0.0
+voice/3/cutoff_hz = 16000.0
+voice/3/pan = 0.0
+voice/4/delay_ms = 12.0
+voice/4/rate_hz = 1.0
+voice/4/depth_ms = 0.0
+voice/4/level_db = 0.0
+voice/4/cutoff_hz = 16000.0
+voice/4/pan = 0.0
 
 [sub_resource type="AudioEffectCompressor" id=8]
 resource_name = "Compressor"

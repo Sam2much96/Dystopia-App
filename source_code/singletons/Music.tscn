@@ -127,8 +127,10 @@ pitch_scale = 4.0
 bus = "B"
 
 [node name="C" type="AudioStreamPlayer" parent="."]
+bus = "B"
 
 [node name="D" type="AudioStreamPlayer" parent="."]
+bus = "B"
 
 [node name="anims" type="AnimationPlayer" parent="."]
 anims/AtoB = SubResource( 1 )
@@ -137,4 +139,6 @@ anims/BtoA = SubResource( 2 )
 anims/pause = SubResource( 4 )
 anims/play = SubResource( 5 )
 
+[connection signal="music_finished" from="." to="." method="_on_Music_music_finished"]
 [connection signal="finished" from="A" to="." method="_on_A_finished"]
+[connection signal="finished" from="B" to="." method="_on_B_finished"]

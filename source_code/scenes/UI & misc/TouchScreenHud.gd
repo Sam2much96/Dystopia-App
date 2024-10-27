@@ -529,19 +529,16 @@ func hide_buttons() :
 func show_action_buttons() :
 	# SHows the Action buttons recursively
 	#print_debug("Showing Action Buttons")
-	for j in action_buttons:
-		#	if j != null:
-		j.show()
-		#_action_button_showing = true
-		#return _action_button_showing
-#	if _action_button_showing:
-#		pass
+	if enabled:
+		for j in action_buttons:
+			j.show()
 
 
 func show_direction_buttons() -> void:
-	print_debug("Showing Direction Buttons")
-	for j in direction_buttons:
-		j.show()
+	#print_debug("Showing Direction Buttons")
+	if enabled:
+		for j in direction_buttons:
+			j.show()
 
 
 func _on_comics_showing(): # Refactoring For Minimap UI
@@ -561,21 +558,22 @@ func __menu():
 	# Hudes All Button Except The Mebnu Button
 	#print_stack()
 	#assert(Globals.os == "Android")
-	print_debug("Touch Interface External Menu")
-	_menu.show()
-	_interract.hide()
-	stats_.hide()
-	roll.hide()
-	slash.hide()
-	comics_.hide()
-	#_joystick.hide()
-	#joystick2.hide()
-	_up.hide()
-	_down.hide()
-	_left.hide()
-	_right.hide()
-	# Debug Menu
-	print_debug(_menu.visible, "/", _interract.visible)
+	if enabled:
+		#print_debug("Touch Interface External Menu")
+		_menu.show()
+		_interract.hide()
+		stats_.hide()
+		roll.hide()
+		slash.hide()
+		comics_.hide()
+		#_joystick.hide()
+		#joystick2.hide()
+		_up.hide()
+		_down.hide()
+		_left.hide()
+		_right.hide()
+		# Debug Menu
+		print_debug(_menu.visible, "/", _interract.visible)
 
 func __disappear():
 	_menu.hide()

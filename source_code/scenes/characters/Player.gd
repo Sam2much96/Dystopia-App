@@ -216,9 +216,14 @@ func hurt(from_position : Vector2):
 		get_parent().add_child(blood)
 		
 		music_singleton_.play_track(hurt_sfx)
+		if hitpoints <= 2:
+			# Play Music With SFX
+			music_singleton_.set_sound_effect(music_singleton_.FX.PITCH_SHIFT,true)
 		
 		if hitpoints <= 0:
 			state = STATE_DIE
+			# turn off music sfx
+			music_singleton_.set_sound_effect(music_singleton_.FX.PITCH_SHIFT,false)
 			music_singleton_.play_track(die_sfx)
 
 

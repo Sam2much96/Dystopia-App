@@ -38,11 +38,14 @@ extends Node
 
 class_name music_singleton
 
+signal music_finished
+
 #add more controls to this script, it breaks the singleton
 export (bool) var music_on 
 export (bool) var sfx_on
 export (int) var volume # volume controller code is not yet written
-
+export (int) var play_back_position : int
+export (int) var track_length : int
 
 # Music COntrol Settings
 #var Music_on_settings : int = 0
@@ -170,8 +173,8 @@ and map the buttons to the game's UI when finished
 Music singleton that handles crossfading when a new song starts
 and applies a low pass filter when the game is paused. Nothing too wise
 """
-var music_debug =''
-onready var current_track
+var music_debug : String =''
+onready var current_track : String
 
 onready var A : AudioStreamPlayer = $A
 onready var B : AudioStreamPlayer = $B
@@ -186,10 +189,11 @@ onready var music_bus = AudioServer.get_bus_index(A.bus)
 
 
 var _music
-onready var Music_streamer : AudioStreamPlayer = get_node("A")  #Refrences the music player node
-onready var  Music_streamer_2  : AudioStreamPlayer=get_node("D")
-onready var sfx_streamer 
-onready var track
+onready var Music_streamer : AudioStreamPlayer = A #get_node("A")  #Refrences the music player node
+onready var Music_streamer_3 : AudioStreamPlayer = B #get_node("B")  #Refrences the music player node
+onready var  Music_streamer_2  : AudioStreamPlayer= D#get_node("D")
+#onready var sfx_streamer 
+onready var track : String 
 
 
 onready var transitions : AnimationPlayer = $anims
@@ -244,7 +248,8 @@ func _ready():
 	"load on/off music settings"
 	Utils.Functions.load_game(true, Globals)
 	
-
+	"Check If Node Paths Are Broken"
+	Utils.UI.check_for_broken_links(my_nodes)
 
 	print_debug("Music_on_settings :",bool (music_on))
 	#	music_on = bool (Music_on_settings)
@@ -254,14 +259,16 @@ func _ready():
 	if music_on == true:
 		#Utils._randomize(self)
 		
-		randomize()
+		#randomize()
 		
 		"Default Music"
+		randomize()
 		music_track = shuffle(default_playlist)
 		
 		
 		# Debug Music Track
 		#print_debug("Mus Track Debug: ",music_track)
+	if music_on:
 		
 		play(music_track) #Not needed for release
 		
@@ -291,47 +298,76 @@ func _process(_delta):
 	"""
 	# Bugs:
 	# (1) Bugs Out In Headless Server Build
-	if Music_streamer != null:
-		if Music_streamer.stream != null and int(Music_streamer.get_playback_position())==int(Music_streamer.get_stream().get_length()):
-			print_debug ('autoshuffle')
-			if music_on: #Music_Available_Locally && music_on:
-				music_track = shuffle(default_playlist) 
-				play(music_track)
-				
+	if music_on == false:
+		return
+	
+	if Music_streamer == null:
+		return
+	
+	if Music_streamer_3 == null:
+		return
+	
+	if Music_streamer.stream == null:
+		return
+	
+
+	# Get The Current Music Streamer And Feed The Data to The inspector Tab
+	if Music_streamer.is_playing():
+		play_back_position = Music_streamer.get_playback_position()
+		track_length = Music_streamer.get_stream().get_length()
+		Music_streamer_3.stop()
+	
+	#if Music_streamer_3.stream == null:
+	#	return 
+	
+	#if Music_streamer_3.is_playing():
+	#	play_back_position = Music_streamer_3.get_playback_position()
+	#	track_length = Music_streamer_3.get_stream().get_length()
+	#	Music_streamer.stop()
+	
+	#print_debug(current_track)
+	if play_back_position==track_length:
+		#print_debug ('autoshuffle')
+		# write code to check if te selected music track played last and account for it
+		# Bug : 
+		# (1) Doesn't shuffle track
+		#print_debug(music_track)
+		#return play(music_track)
+		emit_signal("music_finished")
 
 
 
-# To DO :
-# (1) Export These Music Details By Default On Music Singleton
-#func _music_debug(): #Breaks # Depreciated : Should Ideally Self Debug To Exported Integers If Necessary
-#	if  music_on == true && get_tree().get_root().get_node("/root/Debug") != null: #Only Debugs if the debug singleton is running
-#		if music_track != null:
-#			for child in get_children() :
-#				if child is AudioStreamPlayer:
-#					if child.stream != null: 
-#						stream = Music_streamer.get_stream()
-#						stream_length = int(stream.get_length())
-#						_track = music_track.get_file()
-#						Playback_position = int(Music_streamer.get_playback_position())
-#						music_debug = str(stream , _track, Playback_position , '/', stream_length, sfx_streamer)
 
 
 
 
 func play(_stream: String):
-	#kinda works
+	#print_stack()
+	# Features
+	# Preloads Randomised Tracks into A and B music streamer and transitions 
+	# Between Both Tracks using animation player BtoA and AtoB once each track finishes
+	# Randomises The Playlist once A or B finished playing
+	# Emits a signal once each track finished playing for all AudioStreamPlayers
+	# (1) loads a track
+	# (2) Loads B Track
 	#it bugs out when the music track node is added to a scene
+	# Bugs:
+	# (1) Method is called Twice During process funtion and loads 2 different music tracks
 	if _stream != null or !_stream.empty(): #null error
 		if current_track == "a":
+			print_debug("Load Track A: ", _stream)
 			B.stream = load(_stream) #invalid funtion load, cannot convert arguement from nil to string
 			transitions.play("AtoB")
 			current_track = "b"
 			music_on = true
+			return
 		else:
+			print_debug("Load Track B: ", current_track, "/", _stream)
 			A.stream = load(_stream)
 			transitions.play("BtoA")
 			current_track = "a"
 			music_on = true
+			return
 	if _stream.empty() :
 		push_error('Music stream is null, fix')
 		print_debug('Stream:',stream, _stream)
@@ -387,13 +423,13 @@ func _notification(what):
 	#print_debug(what) # for debug purposes only
 	if what == NOTIFICATION_PAUSED: # Called When App Is Paused And Sets A's Bus first Music Fx the low pass filter
 		
-		AudioServer.set_bus_effect_enabled(music_bus,FX.LOW_PASS_FILTER,true) # B's music Bus
+		AudioServer.set_bus_effect_enabled(music_bus,selected_sound_fx,true) # B's music Bus
 		AudioServer.set_bus_volume_db(music_bus,-3)
 		#AudioServer.set_bus_volume_db(music_bus_2,10)
 
 	if what == NOTIFICATION_UNPAUSED:
 		
-		AudioServer.set_bus_effect_enabled(music_bus,FX.LOW_PASS_FILTER,false)
+		AudioServer.set_bus_effect_enabled(music_bus,selected_sound_fx,false)
 		AudioServer.set_bus_volume_db(music_bus,0)
 		#AudioServer.set_bus_volume_db(music_bus_2,-100)
 
@@ -435,13 +471,26 @@ static func shuffle (playlist : Dictionary) -> String:
 	print_debug("selected Item After Shuffle: ",playlist[track])
 	return playlist[track]
 
-
+static func shuffle_array(_fx : Array) -> int : # selects a random number of an array
+	var sel = int (rand_range(-1,_fx.size()))
+	
+	return _fx[sel]
 
 func _on_A_finished(): #This  signals when the music has finished and autoshuffles
-	randomize() 
-	print_debug('music finished--music singleton') #code block works
+	#randomize() #  reset the random seed in the random number generator
+	# shuffle music track
+	music_track = shuffle(default_playlist)
+	get_random_sound_effect()
+	print_debug('music finished A /', music_track, selected_sound_fx) #code block works
+	transitions.play("AtoB")
+	#plays the music trac twuce
 
-
+func _on_B_finished():
+	
+	#get_random_sound_effect()
+	print_debug('music finished B/', music_track,"/",selected_sound_fx) 
+	transitions.play("BtoA") # B to A Has higher Pitch
+	# plays the music track twice
 func play_sfx(list : Dictionary): #a separate bus channel for sfx using dictionary playlist
 	# 
 	if sfx_on== true:
@@ -449,7 +498,7 @@ func play_sfx(list : Dictionary): #a separate bus channel for sfx using dictiona
 		
 		C.stream = load(sfx)
 		C.play()
-		sfx_streamer = str ('playing sfx: ',sfx.get_file())
+		print_debug ('playing sfx: ',sfx.get_file())
 		yield(get_tree().create_timer(0.8), "timeout")
 		C.stop()
 
@@ -462,7 +511,7 @@ func play_track(_track : String):
 
 		D.set_stream ( load (_track)) #Children Scripts should not load the soundtracks
 		D.play(0.0)
-		sfx_streamer  = str('playing sfx: ',_track.get_file())
+		print_debug ('playing sfx: ',_track.get_file())
 		yield(get_tree().create_timer(0.8), "timeout")
 		D.stop()
 
@@ -472,6 +521,23 @@ func _exit_tree():
 
 
 func get_random_sound_effect() -> int :
-	var effect_types : Array = FX.values()
-	var random_index = randi() % effect_types.size()
-	return effect_types[random_index]
+	
+	selected_sound_fx= shuffle_array(FX.values())
+	return selected_sound_fx
+
+
+func set_sound_effect(fx_ : int, state : bool):
+	# Exportable Function To Set Sound Effect From Any Scene
+	if FX.values().has(fx_):
+		AudioServer.set_bus_effect_enabled(music_bus,fx_,state)
+	else:
+		push_error("Selected Sound FX is Beyond The Scope Of Usable SFX")
+
+
+
+
+func _on_Music_music_finished():
+	print_debug("sdjnfsfjnhu")
+	randomize()
+	music_track = shuffle(default_playlist)
+	play(music_track)

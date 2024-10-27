@@ -1,0 +1,146 @@
+[gd_resource type="AudioBusLayout" load_steps=27 format=2]
+
+[sub_resource type="AudioEffectAmplify" id=3]
+resource_name = "Amplify"
+
+[sub_resource type="AudioEffectBandLimitFilter" id=4]
+resource_name = "BandLimitFilter"
+
+[sub_resource type="AudioEffectEQ21" id=13]
+resource_name = "EQ21"
+
+[sub_resource type="AudioEffectEQ6" id=14]
+resource_name = "EQ6"
+
+[sub_resource type="AudioEffectFilter" id=15]
+resource_name = "Filter"
+
+[sub_resource type="AudioEffectHighPassFilter" id=16]
+resource_name = "HighPassFilter"
+
+[sub_resource type="AudioEffectHighShelfFilter" id=17]
+resource_name = "HighShelfFilter"
+
+[sub_resource type="AudioEffectLimiter" id=18]
+resource_name = "Limiter"
+
+[sub_resource type="AudioEffectLowPassFilter" id=19]
+resource_name = "LowPassFilter"
+
+[sub_resource type="AudioEffectLowShelfFilter" id=20]
+resource_name = "LowShelfFilter"
+
+[sub_resource type="AudioEffectNotchFilter" id=21]
+resource_name = "NotchFilter"
+
+[sub_resource type="AudioEffectPanner" id=22]
+resource_name = "Panner"
+
+[sub_resource type="AudioEffectBandPassFilter" id=5]
+resource_name = "BandPassFilter"
+
+[sub_resource type="AudioEffectPhaser" id=23]
+resource_name = "Phaser"
+
+[sub_resource type="AudioEffectPitchShift" id=24]
+resource_name = "PitchShift"
+
+[sub_resource type="AudioEffectRecord" id=25]
+resource_name = "Record"
+
+[sub_resource type="AudioEffectReverb" id=26]
+resource_name = "Reverb"
+
+[sub_resource type="AudioEffectSpectrumAnalyzer" id=27]
+resource_name = "SpectrumAnalyzer"
+
+[sub_resource type="AudioEffectStereoEnhance" id=28]
+resource_name = "StereoEnhance"
+
+[sub_resource type="AudioEffectCapture" id=6]
+resource_name = "Capture"
+
+[sub_resource type="AudioEffectChorus" id=7]
+resource_name = "Chorus"
+
+[sub_resource type="AudioEffectCompressor" id=8]
+resource_name = "Compressor"
+
+[sub_resource type="AudioEffectDelay" id=9]
+resource_name = "Delay"
+
+[sub_resource type="AudioEffectDistortion" id=10]
+resource_name = "Distortion"
+
+[sub_resource type="AudioEffectEQ" id=11]
+resource_name = "EQ"
+
+[sub_resource type="AudioEffectEQ10" id=12]
+resource_name = "EQ10"
+
+[resource]
+bus/0/volume_db = 1.98707
+bus/1/name = "A"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.398338
+bus/1/send = ""
+bus/2/name = "B"
+bus/2/solo = false
+bus/2/mute = false
+bus/2/bypass_fx = false
+bus/2/volume_db = 0.0
+bus/2/send = "Master"
+bus/2/effect/0/effect = SubResource( 3 )
+bus/2/effect/0/enabled = false
+bus/2/effect/1/effect = SubResource( 4 )
+bus/2/effect/1/enabled = false
+bus/2/effect/2/effect = SubResource( 5 )
+bus/2/effect/2/enabled = false
+bus/2/effect/3/effect = SubResource( 6 )
+bus/2/effect/3/enabled = false
+bus/2/effect/4/effect = SubResource( 7 )
+bus/2/effect/4/enabled = false
+bus/2/effect/5/effect = SubResource( 8 )
+bus/2/effect/5/enabled = false
+bus/2/effect/6/effect = SubResource( 9 )
+bus/2/effect/6/enabled = false
+bus/2/effect/7/effect = SubResource( 10 )
+bus/2/effect/7/enabled = false
+bus/2/effect/8/effect = SubResource( 11 )
+bus/2/effect/8/enabled = false
+bus/2/effect/9/effect = SubResource( 12 )
+bus/2/effect/9/enabled = false
+bus/2/effect/10/effect = SubResource( 13 )
+bus/2/effect/10/enabled = false
+bus/2/effect/11/effect = SubResource( 14 )
+bus/2/effect/11/enabled = false
+bus/2/effect/12/effect = SubResource( 15 )
+bus/2/effect/12/enabled = false
+bus/2/effect/13/effect = SubResource( 16 )
+bus/2/effect/13/enabled = false
+bus/2/effect/14/effect = SubResource( 17 )
+bus/2/effect/14/enabled = false
+bus/2/effect/15/effect = SubResource( 18 )
+bus/2/effect/15/enabled = false
+bus/2/effect/16/effect = SubResource( 19 )
+bus/2/effect/16/enabled = false
+bus/2/effect/17/effect = SubResource( 20 )
+bus/2/effect/17/enabled = false
+bus/2/effect/18/effect = SubResource( 21 )
+bus/2/effect/18/enabled = false
+bus/2/effect/19/effect = SubResource( 22 )
+bus/2/effect/19/enabled = false
+bus/2/effect/20/effect = SubResource( 23 )
+bus/2/effect/20/enabled = false
+bus/2/effect/21/effect = SubResource( 24 )
+bus/2/effect/21/enabled = false
+bus/2/effect/22/effect = SubResource( 25 )
+bus/2/effect/22/enabled = false
+bus/2/effect/23/effect = SubResource( 26 )
+bus/2/effect/23/enabled = false
+bus/2/effect/24/effect = SubResource( 27 )
+bus/2/effect/24/enabled = false
+bus/2/effect/25/effect = SubResource( 28 )
+bus/2/effect/25/enabled = false

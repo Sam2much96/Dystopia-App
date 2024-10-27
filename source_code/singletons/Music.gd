@@ -212,6 +212,16 @@ var stream_length : int
 var Playback_position : int
 var _track : String
 
+# Audio FX Enumeration
+# Matches The Audio Fx Layout Arrangement In Audio Bus Layout
+enum FX {AMPLIFY, BAND_LIMIT_FILTER, BAND_PASS_FILTER, CAPTURE, CHORUS, COMPRESSOR, 
+DELAY, DISTORTION, EQ, EQ10, EQ21, EQ6, FILTER, HIGH_PASS_FILTER, HIGH_SHELF_FILTER,
+LIMITER, LOW_PASS_FILTER, LOW_SHELF_FILTER, NOTCH_FILTER, PANNER, PHASER, PITCH_SHIFT,
+RECORD, REVERB, SPECTRUM_ANALYSER, STERIO_ENCHANCE
+ }
+
+export (int) var selected_sound_fx : int = get_random_sound_effect()
+
 
 func _ready():
 	
@@ -228,7 +238,7 @@ func _ready():
 	# Check if Music Unzip root folder exists
 	#if not wallet.Functions.check_local_wallet_directory(FileDirectory, "user://Music/Dystopia-App/source_code/music"):
 	#	FileDirectory.make_dir_recursive("user://Music/Dystopia-App/source_code/music")
-	
+	print_debug("Sound Fx Debug: ",selected_sound_fx)
 	
 	
 	"load on/off music settings"
@@ -291,7 +301,8 @@ func _process(_delta):
 
 
 
-
+# To DO :
+# (1) Export These Music Details By Default On Music Singleton
 #func _music_debug(): #Breaks # Depreciated : Should Ideally Self Debug To Exported Integers If Necessary
 #	if  music_on == true && get_tree().get_root().get_node("/root/Debug") != null: #Only Debugs if the debug singleton is running
 #		if music_track != null:
@@ -361,37 +372,51 @@ func clear():# triggers an autodelete in music track nodes
 	return self.music_on
 
 
-# Simple 'muffled music' effect on pause using a low pass filter
-func _notification(what : int):
-	# Docs: This code bloc calls uses multiple node states to Alter the State of this Music Object
+"Simple 'muffled music' effect on pause using a low pass filter"
+func _notification(what):
+	# Features: 
+	#
+	# This code bloc calls uses multiple node states to Alter the State of this Music Object
+	# It implement a sound effect on Bus B and Lowers Bus A's volume to -100 and increases Bus B volume to Positive 1
+	# It The Plays an Animation Changing the Bus's AUdio and uses that to Transition Between Effects
+	# Audio Bus Effect Documentation : https://docs.godotengine.org/en/3.6/tutorials/audio/audio_buses.html
+	# TO DO : 
+	# (1) Map FX To Local Enumeration variable
+	# (2) Export Audio Effects To Other Scenes Via Singleton Methods
 	
 	#print_debug(what) # for debug purposes only
-	if what == NOTIFICATION_PAUSED:
-		AudioServer.set_bus_effect_enabled(music_bus,0,true)
-		AudioServer.set_bus_volume_db(music_bus,-10)
+	if what == NOTIFICATION_PAUSED: # Called When App Is Paused And Sets A's Bus first Music Fx the low pass filter
+		
+		AudioServer.set_bus_effect_enabled(music_bus,FX.LOW_PASS_FILTER,true) # B's music Bus
+		AudioServer.set_bus_volume_db(music_bus,-3)
+		#AudioServer.set_bus_volume_db(music_bus_2,10)
 
 	if what == NOTIFICATION_UNPAUSED:
-		AudioServer.set_bus_effect_enabled(music_bus,0,false)
+		
+		AudioServer.set_bus_effect_enabled(music_bus,FX.LOW_PASS_FILTER,false)
 		AudioServer.set_bus_volume_db(music_bus,0)
+		#AudioServer.set_bus_volume_db(music_bus_2,-100)
 
 	if what == NOTIFICATION_PREDELETE:
 		AudioServer.set_bus_volume_db(music_bus,-100)
-		AudioServer.set_bus_volume_db(music_bus_2,-100)
+		#AudioServer.set_bus_volume_db(music_bus_2,-100)
 		
 
 	if what == NOTIFICATION_APP_PAUSED:
-		
+		print_debug("1111111111")
 		AudioServer.set_bus_mute(music_bus, true)
-		AudioServer.set_bus_mute(music_bus_2, true)
+		#AudioServer.set_bus_mute(music_bus_2, true)
 		
 		clear()
 	if what == NOTIFICATION_APP_RESUMED:
+		print_debug("22222222")
+		# Unmute both music bus's
 		AudioServer.set_bus_mute(music_bus, false)
 		AudioServer.set_bus_mute(music_bus_2, false)
 		
-		music_track = shuffle(default_playlist)
-		print_debug("Mus Debug 3: ", music_track)
-		play(music_track)
+		#music_track = shuffle(default_playlist)
+		#print_debug("Mus Debug 3: ", music_track)
+		#play(music_track)
 		
 
 
@@ -446,3 +471,7 @@ func _exit_tree():
 	Utils.MemoryManagement.queue_free_array(my_nodes)
 
 
+func get_random_sound_effect() -> int :
+	var effect_types : Array = FX.values()
+	var random_index = randi() % effect_types.size()
+	return effect_types[random_index]

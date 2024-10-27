@@ -528,8 +528,7 @@ func hide_buttons() :
 
 func show_action_buttons() :
 	# SHows the Action buttons recursively
-	print_debug("Showing Action Buttons")
-	#if _action_button_showing == false:
+	#print_debug("Showing Action Buttons")
 	for j in action_buttons:
 		#	if j != null:
 		j.show()

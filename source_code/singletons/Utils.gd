@@ -1005,7 +1005,7 @@ class Downloader extends Node:
 	parses the poopbyte array as a video stream
 	"""
 	# Refactor into proper clas/static function
-	func _http_request_completed(result, response_code, _headers, body): # dOWNLOADS A VIDEO FROM A SERVER
+	func _http_request_completed(result, response_code, _headers, body): # dOWNLOADS A VIDEO FROM A SERVER via tls/ftp and pipes the output to a video
 		if body.empty() != true: #Executes once a Connection is established 
 
 			Utils.dir.open ("user://")

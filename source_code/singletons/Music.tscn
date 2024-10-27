@@ -119,11 +119,12 @@ sfx_on = true
 volume = 10
 
 [node name="A" type="AudioStreamPlayer" parent="."]
-pitch_scale = 4.0
+bus = "B"
 
 [node name="B" type="AudioStreamPlayer" parent="."]
 volume_db = -30.0
-mix_target = 2
+pitch_scale = 4.0
+bus = "B"
 
 [node name="C" type="AudioStreamPlayer" parent="."]
 

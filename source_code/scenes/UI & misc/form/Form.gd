@@ -132,50 +132,6 @@ func _on_play_pressed():
 	Utils.Functions.change_scene_to(cinematics, get_tree())
 
 
-"""
-CHECKS IF THE DEVICE IS INTERNET CONNECTED AND GATEKEEPS ACCESS ON MOBILE DEVICES
-"""
-# To DO: Port to Individual Platform Singletons
-#func _check_if_device_is_online(): 
-#	#if os == 'Android' or 'iOS' or 'X11': #disable x11 for release build
-#	#	index = index + 1
-#	#	dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
-#	#	#Networking.url = 
-#	#	Networking._check_connection( 'https://mfts.io', Networking)#url('https://play.google.com/store/apps/details?id=dystopia.app')
-#	print_debug("Port Code to Indicvidual Platform Singletons")
-
-
-"""
-SHould Make A Http Request To Get All GamePlay Data From THe net once
-"""
-# Depreciated for refactoring
-# Should Iealy Be A Self Contained Method In The Networking SIngleton
-#func _http_request_completed(result, response_code, headers, body):
-#	if body.empty() != true:
-#		show_play_button()
-#		
-#		Networking.good_internet = true #aves the internet status as a global variable
-#		
-#		#dialgue_box.show_dialog('Device is internet connected','Admin')
-#		print ('Device is internet connected', result, response_code)
-#		return
-#	# Loop
-#	while body.empty() == true && index < 30:
-#		print ('No Internet Connection', result, response_code)
-#		index += 1
-#		_check_if_device_is_online()
-#		#if _debug != null:
-#		
-#		get_tree().change_scene_to( _debug.error_splash_page)
-#		
-#		#Resets Networking node
-#		Networking.stop_check()
-#		# Error splash page
-#		if index == 10:
-#			#dialgue_box.show_dialog('No Internet Connection','Admin') #not needed
-#			get_tree().change_scene_to(_debug.error_splash_page)
-#			break
-
 
 func show_play_button() :
 	play_button.show()

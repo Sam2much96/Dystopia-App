@@ -16,7 +16,10 @@
 # (5) Optimize auto tile tilesheet
 # (6) Maxes out Static Memory, requires refactor for dynamic memory optimization
 # *************************************************
-
+# To DO : 
+# (1) Decouple Codebase
+#
+#
 extends Line2D
 # Procedurally generated tilemap creator
 

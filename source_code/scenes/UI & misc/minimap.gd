@@ -22,14 +22,9 @@ extends NinePatchRect
 
 class_name minimap
 
-var player_node : KinematicBody2D # Player Node
+var player_node : Player # Player Node
 
-#tweak code for multiplayer
-#onready var texture_object : StreamTexture = preload("res://scenes/multiplayer/images/minimap/object.png")
-#onready var texture_player : StreamTexture = preload("res://scenes/multiplayer/images/minimap/player.png")
-#onready var label_position #= $label_position
-#onready var node_root #= get_node("/root/world")
-export (float) var zoom : float = 1.5
+export (float) var zoom : float = 10.1
 onready var player_marker : Sprite = $Sprite
 onready var player2_marker : Sprite = $Sprite2
 onready var grid_scale
@@ -47,18 +42,21 @@ func _ready():
 
 # Redraw the minimap once per 1/2 second
 func _process(_delta): # Should Ideally Use The SImulation COunter
-	#if Globals.players.empty(): # Guard Glause Incase THe Player is not Instanced
-	#	return
+	
 	if not player_node:
 		return
 	
+	if is_instance_valid(player_node):
 	
-	
-	#total_delta += delta
-	#if (total_delta > 0.5):
-	#	total_delta -= 0.5
-	#	update()
-	
+		# updata Player Marker
+		#player_marker.position = player_node.position
+		# Calculate the player's position on the minimap
+		var player_pos = player_node.position * grid_scale
+		player_marker.position.x = clamp(player_pos.x, 0, rect_size.x)
+		player_marker.position.y = clamp(player_pos.y, 0, rect_size.y)
+
+
+
 
 # Draw the players on the minimap
 func _draw():

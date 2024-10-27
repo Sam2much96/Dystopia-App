@@ -226,7 +226,6 @@ text = "Item 1
 flat = true
 
 [node name="4" type="Tabs" parent="TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -260,7 +259,7 @@ script = ExtResource( 12 )
 
 [node name="Sprite2" type="Sprite" parent="TabContainer/4/MarginContainer/minimap"]
 modulate = Color( 0, 0, 0, 1 )
-position = Vector2( 225, 243 )
+position = Vector2( 394, 306 )
 scale = Vector2( 9, 9 )
 texture = ExtResource( 14 )
 

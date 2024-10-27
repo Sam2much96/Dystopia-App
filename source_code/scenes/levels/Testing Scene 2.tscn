@@ -1,5 +1,6 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
+[ext_resource path="res://scenes/props/Mushroom.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/items/coins.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/items/extra life.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/props/Pond.tscn" type="PackedScene" id=4]
@@ -59,3 +60,6 @@ scale = Vector2( 1.34899, 1.34899 )
 monitorable = false
 
 [node name="grass" parent="." instance=ExtResource( 14 )]
+
+[node name="mushroom" parent="." instance=ExtResource( 1 )]
+position = Vector2( -755, 258 )

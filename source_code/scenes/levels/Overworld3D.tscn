@@ -47,7 +47,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.08679, 0.818834, -0.0901022
 polygon = PoolVector2Array( 11.5037, 3.15512, 11.5656, 0.161346, 15.216, 0.153553, 15.0923, 3.33855 )
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 100.0
+wait_time = 10.0
 autostart = true
 
 [connection signal="body_entered" from="WorldEnvironment/Area" to="WorldEnvironment/Area" method="_on_body_entered"]

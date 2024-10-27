@@ -1171,6 +1171,7 @@ height = 67.6021
 [node name="Enemy" type="KinematicBody2D" groups=["enemies"]]
 position = Vector2( 585.638, 309.087 )
 scale = Vector2( 0.84, 0.84 )
+collision_layer = 2
 script = ExtResource( 1 )
 hitpoints = 1
 

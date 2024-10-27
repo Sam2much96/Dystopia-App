@@ -114,13 +114,16 @@ resource_name = "play"
 [node name="Music" type="Node"]
 pause_mode = 2
 script = ExtResource( 1 )
+music_on = true
 sfx_on = true
 volume = 10
 
 [node name="A" type="AudioStreamPlayer" parent="."]
-volume_db = -30.0
+pitch_scale = 4.0
 
 [node name="B" type="AudioStreamPlayer" parent="."]
+volume_db = -30.0
+mix_target = 2
 
 [node name="C" type="AudioStreamPlayer" parent="."]
 

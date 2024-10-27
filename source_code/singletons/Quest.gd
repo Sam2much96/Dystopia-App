@@ -34,7 +34,6 @@ func get_status(quest_name:String) -> int:
 		return quest_list[quest_name]
 	else:
 		return STATUS.NONEXISTENT
-	pass
 
 
 func get_status_as_text(quest_name:String) -> int:
@@ -50,7 +49,7 @@ func change_status(quest_name:String, status:int) -> bool:
 		return true
 	else:
 		return false
-	pass
+
 
 # Start a new quest
 func accept_quest(quest_name:String) -> bool:
@@ -60,7 +59,6 @@ func accept_quest(quest_name:String) -> bool:
 		quest_list[quest_name] = STATUS.STARTED
 		emit_signal("quest_changed", quest_name, STATUS.STARTED)
 		return true
-	pass
 
 
 # List all the quest in a certain status
@@ -72,9 +70,7 @@ func list(status:int) -> Array:
 		if quest_list[quest] == status:
 			result.append(quest)
 	return result
-	pass
-	
-	
+
 func get_quest_list() -> Dictionary:
 	return quest_list.duplicate()
 
@@ -87,6 +83,4 @@ func remove_quest(quest_name:String) -> bool:
 		return true
 	else:
 		return false
-	pass
-	
 

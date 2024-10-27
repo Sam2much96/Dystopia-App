@@ -207,10 +207,10 @@ pending_text = "You forgot? Go and kill 50 Bands"
 position = Vector2( 158.174, -477.978 )
 scale = Vector2( 0.88708, 0.917088 )
 enabled = true
-_hitpoints = 1
+_hitpoints = 5
 enemy_type = "Intermediate"
 enemy_spawn_1 = ExtResource( 4 )
-spawn_count = 4
+spawn_count = 8
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 position = Vector2( 748.218, -1767.34 )

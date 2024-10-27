@@ -59,12 +59,12 @@ func _on_Item_body_entered(body : Player): # Priority Process
 		
 		
 		# Only Calls if user has created an Algo account
-		if Wallet.address && Wallet.mnemonic != null:
-			# Withdraw from Escrow SmartContract
-			Wallet.WITHDRAW = true
+		#if Wallet.address && Wallet.mnemonic != null:
+		#	# Withdraw from Escrow SmartContract
+		#	Wallet.WITHDRAW = true
 		# Run Wallet Checks & process withdrawal
 		
-			Wallet.run_wallet_checks()
+		#	Wallet.run_wallet_checks()
 		
 		# Update Global Algos with 0.005 MIcroAlgos
 		Globals.algos += 5000

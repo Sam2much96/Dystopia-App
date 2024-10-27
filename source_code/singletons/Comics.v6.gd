@@ -975,7 +975,6 @@ class Functions extends RefCounted:
 					
 					node = err.instantiate(0)
 					
-					 
 					
 					# SET NODE NAME
 					node.name = Local.comic_names[1]

@@ -340,7 +340,7 @@ func register_player(id : int)-> Dictionary:
 	# (3) Depreciating Inventory Item for data optimization
 	
 	player_info[id] = {
-		 #id : { # server peer id
+		#id : { # server peer id
 		"pos": {"x": 0, "y":0}, # updated positional data, 
 		"vel":{"x": 0, "y": 0},
 		"fr": 0, #frame data
@@ -360,7 +360,7 @@ func register_player(id : int)-> Dictionary:
 	}
 	
 	
-	 
+	
 	return player_info
 
 func get_all_player_ids()-> Array:

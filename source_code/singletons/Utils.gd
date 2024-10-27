@@ -81,7 +81,6 @@ class Zip extends RefCounted:
 					# save the file's uncompressed Pool Byte Array
 					unziped_file = gdunzip.uncompress(filename)
 
-		 			#Uncompresses files locally
 					print("saving", filename, "Locally", unziped_file.size(), "to: ", concat)
 				#for t in gdunzip.files.keys():
 				#	print ("Type of " + f['file_name'] + " ",typeof(gdunzip.get_compressed(t))) # for debug purposes only
@@ -109,7 +108,7 @@ class Player_utils extends RefCounted:
 	#	
 	# Rewrite into a separate function
 		Globals.players.append( scene_tree.get_nodes_in_group('player') )#gets all player nodes in the scene
-	 #it shows deleted object once player is despawns.
+	#it shows deleted object once player is despawns.
 		if Globals.players.is_empty() == true: #error catcher 1            
 			Globals.players.clear()
 		#
@@ -286,55 +285,55 @@ class Functions extends RefCounted:
 		print_debug ("-------Saving Game -------")
 		var save_dict : Dictionary = {}
 		var _save_game : FileAccess = Utils.file 
-		_save_game.open("user://savegeme.save", FileAccess.WRITE_READ)
-		if !player.is_empty():
-			save_dict.player = player #saves the player node 
-		if spawn_x != 0:
-			save_dict.spawn_x = spawn_x
-		if spawn_y != 0:
-			save_dict.spawn_y =spawn_y
-		if not current_level.is_empty() :
-			save_dict.current_level = current_level
+		#_save_game.open("user://savegeme.save", FileAccess.WRITE_READ)
+		#if !player.is_empty():
+		#	save_dict.player = player #saves the player node 
+		#if spawn_x != 0:
+		#	save_dict.spawn_x = spawn_x
+		#if spawn_y != 0:
+		#	save_dict.spawn_y =spawn_y
+		#if not current_level.is_empty() :
+		#	save_dict.current_level = current_level
 		
 		# Inventory List is saved individually
-		if !Inventory.list().is_empty():
-			save_dict.inventory = Inventory.list()
-		if !Quest.get_quest_list().is_empty():
-			save_dict.quests = Quest.get_quest_list()
-		if not os.is_empty():
-			save_dict.os = os
-		if kill_count != 0 :
-			save_dict.kill_count = kill_count
+		#if !Inventory.list().is_empty():
+		#	save_dict.inventory = Inventory.list()
+		#if !Quest.get_quest_list().is_empty():
+		#	save_dict.quests = Quest.get_quest_list()
+		#if not os.is_empty():
+		#	save_dict.os = os
+		#if kill_count != 0 :
+		#	save_dict.kill_count = kill_count
 		#save_dict.currency = Suds #should load from encrypted wallet.cfg
 		
 		# For preserving scene changing information
-		if not prev_scene.is_empty() :
-			save_dict.prev_scene = prev_scene
+		#if not prev_scene.is_empty() :
+		#	save_dict.prev_scene = prev_scene
 			
-		if prev_scene_spawnpoint != null: # Depreciate in favor of a singular spawpoint variable
-			save_dict.prev_scene_spawnpoint = prev_scene_spawnpoint
+		#if prev_scene_spawnpoint != null: # Depreciate in favor of a singular spawpoint variable
+		#	save_dict.prev_scene_spawnpoint = prev_scene_spawnpoint
 		
-		if player_hitpoints != 0:
-			save_dict.player_hitpoints = player_hitpoints
-		if not direction_control.is_empty():
-			save_dict.direction_control = direction_control
+		#if player_hitpoints != 0:
+		#	save_dict.player_hitpoints = player_hitpoints
+		#if not direction_control.is_empty():
+		#	save_dict.direction_control = direction_control
 		
 		#Music on settings is a boolean converted to int
-		if Music != null : 
-			save_dict.music = int(Music.music_on) #add other variables to save
+		#if Music != null : 
+		#	save_dict.music = int(Music.music_on) #add other variables to save
 		
 		# Language is saved independently
-		if not Dialogs.language.is_empty():
-			save_dict.languague = Dialogs.language
+		#if not Dialogs.language.is_empty():
+		#	save_dict.languague = Dialogs.language
 		
 		# Control Settings
 		# Vibration
-		save_dict.vibrate = GlobalInput.vibrate
+		#save_dict.vibrate = GlobalInput.vibrate
 		
-		_save_game.store_line(JSON.new().stringify(save_dict))
-		_save_game.close()
-		print ("saved gameplay")
-		print_debug("Save GamePlay Is Buggy in v 4.2 port")
+		#_save_game.store_line(JSON.new().stringify(save_dict))
+		#_save_game.close()
+		#print ("saved gameplay")
+		#print_debug("Save GamePlay Is Buggy in v 4.2 port")
 		return false
 
 	"""
@@ -407,7 +406,6 @@ class Functions extends RefCounted:
 		if save_dict.has('current_level'):
 			GlobalScript.current_level = save_dict.current_level
 		
-		 
 		"Scene Loader"
 		if save_dict.has('prev_scene'):
 			# Presumably a bugfix for scene changing
@@ -865,27 +863,24 @@ class Downloader extends Node:
 		if(t.is_active()):
 			return
 		t.start(Callable(self, "_load").bind({"domain":domain,"url":url,"port":port,"ssl":ssl}))
-		 
+
 	func _load(params): # what params?
 		var err = 0
 		var http = HTTPClient.new()
 		err = http.connect(params.domain, Callable(params.port, params.ssl))
-		 
+
 		while(http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING):
 			http.poll()
 			OS.delay_msec(100)
-		  
+ 
 		var headers = [
-		  "User-Agent: Pirulo/1.0 (Godot)",
-		  "Accept: */*"
-		 ]
-		 
+		"User-Agent: Pirulo/1.0 (Godot)",
+		"Accept: */*"
+		]
 		err = http.request(HTTPClient.METHOD_GET,params.url,headers)
-		 
 		while (http.get_status() == HTTPClient.STATUS_REQUESTING):
 			http.poll()
-			OS.delay_msec(500)
-		 
+			OS.delay_msec(500) 
 		var rb = PackedByteArray()
 		if(http.has_response()):
 			headers = http.get_response_headers_as_dictionary()
@@ -897,14 +892,14 @@ class Downloader extends Node:
 				else:
 					rb = rb+chunk
 					call_deferred("_send_loading_signal",rb.size(),http.get_response_body_length())
-		  
+		
 		call_deferred("_send_loaded_signal")
 		http.close()
 		return rb
 	func _send_loading_signal(l,t):
 		emit_signal("loading",l,t)
 		pass
-		 
+		
 	func _send_loaded_signal():
 		var r = t.wait_to_finish()
 		emit_signal("loaded",r)
@@ -1116,7 +1111,7 @@ class Film :
 			# Checks the Video file
 			var err #= (error_checker.open('user://video.ogv', File.READ))
 			#Debug.misc_debug = str('VIdeo buffer: ' ,_body) # Debugs the video file
-			 #store pool byte array as video buffer
+			#store pool byte array as video buffer
 			var video_file_path = video_file.get_path_absolute() #gets the file path
 			print ('Video File path: ', video_file_path)
 			var VIDEO = load(video_file_path)
@@ -1124,7 +1119,7 @@ class Film :
 			#return print ('Video FIle Path',video_file_path)
 			#Comvert size to MB usingConvertfunctiion
 			
-			 # Gets VIdeo file length in bytes, converts it to MB
+			# Gets VIdeo file length in bytes, converts it to MB
 			var __video_file_size_mb = Utils.Screen._ram_convert(video_file.get_length())
 
 			print ('Video file size: ',__video_file_size_mb, '/',' Est file size: ', size)# For debug purposes only

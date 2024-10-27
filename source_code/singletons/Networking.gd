@@ -284,8 +284,7 @@ static func _connect_to_ipfs_gateway(parse : bool, url : String, selected_gatewa
 		
 		var t=StreamPeerTLS.new()
 	
-		var error #= request_node.request(url,PackedStringArray(),false,HTTPClient.METHOD_GET) 
-		 
+		var error #= request_node.request(url,PackedStringArray(),false,HTTPClient.METHOD_GET)  
 		print (' Networking Request Error: ',error) #for debug purposes only
 		print ("Final Url: ", url)
 		return
@@ -555,7 +554,7 @@ func _server_disconnected():
 
 
 func _player_disconnected(_id : int):
-	 # _id, Lobby: SceneTree, UI : Control)
+	# _id, Lobby: SceneTree, UI : Control)
 	#emit_signal("game_finished")
 	Lobby._on_player_disconnected(_id, get_tree(), UserInterface)
 	#_end_game()
@@ -675,7 +674,6 @@ func _instance_players(id : int ):
 		a.name = str(id) # client player
 		
 		b.name = str(player_ids_stored[0]) # server player
-		 
 		# Create Global Pointers to Player Objects for Simulation Logic
 		Simulation.all_player_objects.append(a)
 		Simulation.all_player_objects.append(b)
@@ -1001,16 +999,17 @@ class Lobby extends Control:
 		# Debug Signal Connections
 		# Signals Connect to Networking Main Script, which executeds Lobby Static Functions
 		# Present in the Lobby Class
-		scene_tree_obj.connect("peer_connected", Callable(Networking, "_player_connected"))
-		scene_tree_obj.connect("peer_disconnected", Callable(Networking, "_player_disconnected"))
+		# Temporarily Disabling for Porting
+		#scene_tree_obj.connect("peer_connected", Callable(Networking, "_player_connected"))
+		#scene_tree_obj.connect("peer_disconnected", Callable(Networking, "_player_disconnected"))
 		
 		# Connection Signal
-		scene_tree_obj.connect("connected_to_server", Callable(Lobby, "_on_connected_ok")) 
-		scene_tree_obj.connect("connection_failed", Callable(Networking, "_connected_fail"))
+		#scene_tree_obj.connect("connected_to_server", Callable(Lobby, "_on_connected_ok")) 
+		#scene_tree_obj.connect("connection_failed", Callable(Networking, "_connected_fail"))
 		
 		# Server
-		scene_tree_obj.connect("server_disconnected", Callable(Networking, "_server_disconnected"))
-
+		#scene_tree_obj.connect("server_disconnected", Callable(Networking, "_server_disconnected"))
+		pass
 
 
 
@@ -1081,7 +1080,6 @@ class Lobby extends Control:
 		Networking. start_check(2)
 		# Simple way to show status.
 		#
-		 
 		status.show_dialog( text + str(isok), "Admin") 
 			
 		# Bug: Dialogue box doesnt stop showing 

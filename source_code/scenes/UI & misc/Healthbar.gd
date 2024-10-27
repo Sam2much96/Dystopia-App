@@ -46,27 +46,27 @@ Connects to the player node and shows a health bar in the form of hearts
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Try to get the player node. If null wait till next frame, rinse, repeat.
-	while (player == null):
-		
-		# use a global function instead
-		player_group = get_tree().get_nodes_in_group("player")
-		# Too much Nested Ifs?
-		if not player_group.is_empty():
-			for i in player_group:
-				if i is Player:
-					player = i #player = player_group.pop_front()
-					initial_health = player.hitpoints
-					
-					#print_debug(111111) #works
-				if i is Player_v2_networking: pass 
-		else:
+	#while (player == null):
+	#	
+	#	# use a global function instead
+	#	player_group = get_tree().get_nodes_in_group("player")
+	#	# Too much Nested Ifs?
+	#	if not player_group.is_empty():
+	#		for i in player_group:
+	#			if i is Player:
+	#				player = i #player = player_group.pop_front()
+	#				initial_health = player.hitpoints
+	#				
+	#				#print_debug(111111) #works
+	#			if i is Player_v2_networking: pass 
+	#	else:
 			
 			# Emitted befor Node._process()
-			await get_tree().idle_frame
+	#		await get_tree().idle_frame
 	
 	
 	# Connect Signals to Player Object
-	player.connect("health_changed", Callable(self, "_on_health_changed"))
+	#player.connect("health_changed", Callable(self, "_on_health_changed"))
 	
 	# Debug SIgnals
 	print_debug(player.is_connected("health_changed", Callable(self, "_on_health_changed")))

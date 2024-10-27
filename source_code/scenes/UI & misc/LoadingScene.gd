@@ -31,7 +31,7 @@ func _ready():
 		
 	if not Globals.current_level.is_empty():
 		
-		if Globals.os == "Android" or "iOS":
+		if Globals.os == "Android": # or "iOS":
 			# Features:
 			# (1) run a timer then start loading for mobile devices
 			# (2) Turns off loading scene for low resource heavy scenes using a Glopbal scne dictionary

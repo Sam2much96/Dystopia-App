@@ -52,7 +52,7 @@ func _ready():
 	noise.fractal_octaves = 2
 
 func _process(delta):
-	if !targets: 
+	if targets.is_empty() == true: 
 		return
 		
 	# keep the camera centered between the targets

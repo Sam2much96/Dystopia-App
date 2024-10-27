@@ -28,10 +28,12 @@ var ingameMenu : Game_Menu
 # Get Debug Singleton for Debugging
 @onready var _debug : Debug = get_node("/root/Debug")
 
+@onready var _utils = get_node("/root/Utils")
+
 # To reduce memory over write of Global scerenn orientation integer unless necessary
 # and reduce memory calls between singletons unless necessary
 var local_screen_orientation : int 
-var initial_screen_orientation : int  = Utils.Screen.Orientation()# for comparison
+@onready var initial_screen_orientation : int  = _utils.Screen.Orientation()# for comparison
 
 func _ready():
 	"""

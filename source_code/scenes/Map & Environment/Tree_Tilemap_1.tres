@@ -8,4 +8,6 @@ texture_region_size = Vector2i(144, 128)
 
 [resource]
 tile_size = Vector2i(144, 128)
+custom_data_layer_0/name = ""
+custom_data_layer_0/type = 0
 sources/0 = SubResource("TileSetAtlasSource_bru0d")

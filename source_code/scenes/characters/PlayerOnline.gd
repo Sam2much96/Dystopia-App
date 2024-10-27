@@ -107,9 +107,9 @@ func _ready():
 	# (1) Networking Singleton to SImulation SIngleton
 	if is_multiplayer_authority():
 		
-		Simulation.connect("pi", Callable(Simulation, "simulate").bind(peer_id, self))
-		print_debug("Simulation signal is connected: ",Simulation.is_connected("pi", Callable(Simulation, "simulate")))
-
+		#Simulation.connect("pi", Callable(Simulation, "simulate").bind(peer_id, self))
+		#print_debug("Simulation signal is connected: ",Simulation.is_connected("pi", Callable(Simulation, "simulate")))
+		print_debug("Fix Multiplayer Code Broken Form Refactor")
 	"Active Camera3D"
 	
 	if not is_multiplayer_authority():

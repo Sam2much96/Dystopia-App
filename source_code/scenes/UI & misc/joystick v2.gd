@@ -206,7 +206,7 @@ func _input(event):
 		#start_debug()
 
 ###################################################################################################
-		 #####The 8 directional analogur code is working
+		#####The 8 directional analogur code is working
 		" ________END OF JOYSTICK LOGIC_______  "
 
 

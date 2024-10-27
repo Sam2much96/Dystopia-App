@@ -162,7 +162,7 @@ func _ready():
 		comics_ = $Control/InterractButtons/comics
 		_joystick = $Joystick/joystick_circle
 		joystick2 = $Joystick/joystick_circle2
-		 
+		
 		Anim = $AnimationPlayer
 		D_pad = $"D-pad"
 
@@ -407,7 +407,7 @@ func _input(event):
 	
 	"Touch Interface State Machine?"
 	if enabled:
-		 
+		
 		# Duplicate of Input.gd GLobal Input SIngleton
 		if GlobalInput._state == GlobalInput.COMICS or Input.is_action_just_pressed("comics"):
 			if _comics.enabled == true:

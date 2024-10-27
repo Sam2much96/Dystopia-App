@@ -35,7 +35,7 @@ func _process(delta):
 
 # Draw the players on the minimap
 func _draw():
-	 # Draw Call Called Every Frame
+	# Draw Call Called Every Frame
 	# Disabling for debugging
 	#var peer_id =  get_tree().get_network_unique_id()
 	#var pos = Vector2(0,0)

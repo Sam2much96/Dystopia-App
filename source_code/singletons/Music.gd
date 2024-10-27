@@ -180,7 +180,7 @@ var music_debug =''
 @onready var music_bus = AudioServer.get_bus_index(A.bus)
 
 
-@onready var requests : HTTPRequest = $HTTPRequest # for downloading musio files
+#@onready var requests : HTTPRequest = $HTTPRequest # for downloading musio files
 @onready var timer : Timer #= $Timer
 
 
@@ -194,7 +194,7 @@ var _music
 @onready var transitions : AnimationPlayer = $anims
 
 # Pointers to Node for Memory Mgmt
-@onready var my_nodes : Array = [Music_streamer,B,C,Music_streamer_2,transitions,requests]
+@onready var my_nodes : Array = [Music_streamer,B,C,Music_streamer_2,transitions]
 
 
 # THis URL fetches a Zip file from an AWS s3 buzket
@@ -218,15 +218,15 @@ func _ready():
 	#print_debug(my_nodes)
 	
 	# connect signals
-	requests.connect("request_completed", Callable(self, "_http_request_completed"))
+	#requests.connect("request_completed", Callable(self, "_http_request_completed"))
 	
 	# Check if Local Music Directory exists & Makes directory
-	if not wallet.Functions.check_local_wallet_directory(FileDirectory,"user://Music") :
-		FileDirectory.make_dir("user://Music")
+	#if not wallet.Functions.check_local_wallet_directory(FileDirectory,"user://Music") :
+	#	FileDirectory.make_dir("user://Music")
 		
 	# Check if Music Unzip root folder exists
-	if not wallet.Functions.check_local_wallet_directory(FileDirectory, "user://Music/Dystopia-App/source_code/music"):
-		FileDirectory.make_dir_recursive("user://Music/Dystopia-App/source_code/music")
+	#if not wallet.Functions.check_local_wallet_directory(FileDirectory, "user://Music/Dystopia-App/source_code/music"):
+	#	FileDirectory.make_dir_recursive("user://Music/Dystopia-App/source_code/music")
 	
 	
 	

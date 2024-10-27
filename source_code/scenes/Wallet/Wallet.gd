@@ -286,7 +286,6 @@ var frame_counter : int = 0
 
 "Checks the Nodes connection Between Singleton & UI"
 func check_Nodes() -> bool:
-	 
 	
 	#*****************Wallet UI ************************************
 	
@@ -627,7 +626,6 @@ func _process(_delta):
 					# fast load
 					account_address.text = t.get("address")
 					wallet_algos.text = str(t.get("_wallet_algos"))
-					 
 				
 				
 				#print (UserData) # For Debug Purposes only
@@ -808,7 +806,7 @@ func _process(_delta):
 						
 						# show account
 						#self.state_controller.select(0) #Temporarily Disabling
-					if asset_url && asset_name != '':
+					if true: #asset_url && asset_name != '': # Temporarily disabled for 4.0 porting
 						
 						'theres a problem with the network connection'
 						'my server isnt serving the json file to godot properly'
@@ -827,7 +825,7 @@ func _process(_delta):
 						
 						#makes a https request to download image from local server
 						Networking.start_check(5)
-						if not Networking.Timeout && wallet_check == 0 :
+						if not true: #Networking.Timeout && wallet_check == 0 : # Temporarily diabled for refactoring
 							wallet_check += 1
 							
 							# selet a random IPFS web 2.0 Gateway
@@ -982,7 +980,6 @@ func run_wallet_checks()-> bool: # works
 		#"Checks if image file is available"
 		is_image_available_at_local_storage = FileCheck4.file_exists(local_image_file)
 		print ("Is local image available: ", is_image_available_at_local_storage) #for debug purposes only
-		 #= _r
 	#return is_image_available_at_local_storage
 	'Fixes account token 0 bytes bug'
 	#if FileDirectory.file_exists(token_write_path ):

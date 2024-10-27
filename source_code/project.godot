@@ -12,13 +12,13 @@ config_version=5
 
 config/name="Dystopia App stable"
 run/main_scene="res://scenes/UI & misc/form/form.tscn"
-config/features=PackedStringArray("4.2")
-run/delta_smoothing=false
+config/features=PackedStringArray("4.0")
 boot_splash/bg_color=Color(1, 1, 1, 1)
 boot_splash/image="res://resources/title animation/Dystopia Logo Drop shadow.png"
 boot_splash/fullsize=false
 boot_splash/use_filter=false
 config/icon="res://icon.png"
+run/delta_smoothing=false
 
 [autoload]
 

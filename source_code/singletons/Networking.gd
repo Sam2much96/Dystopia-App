@@ -47,7 +47,7 @@ export (String) var cfg_client_ip
 #########################  Web browser codes  ############################3
 export (String) var url : String = ''
 var check_timer 
-var debug = ''
+#var debug__ = ''
 var WORLD_SIZE : int = 40000.0
 
 
@@ -84,7 +84,7 @@ onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
 
 onready var timer :Timer  = $Timer2
-onready var _reference_to_self =get_node('/root/Networking') #formerly _y
+onready var _reference_to_self = self#get_node('/root/Networking') #formerly _y
 onready var _reference_to_debug =get_node('/root/Debug') #formerly _y
 
 # Default hostname used by the login form
@@ -94,7 +94,7 @@ const BACKUP_HOSTNAME = "127.0.0.1" # depreciated
 const SERVER_PORT = 9080
 const MAX_PLAYERS = 4
 export (String) var CLIENT_IP : String  
-
+export (Dictionary) var Data : Dictionary
 const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
 
 
@@ -166,7 +166,8 @@ func _ready():
 	
 	print ("Networking Server Config and Player Name: ",cfg_server_ip,cfg_player_name, "/")
 	
-
+	#check if device is online on a separate thread
+	_check_connection( "https://api.coingecko.com/api/v3/simple/price?ids=algorand&vs_currencies=usd", Networking)#url('https://play.google.com/store/apps/details?id=dystopia.app')
 
 
 func _process(_delta): 
@@ -299,67 +300,78 @@ static func _parse(_url : String)-> String: #works
 	return _url
 
 
-'Internet COnnectivity Check'
-static func _check_if_device_is_online(node: HTTPRequest):
-	
-	_check_connection('https://mfts.io', node)
+"""
+HTTP REQUEST STATE MACHINE
+"""
 
-
-
-func on_request_result(result, response_code, headers, body): # I need to pass variables to this code bloc
+func _on_Networking_request_completed(result, response_code, headers, body : PoolByteArray): # I need to pass variables to this code bloc
 	"HTTP REQUEST RESULT'S STATE MACHINE"
 	#resets result if completed successfully
-	running_request = false
+	#running_request = false
 	#connected to results and works as an auto emitter
 	match result:
 		RESULT_SUCCESS: #what happens to body? #always write a http request cmpleted function in the connecting script
 			emit_signal("connection_success") 
+			good_internet = true
 			#_connection =(str ('connection success')) # Debugs to the Debug singleton # Depreciated--Delete
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body))  
+			#print_debug (str(result) + str(response_code) + str(headers)+ str (body))  
+			
+			# PArses API Get Result TO Json
+			var _result = JSON.parse(body.get_string_from_utf8())
+
+			if _result.error == OK:
+				Data = _result.result
+				print_debug("Data debug: ",Data)  # Outputs: { "algorand": { "usd": 0.114662 } }
+			else:
+				print_debug("Failed to parse JSON")
+			#print_debug(body.get_string_from_utf8())
+			#print_debug(body.get_string_from_utf8())
 		RESULT_CHUNKED_BODY_SIZE_MISMATCH:
 			emit_signal("error_connection_failed", RESULT_CHUNKED_BODY_SIZE_MISMATCH,'RESULT_CHUNKED_BODY_SIZE_MISMATCH')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_CANT_CONNECT:
 			emit_signal("error_connection_failed",RESULT_CANT_CONNECT,'RESULT_CANT_CONNECT')
+			good_internet = false
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_CANT_RESOLVE:
 			emit_signal("error_connection_failed",RESULT_CANT_RESOLVE,'RESULT_CANT_RESOLVE')
+			good_internet = false
 			#_connection = (str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_CONNECTION_ERROR:
 			emit_signal("error_connection_failed",RESULT_CONNECTION_ERROR,'RESULT_CONNECTION_ERROR')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_SSL_HANDSHAKE_ERROR:
 			emit_signal("error_ssl_handshake")
 			#_connection = (str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_NO_RESPONSE:
 			emit_signal("error_connection_failed",RESULT_NO_RESPONSE,'RESULT_NO_RESPONSE')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_BODY_SIZE_LIMIT_EXCEEDED:
 			emit_signal("error_connection_failed", RESULT_BODY_SIZE_LIMIT_EXCEEDED,'RESULT_BODY_SIZE_LIMIT_EXCEEDED')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_REQUEST_FAILED:
 			emit_signal("error_connection_failed", RESULT_REQUEST_FAILED, 'RESULT_REQUEST_FAILED')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
+			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) 
 		RESULT_DOWNLOAD_FILE_CANT_OPEN:
 			emit_signal("error_connection_failed",RESULT_DOWNLOAD_FILE_CANT_OPEN,'RESULT_DOWNLOAD_FILE_CANT_OPEN')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
+			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) 
 		RESULT_DOWNLOAD_FILE_WRITE_ERROR:
 			emit_signal("error_connection_failed", RESULT_DOWNLOAD_FILE_WRITE_ERROR, 'RESULT_DOWNLOAD_FILE_WRITE_ERROR')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
+			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) 
 		RESULT_REDIRECT_LIMIT_REACHED:
 			emit_signal("error_connection_failed",RESULT_REDIRECT_LIMIT_REACHED, 'RESULT_REDIRECT_LIMIT_REACHED')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
+			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) 
 	#stop_check() # Disabled
 	
 	
@@ -1216,3 +1228,8 @@ func open_browser(url : String):
 		return OS.shell_open(url)
 
 	#return OS.shell_open(url)
+
+
+#func _on_Networking_request_completed(result, response_code, headers, body):
+#	print_debug(result,response_code, headers, body)
+#	if response_code ==

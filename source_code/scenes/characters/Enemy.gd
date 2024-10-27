@@ -282,13 +282,6 @@ func _physics_process(_delta):
 				#print_debug("walk_" + facing)
 			else:
 				state = STATE_IDLE
-			pass
-			
-			
-			
-			#linear_vel = position.direction_to(linear_vel) * WALK_SPEED
-			#move_and_slide(linear_vel)
-			#navi.set_velocity(linear_vel_)
 			
 			
 		STATE_ATTACK:

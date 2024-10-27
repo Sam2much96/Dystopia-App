@@ -59,7 +59,7 @@ var _inventory_button : Button
 
 var _coin_label : Label 
 var _quest_label : Label
-
+var _price_label : Label
 # Backup Pointer to Inventory Singleton
 onready var _inventory : Storage = get_tree().get_root().get_node("/root/Inventory")
 
@@ -88,6 +88,7 @@ func _ready():
 	_Mini_map = $"TabContainer/4/MarginContainer/minimap"
 	_quest_label = $"TabContainer/2/ScrollContainer2/VBoxContainer/Quests"
 	_coin_label = $"TabContainer/1/VBoxContainer/HBoxContainer/Algos"
+	_price_label = $"TabContainer/1/VBoxContainer/HBoxContainer/price"
 	_inventory_button = $"TabContainer/3/MarginContainer/ScrollContainer3/VBoxContainer/Inventory"
 	_inventory_parent_label = $"TabContainer/3/MarginContainer/ScrollContainer3/VBoxContainer/Title3"
 	tab_container = $TabContainer
@@ -95,7 +96,7 @@ func _ready():
 	
 	# Check That THe UI Nodes are OK
 	_Stats_UI_Elements = [
-		_Mini_map, _quest_label, _coin_label, 
+		_Mini_map, _quest_label, _coin_label,_price_label, 
 		_inventory_button, _inventory_parent_label,
 		tab_container, _inventory_parent
 	]
@@ -167,8 +168,10 @@ func _input(event):
 
 
 func _update_wallet_stats(): #Updates killcount and Algos
-	_coin_label.text = 'mAlgos: ' + str (Globals.algos)
-
+	"Update Price From CoinGecko API"
+	if Networking.good_internet:
+		_coin_label.text = 'mAlgos: ' + str (Globals.algos)
+		_price_label.text = "Price : $" + str(Networking.Data["algorand"]["usd"])
 
 func _update_quest_listing():
 	# DOcument and refactor
@@ -337,22 +340,6 @@ func _enable():
 	Music.play_track(Music.ui_sfx[0])
 	get_tree().paused = enabled
 	
-	"Mobile HUD Controller" # NANI?
-	
-	#tab_container.set_focus_mode(Control.FOCUS_CLICK)
-	
-	# Ignore All Mouse UI Inputs WHen Hidden
-	#tab_container.set_mouse_filter(Control.MOUSE_FILTER_STOP)
-
-	
-	
-	if is_instance_valid(Android.TouchInterface):
-		print_debug("Touch HUD Instance valid, this code bloc should be moved to Android singletnon")
-		#emit_signal("status_showing") # sihnal connected at touch interface
-		#GlobalInput.TouchInterface.status()
-		#"Grab Focus ?"
-		#grab_focus()
-		#asasfghafhd
 	_update_quest_listing()
 	_update_inventory_listing() # Refactor
 	_update_wallet_stats()

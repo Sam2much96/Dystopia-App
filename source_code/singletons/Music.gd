@@ -186,8 +186,8 @@ onready var music_bus = AudioServer.get_bus_index(A.bus)
 
 
 var _music
-onready var Music_streamer : AudioStreamPlayer = get_node_or_null("A")  #Refrences the music player node
-onready var  Music_streamer_2  : AudioStreamPlayer=get_node_or_null("D")
+onready var Music_streamer : AudioStreamPlayer = get_node("A")  #Refrences the music player node
+onready var  Music_streamer_2  : AudioStreamPlayer=get_node("D")
 onready var sfx_streamer 
 onready var track
 

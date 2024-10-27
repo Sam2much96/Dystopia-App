@@ -1062,8 +1062,8 @@ class Functions extends Reference:
 				if the previous target position is different by a large amount, discard it and wait for next target input
 				"""
 					
-				var x : int = _target.x
-				var y : int = _target.y
+				var x : float = _target.x
+				var y : float = _target.y
 				target_memory_x.append(x) #works
 				target_memory_y.append(y) #works
 				

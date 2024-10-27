@@ -29,7 +29,7 @@ for every change in either
 
 var messages : Array = []
 
-var nodes : Array = [self]
+#var nodes : Array = [self]
 
 onready var anims : AnimationPlayer = $anims
 func _enter_tree():

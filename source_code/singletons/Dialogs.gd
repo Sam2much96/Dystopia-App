@@ -275,7 +275,7 @@ class Parser extends Reference :
 				# line to return cannot be 0 as a result of this code implementation
 				if index == line_to_return:
 					return line_string
-					break
+					#break
 				_f.close() 
 			
 		return line_string

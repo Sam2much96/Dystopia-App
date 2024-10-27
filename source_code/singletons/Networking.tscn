@@ -9,4 +9,5 @@ enabled = true
 [node name="Timer2" type="Timer" parent="."]
 wait_time = 10.0
 
+[connection signal="request_completed" from="." to="." method="_on_Networking_request_completed"]
 [connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]

@@ -118,9 +118,9 @@ sfx_on = true
 volume = 10
 
 [node name="A" type="AudioStreamPlayer" parent="."]
+volume_db = -30.0
 
 [node name="B" type="AudioStreamPlayer" parent="."]
-volume_db = -30.0
 
 [node name="C" type="AudioStreamPlayer" parent="."]
 

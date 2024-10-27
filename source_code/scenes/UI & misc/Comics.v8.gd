@@ -101,3 +101,7 @@ func _on_Pen_pressed() -> int:
 		enabled = false
 		return 0
 	return 0
+
+
+func _on_minimap_gui_input(event):
+	enabled = true

@@ -86,7 +86,7 @@ func _ready():
 
 	# Connects the Networking signal
 	# Temporarily disabling for refactorng
-	Networking.connect("request_completed", self, "_http_request_completed")
+	#Networking.connect("request_completed", self, "_http_request_completed")
 
 
 	"Checks Internet Access is Verified "
@@ -136,13 +136,13 @@ func _on_play_pressed():
 CHECKS IF THE DEVICE IS INTERNET CONNECTED AND GATEKEEPS ACCESS ON MOBILE DEVICES
 """
 # To DO: Port to Individual Platform Singletons
-func _check_if_device_is_online(): 
-	#if os == 'Android' or 'iOS' or 'X11': #disable x11 for release build
-	#	index = index + 1
-	#	dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
-	#	#Networking.url = 
-	#	Networking._check_connection( 'https://mfts.io', Networking)#url('https://play.google.com/store/apps/details?id=dystopia.app')
-	print_debug("Port Code to Indicvidual Platform Singletons")
+#func _check_if_device_is_online(): 
+#	#if os == 'Android' or 'iOS' or 'X11': #disable x11 for release build
+#	#	index = index + 1
+#	#	dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
+#	#	#Networking.url = 
+#	#	Networking._check_connection( 'https://mfts.io', Networking)#url('https://play.google.com/store/apps/details?id=dystopia.app')
+#	print_debug("Port Code to Indicvidual Platform Singletons")
 
 
 """

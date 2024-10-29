@@ -128,7 +128,7 @@ func _process(_delta):
 					Enemy_debug = 'Enemy debug:' + str('Killcount:' , Globals.kill_count)
 					Autosave_debug = Autosave_debug
 
-					Network_debug =  str(Networking.debug )
+					Network_debug =  ""#str(Networking.debug )
 					misc_debug = str(misc_debug) #+ str("/")  + _new_debug('new debugs are run in this function: ')
 					Globals_debug='Direction type' + '/'+ str(Globals.direction_control)
 					avail_thread = str('Available threads: ',int (OS.get_processor_count())) 

@@ -195,7 +195,7 @@ func respawn():
 		Utils.Functions.change_scene_to(Globals.scene_resource, get_tree())
 	else: 
 		get_tree().reload_current_scene()
-		emit_signal("health_changed")
+		emit_signal("health_changed", hitpoints)
 		return 0
 
 

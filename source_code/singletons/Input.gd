@@ -283,3 +283,4 @@ func _exit_tree():
 	# Clears all ui buttons
 	
 	Utils.MemoryManagement.queue_free_array(children)
+	self.queue_free()

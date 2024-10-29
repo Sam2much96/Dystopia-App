@@ -33,8 +33,8 @@ export (bool) var STATIC # Determine if To use Dynamic or static memory / For RA
 
 
 # Specifies the Draw Map Area so the Tilemap drawn isnt infinite
-export(int) var map_width = 80
-export(int) var map_height = 50
+export(int) var map_width = 10#80
+export(int) var map_height = 10#50
 
 export(String) var world_seed = "Hello World!"
 export(int) var noise_octaves = 3
@@ -194,3 +194,4 @@ func generate() :
 
 func _exit_tree():
 	clear()
+	

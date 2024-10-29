@@ -32,11 +32,12 @@ export(String) var spawnpoint = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# warning-ignore:return_value_discarded
-	connect("body_entered", self, "_on_body_entered")
+	# Connect Signal To Self Only If Not Connected
+	if is_connected("body_entered", self, "_on_body_entered") == false:
+		connect("body_entered", self, "_on_body_entered")
 	
 	# update current scene
-		#use current scene to trigger cinematic
+	# use current scene to trigger cinematic
 	Globals.update_curr_scene() 
 
 

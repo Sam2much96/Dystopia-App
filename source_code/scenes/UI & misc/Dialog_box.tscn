@@ -244,6 +244,9 @@ margin_right = 1101.0
 margin_bottom = 1162.53
 texture = ExtResource( 6 )
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
 [node name="dialog_text" type="Label" parent="."]
 anchor_right = 1.0

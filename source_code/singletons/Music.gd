@@ -476,6 +476,7 @@ static func shuffle_array(_fx : Array) -> int : # selects a random number of an 
 	
 	return _fx[sel]
 
+# Play the Next Track and Shuffle
 func _on_A_finished(): #This  signals when the music has finished and autoshuffles
 	#randomize() #  reset the random seed in the random number generator
 	# shuffle music track
@@ -485,6 +486,7 @@ func _on_A_finished(): #This  signals when the music has finished and autoshuffl
 	transitions.play("AtoB")
 	#plays the music trac twuce
 
+# Play the Next Track And Shuffle
 func _on_B_finished():
 	
 	#get_random_sound_effect()
@@ -535,9 +537,9 @@ func set_sound_effect(fx_ : int, state : bool):
 
 
 
-
+# Music Finished Playing
 func _on_Music_music_finished():
-	print_debug("sdjnfsfjnhu")
+	#print_debug("sdjnfsfjnhu")
 	randomize()
 	music_track = shuffle(default_playlist)
 	play(music_track)

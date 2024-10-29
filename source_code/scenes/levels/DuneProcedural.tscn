@@ -28,16 +28,15 @@ tile_data = PoolIntArray( -393214, 0, 0, -393213, 0, 327681, -327678, 0, 262144,
 script = ExtResource( 5 )
 
 [node name="CaveGenerator" parent="Dunes_Procedural" instance=ExtResource( 10 )]
-position = Vector2( 431.744, 189.562 )
-points = PoolVector2Array( 4025.91, 1106.61, -2263.62, 1086.45, -2446.97, 8814, 4199.75, 8668.07, 3963.02, 1213.47 )
+position = Vector2( 53.2655, 896.455 )
+scale = Vector2( 0.847201, 0.330879 )
+points = PoolVector2Array( 408.933, 2841.8, -1073.6, 3014.07, -1006.32, 9052.54, 498.64, 8937.69, 476.213, 2956.65 )
 width = 30.0
 default_color = Color( 0.4, 0.501961, 1, 0 )
 enabled = true
 STATIC = true
-map_width = 700
-map_height = 700
-world_seed = "Pleasse Give me a good result nitori olorun"
-noise_octaves = 53
+map_width = 100
+map_height = 100
 noise_period = 60
 noise_persistence = 0.01
 noise_lacunarity = 0.05

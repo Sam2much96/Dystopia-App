@@ -203,13 +203,27 @@ func state_machine_logic(node, peer_id : int):
 				
 		STATE_ROLL:
 			if roll_direction == Vector2.ZERO:
-				node.state = STATE_IDLE
-			else:
+				
+				
+				#
+				# get roll direction from facing
+				#
+				# 
+				#print_debug("11111111", _facing)
+				if facing == RIGHT:
+					roll_direction = Vector2.RIGHT
+				if facing == LEFT:
+					roll_direction = Vector2.LEFT
+				if facing == UP:
+					roll_direction = Vector2.UP
+				if facing == DOWN:
+					roll_direction = Vector2.DOWN
+			if roll_direction != Vector2.ZERO:
 				linear_vel = move_and_slide(linear_vel)
 				var target_speed = Vector2()
 				target_speed = roll_direction
 				target_speed *= ROLL_SPEED
-				#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)
+				
 				linear_vel = target_speed
 				node.new_anim = "roll"
 				if Input.is_action_just_pressed("attack"): #punch and slide funtionality

@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://New game code and features/admob-lib/admob.gd"
 }, {
+"base": "Node",
+"class": "Algodot",
+"language": "GDScript",
+"path": "res://scenes/Wallet/Algod.gd"
+}, {
 "base": "CPUParticles2D",
 "class": "BloodSplatter",
 "language": "GDScript",
@@ -496,6 +501,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AdMob": "res://New game code and features/admob-lib/icon.png",
+"Algodot": "",
 "BloodSplatter": "res://resources/FX/Blood splatter fx.webp",
 "Boulder_Big": "",
 "BrokenShip": "",

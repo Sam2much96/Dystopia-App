@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://singletons/Networking.gd" type="Script" id=1]
+[ext_resource path="res://scenes/Wallet/Wallet.gd" type="Script" id=2]
+[ext_resource path="res://scenes/Wallet/Algod.gd" type="Script" id=3]
 
 [node name="Networking" type="HTTPRequest"]
 script = ExtResource( 1 )
@@ -8,6 +10,12 @@ enabled = true
 
 [node name="Timer2" type="Timer" parent="."]
 wait_time = 10.0
+
+[node name="Wallet" type="Control" parent="."]
+script = ExtResource( 2 )
+
+[node name="Algod" type="Node" parent="Wallet"]
+script = ExtResource( 3 )
 
 [connection signal="request_completed" from="." to="." method="_on_Networking_request_completed"]
 [connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]

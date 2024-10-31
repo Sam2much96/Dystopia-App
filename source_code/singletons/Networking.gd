@@ -82,8 +82,9 @@ signal Timeout
 
 onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
-
+#******************Pointer To Child Nodes********************#
 onready var timer :Timer  = $Timer2
+onready var Wallet_ : wallet
 onready var _reference_to_self = self#get_node('/root/Networking') #formerly _y
 onready var _reference_to_debug =get_node('/root/Debug') #formerly _y
 
@@ -147,9 +148,11 @@ export (int) var GamePlay = OFFLINE
 
 
 # Netwroked Player Object
+# I Need a way of keeping access to Player Object instancess
 onready var PlayerObject  = load("res://scenes/characters/Aarin_networking.tscn") # : Player_v2_networking
 
-# I Need a way of keeping access to Player Object instancess
+
+
 
 func _ready():
 	_init_timer()

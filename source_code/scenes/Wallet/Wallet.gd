@@ -67,11 +67,12 @@ extends Control
 
 class_name wallet
 
+# Wallet Node Variableds
 
 var image_url
 var json= File.new()
-var account_info: Dictionary = {1:[]}
-var save_dict: Dictionary = {}
+export (Dictionary) var account_info: Dictionary = {1:[]}
+export (Dictionary) var save_dict: Dictionary = {}
 
 #*****************************************************
 
@@ -80,17 +81,18 @@ var save_dict: Dictionary = {}
 #************** Algo Variables *************************
 
 
-var Player_account: String 
-var Player_mnemonic: String 
+export (String) var Player_account: String 
+export (String)  var Player_mnemonic: String 
 
-var Player_account_details: Array =[]
-var Player_account_temp: Array =[]
+export (Array) var Player_account_details: Array =[]
+export (Array) var Player_account_temp: Array =[]
 
 #************Wallet variables**************#
 
-var amount : int
+export (int) var amount : int
 export (String) var address #: String
-var mnemonic : String
+
+var mnemonic : String setget _set_mnemonic # private variant with set get function
 
 var recievers_addr : String = '' #for transactions
 var _amount : int = 0#for transactions
@@ -121,36 +123,41 @@ var UserData : Dictionary = {
 }
 
 #************File Checkers*************#
-var FileCheck1= Utils.file #File.new() #checks account info
-var FileCheck2= Utils.file #File.new() #checks NFT metadata .json
-var FileCheck3= Utils.file #File.new()#checks local image storage
-var FileCheck4= Utils.file #File.new() # checks wallet mnemonic
+var FileCheck1= File.new() #checks account info
+var FileCheck2= FileCheck1 #Utils.file #File.new() #checks NFT metadata .json
+var FileCheck3= FileCheck1 #Utils.file #File.new()#checks local image storage
+var FileCheck4= FileCheck1 #Utils.file #File.new() # checks wallet mnemonic
 
 
 var FileDirectory=Directory.new() #deletes all theon reset
 
 
 #***********Escrow*****************#
-var WITHDRAW : bool = false
+export (bool) var WITHDRAW : bool = false
 
 
 #************Wallet Save Path**********************#
-var token_write_path : String = "user://wallet/account_info.token" #creating directory bugs out
-var token_dir : String = "user://wallet"
+export (String) var token_write_path : String = "user://wallet/account_info.token" #creating directory bugs out
+export (String) var token_dir : String = "user://wallet"
 
 export (String) var local_image_path ="user://wallet/img0.png" #Loads the image file path from a folder to prevent redownloads (depreciated)
-var local_image_file : String = "user://wallet/img0.png.png" 
+export (String) var local_image_file : String = "user://wallet/img0.png.png" 
 
 
 #************Wallet Password & Keys **********************#
 #var keys_path : String = "user://wallet/wallet_keys.cfg"
 #var keys_passwrd : PoolByteArray = [1234]
 
-"State Machine"
+"Wallet State Machine"
 
-enum {NEW_ACCOUNT,CHECK_ACCOUNT, SHOW_ACCOUNT, IMPORT_ACCOUNT, TRANSACTIONS ,COLLECTIBLES, SMARTCONTRACTS, IDLE, PASSWORD, SHOW_MNEMONIC}
-export var state = IDLE
+enum {
+NEW_ACCOUNT,CHECK_ACCOUNT, SHOW_ACCOUNT, IMPORT_ACCOUNT, 
+TRANSACTIONS ,COLLECTIBLES, SMARTCONTRACTS, 
+IDLE, PASSWORD, SHOW_MNEMONIC
+}
+export (int) var state = IDLE
 
+#************ Wallet Check Stopper************#
 var wallet_check : int = 0
 var wallet_check_counter : int = 0
 var params
@@ -181,12 +188,13 @@ signal completed #placehoder signal
 #**********************************#
 
 #************ All Used Nodes in Wallet Scene**********************#
-#onready var timer = $Timer #depreciated
-onready var q = HTTPRequest.new()
-onready var q2 = HTTPRequest.new()
+onready var NetworkingSingleton : HTTPRequest = get_parent() #pointer to Netwroking 4.0 singleton
+onready var timer = NetworkingSingleton.timer #$Timer #depreciated
+onready var q = NetworkingSingleton #HTTPRequest.new()
+onready var q2 = NetworkingSingleton #HTTPRequest.new()
 
  
-var Algorand #: Algodot
+onready var Algorand : Algodot = get_child(0) # Algodot Helper Scripts
 var state_controller : OptionButton
 
 var account_address : Label
@@ -443,10 +451,12 @@ func __ready():
 		#*******UI***********#
 
 func _ready():
-	self.add_child(q) #add networking node to the scene tree
-	self.add_child(q2) #add networking node to the scene tree
+	# Depreciated In favour of Networking Singleton Pattern
+	#self.add_child(q) #add networking node to the scene tree
+	#self.add_child(q2) #add networking node to the scene tree
 	
-	
+	# Make Self Global
+	NetworkingSingleton.Wallet_ = self
 	
 	
 	if Algorand == null: 
@@ -457,76 +467,76 @@ func _ready():
 	
 	#print("----loaded acct info------")
 
-func _process(_delta):
+func _process(delta):
 	
-	frame_counter += 1
-	
-	if frame_counter > 600:
-		frame_counter = 0
+	#frame_counter += 1
+	#
+	#if frame_counter > 600:
+	#	frame_counter = 0
 		
 	# Called Every 60th frame
-	if frame_counter % 6 == 0:
-		pass
+	#if frame_counter % 6 == 0:
+	#	pass
+	#	
+	#if Globals.curr_scene == "Wallet_scene":
 		
-	if Globals.curr_scene == "Wallet_scene":
+	#	# Get the Wallet Root Scene
+	#	WalletRoot = get_tree().get_nodes_in_group("Wallet").pop_front()
 		
-		# Get the Wallet Root Scene
-		WalletRoot = get_tree().get_nodes_in_group("Wallet").pop_front()
-		
-		# UI state Processing (works-ish)
-		# Remove New Account State. It has a new UI mapping
-		"Constantly Running Process Introduces a stuck state Bug"
-		if self.state_controller.visible :
-			if self.state_controller.get_selected() == 0:
-				state = SHOW_ACCOUNT #only loads wallet once
-				
-			elif self.state_controller.get_selected() == 1:
-				#wallet_check = 0 # resets the wallet check stopper
-				state = CHECK_ACCOUNT
-		#	elif self.state_controller.get_selected() == 2:
-		#		wallet_check = 0 # resets the wallet check stopper
-		#		state = NEW_ACCOUNT
-			elif self.state_controller.get_selected() == 2:
-				wallet_check = 0 # resets the wallet check stopper
-				state = IMPORT_ACCOUNT
-			elif self.state_controller.get_selected() == 3:
-				wallet_check = 0 # resets the wallet check stopper
-				state = TRANSACTIONS
-			elif self.state_controller.get_selected() == 4:
-				wallet_check = 0 # resets the wallet check stopper
-				state = SMARTCONTRACTS
-				
-				
-				
-			elif self.state_controller.get_selected() == 5:
-				wallet_check = 0 # resets the wallet check stopper
-				state = COLLECTIBLES
-			elif self.state_controller.get_selected() == 6:
-				wallet_check = 0
-				state = PASSWORD
-			elif self.state_controller.get_selected() == 7:
-				wallet_check = 0
-				state = SHOW_MNEMONIC
-			elif self.state_controller.get_selected() == 8:
-				wallet_check = 0
-				Globals.curr_scene = "Menu"
-				state = IDLE
-				
-				loaded_wallet = false
-				return Globals._go_to_title() # Breaks wallet scene
-	
-			elif self.state_controller.get_selected() == -1:
-				state = NEW_ACCOUNT
+	#	# UI state Processing (works-ish)
+	#	# Remove New Account State. It has a new UI mapping
+	#	"Constantly Running Process Introduces a stuck state Bug"
+	#	if self.state_controller.visible :
+	#		if self.state_controller.get_selected() == 0:
+	#			state = SHOW_ACCOUNT #only loads wallet once
+	#			
+	#		elif self.state_controller.get_selected() == 1:
+	#			#wallet_check = 0 # resets the wallet check stopper
+	#			state = CHECK_ACCOUNT
+	#	#	elif self.state_controller.get_selected() == 2:
+	#	#		wallet_check = 0 # resets the wallet check stopper
+	#	#		state = NEW_ACCOUNT
+	#		elif self.state_controller.get_selected() == 2:
+	#			wallet_check = 0 # resets the wallet check stopper
+	#			state = IMPORT_ACCOUNT
+	#		elif self.state_controller.get_selected() == 3:
+	#			wallet_check = 0 # resets the wallet check stopper
+	#			state = TRANSACTIONS
+	#		elif self.state_controller.get_selected() == 4:
+	#			wallet_check = 0 # resets the wallet check stopper
+	#			state = SMARTCONTRACTS
+	#			
+	#			
+	#			
+	#		elif self.state_controller.get_selected() == 5:
+	#			wallet_check = 0 # resets the wallet check stopper
+	#			state = COLLECTIBLES
+	#		elif self.state_controller.get_selected() == 6:
+	#			wallet_check = 0
+	#			state = PASSWORD
+	#		elif self.state_controller.get_selected() == 7:
+	#			wallet_check = 0
+	#			state = SHOW_MNEMONIC
+	#		elif self.state_controller.get_selected() == 8:
+	#			wallet_check = 0
+	#			Globals.curr_scene = "Menu"
+	#			state = IDLE
+	#			
+	#			loaded_wallet = false
+	#			return Globals._go_to_title() # Breaks wallet scene
+	#
+	#		elif self.state_controller.get_selected() == -1:
+	#			state = NEW_ACCOUNT
 	
 	"WALLET STATES"
-	
+	# Wallet State Machine
 	#if canvas_layer != null: # null pointer Error Fixer
-		
+	
 	match state:
 		NEW_ACCOUNT: #loads wallet details if account already exists
 			
 			# Reset UI animation for State controller 
-			_Animation_UI.play("RESET_UI")
+			#_Animation_UI.play("RESET_UI")
 			
 			
 			'Generates New Account'
@@ -587,7 +597,7 @@ func _process(_delta):
 				Wallet.check_wallet_info(self.Algorand.algod, UserData, account_info, FileDirectory, token_dir, self) #checks saved wallet variables for error
 				
 				# Escape Current State to Show Account State
-				self.state_controller.select(0) 
+			#	self.state_controller.select(0) 
 				state = SHOW_ACCOUNT
 				
 		#Loads all wallet details into Memory
@@ -1065,28 +1075,29 @@ func save_account_info( info : Dictionary, number: int)-> bool:
 
 
 
-'Performs a Bunch of HTTP requests'
+#'Performs a Bunch of HTTP requests'
 #(1) To Check if internet connection is good (works)
 # (2) To download Images from IPFS (buggy)
-func _http_request_completed(result, response_code, headers, body): #works with https connection
-	print (" request done 1: ", result) #********for debug purposes only
-	print (" headers 1: ", headers)#*************for debug purposes only
-	print (" response code 1: ", response_code) #for debug purposes only
-	
-	if not body.empty():
-		Networking.good_internet = true
-	
-	
-	if body.empty(): #returns an empty body
-		push_error("Result Unsuccessful")
-		Networking.good_internet = false
-		#Networking.stop_check()
-	
+#func _http_request_completed(result, response_code, headers, body): #works with https connection
+#	print (" request done 1: ", result) #********for debug purposes only
+#	print (" headers 1: ", headers)#*************for debug purposes only
+#	print (" response code 1: ", response_code) #for debug purposes only
+#	
+#	if not body.empty():
+#		Networking.good_internet = true
+#	
+#	
+#	if body.empty(): #returns an empty body
+#		push_error("Result Unsuccessful")
+#		Networking.good_internet = false
+#		#Networking.stop_check()
+#	
+#
+#			
+#	else: return
 
-			
-	else: return
-
-
+# To Do:
+# (1) Refactor To Networking Singleton Pattern
 func _http_request_completed_2(result, response_code, headers, body): 
 	print (" response code 2: ", response_code) #for debug purposes only
 	if !body.empty() && !is_image_available_at_local_storage:
@@ -1143,9 +1154,12 @@ func create_wallet_directory()-> void:
 	else: return 
 
 
-
-func _on_Main_menu_pressed():
-	return Globals._go_to_title()
+"""
+Button UX
+"""
+# Depreciated
+#func _on_Main_menu_pressed():
+#	return Globals._go_to_title()
 
 
 func _on_testnetdispenser_pressed(): #connect to UI
@@ -1164,43 +1178,46 @@ func _on_mnemonic_pressed():
 func on_funding_success_close():
 	if funding_success_close_button.pressed :
 		reset_transaction_parameters()# fixes double spend bug
-		state_controller.select(0) #show account dashboard
+	#	state_controller.select(0) #show account dashboard
 
-func _on_pass_buttons_pressed():
-	if state == PASSWORD:
-		for i in passward_UI_Buttons:
-			if i.pressed:
-				password_LineEdit.text += i.text
-
-func _on_password_entered_pressed():
-	if password_Entered_Button.pressed:
-		password_valid = true
-		print ("Password Placeholder entered", password_valid)
-		self.set_process(true)
+#func _on_pass_buttons_pressed():
+#	if state == PASSWORD:
+#		for i in passward_UI_Buttons:
+#			if i.pressed:
+#				password_LineEdit.text += i.text
 
 
-func _on_create_acc_button_pressed():
-	if _Create_Acct_button.pressed:
-	
-		# Fixes Stuck State Bug
-		# Check state controller process()
-		
-		state = NEW_ACCOUNT
-		self.state_controller.select(-1)
-		#self.state_controller.select(2) #Create Account 
-		print ("Create Acct button pressed", state)
-		
-		#return state
+
+#func _on_password_entered_pressed():
+#	if password_Entered_Button.pressed:
+#		password_valid = true
+#		print ("Password Placeholder entered", password_valid)
+#		self.set_process(true)
 
 
-func _on_cr8_Acct_Successfull_Homebutton_pressed():
-	if CreatAccountSuccessful_Proceed_home_button.pressed:
-		return self.state_controller.select(0) # Show Account
+#func _on_create_acc_button_pressed():
+#	if _Create_Acct_button.pressed:
+#	
+#		# Fixes Stuck State Bug
+#		# Check state controller process()
+#		
+#		state = NEW_ACCOUNT
+#		self.state_controller.select(-1)
+#		#self.state_controller.select(2) #Create Account 
+#		print ("Create Acct button pressed", state)
+#		
+#		#return state
 
-func _on_cr8_Acct_Successfull_CopySK_pressed():
-	if CreatAccountSuccessful_Copy_Mnemonic_button.pressed:
-		return _on_Copy_mnemonic_pressed()
 
+#func _on_cr8_Acct_Successfull_Homebutton_pressed():
+#	if CreatAccountSuccessful_Proceed_home_button.pressed:
+#		return self.state_controller.select(0) # Show Account
+
+#func _on_cr8_Acct_Successfull_CopySK_pressed():
+#	if CreatAccountSuccessful_Copy_Mnemonic_button.pressed:
+#		return _on_Copy_mnemonic_pressed()
+#
+# To DO: Refactor Button Connections In Gaming Wallet Test project
 func _on_txn_txn_valid_button_pressed():
 	if txn_txn_valid_button.pressed:
 		transaction_valid = true #works
@@ -1660,3 +1677,6 @@ class Wallet extends Reference:
 
 		return user_data
 
+
+func _set_mnemonic(sk : String):
+	mnemonic = sk

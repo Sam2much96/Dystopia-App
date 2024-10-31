@@ -42,7 +42,7 @@
 
 # To-DO:
 # (9) Implement 
-# (10) IMplement Tokenized characters (player_v2)
+# (10) IMplement Tokenized characters (player_v3)
 # (11) Implement cryptographic encryption and decryption
 #
 # (17) Delete local NFT's if token is sent
@@ -60,6 +60,7 @@
 # (24) Methods cant be called from Other Scenes. (Done)
 # (25) Make all methods Static Functions
 # (26) Implement Wallet Translations
+# (27) Export User Wallet Information TO Status UI and Implement A Testnety Withdrawal Button
 # *************************************************
 
 

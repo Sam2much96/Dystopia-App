@@ -300,7 +300,7 @@ func _on_comics_pressed():
 
 func _on_controls_pressed():
 	Music.play_track(_ui_sfx)
-	return Utils.Functions.change_scene_to(Globals.controls, get_tree())
+	return Utils.Functions.change_scene_to(load(Globals.global_scenes["controls"]), get_tree())
 
 
 func _on_quit_pressed():

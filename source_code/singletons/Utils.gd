@@ -216,6 +216,7 @@ class Functions extends Reference:
 		progress: float
 		) -> PackedScene:
 		
+		#print_stack()
 		#print_debug("Loading Large Scene")
 		if _to_load != "" && scene_resource == null:
 			var time_max = 50000 #sets an estimate maximum time to load scene

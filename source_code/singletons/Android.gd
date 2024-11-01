@@ -13,6 +13,8 @@ extends Node
 
 class_name android, "res://resources/misc/Android 32x32.png"
 
+signal player_ready # Emitted When Player Enters Scene Tree
+
 # Lifetime OPtimizations for CPU Particle FX
 const Long_lifetime : int = 6
 const Short_lifetime : int = 3
@@ -21,9 +23,11 @@ const MINUMUM_FPS : int = 25
 
 onready var TouchInterface : TouchScreenHUD #= GlobalInput.gameHUD.TouchInterface
 onready var GameHUD_ : GameHUD
+
+
 var ingameMenu : Game_Menu
 
-export (bool) var _is_android = true
+export (bool) var _is_android = false
 
 # To reduce memory over write of Global scerenn orientation integer unless necessary
 # and reduce memory calls between singletons unless necessary
@@ -62,6 +66,8 @@ func _ready():
 		Chrome = Engine.get_singleton("GodotChrome")#load("res://New game code and features/GodotChrome.gd")
 		
 		#_ads = AdMob.new()
+		# Connect Signals 
+		connect("player_ready",self, "_on_player_ready")
 		
 		#initial_screen_orientation = Utils.Screen.Orientation()
 	if _globals.os == "HTML5" && initial_screen_orientation == 1: # Mobile Browser
@@ -71,7 +77,15 @@ func _ready():
 		print_debug("Device Is Mobile Browser")
 		_debug.misc_debug += "Device is Mobile Browser"
 		_is_android = true
-		
+	
+	if _globals.os == "HTML5" && initial_screen_orientation == 0: # PC Browser
+		# Check Screen Dimensions to estimate if it is a mobile browser
+		#initial_screen_orientation = Utils.Screen.Orientation()
+		#if initial_screen_orientation == 0: # Vertical Screen is 1, it's set to 0 for local testing
+		print_debug("Device Is PC Browser")
+		_debug.misc_debug += "Device is PC Browser"
+		_is_android = false
+	
 	if _globals.os != "Android":
 		_is_android = false
 		push_warning("Device Is Not Android!")
@@ -126,6 +140,7 @@ func show_only_menu():
 	TouchInterface.__menu()
 
 func show_all_buttons():
+	print_stack()
 	TouchInterface.show_action_buttons()
 	TouchInterface.show_direction_buttons()
 
@@ -147,6 +162,12 @@ func _process(delta):
 	# Functions :
 	# (1) Turns off CPU fx is framerate is too low
 	
+	"""
+	Touch HUD Visibility
+	"""
+	
+	if is_instance_valid(TouchInterface) && _is_android == false : # PC Browser
+		TouchInterface.hide()
 	
 	"""
 	RAIN FX OPTIMIZATION
@@ -237,3 +258,10 @@ func _process(delta):
 		if local_screen_orientation == 0:
 			Utils.UI.upscale_ui(ingameMenu, ingameMenu.initialScale, ingameMenu.get_position())
 		
+
+func _on_player_ready():
+	if _is_android == true:
+			# Move To android Singleton
+	#if Globals.os == "Android":
+		GlobalInput.TouchInterface.enabled = true
+		Android.show_all_buttons() # Show Touch HUD UI

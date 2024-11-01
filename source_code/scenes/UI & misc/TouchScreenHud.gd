@@ -175,21 +175,25 @@ func _ready():
 	#print_debug("Connect Texture Button Signals Here")
 	#print_debug("OS Debug: ",Globals.os)
 	# COde Mutates ENabled
-	#if Android.is_android() == false:
+	if Android.is_android() == false:
+		self.hide()
+		enabled = false
+	#if Android.is_android() == true: 
+	#	self.show()
+	##	print_debug("Showing Touch Interface")
+	#if Globals.os == "Android":
+	#	self.show()
+	#	enabled = true
+	#if Globals.os == "HTML5" && Utils.initial_screen_orientation == 0: # Mobile Browser
+	#	self.show()
+	#	enabled = true
+	#if Globals.os == "HTML5" && Utils.initial_screen_orientation == 1: # PC Browser
 	#	self.hide()
 	#	enabled = false
-	if Android.is_android() == true: 
-		self.show()
-	#	print_debug("Showing Touch Interface")
-	if Globals.os == "Android":
-		self.show()
-		enabled = true
-	if Globals.os == "HTML5" && Utils.initial_screen_orientation == 0: # Mobile Browser
-		self.show()
-		enabled = true
-	##self.hide() if not Android.is_android() else print_debug("Showing Touch Interface")
-	if Globals.os == "X11":
-		self.hide()
+	###self.hide() if not Android.is_android() else print_debug("Showing Touch Interface")
+	#if Globals.os == "X11":
+	#	self.hide()
+	# VIsibility Is Handled In Singleton Process
 
 	
 	######## Begin Setting Nodes #
@@ -501,6 +505,8 @@ func touch_interface_debug(): #Debug singleton is broken
 
 
 func show_all_buttons():
+	print_stack()
+	#if enabled:
 	print_debug("Showing All Buttons")
 	show_action_buttons()
 	show_direction_buttons()

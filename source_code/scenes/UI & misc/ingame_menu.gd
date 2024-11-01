@@ -14,6 +14,7 @@
 # To-Do
 # (1) Implement Different States (Portrait & LandScape) Using Global Screen Orientation
 
+
 #Bugs 
 # (1) Buggy on Screen Orientation Rotation
 # (2) Implements Swipe Gestures for Auto Scroll using refactores swipe detection
@@ -237,6 +238,7 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 
 		Music.play_track(_ui_sfx) #plays ui sfx in a loop
 		
+		
 		menu_state = HIDDEN
 		
 		return 0
@@ -294,14 +296,18 @@ func _on_comics_pressed():
 	
 	# SHould Open URL to ItchIO Page On Mobile & PC
 	Networking.open_browser("https://www.webtoons.com/en/canvas/dystopia-app/chap-2-the-money-heist/viewer?title_no=997712&episode_no=1&serviceZone=GLOBAL")
-
+	
+	
 
 
 
 func _on_controls_pressed():
 	Music.play_track(_ui_sfx)
-	return Utils.Functions.change_scene_to(load(Globals.global_scenes["controls"]), get_tree())
-
+	Utils.Functions.change_scene_to(load(Globals.global_scenes["controls"]), get_tree())
+	
+	menu_state = HIDDEN
+	
+	return 0
 
 func _on_quit_pressed():
 	if get_tree().get_current_scene().get_name() == 'Menu': # Title Screen Custom Quit

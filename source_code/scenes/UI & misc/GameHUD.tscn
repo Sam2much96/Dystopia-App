@@ -100,9 +100,6 @@ anims/SCREEN_HORIZONTAL = SubResource( 1 )
 anims/SCREEN_VERTICAL = SubResource( 2 )
 
 [node name="Dialog_box" parent="." instance=ExtResource( 1 )]
-margin_top = 988.529
-margin_right = 1101.0
-margin_bottom = 1162.53
 input_pass_on_modal_close_click = false
 region_rect = Rect2( 30, 19, 1840, 269 )
 

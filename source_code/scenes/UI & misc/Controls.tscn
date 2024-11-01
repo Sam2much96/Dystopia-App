@@ -1,8 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Controls.gd" type="Script" id=1]
 [ext_resource path="res://scenes/UI & misc/Help.tscn" type="PackedScene" id=2]
 [ext_resource path="res://fonts/scroll_bar_theme.tres" type="Theme" id=3]
+[ext_resource path="res://scenes/Comics/Outside/2.webp" type="Texture" id=4]
+[ext_resource path="res://scenes/Comics/Outside/1.webp" type="Texture" id=5]
 [ext_resource path="res://scenes/UI & misc/generic_joystick_ui_selector.gd" type="Script" id=6]
 [ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=8]
 [ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=14]
@@ -42,11 +44,31 @@ margin_right = 746.09
 margin_bottom = 136.108
 theme = SubResource( 1 )
 
+[node name="TextureRect" type="TextureRect" parent="."]
+self_modulate = Color( 1, 1, 1, 0.309804 )
+margin_left = -236.0
+margin_top = -69.0
+margin_right = 1046.0
+margin_bottom = 648.0
+texture = ExtResource( 4 )
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+modulate = Color( 1, 1, 1, 0.298039 )
+margin_left = 2.0
+margin_top = 965.0
+margin_right = 1284.0
+margin_bottom = 1682.0
+texture = ExtResource( 5 )
+
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-margin_left = 299.0
-margin_top = 51.0
-margin_right = 809.0
-margin_bottom = 557.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -193.0
+margin_top = -300.0
+margin_right = 193.0
+margin_bottom = 300.0
 theme = ExtResource( 3 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]

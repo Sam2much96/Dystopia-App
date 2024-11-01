@@ -7,13 +7,6 @@
 [ext_resource path="res://scenes/Shaders/Impact.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/UI & misc/Fight Cam.gd" type="Script" id=6]
 
-[sub_resource type="ShaderMaterial" id=1]
-shader = ExtResource( 4 )
-shader_param/angle_degrees = 0.0
-shader_param/Samples = 25
-shader_param/strength = 0.0
-shader_param/noise = ExtResource( 3 )
-
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 35.8589
 
@@ -263,24 +256,12 @@ tracks/2/keys = {
 "values": [ null ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("sprite:frame")
+tracks/3/path = NodePath("sprite:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ 0 ]
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("sprite:scale")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
@@ -734,6 +715,13 @@ tracks/7/keys = {
 "values": [ null ]
 }
 
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 4 )
+shader_param/angle_degrees = 0.0
+shader_param/Samples = 25
+shader_param/strength = 0.0
+shader_param/noise = ExtResource( 3 )
+
 [sub_resource type="Animation" id=10]
 length = 0.7
 loop = true
@@ -943,10 +931,10 @@ tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.332894, 0.445095, 0.6061 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 23, 24, 25, 26, 27, 28, 23 ]
+"values": [ 23, 24, 25, 27, 28, 23 ]
 }
 
 [sub_resource type="Animation" id=12]
@@ -1472,12 +1460,9 @@ __meta__ = {
 WALK_SPEED = 400
 
 [node name="sprite" type="Sprite" parent="."]
-modulate = Color( 0, 0, 0, 1 )
-material = SubResource( 1 )
 position = Vector2( -14.72, -115.004 )
 scale = Vector2( 0.676, 0.676 )
 texture = ExtResource( 2 )
-flip_h = true
 hframes = 8
 vframes = 7
 frame = 27

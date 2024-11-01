@@ -120,9 +120,11 @@ func _ready():
 	# Buggy check ln 74
 	#Behaviour.AutoSpawn(self)
 	# Set Player Object To The Minimap
+	# TO DO : Use Signals for cleaner Implementation
 	GlobalInput.gameHUD._Stats._Mini_map.player_node = self # TO Do : Fix Onready var bug
-	GlobalInput.TouchInterface.enabled = true
-	Android.show_all_buttons() # Show Touch HUD UI
+	
+	Android.emit_signal("player_ready") # Triggers Android Specific Config for Player Movement
+	
 	# Connect To Dialogue Singleton
 	
 	if not (

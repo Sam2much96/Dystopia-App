@@ -1,11 +1,18 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://scenes/characters/TopDownPlayer.gd" type="Script" id=1]
-[ext_resource path="res://resources/Aarin/spritesheet_4.webp" type="Texture" id=2]
+[ext_resource path="res://resources/Aarin/spritesheet_5.webp" type="Texture" id=2]
 [ext_resource path="res://scenes/Shaders/BlueNoise.webp" type="Texture" id=3]
 [ext_resource path="res://scenes/Shaders/DirectionalBlur.shader" type="Shader" id=4]
 [ext_resource path="res://scenes/Shaders/Impact.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/UI & misc/Fight Cam.gd" type="Script" id=6]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 4 )
+shader_param/angle_degrees = 0.0
+shader_param/Samples = 25
+shader_param/strength = 0.0
+shader_param/noise = ExtResource( 3 )
 
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 35.8589
@@ -15,6 +22,57 @@ radius = 60.225
 height = 162.07
 
 [sub_resource type="AnimationNodeAnimation" id=23]
+
+[sub_resource type="Animation" id=24]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 27 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("player_sword/slash:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -22.4663, -100.646 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("player_sword/slash:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 132.318 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("player_sword/slash:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
 
 [sub_resource type="Animation" id=21]
 resource_name = "dance"
@@ -29,7 +87,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 0.9 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 39, 40, 39, 40, 39, 40 ]
+"values": [ 47, 48, 47, 48, 47, 48 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("sprite:flip_h")
@@ -56,7 +114,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.7 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 34, 35 ]
+"values": [ 43, 44 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("sprite:flip_h")
@@ -138,6 +196,7 @@ tracks/6/keys = {
 [sub_resource type="Animation" id=22]
 resource_name = "fall"
 length = 0.5
+step = 0.01
 tracks/0/type = "value"
 tracks/0/path = NodePath("sprite:frame")
 tracks/0/interp = 1
@@ -148,7 +207,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 41 ]
+"values": [ 49 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("sprite:scale")
@@ -157,10 +216,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.47, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0.675638, 0.675638 ), Vector2( 0.180145, 0.180145 ) ]
+"values": [ Vector2( 1, 1 ), Vector2( 0.180145, 0.180145 ), Vector2( 0.675638, 0.675638 ) ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -675,13 +734,6 @@ tracks/7/keys = {
 "values": [ null ]
 }
 
-[sub_resource type="ShaderMaterial" id=1]
-shader = ExtResource( 4 )
-shader_param/angle_degrees = 0.0
-shader_param/Samples = 25
-shader_param/strength = 0.2584
-shader_param/noise = ExtResource( 3 )
-
 [sub_resource type="Animation" id=10]
 length = 0.7
 loop = true
@@ -785,7 +837,7 @@ tracks/7/keys = {
 }
 
 [sub_resource type="Animation" id=11]
-length = 0.4
+length = 0.7
 tracks/0/type = "value"
 tracks/0/path = NodePath("player_sword/slash:disabled")
 tracks/0/interp = 1
@@ -793,7 +845,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.4 ),
+"times": PoolRealArray( 0, 0.7 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ false, true ]
@@ -841,7 +893,7 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0.4 ),
+"times": PoolRealArray( 0.7 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
@@ -891,14 +943,14 @@ tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 23, 24, 25, 26 ]
+"values": [ 23, 24, 25, 26, 27, 28, 23 ]
 }
 
 [sub_resource type="Animation" id=12]
-length = 0.4
+length = 0.75
 tracks/0/type = "value"
 tracks/0/path = NodePath("player_sword/slash:disabled")
 tracks/0/interp = 1
@@ -954,7 +1006,7 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0.4 ),
+"times": PoolRealArray( 0.7 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
@@ -1004,10 +1056,10 @@ tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 27, 28, 29, 30 ]
+"values": [ 29, 30, 31, 32, 34, 35, 29 ]
 }
 tracks/9/type = "value"
 tracks/9/path = NodePath("sprite:scale")
@@ -1023,7 +1075,7 @@ tracks/9/keys = {
 }
 
 [sub_resource type="Animation" id=13]
-length = 0.4
+length = 0.7
 tracks/0/type = "value"
 tracks/0/path = NodePath("player_sword/slash:disabled")
 tracks/0/interp = 1
@@ -1031,7 +1083,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.3 ),
+"times": PoolRealArray( 0, 0.7 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ false, true ]
@@ -1079,7 +1131,7 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0.4 ),
+"times": PoolRealArray( 0.7 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
@@ -1129,14 +1181,14 @@ tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 27, 28, 29, 30 ]
+"values": [ 29, 30, 31, 32, 34, 35, 29 ]
 }
 
 [sub_resource type="Animation" id=14]
-length = 0.4
+length = 0.7
 tracks/0/type = "value"
 tracks/0/path = NodePath("player_sword/slash:disabled")
 tracks/0/interp = 1
@@ -1144,10 +1196,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2 ),
+"times": PoolRealArray( 0, 0.7 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ false, false ]
+"values": [ false, true ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("player_sword/slash:position")
@@ -1159,7 +1211,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 5, 6 ) ]
+"values": [ Vector2( -22.4663, -100.646 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("player_sword/slash:rotation_degrees")
@@ -1171,7 +1223,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 110.664 ]
+"values": [ 132.318 ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("sprite:frame")
@@ -1180,10 +1232,10 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0, 0.1, 0.3 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 31, 32, 33 ]
+"values": [ 36, 37, 38, 39, 40, 41, 42 ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("sprite:flip_h")
@@ -1204,7 +1256,7 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0.4 ),
+"times": PoolRealArray( 0.7 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
@@ -1421,13 +1473,14 @@ WALK_SPEED = 400
 
 [node name="sprite" type="Sprite" parent="."]
 modulate = Color( 0, 0, 0, 1 )
+material = SubResource( 1 )
 position = Vector2( -14.72, -115.004 )
 scale = Vector2( 0.676, 0.676 )
 texture = ExtResource( 2 )
 flip_h = true
 hframes = 8
 vframes = 7
-frame = 34
+frame = 27
 
 [node name="hitbox" type="CollisionShape2D" parent="."]
 position = Vector2( -0.882385, -27.9806 )
@@ -1437,10 +1490,11 @@ shape = SubResource( 2 )
 [node name="player_sword" type="Area2D" parent="."]
 position = Vector2( 6.30249, -86.9744 )
 collision_layer = 32
+monitorable = false
 
 [node name="slash" type="CollisionPolygon2D" parent="player_sword"]
-position = Vector2( -15.5219, -3.42419 )
-rotation = -0.0236131
+position = Vector2( -22.4663, -100.646 )
+rotation = 2.30939
 polygon = PoolVector2Array( -91.5168, 17.4712, -49.7053, 33.7712, -36.5348, 110.047, 35.867, 113.696, 44.7355, 32.9416, 90.0337, 28.9744, 135.867, -41.8589, 45.4412, -44.8453, 33.0892, -126.582, -28.0219, -121.026, -35.1723, -51.082, -122.466, -43.2478 )
 
 [node name="camera" type="Camera2D" parent="."]
@@ -1469,6 +1523,7 @@ __meta__ = {
 wait_time = 0.1
 
 [node name="Impact" parent="." instance=ExtResource( 5 )]
+visible = false
 position = Vector2( 20.7633, -48.054 )
 _impact = true
 
@@ -1479,6 +1534,7 @@ anim_player = NodePath("anims")
 [node name="anims" type="AnimationPlayer" parent="AnimationTree"]
 root_node = NodePath("../..")
 autoplay = "reset"
+anims/RESET = SubResource( 24 )
 anims/dance = SubResource( 21 )
 anims/die = SubResource( 3 )
 anims/fall = SubResource( 22 )

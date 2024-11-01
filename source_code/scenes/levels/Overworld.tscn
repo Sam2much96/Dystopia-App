@@ -213,22 +213,26 @@ scale = Vector2( 0.641414, 0.771429 )
 position = Vector2( 297, 840 )
 enabled = true
 dialogue = "dir3"
+speaker = "Player"
 HINT = true
 
 [node name="signpost2" parent="." instance=ExtResource( 14 )]
 position = Vector2( 209.981, 2199.49 )
 enabled = true
 dialogue = "dir1"
+speaker = "Player"
 
 [node name="signpost4" parent="." instance=ExtResource( 14 )]
 position = Vector2( 8148.29, -4770.68 )
 enabled = true
 dialogue = "Don't Go Into The Hole, I  Wouldn't Do It"
+speaker = "Warning"
 
 [node name="signpost3" parent="." instance=ExtResource( 14 )]
 position = Vector2( 2793.21, -4823.67 )
 enabled = true
 dialogue = "East : Abbi City / South: Ukwani Desert"
+speaker = "Player"
 
 [node name="broken ship" parent="." instance=ExtResource( 16 )]
 position = Vector2( 3134.37, 2440.4 )

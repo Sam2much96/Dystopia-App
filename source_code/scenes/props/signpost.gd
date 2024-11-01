@@ -29,7 +29,8 @@ Displays A Dialogue Text When the Player comes near
 var interract : bool = false
 
 export(bool) var enabled
-export(String) var dialogue = ""
+export(String) var dialogue : String = ""
+export(String) var speaker : String = ""
 
 
 
@@ -91,7 +92,7 @@ func show_signpost():
 			Dialogs.translate_to( dialogue, Dialogs.language), 'Player'
 			)
 	elif not HINT:
-		Dialogs.dialog_box.show_dialog(Dialogs.translate_to(dialogue, Dialogs.language), 'Player')
+		Dialogs.dialog_box.show_dialog(Dialogs.translate_to(dialogue, Dialogs.language), speaker)
 
 
 func hide_signpost():

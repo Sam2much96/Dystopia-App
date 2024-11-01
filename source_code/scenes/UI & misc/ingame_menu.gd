@@ -320,7 +320,10 @@ func _on_quit_pressed():
 
 func _on_multiplayer_pressed(): # Experimental feature
 	Music.play_track(_ui_sfx)
-	return get_tree().change_scene_to(load ('res://scenes/multiplayer/login.tscn'))
+	
+	return Utils.Functions.change_scene_to(load('res://scenes/multiplayer/login.tscn'), get_tree())
+
+
 
 func _exit_tree():
 	# Memory Leak Management

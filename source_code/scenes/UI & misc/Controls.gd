@@ -80,7 +80,9 @@ func _ready():
 	$ScrollContainer/VBoxContainer/back.grab_focus() #Back button grabs focus
 
 	#$TextureRect.hide()
-
+	#hide ingame menu
+	Android.show_only_menu()
+	
 
 	if Globals.screenOrientation == 1 && Globals.os == "Android":
 		upscale_ui()
@@ -128,8 +130,8 @@ func _on_Debug_toggled(button_pressed):
 		if button_pressed:
 			# node_input : Input ,tree: SceneTree, action : String, _pressed : bool
 			GInput_.parse_input(GInput_.gameHUD.TouchInterface.TouchInput, get_tree(),"Debug", true)
-			$TextureRect2.show() #Shows Debug hint when in debug mode
-			$TextureRect.hide()
+			#$TextureRect2.show() #Shows Debug hint when in debug mode
+			#$TextureRect.hide()
 
 'Changes Button Sizes for mobile UI'
 # Scales UI up for Android Mobile Devices

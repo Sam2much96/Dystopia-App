@@ -7,12 +7,13 @@
 #
 # Features:
 # (1) Implements Platforming Code for Player Object
-# (2) x4 Air Jumps
+# (2) x9 Air Jumps
 #
 # To DO:
 # (1) Wall Jumps
 # (2) Implement Player Animations
 # (3) Implement Facing
+# (4) falling Animation When jumping off cliff edge
 # *************************************************
 
 extends Player
@@ -21,11 +22,13 @@ class_name Player_v3_Platformer
 
 export (int) var speed = 10
 export (int) var jump_speed = -1800
-export (int) var gravity = 4000
+export (int) var gravity = 4000 # default gravity
 
+
+export (float) var GRAVITY_TIMEOUT : float = 0.5 # pauses gravity during jumps for 0.5 secs
 const MAX_SPEED = 1000
 # For Jumping Mechanics
-const max_air_jumps : int = 6
+const max_air_jumps : int = 9
 var air_jump_counter : int = 0
 
 export (Vector2) var velocity = Vector2.ZERO
@@ -89,6 +92,8 @@ func _physics_process(delta):
 			# Stop Gravity
 			gravity = 0
 			
-			yield(get_tree().create_timer(0.5),"timeout")
+			yield(get_tree().create_timer(GRAVITY_TIMEOUT),"timeout")
 			gravity = 4000 # Reset Gravity
+	
+
 	

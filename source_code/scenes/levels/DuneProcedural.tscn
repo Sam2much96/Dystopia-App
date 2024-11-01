@@ -17,11 +17,12 @@ tile_data = PoolIntArray( -1114030, 0, 0, -1114029, 0, 0, -1114028, 0, 0, -10485
 scroll_offset = Vector2( 1, 1 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 476, -2391 )
+position = Vector2( 299, -6472 )
 script = ExtResource( 6 )
 speed = 75
 jump_speed = -1800
 gravity = 4000
+GRAVITY_TIMEOUT = 0.5
 velocity = Vector2( 0, 0 )
 
 [node name="Dunes_Procedural" type="TileMap" parent="."]

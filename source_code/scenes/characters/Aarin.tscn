@@ -1494,7 +1494,7 @@ monitorable = false
 
 [node name="slash" type="CollisionPolygon2D" parent="player_sword"]
 position = Vector2( -22.4663, -100.646 )
-rotation = 2.30939
+rotation = 2.30938
 polygon = PoolVector2Array( -91.5168, 17.4712, -49.7053, 33.7712, -36.5348, 110.047, 35.867, 113.696, 44.7355, 32.9416, 90.0337, 28.9744, 135.867, -41.8589, 45.4412, -44.8453, 33.0892, -126.582, -28.0219, -121.026, -35.1723, -51.082, -122.466, -43.2478 )
 
 [node name="camera" type="Camera2D" parent="."]
@@ -1523,7 +1523,6 @@ __meta__ = {
 wait_time = 0.1
 
 [node name="Impact" parent="." instance=ExtResource( 5 )]
-visible = false
 position = Vector2( 20.7633, -48.054 )
 _impact = true
 

@@ -16,6 +16,14 @@ tile_data = PoolIntArray( -1114030, 0, 0, -1114029, 0, 0, -1114028, 0, 0, -10485
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 scroll_offset = Vector2( 1, 1 )
 
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 476, -2391 )
+script = ExtResource( 6 )
+speed = 75
+jump_speed = -1800
+gravity = 4000
+velocity = Vector2( 0, 0 )
+
 [node name="Dunes_Procedural" type="TileMap" parent="."]
 self_modulate = Color( 0, 0, 0, 1 )
 position = Vector2( 566.286, 295.252 )
@@ -28,9 +36,8 @@ tile_data = PoolIntArray( -393214, 0, 0, -393213, 0, 327681, -327678, 0, 262144,
 script = ExtResource( 5 )
 
 [node name="CaveGenerator" parent="Dunes_Procedural" instance=ExtResource( 10 )]
-position = Vector2( 53.2655, 896.455 )
-scale = Vector2( 0.847201, 0.330879 )
-points = PoolVector2Array( 408.933, 2841.8, -1073.6, 3014.07, -1006.32, 9052.54, 498.64, 8937.69, 476.213, 2956.65 )
+position = Vector2( 266.714, -1324.25 )
+points = PoolVector2Array( 4677, 2827, -983, 2869, -1006.32, 9052.54, 4653, 8779, 4474, 2744 )
 width = 30.0
 default_color = Color( 0.4, 0.501961, 1, 0 )
 enabled = true
@@ -41,15 +48,6 @@ noise_period = 60
 noise_persistence = 0.01
 noise_lacunarity = 0.05
 noise_threshold = 0.05
-
-[node name="Player" parent="Dunes_Procedural/CaveGenerator" instance=ExtResource( 1 )]
-position = Vector2( 315.94, -9728.72 )
-scale = Vector2( 0.901054, 0.901054 )
-script = ExtResource( 6 )
-speed = 75
-jump_speed = -1800
-gravity = 4000
-velocity = Vector2( 0, 0 )
 
 [node name="Exit" type="Area2D" parent="Dunes_Procedural"]
 monitorable = false

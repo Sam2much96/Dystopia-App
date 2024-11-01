@@ -261,6 +261,9 @@ text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In semper moles
 autowrap = true
 clip_text = true
 percent_visible = 0.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
 [node name="next_dialog_arrow" type="TextureRect" parent="."]
 anchor_left = 1.0

@@ -18,7 +18,8 @@ https://docs.google.com/presentation/d/1ZqYquZDcGYpotuJnGGzXbDy9AoX4rpI0OgRNC-92
 
 ![Screenshot](https://github.com/Sam2much96/Dystopia-App/blob/v3.5.3/source_code/resources/illustrations/cover%201.png)
 
-## White Board
+## White Paper
+[![WhiteBoard](https://img.itch.zone/aW1nLzE4NDc5NTU1LmpwZw==/original/Lcxe%2FA.jpg)
 
 **Trailer Video**
 

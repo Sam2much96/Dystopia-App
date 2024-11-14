@@ -67,13 +67,17 @@ theme = ExtResource( 3 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_right = 352.0
-margin_bottom = 1083.0
+margin_bottom = 1151.0
 script = ExtResource( 6 )
 
 [node name="Label_Spacer" type="Label" parent="ScrollContainer/VBoxContainer"]
 margin_right = 352.0
-margin_bottom = 99.0
+margin_bottom = 167.0
 text = "
+
+
+
+
 
 
 
@@ -81,9 +85,9 @@ text = "
 "
 
 [node name="back" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 103.0
+margin_top = 171.0
 margin_right = 352.0
-margin_bottom = 181.0
+margin_bottom = 249.0
 custom_fonts/font = ExtResource( 8 )
 action_mode = 0
 text = "Back"
@@ -94,9 +98,9 @@ __meta__ = {
 }
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-margin_top = 185.0
+margin_top = 253.0
 margin_right = 352.0
-margin_bottom = 263.0
+margin_bottom = 331.0
 
 [node name="music" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer2"]
 margin_right = 236.0
@@ -116,9 +120,9 @@ margin_right = 264.0
 margin_bottom = 78.0
 
 [node name="debug" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 267.0
+margin_top = 335.0
 margin_right = 352.0
-margin_bottom = 345.0
+margin_bottom = 413.0
 custom_fonts/font = ExtResource( 8 )
 toggle_mode = true
 shortcut_in_tooltip = false
@@ -130,9 +134,9 @@ __meta__ = {
 }
 
 [node name="languague" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 349.0
+margin_top = 417.0
 margin_right = 352.0
-margin_bottom = 427.0
+margin_bottom = 495.0
 custom_fonts/font = ExtResource( 8 )
 toggle_mode = true
 shortcut_in_tooltip = false
@@ -144,9 +148,9 @@ __meta__ = {
 }
 
 [node name="shuffle" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 431.0
+margin_top = 499.0
 margin_right = 352.0
-margin_bottom = 509.0
+margin_bottom = 577.0
 custom_fonts/font = ExtResource( 8 )
 toggle_mode = true
 shortcut_in_tooltip = false
@@ -158,9 +162,9 @@ __meta__ = {
 }
 
 [node name="github" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 513.0
+margin_top = 581.0
 margin_right = 352.0
-margin_bottom = 591.0
+margin_bottom = 659.0
 custom_fonts/font = ExtResource( 8 )
 toggle_mode = true
 shortcut_in_tooltip = false
@@ -172,9 +176,9 @@ __meta__ = {
 }
 
 [node name="wallet" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 595.0
+margin_top = 663.0
 margin_right = 352.0
-margin_bottom = 673.0
+margin_bottom = 741.0
 custom_fonts/font = ExtResource( 8 )
 toggle_mode = true
 shortcut_in_tooltip = false
@@ -186,9 +190,9 @@ __meta__ = {
 }
 
 [node name="CRT" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 677.0
+margin_top = 745.0
 margin_right = 352.0
-margin_bottom = 755.0
+margin_bottom = 823.0
 custom_fonts/font = ExtResource( 8 )
 toggle_mode = true
 shortcut_in_tooltip = false
@@ -200,26 +204,26 @@ __meta__ = {
 }
 
 [node name="help" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 759.0
+margin_top = 827.0
 margin_right = 352.0
-margin_bottom = 837.0
+margin_bottom = 905.0
 custom_fonts/font = ExtResource( 8 )
 text = "Hold to Show Help"
 flat = true
 
 [node name="change controller" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 841.0
+margin_top = 909.0
 margin_right = 352.0
-margin_bottom = 919.0
+margin_bottom = 987.0
 custom_fonts/font = ExtResource( 8 )
 toggle_mode = true
 text = "Direction/controls"
 flat = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-margin_top = 923.0
+margin_top = 991.0
 margin_right = 352.0
-margin_bottom = 1001.0
+margin_bottom = 1069.0
 
 [node name="vibration" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer"]
 margin_right = 185.0
@@ -242,9 +246,9 @@ margin_bottom = 656.0
 toggle_mode = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-margin_top = 1005.0
+margin_top = 1073.0
 margin_right = 352.0
-margin_bottom = 1083.0
+margin_bottom = 1151.0
 
 [node name="multiplayer" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer3"]
 margin_right = 217.0

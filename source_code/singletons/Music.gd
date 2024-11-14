@@ -62,7 +62,9 @@ export (Dictionary) var default_playlist : Dictionary ={
 	6:"res://music/Spooky-Chike-san song.ogg",
 	7:"res://music/Gregorian-Chant(chosic.com).ogg",
 	8:"res://music/zelda2.ogg",
-	9: "res://music/Track 1-1.ogg"
+	9: "res://music/Track 1-1.ogg",
+	10:"res://music/The Road Warrior.ogg",
+	11:"res://music/Marble Tower 4.ogg" 
 }
 
 # Files Hosted on AWS S3 Bucket

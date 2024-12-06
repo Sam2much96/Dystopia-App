@@ -59,12 +59,15 @@ export (Dictionary) var default_playlist : Dictionary ={
 	3:"res://music/chike san afro 2.ogg",
 	4:"res://music/chike san afro 3.ogg",
 	5: "res://music/Inhumanity Game Track 3.ogg",
-	6:"res://music/Spooky-Chike-san song.ogg",
+	6:"res://music/paranoia.ogg",
 	7:"res://music/Gregorian-Chant(chosic.com).ogg",
 	8:"res://music/zelda2.ogg",
 	9: "res://music/Track 1-1.ogg",
 	10:"res://music/The Road Warrior.ogg",
-	11:"res://music/Marble Tower 4.ogg" 
+	11:"res://music/Marble Tower 4.ogg",
+	12:"res://music/hard_won_nobility.ogg",
+	13:"res://music/here_comes_trouble.ogg",
+	14:"res://music/captured_land.ogg"
 }
 
 # Files Hosted on AWS S3 Bucket

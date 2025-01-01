@@ -19,12 +19,21 @@ __meta__ = {
 "_edit_horizontal_guides_": [  ]
 }
 
-[node name="ColorRect" type="ColorRect" parent="."]
-visible = false
-margin_top = -321.0
-margin_right = 1064.0
-margin_bottom = 1185.0
-color = Color( 1, 1, 1, 0.611765 )
+[node name="TextureRect" type="TextureRect" parent="."]
+self_modulate = Color( 1, 1, 1, 0.309804 )
+margin_left = -236.0
+margin_top = -69.0
+margin_right = 1046.0
+margin_bottom = 648.0
+texture = ExtResource( 4 )
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+modulate = Color( 1, 1, 1, 0.298039 )
+margin_left = 2.0
+margin_top = 965.0
+margin_right = 1284.0
+margin_bottom = 1682.0
+texture = ExtResource( 5 )
 
 [node name="Help popup" type="Popup" parent="."]
 margin_right = 1285.0
@@ -43,22 +52,6 @@ margin_top = 96.1085
 margin_right = 746.09
 margin_bottom = 136.108
 theme = SubResource( 1 )
-
-[node name="TextureRect" type="TextureRect" parent="."]
-self_modulate = Color( 1, 1, 1, 0.309804 )
-margin_left = -236.0
-margin_top = -69.0
-margin_right = 1046.0
-margin_bottom = 648.0
-texture = ExtResource( 4 )
-
-[node name="TextureRect2" type="TextureRect" parent="."]
-modulate = Color( 1, 1, 1, 0.298039 )
-margin_left = 2.0
-margin_top = 965.0
-margin_right = 1284.0
-margin_bottom = 1682.0
-texture = ExtResource( 5 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 anchor_right = 1.0

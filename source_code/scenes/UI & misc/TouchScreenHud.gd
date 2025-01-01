@@ -71,8 +71,9 @@ onready var _debug = get_tree().get_root().get_node("/root/Debug")
 # Comics Singleton Pointer
 onready var _comics = null#get_tree().get_root().get_node("/root/Comics_v6")
 
-# Global Input Ponter
+#Safe Global Input Ponter
 onready var _Input = get_tree().get_root().get_node("/root/GlobalInput")
+
 # Pointer to Parent
 onready var parent = get_parent()
 

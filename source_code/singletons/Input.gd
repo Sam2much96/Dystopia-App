@@ -66,11 +66,8 @@ onready var _Comics :  = $ComicSwipeGestures
 var _Stats : Stats
 var _Status_text : StatusText 
 
-
-var gameHUD : GameHUD
-#"Ingame HUD"
-## Mobiles
-#var _TouchScreenHUD : TouchScreenHUD
+# Game HUD + set get functions
+var gameHUD : GameHUD setget set_gameHUD, get_gameHUD
 
 # Mobile Joystick
 var joystick 
@@ -233,21 +230,7 @@ static func parse_input(node_input : Input ,tree: SceneTree, action : String, _p
 	
 	
 	tree.set_input_as_handled()
-	
-	# Save Input Action To Array
-	# is done in unhandled input method
-	#if action == "roll":
-	#	pass
-	#if action == "attack":
-	#	pass
-	#if action == "attack":
-	#	pass
-	
-	#a.action = action
-	#a.pressed = false
-	
-	# stop button Press
-	#Input.parse_input_event(a)
+
 	
 	return 0
 
@@ -275,8 +258,12 @@ func _get_input_buffer() -> int:
 	return int(Utils.array_to_string(input_buffer.duplicate()))
 
 
-#func show_loading(): # depreciated
-#	gameHUD._loading.show()
+func set_gameHUD(hud : GameHUD):
+	gameHUD = hud
+
+func get_gameHUD() -> GameHUD:
+	return gameHUD
+
 
 
 func _exit_tree():

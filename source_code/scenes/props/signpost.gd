@@ -108,7 +108,7 @@ func _on_signpost_body_entered(body):
 		show_signpost()
 		#activate(true)
 		#print(" Player Body Entered ")
-		print_debug ('player near signpost: ', Globals.near_interractible_objects)
+		print_debug ('player near signpost ')
 
 # Error Method Not found
 #func _on_player_area_exited(area):
@@ -131,6 +131,6 @@ func _on_signpost_body_exited(body):
 		return
 	
 	if body is Player:
-		print_debug ('player near signpost: ', Globals.near_interractible_objects)
+		print_debug ('player near signpost')
 	
 

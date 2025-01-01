@@ -295,7 +295,7 @@ func _on_comics_pressed():
 	#Utils.Functions.change_scene_to(Globals.comics___2, get_tree())
 	
 	# SHould Open URL to ItchIO Page On Mobile & PC
-	Networking.open_browser("https://dystopia-app-manga.vercel.app/manga.html")
+	Networking.open_browser("https://dystopia-app.site/public/manga.html")
 	
 	
 
@@ -402,6 +402,3 @@ func manually_translate()-> void:
 		
 		#comics.set_text(Dialogs.translate_to("comics", Dialogs.language))
 
-
-#func _on_github_pressed():
-#	get_tree().change_scene("res://addons/github-integration/scenes/GitHub.tscn")

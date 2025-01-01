@@ -12,6 +12,7 @@
 # (2) Add Swipe Gestures on/off controls
 # (3) Include a GitHub Login, to encourage Players to Inspect the Code Base ( Done in Game HUD)
 # (4) Implement Keyboard Layout for  player's help
+# (5) Show Player's Gameplay stats
 # *************************************************
 #
 # Bugs:
@@ -69,7 +70,7 @@ onready var _controller_help : Help = $"Help popup/Control"
 
 onready var debug__ = get_tree().get_root().get_node("/root/Debug")
 onready var music_ = get_tree().get_root().get_node("/root/Music")
-onready var GInput_ = get_tree().get_root().get_node("/root/GlobalInput")
+onready var GInput_ = get_tree().get_root().get_node("/root/GlobalInput") # use set get functions for this logic
 
 func _ready():
 	#if get_tree().get_root().has_node("/root/Debug") == true:
@@ -90,27 +91,6 @@ func _ready():
 	manual_translate()
 
 
-#func _input(event):
-	
-#	"Auto Scroller"
-	# Depreciated for Global Input Singleton
-	# Connects to Global Comics Swipe Feature and Game Menu Scroller function
-	#'AutoScroller'
-	# Implemented but Requires Proper Swipe Gesture Callibration
-	# 
-
-#	if Comics_v6._state == Comics_v6.SWIPE_RIGHT:
-		
-		
-		# Scroll Down
-#		Game_Menu.scroll(false, true,scroller)
-#	elif Comics_v6._state == Comics_v6.SWIPE_DOWN:
-		
-		# Scroll Up
-#		Game_Menu.scroll(true, true,scroller)
-		
-#	else: pass
-
 
 func _on_Button_pressed():
 	return get_tree().change_scene_to(Globals.title_screen) #changes scene to main title
@@ -128,10 +108,10 @@ Turns Music on and off & shuffles current track. Fix code later
 func _on_Debug_toggled(button_pressed): 
 	if get_tree().get_root().get_node("/root/Debug") != null:
 		if button_pressed:
+			# Gets the Input node from the Touch Interface and uses that to parse input programmatically
+			
 			# node_input : Input ,tree: SceneTree, action : String, _pressed : bool
-			GInput_.parse_input(GInput_.gameHUD.TouchInterface.TouchInput, get_tree(),"Debug", true)
-			#$TextureRect2.show() #Shows Debug hint when in debug mode
-			#$TextureRect.hide()
+			GInput_.parse_input(GInput_.get_gameHUD().get_TouchInterface().TouchInput, get_tree(),"Debug", true)
 
 'Changes Button Sizes for mobile UI'
 # Scales UI up for Android Mobile Devices

@@ -86,7 +86,7 @@ var uncompressed # Varible holds uncompressed zip files
 
 
 'ingame Environment Variables'
-var near_interractible_objects #which objects use this?
+#var near_interractible_objects #which objects use this?
 
 'Scene Loading variables'
 var scene_resource : PackedScene # Large Resouce Scene Placeholder

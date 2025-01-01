@@ -52,7 +52,7 @@ onready var android_ = get_tree().get_root().get_node("/root/Android")
 
 # Export Null Pointer TO Other Scene Setters
 var menu : Game_Menu
-var TouchInterface : TouchScreenHUD
+var TouchInterface : TouchScreenHUD setget set_TouchInterface, get_TouchInterface
 var _Comics  #Comics Node Pointer Safe
 var _Stats : Stats
 var _Status_text : StatusText
@@ -66,7 +66,9 @@ var children : Array
 func _ready():
 
 	menu = $"Menu "
-	TouchInterface =  $TouchInterface
+	
+	set_TouchInterface($TouchInterface)
+	
 	#_Comics = GlobalInput.get_child(1) #Comics Node Pointer
 	_Stats = $Stats
 	_Status_text = $Status_text
@@ -80,21 +82,28 @@ func _ready():
 	Utils.UI.check_for_broken_links(children)
 	
 	# make self Global via singleton
-	# Unsafe
-	#GlobalInput.gameHUD = self
+	# using setter and getter functions
 	
 	# Make Self global via scene Tree
 	# Safe
 	if is_instance_valid(globalInput):
-		globalInput.gameHUD = self
+		globalInput.set_gameHUD(self)
 	if is_instance_valid(android_):
+		
 		android_.GameHUD_ = self
+	
 	#Update Current Scene Whenever Scene Tree Changes
 	Globals.update_curr_scene()
 	
 	
 	# Hide Game HUD WHen Ready
-	
+
+func set_TouchInterface(hud : TouchScreenHUD):
+	TouchInterface = hud
+
+func get_TouchInterface() -> TouchScreenHUD:
+	return TouchInterface
+
 func _exit_tree():
 	# Memory Leak Management
 	#

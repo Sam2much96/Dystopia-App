@@ -21,8 +21,8 @@ const Short_lifetime : int = 3
 const MINUMUM_FPS : int = 25
 
 
-onready var TouchInterface : TouchScreenHUD #= GlobalInput.gameHUD.TouchInterface
-onready var GameHUD_ : GameHUD
+onready var TouchInterface : TouchScreenHUD  setget set_TouchInterface, get_TouchInterface #= GlobalInput.gameHUD.TouchInterface
+onready var GameHUD_ : GameHUD 
 
 
 var ingameMenu : Game_Menu
@@ -265,3 +265,10 @@ func _on_player_ready():
 	#if Globals.os == "Android":
 		GlobalInput.TouchInterface.enabled = true
 		Android.show_all_buttons() # Show Touch HUD UI
+
+
+func set_TouchInterface(hud : TouchScreenHUD):
+	TouchInterface = hud
+
+func get_TouchInterface() -> TouchScreenHUD:
+	return TouchInterface

@@ -26,7 +26,7 @@
 # (3) Write proper documentation (done)
 # (4) Implement signals
 # (5) Implement Testnet/ Localhost switch (done)
-#
+# (6) Implement AAR or local godot algod implementation for better player UX
 # *************************************************
 
 extends Node

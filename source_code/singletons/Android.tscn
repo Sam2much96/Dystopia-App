@@ -10,3 +10,6 @@ script = ExtResource( 2 )
 script = ExtResource( 1 )
 is_real = true
 banner_on_top = true
+
+[connection signal="banner_failed_to_load" from="AdMob" to="." method="_on_AdMob_banner_failed_to_load"]
+[connection signal="banner_loaded" from="AdMob" to="." method="_on_AdMob_banner_loaded"]

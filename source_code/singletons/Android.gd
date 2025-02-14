@@ -48,6 +48,7 @@ var Chrome = null
 # Ad Mob Ads Node
 onready var _ads : AdMob = self.get_child(0)
 
+
 func _ready():
 	
 	"""
@@ -124,7 +125,10 @@ func ads() -> void:
 
 
 func _no_ads() -> void:
+	print_stack() # debug the stack
+	
 	if is_instance_valid(_ads):
+		print_debug("Hiding Adds Banner")
 		_ads.hide_banner()
 
 
@@ -272,3 +276,21 @@ func set_TouchInterface(hud : TouchScreenHUD):
 
 func get_TouchInterface() -> TouchScreenHUD:
 	return TouchInterface
+
+# OPtimise android ads
+func _on_AdMob_banner_loaded():
+	# Ad some sud to this account
+	Globals.suds + 100
+	
+
+
+
+func _on_AdMob_banner_failed_to_load(error_code):
+	# stop the ads timer, log the error codes
+	
+	# pass the error code to ingame debug
+	_debug.Ads_debug = "Banner Ads failer : err" + str(error_code)
+
+
+
+

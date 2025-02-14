@@ -734,6 +734,10 @@ reset={
 "events": [  ]
 }
 
+[input_devices]
+
+pointing/android/enable_long_press_as_right_click=true
+
 [locale]
 
 translations=PoolStringArray( "res://Translation/Translation_1.en_US.translation", "res://Translation/Translation_1.fr.translation", "res://Translation/Translation_1.ha_NG.translation", "res://Translation/Translation_1.hi_IN.translation", "res://Translation/Translation_1.ig_NG.translation", "res://Translation/Translation_1.ja.translation", "res://Translation/Translation_1.pt_BR.translation", "res://Translation/Translation_1.te_IN.translation", "res://Translation/Translation_1.yo_NG.translation", "res://Translation/Translation_1.zh_CN.translation" )

@@ -170,11 +170,12 @@ func _input(event):
 func _update_wallet_stats(): #Updates killcount and Algos
 	"Update Price From CoinGecko API"
 	if Networking.good_internet:
-		_coin_label.text = 'mAlgos: ' + str (Globals.algos)
-		_price_label.text = "Price : $" + str(Networking.Data["algorand"]["usd"])
+		_coin_label.text = 'Suds: ' + str (Globals.suds)
+		_price_label.text = "Prices: mAlgo $" + str(Networking.Data["algorand"]["usd"]) + "/" + "Suds: 0.38" # should ideally fetch price data from prebonded token
+
 
 func _update_quest_listing():
-	# DOcument and refactor
+	# Document and refactor
 	
 	var text = ""
 	text += "Started:\n"
@@ -185,7 +186,7 @@ func _update_quest_listing():
 		text += "  %s\n" % quest
 	
 	_quest_label.text = text
-	#pass
+
 
 # Connects to Inventory.remove item -> Stats.gd
 func _update_inventory_button_cache(item : String, amount : int) : # COde Bloc Called from inventroy singleton remove_item() method

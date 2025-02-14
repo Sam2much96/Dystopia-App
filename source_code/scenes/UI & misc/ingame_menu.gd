@@ -294,7 +294,7 @@ func _on_comics_pressed():
 	Music.play_track(_ui_sfx)
 	#Utils.Functions.change_scene_to(Globals.comics___2, get_tree())
 	
-	# SHould Open URL to ItchIO Page On Mobile & PC
+	# Open URL to My Website
 	Networking.open_browser("https://dystopia-app.site")
 	
 	
@@ -402,3 +402,9 @@ func manually_translate()-> void:
 		
 		#comics.set_text(Dialogs.translate_to("comics", Dialogs.language))
 
+
+
+func _on_Rug_Ninja_pressed():
+	# Open URL to My Website
+	Networking.open_browser("https://rug.ninja/Suds")
+	

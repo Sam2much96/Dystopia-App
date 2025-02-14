@@ -170,7 +170,7 @@ func _ready():
 	print ("Networking Server Config and Player Name: ",cfg_server_ip,cfg_player_name, "/")
 	
 	#check if device is online on a separate thread
-	_check_connection( "https://api.coingecko.com/api/v3/simple/price?ids=algorand&vs_currencies=usd", Networking)#url('https://play.google.com/store/apps/details?id=dystopia.app')
+	_check_connection("https://api.coingecko.com/api/v3/simple/price?ids=algorand&vs_currencies=usd" , Networking) #
 
 
 func _process(_delta): 
@@ -318,13 +318,13 @@ func _on_Networking_request_completed(result, response_code, headers, body : Poo
 			good_internet = true
 			#_connection =(str ('connection success')) # Debugs to the Debug singleton # Depreciated--Delete
 			#print_debug (str(result) + str(response_code) + str(headers)+ str (body))  
-			
+			#print(body.get_string_from_utf8())
 			# PArses API Get Result TO Json
 			var _result = JSON.parse(body.get_string_from_utf8())
 
 			if _result.error == OK:
 				Data = _result.result
-				print_debug("Data debug: ",Data)  # Outputs: { "algorand": { "usd": 0.114662 } }
+				print_debug("Internet Data debug: ",Data)  # Outputs: { "algorand": { "usd": 0.114662 } }
 			else:
 				print_debug("Failed to parse JSON")
 			#print_debug(body.get_string_from_utf8())

@@ -1172,3 +1172,23 @@ class Film :
 			return video_file
 		return video_file
 
+
+
+
+class Advertising:
+	"""
+	An Advertising Class for optimising and controlling the ads / ads data for each player
+	"""
+	var t = 0
+	
+	
+	static func start_ads_timer(_timer : Timer):
+		_timer.start()
+	
+	func hash_ads_data():
+		pass
+		
+	func stop_ads_timer(_timer : Timer):
+		_timer.stop()
+		
+		# log the data

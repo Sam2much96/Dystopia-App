@@ -117,7 +117,7 @@ var player_name : String
 # Buggy
 onready var algos : int  #=  Wallet.Wallet.load_account_info(false, Wallet.token_write_path, Wallet.FileCheck3, Wallet.UserData).get("_wallet_algos")
 	#MicroAlgos 
-
+onready var suds : int
 
 "Device Variables"
 var user_data_dir : String =OS.get_user_data_dir()

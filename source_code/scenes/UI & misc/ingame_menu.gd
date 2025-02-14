@@ -295,7 +295,7 @@ func _on_comics_pressed():
 	#Utils.Functions.change_scene_to(Globals.comics___2, get_tree())
 	
 	# SHould Open URL to ItchIO Page On Mobile & PC
-	Networking.open_browser("https://dystopia-app.site/public/manga.html")
+	Networking.open_browser("https://dystopia-app.site")
 	
 	
 

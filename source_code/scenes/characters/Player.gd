@@ -10,6 +10,7 @@
 # (3) It's a class and stores variables to the UI, Globals singleton, PlayersSave Files, and the Debug SIngleton
 # (4) Extend input from Global Input Singleton
 # (5) Extends to Top DOwn and SideScrolling Player Scripts
+# (6) Player & Enemy SFX is handled by simulation singleton
 # *************************************************
 # To Do:
 # (1) Implement State Buffer (Done)
@@ -83,6 +84,7 @@ onready var despawn_particles: DeSpawnFX = Globals.despawn_fx.instance()
 
 onready var die_sfx: String = Music.nokia_soundpack[27]
 onready var hurt_sfx: String = Music.nokia_soundpack[20]
+onready var dash_sfx : String = Music.wind_sfx[1]
 
 # Get Singletons
 onready var music_singleton_: music_singleton = get_node("/root/Music")
@@ -221,3 +223,8 @@ func hurt(from_position: Vector2):
 			# turn off music sfx
 			music_singleton_.set_sound_effect(music_singleton_.FX.PITCH_SHIFT, false)
 			music_singleton_.play_track(die_sfx)
+
+
+func dash():
+	music_singleton_.play_track(dash_sfx)
+

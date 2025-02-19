@@ -112,20 +112,44 @@ export (Dictionary) var blood_fx : Dictionary = {
 }
 
 export (Dictionary) var hit_sfx : Dictionary = {
-	0:'res://sounds/hit01.ogg',
-	1:'res://sounds/hit02.ogg',
-	2:'res://sounds/hit03.ogg',
-	3:'res://sounds/hit04.ogg',
-	4:'res://sounds/hit05.ogg',
-	5:'res://sounds/hit06.ogg',
-	6:'res://sounds/hit07.ogg',
-	7:'res://sounds/hit08.ogg',
+	0:'res://sounds/Dragon Ball Z Punch Sound Effect N°9.wav',
+	1:'res://sounds/Dragon Ball Z Punch Sound Effect N°10.wav',
+	2:'res://sounds/Dragon Ball Z Punch Sound Effect N°11.wav',
+	3:'res://sounds/Dragon Ball Z Punch Sound Effect N°12.wav',
+	4:'res://sounds/Dragon Ball Z Punch Sound Effect N°13.wav',
+	5:'res://sounds/Dragon Ball Z Punch Sound Effect N°14.wav',
+	6:'res://sounds/Dragon Ball Z Punch Sound Effect N°15.wav',
+	7:'res://sounds/Dragon Ball Z Punch Sound Effect N°16.wav',
+	8:'res://sounds/Dragon Ball Z Punch Sound Effect N°17.wav',
+	9:'res://sounds/Dragon Ball Z Punch Sound Effect N°18.wav',
+	10:'res://sounds/Dragon Ball Z Punch Sound Effect N°19.wav',
+	11:'res://sounds/Dragon Ball Z Punch Sound Effect N°20.wav',
+	12:'res://sounds/Dragon Ball Z Punch Sound Effect N°21.wav',
+	13:'res://sounds/Dragon Ball Z Punch Sound Effect N°22.wav',
+	14:'res://sounds/Dragon Ball Z Punch Sound Effect N°23.wav',
+	15:'res://sounds/Dragon Ball Z Punch Sound Effect N°24.wav',
+	16:'res://sounds/Dragon Ball Z Punch Sound Effect N°25.wav'
 
 }
 
 export (Dictionary) var grass_sfx : Dictionary  = {0:'res://sounds/Fantozzi-SandR3.ogg'}
 
-export (Dictionary) var wind_sfx : Dictionary = {0:'res://sounds/wind_2.ogg'}
+export (Dictionary) var wind_sfx : Dictionary = {
+	0:'res://sounds/wind_2.ogg',
+	1: 'res://sounds/gogeta-gogeta-instant-teleportation-sound-effect.ogg'
+	}
+
+export (Dictionary) var sword_sfx : Dictionary = {
+	0 : "res://sounds/Dragon Ball Z Trunks Sword In Sound Effect n°2.wav",
+	1 : "res://sounds/Dragon Ball Z Trunks Sword In Sound Effect n°4.wav",
+	2 : "res://sounds/Dragon Ball Z Trunks Sword Out Sound Effect n°1.wav",
+	3 : "res://sounds/Dragon Ball Z Trunks Sword Slash Sound Effect n°4.wav",
+	4 : "res://sounds/Dragon Ball Z Trunks Sword Slash Sound Effect n°5.wav",
+	5 : "res://sounds/Dragon Ball Z Trunks Sword Slash Sound Effect n°6.wav",
+	6 : "res://sounds/Dragon Ball Z Trunks Sword Slash Sound Effect n°7.wav",
+	7 : "res://sounds/Dragon Ball Z Trunks Sword Slash Sound Effect n°8.wav",
+	8 : "res://sounds/Dragon Ball Z Trunks Sword Slash Sound Effect n°9.wav"
+}
 
 export (Dictionary) var nokia_soundpack : Dictionary = {
 	0: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/bad_melody.ogg",

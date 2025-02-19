@@ -74,7 +74,7 @@ func _ready():
 		Dialogs.is_connected("dialog_ended", self, "_on_dialog_ended") 
 		):
 		
-			push_error("Debug Connected Signals")
+			push_warning("Debug Connected Signals")
 
 
 func show_signpost():
@@ -93,7 +93,8 @@ func show_signpost():
 			)
 	elif not HINT:
 		Dialogs.dialog_box.show_dialog(Dialogs.translate_to(dialogue, Dialogs.language), speaker)
-
+	
+	
 
 func hide_signpost():
 	print("hiding signpost")

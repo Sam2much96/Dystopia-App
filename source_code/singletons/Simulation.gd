@@ -750,6 +750,7 @@ class Player_ extends Reference:
 			blood.global_position = _global_position
 			_body.get_parent().add_child(blood)
 			Globals.player_cam.shake()
+			Music.play_sfx(Music.sword_sfx)
 			Music.play_track(Music.nokia_soundpack[20]) # Hurt Sound Track
 			
 			if _body.hitpoints <= 0:

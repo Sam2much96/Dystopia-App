@@ -2,7 +2,7 @@
 # godot3-Dystopia-game by INhumanity_arts
 # Released under MIT License
 # *************************************************
-# Ingame Menu
+# Ingame Menu for Android
 # 
 # Features:
 #(1) Impement State Machine (done)
@@ -80,7 +80,7 @@ func _ready():
 	GlobalInput.menu = self
 	
 	#Buttons
-	comics  = $ScrollContainer/HSeparator/comics
+	comics  = $ScrollContainer/HSeparator/lore
 	new_game  = $"ScrollContainer/HSeparator/new game"
 
 	continue_game = get_node("ScrollContainer/HSeparator/continue") 
@@ -144,9 +144,8 @@ func _input(event):
 	if not event.is_action_pressed("menu"): # Guard Clause
 		return
 	
-	#if event.is_action_pressed("menu") == true :# 
-		#print_stack()
-	print_debug("Menu Is Pressed")
+	
+	#print_debug("Menu Is Pressed")
 	if menu_state == HIDDEN:
 		menu_state = SHOWING
 		
@@ -164,12 +163,7 @@ func _input(event):
 		Music.play_track(_ui_sfx_1)
 		return menu_state
 		
-#input functions for gamepad
-# Temporarily Disabled for refactor
 
-#		if event.is_action_pressed("ui_cancel") && visible == true:
-#			Globals._go_to_title()
-#	else : pass 
 	
 	get_tree().set_input_as_handled()
 
@@ -289,7 +283,7 @@ func _menu_pause_and_play(boolean): #pass it a boolean to custom pause and play
 	get_tree().set_pause(boolean)
 
 
-func _on_comics_pressed():
+func _on_lore_pressed():
 	print_debug ('comics pressed')
 	Music.play_track(_ui_sfx)
 	#Utils.Functions.change_scene_to(Globals.comics___2, get_tree())
@@ -346,11 +340,10 @@ func _exit_tree():
 
 
 
-
+#To be Depreciated and moved to Website dystopia-site for better curation UX
 func _on_anime_pressed():
 	Music.play_track(_ui_sfx)
-	#return get_tree().change_scene_to((load('res://scenes/UI & misc/Shop.tscn')))
-
+	
 	# SHould Open URL to CHannel Playlist On Youtube
 	# using screen orientation as a parameter
 	Networking.open_browser("https://www.youtube.com/playlist?list=PLYvZuLwGpTn89vzTTgIypeEDuEIeVuNaW")
@@ -399,12 +392,6 @@ func manually_translate()-> void:
 			# Update the button links then
 			
 			i.set_text(Dialogs.translate_to(i.name, Dialogs.language))
-		
-		#comics.set_text(Dialogs.translate_to("comics", Dialogs.language))
 
 
 
-func _on_Rug_Ninja_pressed():
-	# Open URL to My Website
-	Networking.open_browser("https://rug.ninja/Suds")
-	

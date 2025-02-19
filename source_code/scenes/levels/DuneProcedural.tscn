@@ -17,7 +17,7 @@ tile_data = PoolIntArray( -1114030, 0, 0, -1114029, 0, 0, -1114028, 0, 0, -10485
 scroll_offset = Vector2( 1, 1 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 299, -6472 )
+position = Vector2( 299, -9913 )
 script = ExtResource( 6 )
 speed = 75
 jump_speed = -1800
@@ -26,14 +26,13 @@ GRAVITY_TIMEOUT = 0.5
 velocity = Vector2( 0, 0 )
 
 [node name="Dunes_Procedural" type="TileMap" parent="."]
-self_modulate = Color( 0, 0, 0, 1 )
 position = Vector2( 566.286, 295.252 )
 tile_set = ExtResource( 9 )
 cell_size = Vector2( 16, 16 )
 show_collision = true
 centered_textures = true
 format = 1
-tile_data = PoolIntArray( -393214, 0, 0, -393213, 0, 327681, -327678, 0, 262144, -327677, 0, 131074, 196620, 0, 0, 4391335, 0, 0 )
+tile_data = PoolIntArray( -393214, 0, 0, -393213, 0, 327681, -327678, 0, 262144, -327677, 0, 131074, -196602, 0, 0, -131066, 0, 0, -65530, 0, 0, 196620, 0, 0, 4391335, 0, 0 )
 script = ExtResource( 5 )
 
 [node name="CaveGenerator" parent="Dunes_Procedural" instance=ExtResource( 10 )]

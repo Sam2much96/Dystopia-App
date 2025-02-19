@@ -605,7 +605,7 @@ _global_script_class_icons={
 config/name="Dystopia App stable"
 run/main_scene="res://scenes/UI & misc/form/form.tscn"
 run/delta_smoothing=false
-boot_splash/image="res://resources/title animation/Dystopia Logo 2 webp.webp"
+boot_splash/image="res://resources/title animation/Dystopia Logo Drop shadow copy.png"
 boot_splash/fullsize=false
 boot_splash/use_filter=false
 boot_splash/bg_color=Color( 1, 1, 1, 1 )
@@ -733,10 +733,6 @@ reset={
 "deadzone": 0.5,
 "events": [  ]
 }
-
-[input_devices]
-
-pointing/android/enable_long_press_as_right_click=true
 
 [locale]
 

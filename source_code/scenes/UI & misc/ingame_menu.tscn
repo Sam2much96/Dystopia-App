@@ -22,13 +22,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="comics" type="Button" parent="ScrollContainer/HSeparator"]
+[node name="lore" type="Button" parent="ScrollContainer/HSeparator"]
 margin_right = 198.0
 margin_bottom = 68.0
 focus_next = NodePath("../new game")
 focus_previous = NodePath("../quit")
 theme = ExtResource( 4 )
-text = "comics"
+text = "lore"
 flat = true
 
 [node name="new game" type="Button" parent="ScrollContainer/HSeparator"]
@@ -36,7 +36,7 @@ margin_top = 72.0
 margin_right = 198.0
 margin_bottom = 140.0
 focus_next = NodePath("../continue")
-focus_previous = NodePath("../comics")
+focus_previous = NodePath("../lore")
 mouse_filter = 1
 text = "new game"
 flat = true
@@ -89,12 +89,12 @@ margin_top = 504.0
 margin_right = 198.0
 margin_bottom = 572.0
 focus_neighbour_top = NodePath("../controls")
-focus_next = NodePath("../comics")
+focus_next = NodePath("../lore")
 focus_previous = NodePath("../controls")
 text = "quit"
 flat = true
 
-[connection signal="pressed" from="ScrollContainer/HSeparator/comics" to="." method="_on_comics_pressed"]
+[connection signal="pressed" from="ScrollContainer/HSeparator/lore" to="." method="_on_lore_pressed"]
 [connection signal="pressed" from="ScrollContainer/HSeparator/new game" to="." method="_on_new_game_pressed"]
 [connection signal="pressed" from="ScrollContainer/HSeparator/continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="ScrollContainer/HSeparator/multiplayer" to="." method="_on_multiplayer_pressed"]

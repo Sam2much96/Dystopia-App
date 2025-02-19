@@ -62,7 +62,7 @@ var player_cam
 var player_hitpoints : int
 var enemy = null
 var enemy_debug : String 
-var initial_level : String = "res://scenes/levels/Overworld.tscn"  # loading outside environment bug fixed
+const initial_level : String = "res://scenes/levels/Overworld.tscn"  # loading outside environment bug fixed
 
 var video_stream #for the video streamers
 
@@ -141,8 +141,8 @@ var bullet_fx : PackedScene
 #var temp
 
 "Wallet Algo"
-#var NFT: TextureRect #should ideally be an array for multiple NFT's
-#var wallet_state  #wallet state global variabe
+# To do :
+# (1) port wallet connect
 
 
 

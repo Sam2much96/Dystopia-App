@@ -121,16 +121,15 @@ func _on_dialog_started():
 	emit_signal("dialog_started")
 	
 func _on_dialog_ended():
-	
-	active = false
-	emit_signal("dialog_ended")
-	
-	yield(get_tree().create_timer(WAIT_TIME), "timeout")
-	# DIalogue Box Node Might Be Removed From Scene Tree After 6 Seconds Wait
-	# This bloc Error Checks for any such occurences
-	if is_instance_valid(dialog_box):
-		dialog_box.hide_dialogue()
-
+	if active:
+		active = false
+		emit_signal("dialog_ended")
+		
+		yield(get_tree().create_timer(WAIT_TIME), "timeout")
+		# DIalogue Box Node Might Be Removed From Scene Tree After 6 Seconds Wait
+		# This bloc Error Checks for any such occurences
+		if is_instance_valid(dialog_box):
+			dialog_box.hide_dialogue()
 
 
  # Uses the translate feature from the Form at res://scenes/UI & misc/form/form.tscn

@@ -713,7 +713,7 @@ class Screen  :
 
 "Procedural Generation"
 class procedural extends Reference:
-	# Bug: Maxes Out Static Memory, Refactoring to use dynamic memeory instead
+	# Bug: Maxes Out Static Memory, Refactored to use dynamic memeory instead
 	#
 	
 	static func genereate(simplex_noise : OpenSimplexNoise, 

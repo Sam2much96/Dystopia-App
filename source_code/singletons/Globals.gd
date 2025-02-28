@@ -99,7 +99,7 @@ var loading_resource : bool = false
 onready var scene_loader= ResourceLoader
 onready var progress : float
 
-var loading_scene : PackedScene = preload("res://scenes/UI & misc/LoadingScene.tscn")
+onready var loading_scene : PackedScene = preload("res://scenes/UI & misc/LoadingScene.tscn")
 
 var Overworld_Scenes : Dictionary = {0 : "res://scenes/levels/Temple interior.tscn",
 1 : "res://scenes/levels/DuneProcedural.tscn",
@@ -130,9 +130,9 @@ var viewport_size : Vector2
 var center_of_viewport : Vector2 
 
 "In Game FX"
-var blood_fx: PackedScene = load ('res://scenes/UI & misc/Blood_Splatter_FX.tscn') #only load this once gameplay is on (optimization)
-var despawn_fx: PackedScene = load ("res://scenes/UI & misc/DespawnFX.tscn")
-var bullet_fx : PackedScene
+onready var blood_fx = load ('res://scenes/UI & misc/Blood_Splatter_FX.tscn') #only load this once gameplay is on (optimization)
+onready var despawn_fx = load ("res://scenes/UI & misc/DespawnFX.tscn")
+#onready var bullet_fx : PackedScene
 
 "Node Pointer"
 #var _smoke_fx_ 
@@ -153,7 +153,7 @@ var bullet_fx : PackedScene
 # (1) Speeds up loading times by hiding it behind cinematics
 # Depreciated
 #var tile_map : TileMap
-var OverWorld : PackedScene
+var OverWorld #: PackedScene
 
 
 #onready var nodes = [blood_fx,despawn_fx,self]

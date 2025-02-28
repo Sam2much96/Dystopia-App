@@ -485,14 +485,9 @@ MUSIC SHUFFLE
 """
 # Shuffles A Dictionary, Returns a string
 static func shuffle (playlist : Dictionary) -> String:
-	# Debug SHuffled Items 
-	#print_debug("shuffling" ,playlist)
 	
-	#music_track = ''
 	var track = int(rand_range(-1,playlist.size())) #selects a random track number
-	
-	
-	print_debug("selected Item After Shuffle: ",playlist[track])
+	#print_debug("selected Item After Shuffle: ",playlist[track]) # for debugging purposes only
 	return playlist[track]
 
 static func shuffle_array(_fx : Array) -> int : # selects a random number of an array

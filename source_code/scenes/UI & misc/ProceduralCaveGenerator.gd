@@ -64,11 +64,11 @@ var counter = 0 # for counting how many calcs are needed for this loop
 # Random World Seed Generator
 # To Do :
 # (1) Increase Seed Variation
-var word_seeds = {0:"Pleasse Give me a good result nitori olorun",
-1: "trying this muther fuccing shuffle randomiser, lool"}
+var word_seeds = Music.local_playlist_one.duplicate() # THe word seed is a random playlist song
 
 
-
+# Chunk size (tiles processed per frame)
+const CHUNK_SIZE = 13_500 # 276_015  is the size of comultaion for a 70x70 map
 
 func _enter_tree()-> void:
 	
@@ -128,7 +128,9 @@ func generate() :
 	# Calculated Generator Dimensions
 	# For debug purposes only
 	print_debug(" Cave Gen Dimensions:", map__width, "/", map__height, "//", map_dimensions)
+	
 
+	
 	if !generated : # conditional prevents auto dungeon regeneration bug
 		
 		
@@ -140,7 +142,7 @@ func generate() :
 		
 		
 		 #unimplemented version of logic that uses < 1400 calculations and moredynamic memory
-		simplex_noise.seed = world_seed[0].hash()
+		simplex_noise.seed = Music.shuffle(word_seeds).hash()
 		
 		# set simplex noise using Editor values
 		simplex_noise.octaves = noise_octaves
@@ -150,32 +152,83 @@ func generate() :
 		
 		# Loop to every tile within Map Area Co-ordinates
 		# Bug: 
-		# (1) This Double for Loop is an optimization hog, its apprx doing >1400 calculations
+		# (1) This Double for Loop is an optimization hog, its apprx doing >260782 calculations
 		#
 		
 		
-		for x in range( -map__width / 2, map__width / 2):
-			for y in range(-map__height / 2, map__height / 2):
+		#for x in range( -map__width / 2, map__width / 2):
+		#	for y in range(-map__height / 2, map__height / 2):
 				
 				# conditional
-				if simplex_noise.get_noise_2d(x, y) < noise_threshold:
+		#		if simplex_noise.get_noise_2d(x, y) < noise_threshold:
 					
 					# generataes a tilemap
-					counter +=1
-					tile_map.set_cell(x,y, tile_map.get_tileset().get_tiles_ids()[0], false, false, false,tile_map.get_cell_autotile_coord(x, y )) # co-ordinate of the TileSet
+		#			counter +=1
+		#			tile_map.set_cell(x,y, tile_map.get_tileset().get_tiles_ids()[0], false, false, false,tile_map.get_cell_autotile_coord(x, y )) # co-ordinate of the TileSet
 					
-					tile_map.update_bitmask_area(Vector2(x, y)) # so the engine knows where to configure the autotiling
-		tile_map.update_dirty_quadrants()
-		
-		
+		#			tile_map.update_bitmask_area(Vector2(x, y)) # so the engine knows where to configure the autotiling
+		#tile_map.update_dirty_quadrants()
+		var tile_ids = tile_map.get_tileset().get_tiles_ids()[0]
+		var tile_positions = []
+		for x in range(-map__width / 2, map__width / 2):
+			for y in range(-map__height / 2, map__height / 2):
+				if simplex_noise.get_noise_2d(x, y) < noise_threshold:
+					tile_positions.append(Vector2(x, y)) # store the tile positions on heap
+					counter +=1
+					#tile_map.set_cellv(Vector2(x,y), tile_ids, false, false, false,tile_map.get_cell_autotile_coord(x, y )) # co-ordinate of the TileSet
+					#
+					#tile_map.update_bitmask_area(Vector2(x, y)) # so the engine knows where to configure the autotiling
 		
 		print_debug("Finished Procedural Generation", "//", counter)
+		print_debug("tilemap data debug: ", tile_positions.size())
+		counter = 0
+		var chunk = []
+		
+		# Process up to CHUNK_SIZE tiles
+		#for i in range(min(CHUNK_SIZE, tile_positions.size())):
+		#	chunk.append(tile_positions.pop_front())  # Efficient way to remove elements
+		#	print("Chunk debug: ",chunk.size())
+		
+		for pos in tile_positions:
+			#print(pos)
+			counter +=1
+			tile_map.set_cellv(Vector2(pos), tile_ids, false, false, false,tile_map.get_cell_autotile_coord(pos.x, pos.y)) # co-ordinate of the TileSet
+			
+			tile_map.update_bitmask_area(Vector2(pos)) # so the engine knows where to configure the autotiling
+			
+			if counter == CHUNK_SIZE:
+				tile_map.update_dirty_quadrants()
+				counter = 0
+				yield(get_tree(), "idle_frame")  # Allow engine to process frames
+
+		print_debug("Tile Position Finished setting")
+		
+		#tile_map.update_dirty_quadrants()
+
+		#place_tiles_in_chunks(tile_positions, tile_ids)
 		generated = true
 		
 	if generated: pass
 
 
 
+func place_tiles_in_chunks(tile_positions, tile_id):
+	while tile_positions.size() > 0:
+		var chunk = []
+		
+		# Process up to CHUNK_SIZE tiles
+		for i in range(min(CHUNK_SIZE, tile_positions.size())):
+			chunk.append(tile_positions.pop_front())  # Efficient way to remove elements
+			
+			print_debug("Chunk debug: ", chunk.size(), "//", tile_positions.size())
+			
+		for pos in chunk:
+			tile_map.set_cellv(pos, tile_id,false, false, false,tile_map.get_cell_autotile_coord(pos.x, pos.y))
+			tile_map.update_bitmask_area(pos)
+
+		yield(get_tree(), "idle_frame")  # Allow engine to process frames
+
+		tile_map.update_dirty_quadrants()
 
 
 

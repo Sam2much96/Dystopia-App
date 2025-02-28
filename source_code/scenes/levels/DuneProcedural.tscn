@@ -17,11 +17,11 @@ tile_data = PoolIntArray( -1114030, 0, 0, -1114029, 0, 0, -1114028, 0, 0, -10485
 scroll_offset = Vector2( 1, 1 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 299, -9913 )
+position = Vector2( 299, -10308 )
 script = ExtResource( 6 )
 speed = 75
 jump_speed = -1800
-gravity = 4000
+gravity = 3500
 GRAVITY_TIMEOUT = 0.5
 velocity = Vector2( 0, 0 )
 

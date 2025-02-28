@@ -22,18 +22,20 @@ class_name Player_v3_Platformer
 
 export (int) var speed = 10
 export (int) var jump_speed = -1800
-export (int) var gravity = 4000 # default gravity
+export (int) var gravity = 3500 # default gravity
 
 
 export (float) var GRAVITY_TIMEOUT : float = 0.5 # pauses gravity during jumps for 0.5 secs
 const MAX_SPEED = 1000
 # For Jumping Mechanics
-const max_air_jumps : int = 9
+const max_air_jumps : int = 5
 var air_jump_counter : int = 0
 
 export (Vector2) var velocity = Vector2.ZERO
 
-
+# Wall jump power multipliers
+const WALL_JUMP_PUSH = 1.5  # Increase horizontal launch distance
+const WALL_JUMP_VERTICAL_BOOST = 1.2  # Increase vertical jump height
 
 # State Machine for Platform Player
 # Extends States from a Core Player Class
@@ -68,32 +70,33 @@ func _physics_process(delta):
 	
 	velocity = move_and_slide(velocity, Vector2.UP)
 	
-	# Jump
-	if Input.is_action_just_pressed("roll"): # jump 1
+	# Jump & Wall Jump Logic
+	if Input.is_action_just_pressed("roll"): 
 		if is_on_floor():
 			velocity.y = jump_speed
-			
-			# Reset Jump counter
-			air_jump_counter = 0
-		if not is_on_floor() && Input.is_action_just_pressed("roll"): # 4x Jumps
-			# Nested Ifs ? # Bad Code
-			# Limits air jumps with a counter
-			if air_jump_counter < max_air_jumps:
-				velocity.y = jump_speed
-			
-				# increase airjump counter
-				air_jump_counter += 1
-				
-				animation.play("roll")
+			air_jump_counter = 0  # Reset air jump counter
+		elif air_jump_counter < max_air_jumps:
+			velocity.y = jump_speed
+			air_jump_counter += 1
+			animation.play("roll")
+		elif is_on_wall():  # Wall Jump Logic
+			var wall_normal = get_wall_normal()
+			velocity.y = jump_speed * WALL_JUMP_VERTICAL_BOOST  # Stronger vertical jump
+			velocity.x = MAX_SPEED * WALL_JUMP_PUSH * wall_normal.x  # Push farther away
+			animation.play("roll")
 	# Ledge Grab
-	if Input.is_action_just_pressed("move_up"):
-		if not is_on_floor():
-			
-			# Stop Gravity
-			gravity = 0
-			
-			yield(get_tree().create_timer(GRAVITY_TIMEOUT),"timeout")
-			gravity = 4000 # Reset Gravity
+#	if Input.is_action_just_pressed("move_up"):
+#		if not is_on_floor():
+#			
+#			# Stop Gravity
+#			gravity = 0
+#			
+#			yield(get_tree().create_timer(GRAVITY_TIMEOUT),"timeout")
+#			gravity = 4000 # Reset Gravity
 	
-
-	
+func get_wall_normal() -> Vector2:
+	for i in range(get_slide_count()):
+		var collision = get_slide_collision(i)
+		if collision.normal.x != 0:  # Check if hitting a wall
+			return collision.normal
+	return Vector2.ZERO  # Default value if no wall is detected

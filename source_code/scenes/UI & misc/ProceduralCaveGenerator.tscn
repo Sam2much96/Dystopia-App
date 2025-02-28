@@ -4,3 +4,5 @@
 
 [node name="CaveGenerator" type="Line2D"]
 script = ExtResource( 1 )
+map_width = 100
+map_height = 100

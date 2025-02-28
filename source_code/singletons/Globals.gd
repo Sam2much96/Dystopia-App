@@ -154,6 +154,9 @@ var bullet_fx : PackedScene
 # Depreciated
 #var tile_map : TileMap
 var OverWorld : PackedScene
+
+
+#onready var nodes = [blood_fx,despawn_fx,self]
 func _ready():
 	#print_debug('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	#print_debug("Despawn Fx:", despawn_fx)
@@ -215,4 +218,5 @@ func _exit_tree():
 	
 	"Prints All Orphaned Nodes"
 	# For proper Memory Leak Management
-	Utils.MemoryManagement.memory_leak_management(self)
+	#Utils.MemoryManagement.queue_free_array(nodes)
+	pass

@@ -12,6 +12,7 @@ ambient_light_color = Color( 0.439216, 0.439216, 0.439216, 1 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( -0.142953, -0.00279304, -0.989726, -0.0318954, 0.99949, 0.00178629, 0.989215, 0.0318231, -0.142969, -5.89927, 0.278735, -0.367564 )
+visible = false
 current = true
 script = ExtResource( 2 )
 

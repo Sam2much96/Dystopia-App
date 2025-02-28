@@ -82,8 +82,9 @@ enum {ENABLED, DISABLED, NULL}
 
 export (int) var _state = DISABLED
 
-func _enter_tree():
-	Networking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , Networking) #
+onready var local_networking : Internet = get_node("/root/Networking")
+
+
 
 
 func _ready():
@@ -143,6 +144,8 @@ func _ready():
 	#	self.is_connected('enabled',self,'_on_status_showing')
 	#	)
 	
+	# Fetch price data
+	local_networking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , local_networking) #
 
 func _input(event):
 	"Status UI Visibility Is Entirely Self Controlled From Here"
@@ -172,10 +175,10 @@ func _input(event):
 
 
 func _update_wallet_stats(): #Updates killcount and Algos
-	"Update Price From CoinGecko API"
+	"Update Price From Vestigefi API"
 	if Networking.good_internet:
 		_coin_label.text = 'Suds: ' + str (Globals.suds)
-		_price_label.text = "Prices: mAlgo $" + str(Networking.Data["algorand"]["usd"]) + "/" + "Suds: 0.38" # should ideally fetch price data from prebonded token
+		_price_label.text =  str(Networking.Data) # fetchs price data from Sud token
 
 
 func _update_quest_listing():

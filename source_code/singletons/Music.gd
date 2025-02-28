@@ -228,7 +228,7 @@ onready var track : String
 onready var transitions : AnimationPlayer = $anims
 
 # Pointers to Node for Memory Mgmt
-onready var my_nodes : Array = [Music_streamer,B,C,Music_streamer_2,transitions]
+onready var my_nodes : Array = [Music_streamer, A,B,C,D,Music_streamer_2,transitions]
 
 
 # THis URL fetches a Zip file from an AWS s3 buzket
@@ -478,11 +478,6 @@ func _notification(what):
 		# Unmute both music bus's
 		AudioServer.set_bus_mute(music_bus, false)
 		AudioServer.set_bus_mute(music_bus_2, false)
-		
-		#music_track = shuffle(default_playlist)
-		#print_debug("Mus Debug 3: ", music_track)
-		#play(music_track)
-		
 
 
 """
@@ -518,10 +513,11 @@ func _on_A_finished(): #This  signals when the music has finished and autoshuffl
 # Play the Next Track And Shuffle
 func _on_B_finished():
 	
-	#get_random_sound_effect()
-	print_debug('music finished B/', music_track,"/",selected_sound_fx) 
+	
+	#print_debug('music finished B/', music_track,"/",selected_sound_fx) 
 	transitions.play("BtoA") # B to A Has higher Pitch
 	# plays the music track twice
+
 func play_sfx(list : Dictionary): #a separate bus channel for sfx using dictionary playlist
 	# 
 	if sfx_on== true:
@@ -537,12 +533,9 @@ func play_track(_track : String):
 	#for playing single sample tracks
 	#_track is a pointer to the music file path
 	if _track != null  and Music_streamer_2 != null :
-		#if music_on == true:
-			#print (_track)# For debug purposes only
-
 		D.set_stream ( load (_track)) #Children Scripts should not load the soundtracks
 		D.play(0.0)
-		print_debug ('playing sfx: ',_track.get_file())
+		#print_debug ('playing sfx: ',_track.get_file()) # for debug purposes only
 		yield(get_tree().create_timer(0.8), "timeout")
 		D.stop()
 

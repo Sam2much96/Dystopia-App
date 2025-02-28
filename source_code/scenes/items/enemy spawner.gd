@@ -50,8 +50,8 @@ export(int) var spawn_count
 
 onready var area : Area2D = $Area2D
 
-var idol = Idol
-var savepoint = idol.new()
+#var idol = Idol
+onready var savepoint = Idol.new()
 
 func _ready():
 	# connect signals
@@ -132,4 +132,6 @@ func _on_Area2D_body_entered(body):
 
 
 
-
+func _exit_tree():
+	# delete idol save object
+	Utils.MemoryManagement.queue_free_array([savepoint])

@@ -47,8 +47,8 @@ export(float) var noise_threshold = 0.5
 export(bool) var redraw setget redraw
 
 # Acces the Parent TileMap with the AutoTile
-onready var tile_map : TileMap
-onready var simplex_noise : OpenSimplexNoise = OpenSimplexNoise.new()
+onready var tile_map = null # should pass in a tilemap parameter
+onready var simplex_noise = OpenSimplexNoise.new()
 
 # Generated Bool
 export(bool) var generated 
@@ -59,10 +59,12 @@ var map__height : int
 var map_dimensions : Vector2
 var point_data : PoolVector2Array
 
+
+var counter = 0 # for counting how many calcs are needed for this loop
 # Random World Seed Generator
 # To Do :
 # (1) Increase Seed Variation
-var word_seeds : Dictionary = {0:"Pleasse Give me a good result nitori olorun",
+var word_seeds = {0:"Pleasse Give me a good result nitori olorun",
 1: "trying this muther fuccing shuffle randomiser, lool"}
 
 
@@ -137,52 +139,37 @@ func generate() :
 		
 		
 		
-		if STATIC:
-			# Static Method Impementation
-			
-			Utils.procedural.genereate(simplex_noise,
-			Music.shuffle(word_seeds), # Random World Seed Generator #world_seed,
-			noise_octaves,
-			noise_period,
-			noise_persistence,
-			noise_lacunarity,
-			noise_threshold,
-			map__height,
-			map__width,
-			tile_map
-			)
-			
-		if !STATIC : #unimplemented version of logic that uses < 1400 calculations and moredynamic memory
-			simplex_noise.seed = world_seed.hash()
-			
-			# set simplex noise using Editor values
-			simplex_noise.octaves = noise_octaves
-			simplex_noise.period = noise_period
-			simplex_noise.persistence = noise_persistence
-			simplex_noise.lacunarity = noise_lacunarity
-			
-			# Loop to every tile within Map Area Co-ordinates
-			# Bug: 
-			# (1) This Double for Loop is an optimization hog, its apprx doing >1400 calculations
-			#
-			
-			
-			for x in range( -map_width / 2, map_width / 2):
-				for y in range(-map_height / 2, map_height / 2):
+		 #unimplemented version of logic that uses < 1400 calculations and moredynamic memory
+		simplex_noise.seed = world_seed[0].hash()
+		
+		# set simplex noise using Editor values
+		simplex_noise.octaves = noise_octaves
+		simplex_noise.period = noise_period
+		simplex_noise.persistence = noise_persistence
+		simplex_noise.lacunarity = noise_lacunarity
+		
+		# Loop to every tile within Map Area Co-ordinates
+		# Bug: 
+		# (1) This Double for Loop is an optimization hog, its apprx doing >1400 calculations
+		#
+		
+		
+		for x in range( -map__width / 2, map__width / 2):
+			for y in range(-map__height / 2, map__height / 2):
+				
+				# conditional
+				if simplex_noise.get_noise_2d(x, y) < noise_threshold:
 					
-					# conditional
-					if simplex_noise.get_noise_2d(x, y) < noise_threshold:
-						
-						# generataes a tilemap
-						
-						tile_map.set_cell(x,y, tile_map.get_tileset().get_tiles_ids()[0], false, false, false,tile_map.get_cell_autotile_coord(x, y )) # co-ordinate of the TileSet
-						
-						tile_map.update_bitmask_area(Vector2(x, y)) # so the engine knows where to configure the autotiling
-			tile_map.update_dirty_quadrants()
+					# generataes a tilemap
+					counter +=1
+					tile_map.set_cell(x,y, tile_map.get_tileset().get_tiles_ids()[0], false, false, false,tile_map.get_cell_autotile_coord(x, y )) # co-ordinate of the TileSet
+					
+					tile_map.update_bitmask_area(Vector2(x, y)) # so the engine knows where to configure the autotiling
+		tile_map.update_dirty_quadrants()
 		
 		
 		
-		print_debug("Finished Procedural Generation")
+		print_debug("Finished Procedural Generation", "//", counter)
 		generated = true
 		
 	if generated: pass

@@ -7,6 +7,7 @@
 # Features:
 # (1) Saves Player Information to Local Storage
 # (2) Connects to the Global Functions class for Saving Functions
+# (3) Used By Enemy Spawner
 
 # To Do:
 #(1) Document

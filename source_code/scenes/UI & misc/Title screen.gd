@@ -24,32 +24,31 @@ The purpose of this code is to beautify the UI programmatically
 
 
 
-#changes Title Screen Art using Global Screen Orientation
 onready var art1 :  TextureRect = $TextureRect2
-
-onready var art3 :  TextureRect = $Sprite
-
 onready var logo : TextureRect = $logo
 
 
 
-#res://scenes/UI & misc/controls_illustration.gd
-# 3D in 2D
-# To Do : 
-#  (1) Play Animation rendered to 2D
-onready var viewport = $Sprite
-
-
-onready var title_nodes : Array = [art1, art3,logo, viewport]
-
+onready var viewport : TextureRect = $Sprite
 onready var position : Position2D = $Position2D 
+onready var cape_animation : Node2D = $Node2D
+onready var title_nodes : Array = [art1, logo, viewport, cape_animation]
+
+onready var _local_android : android = get_node("/root/Android")
+
+
+func _enter_tree():
+	# Should Trigger Ads Inititialasation
+	# Title Screen Is Solely Responsible for Triggering and Removing android ads
+	# Temporary implementation for UX testing
+	#Android.ads()
+	pass
 
 func _ready():
 	
 	
 	# Fix Menu Positioning on Mobile Devices
 	
-	#art3.set_texture(viewport.viewport_image)
 	
 	# Controls_illustratins.gd has texture positional bug
 	if Globals.screenOrientation == 1:
@@ -57,35 +56,17 @@ func _ready():
 	if Globals.screenOrientation == 0:
 		art1.hide()
 	
-	if Globals.os != "Android":
-		$start.show()
-	else : $start.hide()
 	
-	# SHow THe Menu Button On Android
-	Android.show_only_menu()
-	
-	# Should Trigger Ads Inititialasation
-	# Title Screen Is Solely Responsible for Triggering and Removing android ads
-	# Temporary implementation for UX testing
-	Android.ads()
+	# Show THe Menu Button On Android
+	_local_android.show_only_menu()
+
 
 
 func _exit_tree():
 	# Memory Leak Management
 	Utils.MemoryManagement.queue_free_array(title_nodes)
-#	_menu.queue_free()
-	Android._no_ads()
+	_local_android._no_ads()
 
 
-
-
-func _on_AdMob_banner_failed_to_load(error_code):
-	push_error("Admob Banner Failed Load")
-
-
-func _on_start_pressed():
-	return 0
-
-
-func _on_start_button_down():
-	GlobalInput.parse_input(GlobalInput.NodeInput,get_tree(),"menu", true)
+#func _on_start_button_down():
+#	GlobalInput.parse_input(GlobalInput.NodeInput,get_tree(),"menu", true)

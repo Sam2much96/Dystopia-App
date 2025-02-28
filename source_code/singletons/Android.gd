@@ -42,11 +42,15 @@ onready var _simulation = get_node("/root/Simulation")
 
 onready var _globals = get_node("/root/Globals")
 
+#*********** Android Plugins *************#
+
 # Godot Chrome
 var Chrome = null
+export (bool) var WebBrowserOpen : bool = false 
 
 # Ad Mob Ads Node
 onready var _ads : AdMob = self.get_child(0)
+
 
 
 func _ready():
@@ -57,18 +61,22 @@ func _ready():
 	# Features
 	# (1) Disable if not on android
 	# (2) Enable on Native ANdroid
-	#(3) Enable on Mobile Browser
+	# (3) Enable on Mobile Browser
 	
 	if _globals.os == "Android": # Android Native
 		_is_android = true
 		
 		# load Godot Chrome Browser
-		  
-		Chrome = Engine.get_singleton("GodotChrome")#load("res://New game code and features/GodotChrome.gd")
+		# To do : write separate godotchrome class 
+		Chrome = Engine.get_singleton("GodotChrome")
 		
-		#_ads = AdMob.new()
+		
+		
+		
 		# Connect Signals 
 		connect("player_ready",self, "_on_player_ready")
+		
+		ads() # Enable ads here
 		
 		#initial_screen_orientation = Utils.Screen.Orientation()
 	if _globals.os == "HTML5" && initial_screen_orientation == 1: # Mobile Browser
@@ -104,15 +112,8 @@ func is_android() -> bool:
 
 
 func ads() -> void:
-	# Should Config and Inititalise Ads Programmatically
-	# Ads Experience SHould Be Cached ANd Timed To SHow & Disappear uppon Player Death
-	# Only Implement Banner Ads For This Game`
+	# Config and Inititalise Ads Programmatically
 	
-	#if is_instance_valid(_ads) : 
-		
-	#get_tree().get_root().get_node("/root/Android").add_child(_ads)
-	#self.add_child(_ads)
-		
 	# config ads
 	_ads.banner_id = "ca-app-pub-3900377589557710/5127703243"
 	_ads.is_real_set(true) # Test Ads & Ads Initialisation
@@ -147,6 +148,7 @@ func show_all_buttons():
 	print_stack()
 	TouchInterface.show_action_buttons()
 	TouchInterface.show_direction_buttons()
+
 
 
 func _process(delta):
@@ -240,7 +242,11 @@ func _process(delta):
 		#if local_screen_orientation != initial_screen_orientation:
 			
 		Utils.Screen._adjust_touchHUD_length(GameHUD_.Anim) # sets touch interface layout
-			
+		
+		# for debugging console Logs
+		#print_debug("Debug 2:", Android.Chrome.consoleLog())
+		
+		
 			# update initial screen orientation
 		#	initial_screen_orientation = local_screen_orientation
 
@@ -291,6 +297,19 @@ func _on_AdMob_banner_failed_to_load(error_code):
 	# pass the error code to ingame debug
 	_debug.Ads_debug = "Banner Ads failer : err" + str(error_code)
 
+	print_debug(_debug.Ads_debug)
+
+	
 
 
+func _on_AdMob_rewarded_video_loaded():
+	# offer the player a random item spin for 1 video
+	print_debug("rewarded video loaded")
 
+
+func _on_AdMob_rewarded_video_opened():
+	print_debug("rewarded video opened")
+
+
+func _on_AdMob_rewarded_video_failed_to_load(error_code):
+	print_debug("rewarded video failed loading: ", error_code)

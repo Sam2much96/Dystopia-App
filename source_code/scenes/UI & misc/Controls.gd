@@ -93,7 +93,7 @@ func _ready():
 
 
 func _on_Button_pressed():
-	return get_tree().change_scene_to(Globals.title_screen) #changes scene to main title
+	Globals._go_to_title() #changes scene to main title
 
 
 """
@@ -117,6 +117,7 @@ func _on_Debug_toggled(button_pressed):
 # Scales UI up for Android Mobile Devices
 
 func upscale_ui():
+	print_debug("Upscaling controls UI")
 	#print (cinematic.calculateViewportSize(self))
 	var newScale = Vector2(1.5,1.5)
 	scroller.set_scale(newScale)
@@ -240,3 +241,7 @@ func _on_github_pressed():
 
 func _on_wallet_pressed():
 	Utils.Functions.change_scene_to(Globals._wallet, get_tree())
+
+
+func _on_notifications_pressed():
+	Android.Notifications.schedule("dkjfskjdf","sadfjshdfsdhf")

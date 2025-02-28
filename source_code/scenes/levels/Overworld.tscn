@@ -131,9 +131,9 @@ scale = Vector2( 1.61925, 2.04034 )
 to_scene = "res://scenes/levels/Overworld3D.tscn"
 
 [node name="Exit_5" parent="Outside" instance=ExtResource( 6 )]
-position = Vector2( 1470.82, 2522.48 )
+position = Vector2( 1451.82, 2519.48 )
 rotation = 3.09728
-scale = Vector2( 1.61925, 0.654114 )
+scale = Vector2( 1.02571, 0.414348 )
 to_scene = "res://scenes/levels/marketplace_2d.tscn"
 
 [node name="Outside City" parent="." instance=ExtResource( 5 )]

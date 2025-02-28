@@ -25,8 +25,8 @@
 # *************************************************
 # To Do:
 # (1) Implement Rollback NetCodes for Multiplayer Gameplay
-# (2) Implement Match Making
-#
+# (2) Implement Match Making via Dystopia-Site
+# (3) More Godot Chrome Implementations via open browser function
 #
 # *************************************************
 
@@ -158,6 +158,8 @@ func _ready():
 	_init_timer()
 	
 	
+	# check if signals connected programmatically
+	
 	if cfg_server_ip == '':
 		cfg_server_ip = DEFAULT_HOSTNAME
 		
@@ -169,8 +171,10 @@ func _ready():
 	
 	print ("Networking Server Config and Player Name: ",cfg_server_ip,cfg_player_name, "/")
 	
+	# Run this on on another thread it hogs the main thread
 	#check if device is online on a separate thread
-	_check_connection("https://api.coingecko.com/api/v3/simple/price?ids=algorand&vs_currencies=usd" , Networking) #
+	# moved to status UI
+	#_check_connection("https://free-api.vestige.fi/asset/2717482658/price" , Networking) #
 
 
 func _process(_delta): 
@@ -192,7 +196,6 @@ func _process(_delta):
 			#
 			if child.is_connected("connection_success",self, '_on_success') != true:
 				return connect("request_completed", self,'on_request_result')
-		
 				return connect("connection_success",self, '_on_success')
 				return connect("error_connection_failed",self,'_on_failure')
 				return connect("error_ssl_handshake",self, '_on_fail_ssl_handshake')
@@ -249,10 +252,10 @@ func start_check_v2(wait_time : int):
 # fix multiple check bug
 static func _check_connection(url, request_node: HTTPRequest): 
 	#Ignore Warning
-	#Request Node must be in the SceneTree
-	print  ("Is Request Noode inside scene tree:", request_node.is_inside_tree())
+	#Request Node must be in the SceneTree for static function to work so i use the Notification sigleton 
+	
 	var error = request_node.request(url,PoolStringArray(),false,0,"") 
-	print (' Networking Request Error: ',error) #for debug purposes only
+	#print_debug(' Networking Request Error: ',error, "/", "Is Request Node inside scene tree: ", request_node.is_inside_tree()) #for debug purposes only
 
 
 func _check_connection_secured(url): # Check http secured Url connection
@@ -307,7 +310,7 @@ static func _parse(_url : String)-> String: #works
 HTTP REQUEST STATE MACHINE
 """
 
-func _on_Networking_request_completed(result, response_code, headers, body : PoolByteArray): # I need to pass variables to this code bloc
+func _on_Networking_request_completed(result: int, response_code : int, headers : PoolStringArray, body : PoolByteArray): # I need to pass variables to this code bloc
 	"HTTP REQUEST RESULT'S STATE MACHINE"
 	#resets result if completed successfully
 	#running_request = false
@@ -324,7 +327,15 @@ func _on_Networking_request_completed(result, response_code, headers, body : Poo
 
 			if _result.error == OK:
 				Data = _result.result
-				print_debug("Internet Data debug: ",Data)  # Outputs: { "algorand": { "usd": 0.114662 } }
+				
+				# Fetches price data in ready function
+				print_debug("Internet Data debug: ",Data)  # 
+				
+				# Temporarily disabled for debugging
+				var price_data='Suds: ' + str(Networking.Data)
+				
+				
+				
 			else:
 				print_debug("Failed to parse JSON")
 			#print_debug(body.get_string_from_utf8())
@@ -1220,7 +1231,10 @@ func open_browser(url : String):
 	# To Do: Implement gdCEF godot CHrome Embedded Framework for Linux and Windows Platform
 	
 	if Globals.os == "Android":
-		Android.Chrome.helloWorld(url) # Open Chrome Embedded Browser To Url
+		
+		Android.Chrome.helloWorld(url,{},true, -99, false) # Open Chrome Embedded Browser To Url
+		Android.WebBrowserOpen = true
+		
 	if Globals.os == "X11":
 		return OS.shell_open(url)
 	if Globals.os == "Windows":

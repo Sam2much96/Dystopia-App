@@ -10,6 +10,7 @@
 # (1) Shares Game Code With the Networking, Player& Enemy scripts
 # (2) Optimizes Enemy Mob Physics and Processess into a single Script with threads
 # (3) Global Frame counter
+# (4) Triggers rain / snow particle fx
 # *************************************************
 # Bugs:
 # (1) Client is authoritative Bug
@@ -112,6 +113,7 @@ CPU FX
 """
 var rainFX : RainFX
 var smokeFX : smoke_fx
+
 
 
 """
@@ -758,4 +760,9 @@ class Player_ extends Reference:
 				Music.play_track(Music.nokia_soundpack[27]) # Death Sound Track
 		#pass
 
+
+func _exit_tree():
+	# Delete all simulated objects
+	
+	Utils.MemoryManagement.queue_free_array([rainFX])
 

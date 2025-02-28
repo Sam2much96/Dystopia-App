@@ -177,11 +177,9 @@ func _go_to_title():
 	'Quits if already at title screen'
 	if curr_scene == 'Menu':
 		get_tree().quit()
-	#Music.play_track(Music.ui_sfx[1])
 	
 	'changes scene to title_screen'
 	# Refactoring to use Large Level Scene Loader
-	#title = load(global_scenes["title"])
 	
 	
 	"Loads Large Scene"

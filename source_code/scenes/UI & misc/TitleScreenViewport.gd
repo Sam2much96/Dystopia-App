@@ -16,7 +16,7 @@ export (ViewportTexture )var viewport_image : ViewportTexture = get_texture()
 #onready var image : image
 
 onready var model = $Spatial
-const SPEED = 20
+const SPEED = 5
 
 
 func _ready():

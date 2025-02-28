@@ -82,6 +82,10 @@ enum {ENABLED, DISABLED, NULL}
 
 export (int) var _state = DISABLED
 
+func _enter_tree():
+	Networking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , Networking) #
+
+
 func _ready():
 	
 	# Get UI Node Pointer

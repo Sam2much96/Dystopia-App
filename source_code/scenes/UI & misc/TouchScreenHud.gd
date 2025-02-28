@@ -731,20 +731,11 @@ func _on_down_pressed():
 	return 0
 
 
-#func _on_menu_gui_input(event):
-#	print_debug("22222222222222") # Doesnt'tWorks
-#	_Input.parse_input("menu", true)
-
 
 func _on_stats_gui_input(event):
 	print_debug("Stats GUI Input")
 	stats_.grab_focus()
-	#print_debug("Stats Button Pressed")
-	#_Input.parse_input("pause", true)
 
-
-#func _on_stats_mouse_entered():
-#	print("1111111111111")
 
 
 func _on_down_button_down():

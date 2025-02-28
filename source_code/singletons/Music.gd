@@ -549,6 +549,7 @@ func play_track(_track : String):
 
 func _exit_tree(): 
 	Utils.MemoryManagement.queue_free_array(my_nodes)
+	
 
 
 func get_random_sound_effect() -> int :
@@ -568,7 +569,6 @@ func set_sound_effect(fx_ : int, state : bool):
 
 # Music Finished Playing
 func _on_Music_music_finished():
-	#print_debug("sdjnfsfjnhu")
 	randomize()
 	music_track = shuffle(default_playlist)
 	play(music_track)

@@ -57,7 +57,6 @@ var _Comics  #Comics Node Pointer Safe
 var _Stats : Stats
 var _Status_text : StatusText
 var heart_box : Healthbar
-#onready var ingame_comics_placeholer = $Comics # depreciated in favour of minimap sub system
 
 var Anim : AnimationPlayer
 var children : Array

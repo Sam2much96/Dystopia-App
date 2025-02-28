@@ -163,10 +163,10 @@ texture_normal = ExtResource( 6 )
 [node name="menu" type="TextureButton" parent="."]
 self_modulate = Color( 0, 0, 0, 1 )
 show_behind_parent = true
-margin_left = 32.0
-margin_top = 48.0
-margin_right = 198.0
-margin_bottom = 191.0
+margin_left = 29.0
+margin_top = 106.0
+margin_right = 195.0
+margin_bottom = 249.0
 texture_normal = ExtResource( 2 )
 
 [connection signal="button_down" from="D-pad/right" to="." method="_on_right_button_down"]

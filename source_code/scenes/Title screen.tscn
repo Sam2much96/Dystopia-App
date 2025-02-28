@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Title screen.gd" type="Script" id=1]
 [ext_resource path="res://resources/title animation/Dystopia Logo 2 webp.webp" type="Texture" id=2]
-[ext_resource path="res://themes/Light.tres" type="Theme" id=3]
 [ext_resource path="res://resources/title animation/intro_animation_sprites/concept_3.webp" type="Texture" id=4]
 [ext_resource path="res://scenes/UI & misc/3d in 2d.tscn" type="PackedScene" id=5]
 [ext_resource path="res://resources/title animation/cape_animation.tscn" type="PackedScene" id=6]
@@ -13,10 +12,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 1 )
-
-[node name="Control" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
 
 [node name="TextureRect2" type="TextureRect" parent="."]
 show_behind_parent = true
@@ -49,17 +44,3 @@ rect_scale = Vector2( 1.68678, 1.68678 )
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 6
-
-[node name="start" type="Button" parent="."]
-margin_left = 198.0
-margin_top = 483.0
-margin_right = 521.0
-margin_bottom = 543.0
-rect_scale = Vector2( 2, 2 )
-theme = ExtResource( 3 )
-custom_colors/font_color = Color( 0.72549, 0.054902, 0.054902, 1 )
-text = "Press To Start"
-flat = true
-
-[connection signal="button_down" from="start" to="." method="_on_start_button_down"]
-[connection signal="pressed" from="start" to="." method="_on_start_pressed"]

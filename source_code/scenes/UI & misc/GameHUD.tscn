@@ -104,6 +104,10 @@ anchor_left = -0.0351562
 anchor_top = 1.00078
 anchor_right = -0.0351562
 anchor_bottom = 1.00078
+margin_left = 36.0
+margin_top = 388.061
+margin_right = 1137.0
+margin_bottom = 562.061
 input_pass_on_modal_close_click = false
 region_rect = Rect2( 30, 19, 1840, 269 )
 

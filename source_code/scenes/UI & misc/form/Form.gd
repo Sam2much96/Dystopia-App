@@ -48,15 +48,9 @@ onready var UI_buttons : Array = [
 	label_spacer2, label_spacer3
 	]
 
-#onready var _hide_dialogue_box : bool = false
 
 func _ready():
-# Described Above
-#	if _debug != null:
-#		_debug = get_tree().get_root().get_node("/root/Debug")
 
-	#dialgue_box.hide_dialogue()
-	
 	
 	# Load Users Prefered DIalogue 
 	Utils.Functions.load_user_data('languague')
@@ -82,11 +76,6 @@ func _ready():
 	language.add_item('Mandarin')
 	language.add_item('Yoruba')
 	language.add_item('Arabic')
-	#language.add_item('Nigerian Pidgin')
-
-	# Connects the Networking signal
-	# Temporarily disabling for refactorng
-	#Networking.connect("request_completed", self, "_http_request_completed")
 
 
 	"Checks Internet Access is Verified "
@@ -127,7 +116,7 @@ func _on_play_pressed():
 		#Globals.save_game()
 	else : Dialogs.language = ""
 
-	print_debug(Dialogs.language)
+	#print_debug(Dialogs.language) # for debug purposes only
 
 	Utils.Functions.change_scene_to(cinematics, get_tree())
 
@@ -171,8 +160,4 @@ func translate()-> void:
 func _exit_tree():
 	print_debug ("Selected Language: ",Dialogs.language)
 	
-	# Clear Memory
-	#for i in UI_buttons:
-	#	i.queue_free()
-
 	Utils.MemoryManagement.queue_free_array(UI_buttons)

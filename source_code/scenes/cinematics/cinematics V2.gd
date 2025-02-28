@@ -22,7 +22,6 @@ extends Control
 # *************************************************
 # TO DO:
 #(1) Update Documentation
-# (2) Reorganise code into classes (Done)
 # (3) Fix video Positionig on multiple devices
 # (4) Guidebook SHould Use HTML Parser
 # (5) 
@@ -34,29 +33,26 @@ export(String, FILE, "*.ogv") var vid_stream = ""
 
 onready var animation : AnimationPlayer = $"animation player"
 onready var position2d : Position2D = $Position2D
-#onready var node : Control = get_node("Node2D") #popup node for centering cinematics
 
 #export (String) var anime_pilot : String = "https://github.com/Sam2much96/RenderChan/actions/runs/"
-#export (String) var animatic : String = "https://youtu.be/uzDzAuJVHcI"
 
 onready var videoplayer : VideoPlayer = $VideoPlayer
 
 """
 CINEMATICS
 """
-###export your video as ogv format
-#update code to reference all in game animations
 
 onready var local_globals : GlobalsVar = get_node("/root/Globals")
 onready var local_dialogs : DialogsVar = get_node("/root/Dialogs")
-
+onready var local_android  : android = get_node("/root/Android")
 onready var local_music : music_singleton = get_node("/root/Music")
 onready var wind_sfx : String = Music.wind_sfx.get(0)
 
-func _ready(): #create a video player function
-
-	Android.hide_touch_interface()
+func _ready(): 
 	
+	local_android.hide_touch_interface()
+	
+
 	
 	#use current scene to trigger cinematic
 	local_globals.update_curr_scene()
@@ -70,9 +66,6 @@ func _ready(): #create a video player function
 	if local_globals.curr_scene == 'Cinematics':
 		videoplayer  = get_node('VideoPlayer') #video player node
 		videoplayer._set_size((get_viewport_rect().size))
-		
-		
-		
 		
 		
 		play_opening_cinematic() #Plays this video only on cinematics node
@@ -96,14 +89,6 @@ func _ready(): #create a video player function
 		
 		local_dialogs.set_font(UI_buttons_2, 44, "",2)
 		
-		# Manually Translate UI
-		# Disabled for testing 
-		#for i in UI_buttons_2:
-		#	# Note: If it breaks with a null object error, it means that the scene layout has been changed
-		#	# Update the button links then
-		#	i.set_text(Dialogs.translate_to(i.name, Dialogs.language))
-		
-	
 	
 	
 	if vid_stream == null:
@@ -157,11 +142,13 @@ func play_opening_cinematic() -> int :
 	animation.play("opening_cinematic")
 	
 	local_music.play_track(wind_sfx)
+	
+	#fetch asset price
 	return 0
 
 func _exit_tree():
 	# Free Memory
-	
+	#local_android._no_ads() # turn off banner ads
 	local_globals.cinematics = null
 	self.queue_free()
 

@@ -22,7 +22,7 @@ class_name Player_v3_Platformer
 
 export (int) var speed = 10
 export (int) var jump_speed = -1800
-export (int) var gravity = 3500 # default gravity
+var gravity = Simulation.gravity # default gravity
 
 
 export (float) var GRAVITY_TIMEOUT : float = 0.5 # pauses gravity during jumps for 0.5 secs
@@ -34,12 +34,13 @@ var air_jump_counter : int = 0
 export (Vector2) var velocity = Vector2.ZERO
 
 # Wall jump power multipliers
-const WALL_JUMP_PUSH = 1.5  # Increase horizontal launch distance
-const WALL_JUMP_VERTICAL_BOOST = 1.2  # Increase vertical jump height
+const WALL_JUMP_PUSH = 2.5  # Increase horizontal launch distance
+const WALL_JUMP_VERTICAL_BOOST = 0.1  # Increase vertical jump height
 
 # State Machine for Platform Player
 # Extends States from a Core Player Class
 
+export (bool) var apply_GRAVITY = false
 
 
 
@@ -66,9 +67,15 @@ func _physics_process(delta):
 
 	
 	# Gravity
-	velocity.y += gravity * delta
+	if apply_GRAVITY: # Apply gravity
+		velocity.y += gravity * delta
+		
+		velocity = move_and_slide(velocity, Vector2.UP)
 	
-	velocity = move_and_slide(velocity, Vector2.UP)
+	# Slow motion gravity
+	if !apply_GRAVITY:
+		velocity.y += 20
+		velocity = move_and_slide(velocity, Vector2.UP)
 	
 	# Jump & Wall Jump Logic
 	if Input.is_action_just_pressed("roll"): 

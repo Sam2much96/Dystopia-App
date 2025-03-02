@@ -40,6 +40,9 @@ class_name Simulationv1
 
 enum {SIMULATING, NON_SIMULATING}
 
+# world gravity
+export (int) var gravity = 3500 # default gravity
+
 # Frame ID
 onready var frame_id : int 
 

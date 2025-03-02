@@ -47,8 +47,8 @@ export(float) var noise_threshold = 0.5
 export(bool) var redraw setget redraw
 
 # Acces the Parent TileMap with the AutoTile
-onready var tile_map = null # should pass in a tilemap parameter
-onready var simplex_noise = OpenSimplexNoise.new()
+var tile_map = null # should pass in a tilemap parameter
+var simplex_noise = OpenSimplexNoise.new()
 
 # Generated Bool
 export(bool) var generated 
@@ -68,12 +68,16 @@ var word_seeds = Music.local_playlist_one.duplicate() # THe word seed is a rando
 
 
 # Chunk size (tiles processed per frame)
-const CHUNK_SIZE = 13_500 # 276_015  is the size of comultaion for a 70x70 map
+var CHUNK_SIZE = 14_297 # Loads in 20 chunks # 276_015  is the size of comultaion for a 70x70 map
+var tile_positions = []
+var tile_ids
+onready var player = get_tree().get_nodes_in_group("player")[0]
 
 func _enter_tree()-> void:
 	
 	# Get Cave generator dimensions as points
-	point_data = self.get_points()
+	#point_data = self.get_points()
+	point_data= self.get_points() #
 	
 	# More Acurate Algorithm
 	map_dimensions = Utils.Functions.calculate_length_breadth(point_data)
@@ -96,22 +100,36 @@ func _enter_tree()-> void:
 	
 	#Calculations
 	#print_debug(map_dimensions)
+	
+	tile_map = get_parent() as TileMap
+	tile_ids = tile_map.get_tileset().get_tiles_ids()[0]
+	# turn off gravity temporarily to stop player dropping 
+	print_debug("Turn on Gravity")
+	
+	#Simulation.gravity = 0
+	
+	clear()
+	generate()
+	render()
+	
 
 func _ready():
 	
-	if enabled:
+	#render()
+	#if enabled:
 		
-		if tile_map == null :#&& Globals.tile_map == null:
+	#	if tile_map == null :#&& Globals.tile_map == null:
 			# Gets the Parent Tilemap Node
-			tile_map = get_parent() as TileMap
+	#		tile_map = get_parent() as TileMap
 			
 			
 			# Make GLobal
 			#Globals.tile_map = tile_map
 		
 		
-		clear()
-		generate()
+	#	clear()
+	#	generate()
+	pass
 
 
 func redraw(value = null) -> void:
@@ -169,7 +187,7 @@ func generate() :
 		#			tile_map.update_bitmask_area(Vector2(x, y)) # so the engine knows where to configure the autotiling
 		#tile_map.update_dirty_quadrants()
 		var tile_ids = tile_map.get_tileset().get_tiles_ids()[0]
-		var tile_positions = []
+		
 		for x in range(-map__width / 2, map__width / 2):
 			for y in range(-map__height / 2, map__height / 2):
 				if simplex_noise.get_noise_2d(x, y) < noise_threshold:
@@ -181,34 +199,56 @@ func generate() :
 		
 		print_debug("Finished Procedural Generation", "//", counter)
 		print_debug("tilemap data debug: ", tile_positions.size())
-		counter = 0
-		var chunk = []
-		
-		# Process up to CHUNK_SIZE tiles
-		#for i in range(min(CHUNK_SIZE, tile_positions.size())):
-		#	chunk.append(tile_positions.pop_front())  # Efficient way to remove elements
-		#	print("Chunk debug: ",chunk.size())
-		
-		for pos in tile_positions:
-			#print(pos)
-			counter +=1
-			tile_map.set_cellv(Vector2(pos), tile_ids, false, false, false,tile_map.get_cell_autotile_coord(pos.x, pos.y)) # co-ordinate of the TileSet
-			
-			tile_map.update_bitmask_area(Vector2(pos)) # so the engine knows where to configure the autotiling
-			
-			if counter == CHUNK_SIZE:
-				tile_map.update_dirty_quadrants()
-				counter = 0
-				yield(get_tree(), "idle_frame")  # Allow engine to process frames
-
-		print_debug("Tile Position Finished setting")
 		
 		#tile_map.update_dirty_quadrants()
 
 		#place_tiles_in_chunks(tile_positions, tile_ids)
 		generated = true
 		
-	if generated: pass
+		print_debug("Turn on gravity")
+		#Simulation.gravity = 3500
+		
+		
+	#if generated: 
+	#	player.apply_GRAVITY = true
+
+#func _process(_delta):
+#	if generated: 
+#		player.apply_GRAVITY = true
+#		self.set_process(false) # turn off processing
+#	if !generated: 
+#		player.apply_GRAVITY = false
+
+
+
+func render():
+	counter = 0
+	var chunk = []
+	
+	
+	# Process up to CHUNK_SIZE tile
+	
+	for pos in tile_positions:
+		#print(pos)
+		counter +=1
+		tile_map.set_cellv(Vector2(pos), tile_ids, false, false, false,tile_map.get_cell_autotile_coord(pos.x, pos.y)) # co-ordinate of the TileSet
+		
+		tile_map.update_bitmask_area(Vector2(pos)) # so the engine knows where to configure the autotiling
+		
+		if player:
+			player.apply_GRAVITY = false
+		
+		if counter == CHUNK_SIZE:
+			
+			tile_map.update_dirty_quadrants()
+			counter = 0
+			yield(get_tree(), "idle_frame")  # Allow engine to process frames
+		
+	
+	
+	if player: player.apply_GRAVITY = true
+	print_debug("Tile Position Finished setting")
+
 
 
 

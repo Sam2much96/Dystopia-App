@@ -19,7 +19,7 @@
 #		Differentiating Between Different Touch Input Types i.e. Stylus, Dpad and joystick
 #		And Mapping Different Inputs To UI Action
 # (9) It Acts As A Hud FOr The Active Player Item via The Action Buttons e.g. Sword Item, Bow Items
-#
+# (10) Calling Attack and Roll signal twince when pressed and when down introduces double punch/ double click
 #
 #
 # Bugs :
@@ -705,30 +705,30 @@ func _on_interact_pressed():
 
 func _on_roll_pressed():
 	#print_debug("Roll Button Pressed")
-	return 0#_Input.parse_input(_Input.NodeInput,__scene_tree,"roll", true)
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"roll", true)
 
 
 func _on_slash_pressed():
 	#print_debug("Attack Button Pressed")
-	return 0#_Input.parse_input(_Input.NodeInput,__scene_tree,"attack", true)
+	return _Input.parse_input(_Input.NodeInput,__scene_tree,"attack", true)
 
 
 func _on_right_pressed():
 	
-	return 0 #_Input.parse_input(_Input.NodeInput,__scene_tree,"move_right", true)
+	return 0 # _Input.parse_input(_Input.NodeInput,__scene_tree,"move_right", true)
 
 
 func _on_up_pressed():
-	return 0#_Input.parse_input(_Input.NodeInput,__scene_tree,"move_up", true)
+	return 0 #_Input.parse_input(_Input.NodeInput,__scene_tree,"move_up", true)
 
 
 func _on_left_pressed():
-	return 0#_Input.parse_input(_Input.NodeInput,__scene_tree,"move_left", true)
+	return 0 #_Input.parse_input(_Input.NodeInput,__scene_tree,"move_left", true)
 
 
 
 func _on_down_pressed():
-	return 0
+	return 0# _Input.parse_input(_Input.NodeInput,__scene_tree,"move_down", true)
 
 
 

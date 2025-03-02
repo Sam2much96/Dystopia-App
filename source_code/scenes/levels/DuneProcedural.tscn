@@ -21,9 +21,9 @@ position = Vector2( 299, -10308 )
 script = ExtResource( 6 )
 speed = 75
 jump_speed = -1800
-gravity = 3500
 GRAVITY_TIMEOUT = 0.5
 velocity = Vector2( 0, 0 )
+apply_GRAVITY = false
 
 [node name="Dunes_Procedural" type="TileMap" parent="."]
 position = Vector2( 566.286, 295.252 )

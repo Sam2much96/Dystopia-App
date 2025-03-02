@@ -97,11 +97,7 @@ func _on_health_changed(new_hp : int):
 	
 	if new_hp == 0:
 		# Hide The Last Heart If Player Life Updates As Zero
-		
 		# Clears Children Nodes and hides the heart instance for duplicating
-		
-		#h2.queue_free()
-		#h3.queue_free() # Code Breaks Here
 		heart_instance.hide()
 	
 	# If THe Plaer HP is THe same As The current Viible Hearts on Screen Return

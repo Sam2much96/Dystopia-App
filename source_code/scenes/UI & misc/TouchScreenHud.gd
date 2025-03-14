@@ -78,7 +78,7 @@ onready var _Input = get_tree().get_root().get_node("/root/GlobalInput")
 onready var parent = get_parent()
 
 # Pointer to menu node from Parent
-onready var menuObj : Game_Menu = parent.get_child(6)
+onready var menuObj : Game_Menu = $"%Menu "#parent.get_child(6)
 
 # Pointer to Global Menu Pointer
 onready var menu3 = _Input.menu
@@ -150,9 +150,6 @@ onready var __scene_tree : SceneTree = get_tree()
 
 # debug COunter counts how many times a mehtod has been called
 var counter : int = 0
-#func _enter_tree():
-	#"Global Pointer" # DEepreciated in favor of GlobalInput Singleton
-	#Globals._TouchScreenHUD = self
 
 # Helper booleans for Stopping Loop Processing
 var _action_button_showing : bool
@@ -160,7 +157,7 @@ var _direction_button_showing : bool
 
 
 # Local Pointer TO Stats Node
-onready var _Stats_ : Stats = get_parent().get_child(4)
+onready var _Stats_ : Stats = $"%Stats"
 
 onready var TouchInput = Input 
 

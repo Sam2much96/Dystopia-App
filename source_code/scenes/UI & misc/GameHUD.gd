@@ -53,29 +53,30 @@ onready var android_ = get_tree().get_root().get_node("/root/Android")
 # Export Null Pointer TO Other Scene Setters
 var menu : Game_Menu
 var TouchInterface : TouchScreenHUD setget set_TouchInterface, get_TouchInterface
-var _Comics  #Comics Node Pointer Safe
 var _Stats : Stats
 var _Status_text : StatusText
 var heart_box : Healthbar
-
+var dialog_box : DialogBox
 var Anim : AnimationPlayer
 var children : Array
 
 
 func _ready():
 
-	menu = $"Menu "
+	menu = $"%Menu "#$"%Menu"
 	
-	set_TouchInterface($TouchInterface)
+	set_TouchInterface($"%TouchInterface")
 	
 	#_Comics = GlobalInput.get_child(1) #Comics Node Pointer
-	_Stats = $Stats
-	_Status_text = $Status_text
-	heart_box = $MarginContainer/Healthbar
-#onready var ingame_comics_placeholer = $Comics # depreciated in favour of minimap sub system
+	_Stats = $"%Stats"
+	_Status_text = $"%Status_text"
+	heart_box = $"%Healthbar"
+	dialog_box =$"%Dialog_box"
 	
 	Anim = $AnimationPlayer
-	children = [menu, TouchInterface, _Stats, _Status_text, heart_box, Anim]
+	children = [menu, TouchInterface, _Stats, _Status_text,dialog_box, heart_box, Anim]
+	
+	#print_debug("HUD Debug 1 :", children)
 	
 	# Check For Broken Links
 	Utils.UI.check_for_broken_links(children)

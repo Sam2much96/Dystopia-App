@@ -175,8 +175,9 @@ class MemoryManagement extends Reference :
 		# SHould Ideally Spawn a THread
 		
 		for i in nodes:
-			if i != null:
-				i.queue_free()
+			if is_instance_valid(i):
+				if i != null:
+					i.queue_free()
 
 	#prints all orphaned nodes in project
 	static func memory_leak_management(from : Node):

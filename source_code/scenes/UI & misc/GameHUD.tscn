@@ -100,14 +100,20 @@ anims/SCREEN_HORIZONTAL = SubResource( 1 )
 anims/SCREEN_VERTICAL = SubResource( 2 )
 
 [node name="Dialog_box" parent="." instance=ExtResource( 1 )]
+unique_name_in_owner = true
 anchor_left = -0.0351562
 anchor_top = 1.00078
 anchor_right = -0.0351562
 anchor_bottom = 1.00078
+margin_left = 36.0
+margin_top = 388.061
+margin_right = 1137.0
+margin_bottom = 562.061
 input_pass_on_modal_close_click = false
 region_rect = Rect2( 30, 19, 1840, 269 )
 
 [node name="Status_text" parent="." instance=ExtResource( 3 )]
+unique_name_in_owner = true
 margin_left = 7.0
 margin_top = 878.0
 margin_right = 7.0
@@ -120,6 +126,7 @@ margin_right = 988.0
 margin_bottom = 101.0
 
 [node name="Healthbar" parent="MarginContainer" instance=ExtResource( 4 )]
+unique_name_in_owner = true
 margin_left = 0.0
 margin_top = 0.0
 margin_right = 938.0
@@ -127,25 +134,27 @@ margin_bottom = 101.0
 mouse_filter = 2
 input_pass_on_modal_close_click = false
 
-[node name="Stats" parent="." instance=ExtResource( 2 )]
-
-[node name="TouchInterface" parent="." instance=ExtResource( 8 )]
-_control = "classic"
-enabled = true
-
 [node name="Menu " parent="." instance=ExtResource( 6 )]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 21.9685
-margin_top = 5.12482
-margin_right = 257.969
-margin_bottom = 274.125
+unique_name_in_owner = true
+margin_left = 50.0
+margin_right = 988.0
+margin_bottom = 101.0
 mouse_filter = 1
 __meta__ = {
 "_edit_use_anchors_": true
 }
+
+[node name="Stats" parent="." instance=ExtResource( 2 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 938.0
+margin_bottom = 591.0
+
+[node name="TouchInterface" parent="." instance=ExtResource( 8 )]
+unique_name_in_owner = true
+_control = "classic"
+enabled = true
 
 [node name="RainFx" parent="." instance=ExtResource( 5 )]
 modulate = Color( 0, 0, 0, 0.611765 )

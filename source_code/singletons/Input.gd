@@ -61,7 +61,6 @@ export (bool) var vibrate = true
 # *************************************************
 var menu : Game_Menu
 var TouchInterface : TouchScreenHUD
-onready var _Comics :  = $ComicSwipeGestures
 
 var _Stats : Stats
 var _Status_text : StatusText 

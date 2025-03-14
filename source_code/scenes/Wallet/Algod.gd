@@ -81,9 +81,10 @@ func _enter_tree():
 
 func _ready():
 	
-	
-	if  debug_txn:
-		_run_debug_test()
+	# disabled for refactor
+	#if  debug_txn:
+	#	_run_debug_test()
+	pass
 
 'Node url are set in _enter_tree()'
 func create_algod_node(network_type: String):

@@ -177,28 +177,28 @@ func _ready():
 	#_check_connection("https://free-api.vestige.fi/asset/2717482658/price" , Networking) #
 
 
-func _process(_delta): 
+#func _process(_delta): 
 	
 	#debug = ( str(connection_debug)  + str (multiplayer_server_debug) + str(multiplayer_client_debug)) # Debugs the Networking and Multiplayer states
 	
 	
 	
-	"Checks Nodes Connections"
-	for child in _reference_to_self.get_children():
-		if child is Timer:
-			check_timer = child
-			if not child.is_connected("timeout",self, '_check_connection') :
-				child.connect("timeout",self, '_check_connection') # connects timeout signal to check connection 
-		if child is HTTPRequest:
+#	"Checks Nodes Connections"
+#	for child in _reference_to_self.get_children():
+#		if child is Timer:
+#			check_timer = child
+#			if not child.is_connected("timeout",self, '_check_connection') :
+#				child.connect("timeout",self, '_check_connection') # connects timeout signal to check connection 
+#		if child is HTTPRequest:
 			#
 			# Checks connection status -> Force connect HTTP request's signals
 			#
 			#
-			if child.is_connected("connection_success",self, '_on_success') != true:
-				return connect("request_completed", self,'on_request_result')
-				return connect("connection_success",self, '_on_success')
-				return connect("error_connection_failed",self,'_on_failure')
-				return connect("error_ssl_handshake",self, '_on_fail_ssl_handshake')
+#			if child.is_connected("connection_success",self, '_on_success') != true:
+#				return connect("request_completed", self,'on_request_result')
+#				return connect("connection_success",self, '_on_success')
+#				return connect("error_connection_failed",self,'_on_failure')
+#				return connect("error_ssl_handshake",self, '_on_fail_ssl_handshake')
 
  
 # Creates a Networking timer
@@ -312,9 +312,9 @@ HTTP REQUEST STATE MACHINE
 
 func _on_Networking_request_completed(result: int, response_code : int, headers : PoolStringArray, body : PoolByteArray): # I need to pass variables to this code bloc
 	"HTTP REQUEST RESULT'S STATE MACHINE"
-	#resets result if completed successfully
-	#running_request = false
-	#connected to results and works as an auto emitter
+	print_debug("request completed")
+	#print_stack()
+	
 	match result:
 		RESULT_SUCCESS: #what happens to body? #always write a http request cmpleted function in the connecting script
 			emit_signal("connection_success") 
@@ -342,53 +342,48 @@ func _on_Networking_request_completed(result: int, response_code : int, headers 
 			#print_debug(body.get_string_from_utf8())
 		RESULT_CHUNKED_BODY_SIZE_MISMATCH:
 			emit_signal("error_connection_failed", RESULT_CHUNKED_BODY_SIZE_MISMATCH,'RESULT_CHUNKED_BODY_SIZE_MISMATCH')
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			print_debug("error_connection_failed", RESULT_CHUNKED_BODY_SIZE_MISMATCH,'RESULT_CHUNKED_BODY_SIZE_MISMATCH')
+			
 		RESULT_CANT_CONNECT:
 			emit_signal("error_connection_failed",RESULT_CANT_CONNECT,'RESULT_CANT_CONNECT')
-			good_internet = false
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			print_debug("error_connection_failed",RESULT_CANT_CONNECT,'RESULT_CANT_CONNECT')
+			
 		RESULT_CANT_RESOLVE:
 			emit_signal("error_connection_failed",RESULT_CANT_RESOLVE,'RESULT_CANT_RESOLVE')
-			good_internet = false
+			print_debug("error_connection_failed",RESULT_CANT_RESOLVE,'RESULT_CANT_RESOLVE')
+			#good_internet = false
 			#_connection = (str ('connection failed')) # Debugs to the Debug singleton
-			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			#print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_CONNECTION_ERROR:
 			emit_signal("error_connection_failed",RESULT_CONNECTION_ERROR,'RESULT_CONNECTION_ERROR')
+			print_debug("error_connection_failed",RESULT_CONNECTION_ERROR,'RESULT_CONNECTION_ERROR')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			#print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_SSL_HANDSHAKE_ERROR:
 			emit_signal("error_ssl_handshake")
-			#_connection = (str ('connection failed')) # Debugs to the Debug singleton
-			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			print_debug("error_ssl_handshake")
 		RESULT_NO_RESPONSE:
 			emit_signal("error_connection_failed",RESULT_NO_RESPONSE,'RESULT_NO_RESPONSE')
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			print_debug("error_connection_failed",RESULT_NO_RESPONSE,'RESULT_NO_RESPONSE')
 		RESULT_BODY_SIZE_LIMIT_EXCEEDED:
 			emit_signal("error_connection_failed", RESULT_BODY_SIZE_LIMIT_EXCEEDED,'RESULT_BODY_SIZE_LIMIT_EXCEEDED')
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			print_debug("error_connection_failed", RESULT_BODY_SIZE_LIMIT_EXCEEDED,'RESULT_BODY_SIZE_LIMIT_EXCEEDED')
 		RESULT_REQUEST_FAILED:
 			emit_signal("error_connection_failed", RESULT_REQUEST_FAILED, 'RESULT_REQUEST_FAILED')
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) 
+			print_debug("error_connection_failed", RESULT_REQUEST_FAILED, 'RESULT_REQUEST_FAILED')
 		RESULT_DOWNLOAD_FILE_CANT_OPEN:
 			emit_signal("error_connection_failed",RESULT_DOWNLOAD_FILE_CANT_OPEN,'RESULT_DOWNLOAD_FILE_CANT_OPEN')
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) 
+			print_debug("error_connection_failed",RESULT_DOWNLOAD_FILE_CANT_OPEN,'RESULT_DOWNLOAD_FILE_CANT_OPEN')
+			
 		RESULT_DOWNLOAD_FILE_WRITE_ERROR:
 			emit_signal("error_connection_failed", RESULT_DOWNLOAD_FILE_WRITE_ERROR, 'RESULT_DOWNLOAD_FILE_WRITE_ERROR')
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) 
+			print_debug("error_connection_failed", RESULT_DOWNLOAD_FILE_WRITE_ERROR, 'RESULT_DOWNLOAD_FILE_WRITE_ERROR')
+			 
 		RESULT_REDIRECT_LIMIT_REACHED:
 			emit_signal("error_connection_failed",RESULT_REDIRECT_LIMIT_REACHED, 'RESULT_REDIRECT_LIMIT_REACHED')
-			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			print_debug (str(result) + str(response_code) + str(headers)+ str (body)) 
-	#stop_check() # Disabled
-	
-	
+			print_debug("error_connection_failed",RESULT_REDIRECT_LIMIT_REACHED, 'RESULT_REDIRECT_LIMIT_REACHED')
+
+
 func _on_success():
 	print('connection success!!')
 	#_connection = str ('connection success!!') # Debug Variable # Depreciated--Delete
@@ -562,7 +557,8 @@ static func save_file_(body: PoolByteArray, Save_path: String, file_size: int ) 
 
 
 func _on_Timer2_timeout():
-	print ('check timer stopped')
+	print_debug('check timer stopped')
+	print_stack()
 	Timeout = true
 
 	emit_signal("Timeout")

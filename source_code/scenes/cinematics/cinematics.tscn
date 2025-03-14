@@ -421,9 +421,6 @@ wait_time = 20.0
 one_shot = true
 autostart = true
 
-[node name="Position2D" type="Position2D" parent="."]
-position = Vector2( -1334.26, 412.127 )
-
 [node name="TextureRect3" type="TextureRect" parent="."]
 visible = false
 margin_left = 395.616

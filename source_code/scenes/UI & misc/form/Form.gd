@@ -61,9 +61,10 @@ func _ready():
 	
 	# If Dialogue Already Preset, Skip to Cinematics.
 	print_debug("User Preloaded Language: ", Dialogs.language)
+	print_debug("Changing to Cinematics")
 	if not Dialogs.language.empty() :
-		get_tree().change_scene_to(cinematics)
-
+		#get_tree().change_scene_to(cinematics)
+		Utils.Functions.change_scene_to(cinematics, get_tree())
 	
 
 	#Adds 3 new languague selection
@@ -78,11 +79,8 @@ func _ready():
 	language.add_item('Arabic')
 
 
-	"Checks Internet Access is Verified "
-
 	
-	#_check_if_device_is_online()
-	translate()
+	#translate()
 
 
 

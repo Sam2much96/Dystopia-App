@@ -18,8 +18,7 @@
 #Bugs 
 # (1) Buggy on Screen Orientation Rotation
 # (2) Implements Swipe Gestures for Auto Scroll using refactores swipe detection
-# (3) Spagetti code 
-# (5) Should implemente Touch Input without emulation
+# (3) Should implement Touch Input without emulation, maybe by morhing the button type or autogenerating /duplicating body
 # *************************************************
 
 extends Control
@@ -31,8 +30,6 @@ signal menu_hidden
 signal menu_showing
 export (bool) var enabled 
 
-#var shop = load('res://scenes/UI & misc/Shop.tscn')
-
 """
 The game menu script. 
 """
@@ -42,18 +39,17 @@ enum { SHOWING, HIDDEN}
 export (String) var menu_state
 
 
+export (bool) var ENABLE  : bool 
 
-
-var counter : int = 0 # Stopis ooverflow of Upscaling Method
+var counter : int = 0 # Stops ooverflow of Upscaling Method
 var comics : Button 
 var new_game : Button 
 
 var continue_game : Button  
-#onready var game_menu : ScrollContainer = self#get_node("MarginContainer")
 
 var _multiplayer : Button 
 
-var anime : Button 
+#var anime : Button 
 var practice : Button 
 var controls : Button 
 var quit : Button 
@@ -82,13 +78,8 @@ func _ready():
 	#Buttons
 	comics  = $ScrollContainer/HSeparator/lore
 	new_game  = $"ScrollContainer/HSeparator/new game"
-
 	continue_game = get_node("ScrollContainer/HSeparator/continue") 
-	#onready var game_menu : ScrollContainer = self#get_node("MarginContainer")
-
 	_multiplayer = $ScrollContainer/HSeparator/multiplayer
-
-	anime = $ScrollContainer/HSeparator/anime
 	practice = $ScrollContainer/HSeparator/practice
 	controls = $ScrollContainer/HSeparator/controls
 	quit  = $"ScrollContainer/HSeparator/quit"
@@ -97,7 +88,7 @@ func _ready():
 	# Auto Scroll with Swipe Gestures
 	scroller= get_node("ScrollContainer")
 
-	MenuButtons = [comics,new_game, continue_game, _multiplayer, anime,practice,controls, quit]
+	MenuButtons = [comics,new_game, continue_game, _multiplayer, practice,controls, quit]
 
 	" Translation"
 	
@@ -106,7 +97,6 @@ func _ready():
 	"Scales for Mobile UI"
 	# Disabling for debuggin
 	
-
 	
 	'Hides the Menu once the scene tree is ready'
 	
@@ -115,18 +105,10 @@ func _ready():
 	
 
 	
-	"Continue Button Disable"#?
-	#if Utils.Functions.load_game(true, Globals) and continue_game != null:
-	#	continue_game.disabled = false 
-		
-	#else:
-	#	continue_game.disabled = true
-	#print_debug("Continue Disabled",continue_game.disabled)
-
 
 func _process(_delta):
 	
-	
+
 	
 	#_hide_some_menu_options() #turning this off temporarily to debug the debug singleton
 	"Visibility State Machine"
@@ -136,7 +118,8 @@ func _process(_delta):
 			return _menu_showing()
 		HIDDEN:
 			return _menu_not_showing()
-
+	#if !ENABLE:
+	#	self.set_process(false)
 
 
 
@@ -163,7 +146,6 @@ func _input(event):
 		Music.play_track(_ui_sfx_1)
 		return menu_state
 		
-
 	
 	get_tree().set_input_as_handled()
 
@@ -304,11 +286,11 @@ func _on_controls_pressed():
 	return 0
 
 func _on_quit_pressed():
-	if get_tree().get_current_scene().get_name() == 'Menu': # Title Screen Custom Quit
+	if Globals.curr_scene == 'Menu': # Title Screen Custom Quit
 		Music.play_track(_ui_sfx_1)
 		get_tree().quit()
 	
-	if get_tree().get_current_scene().get_name() == 'form': # Mutiplayer Login Custom Quit
+	if Globals.curr_scene == 'form': # Mutiplayer Login Custom Quit
 		Music.play_track(_ui_sfx_1)
 		get_tree().quit()
 	else:
@@ -332,7 +314,6 @@ func _exit_tree():
 	
 	Utils.MemoryManagement.queue_free_array(MenuButtons)
 	Music._notification(NOTIFICATION_UNPAUSED) #resets music when exiting scene tree
-	
 
 
 
@@ -340,15 +321,8 @@ func _exit_tree():
 
 
 
-#To be Depreciated and moved to Website dystopia-site for better curation UX
-func _on_anime_pressed():
-	Music.play_track(_ui_sfx)
-	
-	# SHould Open URL to CHannel Playlist On Youtube
-	# using screen orientation as a parameter
-	Networking.open_browser("https://www.youtube.com/playlist?list=PLYvZuLwGpTn89vzTTgIypeEDuEIeVuNaW")
 
-
+# To be Depreciated and moved to Website dystopia-site for better curation UX
 
 func _on_wallet_pressed():
 	Music.play_track(_ui_sfx)

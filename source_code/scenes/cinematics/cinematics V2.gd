@@ -16,15 +16,12 @@ extends Control
 # (3) Sets Global Screen Orientation
 # ********************************************************************
 # Bugs:
-#(1) Breaks on Mobile devices. Debug 
-#(2) Lack of Documentation.
+#(1) Redraw animation video assets to scale to mobile 
+#(2) 
 #(3)  
 # *************************************************
-# TO DO:
-#(1) Update Documentation
-# (3) Fix video Positionig on multiple devices
-# (4) Guidebook SHould Use HTML Parser
-# (5) 
+# 
+# 
 # *************************************************
 
 class_name cinematic
@@ -32,9 +29,6 @@ class_name cinematic
 export(String, FILE, "*.ogv") var vid_stream = ""
 
 onready var animation : AnimationPlayer = $"animation player"
-onready var position2d : Position2D = $Position2D
-
-#export (String) var anime_pilot : String = "https://github.com/Sam2much96/RenderChan/actions/runs/"
 
 onready var videoplayer : VideoPlayer = $VideoPlayer
 
@@ -148,7 +142,6 @@ func play_opening_cinematic() -> int :
 
 func _exit_tree():
 	# Free Memory
-	#local_android._no_ads() # turn off banner ads
 	local_globals.cinematics = null
 	self.queue_free()
 

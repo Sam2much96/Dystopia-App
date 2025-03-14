@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Title screen.gd" type="Script" id=1]
 [ext_resource path="res://resources/title animation/Dystopia Logo 2 webp.webp" type="Texture" id=2]
 [ext_resource path="res://resources/title animation/intro_animation_sprites/concept_3.webp" type="Texture" id=4]
 [ext_resource path="res://scenes/UI & misc/3d in 2d.tscn" type="PackedScene" id=5]
-[ext_resource path="res://resources/title animation/cape_animation.tscn" type="PackedScene" id=6]
 
 [node name="Menu" type="Control"]
 light_mask = 0
@@ -26,10 +25,6 @@ texture = ExtResource( 4 )
 
 [node name="Position2D" type="Position2D" parent="."]
 position = Vector2( -755.147, 113.871 )
-
-[node name="Node2D" parent="." instance=ExtResource( 6 )]
-position = Vector2( 519, 439 )
-scale = Vector2( 0.557234, 0.557234 )
 
 [node name="logo" type="TextureRect" parent="."]
 anchor_left = 0.5

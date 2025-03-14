@@ -110,12 +110,12 @@ var stats_ : TextureButton
 var roll : TextureButton 
 var slash  : TextureButton 
 
-var comics_ : TextureButton 
+#var comics_ : TextureButton 
 var _joystick : TouchScreenButton
 var joystick2 : TouchScreenButton 
-var D_pad : Control 
+#var D_pad : Control 
 
-var Anim : AnimationPlayer 
+#var Anim : AnimationPlayer 
 
 var _up : TextureButton
 var _down : TextureButton
@@ -124,9 +124,9 @@ var _right : TextureButton
 
 
 
-'UI control Parents'
-var interract_buttons : Control
-var action_interract_buttons : Control
+#'UI control Parents'
+#var interract_buttons : Control
+#var action_interract_buttons : Control
 
 "Dimensions Calculator"
 var dimensions : Vector2  
@@ -179,53 +179,38 @@ func _ready():
 	if Android.is_android() == false:
 		self.hide()
 		enabled = false
-	#if Android.is_android() == true: 
-	#	self.show()
-	##	print_debug("Showing Touch Interface")
-	#if Globals.os == "Android":
-	#	self.show()
-	#	enabled = true
-	#if Globals.os == "HTML5" && Utils.initial_screen_orientation == 0: # Mobile Browser
-	#	self.show()
-	#	enabled = true
-	#if Globals.os == "HTML5" && Utils.initial_screen_orientation == 1: # PC Browser
-	#	self.hide()
-	#	enabled = false
-	###self.hide() if not Android.is_android() else print_debug("Showing Touch Interface")
-	#if Globals.os == "X11":
-	#	self.hide()
-	# VIsibility Is Handled In Singleton Process
+
 
 	
 	######## Begin Setting Nodes #
-	_menu = $menu
-	_interract = $Control/InterractButtons/interact
-	stats_ = $Control/InterractButtons/stats
-	roll = $Control/ActionButtons/Spacer/roll
-	slash = $Control/ActionButtons/slash
-	comics_ = $Control/InterractButtons/comics
+	_menu = $"%menu"
+	_interract = $"%interact"
+	stats_ = $"%stats"
+	roll = $"%roll"
+	slash = $"%slash"
+	#comics_ = $"%comics"
 	#_joystick = $Joystick/joystick_circle
 	#joystick2 = $Joystick/joystick_circle2
 	 
 	#Anim = $AnimationPlayer
-	D_pad = $"D-pad"
+	#D_pad = $"D-pad"
 	LineDebug = $Line2D
 	#touch_interface_debug() disabling for now
 	
-	_up = $"D-pad/up"
-	_down = $"D-pad/down"
-	_left = $"D-pad/left"
-	_right = $"D-pad/right"
+	_up = $"%up"
+	_down = $"%down"
+	_left = $"%left"
+	_right = $"%right"
 	
 
-	action_interract_buttons = $Control/ActionButtons 
-	interract_buttons = $Control/InterractButtons
+	#action_interract_buttons = $Control/ActionButtons 
+	#interract_buttons = $Control/InterractButtons
 	
 	# Debug Broken Lins
 	
-	all_UI_Nodes = [_menu ,stats_, _interract, roll, slash,comics_,
+	all_UI_Nodes = [_menu ,stats_, _interract, roll, slash,
 	#_joystick, joystick2,
-	D_pad, _up, _down, _left, _right ]
+	 _up, _down, _left, _right ]
 	
 	# Error Catcher For Broken UI Links
 	Utils.UI.check_for_broken_links(all_UI_Nodes)
@@ -240,12 +225,11 @@ func _ready():
 		stats_,
 		_interract,
 		roll, 
-		slash,
-		comics_
+		slash
 		]
 	
 	#analogue_joystick  = [ _joystick, joystick2]
-	d_pad = [D_pad, _up, _down, _left, _right]
+	d_pad = [ _up, _down, _left, _right]
 	
 	
 		# Select Users Preferred Direction Controls 
@@ -260,13 +244,9 @@ func _ready():
 
 	#### Done Setting Nodes
 	
-	# Update scene Temporarily Disabled
-	#Globals.update_curr_scene()
-	
 	#print_debug( " Global Touch HUD: ", GlobalInput.TouchInterface)
 	# Auto Hides All UI Interfaces
-		
-	#__menu()
+	
 	reset()
 	
 	# Turn off this setup script if not running on Android
@@ -442,11 +422,10 @@ func status():  #used by ui scene when status is clicked
 	stats_.show()
 
 
-func comics():  #used by ui scene when comics is clicked
-	#_state_controller = _COMICS
-	#return _state_controller 
-	hide_buttons()
-	comics_.show()
+#func comics():  #used by ui scene when comics is clicked
+#	#_state_controller = _COMICS
+#	#return _state_controller 
+#	hide_buttons()
 
 func menu(): #used by ui scene when menu is clicked
 	#_state_controller = _MENU
@@ -474,12 +453,16 @@ func attack(): #used by ui scene when attack is clicked
 	slash.show()
 	roll.show()
 	if _control == Globals._controller_type[1]: # modern
-		D_pad.hide()
+		#D_pad.hide()
+		#
+		for i in d_pad:
+			i.hide()
 		joystick_parent.show()
 
 	if _control == Globals._controller_type[2]: # classic
 		joystick_parent.hide()
-		D_pad.show()
+		for i in d_pad:
+			i.show()
 
 
 
@@ -527,7 +510,8 @@ func hide_buttons() :
 		if x.visible:
 			x.hide()
 	# hackky bug fix for D-pad UI showing Bug
-	D_pad.hide()
+	for i in d_pad:
+		i.hide()
 	
 	
 	# Release UI FOus
@@ -548,15 +532,15 @@ func show_direction_buttons() -> void:
 			j.show()
 
 
-func _on_comics_showing(): # Refactoring For Minimap UI
-	print_debug("Comics SHowing")
-	
-	comics() 
+#func _on_comics_showing(): # Refactoring For Minimap UI
+#	print_debug("Comics SHowing")
+#	
+#	comics() 
 
 
-func _on_comics_hidden():
-	print_debug("Comics Hidden")
-	reset()
+#func _on_comics_hidden():
+#	print_debug("Comics Hidden")
+#	reset()
 
 
 
@@ -572,7 +556,7 @@ func __menu():
 		stats_.hide()
 		roll.hide()
 		slash.hide()
-		comics_.hide()
+		#comics_.hide()
 		#_joystick.hide()
 		#joystick2.hide()
 		_up.hide()
@@ -588,7 +572,7 @@ func __disappear():
 	stats_.hide()
 	roll.hide()
 	slash.hide()
-	comics_.hide()
+	#comics_.hide()
 	#_joystick.hide()
 	#joystick2.hide()
 	_up.hide()
@@ -628,13 +612,7 @@ func Horizontal():
 	_menu.rect_size = Vector2(166,143)
 	_menu.rect_scale = Vector2(0.5,0.5)
 	
-	$Control/InterractButtons/Label_Spacer.hide()
-	$Control/InterractButtons.rect_scale = Vector2(0.7,0.7)
-	$Control/InterractButtons.rect_position = Vector2(840,-13)
 	
-	$Control/ActionButtons.rect_scale = Vector2(1,1)
-	$Control/ActionButtons.rect_position = Vector2(704,296)
-	$Control/ActionButtons.rect_size = Vector2(224,206)
 	return 0
 
 
@@ -665,14 +643,6 @@ func Vertical():
 	_menu.rect_size = Vector2(166,143)
 	_menu.rect_scale = Vector2(1,1)
 	
-	
-	$Control/InterractButtons/Label_Spacer.show()
-	$Control/InterractButtons.rect_scale = Vector2(1,1)
-	$Control/InterractButtons.rect_position = Vector2(736.723,-21.035)
-	
-	$Control/ActionButtons.rect_scale = Vector2(1.5,1.5)
-	$Control/ActionButtons.rect_position = Vector2(611.412,1723.547)
-	$Control/ActionButtons.rect_size = Vector2(224,206)
 	
 	
 	return 0
@@ -810,20 +780,3 @@ func _on_menu_button_up():
 
 func _on_menu_button_down():
 	return _Input.parse_input(TouchInput,__scene_tree,"menu", true)
-
-"""
-Unhandled Inputs
-"""
-# (1) For Debugging Stuck Input Bugs which are unhandled inputs with no node responsibility
-
-#func _unhandled_input(event):
-#	# Fixed Stuck Input Bug / Unhandled Input From This node can be debugged here
-#	if event is InputEventScreenTouch:
-#		return
-#	if event is InputEventMouseButton:
-#		return
-#	
-#	if _Input.reg_inputs.has(event.action):
-	#
-#		print_debug("Unhandled Input Debug: ",event.action, event.is_pressed())
-#

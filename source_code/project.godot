@@ -44,11 +44,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/GodotGPT/ChatGPTAPI.gd"
 }, {
-"base": "Control",
-"class": "Comics",
-"language": "GDScript",
-"path": "res://scenes/UI & misc/Comics.v7.gd"
-}, {
 "base": "Node2D",
 "class": "ComicsV8",
 "language": "GDScript",
@@ -399,11 +394,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/items/coins.gd"
 }, {
-"base": "AnimatedSprite",
-"class": "comicPanel",
-"language": "GDScript",
-"path": "res://scenes/UI & misc/comic_panel_extension_script.gd"
-}, {
 "base": "Node2D",
 "class": "damage",
 "language": "GDScript",
@@ -507,7 +497,6 @@ _global_script_class_icons={
 "BrokenShip": "",
 "Bullet": "",
 "ChatGPTAPI": "",
-"Comics": "",
 "ComicsV8": "",
 "ContributorClass": "",
 "ControlIllustrations": "",
@@ -578,7 +567,6 @@ _global_script_class_icons={
 "camera": "",
 "cinematic": "",
 "coins": "",
-"comicPanel": "",
 "damage": "",
 "debug": "",
 "enemy_spawner": "",

@@ -60,7 +60,6 @@ custom_fonts/font = ExtResource( 3 )
 script = ExtResource( 6 )
 
 [node name="0" type="Tabs" parent="TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 74.0
@@ -98,6 +97,7 @@ text = "KC
 align = 1
 
 [node name="1" type="Tabs" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -225,6 +225,7 @@ text = "Item 1
 flat = true
 
 [node name="4" type="Tabs" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0

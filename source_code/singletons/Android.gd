@@ -76,6 +76,8 @@ func _ready():
 		# Connect Signals 
 		connect("player_ready",self, "_on_player_ready")
 		
+		
+		
 		ads() # Enable ads here
 		
 		#initial_screen_orientation = Utils.Screen.Orientation()
@@ -112,17 +114,21 @@ func is_android() -> bool:
 
 
 func ads() -> void:
+	# create ads parameters
+	
 	# Config and Inititalise Ads Programmatically
 	
 	# config ads
 	_ads.banner_id = "ca-app-pub-3900377589557710/5127703243"
-	_ads.is_real_set(true) # Test Ads & Ads Initialisation
-	_ads.is_real = true
-	#_ads._init()
+	_ads.rewarded_id = "ca-app-pub-3900377589557710/4046256488"
+	_ads.is_real_set(false) # Test Ads & Ads Initialisation
+	_ads.is_real = false
+	#_ads.initialize_on_background_thread()
 	_ads.load_banner()
+	_ads.load_rewarded_video()
+	
 	_ads.show_banner()
 	_ads.move_banner(false)
-
 
 
 func _no_ads() -> void:
@@ -285,8 +291,10 @@ func get_TouchInterface() -> TouchScreenHUD:
 
 # OPtimise android ads
 func _on_AdMob_banner_loaded():
+	print_debug("Banner Ads Loaded")
+	
 	# Ad some sud to this account
-	Globals.suds + 100
+	Globals.suds + 1_000
 	
 
 
@@ -295,7 +303,7 @@ func _on_AdMob_banner_failed_to_load(error_code):
 	# stop the ads timer, log the error codes
 	
 	# pass the error code to ingame debug
-	_debug.Ads_debug = "Banner Ads failer : err" + str(error_code)
+	_debug.Ads_debug = "Banner Ads failed err" + str(error_code)
 
 	print_debug(_debug.Ads_debug)
 
@@ -305,11 +313,20 @@ func _on_AdMob_banner_failed_to_load(error_code):
 func _on_AdMob_rewarded_video_loaded():
 	# offer the player a random item spin for 1 video
 	print_debug("rewarded video loaded")
+	
+
+func show_rewarded_video_ads():
+	_ads.show_rewarded_video() # Show the rewarded video ad
+
 
 
 func _on_AdMob_rewarded_video_opened():
 	print_debug("rewarded video opened")
-
+	Globals.suds += 10_000
 
 func _on_AdMob_rewarded_video_failed_to_load(error_code):
 	print_debug("rewarded video failed loading: ", error_code)
+
+
+func _on_AdMob_rewarded(currency, amount):
+	print_debug(currency, amount)

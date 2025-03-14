@@ -45,7 +45,7 @@ func _process(_delta): # Should Ideally Use The SImulation COunter
 	
 	if not player_node:
 		return
-	
+		
 	if is_instance_valid(player_node):
 	
 		# updata Player Marker

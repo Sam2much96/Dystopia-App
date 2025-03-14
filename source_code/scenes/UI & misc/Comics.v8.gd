@@ -67,15 +67,6 @@ func _on_clear_pressed():
 
 
 
-# AI Logic
-# (1)  Get Png Of Drawings
-# (2) Send It To ToonCrafters A.I. via Replicate API via http request
-# (3) Download The resulting video / png sequece
-# (4) Load It in For Preview
-# (5) Cache Results 
-# (6) Show In side viewports
-func AI()-> void: 
-	pass
 
 
 """

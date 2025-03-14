@@ -118,11 +118,11 @@ func _on_skip_pressed():
 func _on_VideoPlayer_finished():
 	_go_to_title()
 
-func _on_Timer_timeout():
-	push_error('Cinematic scene broken')
-	_go_to_title()
-	if local_globals.curr_scene == 'Cinematics':
-		pass
+#func _on_Timer_timeout():
+#	push_error('Cinematic scene broken')
+#	_go_to_title()
+#	if local_globals.curr_scene == 'Cinematics':
+#		pass
 
 
 func _go_to_title() -> void: 

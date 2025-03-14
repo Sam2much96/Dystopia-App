@@ -113,14 +113,14 @@ var Timeout : bool = false
 #*********IPFS Gateway***************#
 # from https://ipfs.github.io/public-gateway-checker/
 # 1 ,2 , 3 work
-export (Array) var gateway : Array = [
-	'gateway.ipfs.io', "dweb.link", "ipfs.io",
-	"ipfs.runfission.com", "jorropo.net", "via0.com", 
-	"cloudflare-ipfs.com", "hardbin.com"
-	]
+#export (Array) var gateway : Array = [
+#	'gateway.ipfs.io', "dweb.link", "ipfs.io",
+#	"ipfs.runfission.com", "jorropo.net", "via0.com", 
+#	"cloudflare-ipfs.com", "hardbin.com"
+#	]
 
 var random : int
-var selected_gateway : String
+#var selected_gateway : String
 
 export (bool) var good_internet : bool
 
@@ -177,29 +177,6 @@ func _ready():
 	#_check_connection("https://free-api.vestige.fi/asset/2717482658/price" , Networking) #
 
 
-#func _process(_delta): 
-	
-	#debug = ( str(connection_debug)  + str (multiplayer_server_debug) + str(multiplayer_client_debug)) # Debugs the Networking and Multiplayer states
-	
-	
-	
-#	"Checks Nodes Connections"
-#	for child in _reference_to_self.get_children():
-#		if child is Timer:
-#			check_timer = child
-#			if not child.is_connected("timeout",self, '_check_connection') :
-#				child.connect("timeout",self, '_check_connection') # connects timeout signal to check connection 
-#		if child is HTTPRequest:
-			#
-			# Checks connection status -> Force connect HTTP request's signals
-			#
-			#
-#			if child.is_connected("connection_success",self, '_on_success') != true:
-#				return connect("request_completed", self,'on_request_result')
-#				return connect("connection_success",self, '_on_success')
-#				return connect("error_connection_failed",self,'_on_failure')
-#				return connect("error_ssl_handshake",self, '_on_fail_ssl_handshake')
-
  
 # Creates a Networking timer
 func _init_timer() : 
@@ -243,10 +220,8 @@ func start_check(time: int):
 	# Reset Timeout parameter
 	#
 	check_timer.start()
+	print_debug("start check")
 
-
-func start_check_v2(wait_time : int):
-	yield(get_tree().create_timer(wait_time),"timeout")
 
 # Check http unsecured Url connection
 # fix multiple check bug
@@ -265,45 +240,6 @@ func _check_connection_secured(url): # Check http secured Url connection
 	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
 	print (' Networking Request Error: ',error) #for debug purposes only
 
-
-func genrate_random_gateway():
-	Utils._randomize(self)
-	random = int(rand_range(-1,gateway.size())) #selects a random track number
-	selected_gateway = gateway[random]
-
-# List of valid IPFS web 2.0 Gateways
-# An array may be a better fit
-#https://ipfs.github.io/public-gateway-checker/
-static func _connect_to_ipfs_gateway(parse : bool, url : String, selected_gateway: String ,request_node: HTTPRequest): # Check http secured Url connection
-	#Ignore Warning
-	
-		# parse Url
-		if parse:
-			url = _parse(url) 
-		
-
-		# uses ipfs web 2 gateway Array
-		
-		
-		url = "https://" + selected_gateway + "/ipfs/" + url
-		
-		#print ("NFT Url: ",url) #for debug purposes only
-		
-		var t=StreamPeerSSL.new()
-	
-		var error = request_node.request(url,PoolStringArray(),false,HTTPClient.METHOD_GET) 
-		 
-		print (' Networking Request Error: ',error) #for debug purposes only
-		print ("Final Url: ", url)
-		return
-
-
-
-'Removes IPFS Domain from Asset url'
-static func _parse(_url : String)-> String: #works
-	_url=_url.replace('ipfs://', '')
-	#print (_url) # for debug purposes only
-	return _url
 
 
 """
@@ -998,15 +934,6 @@ class Lobby extends Control:
 	const DEFAULT_PORT = 8910
 
 
-	# Lobby UI
-	# Declares Variables
-	#onready var address = $Address
-	#onready var host_button = $HostButton
-	#onready var join_button = $JoinButton
-	#onready var status_ok = $StatusOk
-	#onready var status_fail = $StatusFail
-	#onready var port_forward_label = $PortForward
-	#onready var find_public_ip_button = $FindPublicIP
 
 	var peer = null
 

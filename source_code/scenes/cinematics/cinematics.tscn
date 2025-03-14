@@ -416,11 +416,6 @@ margin_bottom = 8.48523
 mouse_filter = 2
 input_pass_on_modal_close_click = false
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 20.0
-one_shot = true
-autostart = true
-
 [node name="TextureRect3" type="TextureRect" parent="."]
 visible = false
 margin_left = 395.616
@@ -519,6 +514,5 @@ anims/intro_animation = ExtResource( 4 )
 anims/opening_cinematic = SubResource( 2 )
 
 [connection signal="finished" from="VideoPlayer" to="." method="_on_VideoPlayer_finished"]
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="skip" to="." method="_on_skip_pressed"]
 [connection signal="animation_finished" from="animation player" to="." method="_on_animation_player_animation_finished"]

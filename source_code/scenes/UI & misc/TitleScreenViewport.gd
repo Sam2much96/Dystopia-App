@@ -12,17 +12,17 @@
 extends Viewport
 
 
-export (ViewportTexture )var viewport_image : ViewportTexture = get_texture()
-#onready var image : image
+onready var viewport_image : ViewportTexture = self.get_texture()
 
-onready var model : Spatial = $Spatial
+onready var outputTex : TextureRect = get_parent()
+onready var model : Spatial = $"%Spatial"
 const SPEED = 10
 
 
 func _ready():
 	
 	# Stream 3d scene renders to the Parent Texture React
-	get_parent().set_texture(viewport_image)
+	outputTex.set_texture(viewport_image)
 
 
 

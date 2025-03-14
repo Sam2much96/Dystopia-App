@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://scenes/UI & misc/TitleScreenViewport.gd" type="Script" id=7]
@@ -17,10 +17,7 @@ shader_param/down_clip = 0.0
 shader_param/left_clip = 0.0
 shader_param/right_clip = 0.0
 
-[sub_resource type="ViewportTexture" id=8]
-viewport_path = NodePath("Viewport")
-
-[node name="Sprite" type="TextureRect"]
+[node name="2d_3d_viewport" type="TextureRect"]
 modulate = Color( 1, 1, 1, 0.662745 )
 show_behind_parent = true
 material = SubResource( 10 )
@@ -42,7 +39,7 @@ render_target_v_flip = true
 gui_disable_input = true
 gui_snap_controls_to_pixels = false
 script = ExtResource( 7 )
-viewport_image = SubResource( 8 )
 
 [node name="Spatial" parent="Viewport" instance=ExtResource( 9 )]
+unique_name_in_owner = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.660889, 0, -3.24523 )

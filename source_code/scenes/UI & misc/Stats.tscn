@@ -120,7 +120,8 @@ margin_top = 36.0
 margin_right = 156.0
 margin_bottom = 167.0
 
-[node name="Algos" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
+[node name="Sud" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
 margin_right = 74.0
 margin_bottom = 131.0
 size_flags_horizontal = 3
@@ -131,6 +132,7 @@ text = "Coins
 align = 1
 
 [node name="price" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
 margin_left = 78.0
 margin_right = 156.0
 margin_bottom = 131.0
@@ -172,6 +174,7 @@ text = "Quests"
 align = 1
 
 [node name="Quests" type="Label" parent="TabContainer/2/ScrollContainer2/VBoxContainer"]
+unique_name_in_owner = true
 margin_top = 47.0
 margin_right = 122.0
 margin_bottom = 245.0
@@ -207,6 +210,7 @@ margin_right = 103.0
 margin_bottom = 181.0
 
 [node name="Title3" type="Label" parent="TabContainer/3/MarginContainer/ScrollContainer3/VBoxContainer"]
+unique_name_in_owner = true
 margin_right = 103.0
 margin_bottom = 43.0
 custom_fonts/font = ExtResource( 2 )
@@ -214,6 +218,7 @@ text = "Inventory"
 align = 1
 
 [node name="Inventory" type="Button" parent="TabContainer/3/MarginContainer/ScrollContainer3/VBoxContainer"]
+unique_name_in_owner = true
 margin_top = 47.0
 margin_right = 103.0
 margin_bottom = 181.0
@@ -240,6 +245,7 @@ anchor_bottom = 1.0
 mouse_filter = 1
 
 [node name="minimap" type="NinePatchRect" parent="TabContainer/4/MarginContainer"]
+unique_name_in_owner = true
 modulate = Color( 1, 1, 1, 0.411765 )
 margin_right = 976.0
 margin_bottom = 524.0

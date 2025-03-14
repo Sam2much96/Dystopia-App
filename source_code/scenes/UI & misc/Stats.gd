@@ -90,12 +90,12 @@ onready var local_networking : Internet = get_node("/root/Networking")
 func _ready():
 	
 	# Get UI Node Pointer
-	_Mini_map = $"TabContainer/4/MarginContainer/minimap"
-	_quest_label = $"TabContainer/2/ScrollContainer2/VBoxContainer/Quests"
-	_coin_label = $"TabContainer/1/VBoxContainer/HBoxContainer/Algos"
-	_price_label = $"TabContainer/1/VBoxContainer/HBoxContainer/price"
-	_inventory_button = $"TabContainer/3/MarginContainer/ScrollContainer3/VBoxContainer/Inventory"
-	_inventory_parent_label = $"TabContainer/3/MarginContainer/ScrollContainer3/VBoxContainer/Title3"
+	_Mini_map = $"%minimap"
+	_quest_label = $"%Quests"
+	_coin_label = $"%Sud"
+	_price_label = $"%price"
+	_inventory_button = $"%Inventory"
+	_inventory_parent_label = $"%Title3"
 	tab_container = $TabContainer
 	_inventory_parent = $"TabContainer/3/MarginContainer/ScrollContainer3/VBoxContainer"
 	
@@ -109,22 +109,7 @@ func _ready():
 	
 	Utils.UI.check_for_broken_links(_Stats_UI_Elements)
 	
-	#for i in _Stats_UI_Elements:
-	#	
-	#	if not is_instance_valid(i):
-	#		push_error(" Node Path Broken : " + str(i))
-	#		print_stack()
-	## Connect signals to self?
-	
-	#self.connect("not_enabled",self, '_on_status_hidden')
-	#self.connect('enabled',self,'_on_status_showing')
-	
-	
-	
-	#self.get_child(0)
-	
-	#Globals.save_game() # Depreciated
-	#get_tree().set_auto_accept_quit(false)
+
 	hide()
 	
 	# Make self global 
@@ -137,15 +122,11 @@ func _ready():
 	# Set Tab Icons via SUbclass Script
 	tab_container.set_script(TabIcons)
 	
-	# Debug Signal Connections
-	
-	#print_debug(
-	#	self.is_connected("not_enabled",self, '_on_status_hidden'), 
-	#	self.is_connected('enabled',self,'_on_status_showing')
-	#	)
 	
 	# Fetch price data
-	local_networking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , local_networking) #
+	# should be run during a simulation run
+	#local_networking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , local_networking) #
+	
 
 func _input(event):
 	"Status UI Visibility Is Entirely Self Controlled From Here"
@@ -159,16 +140,13 @@ func _input(event):
 		print_debug("enable")
 		enabled = true
 		_enable()
-	#	#_state = ENABLED
-		#Music.play_track(Music.ui_sfx[0])
-		return enabled # _state
+		return enabled 
 	if event.is_action_pressed("pause") && enabled == true:
 		enabled = false
 		_disable()
-	#	#_state = DISABLED
+
 		print_debug("disable")
-		#Music.play_track(Music.ui_sfx[1])
-		return enabled #_state
+		return enabled
 
 
 

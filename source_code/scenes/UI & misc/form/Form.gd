@@ -38,19 +38,19 @@ onready var label_spacer : Label = $ui/grid/label_spacer
 onready var label_spacer2 : Label = $ui/grid/label_spacer2
 onready var label_spacer3 : Label =$ui/grid/label_spacer3
 
-#onready var _debug =get_tree().get_root().get_node("/root/Debug")
 
-#var os : String = Globals.os # Pointer
 
-onready var UI_buttons : Array = [
-	play_button,  
-	language, label_spacer, 
-	label_spacer2, label_spacer3
-	]
-
+onready var UI_buttons : Array 
 
 func _ready():
 
+	UI_buttons = [
+		play_button,  
+		language, label_spacer, 
+		label_spacer2, label_spacer3
+	]
+	
+	Utils.UI.check_for_broken_links(UI_buttons)
 	
 	# Load Users Prefered DIalogue 
 	Utils.Functions.load_user_data('languague')

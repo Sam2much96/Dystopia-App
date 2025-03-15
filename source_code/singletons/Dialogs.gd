@@ -15,6 +15,7 @@
 # (2) shows a dialogue function, hide_a dialogue function (1/2)
 # (3) Has two signals for when dialogue starts and when it ends.
 # (4) Translates between languages using a translation .csv file
+# (5) Connects signals from Dialog Box and Connects Signals to Player Script
 
 extends Node
 
@@ -36,15 +37,14 @@ using text to speech, etc)
 """
 
 
-
-signal dialog_started
-signal dialog_ended
+# what do these signals connect to?
+signal singleton_dialog_started
+signal singleton_dialog_ended
 
 var active = false
 
-var dialog_box = null setget _set_dialog_box
+var dialog_box : DialogBox = null setget _set_dialog_box
 
-var word_bubble_box : AnimatedSprite = null  setget _set_wordbubble_box
 var language : String = ""# stores the current language the user selects
 
 #var _script_testing : String = 'res://resources/dialogues/script_testing.gd'
@@ -91,10 +91,10 @@ func hide_dialogue(): #can be used to hide the dialogue box. Not best Practice
 		dialog_box.hide_dialogue() # Trigger a hide function in it.
 
 
-func _set_dialog_box(node):
-	if not node is DialogBox: # if not node is not of type node?
-		push_error("provided node doesn't extend Dialogue Box") # push error
-		return 
+func _set_dialog_box(node : DialogBox):
+	#if not node is DialogBox: # if not node is not of type node?
+	#	push_error("provided node doesn't extend Dialogue Box") # push error
+	#	return 
 	
 	dialog_box = node
 	
@@ -110,20 +110,16 @@ func _set_dialog_box(node):
 	
 	pass
 
-func _set_wordbubble_box(node): #word bubblebox class
-	word_bubble_box = node
-	
-	# Connect signals
 
 
 func _on_dialog_started():
 	active = true
-	emit_signal("dialog_started")
-	
+	emit_signal("singleton_dialog_started")
+
 func _on_dialog_ended():
 	if active:
 		active = false
-		emit_signal("dialog_ended")
+		emit_signal("singleton_dialog_ended")
 		
 		yield(get_tree().create_timer(WAIT_TIME), "timeout")
 		# DIalogue Box Node Might Be Removed From Scene Tree After 6 Seconds Wait

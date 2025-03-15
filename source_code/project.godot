@@ -267,7 +267,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "QuestGiver",
 "language": "GDScript",
-"path": "res://scenes/UI & misc/Quest.gd"
+"path": "res://scenes/UI & misc/Quest_Giver.gd"
 }, {
 "base": "CPUParticles2D",
 "class": "RainFX",

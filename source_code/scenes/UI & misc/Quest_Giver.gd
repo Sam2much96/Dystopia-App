@@ -37,7 +37,7 @@ export(String, MULTILINE) var initial_text = "TLDR; bring me 10 thingies"
 export(String, MULTILINE) var pending_text = "You forgot? I want 10 thingies"
 export(String, MULTILINE) var delivered_text = "Thank you! Here's your reward.."
 
-func process() -> String:
+func _process(_delta):
 	var quest_status = Quest.get_status(quest_name)
 	match quest_status:
 		Quest.STATUS.NONEXISTENT:
@@ -53,3 +53,4 @@ func process() -> String:
 				return pending_text
 		_:
 			return ""
+

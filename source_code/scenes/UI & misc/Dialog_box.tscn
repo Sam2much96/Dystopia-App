@@ -236,6 +236,7 @@ tracks/1/keys = {
 }
 
 [node name="Dialog_box" type="NinePatchRect"]
+modulate = Color( 1, 1, 1, 0.2 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -266,6 +267,7 @@ __meta__ = {
 }
 
 [node name="next_dialog_arrow" type="TextureRect" parent="."]
+visible = false
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -307,6 +309,7 @@ __meta__ = {
 }
 
 [node name="anims" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
 anims/MOBILE = SubResource( 7 )
 anims/PC = SubResource( 8 )
 anims/RESET = SubResource( 9 )
@@ -316,3 +319,7 @@ anims/show_text = SubResource( 5 )
 anims/wait = SubResource( 6 )
 next/appear = "show_text"
 next/show_text = "wait"
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

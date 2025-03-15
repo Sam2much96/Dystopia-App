@@ -158,9 +158,4 @@ func _on_NPC_body_entered(body):
 func _on_NPC_body_exited(body):
 	if body is Player:
 		active = false
-		# Prints Center of Player and NPC
-		#print(  Behaviour.FollowPlayer(self, body)  ) # for debug purposes only
-		 
-		#self.position = -Behaviour.FollowPlayer(self, body)
-		#move_and_slide( -Behaviour.FollowPlayer(self, body))
-		
+

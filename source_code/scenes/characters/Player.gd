@@ -11,6 +11,7 @@
 # (4) Extend input from Global Input Singleton
 # (5) Extends to Top DOwn and SideScrolling Player Scripts
 # (6) Player & Enemy SFX is handled by simulation singleton
+# (7) Connects Dialog Signals From Dialogs Singleton
 # *************************************************
 # To Do:
 # (1) Implement State Buffer (Done)
@@ -126,8 +127,8 @@ func _ready():
 	# Connect To Dialogue Singleton
 	
 	if not (
-			Dialogs.connect("dialog_started", self, "_on_dialog_started") == OK and
-			Dialogs.connect("dialog_ended", self, "_on_dialog_ended") == OK):
+			Dialogs.connect("singleton_dialog_started", self, "_on_dialog_started") == OK and
+			Dialogs.connect("singleton_dialog_ended", self, "_on_dialog_ended") == OK):
 		push_error("Error Connecting To The Dialog System")
 		print_debug("Error connecting to dialog system")
 	

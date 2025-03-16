@@ -1210,6 +1210,8 @@ anims/walk_up = SubResource( 17 )
 
 [node name="enemy_sword" type="Area2D" parent="." groups=["enemy_weapons"]]
 position = Vector2( 0, -78.0211 )
+collision_layer = 32
+collision_mask = 31
 
 [node name="slash" type="CollisionPolygon2D" parent="enemy_sword"]
 polygon = PoolVector2Array( -134.513, -92.9393, -124.246, 19.4555, -59.4026, 109.155, 76.2278, 112.938, 75.147, 26.4802, -2.66479, 20.5363, -36.1671, -8.64319, -57.2411, -40.5244 )

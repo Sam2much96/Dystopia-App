@@ -2,8 +2,10 @@
 
 [ext_resource path="res://scenes/props/signpost.gd" type="Script" id=1]
 
-[node name="DialogueTrigger" type="Area2D"]
+[node name="DialogueTrigger" type="Area2D" groups=["Trigger"]]
 position = Vector2( -1, 5 )
+collision_layer = 256
+collision_mask = 47
 monitorable = false
 script = ExtResource( 1 )
 dialogue = "Dialogue Clicked"

@@ -52,7 +52,7 @@ onready var h3 : TextureRect = $heart3
 
 
 onready var placeholder_hearts : Array = [h2,h3] # For Holding memory pointer to the placeholder heartb
-
+onready var additional_hearts : Array 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -74,86 +74,103 @@ func get_heart_count() -> int:
 	HEALTH_COUNT = 0 # Clear Prev Health COunt
 	
 	for i in hp_child:
-		if i is Tween:
-			pass
+		
 		if i is TextureRect :
 			if i.visible == true: # Counts Only Visible Heart Boxes
 				HEALTH_COUNT +=1
 			if i.visible == false:
 				HEALTH_LOST +=1
+		if i is Tween: # unused tween animation node for healthbar anims
+			pass
 		else:
 			pass
 	#print_debug("Heart Count Debug: ",HEALTH_COUNT)
 	return HEALTH_COUNT
 
 
-# Should Implement a New Constant for Max Health
-func _on_health_changed(new_hp : int):
-	# Buggy Logic
-	print_debug("Health Change Function Called: ", new_hp)
+func _on_health_changed(new_hp: int):
+	push_warning("Health Change Function Called: "+  str(new_hp))
 	
-	# Update THe Heart COunt Variables
-	get_heart_count() # -1 for The unimplemented Empty Heart Scene & tween node
+	# Update Heart Count Variables
+	get_heart_count()
 	
+	# If health is 0, hide all hearts
 	if new_hp == 0:
-		# Hide The Last Heart If Player Life Updates As Zero
-		# Clears Children Nodes and hides the heart instance for duplicating
 		heart_instance.hide()
+		h2.hide()
+		h3.hide()
+		return
+	# If health is 1, hide all hearts
+	if new_hp == 1:
+		heart_instance.show()
+		h2.hide()
+		h3.hide()
+		return
+	if new_hp == 2:
+		heart_instance.show()
+		h2.show()
+		h3.hide()
+		return
+	if new_hp == 3:
+		heart_instance.show()
+		h2.show()
+		h3.show()
+		for i in additional_hearts:
+			i.hide()
+		
+		#Utils.MemoryManagement.queue_free_array(additional_hearts)
+		return
 	
-	# If THe Plaer HP is THe same As The current Viible Hearts on Screen Return
-	# It is a Guard Clause
+	
+	# Guard Clause: If new health equals current heart count, return
 	if new_hp == HEALTH_COUNT:
 		return
 	
 	"""
 	HEALTH INCREASE Logic
 	"""
-	# To Do : Implement Tweening for animation
-	
 	# Health Increase past 3 with No Health Lost
-	if new_hp > HEALTH_COUNT && HEALTH_LOST == 0 :
-		var hearts_to_add = new_hp - HEALTH_COUNT # get the difference
-		# Debug the difference and show HP
-		print_debug("health Box Increase 111: ", hearts_to_add)
-		
-		# Run A Recursive Loop TO Duplicate Additional Hearts
-		for i in hearts_to_add:
-			var t = h3.duplicate()# HeartScene.instance()
-			self.call_deferred("add_child", t)
-			#self.add_child(t)
-	
+	if new_hp > HEALTH_COUNT and HEALTH_LOST == 0:
+		var hearts_to_add = new_hp - HEALTH_COUNT  # Get the difference
+		print_debug("Health Box Increase 111: ", hearts_to_add)
+
+		# Add additional hearts
+		for i in range(hearts_to_add):
+			var new_heart = h3.duplicate()
+			additional_hearts.append(new_heart)
+			self.call_deferred("add_child", new_heart)
+
 	# Health Increase past 3 with Some Health Lost
-	if new_hp > HEALTH_COUNT && HEALTH_LOST > 0 :
-		var hearts_to_add = new_hp - HEALTH_COUNT # get the difference
-		# Debug the difference and show HP
-		print_debug("health Box Increase222 : ", hearts_to_add)
-		
-		# Run A Recursive Loop TO Duplicate Additional Hearts
-		for i in hearts_to_add:
-			#self.get_child(hearts_to_add).show() # get a child and show it
-			HEALTH_LOST =-1
-			for u in self.get_children():
-				u.show()
+	elif new_hp > HEALTH_COUNT and HEALTH_LOST > 0:
+		#print(111111)
+		var hearts_to_restore = min(new_hp - HEALTH_COUNT, HEALTH_LOST)
+		print_debug("Restoring Hidden Hearts: ", hearts_to_restore)
+
+		for child in self.get_children():
+			if hearts_to_restore > 0 and child is TextureRect and not child.visible:
+				child.show()
+				hearts_to_restore -= 1
+				HEALTH_LOST -= 1
+
+		# If there are still more hearts to add after restoring hidden ones
+		var extra_hearts_needed = new_hp - (HEALTH_COUNT + hearts_to_restore)
+		print_debug("Additional Hearts to Add: ", extra_hearts_needed)
+
+		for i in range(extra_hearts_needed):
+			var new_heart = h3.duplicate()
+			self.call_deferred("add_child", new_heart)
+
 	"""
 	HEALTH DECREASE Logic
 	"""
-	
-	# Health Decrese
-	# State : Works
-	
-	# If The New Health is Lower Than THe Current Health Count
 	if new_hp < HEALTH_COUNT:
-		var _to_remove_hearts = HEALTH_COUNT - new_hp
+		var to_remove_hearts = HEALTH_COUNT - new_hp
 		
-		# Recursively HIde all heart childern
-		while (_to_remove_hearts > 0):
-			self.get_child(_to_remove_hearts).hide()
-			_to_remove_hearts -= 1
-			HEALTH_LOST +=1 # Increase THe health lost variable
-			
-	
-	# Debug Heart Update
-	#print_debug("Heart Update Debug: ", (self.get_child_count() -2), "/", "New HP : ",new_hp)
-
-
+		while to_remove_hearts > 0:
+			for child in self.get_children():
+				if child is TextureRect and child.visible:
+					child.hide()
+					HEALTH_LOST += 1
+					to_remove_hearts -= 1
+					break  # Ensure only one heart is hidden per loop iteration
 

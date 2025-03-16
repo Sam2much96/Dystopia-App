@@ -37,21 +37,21 @@ export (PackedScene) var enemy_spawn_1
 
 onready var position_in_area : Vector2 = self.position #origin point
 onready var anim : AnimationPlayer = $AnimationPlayer
-onready var cool_down: Timer = $COOL_DOWN
+#onready var cool_down: Timer = $COOL_DOWN
 #var enemy = load('res://scenes/characters/Bandits.tscn') 
 
 # Frame Counter
-var frame_counter : int = 0
+#var frame_counter : int = 0
 
 
 # Boolean For Triggering Spawning
-var SPAWNNING : bool = false
+#var SPAWNNING : bool = false
 export(int) var spawn_count 
 
 onready var area : Area2D = $Area2D
 
 #var idol = Idol
-onready var savepoint = Idol.new()
+#onready var savepoint = Idol.new()
 
 func _ready():
 	# connect signals
@@ -103,20 +103,8 @@ func finished_spawning() -> bool:
 	
 	
 " SPAWN STARTER/ PLAYER DETECTOR"
-func _on_Area2D_body_exited(body):
+func _on_Area2D_body_exited(_body):
 	pass
-
-# tEMPLATE FOR iMPLEMENTING A SPAWNING cOOLDOWN WITH tIMER
-func _on_COOL_DOWN_timeout(): # Disabled for performance optimization
-		# Reset 
-		frame_counter = 0
-		savepoint._reset_autosave_debugger()
-		
-		spawn_enemy()
-		
-		if finished_spawning():
-			#delete
-			queue_free()
 
 # Triggers a Spawn When Player Body Enters the Collision
 func _on_Area2D_body_entered(body):
@@ -124,14 +112,26 @@ func _on_Area2D_body_entered(body):
 		
 		#print_debug("Player Enters Enemy Spawn Range")
 		spawn_enemy()
-	
-	# Saves Using A Savepoint Class
-	#
-	#
-	savepoint._save(body)
+		
+		# Save
+		#
+		#
+		
+		Utils.Functions.save_game(
+		[body], 
+		body.hitpoints, 
+		body.position.x, 
+		body.position.y, 
+		Globals.curr_scene, 
+		"", 
+		Globals.kill_count, 
+		"", 
+		null, 
+		""
+		) 
 
 
 
 func _exit_tree():
 	# delete idol save object
-	Utils.MemoryManagement.queue_free_array([savepoint])
+	Utils.MemoryManagement.queue_free_array([self])

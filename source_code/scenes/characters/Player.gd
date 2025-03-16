@@ -177,9 +177,13 @@ func despawn():
 	
 	
 	self.hide()
+	
+	get_tree().reload_current_scene()
 
+
+# Heartbox Update ROuter
 # Exposed Dynamic Function To Upate The Game HUD Heart Box 
-# From ANother Scen Throught THe Player
+# From ANother Scene Throught THe Player
  
 func update_heart_box():
 	# Call The Method With My HP To Register Current Player HP

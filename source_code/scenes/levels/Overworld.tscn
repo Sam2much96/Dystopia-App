@@ -222,27 +222,11 @@ HINT = true
 [node name="signpost2" parent="." instance=ExtResource( 14 )]
 position = Vector2( 894, 2377 )
 
-[node name="DialogueTrigger2" parent="signpost2" instance=ExtResource( 15 )]
-position = Vector2( 4, 32 )
-enabled = true
-dialogue = "UP : Temple
-
-DOWN: unknown"
-
 [node name="signpost3" parent="." instance=ExtResource( 14 )]
 position = Vector2( 2674, -4949 )
 
-[node name="DialogueTrigger3" parent="signpost3" instance=ExtResource( 15 )]
-position = Vector2( 6, 39 )
-
 [node name="signpost4" parent="." instance=ExtResource( 14 )]
 position = Vector2( 8581, -4834 )
-
-[node name="DialogueTrigger4" parent="signpost4" instance=ExtResource( 15 )]
-position = Vector2( 2, 48 )
-enabled = true
-dialogue = "Don't Go Down The Hole, I would'nt do it!"
-speaker = "Traveler"
 
 [node name="broken ship" parent="." instance=ExtResource( 16 )]
 position = Vector2( 3134.37, 2440.4 )

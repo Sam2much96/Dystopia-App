@@ -8,9 +8,10 @@
 # Features:
 # (1) Saves Player Information to Local Storage once Player Object is Detected.
 # (2) Connects to Globals Functions class for Saving Player Object Information
+# (3) Exit Should Be on Collision Layer 3
 
 # To Do:
-#(1) Document Functions
+#(1) Document Functions (Done)
 # (2) Write Redundancy Code for Debugging signal connections
 # *************************************************
 
@@ -52,26 +53,28 @@ func _on_body_entered(body):
 		Utils.Functions.save_game(
 			[body], 
 			body.hitpoints, 
-			(body.position.x+ 200), 
-			(body.position.y +200), 
+			body.position.x, 
+			body.position.y, 
 			to_scene, 
 			"", 
 			Globals.kill_count, 
 			"", 
 			null, 
 			""
-			) 
-			
-	print_debug ("Finished Saving Game")
-	
-	if  to_scene.empty():
-		push_error("Error changing scenes: to_scene has no assigned scene")
-		return false
+		) 
 		
+		print_debug ("Finished Saving Game")
+	
+	if  to_scene.empty(): # Error Catcher 1
+		push_error("Error changing scenes: to_scene has no assigned scene")
+		return 
+
 	if !to_scene.empty():
 		print_debug("To Scene Debug: ", to_scene)
-	
-		# Global Scene Transition
-	if Utils.Functions.change_scene_to(Globals.loading_scene, get_tree()) != OK:
-		push_error("Error changing scene")
 
+	Globals.curr_scene = to_scene
+	print_debug("changing scene to :", to_scene)
+	get_tree().change_scene(to_scene)
+		# Global Scene Transition
+	#Utils.Functions.change_scene_to(Globals.loading_scene, get_tree()) #!= OK:
+	#	push_error("Error changing scene")

@@ -11,7 +11,7 @@
 # *************************************************
 # Bugs:
 # (1) Dialog box bugs out if there's a single error in the script
-# (2) 
+# (2) Breaks Exit.gd (Fix Collission spammer bug)
 # (3) Doesnt't Trigger UI changes in Touch HUD
 # (4) 
 # (5) Replace Player with Global Name / Wallet Address by modifying forms.gd

@@ -67,7 +67,7 @@ func _ready():
 	
 
 
-func _process(delta : float):
+func _process(_delta):
 	
 	if active:
 		

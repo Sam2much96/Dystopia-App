@@ -10,12 +10,6 @@
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
-visible = false
-position = Vector2( 483, 286 )
-color = Color( 0, 0, 0, 1 )
-polygon = PoolVector2Array( -233, -188, -233, 332, -494, 330, -480, -324, 533, -310, 552, 397, 84, 387, 93, -22, 310, -15, 291, -248 )
-
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 483, 286 )
 scale = Vector2( 2.1709, 2.1709 )
@@ -30,10 +24,9 @@ rect_scale = Vector2( 0.514309, 0.514309 )
 texture = ExtResource( 5 )
 
 [node name="DialogueTrigger" parent="Merchant" instance=ExtResource( 4 )]
-position = Vector2( 229.434, 433.592 )
+position = Vector2( 231.378, 377.205 )
 enabled = true
-dialogue = "Hallo! Do You Want To Buy Something?"
-DECISION = true
+HINT = true
 
 [node name="Wall Collisions" type="StaticBody2D" parent="."]
 position = Vector2( -36, -132 )
@@ -45,27 +38,16 @@ polygon = PoolVector2Array( 763, 685, 200, 676, 172, 2308, 1206, 2293, 1202, 249
 [node name="Exit" parent="." instance=ExtResource( 2 )]
 position = Vector2( 303, 2068 )
 scale = Vector2( 3.52144, -0.425129 )
+collision_layer = 2048
 to_scene = "res://scenes/levels/Overworld.tscn"
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 276, 1684 )
+collision_layer = 2055
 
 [node name="NPC_Iye" parent="." instance=ExtResource( 9 )]
 position = Vector2( 152, 769 )
 scale = Vector2( 0.930452, 0.930452 )
 
-[node name="DialogueTrigger2" parent="NPC_Iye" instance=ExtResource( 4 )]
-position = Vector2( 4.29898, 77.3817 )
-scale = Vector2( 1.07475, 1.07475 )
-enabled = true
-dialogue = "Inner Peace "
-QUEST = true
-quest_name = "Get Generic Items"
-reward_item = "Bomb"
-
 [node name="NPC" parent="." instance=ExtResource( 7 )]
 position = Vector2( 454, 842 )
-
-[node name="DialogueTrigger" parent="NPC" instance=ExtResource( 4 )]
-enabled = true
-dialogue = "Inner Peace "

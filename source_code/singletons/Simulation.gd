@@ -705,7 +705,7 @@ class Enemy_ extends Reference:
 		# (1) Hit Detection
 		# (2) Hit Registration
 		# (3) RPC Call for multiplayer mesh
-		print_stack()
+		#print_stack()
 		print_debug("Fix ENemy Player Collision Spammer")
 		if not state == STATE_DIE && area.name == "player_sword": #if it's not dead and it's hit by the player"s sword collisssion
 			
@@ -723,9 +723,9 @@ class Enemy_ extends Reference:
 			_body.get_parent().call_deferred("add_child", blood)
 			blood.global_position = _global_position # Makes the fx position to the Kinematic object position
 			
+		
 
-
-class Player_ extends Reference:
+class Player_:
 	
 	# DUplicate of Player States
 	enum { 
@@ -752,7 +752,7 @@ class Player_ extends Reference:
 			#var pushback_direction = (global_position - area.global_position).normalized()
 			#move_and_slide( pushback_direction * pushback)
 			
-			_body.state = STATE_HURT
+			_body.state = _body.TOP_DOWN.STATE_HURT
 			var blood = Globals.blood_fx.instance()
 			blood.global_position = _global_position
 			_body.get_parent().add_child(blood)
@@ -761,9 +761,9 @@ class Player_ extends Reference:
 			Music.play_track(Music.nokia_soundpack[20]) # Hurt Sound Track
 			
 			if _body.hitpoints <= 0:
-				_body.state = STATE_DIE
+				_body.state = _body.TOP_DOWN.STATE_DIE
 				Music.play_track(Music.nokia_soundpack[27]) # Death Sound Track
-		#pass
+
 
 
 func _exit_tree():

@@ -195,12 +195,12 @@ class Functions extends Reference:
 	
 	
 	static func change_scene_to(scene : PackedScene, tree : SceneTree): #Loads scenes faster?
-		
-		#if scene is PackedScene: 
-			if scene != null: 
-				return tree.change_scene_to(scene)  
+		#print_stack()
+		if scene != null: 
+			return tree.change_scene_to(scene)  
 
-			else: print_debug (scene," ", typeof(scene) ,"is not supported in this function")
+		else: 
+			push_error(str(scene)+" "+ str(typeof(scene)) +"is not supported in this function")
 	
 	'Resource Loader FOr Large Scenes'
 	# Bugs
@@ -406,6 +406,8 @@ class Functions extends Reference:
 		'Player Object Spawn Position'
 		if save_dict.has('spawn_x'):
 			GlobalScript.spawn_x = save_dict.spawn_x 
+		
+		if save_dict.has('spawn_y'):
 			GlobalScript.spawn_y = save_dict.spawn_y
 		
 		'Saves Player Spawn Point'

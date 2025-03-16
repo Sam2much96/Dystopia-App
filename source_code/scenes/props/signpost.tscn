@@ -1,24 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/signpost_128x.png" type="Texture" id=1]
-[ext_resource path="res://scenes/props/signpost.gd" type="Script" id=2]
 
-[node name="signpost" type="Area2D"]
-position = Vector2( -1, 5 )
-monitorable = false
-script = ExtResource( 2 )
-dialogue = "Dialogue Clicked"
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-position = Vector2( -2.96302, -55.0949 )
-scale = Vector2( 0.888505, 0.969388 )
-build_mode = 1
-polygon = PoolVector2Array( -60.2008, -31.3653, -60.2008, 66.6347, 57.7992, 66.6347, 58.7992, -30.3653 )
-
-[node name="Sprite" type="Sprite" parent="CollisionPolygon2D"]
-position = Vector2( -8.94566, 13.7989 )
-scale = Vector2( 1.28746, 1.21561 )
+[node name="SignpostSprite" type="Sprite"]
 texture = ExtResource( 1 )
-
-[connection signal="body_entered" from="." to="." method="_on_signpost_body_entered"]
-[connection signal="body_exited" from="." to="." method="_on_signpost_body_exited"]

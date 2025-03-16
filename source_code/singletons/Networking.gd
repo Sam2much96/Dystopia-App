@@ -1024,11 +1024,11 @@ class Lobby extends Control:
 	# SHows ingame Status
 	# Connect to Dialogue Box
 	static func _set_status(text : String, status : DialogBox, isok : bool):
-		Networking. start_check(2)
+		#Networking. start_check(2)
 		# Simple way to show status.
 		#
 		 
-		status.show_dialog( text + str(isok), "Admin") 
+		status.show_dialog( text + str(isok), "Admin", false) 
 			
 		# Bug: Dialogue box doesnt stop showing 
 		

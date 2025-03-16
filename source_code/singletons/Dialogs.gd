@@ -82,9 +82,8 @@ var hints : Dictionary = {0: "hint1",
 
 func show_dialog(text:String, speaker:String):
 	if is_instance_valid(dialog_box): # If an instance of dialogue box hasn't been deleted from memory?
-		dialog_box.show_dialog(text, speaker)
-		#Networking.start_check(1)
-		
+		dialog_box.show_dialog(text, speaker, false)
+
 
 func hide_dialogue(): #can be used to hide the dialogue box. Not best Practice
 	if is_instance_valid(dialog_box): # If an instance of dialogue box hasn't been deleted from memory?
@@ -105,6 +104,7 @@ func _set_dialog_box(node : DialogBox):
 	
 	if dialog_box.get_script().has_script_signal("dialog_ended"):
 		dialog_box.connect("dialog_ended", self, "_on_dialog_ended")
+	
 	else:
 		push_error("provided node doesn't implement dialog_started signal")
 	

@@ -8,16 +8,13 @@
 # (1) Is a class
 # (2) Plays an animation that shows text via the dialogue singletom
 # (3) Fetches Global Screen Orientation calculated from cinematics class and uses it for Self Positioning
-# (4) Implement 2 Dialog box icons for different screen orientations
+# (4) Implements 2 Dialog box icons for different screen orientations
 # Bugs:
 
 
 #
 # To DO:
-# (1) Implement Decision Tree
-# 
-# (4) Implement Decision tree diaglue box with buttons
-# (5) Add dialogue box Icon (Done)
+# (1) Add Redundancy Code For node Signals
 # *************************************************
 
 extends NinePatchRect
@@ -34,27 +31,37 @@ onready var timer : Timer = $Timer
 onready var character_text : Label = $nametag/label
 onready var anims : AnimationPlayer = $"%anims"
 
+
+onready var yes_accept : Button = $HBoxContainer/accept
+onready var no_decline : Button = $HBoxContainer/decline
+
+# signal emitted to Dialogs singleton and connected via a set get function
+# signal is the routed to Player kinematics which triggers player's pause on dialogue
 signal dialog_started
 signal dialog_ended
 
-
+onready var all_dialogue_nodes = [dialog_text, timer, character_text, anims, yes_accept, no_decline]
 
 func _ready():
 	
-	# uses set get functions to connect signals from Dialogs singleton
+	# Make Self Global and connect signals
 	Dialogs.dialog_box = self
 	hide()
 	
 	self_set_position()
+	
+	
 	# Dialogue box scaling on mobile devices
 	# Load Different textures depending on the Screen Orientation
 	# Bug: Dialogues UI is misaligned on mobile screens
 	if Globals.screenOrientation == 1:
 		self.set_texture(load("res://resources/misc/dialog_box_webp_mobile.webp"))
-	else : pass
+	else : 
+		pass
 
 
-func show_dialog(new_text : String, speaker : String):
+
+func show_dialog(new_text : String, speaker : String, action : bool):
 	# Shows Dialog Box Programmatically
 	# 
 	anims.play("appear")
@@ -62,8 +69,13 @@ func show_dialog(new_text : String, speaker : String):
 	dialog_text.text = new_text
 	character_text.text = speaker
 	timer.start(1)
-	
-	
+	if action:
+		show_decision_buttons()
+
+
+func show_decision_buttons():
+	yes_accept.show()
+	no_decline.show()
 
 func self_set_position():
 	# Debug Screen Orientation for Dialogue box positioning
@@ -79,6 +91,18 @@ func hide_dialogue(): #Hides the Dialogue box
 	anims.play("disappear")
 
 
+func _exit_tree():
+	# Memory Management for Node
+	Utils.Functions
 
 func _on_Timer_timeout():
 	emit_signal("dialog_ended")
+
+# For Decision Tree 
+
+func _on_accept_pressed():
+	print_debug("Yes")
+
+
+func _on_decline_pressed():
+	print_debug("No")

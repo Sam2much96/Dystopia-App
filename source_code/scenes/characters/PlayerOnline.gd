@@ -405,7 +405,7 @@ func update_state_buffer(state, state_):
 
 remote func player_leaving(id : int):
 	print_debug("Callback: player_leaving(" + str(id)+")")
-	Dialogs.dialog_box.show_dialog("Player leaving: " + Networking.player_info[id].name, "Admin")
+	Dialogs.dialog_box.show_dialog("Player leaving: " + Networking.player_info[id].name, "Admin", false)
 	Simulation.player_info[id].node.queue_free()
 	Simulation.player_info.erase(id)
 
@@ -450,7 +450,7 @@ remote func player_health(id : int, health: int):
 	print("Callback: player_health(" + str(id) +","+str(health)+")")
 	if health == 0:
 		Networking.player_info[id].destroyed = true
-		Dialogs.dialog_box.show_dialog(Networking.player_info[id].name +" destroyed!", "Admin")
+		Dialogs.dialog_box.show_dialog(Networking.player_info[id].name +" destroyed!", "Admin", false)
 		Networking.player_info[id].node.queue_free()
 		var preload_explosion
 		

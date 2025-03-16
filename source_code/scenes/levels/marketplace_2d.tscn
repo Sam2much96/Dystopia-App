@@ -39,15 +39,15 @@ scale = Vector2( 1.57571, 1.57571 )
 dialogue = "The Portal Behind Me opens to The WebWay, a pocket dimension in the warp. Be careful!"
 speaker = "Merchant"
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="Wall Collisions" type="StaticBody2D" parent="."]
 position = Vector2( -36, -132 )
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Wall Collisions"]
 position = Vector2( -121, -50 )
-polygon = PoolVector2Array( 763, 685, 200, 676, 173, 2201, -56, 2196, -32, -57, 1243, -32, 1201, 2268, 760, 2235 )
+polygon = PoolVector2Array( 763, 685, 200, 676, 172, 2308, 1206, 2293, 1202, 2495, -53, 2499, -32, -57, 1243, -32, 1201, 2268, 772, 2270 )
 
 [node name="Exit" parent="." instance=ExtResource( 2 )]
-position = Vector2( 301, 1977 )
+position = Vector2( 303, 2068 )
 scale = Vector2( 3.52144, -0.425129 )
 to_scene = "res://scenes/levels/Overworld.tscn"
 

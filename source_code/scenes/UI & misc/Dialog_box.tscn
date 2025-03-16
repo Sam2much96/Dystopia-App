@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://fonts/adamwarrenpro-bold.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/UI & misc/Dialog_box.gd" type="Script" id=2]
@@ -42,34 +42,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 0, 427 ) ]
-}
-
-[sub_resource type="Animation" id=9]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:rect_position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 0, 988.529 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:rect_size")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 1101, 174 ) ]
+"values": [ Vector2( 0, 300 ) ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -236,13 +209,13 @@ tracks/1/keys = {
 }
 
 [node name="Dialog_box" type="NinePatchRect"]
-modulate = Color( 1, 1, 1, 0.2 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 988.529
-margin_right = 1101.0
-margin_bottom = 1162.53
+margin_left = 14.1422
+margin_top = 306.505
+margin_right = 91.1422
+margin_bottom = 480.505
 texture = ExtResource( 6 )
 script = ExtResource( 2 )
 __meta__ = {
@@ -267,7 +240,6 @@ __meta__ = {
 }
 
 [node name="next_dialog_arrow" type="TextureRect" parent="."]
-visible = false
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -312,7 +284,6 @@ __meta__ = {
 unique_name_in_owner = true
 anims/MOBILE = SubResource( 7 )
 anims/PC = SubResource( 8 )
-anims/RESET = SubResource( 9 )
 anims/appear = SubResource( 3 )
 anims/disappear = SubResource( 4 )
 anims/show_text = SubResource( 5 )
@@ -322,4 +293,33 @@ next/show_text = "wait"
 
 [node name="Timer" type="Timer" parent="."]
 
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+visible = false
+margin_left = 198.0
+margin_top = 158.0
+margin_right = 710.0
+margin_bottom = 248.0
+alignment = 1
+
+[node name="accept" type="Button" parent="HBoxContainer"]
+margin_right = 149.0
+margin_bottom = 90.0
+text = "YES                             "
+
+[node name="LabelSpacer" type="Label" parent="HBoxContainer"]
+margin_left = 153.0
+margin_top = 38.0
+margin_right = 361.0
+margin_bottom = 52.0
+text = "                                                    "
+align = 1
+
+[node name="decline" type="Button" parent="HBoxContainer"]
+margin_left = 365.0
+margin_right = 570.0
+margin_bottom = 90.0
+text = "NO                                           "
+
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="pressed" from="HBoxContainer/accept" to="." method="_on_accept_pressed"]
+[connection signal="pressed" from="HBoxContainer/decline" to="." method="_on_decline_pressed"]

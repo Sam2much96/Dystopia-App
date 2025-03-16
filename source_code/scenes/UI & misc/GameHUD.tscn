@@ -101,10 +101,12 @@ anims/SCREEN_VERTICAL = SubResource( 2 )
 
 [node name="Dialog_box" parent="." instance=ExtResource( 1 )]
 unique_name_in_owner = true
-anchor_left = -0.0351562
-anchor_top = 1.00078
-anchor_right = -0.0351562
-anchor_bottom = 1.00078
+anchor_left = 0.0527344
+anchor_right = 0.901367
+margin_left = -16.0
+margin_top = -252.0
+margin_right = 61.0
+margin_bottom = -78.0
 input_pass_on_modal_close_click = false
 region_rect = Rect2( 30, 19, 1840, 269 )
 

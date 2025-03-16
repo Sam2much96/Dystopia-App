@@ -32,6 +32,7 @@ onready var character_text : Label = $nametag/label
 onready var anims : AnimationPlayer = $"%anims"
 
 
+onready var decisionParent : HBoxContainer = $HBoxContainer
 onready var yes_accept : Button = $HBoxContainer/accept
 onready var no_decline : Button = $HBoxContainer/decline
 
@@ -64,18 +65,27 @@ func _ready():
 func show_dialog(new_text : String, speaker : String, action : bool):
 	# Shows Dialog Box Programmatically
 	# 
+	#print_debug("show dialog")
 	anims.play("appear")
 	emit_signal("dialog_started")
 	dialog_text.text = new_text
 	character_text.text = speaker
 	timer.start(1)
 	if action:
+	#	print_debug("Decision Logic Triggered")
+	#	anims.play("decision")
 		show_decision_buttons()
-
+	if !action:
+		hide_decision_buttons()
 
 func show_decision_buttons():
+	decisionParent.show()
 	yes_accept.show()
 	no_decline.show()
+
+func hide_decision_buttons():
+	decisionParent.hide()
+
 
 func self_set_position():
 	# Debug Screen Orientation for Dialogue box positioning
@@ -98,7 +108,7 @@ func _exit_tree():
 func _on_Timer_timeout():
 	emit_signal("dialog_ended")
 
-# For Decision Tree 
+# Decision Tree Buttons 
 
 func _on_accept_pressed():
 	print_debug("Yes")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://fonts/adamwarrenpro-bold.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/UI & misc/Dialog_box.gd" type="Script" id=2]
@@ -44,6 +44,9 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Vector2( 0, 300 ) ]
 }
+
+[sub_resource type="Animation" id=9]
+length = 0.001
 
 [sub_resource type="Animation" id=3]
 length = 0.1
@@ -111,6 +114,21 @@ tracks/4/keys = {
 "args": [ "resized" ],
 "method": "emit_signal"
 } ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "descision"
+tracks/0/type = "value"
+tracks/0/path = NodePath("HBoxContainer:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -284,7 +302,9 @@ __meta__ = {
 unique_name_in_owner = true
 anims/MOBILE = SubResource( 7 )
 anims/PC = SubResource( 8 )
+anims/RESET = SubResource( 9 )
 anims/appear = SubResource( 3 )
+anims/descision = SubResource( 10 )
 anims/disappear = SubResource( 4 )
 anims/show_text = SubResource( 5 )
 anims/wait = SubResource( 6 )

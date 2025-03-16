@@ -6,7 +6,9 @@
 # 
 #Needs:
 # (1) Documentation
-#
+# (2) Should Be Triggerable Outside NPC Scene
+# (3) NPC Navigation A.I. needs refactoring
+# 
 # *************************************************
 
 

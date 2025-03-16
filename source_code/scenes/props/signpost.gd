@@ -32,6 +32,7 @@ export(String) var speaker : String = ""
 
 
 export (bool) var HINT #= false # Boolean conditional for hint system
+export (bool) var DECISION 
 func _ready():
 	
 	if enabled:
@@ -63,8 +64,7 @@ func show_signpost():
 	if not is_instance_valid(Dialogs.dialog_box): # Error Catcher 1
 		return
 	
-	#if interract && Globals.near_interractible_objects:
-	print_debug("showing signpost")
+	#print_debug("showing signpost")
 	
 	if HINT:
 		# Shows Random Hints using a Dictionary shuffle algorithm
@@ -73,8 +73,12 @@ func show_signpost():
 		return Dialogs.dialog_box.show_dialog(
 			Dialogs.translate_to( dialogue, Dialogs.language), 'Player', false
 			)
-	elif not HINT:
+	if !HINT:
 		Dialogs.dialog_box.show_dialog(Dialogs.translate_to(dialogue, Dialogs.language), speaker, false)
+	
+	if DECISION:
+		Dialogs.dialog_box.show_dialog(Dialogs.translate_to(dialogue, Dialogs.language), speaker, true)
+	
 	
 	
 
@@ -103,3 +107,6 @@ func _on_signpost_body_exited(body):
 		#print_debug ('player near signpost')
 		return
 
+
+func _exit_tree():
+	Utils.MemoryManagement.free_object(self) # Memory Management for All Dialog Triggers

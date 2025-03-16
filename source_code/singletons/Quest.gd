@@ -5,8 +5,10 @@
 # Quest Singleton
 # 
 # To Do:
-#(1) Write Proper Documentation
-# (2) Connect to Playstore through the Networking singleton
+#(1) Write Proper Documentation (Done)
+# (2) Connect to Playstore through the Networking singleton (Depreciated)
+# (3) Match Quest Logic From CSV File
+# (4) Match Quest Rewards From CSV Files
 # *************************************************
 
 
@@ -83,4 +85,69 @@ func remove_quest(quest_name:String) -> bool:
 		return true
 	else:
 		return false
+
+
+
+
+
+
+
+
+
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Quest Giver (Depreciated Codebase Refactored to Lass)
+# 
+#Needs:
+# (1) Documentation
+# (2) Should Be Triggerable Outside NPC Scene
+# (3) NPC Navigation A.I. needs refactoring
+# (4) Quest Systems needs major refactoring
+# *************************************************
+
+# TO DO:
+# (1) Refactoring to Dialog Trigger Script
+
+
+class QuestGivers extends Reference:
+	
+	# TO DO: 
+	# (1) Match Quest Logic From CSV File
+	# (2) Match Quest Rewards From CSV Files
+	
+	# Quest Giver Logic As A Class
+	# Matched Different Responses To the state of the Given Quest
+	
+	static func process(
+		quest_name: String, 
+		initial_text: String, 
+		required_item : String, 
+		required_amount : int, 
+		reward_item : String , 
+		reward_amount : int,
+		delivered_text : String,
+		pending_text : String
+		) -> String:
+		
+		var quest_status = Quest.get_status(quest_name)
+		print_debug ("Quest Debug 1:", quest_status)
+		match quest_status:
+			Quest.STATUS.NONEXISTENT:
+				Quest.accept_quest(quest_name)
+				return initial_text
+			Quest.STATUS.STARTED:
+				if Inventory.get_item(required_item) >= required_amount:
+					Inventory.remove_item(required_item, required_amount)
+					Quest.change_status(quest_name, Quest.STATUS.COMPLETE)
+					Inventory.add_item(reward_item, reward_amount)
+					return delivered_text
+					
+				else:
+					return pending_text
+			Quest.STATUS.COMPLETE:
+				return "Quest Completed"
+			_:
+				return ""
 

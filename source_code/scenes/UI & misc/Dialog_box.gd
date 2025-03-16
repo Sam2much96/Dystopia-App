@@ -109,10 +109,12 @@ func _on_Timer_timeout():
 	emit_signal("dialog_ended")
 
 # Decision Tree Buttons 
-
+# To DO : 
+# (1) Connect Yes and No Decisions to functions dynamically
 func _on_accept_pressed():
 	print_debug("Yes")
 
 
 func _on_decline_pressed():
 	print_debug("No")
+	emit_signal("dialog_ended")

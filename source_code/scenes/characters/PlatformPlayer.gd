@@ -14,6 +14,7 @@
 # (2) Implement Player Animations
 # (3) Implement Facing
 # (4) falling Animation When jumping off cliff edge
+# (5) State machine
 # *************************************************
 
 extends Player

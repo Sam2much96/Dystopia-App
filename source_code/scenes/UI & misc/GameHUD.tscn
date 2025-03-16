@@ -112,10 +112,10 @@ region_rect = Rect2( 30, 19, 1840, 269 )
 
 [node name="Status_text" parent="." instance=ExtResource( 3 )]
 unique_name_in_owner = true
-margin_left = 7.0
-margin_top = 878.0
-margin_right = 7.0
-margin_bottom = 992.0
+margin_left = -5.0
+margin_top = 159.0
+margin_right = -5.0
+margin_bottom = 273.0
 input_pass_on_modal_close_click = false
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

@@ -55,16 +55,16 @@ export(String, "up", "down", "left", "right") var _facing = "down" # used as a p
 export(String) var anim: String = ""
 export(String) var new_anim: String = ""
 
-enum {
+enum TOP_DOWN{
 	STATE_BLOCKED, STATE_IDLE, STATE_WALKING,
 	STATE_ATTACK, STATE_ROLL, STATE_DIE,
 	STATE_HURT, STATE_DANCE
 	}
 
-enum {UP, DOWN, LEFT, RIGHT}
+enum FACING {UP, DOWN, LEFT, RIGHT}
 
-export(int) var state = STATE_IDLE
-export(int) var facing = DOWN
+export(int) var state = TOP_DOWN.STATE_IDLE
+export(int) var facing = FACING.DOWN
 
 #********Miscellaneous***********#
 onready var player_camera: Camera2D = $camera # the player's camera
@@ -149,22 +149,23 @@ func _ready():
 			push_error("Heart Box Node Not Connected")
 
 func _on_dialog_started():
-	state = STATE_BLOCKED
+	state = TOP_DOWN.STATE_BLOCKED
 
 func _on_dialog_ended():
-	state = STATE_IDLE
+	state = TOP_DOWN.STATE_IDLE
 
 
 ## HELPER FUNCS
 func goto_idle():
 	linear_vel = Vector2.ZERO
 	new_anim = "idle_" + _facing
-	state = STATE_IDLE
+	state = TOP_DOWN.STATE_IDLE
 
 
 func despawn():
 	#this code breaks
 	# To DO : Move this code to a dedicated hit collision detection calss
+	print_debug("Debugging Player Despawn")
 	
 	get_parent().add_child(despawn_particles)
 	get_parent().add_child(blood)
@@ -204,12 +205,12 @@ func shake(): # Shaky Cam FX
 
 func hurt(from_position: Vector2):
 	# Duplicate of _on_hurtbox_area_entered
-	if state != STATE_DIE:
+	if state != TOP_DOWN.STATE_DIE:
 		hitpoints -= 1
 		emit_signal("health_changed", hitpoints)
 		var pushback_direction: Vector2 = (global_position - from_position).normalized()
 		move_and_slide(pushback_direction * pushback)
-		state = STATE_HURT
+		state = TOP_DOWN.STATE_HURT
 		
 		blood.global_position = global_position
 		get_parent().add_child(blood)
@@ -220,7 +221,7 @@ func hurt(from_position: Vector2):
 			music_singleton_.set_sound_effect(music_singleton_.FX.PITCH_SHIFT, true)
 		
 		if hitpoints <= 0:
-			state = STATE_DIE
+			state = TOP_DOWN.STATE_DIE
 			# turn off music sfx
 			music_singleton_.set_sound_effect(music_singleton_.FX.PITCH_SHIFT, false)
 			music_singleton_.play_track(die_sfx)

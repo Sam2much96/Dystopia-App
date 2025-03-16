@@ -6,7 +6,7 @@
 [ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=5]
 [ext_resource path="res://resources/FX/flame_fx_webp.webp" type="Texture" id=6]
-[ext_resource path="res://scenes/UI & misc/Quest_Giver.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/UI & misc/dialog_trigger.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/levels/Temple interior.gd" type="Script" id=9]
 [ext_resource path="res://scenes/items/enemy spawner.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/items/bow.tscn" type="PackedScene" id=11]
@@ -194,14 +194,8 @@ scale = Vector2( 0.555242, 0.555242 )
 position = Vector2( 134.371, -1206.91 )
 scale = Vector2( 0.82276, 0.82276 )
 
-[node name="Quest" parent="NPC" instance=ExtResource( 8 )]
-quest_name = "Go and Read the comics"
-required_item = "Bandit heads"
-required_amount = 50
-reward_item = "Bomb"
-reward_amount = 5
-initial_text = "You're a superb player. Go kill 50 of these bandit monsters for me"
-pending_text = "You forgot? Go and kill 50 Bands"
+[node name="DialogueTrigger" parent="NPC" instance=ExtResource( 7 )]
+QUEST = true
 
 [node name="enemy_spawner" parent="." instance=ExtResource( 10 )]
 position = Vector2( 158.174, -477.978 )

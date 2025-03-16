@@ -50,7 +50,8 @@ onready var simulation_ = get_node_or_null("/root/Simulation")
 func _ready():
 	if active:
 		
-		Utils._randomize(self)
+		randomize() # trigger the random seed generator
+		
 		
 		# Adds a Kinematic Body for Move and SLide
 		#self.add_child(Kinematic_Body)
@@ -86,14 +87,15 @@ func _process(delta : float):
 				#move_and_slide( -Behaviour.FollowPlayer(self, __body))
 				#print (get_tree().get_nodes_in_group('player').pop_front())
 				
-				# Follow Player
+				# Run Away From The Player
+				# TO Do : Rewrite to use tween and navigation layer
 				move_and_slide( Behaviour.EscapePlayer(self, __body))
 				
 
 		
-		"""
-		Sets Custom NPC Dialogue
-		"""
+		#"""
+		#Sets Custom NPC Dialogue
+		#"""
 		# Fetched Durrent Dialouge from AI Prompy
 		#if frame_counter % 10 == 0 && _AI != null &&_AI.output != "":
 		#	if not dialogs.has(_AI.output):
@@ -103,24 +105,28 @@ func _process(delta : float):
 		#	else : pass
 
 
-func _input(event):
-	if (
-			active and not
-			dialogs.empty() and
-			event.is_action_pressed("interact") and not
-			Dialogs.active
-		):
-		if has_node("Quest"):
-			var quest_dialog = get_node("Quest").process()
-			if quest_dialog != "":
-				Dialogs.show_dialog(quest_dialog, character_name)
-				return
-		Dialogs.show_dialog(dialogs[current_dialog], character_name)
-		
-		# Updates the Current Dialogue
-		current_dialog = wrapi(current_dialog + 1, 0, dialogs.size())
-		
-#func _on_body_entered(body):
+# To DO: 
+# (1) Rewrite to Show Decision Dialogue
+#func _input(event):
+#	if (
+#			active and not
+#			dialogs.empty() and
+#			event.is_action_pressed("interact") and not
+#			Dialogs.active
+#		):
+#		
+#		print_debug(111111)
+#		if self.has_node("QuestGiver"): # Checks if the node is holding the Quest Giver Object
+#			print_debug("Has Quest")
+#			var quest_dialog = get_node("QuestGiver").process() # call
+#			if quest_dialog != "":
+#				Dialogs.show_dialog(quest_dialog, character_name)
+#				return
+#		Dialogs.show_dialog(dialogs[current_dialog], character_name)
+#		
+#		# Updates the Current Dialogue
+#		current_dialog = wrapi(current_dialog + 1, 0, dialogs.size())
+#		
 
 
 #func _on_body_exited(body):

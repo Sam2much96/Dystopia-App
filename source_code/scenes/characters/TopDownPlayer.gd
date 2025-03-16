@@ -87,16 +87,16 @@ func facing_logic(node : Player, peed_id : int):
 	#print_debug(node)
 	if Input.is_action_pressed("move_left") or GlobalInput._state == GlobalInput.LEFT:
 		
-		node.facing = LEFT
+		node.facing = FACING.LEFT
 	if Input.is_action_pressed("move_right") or GlobalInput._state == GlobalInput.RIGHT:
 		
-		facing = RIGHT
+		facing = FACING.RIGHT
 	if Input.is_action_pressed("move_up") or GlobalInput._state == GlobalInput.UP:
 		
-		node.facing = UP
+		node.facing = FACING.UP
 	if Input.is_action_pressed("move_down") or GlobalInput._state == GlobalInput.DOWN:
 		
-		node.facing = DOWN
+		node.facing = FACING.DOWN
 
 func state_machine_logic(node, peer_id : int):
 	"""
@@ -110,13 +110,13 @@ func state_machine_logic(node, peer_id : int):
 	# (3) Im making the animation, facing and state, node specific
 	
 	match node.facing:
-		UP:
+		FACING.UP:
 			node._facing = "up"
-		DOWN:
+		FACING.DOWN:
 			node._facing = "down"
-		LEFT: 
+		FACING.LEFT: 
 			node._facing = "left"
-		RIGHT:
+		FACING.RIGHT:
 			node._facing = "right"
 	
 	
@@ -127,10 +127,12 @@ func state_machine_logic(node, peer_id : int):
 	#if offline: 
 	# refactor codebase into Node based implementation
 	match state:
-		STATE_BLOCKED: # Un Implemented State?
+		TOP_DOWN.STATE_BLOCKED: 
+			# Called From THe Dialog Singleton emmiting dialog started
+			#  Triggers a slight pause in player's movements
 			node.new_anim = "idle_" + node._facing
 			
-		STATE_IDLE:
+		TOP_DOWN.STATE_IDLE:
 			if (
 				# should be moved to input class imho
 					Input.is_action_pressed("move_down") or
@@ -143,31 +145,31 @@ func state_machine_logic(node, peer_id : int):
 					GlobalInput._state == GlobalInput.LEFT or
 					GlobalInput._state == GlobalInput.RIGHT
 				):
-					node.state = STATE_WALKING
+					node.state = TOP_DOWN.STATE_WALKING
 					
 					if err > 0 :emit_signal("state_changed", node.state)
 			# Attack State
 			if Input.is_action_just_pressed("attack"):
-				node.state = STATE_ATTACK
+				node.state = TOP_DOWN.STATE_ATTACK
 				#state = node.state
 				if err > 0 : emit_signal("state_changed", node.state)
 			# State Dash
 			if Input.is_action_just_pressed("roll"):
-				node.state = STATE_ROLL
+				node.state = TOP_DOWN.STATE_ROLL
 				if err > 0 : emit_signal("state_changed", node.state)
 				# Roll DIrection Calcualatin
 				node.roll_direction = GlobalInput.roll_direction_calculation()
 			
 			node.new_anim = "idle_" + node._facing
 			if Input.is_action_just_pressed("interact"):
-				node.state = STATE_DANCE
-		STATE_WALKING:
+				node.state = TOP_DOWN.STATE_DANCE
+		TOP_DOWN.STATE_WALKING:
 			if Input.is_action_just_pressed("attack"):
-				node.state = STATE_ATTACK
+				node.state = TOP_DOWN.STATE_ATTACK
 				
 			
 			if Input.is_action_just_pressed("roll"):
-				node.state = STATE_ROLL
+				node.state = TOP_DOWN.STATE_ROLL
 				#emit_signal("state_changed")
 			
 			linear_vel = move_and_slide(linear_vel, Vector2(0,0))
@@ -196,12 +198,12 @@ func state_machine_logic(node, peer_id : int):
 			else:
 				goto_idle()
 			
-		STATE_ATTACK:
+		TOP_DOWN.STATE_ATTACK:
 			# Playe attack animation
 				
 				node.new_anim = "slash_" + _facing
 				
-		STATE_ROLL:
+		TOP_DOWN.STATE_ROLL:
 			if roll_direction == Vector2.ZERO:
 				
 				
@@ -210,13 +212,13 @@ func state_machine_logic(node, peer_id : int):
 				#
 				# 
 				#print_debug("11111111", _facing)
-				if facing == RIGHT:
+				if facing == FACING.RIGHT:
 					roll_direction = Vector2.RIGHT
-				if facing == LEFT:
+				if facing == FACING.LEFT:
 					roll_direction = Vector2.LEFT
-				if facing == UP:
+				if facing == FACING.UP:
 					roll_direction = Vector2.UP
-				if facing == DOWN:
+				if facing == FACING.DOWN:
 					roll_direction = Vector2.DOWN
 			if roll_direction != Vector2.ZERO:
 				linear_vel = move_and_slide(linear_vel)
@@ -227,18 +229,18 @@ func state_machine_logic(node, peer_id : int):
 				linear_vel = target_speed
 				node.new_anim = "roll"
 				if Input.is_action_just_pressed("attack"): #punch and slide funtionality
-					state = STATE_ATTACK
+					state = TOP_DOWN.STATE_ATTACK
 					#emit_signal("state_changed")
-		STATE_DIE:
+		TOP_DOWN.STATE_DIE:
 			node.new_anim = "die"
 			#emit_signal("state_changed")
-		STATE_HURT:
+		TOP_DOWN.STATE_HURT:
 			node.new_anim = "hurt"
 			
 			# FX works better in script
 			Globals.player_cam.shake()
 			
-		STATE_DANCE:
+		TOP_DOWN.STATE_DANCE:
 			node.new_anim = "dance"
 			if (
 				# should be moved to input class imho
@@ -252,7 +254,7 @@ func state_machine_logic(node, peer_id : int):
 					GlobalInput._state == GlobalInput.LEFT or
 					GlobalInput._state == GlobalInput.RIGHT
 				):
-					node.state = STATE_WALKING
+					node.state = TOP_DOWN.STATE_WALKING
 			
 			#goto_idle()
 	if new_anim != anim:

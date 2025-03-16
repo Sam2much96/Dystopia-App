@@ -264,11 +264,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/props/Puddle.gd"
 }, {
-"base": "Node",
-"class": "QuestGiver",
-"language": "GDScript",
-"path": "res://scenes/UI & misc/Quest_Giver.gd"
-}, {
 "base": "CPUParticles2D",
 "class": "RainFX",
 "language": "GDScript",
@@ -541,7 +536,6 @@ _global_script_class_icons={
 "Potion": "",
 "ProceduralGeneration": "",
 "Puddle": "",
-"QuestGiver": "",
 "RainFX": "",
 "RepositoryItem": "",
 "RestHandler": "",

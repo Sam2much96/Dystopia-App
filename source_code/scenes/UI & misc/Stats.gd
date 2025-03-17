@@ -10,7 +10,7 @@
 # (1) Parses Quest Data from Singleton
 # (2) Controls Touch HUD
 # (3) Connects Inventory Buttons to inventory singleton on line 215
-#
+# (4) Serialised Quest Status to Users
 # *************************************************
 # TO-DO:
 # 
@@ -123,10 +123,10 @@ func _ready():
 	tab_container.set_script(TabIcons)
 	
 	
-	# Fetch price data
-	# should be run during a simulation run
+	# Fetch price data once ready
+	# 
 	#local_networking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , local_networking) #
-	
+	Networking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , Networking) #
 
 func _input(event):
 	"Status UI Visibility Is Entirely Self Controlled From Here"
@@ -154,21 +154,29 @@ func _input(event):
 
 func _update_wallet_stats(): #Updates killcount and Algos
 	"Update Price From Vestigefi API"
+	
+
+	
 	if Networking.good_internet:
 		_coin_label.text = 'Suds: ' + str (Globals.suds)
 		_price_label.text =  str(Networking.Data) # fetchs price data from Sud token
 
 
 func _update_quest_listing():
-	# Document and refactor
+	# Prints Out the Quest Database from save game 
+	# and serialises them based on their enumeration value
+	# TO DO: serialise output to prettier UI
 	
 	var text = ""
 	text += "Started:\n"
-	for quest in Quest.list(Quest.STATUS.STARTED):
-		text += "  %s\n" % quest
+	for i in Quest.list(Quest.STATUS.STARTED):
+		text += "  %s\n" % i #print as a string and create a new line
 	text += "Failed:\n"
-	for quest in Quest.list(Quest.STATUS.FAILED):
-		text += "  %s\n" % quest
+	for p in Quest.list(Quest.STATUS.FAILED):
+		text += "  %s\n" % p #print as a string and create a new line
+	text += "Finished:\n"
+	for j in Quest.list(Quest.STATUS.COMPLETE):
+		text += "%s\n" % j #print as a string and create a new line
 	
 	_quest_label.text = text
 
@@ -326,7 +334,7 @@ func _enable():
 	Music.play_track(Music.ui_sfx[0])
 	get_tree().paused = enabled
 	
-	_update_quest_listing()
+	_update_quest_listing() # Refactor
 	_update_inventory_listing() # Refactor
 	_update_wallet_stats()
 	print_debug("Stats UI Enabled") 

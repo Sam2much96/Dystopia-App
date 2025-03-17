@@ -72,9 +72,9 @@ func _on_body_entered(body):
 	if !to_scene.empty():
 		print_debug("To Scene Debug: ", to_scene)
 
-	Globals.curr_scene = to_scene
-	print_debug("changing scene to :", to_scene)
-	get_tree().change_scene(to_scene)
+	Globals.current_level = to_scene
+	#print_debug("changing scene to :", to_scene)
+	#get_tree().change_scene(to_scene)
 		# Global Scene Transition
-	#Utils.Functions.change_scene_to(Globals.loading_scene, get_tree()) #!= OK:
+	Utils.Functions.change_scene_to(Globals.loading_scene, get_tree()) #!= OK:
 	#	push_error("Error changing scene")

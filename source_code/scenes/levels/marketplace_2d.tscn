@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/market_placekra.webp" type="Texture" id=1]
 [ext_resource path="res://scenes/levels/Exit.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/UI & misc/dialog_trigger.tscn" type="PackedScene" id=4]
 [ext_resource path="res://resources/merchant_NPC.webp" type="Texture" id=5]
 [ext_resource path="res://scenes/characters/Npc CHIEFPRIEST.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/characters/Npc.tscn" type="PackedScene" id=9]
@@ -22,11 +21,6 @@ margin_right = 652.0
 margin_bottom = 1269.0
 rect_scale = Vector2( 0.514309, 0.514309 )
 texture = ExtResource( 5 )
-
-[node name="DialogueTrigger" parent="Merchant" instance=ExtResource( 4 )]
-position = Vector2( 231.378, 377.205 )
-enabled = true
-HINT = true
 
 [node name="Wall Collisions" type="StaticBody2D" parent="."]
 position = Vector2( -36, -132 )

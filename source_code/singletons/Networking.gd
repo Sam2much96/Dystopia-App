@@ -267,8 +267,10 @@ func _on_Networking_request_completed(result: int, response_code : int, headers 
 				# Fetches price data in ready function
 				print_debug("Internet Data debug: ",Data)  # 
 				
+				# data serialisation is done in Stats HUD
+				
 				# Temporarily disabled for debugging
-				var price_data='Suds: ' + str(Networking.Data)
+				#var price_data='Suds: ' + str(Networking.Data)
 				
 				
 				
@@ -293,6 +295,7 @@ func _on_Networking_request_completed(result: int, response_code : int, headers 
 		RESULT_CONNECTION_ERROR:
 			emit_signal("error_connection_failed",RESULT_CONNECTION_ERROR,'RESULT_CONNECTION_ERROR')
 			print_debug("error_connection_failed",RESULT_CONNECTION_ERROR,'RESULT_CONNECTION_ERROR')
+			good_internet = false
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
 			#print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_SSL_HANDSHAKE_ERROR:

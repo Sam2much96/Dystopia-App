@@ -278,7 +278,6 @@ shape = SubResource( 1 )
 [node name="pickup" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 2 )
 volume_db = 2.0
-bus = "Music"
 
 [node name="anims" type="AnimationPlayer" parent="."]
 autoplay = "spawn"

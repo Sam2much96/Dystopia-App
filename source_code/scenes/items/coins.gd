@@ -38,7 +38,6 @@ func _ready():
 	
 	anims.play("spawn")
 	
-	Networking.start_check_v2(2)
 	
 	anims.play("idle")
 	
@@ -70,7 +69,7 @@ func _on_Item_body_entered(body): # Priority Process
 			#	Wallet.run_wallet_checks()
 			
 			# Update Global Algos with 0.005 MIcroAlgos
-			Globals.algos += 5000
+			Globals.suds += 5_000
 			
 			self.queue_free()
 

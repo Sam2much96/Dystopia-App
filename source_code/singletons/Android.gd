@@ -303,7 +303,7 @@ func _on_AdMob_banner_failed_to_load(error_code):
 	# stop the ads timer, log the error codes
 	
 	# pass the error code to ingame debug
-	_debug.Ads_debug = "Banner Ads failed err" + str(error_code)
+	_debug.Ads_debug += "Banner Ads failed err" + str(error_code)
 
 	print_debug(_debug.Ads_debug)
 

@@ -28,7 +28,7 @@ class_name debug
 export (bool) var enabled 
 
 
-var error_splash_page : PackedScene = load ('res://New game code and features/Error splash page for crashes.tscn')
+#var error_splash_page : PackedScene = load ('res://New game code and features/Error splash page for crashes.tscn')
 
 
 var logging = false
@@ -59,8 +59,8 @@ var Enemy_debug : String
 var debug_panel  : Node
 var Comics_debug : String = ''
 var misc_debug : String = ''
-var kill_count : int = 0
-var enemy : String = ''
+#var kill_count : int = 0
+#var enemy : String = ''
 var Network_debug : String = ''
 var Globals_debug : String
 var Ads_debug : String = ''
@@ -129,7 +129,7 @@ func _process(_delta):
 					Autosave_debug = Autosave_debug
 
 					Network_debug =  ""#str(Networking.debug )
-					misc_debug = str(misc_debug) + str("/")  + str(Ads_debug)
+					misc_debug = "misc debug: "+ str("/")  + str(Ads_debug)
 					Globals_debug='Direction type' + '/'+ str(Globals.direction_control)
 					avail_thread = str('Available threads: ',int (OS.get_processor_count())) 
 

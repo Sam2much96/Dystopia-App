@@ -50,6 +50,7 @@ noise_lacunarity = 0.05
 noise_threshold = 0.05
 
 [node name="Exit" type="Area2D" parent="Dunes_Procedural"]
+collision_mask = 2
 monitorable = false
 script = ExtResource( 2 )
 to_scene = "res://scenes/levels/Overworld.tscn"

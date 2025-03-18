@@ -113,25 +113,6 @@ func _enter_tree()-> void:
 	render()
 	
 
-func _ready():
-	
-	#render()
-	#if enabled:
-		
-	#	if tile_map == null :#&& Globals.tile_map == null:
-			# Gets the Parent Tilemap Node
-	#		tile_map = get_parent() as TileMap
-			
-			
-			# Make GLobal
-			#Globals.tile_map = tile_map
-		
-		
-	#	clear()
-	#	generate()
-	pass
-
-
 func redraw(value = null) -> void:
 	if tile_map == null :#&& Globals.tile_map == null:
 		return
@@ -168,24 +149,6 @@ func generate() :
 		simplex_noise.persistence = noise_persistence
 		simplex_noise.lacunarity = noise_lacunarity
 		
-		# Loop to every tile within Map Area Co-ordinates
-		# Bug: 
-		# (1) This Double for Loop is an optimization hog, its apprx doing >260782 calculations
-		#
-		
-		
-		#for x in range( -map__width / 2, map__width / 2):
-		#	for y in range(-map__height / 2, map__height / 2):
-				
-				# conditional
-		#		if simplex_noise.get_noise_2d(x, y) < noise_threshold:
-					
-					# generataes a tilemap
-		#			counter +=1
-		#			tile_map.set_cell(x,y, tile_map.get_tileset().get_tiles_ids()[0], false, false, false,tile_map.get_cell_autotile_coord(x, y )) # co-ordinate of the TileSet
-					
-		#			tile_map.update_bitmask_area(Vector2(x, y)) # so the engine knows where to configure the autotiling
-		#tile_map.update_dirty_quadrants()
 		var tile_ids = tile_map.get_tileset().get_tiles_ids()[0]
 		
 		for x in range(-map__width / 2, map__width / 2):
@@ -274,4 +237,4 @@ func place_tiles_in_chunks(tile_positions, tile_id):
 
 func _exit_tree():
 	clear()
-	
+	enabled= false

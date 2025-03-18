@@ -27,10 +27,7 @@
 # *************************************************
 #
 # Bugs:
-# (1) Breaks sometimes
-# (2) No debug
-# (3) No Output
-# (4) Breaks whenever dialog trigger is used in the same scene
+# 
 #
 # *************************************************
 
@@ -65,7 +62,7 @@ onready var randomHints : String
 
 
 'Scene Loading variables'
-var scene_resource : PackedScene # Large Resouce Scene Placeholder
+#var scene_resource : PackedScene # Large Resouce Scene Placeholder
 #var _to_load : String  # Large Resource Placeholder Variable
 var _o : ResourceInteractiveLoader#for polling resource loader
 #var err
@@ -76,51 +73,7 @@ onready var scene_loader= ResourceLoader
 onready var progress : float
 
 onready var timer  = $Timer
-signal loaded(a,b)
-
-func _process(_delta):
-	
-	
-	"Loads Large Scene"
-	# Bug :
-	# (1) Take too long (Performance Lag)
-	# (2) Bad UX
-	# (3) Returns a Null resource load on Vulkan Godot 4.2.2
-	#
-	# Fix
-	# (1) Hide Loading Screen
-	# (2) Show Loading Icon WHile Scene is being Loaded
-	# (3) Implement Redundancy loading code
-	# Emptry current level initiator
-	if LOADING && not Globals.current_level.empty():
-		
-		# this function loads the scene resource into a global script and returns it
-		loaded_scene_temp = LoadLargeScene(
-		Globals.current_level, 
-		loaded_scene_temp, 
-		_o, 
-		scene_loader, 
-		a, 
-		b, 
-		progress,
-		self
-		)
-		
-		# Null resource load
-		#
-		
-		LOADING = false
-		
-		print_debug("Loaded Scene Temp: ",loaded_scene_temp)
-		if loaded_scene_temp != null: # successful load
-			print_debug("Loading successfull")
-			Utils.Functions.change_scene_to( loaded_scene_temp, get_tree())
-		if loaded_scene_temp == null : # unsuccessfull load redundancy code backported from 4.2.2 Vulkan
-			push_error("Loading failed")
-			#get_tree().change_scene_to(load(Globals.current_level))
-			print_debug("Loading failed")
-
-
+#signal loaded(a,b)
 
 
 
@@ -129,7 +82,7 @@ func _ready():
 	Number.hide()
 	
 	# placeholder progress bar until resource interractive loader can be polled and waited
-	show_progress(19,20)
+	show_progress(5,20)
 	
 	# COnnect Signals for redundancy errors
 	if not is_connected("visibility_changed",self,"_on_loading_visibility_changed"):
@@ -138,7 +91,7 @@ func _ready():
 	
 	# connect loading poll signal
 	
-	connect("loaded", self,"show_progress", [a,b])
+	#connect("loaded", self,"show_progress", [a,b])
 	
 	print_debug("laading scene %s :",[Globals.current_level])
 	
@@ -180,6 +133,63 @@ func _ready():
 
 
 
+func _process(_delta):
+	
+	
+	"Loads Large Scene"
+	# Bug :
+	# (1) Take too long (Performance Lag)
+	# (2) Bad UX
+	# (3) Returns a Null resource load on Vulkan Godot 4.2.2
+	#
+	# Fix
+	# (1) Hide Loading Screen
+	# (2) Show Loading Icon WHile Scene is being Loaded
+	# (3) Implement Redundancy loading code
+	# Emptry current level initiator
+	if LOADING && not Globals.current_level.empty():
+		
+		# this function loads the scene resource into a global script and returns it
+		loaded_scene_temp = LoadLargeScene(
+		Globals.current_level, 
+		loaded_scene_temp, 
+		_o, 
+		scene_loader, 
+		a, 
+		b, 
+		progress,
+		self
+		)
+		
+		# Null resource load
+		#
+		
+		LOADING = false
+		
+		print_debug("Loaded Scene Temp: ",loaded_scene_temp)
+		if loaded_scene_temp != null: # successful load
+			print_debug("Loading successfull")
+			
+			# only show progress bars for these scenes else change instantly
+			if (Globals.current_level == Globals.Overworld_Scenes.get(1) or
+			Globals.current_level == Globals.Overworld_Scenes.get(5)
+			):
+				show_progress(20,20)
+				yield(get_tree().create_timer(2),"timeout")
+				
+			
+			Utils.Functions.change_scene_to( loaded_scene_temp, get_tree())
+		
+		if loaded_scene_temp == null : # unsuccessfull load redundancy code backported from 4.2.2 Vulkan
+			push_error("Loading failed")
+			#get_tree().change_scene_to(load(Globals.current_level))
+			print_debug("Loading failed")
+
+
+
+
+
+
 func _on_loading_visibility_changed():
 	# connects to a Github node signal
 	VISIBLE = visible
@@ -200,8 +210,8 @@ func visibility_logic( _visible : bool):
 # Shows a Progress Bar
 func show_progress(value : float , max_value : float):
 	Progress.show()
-	yield(get_tree(), "idle_frame") # pause for idle frame breaks the loader
-	print_debug("Show Progress Triggered: ", value, "/",max_value)
+	#yield(get_tree(), "idle_frame") # pause for idle frame breaks the loader
+	#print_debug("Show Progress Triggered: ", value, "/",max_value)
 	Progress.set_value(range_lerp(value,0,max_value,0,100))
 
 func hide_progress():
@@ -214,9 +224,6 @@ func show_number(value : float , ref_value : float, type : String):
 
 func hide_number():
 	Number.hide()
-
-#func idle():
-#	yield(get_tree(), "idle_frame")
 
 
 # Utils functions deserialised for debugging

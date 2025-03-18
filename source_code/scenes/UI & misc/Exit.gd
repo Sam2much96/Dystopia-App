@@ -79,7 +79,7 @@ func _on_body_entered(body : Player) -> void:
 	#print_debug("changing scene to :", to_scene)
 	#get_tree().change_scene(to_scene)
 		# Global Scene Transition
-	Utils.Functions.change_scene_to(Globals.loading_scene, get_tree()) #!= OK:
+	Utils.Functions.change_scene_to(Globals.loading_scene, get_tree())
 	#	push_error("Error changing scene")
 
 
@@ -87,7 +87,7 @@ func _on_Exit_area_entered(area):
 	if area.name == "hurtbox":
 		
 		print_debug("area: ", area.name)
-		
+		#Utils.Functions.change_scene_to(Globals.loading_scene, get_tree())
 
 func _on_Exit_body_entered(body):
 	

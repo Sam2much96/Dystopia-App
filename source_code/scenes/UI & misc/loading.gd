@@ -79,12 +79,12 @@ func _process(_delta):
 	if LOADING && not Globals.current_level.empty():
 		
 		# this function loads the scene resource into a global script and returns it
-		loaded_scene_temp = Utils.Functions.LoadLargeScene(
+		loaded_scene_temp = LoadLargeScene(
 		Globals.current_level, 
 		Globals.scene_resource, 
 		Globals._o, 
 		Globals.scene_loader, 
-		Globals.loading_resource, 
+		#Globals.loading_resource, 
 		Globals.a, 
 		Globals.b, 
 		Globals.progress)
@@ -107,7 +107,7 @@ func _process(_delta):
 
 
 func _ready():
-	Progress.hide()
+	#Progress.hide()
 	Number.hide()
 	
 	
@@ -184,3 +184,71 @@ func show_number(value : float , ref_value : float, type : String):
 
 func hide_number():
 	Number.hide()
+
+
+
+# Utils functins deserialised for debugging
+func LoadLargeScene(
+	scene_to_load : String, 
+	scene_resource : PackedScene, 
+	resource_interactive_loader : ResourceInteractiveLoader, 
+	scene_loader : ResourceLoader, 
+	a: int , 
+	b : int, 
+	progress: float
+	) -> PackedScene:
+	
+	#print_stack()
+	#print_debug("Loading Large Scene")
+	if scene_to_load != "" && scene_resource == null:
+		var time_max = 50000 #sets an estimate maximum time to load scene
+		var current_time = OS.get_ticks_msec()
+		
+		
+		resource_interactive_loader = (scene_loader.load_interactive(scene_to_load)) #function returns a resourceInteractiveLoader
+		
+		#causes cyclical error bug?
+		#scene_loader.load_interactive(scene_to_load) #function returns a resourceInteractiveLoader
+		
+		
+		print_debug (" Loader Debug Outer loop >>> Inner Loop")
+		while OS.get_ticks_msec() < (current_time + time_max) && resource_interactive_loader != null: 
+
+			var err = resource_interactive_loader.poll()
+			
+			print_debug("scene res: "+str(scene_resource)+"\n scene to load: "+str(scene_to_load)+"\n Error: "+str(err)+" \nLoop Debug") #Debugger
+			
+			
+			
+			if err == ERR_FILE_EOF: # Finished Loading #Works
+				#_loading_resource = false
+				
+				scene_resource = (resource_interactive_loader.get_resource()) 
+				print_debug ("Resource Loaded :", scene_resource)
+				
+				break
+				
+			# Tracks Scene Resource Progress. 
+			# Should be exportable to UI/ UX
+			elif err == OK: #works
+				a = resource_interactive_loader.get_stage()
+				b = resource_interactive_loader.get_stage_count() 
+				
+				print_debug (a, "/",b) 
+				
+				
+				
+			else: # Error during loading
+				push_error("Problems loading Scene.  Debug Gloabls scene loader")
+				push_error(str(progress) + "% " + str (scene_to_load))
+				break
+				
+	if scene_resource != null:  
+		return scene_resource
+	if scene_resource == null:
+		push_error("There was an Error. Loading the Scene Resource is null")
+	
+	return scene_resource
+
+
+

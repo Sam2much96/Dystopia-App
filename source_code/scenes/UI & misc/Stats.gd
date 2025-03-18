@@ -80,7 +80,7 @@ var regex : RegEx = RegEx.new()
 
 enum {ENABLED, DISABLED, NULL}
 
-export (int) var _state = DISABLED
+#export (int) var _state = DISABLED
 
 onready var local_networking : Internet = get_node("/root/Networking")
 
@@ -125,9 +125,9 @@ func _ready():
 	
 	
 	# Fetch price data once ready
-	# 
-	#local_networking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , local_networking) #
-	Networking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , Networking) #
+	
+	call_deferred("_fetch_prices")
+
 
 func _input(event):
 	"Status UI Visibility Is Entirely Self Controlled From Here"
@@ -150,6 +150,10 @@ func _input(event):
 		return enabled
 
 
+
+func _fetch_prices():
+	print_debug ("fetching price data from Vestige API")
+	local_networking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , local_networking) #
 
 
 

@@ -287,4 +287,7 @@ anims/idle = SubResource( 6 )
 anims/reset = SubResource( 3 )
 anims/spawn = SubResource( 4 )
 
-[node name="Timer" type="Timer" parent="."]
+[node name="timer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_coins_body_entered"]
+[connection signal="timeout" from="timer" to="." method="_on_timer_timeout"]

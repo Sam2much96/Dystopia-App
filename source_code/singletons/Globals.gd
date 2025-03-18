@@ -95,7 +95,7 @@ var _o : ResourceInteractiveLoader#for polling resource loader
 var err
 var a : int # Loader progress variable (a/b) 
 var b : int
-var loading_resource : bool = false
+#var loading_resource : bool = false
 onready var scene_loader= ResourceLoader
 onready var progress : float
 
@@ -188,13 +188,13 @@ func _go_to_title():
 	
 	
 	"Loads Large Scene"
-	
+	# Rewrite to use loading scene refactor instead
 	Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
 	global_scenes["title"], 
 	scene_resource, 
 	_o, 
 	scene_loader, 
-	loading_resource, 
+	false, 
 	a, 
 	b, 
 	progress

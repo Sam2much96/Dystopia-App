@@ -44,11 +44,8 @@ signal music_finished
 export (bool) var music_on 
 export (bool) var sfx_on
 export (int) var volume # volume controller code is not yet written
-export (int) var play_back_position : int
-export (int) var track_length : int
-
-# Music COntrol Settings
-#var Music_on_settings : int = 0
+export (int) var play_back_position : float
+export (int) var track_length : float
 
 export(String, FILE, "*.ogg") var music_track : String = ""
 
@@ -213,9 +210,6 @@ onready var D : AudioStreamPlayer = $D
 onready var music_bus_2 = AudioServer.get_bus_index(B.bus)
 onready var music_bus = AudioServer.get_bus_index(A.bus)
 
-#onready var requests : HTTPRequest = $HTTPRequest
-#onready var timer : Timer #= $Timer
-
 
 var _music
 onready var Music_streamer : AudioStreamPlayer = A #get_node("A")  #Refrences the music player node
@@ -231,9 +225,6 @@ onready var transitions : AnimationPlayer = $anims
 onready var my_nodes : Array = [Music_streamer, A,B,C,D,Music_streamer_2,transitions]
 
 
-# THis URL fetches a Zip file from an AWS s3 buzket
-#var musicAWS3_URL : Dictionary = {"zip":"https://llama2-7b.s3.eu-north-1.amazonaws.com/music.zip"
-#} 
 
 onready var FileCheck= Utils.file  # checks Music Files
 onready var FileDirectory=Utils.dir #checks Music Irectory
@@ -258,19 +249,6 @@ export (int) var selected_sound_fx : int = get_random_sound_effect()
 
 func _ready():
 	
-	# Debug Music  nodes
-	#print_debug(my_nodes)
-	
-	# connect signals
-	#requests.connect("request_completed", self , "_http_request_completed")
-	
-	# Check if Local Music Directory exists & Makes directory
-	#if not wallet.Functions.check_local_wallet_directory(FileDirectory,"user://Music") :
-	#	FileDirectory.make_dir("user://Music")
-		
-	# Check if Music Unzip root folder exists
-	#if not wallet.Functions.check_local_wallet_directory(FileDirectory, "user://Music/Dystopia-App/source_code/music"):
-	#	FileDirectory.make_dir_recursive("user://Music/Dystopia-App/source_code/music")
 	print_debug("Sound Fx Debug: ",selected_sound_fx)
 	
 	
@@ -286,9 +264,6 @@ func _ready():
 	
 	"Music Player Logic"
 	if music_on == true:
-		#Utils._randomize(self)
-		
-		#randomize()
 		
 		"Default Music"
 		randomize()
@@ -538,7 +513,16 @@ func play_track(_track : String):
 func _exit_tree(): 
 	Utils.MemoryManagement.queue_free_array(my_nodes)
 	
-
+	# memory management
+	blood_fx.clear()
+	hit_sfx.clear()
+	grass_sfx.clear()
+	ui_sfx.clear()
+	comic_sfx.clear()
+	local_playlist_one.clear()
+	nokia_soundpack.clear()
+	sword_sfx.clear()
+	wind_sfx.clear()
 
 func get_random_sound_effect() -> int :
 	

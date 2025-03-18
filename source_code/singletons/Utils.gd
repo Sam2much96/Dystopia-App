@@ -205,7 +205,7 @@ class Functions extends Reference:
 	'Resource Loader FOr Large Scenes'
 	# Bugs
 	# (11 Performance Hog on Low powered devices
-	# (2) Progress Debug is not exportable
+	# (2) Progress Debug is not exportable (1/2)
 	static func LoadLargeScene(
 		_to_load : String, 
 		scene_resource : PackedScene, 
@@ -1182,6 +1182,8 @@ class Advertising:
 	"""
 	An Advertising Class for optimising and controlling the ads / ads data for each player
 	"""
+	# To DO :
+	# (1) Implement in Android Singleton
 	var t = 0
 	
 	

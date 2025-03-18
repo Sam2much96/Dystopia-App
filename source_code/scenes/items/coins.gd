@@ -30,15 +30,17 @@ export(int) var amount #microalgos
 var status
 
 onready var anims : AnimationPlayer = $anims
-onready var timer : Timer = $Timer
+onready var timer : Timer = $timer
 
 onready var sub_nodes : Array = [anims]
 
 func _ready():
-	# COnnect Signals
+	# Connect Signals Redundancy Code
+	if not is_connected("body_entered", self, "_on_coins_body_entered") :
+		connect("body_entered", self, "_on_coins_body_entered")
 	
-	connect("body_entered", self, "_on_Item_body_entered")
-	timer.connect("timeout", self, "_on_timer_timeout")
+	if not timer.is_connected("timeout", self, "_on_timer_timeout"):
+		timer.connect("timeout", self, "_on_timer_timeout")
 	
 	
 	anims.play("spawn")
@@ -51,12 +53,14 @@ func _ready():
 func _on_timer_timeout():
 	anims.play("idle")
 
-func _on_Item_body_entered(body): # Priority Process
+func _on_coins_body_entered(body): # Priority Process
 	if not body is Player: # Guard Clause For Non Player Objects
 		return
 		
+		print_debug ("Player Body Detected on Coin Item")
+		
 		if amount != null:
-			call_deferred("disconnect", "body_entered", self, "_on_Item_body_entered")
+			call_deferred("disconnect", "body_entered", self, "_on_coins_body_entered")
 			#Inventory.add_item(item_type, amount)
 			Globals.algos = Globals.algos + amount #should be Algos instead
 			
@@ -81,3 +85,4 @@ func _on_Item_body_entered(body): # Priority Process
 
 #func _exit_tree():
 #	Utils.MemoryManagement.queue_free_array(sub_nodes)
+

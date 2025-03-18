@@ -45,7 +45,7 @@ var buffer : Dictionary = {
 	Bow : 0
 }
 # Create Pointers to Stats and Quests HUD
-var _stats_ui #: Stats 
+var stats_ui : Stats setget set_Stats_UI, get_Stats_UI 
 
 
 # Intanciable items
@@ -98,7 +98,7 @@ func remove_item(type:String, amount:int) -> bool:
 	if inventory.has(type) and inventory[type] >= amount:
 		inventory[type] -= amount
 		
-		_stats_ui._update_inventory_button_cache(type, amount) # Testing Functions
+		stats_ui._update_inventory_button_cache(type, amount) # Testing Functions
 		
 		if inventory[type] == 0:
 			inventory.erase(type)
@@ -196,4 +196,11 @@ func _get_inventory_buffer() -> String:
 	var inv : String = JSON.print(buffer.duplicate())
 	return inv
 
-	
+
+# Setter and Getter functions for proper UI Handling
+
+func set_Stats_UI(ui : Stats):
+	stats_ui = ui 
+
+func get_Stats_UI() -> Stats:
+	return stats_ui

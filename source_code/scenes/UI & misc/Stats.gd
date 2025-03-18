@@ -61,7 +61,7 @@ var _coin_label : Label
 var _quest_label : Label
 var _price_label : Label
 # Backup Pointer to Inventory Singleton
-onready var _inventory : Storage = get_tree().get_root().get_node("/root/Inventory")
+onready var _inventory = get_tree().get_root().get_node("/root/Inventory")
 
 # Pointer to GLobal Touch HUD
 
@@ -113,8 +113,9 @@ func _ready():
 	hide()
 	
 	# Make self global 
-	Inventory._stats_ui = self
-	GlobalInput._Stats = self
+	# uses setter and getter functions for proper code handling 
+	Inventory.stats_ui = self
+	GlobalInput.Stats_ = self
 	
 	#Regex for Inventory Update
 	regex.compile("(\\d+)")

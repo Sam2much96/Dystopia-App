@@ -110,12 +110,11 @@ var _state_buffer_decoded : Array
 
 
 """
-
 CPU FX
-
 """
-var rainFX : RainFX
-var smokeFX : smoke_fx
+# Uses setters and getters for proper setup
+var rainFX : RainFX setget set_rainFx, get_rainFx
+var smokeFX : smoke_fx setget set_smokeFx, get_smokeFx
 
 
 
@@ -763,6 +762,21 @@ class Player_:
 			if _body.hitpoints <= 0:
 				_body.state = _body.TOP_DOWN.STATE_DIE
 				Music.play_track(Music.nokia_soundpack[27]) # Death Sound Track
+
+
+# Setter and Getter functions for Singleton objects handling
+
+func set_rainFx(vfx : RainFX):
+	rainFX = vfx
+
+func get_rainFx() -> RainFX:
+	return rainFX
+
+func set_smokeFx(vfx : smoke_fx):
+	smokeFX = vfx
+
+func get_smokeFx() -> smoke_fx:
+	return smokeFX
 
 
 

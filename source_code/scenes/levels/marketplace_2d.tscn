@@ -49,3 +49,4 @@ position = Vector2( 454, 842 )
 
 [node name="coins" parent="." instance=ExtResource( 4 )]
 position = Vector2( 476, 1106 )
+item_type = "suds"

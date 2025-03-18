@@ -62,7 +62,7 @@ export (bool) var vibrate = true
 var menu : Game_Menu
 var TouchInterface : TouchScreenHUD
 
-var _Stats : Stats
+var Stats_ : Stats
 var _Status_text : StatusText 
 
 # Game HUD + set get functions
@@ -234,7 +234,7 @@ static func parse_input(node_input : Input ,tree: SceneTree, action : String, _p
 	return 0
 
 func vibrate(duration_ms : int, os : String):
-	# Nested if?
+	
 	if Globals.os == "Android" && vibrate : #or "iOS" or "HTML5":
 		
 		if joystick == null :# Fixes Mobile joystick spamm vibration bug

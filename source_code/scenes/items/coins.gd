@@ -7,7 +7,12 @@
 # To Do:
 # (1) Run on Web3
 # (2) Proper Documentation
-# (3) Should Use Algos
+# (3) Should Use $Suds
+# *************************************************
+# TO DO:
+# (1) Fix price api serialisation
+#
+#
 # *************************************************
 
 extends Area2D

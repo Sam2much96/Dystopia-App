@@ -60,6 +60,7 @@ onready var message : Label = $VBoxContainer/Message
 # loading throbber
 onready var  loading2 : TextureRect = $VBoxContainer/loading2
 
+onready var randomHints = ''
 
 func _process(_delta):
 	
@@ -110,12 +111,19 @@ func _ready():
 	Number.hide()
 	
 	
+	
 	# COnnect Signals for redundancy errors
 	if not is_connected("visibility_changed",self,"_on_loading_visibility_changed"):
 		connect("visibility_changed",self,"_on_loading_visibility_changed")
 
-	print_debug("laading scene %s: ",Globals.current_level)
+	print_debug("laading scene %s :",[Globals.current_level])
 	
+	# show random hints
+	
+	# Shows Random Hints using a Dictionary shuffle algorithm
+	randomHints = Music.shuffle(Dialogs.hints)
+		# Translates them to the User's Language
+	message.set_text(Dialogs.translate_to( randomHints, Dialogs.language))
 	
 	
 	if Globals.current_level.empty():

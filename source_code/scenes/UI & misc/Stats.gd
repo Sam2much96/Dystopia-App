@@ -60,6 +60,9 @@ var _inventory_button : Button
 var _coin_label : Label 
 var _quest_label : Label
 var _price_label : Label
+
+var kill_count : Label
+
 # Backup Pointer to Inventory Singleton
 onready var _inventory = get_tree().get_root().get_node("/root/Inventory")
 
@@ -98,6 +101,7 @@ func _ready():
 	_inventory_parent_label = $"%Title3"
 	tab_container = $TabContainer
 	_inventory_parent = $"TabContainer/3/MarginContainer/ScrollContainer3/VBoxContainer"
+	kill_count = $"%Kill_count"
 	
 	# Check That THe UI Nodes are OK
 	_Stats_UI_Elements = [
@@ -185,6 +189,9 @@ func _update_quest_listing():
 	
 	_quest_label.text = text
 
+
+func _update_player_stats():
+	kill_count.text= "Kill count: "+ str(Globals.kill_count)
 
 # Connects to Inventory.remove item -> Stats.gd
 func _update_inventory_button_cache(item : String, amount : int) : # COde Bloc Called from inventroy singleton remove_item() method
@@ -339,9 +346,10 @@ func _enable():
 	Music.play_track(Music.ui_sfx[0])
 	get_tree().paused = enabled
 	
-	_update_quest_listing() # Refactor
+	_update_quest_listing()
 	_update_inventory_listing() # Refactor
 	_update_wallet_stats()
+	_update_player_stats()
 	print_debug("Stats UI Enabled") 
 
 func _disable():

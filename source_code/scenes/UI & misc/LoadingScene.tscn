@@ -71,4 +71,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "message"
 align = 1
 
+[node name="Timer" type="Timer" parent="."]
+
 [connection signal="visibility_changed" from="." to="." method="_on_loading_visibility_changed"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

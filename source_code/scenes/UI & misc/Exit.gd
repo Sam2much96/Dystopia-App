@@ -45,7 +45,7 @@ func _on_body_entered(body : Player) -> void:
 	
 	"Loads Large Scene Precursour"
 	
-	Globals.current_level = to_scene
+	#Globals.current_level = to_scene
 	Globals.spawn_x = body.position.x 
 	Globals.spawn_y = body.position.y
 	Globals.player_hitpoints = body.hitpoints
@@ -54,7 +54,7 @@ func _on_body_entered(body : Player) -> void:
 	# Rewrite to Serialise Quest data and show documentation
 	
 	Utils.Functions.save_game(
-	[body], 
+		[body], 
 		body.hitpoints, 
 		body.position.x, 
 		body.position.y, 

@@ -83,6 +83,4 @@ func _on_coins_body_entered(body): # Priority Process
 			self.queue_free()
 
 
-#func _exit_tree():
-#	Utils.MemoryManagement.queue_free_array(sub_nodes)
 

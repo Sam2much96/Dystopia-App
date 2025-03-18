@@ -60,8 +60,21 @@ onready var message : Label = $VBoxContainer/Message
 # loading throbber
 onready var  loading2 : TextureRect = $VBoxContainer/loading2
 
-onready var randomHints = ''
+onready var randomHints : String
 
+
+'Scene Loading variables'
+var scene_resource : PackedScene # Large Resouce Scene Placeholder
+#var _to_load : String  # Large Resource Placeholder Variable
+var _o : ResourceInteractiveLoader#for polling resource loader
+#var err
+var a : int # Loader progress variable (a/b) 
+var b : int
+#var loading_resource : bool = false
+onready var scene_loader= ResourceLoader
+onready var progress : float
+
+onready var timer  = $Timer
 func _process(_delta):
 	
 	
@@ -81,12 +94,12 @@ func _process(_delta):
 		# this function loads the scene resource into a global script and returns it
 		loaded_scene_temp = LoadLargeScene(
 		Globals.current_level, 
-		Globals.scene_resource, 
-		Globals._o, 
-		Globals.scene_loader, 
-		Globals.a, 
-		Globals.b, 
-		Globals.progress)
+		#scene_resource, 
+		_o, 
+		#scene_loader, 
+		#a, 
+		#b, 
+		progress)
 		
 		# Null resource load
 		#
@@ -143,10 +156,14 @@ func _ready():
 				
 				# Only show long loading scene for overworld scenes 1 and 5 which are resource heavy
 				
-				yield(get_tree().create_timer(5), "timeout")
+				# set 2 different times for mobile and pc
+				#yield(get_tree().create_timer(5), "timeout")
+				timer.start(5)
+				return
 				
-				
-		LOADING = true
+		if Globals.os == "X11" or "Windows" or "HTML5"or "OSX"or "Server"or "UWP":
+			#timer.start(1) # start loading immediately
+			LOADING = true
 
 
 
@@ -190,11 +207,11 @@ func hide_number():
 # Utils functins deserialised for debugging
 func LoadLargeScene(
 	scene_to_load : String, 
-	scene_resource : PackedScene, 
+	#scene_resource : PackedScene, 
 	resource_interactive_loader : ResourceInteractiveLoader, 
-	scene_loader : ResourceLoader, 
-	a: int , 
-	b : int, 
+	#scene_loader : ResourceLoader, 
+	#a_: int , 
+	#b_ : int, 
 	progress: float
 	) -> PackedScene:
 	
@@ -250,3 +267,7 @@ func LoadLargeScene(
 
 
 
+
+# used for timing load times
+func _on_Timer_timeout():
+	LOADING = true

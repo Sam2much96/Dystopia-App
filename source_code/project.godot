@@ -314,11 +314,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/multiplayer/minimal.gd"
 }, {
-"base": "AnimatedSprite",
-"class": "WordBubbleBox",
-"language": "GDScript",
-"path": "res://scenes/UI & misc/word_bubble_box.gd"
-}, {
 "base": "Node",
 "class": "android",
 "language": "GDScript",
@@ -491,7 +486,6 @@ _global_script_class_icons={
 "TouchScreenHUD": "res://resources/misc/Android 32x32.png",
 "WebBrowser": "",
 "WebConnection": "",
-"WordBubbleBox": "",
 "android": "res://resources/misc/Android 32x32.png",
 "camera": "",
 "cinematic": "",
@@ -540,6 +534,7 @@ Utils="*res://singletons/Utils.gd"
 Simulation="*res://singletons/Simulation.tscn"
 Android="*res://singletons/Android.tscn"
 GlobalInput="*res://singletons/Input.tscn"
+FPSGraphOverlay="*res://addons/fps_graph_overlay/FPSGraphOverlay.tscn"
 
 [debug]
 
@@ -560,7 +555,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/orphan_import_file_cleaner/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/fps_graph_overlay/plugin.cfg", "res://addons/orphan_import_file_cleaner/plugin.cfg" )
 
 [gdnative]
 

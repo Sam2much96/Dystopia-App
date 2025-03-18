@@ -86,6 +86,7 @@ text = "Stats"
 align = 1
 
 [node name="Kill_count" type="Label" parent="TabContainer/0/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
 margin_top = 47.0
 margin_right = 62.0
 margin_bottom = 178.0

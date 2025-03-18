@@ -88,16 +88,6 @@ var uncompressed # Varible holds uncompressed zip files
 'ingame Environment Variables'
 #var near_interractible_objects #which objects use this?
 
-'Scene Loading variables'
-var scene_resource : PackedScene # Large Resouce Scene Placeholder
-var _to_load : String  # Large Resource Placeholder Variable
-var _o : ResourceInteractiveLoader#for polling resource loader
-var err
-var a : int # Loader progress variable (a/b) 
-var b : int
-#var loading_resource : bool = false
-onready var scene_loader= ResourceLoader
-onready var progress : float
 
 onready var loading_scene : PackedScene = load("res://scenes/UI & misc/LoadingScene.tscn")
 
@@ -188,20 +178,10 @@ func _go_to_title():
 	
 	
 	"Loads Large Scene"
-	# Rewrite to use loading scene refactor instead
-	Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
-	global_scenes["title"], 
-	scene_resource, 
-	_o, 
-	scene_loader, 
-	false, 
-	a, 
-	b, 
-	progress
-	), get_tree())
-	
-	#Utils.Functions.change_scene_to(title, get_tree())#get_tree().change_scene()
-	return 0
+	# prep loading scene by setting the level to load as titlescreen
+	current_level = global_scenes["title"]
+	Utils.Functions.change_scene_to(Globals.loading_scene, get_tree())
+
 
 func _go_to_cinematics():
 	cinematics = load(global_scenes["cinematics"])

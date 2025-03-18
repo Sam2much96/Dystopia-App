@@ -84,7 +84,6 @@ func _process(_delta):
 		Globals.scene_resource, 
 		Globals._o, 
 		Globals.scene_loader, 
-		#Globals.loading_resource, 
 		Globals.a, 
 		Globals.b, 
 		Globals.progress)
@@ -99,7 +98,8 @@ func _process(_delta):
 			print_debug("Loading successfull")
 			Utils.Functions.change_scene_to( loaded_scene_temp, get_tree())
 		if loaded_scene_temp == null : # unsuccessfull load redundancy code backported from 4.2.2 Vulkan
-			get_tree().change_scene_to(load(Globals.current_level))
+			push_error("Loading failed")
+			#get_tree().change_scene_to(load(Globals.current_level))
 			print_debug("Loading failed")
 
 
@@ -220,9 +220,7 @@ func LoadLargeScene(
 			
 			
 			
-			if err == ERR_FILE_EOF: # Finished Loading #Works
-				#_loading_resource = false
-				
+			if err == ERR_FILE_EOF: # Finished Loading 
 				scene_resource = (resource_interactive_loader.get_resource()) 
 				print_debug ("Resource Loaded :", scene_resource)
 				

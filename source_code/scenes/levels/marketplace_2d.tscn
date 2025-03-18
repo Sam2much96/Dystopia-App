@@ -37,7 +37,7 @@ to_scene = "res://scenes/levels/Overworld.tscn"
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 276, 1684 )
-collision_layer = 2055
+collision_layer = 2049
 
 [node name="NPC_Iye" parent="." instance=ExtResource( 9 )]
 position = Vector2( 152, 769 )

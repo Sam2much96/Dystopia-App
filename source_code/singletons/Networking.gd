@@ -48,7 +48,7 @@ export (String) var cfg_client_ip
 export (String) var url : String = ''
 var check_timer 
 #var debug__ = ''
-var WORLD_SIZE : int = 40000.0
+#var WORLD_SIZE : int = 40000.0
 
 
 
@@ -80,12 +80,12 @@ signal error_ssl_handshake
 signal game_finished
 signal Timeout
 
-onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
+#onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
 #******************Pointer To Child Nodes********************#
 onready var timer :Timer  = $Timer2
 onready var Wallet_ : wallet
-onready var _reference_to_self = self#get_node('/root/Networking') #formerly _y
+#onready var _reference_to_self = self#get_node('/root/Networking') #formerly _y
 onready var _reference_to_debug =get_node('/root/Debug') #formerly _y
 
 # Default hostname used by the login form
@@ -94,7 +94,7 @@ const DEFAULT_HOSTNAME = "ws://localhost" # depreciated
 const BACKUP_HOSTNAME = "127.0.0.1" # depreciated
 const SERVER_PORT = 9080
 const MAX_PLAYERS = 4
-export (String) var CLIENT_IP : String  
+#export (String) var CLIENT_IP : String  
 export (Dictionary) var Data : Dictionary
 const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
 

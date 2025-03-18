@@ -69,10 +69,10 @@ var video_stream #for the video streamers
 
 
 # warning-ignore:unused_class_variable
-var spawnpoint : Vector2
-var spawn_x : int 
-var spawn_y : int 
-var current_level : String
+var spawnpoint : Vector2 
+var spawn_x : float = 0.0
+var spawn_y : float = 0.0
+var current_level : String = ""
 
 
 # Music
@@ -99,7 +99,7 @@ var loading_resource : bool = false
 onready var scene_loader= ResourceLoader
 onready var progress : float
 
-onready var loading_scene : PackedScene = preload("res://scenes/UI & misc/LoadingScene.tscn")
+onready var loading_scene : PackedScene = load("res://scenes/UI & misc/LoadingScene.tscn")
 
 var Overworld_Scenes : Dictionary = {0 : "res://scenes/levels/Temple interior.tscn",
 1 : "res://scenes/levels/DuneProcedural.tscn",
@@ -110,17 +110,17 @@ var Overworld_Scenes : Dictionary = {0 : "res://scenes/levels/Temple interior.ts
 } # for simplifying loading and scene changes states
 
 "Crypto Variables" 
-var address : String
-var mnemonic : String
-var player_name : String
+var address : String 
+var mnemonic : String 
+var player_name : String 
 
-# Buggy
-onready var algos : int  #=  Wallet.Wallet.load_account_info(false, Wallet.token_write_path, Wallet.FileCheck3, Wallet.UserData).get("_wallet_algos")
+# Rewrite load acccount info into save file function
+var algos : int  #=  Wallet.Wallet.load_account_info(false, Wallet.token_write_path, Wallet.FileCheck3, Wallet.UserData).get("_wallet_algos")
 	#MicroAlgos 
-onready var suds : int
+var suds : int 
 
 "Device Variables"
-var user_data_dir : String =OS.get_user_data_dir()
+onready var user_data_dir : String =OS.get_user_data_dir()
 
 
 "Screen Orientation"
@@ -161,8 +161,10 @@ func _ready():
 	#print_debug('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	#print_debug("Despawn Fx:", despawn_fx)
 	
-	
-	
+	algos = 0
+	suds = 0
+	player_name = ""
+	address = ""
 	
 	#Set White Background
 	VisualServer.set_default_clear_color(ColorN("white")) 
@@ -214,8 +216,6 @@ func _exit_tree():
 	
 	"Deletes all Orphaned Nodes"
 
-	
-	
 	"Prints All Orphaned Nodes"
 	# For proper Memory Leak Management
 	#Utils.MemoryManagement.queue_free_array(nodes)

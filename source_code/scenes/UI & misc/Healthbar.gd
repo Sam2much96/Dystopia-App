@@ -135,10 +135,10 @@ func _on_health_changed(new_hp: int):
 		print_debug("Health Box Increase 111: ", hearts_to_add)
 
 		# Add additional hearts
-		for i in range(hearts_to_add):
+		for _i in range(hearts_to_add):
 			var new_heart = h3.duplicate()
 			additional_hearts.append(new_heart)
-			self.call_deferred("add_child", new_heart)
+			#self.call_deferred("add_child", new_heart)
 
 	# Health Increase past 3 with Some Health Lost
 	elif new_hp > HEALTH_COUNT and HEALTH_LOST > 0:
@@ -147,7 +147,7 @@ func _on_health_changed(new_hp: int):
 		print_debug("Restoring Hidden Hearts: ", hearts_to_restore)
 
 		for child in self.get_children():
-			if hearts_to_restore > 0 and child is TextureRect and not child.visible:
+			if hearts_to_restore > 0 && child is TextureRect && !child.visible:
 				child.show()
 				hearts_to_restore -= 1
 				HEALTH_LOST -= 1

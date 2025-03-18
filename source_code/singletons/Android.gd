@@ -46,7 +46,7 @@ onready var _globals = get_node("/root/Globals")
 
 # Godot Chrome
 var Chrome = null
-export (bool) var WebBrowserOpen : bool = false 
+#export (bool) var WebBrowserOpen : bool = false 
 
 # Ad Mob Ads Node
 onready var _ads : AdMob = self.get_child(0)
@@ -157,7 +157,7 @@ func show_all_buttons():
 
 
 
-func _process(delta):
+func _process(_delta):
 	
 	
 	" Rain Fx Optimizations "
@@ -294,7 +294,7 @@ func _on_AdMob_banner_loaded():
 	print_debug("Banner Ads Loaded")
 	
 	# Ad some sud to this account
-	Globals.suds + 1_000
+	Globals.suds += 1000
 	
 
 

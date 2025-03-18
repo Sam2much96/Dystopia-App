@@ -27,8 +27,8 @@ export (int) var counter #= 0 #used to off and on the comics placeholder
 
 export (bool) var emitting_smoke
 
-onready var _smoke_fx : CPUParticles2D = $smoke_fx
-onready var _smoke_fx_2 : CPUParticles2D = $smoke_fx2
+onready var _smoke_fx : smoke_fx = $smoke_fx
+onready var _smoke_fx_2 : smoke_fx = $smoke_fx2
 
 
 #toggles comics placeholder visible on player contact

@@ -68,14 +68,12 @@ var _Hide_touch_interface : bool
 #Debug
 onready var _debug = get_tree().get_root().get_node("/root/Debug")
 
-# Comics Singleton Pointer
-onready var _comics = null#get_tree().get_root().get_node("/root/Comics_v6")
 
 #Safe Global Input Ponter
 onready var _Input = get_tree().get_root().get_node("/root/GlobalInput")
 
 # Pointer to Parent
-onready var parent = get_parent()
+#onready var parent = get_parent()
 
 # Pointer to menu node from Parent
 onready var menuObj : Game_Menu = $"%Menu "#parent.get_child(6)
@@ -89,19 +87,19 @@ onready var menu3 = _Input.menu
 # add functions to state machine
 enum { D_PAD_, JOYSTICK, STYLUS , CONFIG, DEBUG } # Config State for Drag ANd Drop Mode
 
-export (int) var _state_controller = D_PAD_
+#export (int) var _state_controller = D_PAD_
 export (String, 'modern', 'classic', "stylus") var _control # Dupli9cate of Globals._controller_type
-export (String, 'menu', 'interract', "attack", "stats", "comics", "reset") var _state_inspector : String # State machine Debugger from inspector Tab
+#export (String, 'menu', 'interract', "attack", "stats", "comics", "reset") var _state_inspector : String # State machine Debugger from inspector Tab
 var _Debug_Run : bool = false
 
 export (bool) var enabled # Local Variant for stroing if device is android from adnroid singleton
 
 #signal menu
-signal interract
+#signal interract
 signal attack
-signal stats
-signal comics
-signal reset
+#signal stats
+#signal comics
+#signal reset
 
 
 var _menu : TextureButton 

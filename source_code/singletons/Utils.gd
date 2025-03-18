@@ -20,7 +20,7 @@
 extends Node
 
 
-export(int) var screenOrientation : int
+export(int) var screenOrientation : int 
 export (Vector2) var viewport_size : Vector2
 export (Vector2) var center_of_viewport : Vector2 
 
@@ -223,23 +223,19 @@ class Functions extends Reference:
 			var time_max = 50000 #sets an estimate maximum time to load scene
 			var t = OS.get_ticks_msec()
 			
-			# play loading anmation 
-			# Play Animation
-			#GlobalAnimation.get_child(0).play("LOADING")
-			#scene_loader.load_interactive(_r) 
 			
 			_o= (scene_loader.load_interactive(_to_load)) #function returns a resourceInteractiveLoader
 
 			scene_loader.load_interactive(_to_load) #function returns a resourceInteractiveLoader
 			
 		
-			#print (" Loader Debug Outer loop >>> Inner Loop")
+			print_debug (" Loader Debug Outer loop >>> Inner Loop")
 			while OS.get_ticks_msec() < (t + time_max) && _o != null: 
 
 				var err = _o.poll()
 				#loading_resource = true
 				
-				#print_debug ("_q: ",scene_resource," _r: ",_to_load," Error: ",str(err),"Loop Debug") #Debugger
+				push_warning("_q: "+str(scene_resource)+" _r: "+str(_to_load)+" Error: "+str(err)+"Loop Debug") #Debugger
 				
 				
 				
@@ -248,6 +244,7 @@ class Functions extends Reference:
 					
 					scene_resource = (_o.get_resource()) 
 					print_debug (scene_resource , "Resource Loaded")
+					push_warning (str(scene_resource) + "Resource Loaded")
 					
 					break
 					#return _q
@@ -257,12 +254,15 @@ class Functions extends Reference:
 					a = _o.get_stage()
 					b = _o.get_stage_count() 
 					progress = (b/a) 
-					#print (a, "/",b,'/',"Progress: ", progress) #progress Debug?
+					print_debug (a, "/",b,'/',"Progress: ", progress) #progress Debug?
+					push_warning (str(a)+ "/"+str(b)+'/'+"Progress: "+ str(progress)) #progress Debug?
+				
+				
 				else: # Error during loading
 					push_error("Problems loading Scene.  Debug Gloabls scene loader")
-					print (str(progress) + "% " + str (_to_load))
-					
+					push_error(str(progress) + "% " + str (_to_load))
 					break
+					
 		if scene_resource != null: # 
 			return scene_resource
 		

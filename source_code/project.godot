@@ -49,11 +49,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Comics.v8.gd"
 }, {
-"base": "HBoxContainer",
-"class": "ContributorClass",
-"language": "GDScript",
-"path": "res://addons/github-integration/scripts/ContributorClass.gd"
-}, {
 "base": "TextureRect",
 "class": "ControlIllustrations",
 "language": "GDScript",
@@ -124,16 +119,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/ingame_menu.gd"
 }, {
-"base": "PanelContainer",
-"class": "GistItem",
-"language": "GDScript",
-"path": "res://addons/github-integration/scripts/GistItem.gd"
-}, {
-"base": "Control",
-"class": "Github",
-"language": "GDScript",
-"path": "res://addons/github-integration/scripts/GitHub.gd"
-}, {
 "base": "Node",
 "class": "GlobalsVar",
 "language": "GDScript",
@@ -143,11 +128,6 @@ _global_script_classes=[ {
 "class": "GooglePlay",
 "language": "GDScript",
 "path": "res://New game code and features/google_play_games_services.gd"
-}, {
-"base": "Control",
-"class": "Headers",
-"language": "GDScript",
-"path": "res://addons/github-integration/scripts/Header.gd"
 }, {
 "base": "HBoxContainer",
 "class": "Healthbar",
@@ -178,11 +158,6 @@ _global_script_classes=[ {
 "class": "Internet",
 "language": "GDScript",
 "path": "res://singletons/Networking.gd"
-}, {
-"base": "HBoxContainer",
-"class": "InvitationItem",
-"language": "GDScript",
-"path": "res://addons/github-integration/scripts/InvitationItem.gd"
 }, {
 "base": "Control",
 "class": "JoyStickUI",
@@ -269,16 +244,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Rain_Fx.gd"
 }, {
-"base": "PanelContainer",
-"class": "RepositoryItem",
-"language": "GDScript",
-"path": "res://addons/github-integration/scripts/RepositoryItem.gd"
-}, {
-"base": "Node",
-"class": "RestHandler",
-"language": "GDScript",
-"path": "res://addons/github-integration/scenes/RestHandler.gd"
-}, {
 "base": "Node2D",
 "class": "Scent",
 "language": "GDScript",
@@ -339,16 +304,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/TouchScreenHud.gd"
 }, {
-"base": "Node",
-"class": "User_Data",
-"language": "GDScript",
-"path": "res://addons/github-integration/scenes/UserData.gd"
-}, {
-"base": "Control",
-"class": "User_Panel",
-"language": "GDScript",
-"path": "res://addons/github-integration/scripts/UserPanel.gd"
-}, {
 "base": "Control",
 "class": "WebBrowser",
 "language": "GDScript",
@@ -358,11 +313,6 @@ _global_script_classes=[ {
 "class": "WebConnection",
 "language": "GDScript",
 "path": "res://scenes/multiplayer/minimal.gd"
-}, {
-"base": "ConfirmationDialog",
-"class": "Window_Dialogue",
-"language": "GDScript",
-"path": "res://addons/github-integration/scripts/WindowDialog.gd"
 }, {
 "base": "AnimatedSprite",
 "class": "WordBubbleBox",
@@ -437,7 +387,7 @@ _global_script_classes=[ {
 "base": "ColorRect",
 "class": "loading",
 "language": "GDScript",
-"path": "res://addons/github-integration/scripts/loading.gd"
+"path": "res://scenes/UI & misc/loading.gd"
 }, {
 "base": "Node",
 "class": "lobbyV2",
@@ -453,11 +403,6 @@ _global_script_classes=[ {
 "class": "music_singleton",
 "language": "GDScript",
 "path": "res://singletons/Music.gd"
-}, {
-"base": "Node",
-"class": "plugin_settings",
-"language": "GDScript",
-"path": "res://addons/github-integration/scenes/PluginSettings.gd"
 }, {
 "base": "RigidBody2D",
 "class": "projectile",
@@ -493,7 +438,6 @@ _global_script_class_icons={
 "Bullet": "",
 "ChatGPTAPI": "",
 "ComicsV8": "",
-"ContributorClass": "",
 "ControlIllustrations": "",
 "DeSpawnFX": "",
 "DebugCharacter": "",
@@ -508,18 +452,14 @@ _global_script_class_icons={
 "GameControls": "",
 "GameHUD": "",
 "Game_Menu": "",
-"GistItem": "",
-"Github": "",
 "GlobalsVar": "",
 "GooglePlay": "",
-"Headers": "",
 "Healthbar": "res://resources/misc/Pixel Heart 32x32.png",
 "Help": "",
 "Idol": "",
 "ImpactFX": "",
 "Input_Buffer": "",
 "Internet": "",
-"InvitationItem": "",
 "JoyStickUI": "",
 "JoystickCircle": "",
 "JoystickV2": "",
@@ -537,8 +477,6 @@ _global_script_class_icons={
 "ProceduralGeneration": "",
 "Puddle": "",
 "RainFX": "",
-"RepositoryItem": "",
-"RestHandler": "",
 "Scent": "",
 "SignPost": "",
 "Simulationv1": "",
@@ -551,11 +489,8 @@ _global_script_class_icons={
 "TempleInterior": "",
 "TitleScreen": "",
 "TouchScreenHUD": "res://resources/misc/Android 32x32.png",
-"User_Data": "",
-"User_Panel": "",
 "WebBrowser": "",
 "WebConnection": "",
-"Window_Dialogue": "",
 "WordBubbleBox": "",
 "android": "res://resources/misc/Android 32x32.png",
 "camera": "",
@@ -574,7 +509,6 @@ _global_script_class_icons={
 "lobbyV2": "",
 "minimap": "",
 "music_singleton": "",
-"plugin_settings": "",
 "projectile": "",
 "quest": "",
 "smoke_fx": "",

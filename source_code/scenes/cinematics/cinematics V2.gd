@@ -37,7 +37,7 @@ CINEMATICS
 """
 
 onready var local_globals : GlobalsVar = get_node("/root/Globals")
-onready var local_dialogs : DialogsVar = get_node("/root/Dialogs")
+#onready var local_dialogs : DialogsVar = get_node("/root/Dialogs")
 onready var local_android  : android = get_node("/root/Android")
 onready var local_music : music_singleton = get_node("/root/Music")
 onready var wind_sfx : String = Music.wind_sfx.get(0)
@@ -64,25 +64,6 @@ func _ready():
 		
 		play_opening_cinematic() #Plays this video only on cinematics node
 	
-	" Anime Shop Scene "
-	if local_globals.curr_scene == "Shop":
-		# Get the Parent
-		var animationplayer : Control = $AnimationPlayer#get_node("AnimationPlayer")
-		videoplayer = $AnimationPlayer/VideoPlayer
-		print ("video player: ", videoplayer)# For Debug puroses only
-		
-		var episode1 : Button = $"africa icon/VBoxContainer/episode"
-		var bts : Button = $"africa icon/VBoxContainer/behind the scenes"
-		var animatic : Button = $"africa icon/VBoxContainer/animatic"
-		var merch : Button = $"africa icon/VBoxContainer/merchandise"
-		var guidebook : Button = $"africa icon/VBoxContainer/guide book"
-		var back : Button = $back
-		var UI_buttons_2 : Array = [episode1, bts,animatic, merch,guidebook, back]
-		
-		#print_debug("UI buttons: ",UI_buttons_2) #For Debug purposes only
-		
-		local_dialogs.set_font(UI_buttons_2, 44, "",2)
-		
 	
 	
 	if vid_stream == null:

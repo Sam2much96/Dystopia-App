@@ -63,6 +63,8 @@ anims/spawning = SubResource( 2 )
 
 [node name="Area2D" type="Area2D" parent="."]
 scale = Vector2( 0.600001, 0.600001 )
+collision_layer = 8
+collision_mask = 2
 monitorable = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]

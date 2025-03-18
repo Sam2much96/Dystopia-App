@@ -141,14 +141,13 @@ func _on_signpost_body_entered(body):
 	
 	if body is Player:
 		show_signpost()
-		
-		print_debug ('player near signpost ')
-
+		#print_debug ('player near signpost ')
+		pass
 
 # Unused Dialog Exit Code
 # Dialog Hide is triggered instead from the Dialog box code
 func _on_signpost_body_exited(body):
 
 	if body is Player:
-		print_debug ('player exits signpost')
-		
+		#print_debug ('player exits signpost')
+		pass

@@ -652,6 +652,7 @@ reset={
 2d_physics/layer_3="Interactive"
 2d_physics/layer_4="Enemy"
 2d_physics/layer_9="Props"
+2d_navigation/layer_1="Overworld"
 
 [locale]
 

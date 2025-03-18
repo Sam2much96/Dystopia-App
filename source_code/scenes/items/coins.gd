@@ -57,7 +57,7 @@ func _on_coins_body_entered(body): # Priority Process
 	if body is Player: # Guard Clause For Non Player Objects
 		
 		
-		print_debug ("Player Body Detected on Coin Item")
+		#print_debug ("Player Body Detected on Coin Item")
 		
 		if amount != null:
 			call_deferred("disconnect", "body_entered", self, "_on_coins_body_entered")

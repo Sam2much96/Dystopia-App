@@ -56,7 +56,7 @@ var players : Array = [] # All Players
 var player : Player # My Player
 
 # Player cam
-var player_cam 
+#var player_cam 
 
 #var _p # Player placeholder
 var player_hitpoints : int
@@ -84,9 +84,6 @@ var direction_control  : String = _controller_type[2]  #toggles btw analogue and
 
 var uncompressed # Varible holds uncompressed zip files
 
-
-'ingame Environment Variables'
-#var near_interractible_objects #which objects use this?
 
 
 onready var loading_scene : PackedScene = load("res://scenes/UI & misc/LoadingScene.tscn")
@@ -145,6 +142,7 @@ onready var despawn_fx = load ("res://scenes/UI & misc/DespawnFX.tscn")
 #var tile_map : TileMap
 var OverWorld #: PackedScene
 
+var player_cam : FightCam setget set_PlayerCam, get_PlayerCam
 
 #onready var nodes = [blood_fx,despawn_fx,self]
 func _ready():
@@ -189,14 +187,20 @@ func _go_to_cinematics():
 	return 0
 
 
+"Player Cam Setters and Getters"
+func set_PlayerCam(camera_ref : FightCam):
+	player_cam = camera_ref
+
+func get_PlayerCam() -> FightCam:
+	return player_cam
 
 
 
-func _exit_tree():
+#func _exit_tree():
 	
-	"Deletes all Orphaned Nodes"
+#	"Deletes all Orphaned Nodes"
 
-	"Prints All Orphaned Nodes"
+#	"Prints All Orphaned Nodes"
 	# For proper Memory Leak Management
 	#Utils.MemoryManagement.queue_free_array(nodes)
-	pass
+#	pass

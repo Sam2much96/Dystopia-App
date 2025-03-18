@@ -68,7 +68,7 @@ func _ready():
 	
 	
 """Destroys the Grass when it's Attacked by Either Player or Enemy Sword collision"""
-
+# The collision layer and mask settings also ensure this outcome
 #************TO MUCH DETECTION**************#
 
 func _on_grass_area_entered(area):
@@ -86,13 +86,7 @@ func _destroy_if (area: Array)-> void: # Works
 			
 			
 			_music_singleton.play_track(_grass_sfx)
-			#queue_free()
 			
-			# Spawn Item If able to
-			#if is_instance_valid(item_spawner):
-				#item_spawner.spawn()
-			
-			#destroy()
 			debug_grass(p) # for debug purposes only
 
 func idle()-> void:
@@ -101,27 +95,11 @@ func idle()-> void:
 func move()-> void:
 	anim.play("move")
 
-'Destroy animation and sound'
-#func destroy()-> void:
-#	#anim.play("destroy")
-#	#yield(get_tree().create_timer(0.3), "timeout") # use timer instead
-#	#set_timer(0.3)
-#	
-#	#Music.play_track(Music.grass_sfx[0])
-#	#queue_free()
-
 
 func set_timer(time: int)->void:
 	timer.one_shot = true
 	timer.autostart = true
 	timer.start(time)
-
-
-
-
-#func _queue_free()->void: #STACK OVERFLOW BUG
-#	queue_free()
-
 
 
 func _on_flowers_area_entered(area):
@@ -144,7 +122,7 @@ func debug_grass( area_name : String)-> void:
 func destroy():
 	# Exported Destroy FUnction for Scenetree Objects
 	anim.play("destroy")
-	#Music.play_track(Music.grass_sfx[0])
+
 	_music_singleton.play_track(_grass_sfx)
 
 func _auto_delete():

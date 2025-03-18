@@ -41,7 +41,8 @@ var noise_y = 0
 func _ready():
 	
 	
-	# Make GLobal
+	# Make Global
+	# using a setter getter functions
 	Globals.player_cam = self
 	
 	# seed random number generator
@@ -66,7 +67,7 @@ func _process(delta):
 	for _target in targets:
 		r = r.expand(_target.position)
 	r = r.grow_individual(margin.x, margin.y, margin.x, margin.y)
-	var d = max(r.size.x, r.size.y)
+	#var d = max(r.size.x, r.size.y)
 	var z
 	if r.size.x > r.size.y * screen_size.aspect():
 		z = clamp(r.size.x / screen_size.x, min_zoom, max_zoom)

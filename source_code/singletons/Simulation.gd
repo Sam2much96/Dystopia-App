@@ -705,7 +705,7 @@ class Enemy_ extends Reference:
 		# (2) Hit Registration
 		# (3) RPC Call for multiplayer mesh
 		#print_stack()
-		print_debug("Fix ENemy Player Collision Spammer")
+		#print_debug("Fix ENemy Player Collision Spammer")
 		if not state == STATE_DIE && area.name == "player_sword": #if it's not dead and it's hit by the player"s sword collisssion
 			
 			print_debug("Enemy Struck, Implement Make RPC CAll if error > 0")

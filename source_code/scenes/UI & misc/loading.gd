@@ -63,6 +63,7 @@ onready var  loading2 : TextureRect = $VBoxContainer/loading2
 onready var randomHints : String
 
 
+
 'Scene Loading variables'
 var scene_resource : PackedScene # Large Resouce Scene Placeholder
 #var _to_load : String  # Large Resource Placeholder Variable
@@ -75,6 +76,8 @@ onready var scene_loader= ResourceLoader
 onready var progress : float
 
 onready var timer  = $Timer
+signal loaded(a,b)
+
 func _process(_delta):
 	
 	
@@ -94,12 +97,14 @@ func _process(_delta):
 		# this function loads the scene resource into a global script and returns it
 		loaded_scene_temp = LoadLargeScene(
 		Globals.current_level, 
-		#scene_resource, 
+		loaded_scene_temp, 
 		_o, 
-		#scene_loader, 
-		#a, 
-		#b, 
-		progress)
+		scene_loader, 
+		a, 
+		b, 
+		progress,
+		self
+		)
 		
 		# Null resource load
 		#
@@ -123,12 +128,18 @@ func _ready():
 	#Progress.hide()
 	Number.hide()
 	
-	
+	# placeholder progress bar until resource interractive loader can be polled and waited
+	show_progress(19,20)
 	
 	# COnnect Signals for redundancy errors
 	if not is_connected("visibility_changed",self,"_on_loading_visibility_changed"):
 		connect("visibility_changed",self,"_on_loading_visibility_changed")
 
+	
+	# connect loading poll signal
+	
+	connect("loaded", self,"show_progress", [a,b])
+	
 	print_debug("laading scene %s :",[Globals.current_level])
 	
 	# show random hints
@@ -158,7 +169,7 @@ func _ready():
 				
 				# set 2 different times for mobile and pc
 				#yield(get_tree().create_timer(5), "timeout")
-				timer.start(5)
+				timer.start(3)
 				return
 				
 		if Globals.os == "X11" or "Windows" or "HTML5"or "OSX"or "Server"or "UWP":
@@ -189,6 +200,8 @@ func visibility_logic( _visible : bool):
 # Shows a Progress Bar
 func show_progress(value : float , max_value : float):
 	Progress.show()
+	yield(get_tree(), "idle_frame") # pause for idle frame breaks the loader
+	print_debug("Show Progress Triggered: ", value, "/",max_value)
 	Progress.set_value(range_lerp(value,0,max_value,0,100))
 
 func hide_progress():
@@ -202,68 +215,84 @@ func show_number(value : float , ref_value : float, type : String):
 func hide_number():
 	Number.hide()
 
+#func idle():
+#	yield(get_tree(), "idle_frame")
 
 
-# Utils functins deserialised for debugging
-func LoadLargeScene(
+# Utils functions deserialised for debugging
+static func LoadLargeScene(
 	scene_to_load : String, 
-	#scene_resource : PackedScene, 
+	sc_resource : PackedScene, 
 	resource_interactive_loader : ResourceInteractiveLoader, 
-	#scene_loader : ResourceLoader, 
-	#a_: int , 
-	#b_ : int, 
-	progress: float
+	sc_loader : ResourceLoader, 
+	a_: int , 
+	b_ : int, 
+	progress_: float, 
+	loader :loading
 	) -> PackedScene:
 	
-	#print_stack()
-	#print_debug("Loading Large Scene")
-	if scene_to_load != "" && scene_resource == null:
-		var time_max = 50000 #sets an estimate maximum time to load scene
-		var current_time = OS.get_ticks_msec()
+	if scene_to_load.empty():
+		push_error("Error: Scene path is empty.")
+	
+	if sc_resource != null:
+		push_error("Error: Scene resource is already loaded.")
+	
+	#if !scene_to_load.empty() : # && sc_resource == null:
+	#var time_max = 50000 #sets an estimate maximum time to load scene
+	#var current_time = OS.get_ticks_msec()
+	
+	
+	resource_interactive_loader = (sc_loader.load_interactive(scene_to_load)) #function returns a resourceInteractiveLoader
+	
+	if resource_interactive_loader == null:
+		push_error("Error: Failed to create ResourceInteractiveLoader.")
+	
+	
+	print_debug("Starting asynchronous scene load >>>> : " + scene_to_load)
+	
+	loader.LOADING = true
+	
+	#while loader.LOADING:
+	while resource_interactive_loader != null && loader.LOADING: #OS.get_ticks_msec() < (current_time + time_max) : 
+		
+		var err = resource_interactive_loader.poll()
+		
+		#print_debug("scene res: "+str(sc_resource)+"\n scene to load: "+str(scene_to_load)+"\n Error: "+str(err)+" \nLoop Debug") #Debugger
+		a_ = resource_interactive_loader.get_stage()
+		b_ = resource_interactive_loader.get_stage_count() 
 		
 		
-		resource_interactive_loader = (scene_loader.load_interactive(scene_to_load)) #function returns a resourceInteractiveLoader
+		match err:
 		
-		#causes cyclical error bug?
-		#scene_loader.load_interactive(scene_to_load) #function returns a resourceInteractiveLoader
-		
-		
-		print_debug (" Loader Debug Outer loop >>> Inner Loop")
-		while OS.get_ticks_msec() < (current_time + time_max) && resource_interactive_loader != null: 
-
-			var err = resource_interactive_loader.poll()
+			OK: # loading, partially finished
+ 
+				#loader.emit_signal("loaded")
+				#resource_interactive_loader.poll()
+				
+				#yield(get_tree(), "idle_frame") # pause for idle frame breaks the loader
+				#print_debug (a_, "/",b_)
+				loader.show_progress(a_, b_)
+				
+				 
+				
+			ERR_FILE_EOF : # Finished Loading 
+				sc_resource = resource_interactive_loader.get_resource()
+				print_debug ("Resource Loaded :", sc_resource)
+				loader.LOADING = false
+				#break
 			
-			print_debug("scene res: "+str(scene_resource)+"\n scene to load: "+str(scene_to_load)+"\n Error: "+str(err)+" \nLoop Debug") #Debugger
-			
-			
-			
-			if err == ERR_FILE_EOF: # Finished Loading 
-				scene_resource = (resource_interactive_loader.get_resource()) 
-				print_debug ("Resource Loaded :", scene_resource)
-				
-				break
-				
-			# Tracks Scene Resource Progress. 
-			# Should be exportable to UI/ UX
-			elif err == OK: #works
-				a = resource_interactive_loader.get_stage()
-				b = resource_interactive_loader.get_stage_count() 
-				
-				print_debug (a, "/",b) 
-				
-				
-				
-			else: # Error during loading
+			_: # Other Errors during loading
 				push_error("Problems loading Scene.  Debug Gloabls scene loader")
-				push_error(str(progress) + "% " + str (scene_to_load))
-				break
-				
-	if scene_resource != null:  
-		return scene_resource
-	if scene_resource == null:
+				push_error(str(progress_) + "% " + str (scene_to_load))
+				loader.LOADING = false
+				#break
+	
+	if sc_resource != null:  
+		return sc_resource
+	if sc_resource == null:
 		push_error("There was an Error. Loading the Scene Resource is null")
 	
-	return scene_resource
+	return sc_resource
 
 
 

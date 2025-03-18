@@ -73,15 +73,15 @@ func _ready():
 		
 		# Debug All Signals
 		
-		if not ( is_connected("area_entered", self, "_on_player_area_entered") and 
-		is_connected("area_exited", self, "_on_player_area_exited") and
-		is_connected("body_entered",self, "_on_signpost_body_entered") and
-		is_connected("body_exited",self, "_on_signpost_body_exited") and
-		Dialogs.is_connected("dialog_started", self, "_on_dialog_started") and
-		Dialogs.is_connected("dialog_ended", self, "_on_dialog_ended") 
-		):
+		#if not ( is_connected("area_entered", self, "_on_player_area_entered") and 
+		#is_connected("area_exited", self, "_on_player_area_exited") and
+		#is_connected("body_entered",self, "_on_signpost_body_entered") and
+		#is_connected("body_exited",self, "_on_signpost_body_exited") and
+		#Dialogs.is_connected("dialog_started", self, "_on_dialog_started") and
+		#Dialogs.is_connected("dialog_ended", self, "_on_dialog_ended") 
+		#):
 		
-			push_error("Debug Connected Signals")
+		#	push_error("Debug Connected Signals")
 
 
 func show_signpost(): # rename to trigger dialogue

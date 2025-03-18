@@ -12,6 +12,7 @@
 # (5) Extends to Top DOwn and SideScrolling Player Scripts
 # (6) Player & Enemy SFX is handled by simulation singleton
 # (7) Connects Dialog Signals From Dialogs Singleton
+# (8) Collision detectin is done from simulation singleton
 # *************************************************
 # To Do:
 # (1) Implement State Buffer (Done)
@@ -23,7 +24,7 @@
 # (7) Implement Item Equip Animation From Inventory.gd
 # (8) Player Sword Attack is unimplemented
 # (9) Player animation should be callable via exported scripts
-# (10) Player should export it's COllision states to simulations singleton
+
 # (11) Impact fx should take a player & enemy colliding boolean parameter and should only trigger then, rather than whenever the attack button is pressed
 
 # *************************************************

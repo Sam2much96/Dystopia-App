@@ -1,12 +1,15 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/market_placekra.webp" type="Texture" id=1]
 [ext_resource path="res://scenes/levels/Exit.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/items/coins.tscn" type="PackedScene" id=4]
 [ext_resource path="res://resources/merchant_NPC.webp" type="Texture" id=5]
+[ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/characters/Npc CHIEFPRIEST.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/items/Item.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/characters/Npc.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/UI & misc/dialog_trigger.tscn" type="PackedScene" id=10]
 
 [node name="Node2D" type="Node2D"]
 
@@ -33,13 +36,17 @@ polygon = PoolVector2Array( 763, 685, 200, 676, 172, 2308, 1206, 2293, 1202, 249
 [node name="Exit" parent="." instance=ExtResource( 2 )]
 position = Vector2( 303, 2068 )
 scale = Vector2( 3.52144, -0.425129 )
-collision_layer = 2048
+collision_layer = 1
 to_scene = "res://scenes/levels/Overworld.tscn"
+
+[node name="Item" parent="." instance=ExtResource( 8 )]
+position = Vector2( 504, 1532 )
+scale = Vector2( 0.72, 0.72 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 276, 1684 )
-collision_layer = 2049
-collision_mask = 1
+collision_layer = 15
+collision_mask = 15
 
 [node name="NPC_Iye" parent="." instance=ExtResource( 9 )]
 position = Vector2( 152, 769 )
@@ -50,4 +57,11 @@ position = Vector2( 454, 842 )
 
 [node name="coins" parent="." instance=ExtResource( 4 )]
 position = Vector2( 476, 1106 )
-item_type = "suds"
+
+[node name="Enemy" parent="." instance=ExtResource( 6 )]
+position = Vector2( 300, 1241 )
+
+[node name="DialogueTrigger" parent="." instance=ExtResource( 10 )]
+position = Vector2( 507, 1872 )
+enabled = true
+HINT = true

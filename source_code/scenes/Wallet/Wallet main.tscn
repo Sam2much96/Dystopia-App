@@ -1,7 +1,6 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://scenes/Wallet/state_controller.gd" type="Script" id=1]
-[ext_resource path="res://addons/algodot/Algod.gd" type="Script" id=2]
 [ext_resource path="res://Wallet Scenes/AccountsSetupPage.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Wallet Scenes/GalleryUI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://themes/option+button.tres" type="Theme" id=5]
@@ -72,8 +71,6 @@ margin_bottom = -577.418
 rect_scale = Vector2( 15.563, 19.384 )
 
 [node name="Algodot" type="Node" parent="."]
-script = ExtResource( 2 )
-network_type = "TESTNET"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = -1

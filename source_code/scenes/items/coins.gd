@@ -54,8 +54,8 @@ func _on_timer_timeout():
 	anims.play("idle")
 
 func _on_coins_body_entered(body): # Priority Process
-	if not body is Player: # Guard Clause For Non Player Objects
-		return
+	if body is Player: # Guard Clause For Non Player Objects
+		
 		
 		print_debug ("Player Body Detected on Coin Item")
 		

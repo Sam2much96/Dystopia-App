@@ -9,7 +9,8 @@
 # (2) 
 # *************************************************
 # Bugs:
-#
+# (1) Brokemn, refactor to use app theme and current scene singleton structure
+#	- where wallet is a child og one of the global singletons accessible from a router
 # *************************************************
 # Goals: 
 #
@@ -108,94 +109,94 @@ func _ready():
 	#print ("Current Scene is: ",Globals.curr_scene) # For Debug Purposes only
 	
 	
-	Wallet.state_controller = self
-	Wallet.Algorand = Algorand
-	Wallet.canvas_layer = canvasLayer
-	Wallet.account_address = account_addr
-	Wallet.dashboard_UI = dashboard_UI
-	Wallet.transaction_ui = transaction_UI
-	Wallet.passward_UI = Password_UI
-	Wallet.funding_success_ui = FundingSuccessUI
-	Wallet.mnemonic_ui = mnemonic_UI
-	Wallet.collectibles_UI = Collectibles_UI
-	Wallet.mnemonic_ui_lineEdit = mnemonic_UI_LineEdit
+	#Wallet.state_controller = self
+	#Wallet.Algorand = Algorand
+	#Wallet.canvas_layer = canvasLayer
+	#Wallet.account_address = account_addr
+	#Wallet.dashboard_UI = dashboard_UI
+	#Wallet.transaction_ui = transaction_UI
+	#Wallet.passward_UI = Password_UI
+	#Wallet.funding_success_ui = FundingSuccessUI
+	#Wallet.mnemonic_ui = mnemonic_UI
+	#Wallet.collectibles_UI = Collectibles_UI
+	#Wallet.mnemonic_ui_lineEdit = mnemonic_UI_LineEdit
+	
 	#print (dashboard_UI.get_children())
 	
 	###Setting this variables bug out the UI input system
-	Wallet.wallet_algos = wallet_algos
-	Wallet.ingame_algos = ingame_algos
+	#Wallet.wallet_algos = wallet_algos
+	#Wallet.ingame_algos = ingame_algos
 	
 	#Collectibles
-	Wallet.NFT = image_texture_holder
-	Wallet.kinematic2d = kinematic2d
-	Wallet.NFT_index_label = asset_index_label
-	Wallet.pfp = profile_pic
-	Wallet.Asset_UI_index = asset_ui_index
-	Wallet.Asset_UI_amount = asset_ui_amount
+	#Wallet.NFT = image_texture_holder
+	#Wallet.kinematic2d = kinematic2d
+	#Wallet.NFT_index_label = asset_index_label
+	#Wallet.pfp = profile_pic
+	#Wallet.Asset_UI_index = asset_ui_index
+	#Wallet.Asset_UI_amount = asset_ui_amount
 	
 	#Buttons
-	Wallet.txn_txn_valid_button = submit_txn_button
-	Wallet.password_Entered_Button = enter_wallet_PassWord_Button #placeholder button
-	Wallet.imported_mnemonic_button = submit_mnemonic_button
-	Wallet.txn_addr = transaction_UI_address_lineEdit
-	Wallet.txn_amount = transaction_UI_amount_lineEdit
-	Wallet.funding_success_close_button = Funding_Success_Close_Button
-	Wallet.smart_contract_UI = App_Call_UI
-	Wallet.smartcontract_ui_address_lineEdit = smartcontract_UI_Address
-	Wallet.smartcontract_ui_appID_lineEdit = smartcontract_UI_AppID
-	Wallet.smartcontract_ui_args_lineEdit = smartcontract_UI_AppArgs
-	Wallet.smartcontract_UI_button = smartcontract_UI_Button
-	Wallet.make_Payment_Button = make_payment_state_controller_button
-	Wallet.nft_asset_id = transaction_UI_asset_id_LineEdit
-	Wallet.fund_Acct_Button = fund_account_Button
-	Wallet.password_LineEdit = password_Enter_LineEdit
-	Wallet._Create_Acct_button = create_new_acct_button
+	#Wallet.txn_txn_valid_button = submit_txn_button
+	#Wallet.password_Entered_Button = enter_wallet_PassWord_Button #placeholder button
+	#Wallet.imported_mnemonic_button = submit_mnemonic_button
+	#Wallet.txn_addr = transaction_UI_address_lineEdit
+	#Wallet.txn_amount = transaction_UI_amount_lineEdit
+	#Wallet.funding_success_close_button = Funding_Success_Close_Button
+	#Wallet.smart_contract_UI = App_Call_UI
+	#Wallet.smartcontract_ui_address_lineEdit = smartcontract_UI_Address
+	#Wallet.smartcontract_ui_appID_lineEdit = smartcontract_UI_AppID
+	#Wallet.smartcontract_ui_args_lineEdit = smartcontract_UI_AppArgs
+	#Wallet.smartcontract_UI_button = smartcontract_UI_Button
+	#Wallet.make_Payment_Button = make_payment_state_controller_button
+	#Wallet.nft_asset_id = transaction_UI_asset_id_LineEdit
+	#Wallet.fund_Acct_Button = fund_account_Button
+	#Wallet.password_LineEdit = password_Enter_LineEdit
+	#Wallet._Create_Acct_button = create_new_acct_button
+	#
+	#Wallet.CreatAccountSuccessful_UI = create_account_succcessful_UI
+	#Wallet.CreatAccountSuccessful_Mnemonic_Label = create_account_succcessful_Label
+	#Wallet.CreatAccountSuccessful_Copy_Mnemonic_button = copy_mnemonic_button
+	#Wallet.CreatAccountSuccessful_Proceed_home_button = proceed_home_button
+	#
+	#
+	#Wallet.Asset_UI = asset__UI
+	#Wallet.asset_txn_valid_button = asset_Txn_valid_Button
+	#Wallet.asset_optin_txn_valid_button =asset_Optin_Txn_valid_Button
+	#Wallet.asset_optin_txn_reject_button = asset_Optin_Txn_reject_Button
+	#print("UI elemts OK: ",Wallet.check_Nodes()) #for debug purposes only
 	
-	Wallet.CreatAccountSuccessful_UI = create_account_succcessful_UI
-	Wallet.CreatAccountSuccessful_Mnemonic_Label = create_account_succcessful_Label
-	Wallet.CreatAccountSuccessful_Copy_Mnemonic_button = copy_mnemonic_button
-	Wallet.CreatAccountSuccessful_Proceed_home_button = proceed_home_button
-	
-	
-	Wallet.Asset_UI = asset__UI
-	Wallet.asset_txn_valid_button = asset_Txn_valid_Button
-	Wallet.asset_optin_txn_valid_button =asset_Optin_Txn_valid_Button
-	Wallet.asset_optin_txn_reject_button = asset_Optin_Txn_reject_Button
-	print("UI elemts OK: ",Wallet.check_Nodes()) #for debug purposes only
-	
-	Wallet._1 = button_1
-	Wallet._2 = button_2
-	Wallet._3 = button_3
-	Wallet._4 = button_4
-	Wallet._5 = button_5
-	Wallet._6 = button_6
-	Wallet._7 = button_7
-	Wallet._8 = button_8
-	Wallet._9 = button_9
-	Wallet._0 = button_0
-	Wallet.zero = button_11
-	Wallet.delete_last_button = button_12
-	
-	#*****Animation ******#
-	Wallet._Animation = AnimationPlayer_
-	Wallet._Animation_UI = AnimationPlayer_2
-	Wallet._Animation_Tree = AnimationTree_
-	
-	#print ("Wallet UI elemts: ",Wallet.UI_Elements) #for debug purposes only
-	
+	#Wallet._1 = button_1
+	#Wallet._2 = button_2
+	#Wallet._3 = button_3
+	#Wallet._4 = button_4
+	#Wallet._5 = button_5
+	#Wallet._6 = button_6
+	#Wallet._7 = button_7
+	#Wallet._8 = button_8
+	#Wallet._9 = button_9
+	#Wallet._0 = button_0
+	#Wallet.zero = button_11
+	#Wallet.delete_last_button = button_12
+	#
+	##*****Animation ******#
+	#Wallet._Animation = AnimationPlayer_
+	#Wallet._Animation_UI = AnimationPlayer_2
+	#Wallet._Animation_Tree = AnimationTree_
+	#
+	#
 	# Connects State Controller Button  Signals to Wallet
 	# Should return a Boolean
-	print_debug(Wallet.Functions.connect_signals_statecontroller(self, Wallet))
+	#print_debug(Wallet.Functions.connect_signals_statecontroller(self, Wallet))
 	
 	
 	
-	print_debug(Wallet.imported_mnemonic_button)
+	#print_debug(Wallet.imported_mnemonic_button)
 	
 	# Triggers CUstom Ready State in Wallet Node
 	
 	
 	# Wallet Singleton ready
-	Wallet.__ready()
+	#Wallet.__ready()
 	
 	
 	#Quick Fix for Upscaing
@@ -215,11 +216,11 @@ func _ready():
 # connect to singleton via signals
 func _on_state_controller_toggled(button_pressed):
 	if button_pressed:
-		#pass
-		Wallet.set_process(true)
+		pass
+		#Wallet.set_process(true)
 	if !button_pressed :
-		#pass
-		Wallet.set_process(false)
+		pass
+		#Wallet.set_process(false)
 	
 	
 	
@@ -242,20 +243,20 @@ func manually_translate()-> void:
 	#SHould Ideally Use Hashmap tuple + for loops  for translations
 	#print(MenuButtons)
 	
-	if Dialogs.language != "" or null:
-		#Select A Font Pack
-		Dialogs.set_font(
-			Wallet.UI_Button_Nodes, 
-			44, 
-			"",#Dialogs.font_pack.get("W1"), 
-			0
-			)
+	#if Dialogs.language != "" or null:
+	#	#Select A Font Pack
+	#	Dialogs.set_font(
+	#		Wallet.UI_Button_Nodes, 
+	#		44, 
+	#		"",#Dialogs.font_pack.get("W1"), 
+	#		0
+	#		)
 		
-		for i in Wallet.UI_Button_Nodes:
-			if i != null:
-			# Note: If it breaks with a null object error, it means that the scene layout has been changed
-			# Update the button links then
-				i.set_text(Dialogs.translate_to(i.text, Dialogs.language))
+	#	for i in Wallet.UI_Button_Nodes:
+	#		if i != null:
+	#		# Note: If it breaks with a null object error, it means that the scene layout has been changed
+	#		# Update the button links then
+	#			i.set_text(Dialogs.translate_to(i.text, Dialogs.language))
 	
 	# Translations
 	#for i in Wallet.UI_Button_Nodes:

@@ -21,7 +21,7 @@ const Short_lifetime : int = 3
 const MINUMUM_FPS : int = 25
 
 
-onready var TouchInterface : TouchScreenHUD  setget set_TouchInterface, get_TouchInterface #= GlobalInput.gameHUD.TouchInterface
+onready var TouchInterface : TouchScreenHUD  setget set_TouchInterface, get_TouchInterface 
 onready var GameHUD_ : GameHUD 
 
 
@@ -248,16 +248,8 @@ func _process(_delta):
 		#if local_screen_orientation != initial_screen_orientation:
 			
 		Utils.Screen._adjust_touchHUD_length(GameHUD_.Anim) # sets touch interface layout
-		
-		# for debugging console Logs
-		#print_debug("Debug 2:", Android.Chrome.consoleLog())
-		
-		
-			# update initial screen orientation
-		#	initial_screen_orientation = local_screen_orientation
-
-		#elif local_screen_orientation == initial_screen_orientation:
-		#	pass
+	
+	
 	if _simulation.frame_counter % 130 == 00 && is_instance_valid(ingameMenu):
 		"""
 		
@@ -277,8 +269,6 @@ func _process(_delta):
 
 func _on_player_ready():
 	if _is_android == true:
-			# Move To android Singleton
-	#if Globals.os == "Android":
 		GlobalInput.TouchInterface.enabled = true
 		Android.show_all_buttons() # Show Touch HUD UI
 

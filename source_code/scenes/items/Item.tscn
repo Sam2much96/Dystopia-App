@@ -141,6 +141,7 @@ tracks/3/keys = {
 }
 
 [node name="Item" type="Area2D" groups=["items"]]
+collision_mask = 2
 script = ExtResource( 2 )
 item_type = "Generic Item"
 
@@ -162,3 +163,5 @@ autoplay = "spawn"
 anims/collected = SubResource( 2 )
 anims/reset = SubResource( 3 )
 anims/spawn = SubResource( 4 )
+
+[connection signal="body_entered" from="." to="." method="_on_Item_body_entered"]

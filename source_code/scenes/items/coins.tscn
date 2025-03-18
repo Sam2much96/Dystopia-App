@@ -262,8 +262,10 @@ tracks/3/keys = {
 }
 
 [node name="coins" type="Area2D" groups=["items"]]
+collision_layer = 4
+collision_mask = 2
 script = ExtResource( 1 )
-item_type = "algos"
+item_type = "suds"
 amount = 50000
 
 [node name="sprite" type="Sprite" parent="."]

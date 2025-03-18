@@ -81,7 +81,7 @@ func _ready():
 		Dialogs.is_connected("dialog_ended", self, "_on_dialog_ended") 
 		):
 		
-			push_warning("Debug Connected Signals")
+			push_error("Debug Connected Signals")
 
 
 func show_signpost(): # rename to trigger dialogue
@@ -138,24 +138,17 @@ func hide_signpost():
 
 # Detect Player
 func _on_signpost_body_entered(body):
-	if not body is Player:
-		pass
+	
 	if body is Player:
 		show_signpost()
 		
-		#print_debug ('player near signpost ')
+		print_debug ('player near signpost ')
 
 
 # Unused Dialog Exit Code
 # Dialog Hide is triggered instead from the Dialog box code
 func _on_signpost_body_exited(body):
-	if not body is Player:
-		return
-	
+
 	if body is Player:
-		#print_debug ('player near signpost')
-		return
-
-
-func _exit_tree():
-	Utils.MemoryManagement.free_object(self) # Memory Management for All Dialog Triggers
+		print_debug ('player exits signpost')
+		

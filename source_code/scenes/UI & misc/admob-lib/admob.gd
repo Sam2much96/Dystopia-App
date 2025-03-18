@@ -1,6 +1,6 @@
 extends Node
 
-class_name AdMob, "res://New game code and features/admob-lib/icon.png"
+class_name AdMob, "res://scenes/UI & misc/admob-lib/icon.png"
 
 
 # signals

@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "AdMob",
 "language": "GDScript",
-"path": "res://New game code and features/admob-lib/admob.gd"
+"path": "res://scenes/UI & misc/admob-lib/admob.gd"
 }, {
 "base": "Node",
 "class": "Algodot",
@@ -425,7 +425,7 @@ _global_script_classes=[ {
 "path": "res://scenes/Wallet/state_controller.gd"
 } ]
 _global_script_class_icons={
-"AdMob": "res://New game code and features/admob-lib/icon.png",
+"AdMob": "res://scenes/UI & misc/admob-lib/icon.png",
 "Algodot": "",
 "BloodSplatter": "res://resources/FX/Blood splatter fx.webp",
 "Boulder_Big": "",
@@ -644,6 +644,14 @@ reset={
 "deadzone": 0.5,
 "events": [  ]
 }
+
+[layer_names]
+
+2d_physics/layer_1="Environment"
+2d_physics/layer_2="Player"
+2d_physics/layer_3="Interactive"
+2d_physics/layer_4="Enemy"
+2d_physics/layer_9="Props"
 
 [locale]
 

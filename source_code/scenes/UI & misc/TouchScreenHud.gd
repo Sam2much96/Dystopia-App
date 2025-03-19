@@ -314,8 +314,8 @@ func _ready():
 		print_debug("Stats Signals and Menu signals implementation are broken")
 		# COnnect signals from dialogue
 		# DIalogues to self
-		Dialogs.connect("dialog_started", self, "interract")
-		Dialogs.connect("dialog_ended", self, "show_all_buttons")
+		Dialogs.dialog_box.connect("dialog_started", self, "interract")
+		Dialogs.dialog_box.connect("dialog_ended", self, "show_all_buttons")
 
 		# Comics to Touch Interface
 		#if is_instance_valid(_comics): # Buggy Singleton Instance
@@ -608,6 +608,30 @@ func Horizontal():
 	_menu.rect_scale = Vector2(0.5,0.5)
 	
 	
+	# this is the default position for stats & interract buttons
+	stats_.rect_position = Vector2(872,35)
+	stats_.rect_size = Vector2(166,103)
+	stats_.rect_scale = Vector2(1,1)
+	
+	_interract.rect_position = Vector2(864,142)
+	_interract.rect_size = Vector2(166,103)
+	_interract.rect_scale = Vector2(1,1)
+	
+	
+	# position the action buttons
+	
+	# move down only the slash and roll buttons
+	
+	slash.rect_position =Vector2(839,342)
+	slash.rect_scale = Vector2(1,1)
+	slash.rect_size = Vector2(110,206)
+	
+	roll.rect_position = Vector2(736,447)
+	roll.rect_size = Vector2(110,103)
+	roll.rect_scale = Vector2(1,1)
+	
+	
+	
 	return 0
 
 
@@ -638,6 +662,25 @@ func Vertical():
 	_menu.rect_size = Vector2(166,143)
 	_menu.rect_scale = Vector2(1,1)
 	
+	# move down only the slash and roll buttons
+	
+	slash.rect_position =Vector2(867,1558)
+	slash.rect_scale = Vector2(1.5,1.5)
+	slash.rect_size = Vector2(110,206)
+	
+	roll.rect_position = Vector2(705,1653)
+	roll.rect_size = Vector2(110,103)
+	roll.rect_scale = Vector2(2,2)
+	
+	
+	# this is the default position for stats & interract buttons
+	stats_.rect_position = Vector2(872,35)
+	stats_.rect_size = Vector2(166,103)
+	stats_.rect_scale = Vector2(1,1)
+	
+	_interract.rect_position = Vector2(864,142)
+	_interract.rect_size = Vector2(166,103)
+	_interract.rect_scale = Vector2(1,1)
 	
 	
 	return 0

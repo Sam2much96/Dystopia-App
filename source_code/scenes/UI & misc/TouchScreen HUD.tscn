@@ -12,7 +12,6 @@
 modulate = Color( 1, 1, 1, 0.67451 )
 mouse_filter = 2
 script = ExtResource( 4 )
-_state_controller = 4
 _control = "modern"
 
 [node name="Line2D" type="Line2D" parent="."]
@@ -100,6 +99,9 @@ margin_bottom = 575.989
 rect_rotation = 90.343
 action_mode = 0
 texture_normal = ExtResource( 15 )
+
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( 839, 1594 )
 
 [connection signal="button_down" from="stats" to="." method="_on_stats_button_down"]
 [connection signal="button_up" from="stats" to="." method="_on_stats_button_up"]

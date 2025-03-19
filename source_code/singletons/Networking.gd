@@ -96,6 +96,8 @@ const SERVER_PORT = 9080
 const MAX_PLAYERS = 4
 #export (String) var CLIENT_IP : String  
 export (Dictionary) var Data : Dictionary
+
+
 const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
 
 

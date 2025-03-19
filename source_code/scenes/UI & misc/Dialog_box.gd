@@ -55,10 +55,11 @@ func _ready():
 	# Dialogue box scaling on mobile devices
 	# Load Different textures depending on the Screen Orientation
 	# Bug: Dialogues UI is misaligned on mobile screens
-	if Globals.screenOrientation == 1:
-		self.set_texture(load("res://resources/misc/dialog_box_webp_mobile.webp"))
-	else : 
-		pass
+	# depreciated bug fix
+	#if Globals.screenOrientation == 1:
+	#	self.set_texture(load("res://resources/misc/dialog_box_webp_mobile.webp"))
+	#else : 
+	#	pass
 
 
 

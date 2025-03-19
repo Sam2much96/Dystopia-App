@@ -35,6 +35,8 @@ export (bool) var enabled
 signal _not_enabled
 signal _enabled
 
+
+
 # Signals TO Connect To Android SIngleton For Controulling Touch HUD (Done)
 #signal status_hidden
 #signal status_showing
@@ -126,9 +128,7 @@ func _ready():
 	tab_container.set_script(TabIcons)
 	
 	
-	# Fetch price data once ready
-	
-	call_deferred("_fetch_prices")
+
 
 
 func _input(event):
@@ -154,17 +154,21 @@ func _input(event):
 
 
 func _fetch_prices():
-	print_debug ("fetching price data from Vestige API")
-	local_networking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , local_networking) #
+	"Update Price From Vestigefi API"
+	
+
+	if !local_networking.Data.empty():
+		push_warning("Price Data has been fetched")
+		return
+		
+	if !local_networking.empty():
+		print_debug ("fetching price data from Vestige API")
+		local_networking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , local_networking) #
 
 
 
 func _update_wallet_stats(): #Updates killcount and Algos
-	"Update Price From Vestigefi API"
-	
-
-	
-	if Networking.good_internet:
+	if Networking.good_internet && !local_networking.Data.empty():
 		_coin_label.text = 'Suds: ' + str (Globals.suds)
 		_price_label.text =  str(Networking.Data) # fetchs price data from Sud token
 
@@ -308,6 +312,10 @@ func _enable():
 	emit_signal('_enabled')
 	Music.play_track(Music.ui_sfx[0])
 	get_tree().paused = enabled
+	
+	
+	call_deferred("_fetch_prices")
+	
 	
 	_update_quest_listing()
 	_update_inventory_listing() # Refactor

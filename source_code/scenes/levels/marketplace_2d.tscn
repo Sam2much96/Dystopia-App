@@ -62,6 +62,7 @@ position = Vector2( 476, 1106 )
 position = Vector2( 300, 1241 )
 
 [node name="DialogueTrigger" parent="." instance=ExtResource( 10 )]
-position = Vector2( 507, 1872 )
+position = Vector2( 254, 1010 )
 enabled = true
-HINT = true
+dialogue = "Would You Like To Buy Something?"
+DECISION = true

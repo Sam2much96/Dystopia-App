@@ -140,7 +140,7 @@ func _input(event):
 		
 	# Enable / DIsable Logic is Buggy
 	if event.is_action_pressed("pause")  && enabled == false:
-		print_debug("enable")
+		#print_debug("enable")
 		enabled = true
 		_enable()
 		return enabled 
@@ -148,7 +148,7 @@ func _input(event):
 		enabled = false
 		_disable()
 
-		print_debug("disable")
+		#print_debug("disable")
 		return enabled
 
 
@@ -313,7 +313,7 @@ func _enable():
 	_update_inventory_listing() # Refactor
 	_update_wallet_stats()
 	_update_player_stats()
-	print_debug("Stats UI Enabled") 
+	#print_debug("Stats UI Enabled") 
 
 func _disable():
 	enabled = false

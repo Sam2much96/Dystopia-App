@@ -118,8 +118,8 @@ func show_signpost(): # rename to trigger dialogue
 		
 		
 		if quest_dialog != "":
-			print_debug("Show Quest Dialogue Decisions")
-			Dialogs.dialog_box.show_dialog(quest_dialog, speaker, true)
+			#print_debug("Show Quest Dialogue Decisions")
+			Dialogs.dialog_box.show_dialog(quest_dialog, speaker, false)
 			return
 		if quest_dialog == "":
 			pass

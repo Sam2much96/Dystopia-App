@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://scenes/levels/Tilemap_1_overworld.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/levels/ForestTilemap.tscn" type="PackedScene" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/items/extra life.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scenes/props/signpost.tscn" type="PackedScene" id=14]
+[ext_resource path="res://scenes/UI & misc/dialog_trigger.tscn" type="PackedScene" id=15]
 [ext_resource path="res://scenes/props/broken ship.tscn" type="PackedScene" id=16]
 [ext_resource path="res://scenes/items/Arrow.tscn" type="PackedScene" id=17]
 [ext_resource path="res://scenes/characters/Npc.tscn" type="PackedScene" id=20]
@@ -27,76 +28,76 @@ outlines = [ PoolVector2Array( 2417.95, -4929.25, 2409.15, -836.791, 2066.27, -7
 [node name="Outside" type="Node2D"]
 script = ExtResource( 28 )
 
-[node name="YSort" type="YSort" parent="."]
+[node name="Trees & Grasses" type="YSort" parent="."]
 sort_enabled = false
 
-[node name="Trees_TileMap" parent="YSort" instance=ExtResource( 2 )]
+[node name="Trees_TileMap" parent="Trees & Grasses" instance=ExtResource( 2 )]
 tile_data = PoolIntArray( -393133, 0, 0, -393132, 0, 0, -393131, 0, 0, -393130, 0, 0, -393129, 0, 0, -327597, 0, 0, -327596, 0, 0, -327595, 0, 0, -327594, 0, 0, -327593, 0, 0, -262058, 0, 0, -262057, 0, 0, -196522, 0, 0, -196521, 0, 0, -130986, 0, 0, -130985, 0, 0, -65450, 0, 0, -65449, 0, 0, 86, 0, 0, 87, 0, 0, 65622, 0, 0, 65623, 0, 0 )
 
-[node name="VisibilityNotifier2D2" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap"]
+[node name="VisibilityNotifier2D2" type="VisibilityNotifier2D" parent="Trees & Grasses/Trees_TileMap"]
 position = Vector2( 7217.91, -106.122 )
 scale = Vector2( 16.3521, 30.3082 )
 script = ExtResource( 9 )
 
-[node name="Trees_TileMap2" parent="YSort" instance=ExtResource( 2 )]
+[node name="Trees_TileMap2" parent="Trees & Grasses" instance=ExtResource( 2 )]
 tile_data = PoolIntArray( 131145, 0, 0, 131146, 0, 0, 131147, 0, 0, 131148, 0, 0, 131149, 0, 0, 131150, 0, 0, 131151, 0, 0, 131152, 0, 0, 131153, 0, 0, 131154, 0, 0, 131155, 0, 0, 131156, 0, 0, 131157, 0, 0, 131158, 0, 0, 131159, 0, 0, 196681, 0, 0, 196682, 0, 0, 196683, 0, 0, 196684, 0, 0, 196685, 0, 0, 196686, 0, 0, 196687, 0, 0, 196688, 0, 0, 196689, 0, 0, 196690, 0, 0, 196691, 0, 0, 196692, 0, 0, 196693, 0, 0, 196694, 0, 0, 196695, 0, 0 )
 
-[node name="VisibilityNotifier2D3" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap2"]
+[node name="VisibilityNotifier2D3" type="VisibilityNotifier2D" parent="Trees & Grasses/Trees_TileMap2"]
 position = Vector2( 6836.93, 170.721 )
 scale = Vector2( 63.3392, 7.19565 )
 script = ExtResource( 9 )
 
-[node name="Trees_TileMap3" parent="YSort" instance=ExtResource( 2 )]
+[node name="Trees_TileMap3" parent="Trees & Grasses" instance=ExtResource( 2 )]
 tile_data = PoolIntArray( -393143, 0, 0, -393142, 0, 0, -393141, 0, 0, -393140, 0, 0, -393139, 0, 0, -393138, 0, 0, -327607, 0, 0, -327606, 0, 0, -327605, 0, 0, -327604, 0, 0, -327603, 0, 0, -327602, 0, 0, -262071, 0, 0, -262070, 0, 0, -196535, 0, 0, -196534, 0, 0, -130999, 0, 0, -130998, 0, 0, -65463, 0, 0, -65462, 0, 0, 73, 0, 0, 74, 0, 0, 65609, 0, 0, 65610, 0, 0, 131145, 0, 0, 131146, 0, 0 )
 
-[node name="VisibilityNotifier2D4" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap3"]
+[node name="VisibilityNotifier2D4" type="VisibilityNotifier2D" parent="Trees & Grasses/Trees_TileMap3"]
 position = Vector2( 6463.57, -80.7232 )
 scale = Vector2( 13.3043, 33.864 )
 script = ExtResource( 9 )
 
-[node name="Trees_TileMap4" parent="YSort" instance=ExtResource( 2 )]
+[node name="Trees_TileMap4" parent="Trees & Grasses" instance=ExtResource( 2 )]
 tile_data = PoolIntArray( -786331, 0, 0, -720817, 0, 0, -720816, 0, 0, -720815, 0, 0, -720814, 0, 0, -720813, 0, 0, -720812, 0, 0, -720811, 0, 0, -720810, 0, 0, -720809, 0, 0, -655282, 0, 0, -655281, 0, 0, -655280, 0, 0, -655279, 0, 0, -655278, 0, 0, -655277, 0, 0, -655276, 0, 0, -655275, 0, 0, -655274, 0, 0, -655273, 0, 0, -655272, 0, 0, -655271, 0, 0, -589746, 0, 0, -589745, 0, 0, -524210, 0, 0, -524209, 0, 0, -524207, 0, 0, -524206, 0, 0, -524205, 0, 0, -524204, 0, 0, -524203, 0, 0, -524202, 0, 0, -524201, 0, 0, -524200, 0, 0, -524199, 0, 0, -458674, 0, 0, -458673, 0, 0, -458671, 0, 0, -458670, 0, 0, -458668, 0, 0, -458667, 0, 0, -458666, 0, 0, -458665, 0, 0, -458664, 0, 0, -458663, 0, 0, -393138, 0, 0, -393137, 0, 0, -393135, 0, 0, -393134, 0, 0, -393130, 0, 0, -393129, 0, 0, -327602, 0, 0, -327601, 0, 0, -327599, 0, 0, -327598, 0, 0, -327597, 0, 0, -327594, 0, 0, -327593, 0, 0 )
 
-[node name="VisibilityNotifier2D5" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap4"]
+[node name="VisibilityNotifier2D5" type="VisibilityNotifier2D" parent="Trees & Grasses/Trees_TileMap4"]
 position = Vector2( 7109.06, -539.752 )
 scale = Vector2( 46.6596, 31.0177 )
 script = ExtResource( 9 )
 
-[node name="Trees_TileMap5" parent="YSort" instance=ExtResource( 2 )]
+[node name="Trees_TileMap5" parent="Trees & Grasses" instance=ExtResource( 2 )]
 tile_data = PoolIntArray( -851869, 0, 0, -851868, 0, 0, -851867, 0, 0, -851866, 0, 0, -786331, 0, 0, -786330, 0, 0, -720793, 0, 0, -655258, 0, 0, -655257, 0, 0, -589722, 0, 0, -524186, 0, 0, -458663, 0, 0 )
 
-[node name="VisibilityNotifier2D6" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap5"]
+[node name="VisibilityNotifier2D6" type="VisibilityNotifier2D" parent="Trees & Grasses/Trees_TileMap5"]
 position = Vector2( 8596.84, -841.402 )
 scale = Vector2( 12.0439, 21.5264 )
 script = ExtResource( 9 )
 
-[node name="Trees_TileMap6" parent="YSort" instance=ExtResource( 2 )]
+[node name="Trees_TileMap6" parent="Trees & Grasses" instance=ExtResource( 2 )]
 tile_data = PoolIntArray( -458649, 0, 0, -393113, 0, 0, -327577, 0, 0, -327576, 0, 0, -262041, 0, 0, -262040, 0, 0, -196505, 0, 0, -130969, 0, 0, -65433, 0, 0 )
 
-[node name="VisibilityNotifier2D7" type="VisibilityNotifier2D" parent="YSort/Trees_TileMap6"]
+[node name="VisibilityNotifier2D7" type="VisibilityNotifier2D" parent="Trees & Grasses/Trees_TileMap6"]
 position = Vector2( 8680.35, -308.008 )
 scale = Vector2( 11.5949, 25.8366 )
 script = ExtResource( 9 )
 
-[node name="grass" parent="YSort" instance=ExtResource( 8 )]
+[node name="grass" parent="Trees & Grasses" instance=ExtResource( 8 )]
 position = Vector2( 3639.47, -407.372 )
 scale = Vector2( 4.19165, 4.19165 )
 
-[node name="grass2" parent="YSort" instance=ExtResource( 8 )]
+[node name="grass2" parent="Trees & Grasses" instance=ExtResource( 8 )]
 position = Vector2( 10196.5, -4811.97 )
 scale = Vector2( 4.19165, 4.19165 )
 
-[node name="flowers" parent="YSort" instance=ExtResource( 10 )]
+[node name="flowers" parent="Trees & Grasses" instance=ExtResource( 10 )]
 position = Vector2( 2854.35, -447.652 )
 scale = Vector2( 4.59821, 4.59821 )
 monitorable = false
 
-[node name="flowers2" parent="YSort" instance=ExtResource( 10 )]
+[node name="flowers2" parent="Trees & Grasses" instance=ExtResource( 10 )]
 position = Vector2( 2913.68, -1083.33 )
 scale = Vector2( 4.59821, 4.59821 )
 monitorable = false
 
-[node name="flowers3" parent="YSort" instance=ExtResource( 10 )]
+[node name="flowers3" parent="Trees & Grasses" instance=ExtResource( 10 )]
 position = Vector2( 10625.3, -4447.36 )
 scale = Vector2( 4.59821, 4.59821 )
 monitorable = false
@@ -230,3 +231,31 @@ position = Vector2( 3248.91, 674.174 )
 
 [node name="extra life" parent="items" instance=ExtResource( 13 )]
 position = Vector2( 3348, 797 )
+
+[node name="DialogueEvents" type="YSort" parent="."]
+
+[node name="DialogueTrigger" parent="DialogueEvents" instance=ExtResource( 15 )]
+position = Vector2( -29, 71 )
+enabled = true
+HINT = true
+
+[node name="DialogueTrigger2" parent="DialogueEvents" instance=ExtResource( 15 )]
+position = Vector2( 2653, -4857 )
+enabled = true
+dialogue = "Left: Abbi City
+Down : Temple"
+
+[node name="DialogueTrigger3" parent="DialogueEvents" instance=ExtResource( 15 )]
+position = Vector2( 8555, -4736 )
+enabled = true
+dialogue = "Dangerous Hole!!!
+Don't Fall In!!!"
+speaker = "Aarin"
+
+[node name="DialogueTrigger4" parent="DialogueEvents" instance=ExtResource( 15 )]
+position = Vector2( 11203, -5212 )
+rotation = 1.57394
+scale = Vector2( 10.8192, 0.857997 )
+enabled = true
+dialogue = "Abbi City! Be carefull, the enemies ahead are alot tougher"
+speaker = "Aarin"

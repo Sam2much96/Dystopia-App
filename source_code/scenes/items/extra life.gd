@@ -11,7 +11,10 @@
 # (3) Registers the health potion Item to the Player Inventory
 # *************************************************
 # To Do:
-# (1) Implement As Inventory Item
+# (1) Implement As Inventory Item (done)
+# (2) Add idle animation
+# (3) Expand State to offer Full & Empty Bottle Items
+# (4) Add idle animation
 
 
 extends Area2D

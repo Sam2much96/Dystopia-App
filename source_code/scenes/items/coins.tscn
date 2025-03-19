@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scenes/items/coins.gd" type="Script" id=1]
 [ext_resource path="res://sounds/item_collected.ogg" type="AudioStream" id=2]
-[ext_resource path="res://resources/misc/algos.png" type="Texture" id=3]
+[ext_resource path="res://resources/misc/coins_128x128_2.png" type="Texture" id=3]
 [ext_resource path="res://scenes/Shaders/outline.shader" type="Shader" id=4]
 
 [sub_resource type="ShaderMaterial" id=7]

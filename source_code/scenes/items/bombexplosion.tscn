@@ -1,9 +1,9 @@
 [gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/Shaders/outline.shader" type="Shader" id=1]
-[ext_resource path="res://resources/misc/bombs.webp" type="Texture" id=2]
+[ext_resource path="res://resources/misc/bomb_128x128.webp" type="Texture" id=2]
 [ext_resource path="res://scenes/items/bombexplosion.gd" type="Script" id=3]
-[ext_resource path="res://resources/FX/flame_fx_webp.webp" type="Texture" id=4]
+[ext_resource path="res://resources/FX/fire_tileset_128x128.webp" type="Texture" id=4]
 [ext_resource path="res://scenes/Shaders/Impact.tscn" type="PackedScene" id=5]
 
 [sub_resource type="ShaderMaterial" id=2]
@@ -238,14 +238,13 @@ texture = ExtResource( 2 )
 visible = false
 self_modulate = Color( 1, 1, 1, 0 )
 position = Vector2( -25.3984, -161.915 )
-scale = Vector2( 0.746638, 0.746638 )
+scale = Vector2( 3, 3 )
 texture = ExtResource( 4 )
 hframes = 3
 vframes = 2
 frame = 2
 
 [node name="Impact" parent="." instance=ExtResource( 5 )]
-visible = false
 position = Vector2( -2.17523, -52.3351 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

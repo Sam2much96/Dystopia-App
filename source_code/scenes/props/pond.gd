@@ -13,7 +13,7 @@
 # (2) The puddle FX whith is a kinematic body 2d is supposed to follow the Body collissions movement, it currently does not
 # (3 Puddle FX is supposed to instance multiple times as the player moves
 # *************************************************
-
+# Depreciated
 
 extends Area2D
 

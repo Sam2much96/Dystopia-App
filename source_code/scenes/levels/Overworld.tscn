@@ -3,7 +3,7 @@
 [ext_resource path="res://scenes/levels/Tilemap_1_overworld.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/levels/ForestTilemap.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/items/enemy spawner.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/props/Pond.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/props/hole.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/levels/buildings.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/levels/Exit.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=7]
@@ -209,7 +209,6 @@ spawn_count = 5
 
 [node name="hole" parent="." instance=ExtResource( 4 )]
 position = Vector2( 8881.06, -4751.42 )
-scale = Vector2( 0.641414, 0.771429 )
 
 [node name="signpost" parent="." instance=ExtResource( 14 )]
 
@@ -227,8 +226,8 @@ position = Vector2( 3134.37, 2440.4 )
 
 [node name="items" type="YSort" parent="."]
 
-[node name="extra life" parent="items" instance=ExtResource( 13 )]
-position = Vector2( 3235.65, 822.261 )
-
 [node name="Arrow" parent="items" instance=ExtResource( 17 )]
 position = Vector2( 3248.91, 674.174 )
+
+[node name="extra life" parent="items" instance=ExtResource( 13 )]
+position = Vector2( 3348, 797 )

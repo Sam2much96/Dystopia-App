@@ -7,8 +7,8 @@
 [ext_resource path="res://fonts/scroll_bar_theme.tres" type="Theme" id=5]
 [ext_resource path="res://scenes/UI & misc/StatsIcons.gd" type="Script" id=6]
 [ext_resource path="res://scenes/UI & misc/minimap.gd" type="Script" id=7]
-[ext_resource path="res://resources/misc/compass.webp" type="Texture" id=9]
-[ext_resource path="res://resources/misc/rupees.webp" type="Texture" id=10]
+[ext_resource path="res://resources/misc/coins_128x128_2.webp" type="Texture" id=8]
+[ext_resource path="res://resources/misc/compass_64x64.webp" type="Texture" id=9]
 [ext_resource path="res://resources/misc/map ui 64x64.webp" type="Texture" id=11]
 [ext_resource path="res://scenes/UI & misc/Comics.v8.gd" type="Script" id=12]
 [ext_resource path="res://scenes/multiplayer/images/minimap/player.png" type="Texture" id=13]
@@ -60,6 +60,7 @@ custom_fonts/font = ExtResource( 3 )
 script = ExtResource( 6 )
 
 [node name="0" type="Tabs" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 74.0
@@ -111,15 +112,24 @@ mouse_filter = 1
 margin_right = 77.0
 margin_bottom = 224.0
 
-[node name="TextureRect" type="TextureRect" parent="TabContainer/1/VBoxContainer"]
+[node name="Label_Spacer" type="Label" parent="TabContainer/1/VBoxContainer"]
 margin_right = 156.0
-margin_bottom = 32.0
-texture = ExtResource( 10 )
+margin_bottom = 65.0
+text = "
+
+
+"
+
+[node name="TextureRect" type="TextureRect" parent="TabContainer/1/VBoxContainer"]
+margin_top = 69.0
+margin_right = 156.0
+margin_bottom = 197.0
+texture = ExtResource( 8 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/1/VBoxContainer"]
-margin_top = 36.0
+margin_top = 201.0
 margin_right = 156.0
-margin_bottom = 167.0
+margin_bottom = 332.0
 
 [node name="Sud" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
@@ -280,7 +290,6 @@ margin_left = 12.3471
 margin_top = 59.4905
 margin_right = 52.3471
 margin_bottom = 91.4905
-rect_scale = Vector2( 5, 5 )
 mouse_filter = 2
 input_pass_on_modal_close_click = false
 texture = ExtResource( 9 )

@@ -5,7 +5,7 @@
 [ext_resource path="res://scenes/levels/Exit.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=5]
-[ext_resource path="res://resources/FX/flame_fx_webp.webp" type="Texture" id=6]
+[ext_resource path="res://resources/FX/fire_tileset_128x128.webp" type="Texture" id=8]
 [ext_resource path="res://scenes/levels/Temple interior.gd" type="Script" id=9]
 [ext_resource path="res://scenes/items/enemy spawner.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/items/bow.tscn" type="PackedScene" id=11]
@@ -137,37 +137,37 @@ anims/RESET = SubResource( 3 )
 anims/flames = SubResource( 1 )
 
 [node name="flame fx" type="Sprite" parent="house_inside"]
-position = Vector2( 205.562, -1509.13 )
+position = Vector2( 234.565, -1431.29 )
 rotation = 0.329316
-scale = Vector2( 0.524031, 0.598448 )
-texture = ExtResource( 6 )
+scale = Vector2( 3, 3.423 )
+texture = ExtResource( 8 )
 hframes = 3
 vframes = 2
 
 [node name="flame fx2" type="Sprite" parent="house_inside"]
-position = Vector2( -365.073, -1501.54 )
+position = Vector2( -359.746, -1424.68 )
 rotation = -0.57759
-scale = Vector2( 0.579545, 0.661845 )
-texture = ExtResource( 6 )
+scale = Vector2( 3, 3.424 )
+texture = ExtResource( 8 )
 flip_h = true
 hframes = 3
 vframes = 2
 frame = 4
 
 [node name="flame fx3" type="Sprite" parent="house_inside"]
-position = Vector2( -866.629, -623.602 )
+position = Vector2( -811.415, -567.239 )
 rotation = -1.56336
-scale = Vector2( 0.501714, 0.572961 )
-texture = ExtResource( 6 )
+scale = Vector2( 3, 3.424 )
+texture = ExtResource( 8 )
 flip_h = true
 hframes = 3
 vframes = 2
 
 [node name="flame fx4" type="Sprite" parent="house_inside"]
-position = Vector2( -859.373, 334.793 )
+position = Vector2( -814.309, 368.392 )
 rotation = -1.61231
-scale = Vector2( 0.501714, 0.572961 )
-texture = ExtResource( 6 )
+scale = Vector2( 3, 3.424 )
+texture = ExtResource( 8 )
 flip_h = true
 hframes = 3
 vframes = 2

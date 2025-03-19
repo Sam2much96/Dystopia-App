@@ -13,7 +13,7 @@
 [ext_resource path="res://scenes/items/extra life.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/UI & misc/GameHUD.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/props/broken ship.tscn" type="PackedScene" id=16]
-[ext_resource path="res://scenes/props/Pond.tscn" type="PackedScene" id=18]
+[ext_resource path="res://scenes/props/hole.tscn" type="PackedScene" id=18]
 [ext_resource path="res://scenes/UI & misc/Rain_Fx.tscn" type="PackedScene" id=19]
 [ext_resource path="res://scenes/props/signpost.tscn" type="PackedScene" id=20]
 

@@ -59,20 +59,20 @@ margin_bottom = 14.0
 [node name="play" type="Button" parent="ui/grid"]
 margin_top = 18.0
 margin_right = 117.0
-margin_bottom = 49.0
+margin_bottom = 57.0
 theme = ExtResource( 6 )
 text = "Play!"
 
 [node name="label_spacer2" type="Label" parent="ui/grid"]
 margin_left = 121.0
-margin_top = 26.0
+margin_top = 30.0
 margin_right = 121.0
-margin_bottom = 40.0
+margin_bottom = 44.0
 
 [node name="language" type="OptionButton" parent="ui/grid"]
-margin_top = 53.0
+margin_top = 61.0
 margin_right = 117.0
-margin_bottom = 73.0
+margin_bottom = 81.0
 theme = ExtResource( 7 )
 text = "Languague"
 

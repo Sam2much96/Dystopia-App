@@ -137,7 +137,6 @@ scale = Vector2( 1.02571, 0.414348 )
 to_scene = "res://scenes/levels/marketplace_2d.tscn"
 
 [node name="Outside City" parent="." instance=ExtResource( 5 )]
-visible = false
 position = Vector2( 12571.8, -3727.55 )
 __meta__ = {
 "_edit_lock_": true

@@ -1,10 +1,12 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://fonts/adamwarrenpro-bold.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/UI & misc/Dialog_box.gd" type="Script" id=2]
+[ext_resource path="res://themes/Buttons_white+Black.tres" type="Theme" id=3]
 [ext_resource path="res://resources/misc/next_dialog_arrow.png" type="Texture" id=4]
 [ext_resource path="res://fonts/DigitalStripBB_BoldItal.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://resources/misc/dialog_box_webp.webp" type="Texture" id=6]
+[ext_resource path="res://themes/Buttons_black.tres" type="Theme" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 30
@@ -314,7 +316,6 @@ next/show_text = "wait"
 [node name="Timer" type="Timer" parent="."]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-visible = false
 margin_left = 198.0
 margin_top = 158.0
 margin_right = 710.0
@@ -322,23 +323,27 @@ margin_bottom = 248.0
 alignment = 1
 
 [node name="accept" type="Button" parent="HBoxContainer"]
-margin_right = 149.0
+margin_left = 4.0
+margin_right = 152.0
 margin_bottom = 90.0
-text = "YES                             "
+theme = ExtResource( 3 )
+text = "       YES         "
 
 [node name="LabelSpacer" type="Label" parent="HBoxContainer"]
-margin_left = 153.0
+margin_left = 156.0
 margin_top = 38.0
-margin_right = 361.0
+margin_right = 364.0
 margin_bottom = 52.0
 text = "                                                    "
 align = 1
 
 [node name="decline" type="Button" parent="HBoxContainer"]
-margin_left = 365.0
-margin_right = 570.0
+margin_left = 368.0
+margin_right = 507.0
 margin_bottom = 90.0
-text = "NO                                           "
+theme = ExtResource( 7 )
+text = "        NO         "
+icon_align = 1
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="HBoxContainer/accept" to="." method="_on_accept_pressed"]

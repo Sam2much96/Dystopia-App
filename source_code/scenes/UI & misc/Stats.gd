@@ -19,8 +19,6 @@
 # (3) Inventory Items Should be more Accessible
 # (4) Implement Character Customization UI (1/2)
 # (5) 
-# (6) Implement Tab Icons with code (1/2)
-#		-(a) Done with TabIcon Subclass
 # (7) Item Button should ideally be low poly texture buttons (1/2)
 #
 # *************************************************
@@ -300,41 +298,6 @@ func _notification(what):  #Triggered when the Min Game Loop is exited
 		print_debug("STATUS NOTIFICATION")
 
 
-# Debugging Status Signals
-# Depreicated Signals
-
-#func _on_status_showing():
-#	# upadate inventory button lising
-#	#_update_inventory_button_cache() #  Depreciated Buggy NFT?
-#	
-#	# Grab Focus
-#	print_debug("2222222222222222")
-#	
-#	#resets Mobile Touch HUD
-#	emit_signal("status_hidden") # SIgnals trigger opposite effect
-#	#GlobalInput.TouchInterface.reset()
-#	
-#	#print_debug("TC Status:",GlobalInput.TouchInterface._Hide_touch_interface, " SC: ", GlobalInput.TouchInterface._state_controller) # Touch Interface Debug
-#	print_debug('status hidden') #for debug purposes
-
-#func _on_status_hidden():
-#	
-#	# Ignore Inp
-#	print_debug("11111111111")
-#	# shows status UI only
-#	# Buggy Method Triggers Status state on Mobile Devices
-#	# TO DO: Implement In Android SIngleton
-#	#GlobalInput.TouchInterface.status()
-#	emit_signal("status_showing")
-#	#print_debug("TC hidden:",GlobalInput.TouchInterface._Hide_touch_interface, " SC: ", GlobalInput.TouchInterface._state_controller) # Touch Interface Debug
-#	print_debug('status showing')
-#	#print_stack()
-
-
-func equip(_item):
-	# Placeholder method for Triggering an Equip method on the Player Script of an Inventroy Oject 
-	pass
-
 """
 Enable And Disable Stats UI & CHildern
 """
@@ -360,9 +323,3 @@ func _disable():
 	hide()
 	get_tree().paused = false
 	print_debug ("Stats UI disabled") # For debug purposes only
-	#print_stack()
-
-	#set_focus_mode(Control.FOCUS_NONE)
-	
-	# Ignore All Mouse UI Inputs WHen Hidden
-	#set_mouse_filter(Control.MOUSE_FILTER_IGNORE)

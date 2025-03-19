@@ -9,7 +9,7 @@
 [sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 1 )
 shader_param/line_color = Color( 1, 1, 1, 1 )
-shader_param/line_thickness = 1.0
+shader_param/line_thickness = 2.067
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 116.623

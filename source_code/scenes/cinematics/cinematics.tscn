@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=2]
+[gd_scene load_steps=55 format=2]
 
 [ext_resource path="res://scenes/cinematics/cinematics V2.gd" type="Script" id=1]
 [ext_resource path="res://resources/title animation/Dystopia Logo Drop shadow.png" type="Texture" id=2]
@@ -44,6 +44,19 @@
 [ext_resource path="res://resources/title animation/intro_animation_sprites/hands_1.webp" type="Texture" id=42]
 [ext_resource path="res://resources/title animation/intro_animation_sprites/hands_3.webp" type="Texture" id=43]
 [ext_resource path="res://resources/title animation/intro_animation_sprites/hands_2.webp" type="Texture" id=44]
+[ext_resource path="res://resources/title animation/TypeScript.webp" type="Texture" id=45]
+[ext_resource path="res://resources/title animation/GitHub.webp" type="Texture" id=46]
+[ext_resource path="res://resources/title animation/Kotlin.webp" type="Texture" id=47]
+[ext_resource path="res://resources/title animation/Node.js.webp" type="Texture" id=48]
+[ext_resource path="res://resources/title animation/Rust_Transparent.webp" type="Texture" id=49]
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ ExtResource( 42 ), ExtResource( 44 ), ExtResource( 43 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
 
 [sub_resource type="SpriteFrames" id=3]
 animations = [ {
@@ -61,18 +74,10 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="SpriteFrames" id=5]
-animations = [ {
-"frames": [ ExtResource( 42 ), ExtResource( 44 ), ExtResource( 43 ) ],
-"loop": true,
-"name": "default",
-"speed": 5.0
-} ]
-
 [sub_resource type="Animation" id=1]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("TextureRect2:rect_position")
+tracks/0/path = NodePath("splatter:rect_position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -84,7 +89,7 @@ tracks/0/keys = {
 "values": [ Vector2( -7.35754, 176.804 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("TextureRect2:rect_scale")
+tracks/1/path = NodePath("splatter:rect_scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -96,7 +101,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0.5, 0.5 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("TextureRect3:visible")
+tracks/2/path = NodePath("godot:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -108,7 +113,7 @@ tracks/2/keys = {
 "values": [ false ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("TextureRect:visible")
+tracks/3/path = NodePath("logo:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -120,7 +125,7 @@ tracks/3/keys = {
 "values": [ true ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("TextureRect2:visible")
+tracks/4/path = NodePath("splatter:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
@@ -227,12 +232,96 @@ tracks/12/keys = {
 "update": 1,
 "values": [ false ]
 }
+tracks/13/type = "value"
+tracks/13/path = NodePath("rust:visible")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/14/type = "value"
+tracks/14/path = NodePath("github:visible")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("typescript:visible")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/16/type = "value"
+tracks/16/path = NodePath("kotlin:visible")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/17/type = "value"
+tracks/17/path = NodePath("nodejs:visible")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/18/type = "value"
+tracks/18/path = NodePath("front_view:position")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 505, 304 ) ]
+}
+tracks/19/type = "value"
+tracks/19/path = NodePath("cape:position")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 486, 339 ) ]
+}
 
 [sub_resource type="Animation" id=2]
 resource_name = "opening_cinematic"
-length = 23.0
+length = 30.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("TextureRect:rect_position")
+tracks/0/path = NodePath("logo:rect_position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -244,7 +333,7 @@ tracks/0/keys = {
 "values": [ Vector2( 117.466, 186.878 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("TextureRect2:rect_position")
+tracks/1/path = NodePath("splatter:rect_position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -256,7 +345,7 @@ tracks/1/keys = {
 "values": [ Vector2( 474.52, 267.573 ), Vector2( 123.457, 192.822 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("TextureRect2:rect_scale")
+tracks/2/path = NodePath("splatter:rect_scale")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -268,136 +357,220 @@ tracks/2/keys = {
 "values": [ Vector2( 0.5, 0.5 ), Vector2( 1, 1 ) ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("TextureRect3:visible")
+tracks/3/path = NodePath("godot:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0, 5.5, 6.6 ),
+"times": PoolRealArray( 0, 7, 8.1 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ false, true, false ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("TextureRect:visible")
+tracks/4/path = NodePath("github:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 5.4 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 8.2, 9.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
-"values": [ true, false ]
+"values": [ false, true, false ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("TextureRect2:visible")
+tracks/5/path = NodePath("typescript:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 5.4 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 9.4, 10.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
-"values": [ true, false ]
+"values": [ false, true, false ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("side_view:visible")
+tracks/6/path = NodePath("kotlin:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0.3, 6.7, 8.1 ),
+"times": PoolRealArray( 0, 10.2, 11 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ false, true, false ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("side_view:position")
+tracks/7/path = NodePath("nodejs:visible")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 6.7, 8.1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1199, 268 ), Vector2( 481, 290 ) ]
+"times": PoolRealArray( 0, 11, 11.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
 }
 tracks/8/type = "value"
-tracks/8/path = NodePath("front_view:visible")
+tracks/8/path = NodePath("rust:visible")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
-tracks/8/enabled = true
+tracks/8/enabled = false
 tracks/8/keys = {
-"times": PoolRealArray( 0.3, 8.1, 13 ),
+"times": PoolRealArray( 0, 11.8, 12.6 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ false, true, false ]
 }
 tracks/9/type = "value"
-tracks/9/path = NodePath("front_view:scale")
+tracks/9/path = NodePath("logo:visible")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/imported = false
 tracks/9/enabled = true
 tracks/9/keys = {
-"times": PoolRealArray( 8.1, 13 ),
+"times": PoolRealArray( 0, 5.4 ),
 "transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0.520001, 0.520001 ), Vector2( 0.660824, 0.660824 ) ]
+"update": 1,
+"values": [ true, false ]
 }
 tracks/10/type = "value"
-tracks/10/path = NodePath("3_4_view:visible")
+tracks/10/path = NodePath("splatter:visible")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/imported = false
 tracks/10/enabled = true
 tracks/10/keys = {
-"times": PoolRealArray( 0.3, 13, 16.7 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 5.4 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ false, true, false ]
+"values": [ true, false ]
 }
 tracks/11/type = "value"
-tracks/11/path = NodePath("3_4_view:position")
+tracks/11/path = NodePath("side_view:visible")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/imported = false
 tracks/11/enabled = true
 tracks/11/keys = {
-"times": PoolRealArray( 13.1 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 521, 318 ) ]
+"times": PoolRealArray( 0.3, 12.8, 16 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
 }
 tracks/12/type = "value"
-tracks/12/path = NodePath("3_4_view:scale")
+tracks/12/path = NodePath("side_view:position")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/imported = false
 tracks/12/enabled = true
 tracks/12/keys = {
-"times": PoolRealArray( 13.1 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 12.8, 13.9, 15, 16 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0.486048, 0.486048 ) ]
+"values": [ Vector2( 1199, 268 ), Vector2( 784, 336 ), Vector2( 546, 274 ), Vector2( 481, 290 ) ]
 }
 tracks/13/type = "value"
-tracks/13/path = NodePath("cape:visible")
+tracks/13/path = NodePath("front_view:visible")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/imported = false
 tracks/13/enabled = true
 tracks/13/keys = {
-"times": PoolRealArray( 0.3, 16.7 ),
+"times": PoolRealArray( 0.3, 16, 19 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/14/type = "value"
+tracks/14/path = NodePath("front_view:scale")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"times": PoolRealArray( 16, 19 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.520001, 0.520001 ), Vector2( 0.660824, 0.660824 ) ]
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("3_4_view:visible")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0.3, 19, 21.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/16/type = "value"
+tracks/16/path = NodePath("3_4_view:position")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/keys = {
+"times": PoolRealArray( 19.1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 521, 318 ) ]
+}
+tracks/17/type = "value"
+tracks/17/path = NodePath("3_4_view:scale")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/keys = {
+"times": PoolRealArray( 19.1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0.486048, 0.486048 ) ]
+}
+tracks/18/type = "value"
+tracks/18/path = NodePath("cape:visible")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/keys = {
+"times": PoolRealArray( 0.3, 21.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ false, true ]
+}
+tracks/19/type = "value"
+tracks/19/path = NodePath("front_view:position")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/keys = {
+"times": PoolRealArray( 16, 19 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 505, 304 ), Vector2( 493, 406 ) ]
+}
+tracks/20/type = "value"
+tracks/20/path = NodePath("cape:position")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/keys = {
+"times": PoolRealArray( 21.3, 30 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 500, 320 ), Vector2( 525, 320 ) ]
 }
 
 [node name="Cinematics" type="Control"]
@@ -409,6 +582,7 @@ __meta__ = {
 }
 
 [node name="VideoPlayer" type="VideoPlayer" parent="."]
+visible = false
 margin_left = 8.48529
 margin_top = 8.48523
 margin_right = 8.48529
@@ -416,7 +590,7 @@ margin_bottom = 8.48523
 mouse_filter = 2
 input_pass_on_modal_close_click = false
 
-[node name="TextureRect3" type="TextureRect" parent="."]
+[node name="godot" type="TextureRect" parent="."]
 visible = false
 margin_left = 395.616
 margin_top = 196.548
@@ -426,7 +600,7 @@ mouse_filter = 2
 input_pass_on_modal_close_click = false
 texture = ExtResource( 6 )
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="logo" type="TextureRect" parent="."]
 margin_left = 117.466
 margin_top = 186.878
 margin_right = 848.466
@@ -436,17 +610,75 @@ input_pass_on_modal_close_click = false
 texture = ExtResource( 2 )
 stretch_mode = 6
 
-[node name="TextureRect2" type="TextureRect" parent="."]
+[node name="splatter" type="TextureRect" parent="."]
 margin_left = -7.35754
 margin_top = 176.804
-margin_right = 723.647
+margin_right = 723.646
 margin_bottom = 449.804
 rect_scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 5 )
 
-[node name="Sprite" parent="." instance=ExtResource( 10 )]
+[node name="3d render" parent="." instance=ExtResource( 10 )]
 mouse_filter = 2
 input_pass_on_modal_close_click = false
+
+[node name="github" type="TextureRect" parent="."]
+visible = false
+margin_right = 3840.0
+margin_bottom = 2160.0
+rect_scale = Vector2( 0.302325, 0.302325 )
+texture = ExtResource( 46 )
+
+[node name="typescript" type="TextureRect" parent="."]
+visible = false
+margin_right = 1920.0
+margin_bottom = 1080.0
+rect_scale = Vector2( 0.57631, 0.57631 )
+texture = ExtResource( 45 )
+
+[node name="kotlin" type="TextureRect" parent="."]
+visible = false
+margin_right = 1920.0
+margin_bottom = 1080.0
+rect_scale = Vector2( 0.506104, 0.506104 )
+texture = ExtResource( 47 )
+
+[node name="nodejs" type="TextureRect" parent="."]
+visible = false
+margin_right = 1920.0
+margin_bottom = 1080.0
+rect_scale = Vector2( 0.576857, 0.576857 )
+texture = ExtResource( 48 )
+
+[node name="rust" type="TextureRect" parent="."]
+visible = false
+margin_right = 1920.0
+margin_bottom = 1080.0
+rect_scale = Vector2( 0.63535, 0.63535 )
+texture = ExtResource( 49 )
+
+[node name="side_view" type="Sprite" parent="."]
+visible = false
+position = Vector2( 256, 290 )
+scale = Vector2( 0.535192, 0.535192 )
+texture = ExtResource( 39 )
+
+[node name="front_view" type="Sprite" parent="."]
+visible = false
+position = Vector2( 505, 304 )
+scale = Vector2( 0.629976, 0.629976 )
+texture = ExtResource( 40 )
+
+[node name="3_4_view" type="Sprite" parent="."]
+visible = false
+position = Vector2( 478, 584 )
+texture = ExtResource( 41 )
+
+[node name="hands" type="AnimatedSprite" parent="3_4_view"]
+position = Vector2( 43.2056, 8.22961 )
+scale = Vector2( 1.01962, 1.01962 )
+frames = SubResource( 5 )
+playing = true
 
 [node name="cape" type="Sprite" parent="."]
 visible = false
@@ -462,29 +694,6 @@ playing = true
 frames = SubResource( 4 )
 playing = true
 
-[node name="side_view" type="Sprite" parent="."]
-visible = false
-position = Vector2( 256, 290 )
-scale = Vector2( 0.535192, 0.535192 )
-texture = ExtResource( 39 )
-
-[node name="3_4_view" type="Sprite" parent="."]
-visible = false
-position = Vector2( 478, 584 )
-texture = ExtResource( 41 )
-
-[node name="hands" type="AnimatedSprite" parent="3_4_view"]
-position = Vector2( 43.2056, 8.22961 )
-scale = Vector2( 1.01962, 1.01962 )
-frames = SubResource( 5 )
-playing = true
-
-[node name="front_view" type="Sprite" parent="."]
-visible = false
-position = Vector2( 505, 304 )
-scale = Vector2( 0.629976, 0.629976 )
-texture = ExtResource( 40 )
-
 [node name="ColorRect" parent="." instance=ExtResource( 7 )]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -496,16 +705,17 @@ input_pass_on_modal_close_click = false
 
 [node name="skip" type="TextureButton" parent="."]
 modulate = Color( 0.584314, 0.152941, 0.152941, 1 )
-margin_left = 364.443
-margin_top = 555.112
-margin_right = 724.443
-margin_bottom = 867.112
-rect_scale = Vector2( 0.488382, 0.469212 )
+show_behind_parent = true
+margin_left = 76.0
+margin_top = 146.0
+margin_right = 436.0
+margin_bottom = 458.0
+rect_scale = Vector2( 0.2, 0.192 )
 texture_normal = ExtResource( 3 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 visible = false
-position = Vector2( 499, 957 )
+position = Vector2( 300, 957 )
 
 [node name="animation player" type="AnimationPlayer" parent="."]
 autoplay = "intro_animation"
@@ -513,6 +723,5 @@ anims/RESET = SubResource( 1 )
 anims/intro_animation = ExtResource( 4 )
 anims/opening_cinematic = SubResource( 2 )
 
-[connection signal="finished" from="VideoPlayer" to="." method="_on_VideoPlayer_finished"]
 [connection signal="pressed" from="skip" to="." method="_on_skip_pressed"]
 [connection signal="animation_finished" from="animation player" to="." method="_on_animation_player_animation_finished"]

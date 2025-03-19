@@ -30,7 +30,7 @@ export(String, FILE, "*.ogv") var vid_stream = ""
 
 onready var animation : AnimationPlayer = $"animation player"
 
-onready var videoplayer : VideoPlayer = $VideoPlayer
+#onready var videoplayer : VideoPlayer = $VideoPlayer
 
 """
 CINEMATICS
@@ -58,8 +58,8 @@ func _ready():
 
 	'Cinematics scene'
 	if local_globals.curr_scene == 'Cinematics':
-		videoplayer  = get_node('VideoPlayer') #video player node
-		videoplayer._set_size((get_viewport_rect().size))
+		#videoplayer  = get_node('VideoPlayer') #video player node
+		#videoplayer._set_size((get_viewport_rect().size))
 		
 		
 		play_opening_cinematic() #Plays this video only on cinematics node
@@ -89,15 +89,15 @@ func _on_back_pressed():
 
 func _on_skip_pressed():
 	print_debug("Skip Button Pressed")
-	videoplayer.stop()
+	#videoplayer.stop()
 	local_globals._go_to_title()
 
 
 
 
 "Exhibits diffenent behaviours depending on a  'One shot ' option"
-func _on_VideoPlayer_finished():
-	_go_to_title()
+#func _on_VideoPlayer_finished():
+#	_go_to_title()
 
 #func _on_Timer_timeout():
 #	push_error('Cinematic scene broken')

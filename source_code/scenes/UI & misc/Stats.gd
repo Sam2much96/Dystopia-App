@@ -130,7 +130,6 @@ func _ready():
 	
 
 
-
 func _input(event):
 	"Status UI Visibility Is Entirely Self Controlled From Here"
 	
@@ -161,7 +160,7 @@ func _fetch_prices():
 		push_warning("Price Data has been fetched")
 		return
 		
-	if !local_networking.empty():
+	if local_networking.Data.empty():
 		print_debug ("fetching price data from Vestige API")
 		local_networking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , local_networking) #
 
@@ -169,8 +168,11 @@ func _fetch_prices():
 
 func _update_wallet_stats(): #Updates killcount and Algos
 	if Networking.good_internet && !local_networking.Data.empty():
-		_coin_label.text = 'Suds: ' + str (Globals.suds)
-		_price_label.text =  str(Networking.Data) # fetchs price data from Sud token
+		_coin_label.text = 'Suds: ' + str (Globals.suds) + "\n Worth: " + str(Globals.suds * float(local_networking.price_usd))
+		
+		# serialises sud price data from vestigefi + Globals storage
+		_price_label.text = "Prices: \n" + "USD: " + local_networking.price_usd + "\n EUR: " + local_networking.price_eur + "\n" + "GBP: " + local_networking.price_gbp + "\n" + "BTC: " + local_networking.price_btc + "\n" + "ALGO: "+ local_networking.price_algo
+
 
 
 func _update_quest_listing():
@@ -312,6 +314,7 @@ func _enable():
 	emit_signal('_enabled')
 	Music.play_track(Music.ui_sfx[0])
 	get_tree().paused = enabled
+	
 	
 	
 	call_deferred("_fetch_prices")

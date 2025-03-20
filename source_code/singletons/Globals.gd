@@ -127,9 +127,6 @@ onready var despawn_fx = load ("res://scenes/UI & misc/DespawnFX.tscn")
 'Temporary variants'
 #var temp
 
-"Wallet Algo"
-# To do :
-# (1) port wallet connect
 
 
 

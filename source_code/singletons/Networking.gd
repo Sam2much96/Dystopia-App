@@ -112,17 +112,8 @@ var running_request : bool = false
 var Timeout : bool = false
 
 
-#*********IPFS Gateway***************#
-# from https://ipfs.github.io/public-gateway-checker/
-# 1 ,2 , 3 work
-#export (Array) var gateway : Array = [
-#	'gateway.ipfs.io', "dweb.link", "ipfs.io",
-#	"ipfs.runfission.com", "jorropo.net", "via0.com", 
-#	"cloudflare-ipfs.com", "hardbin.com"
-#	]
 
 var random : int
-#var selected_gateway : String
 
 export (bool) var good_internet : bool
 
@@ -154,7 +145,14 @@ export (int) var GamePlay = OFFLINE
 onready var PlayerObject  = load("res://scenes/characters/Aarin_networking.tscn") # : Player_v2_networking
 
 
-
+"Wallet Algo"
+# To do :
+# (1) port wallet connect for better wallet integration UX
+export (String) var price_usd : String
+export (String) var price_eur : String
+export (String) var price_gbp : String
+export (String) var price_btc : String 
+export (String) var price_algo : String 
 
 func _ready():
 	_init_timer()
@@ -261,18 +259,22 @@ func _on_Networking_request_completed(result: int, response_code : int, headers 
 			#print_debug (str(result) + str(response_code) + str(headers)+ str (body))  
 			#print(body.get_string_from_utf8())
 			# PArses API Get Result TO Json
-			var _result = JSON.parse(body.get_string_from_utf8())
+			var _response_text =body.get_string_from_utf8()
+			var _result = JSON.parse(_response_text)
 
 			if _result.error == OK:
 				Data = _result.result
 				
 				# Fetches price data in ready function
 				print_debug("Internet Data debug: ",Data)  # 
+				print_debug("Price serialisation: ", _format_price(Data.USD))
 				
 				# data serialisation is done in Stats HUD
-				
-				# Temporarily disabled for debugging
-				#var price_data='Suds: ' + str(Networking.Data)
+				price_usd = _format_price(Data.USD)
+				price_eur = _format_price(Data.EUR)
+				price_gbp = _format_price(Data.GBP)
+				price_btc = _format_price(Data.BTC)
+				price_algo =_format_price(Data.price)
 				
 				
 				
@@ -325,13 +327,18 @@ func _on_Networking_request_completed(result: int, response_code : int, headers 
 			print_debug("error_connection_failed",RESULT_REDIRECT_LIMIT_REACHED, 'RESULT_REDIRECT_LIMIT_REACHED')
 
 
+
+func _format_price(value):
+	# formats vestigefi price data to 12 places
+	return "%.12f" % value
+
 func _on_success():
-	print('connection success!!')
+	print_debug('connection success!!')
 	#_connection = str ('connection success!!') # Debug Variable # Depreciated--Delete
 	
 
 func _on_failure(code, message):
-	print('Connection Failure !!\nCode: ', code,"Message:", message)
+	print_debug('Connection Failure !!\nCode: ', code,"Message:", message)
 	#_connection = str ('connection failed!!') # Debug Variable # Depreciated--Delete
 
 

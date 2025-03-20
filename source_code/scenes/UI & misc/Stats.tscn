@@ -98,7 +98,6 @@ text = "KC
 align = 1
 
 [node name="1" type="Tabs" parent="TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -113,22 +112,20 @@ margin_bottom = 224.0
 
 [node name="Label_Spacer" type="Label" parent="TabContainer/1/VBoxContainer"]
 margin_right = 156.0
-margin_bottom = 65.0
+margin_bottom = 31.0
 text = "
-
-
 "
 
 [node name="TextureRect" type="TextureRect" parent="TabContainer/1/VBoxContainer"]
-margin_top = 69.0
+margin_top = 35.0
 margin_right = 156.0
-margin_bottom = 197.0
+margin_bottom = 163.0
 texture = ExtResource( 8 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/1/VBoxContainer"]
-margin_top = 201.0
+margin_top = 167.0
 margin_right = 156.0
-margin_bottom = 332.0
+margin_bottom = 298.0
 
 [node name="Sud" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
@@ -197,6 +194,7 @@ Quest 2
 align = 1
 
 [node name="3" type="Tabs" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -239,6 +237,7 @@ text = "Item 1
 flat = true
 
 [node name="4" type="Tabs" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0

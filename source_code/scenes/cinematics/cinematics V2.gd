@@ -44,7 +44,7 @@ onready var wind_sfx : String = Music.wind_sfx.get(0)
 
 func _ready(): 
 	
-	local_android.hide_touch_interface()
+	#local_android.hide_touch_interface()
 	
 
 	

@@ -70,7 +70,7 @@ margin_left = 3.07108
 margin_top = 3.35535
 margin_right = 991.071
 margin_bottom = 905.355
-theme = ExtResource( 5 )
+theme = ExtResource( 10 )
 scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/0/ScrollContainer"]
@@ -98,6 +98,7 @@ text = "KC
 align = 1
 
 [node name="1" type="Tabs" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -111,21 +112,15 @@ margin_right = 77.0
 margin_bottom = 224.0
 
 [node name="Label_Spacer" type="Label" parent="TabContainer/1/VBoxContainer"]
-margin_right = 156.0
+margin_right = 288.0
 margin_bottom = 31.0
 text = "
 "
 
-[node name="TextureRect" type="TextureRect" parent="TabContainer/1/VBoxContainer"]
-margin_top = 35.0
-margin_right = 156.0
-margin_bottom = 163.0
-texture = ExtResource( 8 )
-
 [node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/1/VBoxContainer"]
-margin_top = 167.0
-margin_right = 156.0
-margin_bottom = 298.0
+margin_top = 35.0
+margin_right = 288.0
+margin_bottom = 166.0
 
 [node name="Sud" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
@@ -149,6 +144,13 @@ custom_fonts/font = ExtResource( 3 )
 text = "Price
 "
 align = 1
+
+[node name="TextureRect" type="TextureRect" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
+margin_left = 160.0
+margin_right = 288.0
+margin_bottom = 131.0
+rect_scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 8 )
 
 [node name="2" type="Tabs" parent="TabContainer"]
 visible = false

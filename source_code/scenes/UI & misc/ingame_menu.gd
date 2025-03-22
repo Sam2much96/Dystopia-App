@@ -41,7 +41,10 @@ export (String) var menu_state
 
 export (bool) var ENABLE  : bool 
 
-var counter : int = 0 # Stops ooverflow of Upscaling Method
+# Stops ooverflow of Upscaling Method
+# stops signal spamming
+
+var counter : int = 0 
 var comics : Button 
 var new_game : Button 
 
@@ -118,8 +121,7 @@ func _process(_delta):
 			return _menu_showing()
 		HIDDEN:
 			return _menu_not_showing()
-	#if !ENABLE:
-	#	self.set_process(false)
+
 
 
 
@@ -136,6 +138,9 @@ func _input(event):
 		set_mouse_filter(Control.MOUSE_FILTER_STOP)
 		Music.play_track(_ui_sfx)
 		
+		
+		emit_signal("menu_showing")
+		
 		return menu_state
 	if menu_state== SHOWING:
 		menu_state = HIDDEN
@@ -144,6 +149,8 @@ func _input(event):
 		set_mouse_filter(Control.MOUSE_FILTER_IGNORE)
 		
 		Music.play_track(_ui_sfx_1)
+		emit_signal("menu_hidden")
+		
 		return menu_state
 		
 	
@@ -226,40 +233,16 @@ func _menu_showing():
 	
 	enabled = true 
 	
-	
-	
-	
-	if counter < 2: # Stops overflow of Menu Logic freeing up the main thread for oher core tasks
-		
-		"UI scaling moved to Android SIngleton"
-		
-		## Temp Disabling for debugging
-		#print_debug("UI downslacling is unimplemented")# For Debug Purposes only
-		
-		# Catch All Mouse UI Inputs WHen Showing
-		set_mouse_filter(Control.MOUSE_FILTER_STOP)
-		
-		emit_signal("menu_showing")
-		counter += 1
-	
-	
 	return show()
 
 #Handles Hiding the menu
 func _menu_not_showing():
+	
 	enabled = false
 	hide()
-	
-	#Music.play_track(Music.ui_sfx[1]) #introduces a sound bug
-	#Music._notification(NOTIFICATION_UNPAUSED) #introduces a sound bug
-	
-	set_focus_mode(Control.FOCUS_NONE)
-	
-	# Ignore All Mouse UI Inputs WHen Hidden
-	set_mouse_filter(Control.MOUSE_FILTER_IGNORE)
-	emit_signal("menu_hidden")
-	
-	return
+
+
+
 #Handles Pausing the Menu
 func _menu_pause_and_play(boolean): #pass it a boolean to custom pause and play
 	get_tree().set_pause(boolean)

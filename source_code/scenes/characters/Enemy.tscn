@@ -1231,6 +1231,7 @@ spawn_2 = ExtResource( 9 )
 spawn_3 = ExtResource( 6 )
 spawn_4 = ExtResource( 10 )
 spawn_5 = ExtResource( 8 )
+spawn_6 = ExtResource( 5 )
 item_scene = ExtResource( 5 )
 random_spawn = true
 

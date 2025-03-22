@@ -103,7 +103,8 @@ var player_name : String
 
 # Rewrite load acccount info into save file function
 var algos : int  #=  Wallet.Wallet.load_account_info(false, Wallet.token_write_path, Wallet.FileCheck3, Wallet.UserData).get("_wallet_algos")
-	#MicroAlgos 
+
+#MicroAlgos 
 var suds : int 
 
 "Device Variables"

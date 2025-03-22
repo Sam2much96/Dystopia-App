@@ -155,9 +155,9 @@ func _input(event):
 func _fetch_prices():
 	"Update Price From Vestigefi API"
 	
-
+	#Price Data has been fetched
 	if !local_networking.Data.empty():
-		push_warning("Price Data has been fetched")
+		#push_warning("Price Data has been fetched")
 		return
 		
 	if local_networking.Data.empty():

@@ -47,8 +47,9 @@ func _ready():
 		art1.hide()
 	
 	
+	# depreciated for touch hud refactor
 	# Show THe Menu Button On Android
-	_local_android.show_only_menu()
+	#_local_android.show_only_menu()
 
 
 

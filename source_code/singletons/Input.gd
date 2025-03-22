@@ -22,7 +22,7 @@
 # (2) Vibration is currently only implemented on Android, porting would require custom libraries
 # *************************************************
 # Bugs:
-# (1) Fix Joystick v2 vibration spams
+# (1) Fix Joystick v2 vibration spams 
 #
 # *************************************************
 
@@ -51,7 +51,7 @@ export (int) var _state
 var pressed : bool = false
 
 # Vibration Settings
-export (bool) var vibrate = true
+export (bool) var vibrate_ = true
 
 
 
@@ -59,11 +59,11 @@ export (bool) var vibrate = true
 # Each of these Objects Use/ REquire Player input
 # Having them always in memory is a good thing
 # *************************************************
-var menu : Game_Menu
-var TouchInterface : TouchScreenHUD
+var menu : Game_Menu setget set_gameMenu, get_gameMenu
+var TouchInterface : TouchScreenHUD setget set_touchHUD, get_touchHUD
 
-var Stats_ : Stats
-var _Status_text : StatusText 
+var Stats_ : Stats setget set_statsHUD, get_statsHUD
+var _Status_text : StatusText setget set_statusText, get_statusText
 
 # Game HUD + set get functions
 var gameHUD : GameHUD setget set_gameHUD, get_gameHUD
@@ -235,7 +235,7 @@ static func parse_input(node_input : Input ,tree: SceneTree, action : String, _p
 
 func vibrate(duration_ms : int, os : String):
 	
-	if Globals.os == "Android" && vibrate : #or "iOS" or "HTML5":
+	if Globals.os == "Android" && vibrate_ : #or "iOS" or "HTML5":
 		
 		if joystick == null :# Fixes Mobile joystick spamm vibration bug
 			# Shoud Connect to Controls so it can be turned on/off
@@ -263,6 +263,33 @@ func set_gameHUD(hud : GameHUD):
 func get_gameHUD() -> GameHUD:
 	return gameHUD
 
+
+func set_statsHUD(stats_hud: Stats):
+	Stats_ = stats_hud
+
+func get_statsHUD() -> Stats:
+	return Stats_
+
+func set_statusText(st_Text: StatusText) :
+	_Status_text = st_Text
+
+
+func get_statusText() -> StatusText :
+	return _Status_text
+
+func set_touchHUD(obj : TouchScreenHUD): 
+	TouchInterface = obj
+
+func get_touchHUD() -> TouchScreenHUD:
+	return TouchInterface
+
+
+
+func set_gameMenu(obj : Game_Menu):
+	menu = obj 
+
+func get_gameMenu() -> Game_Menu:
+	return menu
 
 
 func _exit_tree():

@@ -203,22 +203,19 @@ class Functions extends Reference:
 			push_error(str(scene)+" "+ str(typeof(scene)) +"is not supported in this function")
 	
 	'Resource Loader FOr Large Scenes'
-	# Bugs
-	# (11 Performance Hog on Low powered devices
-	# (2) Progress Debug is not exportable (1/2)
+	# Refactored to Loading Scene
 	static func LoadLargeScene(
 		_to_load : String, 
 		scene_resource : PackedScene, 
 		_o : ResourceInteractiveLoader, 
 		scene_loader : ResourceLoader, 
 		_loading_resource : bool, 
-		a: int , 
-		b : int, 
+		a: float , 
+		b : float, 
 		progress: float
 		) -> PackedScene:
 		
-		#print_stack()
-		#print_debug("Loading Large Scene")
+		print_debug("Loading Large Scene")
 		if _to_load != "" && scene_resource == null:
 			var time_max = 50000 #sets an estimate maximum time to load scene
 			var t = OS.get_ticks_msec()
@@ -311,7 +308,10 @@ class Functions extends Reference:
 			save_dict.os = os
 		if kill_count != 0 :
 			save_dict.kill_count = kill_count
-		#save_dict.currency = Suds #should load from encrypted wallet.cfg
+		
+		# Save Device's Tokens
+		if Globals.suds != 0:
+			save_dict.suds = Globals.suds
 		
 		# For preserving scene changing information
 		if not prev_scene.empty() :
@@ -335,7 +335,7 @@ class Functions extends Reference:
 		
 		# Control Settings
 		# Vibration
-		save_dict.vibrate = GlobalInput.vibrate
+		save_dict.vibrate = GlobalInput.vibrate_
 		
 		save_game.store_line(to_json(save_dict))
 		save_game.close()
@@ -355,8 +355,12 @@ class Functions extends Reference:
 		if not save_game.file_exists("user://savegeme.save"):
 			return false
 		var err = save_game.open("user://savegeme.save", File.READ)
-		if err == OK:
-		
+		var length = save_game.get_len() # checks for corrupted
+		if err == OK && length > 0:
+			# Bug :
+			# (1) Code doesn't account for corrupted save files (fixed)
+			#print_debug("Save file debug 1 : ", length)
+			
 			save_dict = parse_json(save_game.get_line())
 			if typeof(save_dict) != TYPE_DICTIONARY:
 				return false
@@ -364,7 +368,11 @@ class Functions extends Reference:
 				_restore_data(save_dict, GlobalScript)
 		
 			save_game.close()
-		return true
+			return true
+		if length == 0:
+			push_error("Save File is Corrupted")
+			return false
+		else : return false
 
 	"""
 	Restores data from the JSON dictionary inside the save files
@@ -391,6 +399,9 @@ class Functions extends Reference:
 		
 		if save_dict.has('os'):
 			GlobalScript.os = save_dict.os
+		
+		if save_dict.has("suds"):
+			GlobalScript.suds = save_dict.suds
 		
 		'Player'
 		if save_dict.has('player'):
@@ -430,7 +441,7 @@ class Functions extends Reference:
 			Dialogs.language = save_dict.languague
 
 		if save_dict.has("vibrate"):
-			GlobalInput.vibrate = bool(save_dict.vibrate)
+			GlobalInput.vibrate_ = bool(save_dict.vibrate)
 
 		if save_dict.has("music"):
 			print_debug("Mus: ",bool(save_dict.music)) # For Debug Purposes Only
@@ -1197,3 +1208,9 @@ class Advertising:
 		_timer.stop()
 		
 		# log the data
+
+func _exit_tree():
+	# Memory Management And removing script warnings
+	screenOrientation = 0
+	
+	pass

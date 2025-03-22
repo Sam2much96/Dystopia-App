@@ -178,8 +178,14 @@ func _process(_delta):
 				yield(get_tree().create_timer(2),"timeout")
 				
 			
+			# TO DO : 
+			# connect a signal from the loading screen to Touchscreen HUD
+			# the signal will connect to show all button once Gamescenes are loaded
+			# and will also connect to menu() once no game scene is loaded 
+			
+			#GlobalInput.TouchInterface.reset()
+			
 			Utils.Functions.change_scene_to( loaded_scene_temp, get_tree())
-		
 		if loaded_scene_temp == null : # unsuccessfull load redundancy code backported from 4.2.2 Vulkan
 			push_error("Loading failed")
 			#get_tree().change_scene_to(load(Globals.current_level))
@@ -260,7 +266,7 @@ static func LoadLargeScene(
 	loader.LOADING = true
 	
 	#while loader.LOADING:
-	while resource_interactive_loader != null && loader.LOADING: #OS.get_ticks_msec() < (current_time + time_max) : 
+	while resource_interactive_loader != null && bool(loader.LOADING) == true: #OS.get_ticks_msec() < (current_time + time_max) : 
 		
 		var err = resource_interactive_loader.poll()
 		

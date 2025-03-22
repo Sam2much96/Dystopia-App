@@ -21,17 +21,17 @@
 # (9) It Acts As A Hud FOr The Active Player Item via The Action Buttons e.g. Sword Item, Bow Items
 # (10) Calling Attack and Roll signal twince when pressed and when down introduces double punch/ double click
 #
+# (12) Connects to Signals from the Stats, Menu and Dilog box objects in GameHUD
+
 #
 # Bugs :
-#(1) using animation player resets the Joystick/D-pad optionality
-#(2) Doesnt run code cuz of low priority on thread, rewrite to use static fucnctions
+
 
 
 # TO DO:
-# (0) _on_comics_showing() is not working
+
 # (1) Fix the joystick code  (1/2)
 # (2) Update the interract state to be usable
-# (3) Hidetouch interface / Touch interface reset bug (workaround) CLicking other buttons on the touch UI resets this bug on touch UI
 #(4) Edit Documentation to be neater (Online documetation)
 # (5) Joystick Colors?
 # (6) Fix Brken Ingame Controller changer (fixed 1/2)
@@ -39,22 +39,17 @@
 # # (a) Write a Resize function using Global Screen Orientation Calculation and Screen Size
 #	#	# (b) Variables available : Globals.os, Globals.screen Orientation, Globals.screenSize,Globals.viewport_size, GLobals.center_of_viewport
 #		#(c) set grouped buttons positioning programmatically (Done)
-# (8) ReWrite Logic Using Animation Player Nodes to fix Stuck Button Bug
-# (9) State machine is not optimized at all (processor hog) (1/2)
 # (10) TOuch Interface should be adjustible on mobile using drag and drop
 # (11) TOuch Interface Format and Scaling should be exported function to android singleton (DOne)
 # (12) Implement Drag and Drop Customization using state machines and postion registers
-# (13) Vibration Bug when Rescaling
-# (14) Touch HUD Scaling is buggy on Mobile Browsers (fixed)
 # (15) Shoud Export An Inspector Item String List THat Triggers Different HUD States 
 # (16) Implement Stylus and Swipe COntrolls for Mobile Devices like LOZ Phantom Hourglass
-# (17) refactor To Use Texture Buttons for Better UI and Configuration. TOuchScreen Buttons Cannot Be moved as Ui Elements
 
  
-# (18) Improve Touch HUD for mobile players (Done)
 # (19) Add touch hud drag and drop using refactored comics script (1/2)
-# (20) Fix hud auto orientation for mobile (Done)
-# (21) Implement procedural animation for Touch Interface Via Functions to be called from Game HUD -> Android Setup
+# # (21) Implement procedural animation for Touch Interface Via Functions to be called from Game HUD -> Android Setup
+#
+# (22) Touch hud should hold the previous states for the TOuch interface to reset back to previous state
 # *************************************************
 
 
@@ -63,23 +58,25 @@ extends Control
 
 class_name TouchScreenHUD, "res://resources/misc/Android 32x32.png"
 
-var _Hide_touch_interface : bool
 
 #Debug
-onready var _debug = get_tree().get_root().get_node("/root/Debug")
+#onready var _debug = get_tree().get_root().get_node("/root/Debug")
 
 
 #Safe Global Input Ponter
 onready var _Input = get_tree().get_root().get_node("/root/GlobalInput")
+onready var node_input = Input  # Generates this nodes Node _input()
 
-# Pointer to Parent
-#onready var parent = get_parent()
 
 # Pointer to menu node from Parent
-onready var menuObj : Game_Menu = $"%Menu "#parent.get_child(6)
+
+onready var menuObj : Game_Menu = $"%Menu "
+
+onready var StatsObj : Stats = $"%Stats"
 
 # Pointer to Global Menu Pointer
-onready var menu3 = _Input.menu
+# use a setget function for this call to menu objed
+#onready var menu3 = _Input.menu
 
 #State Machine
 # Use A Match Conditional for differentiating Input Types
@@ -89,8 +86,8 @@ enum { D_PAD_, JOYSTICK, STYLUS , CONFIG, DEBUG } # Config State for Drag ANd Dr
 
 #export (int) var _state_controller = D_PAD_
 export (String, 'modern', 'classic', "stylus") var _control # Dupli9cate of Globals._controller_type
-#export (String, 'menu', 'interract', "attack", "stats", "comics", "reset") var _state_inspector : String # State machine Debugger from inspector Tab
-var _Debug_Run : bool = false
+
+#var _Debug_Run : bool = false
 
 export (bool) var enabled # Local Variant for stroing if device is android from adnroid singleton
 
@@ -121,18 +118,15 @@ var _left : TextureButton
 var _right : TextureButton
 
 
-
 #'UI control Parents'
-#var interract_buttons : Control
-#var action_interract_buttons : Control
 
 "Dimensions Calculator"
 var dimensions : Vector2  
 var dimensional_diff : Vector2  
 
-var buttons_positional_data : Array
+#var buttons_positional_data : Array
 
-var LineDebug : Line2D 
+#var LineDebug : Line2D 
 
 onready var joystick_parent: Control # = $Joystick
 
@@ -146,18 +140,14 @@ onready var d_pad : Array
 "Scene Tree"
 onready var __scene_tree : SceneTree = get_tree()
 
-# debug COunter counts how many times a mehtod has been called
-var counter : int = 0
 
 # Helper booleans for Stopping Loop Processing
 var _action_button_showing : bool
 var _direction_button_showing : bool
 
 
-# Local Pointer TO Stats Node
-onready var _Stats_ : Stats = $"%Stats"
 
-onready var TouchInput = Input 
+#onready var TouchInput = Input 
 
 func _ready():
 	
@@ -165,15 +155,14 @@ func _ready():
 	#
 	GlobalInput.TouchInterface = self
 	Android.TouchInterface = self
+	#Android.TouchInterface.set_TouchInterface(self)# = self
 	
 	
-	# Bug: Android Intializer is buggy
-	#print_debug("Connect Texture Button Signals Here")
-	#print_debug("OS Debug: ",Globals.os)
-	# COde Mutates ENabled
-	if Android.is_android() == false:
-		self.hide()
-		enabled = false
+	# Code Mutates ENabled
+	# temporarily disabling for debugging
+	#if Android.is_android() == false:
+	#	self.hide()
+	#	enabled = false
 
 
 	
@@ -189,7 +178,7 @@ func _ready():
 	 
 	#Anim = $AnimationPlayer
 	#D_pad = $"D-pad"
-	LineDebug = $Line2D
+	#LineDebug = $Line2D
 	#touch_interface_debug() disabling for now
 	
 	_up = $"%up"
@@ -203,9 +192,7 @@ func _ready():
 	
 	# Debug Broken Lins
 	
-	all_UI_Nodes = [_menu ,stats_, _interract, roll, slash,
-	#_joystick, joystick2,
-	 _up, _down, _left, _right ]
+	all_UI_Nodes = [_menu ,stats_, _interract, roll, slash, _up, _down, _left, _right ]
 	
 	# Error Catcher For Broken UI Links
 	Utils.UI.check_for_broken_links(all_UI_Nodes)
@@ -236,29 +223,22 @@ func _ready():
 		print_debug("Joystick Inputs Require Refactoring")
 	# Default Direction Button should be Analgue
 	else: pass #direction_buttons = analogue_joystick
-
-	#### Done Setting Nodes
 	
-	#print_debug( " Global Touch HUD: ", GlobalInput.TouchInterface)
-	# Auto Hides All UI Interfaces
 	
-	reset()
+	#reset()
+	menu()
 	
 	# Turn off this setup script if not running on Android
 	if enabled:
 		
 		# Connect Button Signals
-		print_debug("Connect Body Signals")
+		#print_debug("Connect Body Signals")
 		
 		
 		#print_debug(direction_buttons, Globals.direction_control)
 
 		"Touch UI Visibility"
 		# moved to ANdroid singleton
-		# Disabling for debugging
-		#hide_self(Globals.os, Globals.screenOrientation, _Hide_touch_interface, self)
-		
-		
 		
 		
 		
@@ -269,32 +249,16 @@ func _ready():
 			_menu.self_modulate = Color(255,255,255) # white
 		else: _menu.self_modulate = Color(0,0,0) # black
 		
-		"Auto sets the controller button"
 		
-		
-		
-		
-		# Depreciated for Refoactoring
-		#Utils.Screen.calculate_button_positional_data(
-		#	_menu, 
-		#	_interract,
-		#	stats_, 
-		#	roll, 
-		#	slash, 
-		#	comics_, 
-		#	_joystick, 
-		#	D_pad
-		#	)
-		
-		"Set Initial Touch HUD Layout"
-		#Utils.Screen._adjust_touchHUD_length(Anim)
 		
 		
 		
 		"Display Screen Calculations"
-		#Utils.Screen.display_calculations(get_tree().get_root(), Utils)
+		Utils.Screen.display_calculations(get_tree().get_root(), Utils)
 		
 		# Calculates the Length and Breadth of All Touchscreen HUD buttons
+		# To DO: 
+		# (1) Refactor for algorithmic solution
 		#dimensions = Utils.Functions.calculate_length_breadth(buttons_positional_data)
 		
 		# calculates a dimensional difference between the center of the vuewport aand the Button onscreen positions 
@@ -311,43 +275,34 @@ func _ready():
 	#print_debug(parent, menu2, menu3)
 		
 		"Mobile Specific Signals"
-		print_debug("Stats Signals and Menu signals implementation are broken")
+		#print_debug("Stats Signals and Menu signals implementation are broken")
+		
 		# COnnect signals from dialogue
-		# DIalogues to self
+		# Dialogues to self
 		Dialogs.dialog_box.connect("dialog_started", self, "interract")
 		Dialogs.dialog_box.connect("dialog_ended", self, "show_all_buttons")
 
-		# Comics to Touch Interface
-		#if is_instance_valid(_comics): # Buggy Singleton Instance
-		#	_comics.connect( 'comics_showing', self, '_on_comics_showing')
-		#	_comics.connect( 'comics_showing', self, '_on_comics_hidden'  )
-
 		# Menu to Touch Interface Connection
-		# Quick Hacky Fiz
-		# It Connects THe TOuch interface to self inplemented methods
-		#if is_instance_valid(menu2): # Error Catcher 1
-		#	menu2.connect("menu_showing", self, "menu") 
-		#	menu2.connect("menu_hidden", self, "show_all_buttons")
+		# Temporarily disabled for UI refactor
 		
-		
-		# connects menu from global pointer
-		if is_instance_valid(menuObj):
-			if not (menuObj.is_connected("menu_showing", self, "menu") &&
-			menuObj.is_connected("menu_hidden", self, "menu")
-			):
-				menuObj.connect("menu_showing", self, "menu") 
-				#menuObj.connect("menu_hidden", self, "menu") # temporarily disabled for ux refactoring
-		## Networking TImer to Touch Interface
-		# Resets Using Networking timer
-		#Networking.timer.connect("timeout", self, "show_all_buttons") 
+		"Connect Signals To Menu"
+		# Bugs : 
+		# (1) Signal Spammer from Menu State machine
+		#	#Fix : Boolean checker for signal emitting
+		if not (menuObj.is_connected("menu_showing", self, "menu") && menuObj.is_connected("menu_hidden", self, "menu")):
+			menuObj.connect("menu_showing", self, "menu") 
+			# this method needs to account for the hud state and returning to the previous state
+			
+		#	menuObj.connect("menu_hidden", self, "show_all_buttons") 
+
 
 		# Connects Stats Ui Signals To Touchscreen HUD for Mobile
-		_Stats_.connect("_enabled", self ,"status")
-		_Stats_.connect("_not_enabled", self ,"show_all_buttons")
+		StatsObj.connect("_enabled", self ,"status")
+		StatsObj.connect("_not_enabled", self ,"show_all_buttons")
 		
 		if (
-			_Stats_.is_connected("_enabled", self ,"status") &&
-			_Stats_.is_connected("_not_enabled", self ,"show_all_buttons") != true 
+			StatsObj.is_connected("_enabled", self ,"status") &&
+			StatsObj.is_connected("_not_enabled", self ,"show_all_buttons") != true 
 		) :
 			push_error("Stats x TouchHUD signal is broken")
 		
@@ -356,54 +311,24 @@ func _ready():
 		#	Inventory._stats_ui.connect("status_hidden",self,"reset")
 			
 			# Debug Signals
+		
+		# connect a signal from the loading screen to Touchscreen HUD
+		# the signal will connect to show all button once Gamescenes are loaded
+		# and will also connect to menu() once no game scene is loaded 
 
-		# Debug SIgnals
-		# Convert to Unit Tests instead
-		# TO DO:
-		# (1) Debug Code
-		# (2) Update Documentation
-		if is_instance_valid(Dialogs && menu3 && Networking):
-			if not (Dialogs.is_connected("dialog_started", self, "interract") &&
-				Dialogs.is_connected("dialog_ended", self, "show_all_buttons") # &&
-				#_comics.is_connected( 'comics_showing', self, '_on_comics_showing') &&
-				#_comics.is_connected( 'comics_showing', self, '_on_comics_hidden'  ) &&
-				#menu3.is_connected("menu_showing", self, "menu") &&
-				#menu3.is_connected("menu_hidden", self, "reset") &&
-				#Networking.timer.is_connected("timeout", self, "reset")
-				
-				) == true:
-
-				# Debug Node Signal Connections
-				print_debug(
-					Dialogs.is_connected("dialog_started", self, "interract"),
-					Dialogs.is_connected("dialog_ended", self, "show_all_buttons")
-					#_comics.is_connected( 'comics_showing', self, '_on_comics_showing'),
-					#_comics.is_connected( 'comics_showing', self, '_on_comics_hidden'  ),
-					#menu3.is_connected("menu_showing", self, "menu"), 
-					#menu3.is_connected("menu_hidden", self, "reset"),
-					#Networking.timer.is_connected("timeout", self, "reset") 
-					)
 
 	if not enabled:
-		__disappear()
-		
+		hide_buttons()
+
 
 # I wrote all the states within functions. I should'vve instead written them within a process fucntion
 """
 THE STATE MACHINE CALLS WITH FUNCTIONS
 """
 func reset():  #resets node visibility statuses
-	
-	#print_stack()
-	#assert(Globals.os == "Android")
+	print_debug("Reset Triggered")
+	print_stack()
 	hide_buttons()
-	
-	#_state_controller = _RESET
-	#return _state_controller 
-	#"shows all the UI options"
-	#show_action_buttons()
-	
-	#show_direction_buttons()
 
 #Enumerate each of the following states
 
@@ -411,8 +336,7 @@ func reset():  #resets node visibility statuses
 
 
 func status():  #used by ui scene when status is clicked
-	#print_debug("dkjasbfiajsdbfiadb")
-	#print_stack()
+	print_debug("Status Triggered")
 	hide_buttons()
 	stats_.show()
 
@@ -422,14 +346,15 @@ func status():  #used by ui scene when status is clicked
 #	#return _state_controller 
 #	hide_buttons()
 
-func menu(): #used by ui scene when menu is clicked
-	#_state_controller = _MENU
-	#return _state_controller 
+func menu(): 
+	#used by ui scene when menu is clicked
+	print_debug("Menu Showing Triggered")
+	#print_stack()
 	hide_buttons()
 	_menu.show()
 
 func interract(): #used by ui scene when interract is clicked
-	
+	print_debug("Interract Triggered")
 	hide_buttons()
 	_menu.show()
 	_interract.show()
@@ -439,7 +364,7 @@ func interract(): #used by ui scene when interract is clicked
 func attack(): #used by ui scene when attack is clicked 
 	#_state_controller = _ATTACK
 	#return _state_controller 
-
+	print_debug("Attack Triggered")
 	emit_signal('attack')
 
 	hide_buttons()
@@ -464,10 +389,10 @@ func attack(): #used by ui scene when attack is clicked
 
 # Handles Debugging Variables from the touch interface system
 # Should PNly run once
-func touch_interface_debug(): #Debug singleton is broken
-	if _Hide_touch_interface == false && _debug.debug_panel != null && _Debug_Run == false:
+#func touch_interface_debug(): #Debug singleton is broken
+#	if _Hide_touch_interface == false && _debug.debug_panel != null && _Debug_Run == false:
 
-		_Debug_Run = true# Runs this Debug Loop Only Once
+#		_Debug_Run = true# Runs this Debug Loop Only Once
 		
 		#RepositionButtonsHUD()
 		# *************************************************
@@ -476,17 +401,16 @@ func touch_interface_debug(): #Debug singleton is broken
 		# (b) Use Line Point Dimensions to Compare Global Screen Size calculations  
 		# *************************************************
 		
-		for i in buttons_positional_data:
-			LineDebug.add_point(i)
+#		for i in buttons_positional_data:
+#			LineDebug.add_point(i)
 			
 			
 
 
 
 func show_all_buttons():
-	print_stack()
-	#if enabled:
-	print_debug("Showing All Buttons")
+	# This function is connected to the dialogue box _on_Timer_timeout functoin
+	# This function trigger the Touchscreen HUD to be visible or show only certain buttons
 	show_action_buttons()
 	show_direction_buttons()
 
@@ -494,8 +418,9 @@ func show_all_buttons():
 func hide_buttons() :
 
 	# Reset Helper Booleans
-	_action_button_showing = false
-	_direction_button_showing = false
+	#_action_button_showing = false
+	#_direction_button_showing = false
+	
 	
 	
 	for i in direction_buttons :
@@ -510,9 +435,11 @@ func hide_buttons() :
 	
 	
 	# Release UI FOus
-
+	debug_visibility()
 
 func show_action_buttons() :
+	print_stack()
+	
 	# SHows the Action buttons recursively
 	#print_debug("Showing Action Buttons")
 	if enabled:
@@ -527,53 +454,23 @@ func show_direction_buttons() -> void:
 			j.show()
 
 
-#func _on_comics_showing(): # Refactoring For Minimap UI
-#	print_debug("Comics SHowing")
-#	
-#	comics() 
+
+"""
+VISIBILITY LOGIC
+"""
+
+# Visibility logic for the touchhud interface for Android
 
 
-#func _on_comics_hidden():
-#	print_debug("Comics Hidden")
-#	reset()
+func debug_visibility():
+	# debug the menu objects visibilty as an array of data
+	# helps in debugging visibility nodes
+	var dg = []
+	for i in all_UI_Nodes:
+		dg.append(i.visible)
+	print_debug("visibility check: ", dg)
 
 
-
-##### External Method TO Be Called Form Other Scripts
-func __menu():
-	# Hudes All Button Except The Mebnu Button
-	#print_stack()
-	#assert(Globals.os == "Android")
-	if enabled:
-		#print_debug("Touch Interface External Menu")
-		_menu.show()
-		_interract.hide()
-		stats_.hide()
-		roll.hide()
-		slash.hide()
-		#comics_.hide()
-		#_joystick.hide()
-		#joystick2.hide()
-		_up.hide()
-		_down.hide()
-		_left.hide()
-		_right.hide()
-		# Debug Menu
-		print_debug(_menu.visible, "/", _interract.visible)
-
-func __disappear():
-	_menu.hide()
-	_interract.hide()
-	stats_.hide()
-	roll.hide()
-	slash.hide()
-	#comics_.hide()
-	#_joystick.hide()
-	#joystick2.hide()
-	_up.hide()
-	_down.hide()
-	_left.hide()
-	_right.hide()
 
 """
 PROCEDURAL ANIMATION FOR UI POSITIONING
@@ -702,7 +599,7 @@ func _on_stats_pressed():
 
 
 func _on_comics_pressed():
-	print_debug("Comics Button Pressed")
+	#print_debug("Comics Button Pressed")
 	return _Input.parse_input(_Input.NodeInput,__scene_tree,"comics", true)
 
 
@@ -740,81 +637,77 @@ func _on_down_pressed():
 
 
 
-func _on_stats_gui_input(event):
-	print_debug("Stats GUI Input")
-	stats_.grab_focus()
-
-
 
 func _on_down_button_down():
-	return _Input.parse_input(TouchInput,__scene_tree,"move_down", true)
+	return _Input.parse_input(node_input,__scene_tree,"move_down", true)
 
 
 func _on_down_button_up():
-	return _Input.parse_input(TouchInput,__scene_tree,"move_down", false)
+	return _Input.parse_input(node_input,__scene_tree,"move_down", false)
 
 
 func _on_left_button_down():
-	return _Input.parse_input(TouchInput,__scene_tree,"move_left", true)
+	return _Input.parse_input(node_input,__scene_tree,"move_left", true)
 
 
 func _on_left_button_up():
-	return _Input.parse_input(TouchInput,__scene_tree,"move_left", false)
+	return _Input.parse_input(node_input,__scene_tree,"move_left", false)
 
 
 func _on_up_button_up():
-	return _Input.parse_input(TouchInput,__scene_tree,"move_up", false)
+	return _Input.parse_input(node_input,__scene_tree,"move_up", false)
 
 
 func _on_up_button_down():
-	return _Input.parse_input(TouchInput,__scene_tree,"move_up", true)
+	return _Input.parse_input(node_input,__scene_tree,"move_up", true)
 
 
 
 
 func _on_right_button_up():
-	return _Input.parse_input(TouchInput,__scene_tree,"move_right", false)
+	return _Input.parse_input(node_input,__scene_tree,"move_right", false)
 
 
 func _on_right_button_down():
-	return _Input.parse_input(TouchInput,__scene_tree,"move_right", true)
+	return _Input.parse_input(node_input,__scene_tree,"move_right", true)
 
 
 func _on_stats_button_up():
-	return _Input.parse_input(TouchInput,__scene_tree,"pause", false)
+	return _Input.parse_input(node_input,__scene_tree,"pause", false)
 
 
 func _on_stats_button_down():
-	return _Input.parse_input(TouchInput,__scene_tree,"pause", true)
+	return _Input.parse_input(node_input,__scene_tree,"pause", true)
 
 
 
 func _on_interact_button_up():
-	return _Input.parse_input(TouchInput,__scene_tree,"interact", false)
+	return _Input.parse_input(node_input,__scene_tree,"interact", false)
 
 
 
 func _on_interact_button_down():
-	return _Input.parse_input(TouchInput,__scene_tree,"interact", true)
+	return _Input.parse_input(node_input,__scene_tree,"interact", true)
 
 
 func _on_roll_button_up():
-	return _Input.parse_input(TouchInput,__scene_tree,"roll", false)
+	return _Input.parse_input(node_input,__scene_tree,"roll", false)
 
 func _on_roll_button_down():
-	return _Input.parse_input(TouchInput,__scene_tree,"roll", true)
+	return _Input.parse_input(node_input,__scene_tree,"roll", true)
 
 func _on_slash_button_up():
-	return _Input.parse_input(TouchInput,__scene_tree,"attack", false)
+	return _Input.parse_input(node_input,__scene_tree,"attack", false)
 
 
 func _on_slash_button_down():
-	return _Input.parse_input(TouchInput,__scene_tree,"attack", true)
+	return _Input.parse_input(node_input,__scene_tree,"attack", true)
 
 
 func _on_menu_button_up():
-	return _Input.parse_input(TouchInput,__scene_tree,"menu", false)
+	return _Input.parse_input(node_input,__scene_tree,"menu", false)
 
 
 func _on_menu_button_down():
-	return _Input.parse_input(TouchInput,__scene_tree,"menu", true)
+	print_debug("Menu Button Pressed")
+	return _Input.parse_input(node_input,__scene_tree,"menu", true)

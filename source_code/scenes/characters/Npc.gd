@@ -37,7 +37,7 @@ var current_dialog = 0
 var root : Node2D = get_parent()
 
 
-onready var Kinematic_Body : KinematicBody2D = self
+#onready var Kinematic_Body : KinematicBody2D = self
 
 onready var __body : Player
 

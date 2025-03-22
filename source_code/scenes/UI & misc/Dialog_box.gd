@@ -107,6 +107,9 @@ func _exit_tree():
 	Utils.Functions
 
 func _on_Timer_timeout():
+	# signal connected to TouchScreen HUD reset animation
+	# this animation triggers the touchscreen hud to appear and disappear
+	
 	emit_signal("dialog_ended")
 
 # Decision Tree Buttons 

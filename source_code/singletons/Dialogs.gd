@@ -107,8 +107,6 @@ func _set_dialog_box(node : DialogBox):
 	
 	else:
 		push_error("provided node doesn't implement dialog_started signal")
-	
-	pass
 
 
 

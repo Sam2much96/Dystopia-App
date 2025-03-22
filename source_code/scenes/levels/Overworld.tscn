@@ -154,34 +154,6 @@ rotation = 1.01254
 scale = Vector2( 6.26556, 1.62012 )
 to_scene = "res://scenes/levels/Building1.tscn"
 
-[node name="DialogueEvents" type="YSort" parent="."]
-
-[node name="DialogueTrigger" parent="DialogueEvents" instance=ExtResource( 15 )]
-position = Vector2( -29, 71 )
-enabled = true
-HINT = true
-
-[node name="DialogueTrigger2" parent="DialogueEvents" instance=ExtResource( 15 )]
-position = Vector2( 2653, -4857 )
-enabled = true
-dialogue = "Left: Abbi City
-Down : Temple"
-
-[node name="DialogueTrigger3" parent="DialogueEvents" instance=ExtResource( 15 )]
-position = Vector2( 8555, -4736 )
-enabled = true
-dialogue = "Dangerous Hole!!!
-Don't Fall In!!!"
-speaker = "Aarin"
-
-[node name="DialogueTrigger4" parent="DialogueEvents" instance=ExtResource( 15 )]
-position = Vector2( 11203, -5212 )
-rotation = 1.57394
-scale = Vector2( 10.8192, 0.857997 )
-enabled = true
-dialogue = "Abbi City! Be carefull, the enemies ahead are alot tougher"
-speaker = "Aarin"
-
 [node name="Player" parent="." instance=ExtResource( 7 )]
 position = Vector2( 672.514, 418.212 )
 scale = Vector2( 0.55068, 0.55068 )
@@ -251,6 +223,35 @@ position = Vector2( 8581, -4834 )
 
 [node name="broken ship" parent="." instance=ExtResource( 16 )]
 position = Vector2( 3134.37, 2440.4 )
+
+[node name="DialogueEvents" type="YSort" parent="."]
+position = Vector2( -16, 32 )
+
+[node name="DialogueTrigger" parent="DialogueEvents" instance=ExtResource( 15 )]
+position = Vector2( -8, 63 )
+enabled = true
+HINT = true
+
+[node name="DialogueTrigger2" parent="DialogueEvents" instance=ExtResource( 15 )]
+position = Vector2( 891, 2445 )
+enabled = true
+dialogue = "Left: Abbi City
+Down : Temple"
+
+[node name="DialogueTrigger3" parent="DialogueEvents" instance=ExtResource( 15 )]
+position = Vector2( 8576, -4782 )
+enabled = true
+dialogue = "Dangerous Hole!!!
+Don't Fall In!!!"
+speaker = "Aarin"
+
+[node name="DialogueTrigger4" parent="DialogueEvents" instance=ExtResource( 15 )]
+position = Vector2( 11203, -5212 )
+rotation = 1.57394
+scale = Vector2( 10.8192, 0.857997 )
+enabled = true
+dialogue = "Abbi City! Be carefull, the enemies ahead are alot tougher"
+speaker = "Aarin"
 
 [node name="items" type="YSort" parent="."]
 

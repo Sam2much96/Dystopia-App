@@ -9,6 +9,10 @@
 # (2) Scales for mobile UI (done)
 # (3) Translations
 # (4) Sets Global Screen Orientation
+# (5) Ingame Menu Has 2 behaviours depending on the current scene
+#		# (a) Trigger Touch HUD menu state when not in overworld
+#		# (b) Triggers Touch menu visible state when in overworld
+#	The signal emitting function should account for this
 # *************************************************
 
 # To-Do
@@ -27,9 +31,11 @@ extends Control
 class_name Game_Menu
 
 signal menu_hidden
+signal menu_hidden_in_game
 signal menu_showing
-export (bool) var enabled 
 
+
+export (bool) var enabled 
 """
 The game menu script. 
 """
@@ -39,12 +45,13 @@ enum { SHOWING, HIDDEN}
 export (String) var menu_state
 
 
-export (bool) var ENABLE  : bool 
+#export (bool) var ENABLE  : bool 
 
 # Stops ooverflow of Upscaling Method
 # stops signal spamming
 
-var counter : int = 0 
+#var counter : int = 0 
+
 var comics : Button 
 var new_game : Button 
 
@@ -132,24 +139,43 @@ func _input(event):
 	
 	#print_debug("Menu Is Pressed")
 	if menu_state == HIDDEN:
+		print_debug("Showing Menu")
+		
 		menu_state = SHOWING
 		
 		set_focus_mode(Control.FOCUS_CLICK)
 		set_mouse_filter(Control.MOUSE_FILTER_STOP)
 		Music.play_track(_ui_sfx)
 		
-		
+		#print_debug("Current Scene debug 1: ", Globals.curr_scene, "/", Globals.current_level)
 		emit_signal("menu_showing")
 		
 		return menu_state
 	if menu_state== SHOWING:
+		
+		print_debug("Hiding Menu")
 		menu_state = HIDDEN
 		
 		set_focus_mode(Control.FOCUS_NONE)
 		set_mouse_filter(Control.MOUSE_FILTER_IGNORE)
 		
 		Music.play_track(_ui_sfx_1)
-		emit_signal("menu_hidden")
+		
+		#print_debug("Current Scene debug 2: ", Globals.curr_scene, "/", Globals.current_level)
+		#menu hidden in game
+		if (Globals.current_level == Globals.Overworld_Scenes[0] 
+		or Globals.Overworld_Scenes[1] 
+		or Globals.Overworld_Scenes[2] 
+		or Globals.Overworld_Scenes[3] 
+		or Globals.Overworld_Scenes[4] 
+		or Globals.Overworld_Scenes[5]):
+			print_debug("Current Level Debug 1: ", Globals.current_level)
+			emit_signal("menu_hidden_in_game")
+		
+		# menu hidden outside main game loop
+		else:
+			print_debug("Current Level Debug 2: ", Globals.current_level)
+			emit_signal("menu_hidden")
 		
 		return menu_state
 		
@@ -157,35 +183,39 @@ func _input(event):
 	get_tree().set_input_as_handled()
 
 
-func _on_continue_pressed():
-	print_debug("continue game pressed")
-	Music.play_track(_ui_sfx)
-	#Utils.Functions.load_game(false, Globals)
-	if Globals.current_level != null:
-		
-		"Loads Large Scene"
-		
-		Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
-		Globals.current_level, 
-		Globals.scene_resource, 
-		Globals._o, 
-		Globals.scene_loader, 
-		Globals.loading_resource, 
-		Globals.a, 
-		Globals.b, 
-		Globals.progress
-		), get_tree())
-		
+# depreciated from refactoring
+#func _on_continue_pressed():
+#	print_debug("continue game pressed")
+#	Music.play_track(_ui_sfx)
+#	#Utils.Functions.load_game(false, Globals)
+#	if Globals.current_level != null:
+#		
+#		"Loads Large Scene"
+#		
+#		Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
+#		Globals.current_level, 
+#		Globals.scene_resource, 
+#		Globals._o, 
+#		Globals.scene_loader, 
+#		Globals.loading_resource, 
+#		Globals.a, 
+#		Globals.b, 
+#		Globals.progress
+#		), get_tree())
+#		
 
-	else:
-		continue_game.hide()
-		push_error("Error: current_level shouldn't be empty")
-	pass # Replace with function body.
+#	else:
+#		continue_game.hide()
+#		push_error("Error: current_level shouldn't be empty")
+#	pass # Replace with function body.
+
 
 
 func _on_new_game_pressed(): #breaks the Globals.current_level script
 	print_debug("new game pressed")
 	if Globals.initial_level != "":
+		
+		# current way to load game
 		
 		# Sets the Current Level to the defauult initial level
 		Globals.current_level = Globals.initial_level
@@ -317,16 +347,19 @@ func _on_practice_pressed(): # turn off in release build
 	# (1) refactor practice scene to forced tutorial scene for new players
 	# (2) Fix audo delete save file bug in form.tscn
 	Globals.current_level = 'res://scenes/levels/Testing Scene 2.tscn' #breaks the Globals.current_level script
-	Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
-		Globals.current_level, 
-		Globals.scene_resource, 
-		Globals._o, 
-		Globals.scene_loader, 
-		Globals.loading_resource, 
-		Globals.a, 
-		Globals.b, 
-		Globals.progress
-		), get_tree())
+	
+	Utils.Functions.change_scene_to(Globals.loading_scene,get_tree() )
+	
+	#Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
+	#	Globals.current_level, 
+	#	Globals.scene_resource, 
+	#	Globals._o, 
+	#	Globals.scene_loader, 
+	#	Globals.loading_resource, 
+	#	Globals.a, 
+	#	Globals.b, 
+	#	Globals.progress
+	#	), get_tree())
 
 
 

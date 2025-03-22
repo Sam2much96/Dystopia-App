@@ -18,7 +18,7 @@ scroll_horizontal_enabled = false
 
 [node name="HSeparator" type="VBoxContainer" parent="ScrollContainer"]
 margin_right = 198.0
-margin_bottom = 500.0
+margin_bottom = 428.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -33,6 +33,7 @@ text = "new game"
 flat = true
 
 [node name="continue" type="Button" parent="ScrollContainer/HSeparator"]
+visible = false
 margin_top = 72.0
 margin_right = 198.0
 margin_bottom = 140.0
@@ -42,18 +43,18 @@ text = "continue"
 flat = true
 
 [node name="multiplayer" type="Button" parent="ScrollContainer/HSeparator"]
-margin_top = 144.0
+margin_top = 72.0
 margin_right = 198.0
-margin_bottom = 212.0
+margin_bottom = 140.0
 focus_previous = NodePath("../continue")
 shortcut_in_tooltip = false
 text = "Multiplayer"
 flat = true
 
 [node name="lore" type="Button" parent="ScrollContainer/HSeparator"]
-margin_top = 216.0
+margin_top = 144.0
 margin_right = 198.0
-margin_bottom = 284.0
+margin_bottom = 212.0
 focus_next = NodePath("../new game")
 focus_previous = NodePath("../quit")
 theme = ExtResource( 4 )
@@ -61,25 +62,25 @@ text = "lore"
 flat = true
 
 [node name="practice" type="Button" parent="ScrollContainer/HSeparator"]
-margin_top = 288.0
+margin_top = 216.0
 margin_right = 198.0
-margin_bottom = 356.0
+margin_bottom = 284.0
 text = "practice"
 flat = true
 
 [node name="controls" type="Button" parent="ScrollContainer/HSeparator"]
-margin_top = 360.0
+margin_top = 288.0
 margin_right = 198.0
-margin_bottom = 428.0
+margin_bottom = 356.0
 focus_next = NodePath("../quit")
 shortcut_in_tooltip = false
 text = "Controls"
 flat = true
 
 [node name="quit" type="Button" parent="ScrollContainer/HSeparator"]
-margin_top = 432.0
+margin_top = 360.0
 margin_right = 198.0
-margin_bottom = 500.0
+margin_bottom = 428.0
 focus_neighbour_top = NodePath("../controls")
 focus_next = NodePath("../lore")
 focus_previous = NodePath("../controls")
@@ -87,7 +88,6 @@ text = "quit"
 flat = true
 
 [connection signal="pressed" from="ScrollContainer/HSeparator/new game" to="." method="_on_new_game_pressed"]
-[connection signal="pressed" from="ScrollContainer/HSeparator/continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="ScrollContainer/HSeparator/multiplayer" to="." method="_on_multiplayer_pressed"]
 [connection signal="pressed" from="ScrollContainer/HSeparator/lore" to="." method="_on_lore_pressed"]
 [connection signal="pressed" from="ScrollContainer/HSeparator/practice" to="." method="_on_practice_pressed"]

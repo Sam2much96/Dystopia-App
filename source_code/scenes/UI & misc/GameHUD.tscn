@@ -149,7 +149,6 @@ unique_name_in_owner = true
 
 [node name="TouchInterface" parent="." instance=ExtResource( 8 )]
 unique_name_in_owner = true
-_control = "classic"
 enabled = true
 
 [node name="RainFx" parent="." instance=ExtResource( 5 )]

@@ -70,7 +70,7 @@ onready var node_input = Input  # Generates this nodes Node _input()
 
 # Pointer to menu node from Parent
 
-onready var menuObj : Game_Menu = $"%Menu "
+onready var menuObj : Game_Menu = Android.ingameMenu
 
 onready var StatsObj : Stats = $"%Stats"
 
@@ -82,10 +82,19 @@ onready var StatsObj : Stats = $"%Stats"
 # Use A Match Conditional for differentiating Input Types
 # Stylus Should Only Catch TOuch Screen Inputs
 # add functions to state machine
-enum { D_PAD_, JOYSTICK, STYLUS , CONFIG, DEBUG } # Config State for Drag ANd Drop Mode
+enum DragNDrop { D_PAD_, JOYSTICK, STYLUS , CONFIG, DEBUG } # Config State for Drag ANd Drop Mode
 
-#export (int) var _state_controller = D_PAD_
-export (String, 'modern', 'classic', "stylus") var _control # Dupli9cate of Globals._controller_type
+
+enum { DOWN, LEFT, UP, RIGHT, MENU, SLASH, ROLL, INTERACT, STATS, RESET, SHOW, HIDE} # Touch interface Internal State Machine
+
+export (int) var touch_controller = MENU
+
+# for storing data for state transition logic
+#var current_state = touch_controller
+#var previous_state = touch_controller
+
+
+#export (String, 'modern', 'classic', "stylus") var _control # Dupli9cate of Globals._controller_type
 
 #var _Debug_Run : bool = false
 
@@ -142,8 +151,8 @@ onready var __scene_tree : SceneTree = get_tree()
 
 
 # Helper booleans for Stopping Loop Processing
-var _action_button_showing : bool
-var _direction_button_showing : bool
+#var _action_button_showing : bool
+#var _direction_button_showing : bool
 
 
 
@@ -155,11 +164,11 @@ func _ready():
 	#
 	GlobalInput.TouchInterface = self
 	Android.TouchInterface = self
-	#Android.TouchInterface.set_TouchInterface(self)# = self
 	
 	
 	# Code Mutates ENabled
 	# temporarily disabling for debugging
+	# code moved to Android Singleton instead
 	#if Android.is_android() == false:
 	#	self.hide()
 	#	enabled = false
@@ -224,9 +233,9 @@ func _ready():
 	# Default Direction Button should be Analgue
 	else: pass #direction_buttons = analogue_joystick
 	
-	
+	# already set with default state machine
 	#reset()
-	menu()
+	#menu()
 	
 	# Turn off this setup script if not running on Android
 	if enabled:
@@ -289,11 +298,15 @@ func _ready():
 		# Bugs : 
 		# (1) Signal Spammer from Menu State machine
 		#	#Fix : Boolean checker for signal emitting
-		if not (menuObj.is_connected("menu_showing", self, "menu") && menuObj.is_connected("menu_hidden", self, "menu")):
-			menuObj.connect("menu_showing", self, "menu") 
+		#if not (menuObj.is_connected("menu_showing", self, "menu") && menuObj.is_connected("menu_hidden", self, "menu")):
+		#	menuObj.connect("menu_showing", self, "menu") 
 			# this method needs to account for the hud state and returning to the previous state
 			
-		#	menuObj.connect("menu_hidden", self, "show_all_buttons") 
+		#print_debug("menu obj debug: ", menuObj)
+		
+		menuObj.connect("menu_hidden", self, "menu") 
+		menuObj.connect("menu_hidden_in_game", self, "show_all_buttons") 
+		menuObj.connect("menu_showing", self, "menu") 
 
 
 		# Connects Stats Ui Signals To Touchscreen HUD for Mobile
@@ -315,13 +328,57 @@ func _ready():
 		# connect a signal from the loading screen to Touchscreen HUD
 		# the signal will connect to show all button once Gamescenes are loaded
 		# and will also connect to menu() once no game scene is loaded 
+		
+		menu() # triggers default menu scene on start of game application
 
-
+	# TO DO: 
+	# (1) Depreciated Code, port core functionality to state machine 22 March 2025
+	
 	if not enabled:
-		hide_buttons()
+		#hide_buttons()
+		pass
 
 
-# I wrote all the states within functions. I should'vve instead written them within a process fucntion
+func _input(event):
+	
+	# only check for button press events
+	# Guard clause: Only proceed if the event is an InputEventKey or InputEventMouseButton and is pressed
+	if not ((event is InputEventKey or event is InputEventMouseButton) and event.pressed):
+		return
+	
+	#print("Button pressed:", event)
+	
+	
+	# Touch Interface Simple State Machine
+	match touch_controller:
+		MENU:
+			return menu() # shows only menu button
+		INTERACT:
+			return interract() # shows only interract button
+		DOWN:
+			return
+		UP: 
+			return
+		LEFT :
+			return
+		RIGHT : 
+			return
+		SLASH:
+			return
+		ROLL :
+			return
+		RESET:
+			return reset() # hides all UI buttons
+		STATS:
+			return status() # shows only status Button
+		SHOW:
+			return show_all_buttons() # shows all touch hud buttons
+		HIDE:
+			return hide_buttons()
+	pass
+
+
+# I wrote all the states within functions. I should'vve instead written them within a process fucntion (Done/ with input process)
 """
 THE STATE MACHINE CALLS WITH FUNCTIONS
 """
@@ -341,10 +398,6 @@ func status():  #used by ui scene when status is clicked
 	stats_.show()
 
 
-#func comics():  #used by ui scene when comics is clicked
-#	#_state_controller = _COMICS
-#	#return _state_controller 
-#	hide_buttons()
 
 func menu(): 
 	#used by ui scene when menu is clicked
@@ -372,17 +425,18 @@ func attack(): #used by ui scene when attack is clicked
 	_menu.show()
 	slash.show()
 	roll.show()
-	if _control == Globals._controller_type[1]: # modern
-		#D_pad.hide()
-		#
-		for i in d_pad:
-			i.hide()
-		joystick_parent.show()
+	
+	#if _control == Globals._controller_type[1]: # modern
+	#	#D_pad.hide()
+	#	#
+	#	for i in d_pad:
+	#		i.hide()
+	#	joystick_parent.show()
 
-	if _control == Globals._controller_type[2]: # classic
-		joystick_parent.hide()
-		for i in d_pad:
-			i.show()
+	#if _control == Globals._controller_type[2]: # classic
+	#	joystick_parent.hide()
+	#	for i in d_pad:
+	#		i.show()
 
 
 
@@ -409,6 +463,7 @@ func attack(): #used by ui scene when attack is clicked
 
 
 func show_all_buttons():
+	#print_stack()
 	# This function is connected to the dialogue box _on_Timer_timeout functoin
 	# This function trigger the Touchscreen HUD to be visible or show only certain buttons
 	show_action_buttons()

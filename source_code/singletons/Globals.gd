@@ -31,22 +31,6 @@ extends Node
 class_name GlobalsVar
 
 
-# Load Scenes Programmatically
-# Rewriting to Use Dictionary and only load scene when needed to optimise memory usage
-var global_scenes : Dictionary = {"title": "res://scenes/Title screen.tscn",
-"form":"'res://scenes/UI & misc/form/form.tscn'",
-"controls": 'res://scenes/UI & misc/Controls.tscn',
-"loading" : "res://scenes/UI & misc/LoadingScene.tscn",
-"wallet" : 'res://scenes/Wallet/Wallet main.tscn',
-"cinematics" : "res://scenes/cinematics/cinematics.tscn"
-}
-
-var form : PackedScene 
-var controls : PackedScene 
-var _wallet : PackedScene 
-var title : PackedScene 
-var cinematics : PackedScene 
-
 onready var curr_scene : String = ""
 onready var os: String = OS.get_name()
 onready var kill_count : int = 0 #update to load from savefile
@@ -84,9 +68,32 @@ var direction_control  : String = _controller_type[2]  #toggles btw analogue and
 
 var uncompressed # Varible holds uncompressed zip files
 
+"""
+Core Game Scenes
+"""
 
+# Load Scenes Programmatically
+# Rewriting to Use Dictionary and only load scene when needed to optimise memory usage
 
-onready var loading_scene : PackedScene = load("res://scenes/UI & misc/LoadingScene.tscn")
+# all global scenes refactor needed for interconnectin UI objects and sharing 
+# state data between them
+var global_scenes : Dictionary = {"title": "res://scenes/Title screen.tscn",
+"form":"'res://scenes/UI & misc/form/form.tscn'",
+"controls": 'res://scenes/UI & misc/Controls.tscn',
+"loading" : "res://scenes/UI & misc/LoadingScene.tscn",
+#"wallet" : 'res://scenes/Wallet/Wallet main.tscn',
+"cinematics" : "res://scenes/cinematics/cinematics.tscn"
+
+}
+
+#var form : PackedScene 
+#var controls : PackedScene 
+#var _wallet : PackedScene 
+#var title : PackedScene 
+var cinematics : PackedScene 
+
+# loading the loading scene to memeory on ready
+onready var loading_scene : PackedScene = load(global_scenes["loading"])
 
 var Overworld_Scenes : Dictionary = {0 : "res://scenes/levels/Temple interior.tscn",
 1 : "res://scenes/levels/DuneProcedural.tscn",
@@ -95,6 +102,9 @@ var Overworld_Scenes : Dictionary = {0 : "res://scenes/levels/Temple interior.ts
 4: "res://scenes/levels/Building1.tscn",
 5: "res://scenes/levels/Overworld.tscn"
 } # for simplifying loading and scene changes states
+
+
+
 
 "Crypto Variables" 
 var address : String 

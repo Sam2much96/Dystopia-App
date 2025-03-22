@@ -25,7 +25,7 @@ var TouchInterface : TouchScreenHUD  setget set_TouchInterface, get_TouchInterfa
 var GameHUD_ : GameHUD 
 
 
-var ingameMenu : Game_Menu
+var ingameMenu : Game_Menu setget set_GameMenu, get_GameMenu
 
 export (bool) var _is_android = false
 
@@ -269,7 +269,14 @@ func set_TouchInterface(hud : TouchScreenHUD):
 func get_TouchInterface() -> TouchScreenHUD:
 	return TouchInterface
 
-# OPtimise android ads
+func set_GameMenu(hud : Game_Menu):
+	ingameMenu = hud 
+
+func get_GameMenu() -> Game_Menu:
+	return ingameMenu
+
+
+# Optimise android ads
 func _on_AdMob_banner_loaded():
 	print_debug("Banner Ads Loaded")
 	

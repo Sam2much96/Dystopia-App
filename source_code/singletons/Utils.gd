@@ -197,7 +197,9 @@ class Functions extends Reference:
 	static func change_scene_to(scene : PackedScene, tree : SceneTree): #Loads scenes faster?
 		#print_stack()
 		if scene != null: 
-			return tree.change_scene_to(scene)  
+			tree.change_scene_to(scene)
+			Globals.update_curr_scene()
+			return   
 
 		else: 
 			push_error(str(scene)+" "+ str(typeof(scene)) +"is not supported in this function")

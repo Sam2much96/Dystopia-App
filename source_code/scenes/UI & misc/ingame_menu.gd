@@ -291,7 +291,7 @@ func _on_quit_pressed():
 func _on_multiplayer_pressed(): # Experimental feature
 	Music.play_track(_ui_sfx)
 	
-	return Utils.Functions.change_scene_to(load(Globals.global_scenes.get("multiplayer")), get_tree())
+	return Utils.Functions.change_scene_to(load(Globals.global_scenes.get("login")), get_tree())
 
 
 

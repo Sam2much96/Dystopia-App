@@ -177,13 +177,15 @@ func _process(_delta):
 				show_progress(20,20)
 				yield(get_tree().create_timer(2),"timeout")
 				
+				# show touch hud on android
+				Android.TouchInterface.touch_controller = Android.TouchInterface.SHOW
+			
 			
 			# TO DO : 
 			# connect a signal from the loading screen to Touchscreen HUD
 			# the signal will connect to show all button once Gamescenes are loaded
 			# and will also connect to menu() once no game scene is loaded 
 			
-			#GlobalInput.TouchInterface.reset()
 			
 			Utils.Functions.change_scene_to( loaded_scene_temp, get_tree())
 		if loaded_scene_temp == null : # unsuccessfull load redundancy code backported from 4.2.2 Vulkan

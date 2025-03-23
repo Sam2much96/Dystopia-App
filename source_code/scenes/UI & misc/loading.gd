@@ -178,8 +178,8 @@ func _process(_delta):
 				yield(get_tree().create_timer(2),"timeout")
 				
 				# show touch hud on android
-				Android.TouchInterface.touch_controller = Android.TouchInterface.SHOW
-			
+				#Android.TouchInterface.touch_controller = Android.TouchInterface.SHOW
+				Android.TouchInterface.show__()
 			
 			# TO DO : 
 			# connect a signal from the loading screen to Touchscreen HUD

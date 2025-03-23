@@ -75,8 +75,9 @@ Core Game Scenes
 # Load Scenes Programmatically
 # Rewriting to Use Dictionary and only load scene when needed to optimise memory usage
 
-# all global scenes refactor needed for interconnectin UI objects and sharing 
+# all global scenes needed for interconnectin UI objects and sharing 
 # state data between them
+# each key is represents each node's scene name which is used for the ui logic
 var global_scenes : Dictionary = {"title": "res://scenes/Title screen.tscn",
 "form":"'res://scenes/UI & misc/form/form.tscn'",
 "Controls": 'res://scenes/UI & misc/Controls.tscn',

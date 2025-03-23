@@ -50,6 +50,7 @@
 # # (21) Implement procedural animation for Touch Interface Via Functions to be called from Game HUD -> Android Setup
 #
 # (22) Touch hud should hold the previous states for the TOuch interface to reset back to previous state
+# (23) Create functions that export the state controller 
 # *************************************************
 
 
@@ -166,12 +167,11 @@ func _ready():
 	Android.TouchInterface = self
 	
 	
-	# Code Mutates ENabled
-	# temporarily disabling for debugging
-	# code moved to Android Singleton instead
-	#if Android.is_android() == false:
-	#	self.hide()
-	#	enabled = false
+	# Code Mutates Enabled
+	#
+	if Android.is_android() == false:
+		self.hide()
+		enabled = false
 
 
 	
@@ -304,9 +304,9 @@ func _ready():
 			
 		#print_debug("menu obj debug: ", menuObj)
 		
-		menuObj.connect("menu_hidden_in_ui", self, "menu") 
-		menuObj.connect("menu_hidden_in_game", self, "show_all_buttons") 
-		menuObj.connect("menu_showing", self, "menu") 
+		menuObj.connect("menu_hidden_in_ui", self, "menu__") 
+		menuObj.connect("menu_hidden_in_game", self, "show__") 
+		menuObj.connect("menu_showing", self, "menu__") 
 		
 		# debug signal connections
 		print_debug("Menu Signals Debug: ",menuObj.is_connected("menu_hidden_in_ui", self, "menu") , menuObj.is_connected("menu_hidden_in_game", self, "show_all_buttons"), menuObj.is_connected("menu_showing", self, "menu") )
@@ -343,53 +343,73 @@ func _ready():
 		pass
 
 
-func _input(event):
+func _process(_delta):
 	
 	# only check for button press events
 	# Guard clause: Only proceed if the event is an InputEventKey or InputEventMouseButton and is pressed
-	if not ((event is InputEventKey or event is InputEventMouseButton) and event.pressed):
-		return
+	#if not ((event is InputEventKey or event is InputEventMouseButton) and event.pressed):
+	#	return
 	
 	#print("Button pressed:", event)
-	
-	
-	# Touch Interface Simple State Machine
-	match touch_controller:
-		MENU:
-			return menu() # shows only menu button
-		INTERACT:
-			return interract() # shows only interract button
-		DOWN:
-			return
-		UP: 
-			return
-		LEFT :
-			return
-		RIGHT : 
-			return
-		SLASH:
-			return
-		ROLL :
-			return
-		RESET:
-			return reset() # hides all UI buttons
-		STATS:
-			return status() # shows only status Button
-		SHOW:
-			return show_all_buttons() # shows all touch hud buttons
-		HIDE:
-			return hide_buttons()
-	pass
+	if enabled:
+		
+		
+		# Touch Interface Simple State Machine
+		match touch_controller:
+			MENU:
+				return menu() # shows only menu button
+			INTERACT:
+				return interract() # shows only interract button
+			DOWN:
+				return
+			UP: 
+				return
+			LEFT :
+				return
+			RIGHT : 
+				return
+			SLASH:
+				return
+			ROLL :
+				return
+			#RESET:
+			#	return reset() # hides all UI buttons
+			STATS:
+				return status() # shows only status Button
+			SHOW:
+				return show_all_buttons() # shows all touch hud buttons
+			HIDE:
+				return hide_buttons()
 
 
-# I wrote all the states within functions. I should'vve instead written them within a process fucntion (Done/ with input process)
+
 """
 THE STATE MACHINE CALLS WITH FUNCTIONS
 """
-func reset():  #resets node visibility statuses
-	print_debug("Reset Triggered")
-	print_stack()
-	hide_buttons()
+
+"Exported Global State Machine Functions"
+
+func menu__():
+	touch_controller = MENU
+
+func show__():
+	touch_controller = SHOW
+
+func hide__():
+	touch_controller = HIDE
+
+func stats__():
+	touch_controller = STATS
+
+func interact__():
+	touch_controller = INTERACT
+
+"Local State Machine Functions"
+
+#func reset():  #resets node visibility statuses
+#	#print_debug("Reset Triggered")
+#	#print_stack()
+#	hide_buttons()
 
 #Enumerate each of the following states
 
@@ -405,10 +425,14 @@ func status():  #used by ui scene when status is clicked
 
 func menu(): 
 	#used by ui scene when menu is clicked
+	# hides all buttons aand shows the menu ui button only
 	#print_debug("Menu Showing Triggered")
 	#print_stack()
+	#print_debug("Menu Button triggered")
 	hide_buttons()
 	_menu.show()
+	#touch_controller = MENU
+	#debug_visibility_() # for temporarily debugging touch buttons state
 
 func interract(): #used by ui scene when interract is clicked
 	print_debug("Interract Triggered")

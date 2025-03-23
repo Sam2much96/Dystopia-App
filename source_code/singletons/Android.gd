@@ -83,14 +83,14 @@ func _ready():
 		#initial_screen_orientation = Utils.Screen.Orientation()
 	
 	# Temporarily disabled for testing/debugging Touchinterface UI on PC
-	#if _globals.os != "Android":
-	#	_is_android = false
-	#	push_warning("Device Is Not Android!")
-	#	self.set_process(false)
-	#	self.set_physics_process(false)
+	if _globals.os != "Android":
+		_is_android = false
+		push_warning("Device Is Not Android!")
+		self.set_process(false)
+		self.set_physics_process(false)
 	
 	
-	print_debug("Android :", _is_android, "/", _globals.os)
+	#print_debug("Android :", _is_android, "/", _globals.os)
 
 
 func is_android() -> bool:
@@ -122,25 +122,8 @@ func _no_ads() -> void:
 	print_stack() # debug the stack
 	
 	if is_instance_valid(_ads):
-		print_debug("Hiding Adds Banner")
+		#print_debug("Hiding Adds Banner")
 		_ads.hide_banner()
-
-
-#func hide_touch_interface():
-#	
-#	# Hide Game HUD
-#	# TO DO: Port TO Touch HUD Inspector Tab
-#	TouchInterface.reset()
-
-
-
-#func show_only_menu():
-#	TouchInterface.menu()
-
-#func show_all_buttons():
-#	print_stack()
-#	TouchInterface.show_action_buttons()
-#	TouchInterface.show_direction_buttons()
 
 
 
@@ -165,9 +148,12 @@ func _process(_delta):
 	Touch HUD Visibility
 	"""
 	
+	# code moved to Touch HUD scene instead
+	# because android processing is turned of if device is not android
 	# Temporarily disabled for debugging
 	#if is_instance_valid(TouchInterface) && _is_android == false : # PC Browser
-	#	TouchInterface.hide()
+	#	TouchInterface.hide__()
+	#	#TouchInterface.enabled = _is_android
 	
 	"""
 	RAIN FX OPTIMIZATION

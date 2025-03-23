@@ -602,7 +602,12 @@ class Screen  :
 		GlobalScript.center_of_viewport = GlobalScript.calc_center_of_rectangle(GlobalScript.viewport_size)
 		
 		# Prints out the Current Viewport Size
-		#print_debug("Viewport Size: ", GlobalScript.viewport_size ,"/","Center of Viewprt: ", GlobalScript.center_of_viewport ) # for debug purposes only
+		# TO DO:
+		# (1) Fix double resizing bug
+		# (2) Provide GLobal framework for scaling UI nodes
+		# (3) Export ALgorithm and apply to touch hud VErtical() and Horizontal()_ functions
+		print_stack()
+		print_debug("Viewport Size: ", GlobalScript.viewport_size ,"/","Center of Viewprt: ", GlobalScript.center_of_viewport ) # for debug purposes only
 		
 	
 	

@@ -55,10 +55,11 @@ texture_normal = ExtResource( 6 )
 unique_name_in_owner = true
 self_modulate = Color( 0, 0, 0, 1 )
 show_behind_parent = true
-margin_left = 36.0
-margin_top = 52.0
-margin_right = 202.0
-margin_bottom = 195.0
+margin_left = 32.0
+margin_top = 48.0
+margin_right = 198.0
+margin_bottom = 191.0
+rect_scale = Vector2( 0.5, 0.5 )
 texture_normal = ExtResource( 2 )
 
 [node name="right" type="TextureButton" parent="."]

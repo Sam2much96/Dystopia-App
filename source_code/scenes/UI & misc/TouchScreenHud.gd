@@ -169,10 +169,11 @@ func _ready():
 	
 	# Code Mutates Enabled
 	#
+	# 
 	if Android.is_android() == false:
 		self.hide()
 		enabled = false
-
+		self.set_process(false)
 
 	
 	######## Begin Setting Nodes #
@@ -298,11 +299,6 @@ func _ready():
 		# Bugs : 
 		# (1) Signal Spammer from Menu State machine
 		#	#Fix : Boolean checker for signal emitting
-		#if not (menuObj.is_connected("menu_showing", self, "menu") && menuObj.is_connected("menu_hidden", self, "menu")):
-		#	menuObj.connect("menu_showing", self, "menu") 
-			# this method needs to account for the hud state and returning to the previous state
-			
-		#print_debug("menu obj debug: ", menuObj)
 		
 		menuObj.connect("menu_hidden_in_ui", self, "menu__") 
 		menuObj.connect("menu_hidden_in_game", self, "show__") 
@@ -323,23 +319,10 @@ func _ready():
 		) :
 			push_error("Stats x TouchHUD signal is broken")
 		
-		#if is_instance_valid(Inventory._stats_ui):
-		#	Inventory._stats_ui.connect("status_showing",self,"status")
-		#	Inventory._stats_ui.connect("status_hidden",self,"reset")
-			
-			# Debug Signals
 		
-		# connect a signal from the loading screen to Touchscreen HUD
-		# the signal will connect to show all button once Gamescenes are loaded
-		# and will also connect to menu() once no game scene is loaded 
 		
 		menu() # triggers default menu scene on start of game application
-
-	# TO DO: 
-	# (1) Depreciated Code, port core functionality to state machine 22 March 2025
-	
 	if not enabled:
-		#hide_buttons()
 		pass
 
 
@@ -380,7 +363,7 @@ func _process(_delta):
 				return show_all_buttons() # shows all touch hud buttons
 			HIDE:
 				return hide_buttons()
-
+	
 
 
 """
@@ -405,14 +388,6 @@ func interact__():
 	touch_controller = INTERACT
 
 "Local State Machine Functions"
-
-#func reset():  #resets node visibility statuses
-#	#print_debug("Reset Triggered")
-#	#print_stack()
-#	hide_buttons()
-
-#Enumerate each of the following states
-
 
 
 
@@ -469,24 +444,6 @@ func attack(): #used by ui scene when attack is clicked
 
 
 
-# Handles Debugging Variables from the touch interface system
-# Should PNly run once
-#func touch_interface_debug(): #Debug singleton is broken
-#	if _Hide_touch_interface == false && _debug.debug_panel != null && _Debug_Run == false:
-
-#		_Debug_Run = true# Runs this Debug Loop Only Once
-		
-		#RepositionButtonsHUD()
-		# *************************************************
-		# Buttons Debug
-		# (a) Plot a line2d with all Buttons Position (done)
-		# (b) Use Line Point Dimensions to Compare Global Screen Size calculations  
-		# *************************************************
-		
-#		for i in buttons_positional_data:
-#			LineDebug.add_point(i)
-			
-			
 
 
 
@@ -669,26 +626,19 @@ func Vertical():
 UI Button Connections
 """
 # via Global Input Singleton
-# Buggy : Introduces Stuct Input Bug On Mobile Devices
+# Bugs : 
+# (1) Pressed Signals Introduces Stuct Input Bug On Mobile Devices
 func _on_menu_pressed():
-	#print_debug("111111111111111111111111111") #Works
-	return 0#_Input.parse_input(_Input.NodeInput,__scene_tree,"menu", true)
-
+	return 0
 
 
 func _on_stats_pressed():
-	#print_debug("Stats Button Pressed")
-	return 0#_Input.parse_input(_Input.NodeInput,__scene_tree,"pause", true)
+	return 0
 
-
-func _on_comics_pressed():
-	#print_debug("Comics Button Pressed")
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"comics", true)
 
 
 func _on_interact_pressed():
-	#print_debug("Interract Button Pressed")
-	return 0 #_Input.parse_input(_Input.NodeInput,__scene_tree,"interact", true)
+	return 0 
 
 
 func _on_roll_pressed():
@@ -703,20 +653,20 @@ func _on_slash_pressed():
 
 func _on_right_pressed():
 	
-	return 0 # _Input.parse_input(_Input.NodeInput,__scene_tree,"move_right", true)
+	return 0 
 
 
 func _on_up_pressed():
-	return 0 #_Input.parse_input(_Input.NodeInput,__scene_tree,"move_up", true)
+	return 0 
 
 
 func _on_left_pressed():
-	return 0 #_Input.parse_input(_Input.NodeInput,__scene_tree,"move_left", true)
+	return 0 
 
 
 
 func _on_down_pressed():
-	return 0# _Input.parse_input(_Input.NodeInput,__scene_tree,"move_down", true)
+	return 0
 
 
 

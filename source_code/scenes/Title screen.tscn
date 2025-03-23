@@ -5,7 +5,7 @@
 [ext_resource path="res://resources/title animation/intro_animation_sprites/concept_3.webp" type="Texture" id=4]
 [ext_resource path="res://scenes/UI & misc/3d in 2d.tscn" type="PackedScene" id=5]
 
-[node name="Menu" type="Control"]
+[node name="Title screen" type="Control"]
 light_mask = 0
 anchor_right = 1.0
 anchor_bottom = 1.0

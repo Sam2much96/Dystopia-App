@@ -83,6 +83,8 @@ func _ready():
 	#translate()
 
 
+	#print_debug("Globals scenes and level debug:", Globals.curr_scene, "/", Globals.current_level)
+	#print_debug("Check if the current scene is a global scene: ", Globals.global_scenes.has(Globals.curr_scene))
 
 
 func _on_play_pressed():

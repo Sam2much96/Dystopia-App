@@ -79,11 +79,13 @@ Core Game Scenes
 # state data between them
 var global_scenes : Dictionary = {"title": "res://scenes/Title screen.tscn",
 "form":"'res://scenes/UI & misc/form/form.tscn'",
-"controls": 'res://scenes/UI & misc/Controls.tscn',
+"Controls": 'res://scenes/UI & misc/Controls.tscn',
 "loading" : "res://scenes/UI & misc/LoadingScene.tscn",
 #"wallet" : 'res://scenes/Wallet/Wallet main.tscn',
-"cinematics" : "res://scenes/cinematics/cinematics.tscn"
-
+"cinematics" : "res://scenes/cinematics/cinematics.tscn",
+"practice" : "res://scenes/levels/Testing Scene 2.tscn",
+"login" : "res://scenes/multiplayer/login.tscn",
+"Title screen" : "res://scenes/Title screen.tscn"
 }
 
 #var form : PackedScene 
@@ -176,7 +178,7 @@ func update_curr_scene() -> void:
 func _go_to_title():
 	update_curr_scene()
 	'Quits if already at title screen'
-	if curr_scene == 'Menu':
+	if curr_scene == 'Title screen':
 		get_tree().quit()
 	
 	'changes scene to title_screen'
@@ -185,7 +187,7 @@ func _go_to_title():
 	
 	"Loads Large Scene"
 	# prep loading scene by setting the level to load as titlescreen
-	current_level = global_scenes["title"]
+	current_level = global_scenes["Title screen"]
 	Utils.Functions.change_scene_to(Globals.loading_scene, get_tree())
 
 

@@ -82,7 +82,7 @@ func _ready():
 
 	#$TextureRect.hide()
 	#hide ingame menu
-	Android.show_only_menu()
+	#Android.show_only_menu()
 	
 
 	if Globals.screenOrientation == 1 && Globals.os == "Android":

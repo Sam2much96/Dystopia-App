@@ -14,7 +14,7 @@
 [ext_resource path="res://scenes/props/Grass.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/props/flowers.tscn" type="PackedScene" id=15]
 
-[node name="Node2D" type="Node2D"]
+[node name="practice" type="Node2D"]
 
 [node name="Item" parent="." instance=ExtResource( 3 )]
 position = Vector2( 82.002, 438.002 )

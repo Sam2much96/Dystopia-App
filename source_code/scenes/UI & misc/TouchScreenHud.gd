@@ -304,11 +304,15 @@ func _ready():
 			
 		#print_debug("menu obj debug: ", menuObj)
 		
-		menuObj.connect("menu_hidden", self, "menu") 
+		menuObj.connect("menu_hidden_in_ui", self, "menu") 
 		menuObj.connect("menu_hidden_in_game", self, "show_all_buttons") 
 		menuObj.connect("menu_showing", self, "menu") 
-
-
+		
+		# debug signal connections
+		print_debug("Menu Signals Debug: ",menuObj.is_connected("menu_hidden_in_ui", self, "menu") , menuObj.is_connected("menu_hidden_in_game", self, "show_all_buttons"), menuObj.is_connected("menu_showing", self, "menu") )
+		
+		
+		
 		# Connects Stats Ui Signals To Touchscreen HUD for Mobile
 		StatsObj.connect("_enabled", self ,"status")
 		StatsObj.connect("_not_enabled", self ,"show_all_buttons")
@@ -401,7 +405,7 @@ func status():  #used by ui scene when status is clicked
 
 func menu(): 
 	#used by ui scene when menu is clicked
-	print_debug("Menu Showing Triggered")
+	#print_debug("Menu Showing Triggered")
 	#print_stack()
 	hide_buttons()
 	_menu.show()
@@ -490,10 +494,10 @@ func hide_buttons() :
 	
 	
 	# Release UI FOus
-	debug_visibility()
+	#debug_visibility()
 
 func show_action_buttons() :
-	print_stack()
+	#print_stack()
 	
 	# SHows the Action buttons recursively
 	#print_debug("Showing Action Buttons")
@@ -517,7 +521,7 @@ VISIBILITY LOGIC
 # Visibility logic for the touchhud interface for Android
 
 
-func debug_visibility():
+func debug_visibility_():
 	# debug the menu objects visibilty as an array of data
 	# helps in debugging visibility nodes
 	var dg = []

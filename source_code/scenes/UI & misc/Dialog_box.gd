@@ -15,6 +15,7 @@
 #
 # To DO:
 # (1) Add Redundancy Code For node Signals
+# (2) Refactor to Popup dialog class
 # *************************************************
 
 extends NinePatchRect
@@ -40,6 +41,10 @@ onready var no_decline : Button = $HBoxContainer/decline
 # signal is the routed to Player kinematics which triggers player's pause on dialogue
 signal dialog_started
 signal dialog_ended
+
+# decision dialogue signals
+signal dialog_accept
+signal dialog_decline 
 
 onready var all_dialogue_nodes = [dialog_text, timer, character_text, anims, yes_accept, no_decline]
 
@@ -91,6 +96,8 @@ func hide_decision_buttons():
 func self_set_position():
 	# Debug Screen Orientation for Dialogue box positioning
 	#Quick Fix for Upscaing/ Positioning On Mobile
+	# Porting the class to pop us class would make this code redundant
+	# you're using the wrong node type
 	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
 		anims.play("MOBILE")
 	if Globals.screenOrientation == 0: #SCREEN_VERTICAL is 0
@@ -116,9 +123,14 @@ func _on_Timer_timeout():
 # To DO : 
 # (1) Connect Yes and No Decisions to functions dynamically
 func _on_accept_pressed():
-	print_debug("Yes")
+	print_debug("accept")
+	emit_signal("dialog_accept")
+	emit_signal("dialog_ended")
+
 
 
 func _on_decline_pressed():
-	print_debug("No")
+	print_debug("decline")
+	emit_signal("dialog_decline")
 	emit_signal("dialog_ended")
+	hide_dialogue()

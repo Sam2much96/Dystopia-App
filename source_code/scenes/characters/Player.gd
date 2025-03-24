@@ -176,6 +176,8 @@ func despawn():
 	if is_instance_valid(blood): # Check if the blood particle is available
 		blood.global_position = global_position
 	
+	# increase player's death count
+	Globals.death_count +=1
 	
 	self.hide()
 	

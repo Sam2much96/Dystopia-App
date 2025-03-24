@@ -101,7 +101,7 @@ func is_android() -> bool:
 
 
 func ads() -> void:
-	# create ads parameters
+	# create ads parameters for rewarded video and banner ads
 	
 	# Config and Inititalise Ads Programmatically
 	
@@ -112,10 +112,17 @@ func ads() -> void:
 	_ads.is_real = false
 	#_ads.initialize_on_background_thread()
 	_ads.load_banner()
-	_ads.load_rewarded_video()
 	
 	_ads.show_banner()
 	_ads.move_banner(false)
+
+func ads_video()-> void:
+	
+	
+	_ads.load_rewarded_video()
+	
+	pass
+
 
 
 func _no_ads() -> void:

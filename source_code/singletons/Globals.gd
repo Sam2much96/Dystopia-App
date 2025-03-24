@@ -34,6 +34,7 @@ class_name GlobalsVar
 onready var curr_scene : String = ""
 onready var os: String = OS.get_name()
 onready var kill_count : int = 0 #update to load from savefile
+onready var death_count : int = 0 # also update and save to savefile
 
 # 
 var players : Array = [] # All Players

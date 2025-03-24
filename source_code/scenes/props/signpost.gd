@@ -13,7 +13,7 @@
 # (1) Dialog box bugs out if there's a single error in the script
 # (2) Breaks Exit.gd (Fix Collission spammer bug)
 # (3) Doesnt't Trigger UI changes in Touch HUD
-# (4) 
+# (4) Node can only show 1 dialogue per scene
 # (5) Replace Player with Global Name / Wallet Address by modifying forms.gd
 # *************************************************
 
@@ -98,10 +98,10 @@ func show_signpost(): # rename to trigger dialogue
 			Dialogs.translate_to( dialogue, Dialogs.language), 'Player', false
 			)
 	if DIALOGUE:
-		Dialogs.dialog_box.show_dialog(Dialogs.translate_to(dialogue, Dialogs.language), speaker, false)
+		return Dialogs.dialog_box.show_dialog(Dialogs.translate_to(dialogue, Dialogs.language), speaker, false)
 	
 	if DECISION:
-		Dialogs.dialog_box.show_dialog(Dialogs.translate_to(dialogue, Dialogs.language), speaker, true)
+		return Dialogs.dialog_box.show_dialog(Dialogs.translate_to(dialogue, Dialogs.language), speaker, true)
 	
 	if QUEST:
 		
@@ -119,8 +119,8 @@ func show_signpost(): # rename to trigger dialogue
 		
 		if quest_dialog != "":
 			#print_debug("Show Quest Dialogue Decisions")
-			Dialogs.dialog_box.show_dialog(quest_dialog, speaker, false)
-			return
+			return Dialogs.dialog_box.show_dialog(quest_dialog, speaker, false)
+			#return
 		if quest_dialog == "":
 			pass
 		#Dialogs.show_dialog(dialogs[current_dialog], character_name)

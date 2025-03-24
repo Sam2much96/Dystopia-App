@@ -5,6 +5,7 @@
 [sub_resource type="DynamicFont" id=1]
 size = 29
 use_mipmaps = true
+use_filter = true
 font_data = ExtResource( 1 )
 
 [sub_resource type="StyleBoxFlat" id=3]

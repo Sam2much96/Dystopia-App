@@ -1270,6 +1270,7 @@ path_max_distance = 10.0
 avoidance_enabled = true
 
 [node name="Line2D" type="Line2D" parent="."]
+position = Vector2( 179.002, -232.246 )
 
 [connection signal="area_entered" from="hurtbox" to="." method="_on_hurtbox_area_entered" flags=3]
 [connection signal="area_exited" from="hurtbox" to="." method="_on_hurtbox_area_exited"]

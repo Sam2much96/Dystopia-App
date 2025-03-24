@@ -310,7 +310,8 @@ class Functions extends Reference:
 			save_dict.os = os
 		if kill_count != 0 :
 			save_dict.kill_count = kill_count
-		
+		if Globals.death_count != 0:
+			save_dict.death_count = Globals.death_count
 		# Save Device's Tokens
 		if Globals.suds != 0:
 			save_dict.suds = Globals.suds
@@ -415,6 +416,11 @@ class Functions extends Reference:
 		
 		if save_dict.has('player_hitpoints'):
 			GlobalScript.player_hitpoints = int(save_dict.player_hitpoints)
+		
+		if save_dict.has('death_count'):
+			GlobalScript.death_count = int(save_dict.death_count)
+		
+		
 		
 		'Player Object Spawn Position'
 		if save_dict.has('spawn_x'):

@@ -195,7 +195,7 @@ func _update_quest_listing():
 
 
 func _update_player_stats():
-	kill_count.text= "Kill count: "+ str(Globals.kill_count)
+	kill_count.text= "Kill count: "+ str(Globals.kill_count) + "\n" + "Death Count: " + str(Globals.death_count)
 
 # Connects to Inventory.remove item -> Stats.gd
 func _update_inventory_button_cache(item : String, amount : int) : # COde Bloc Called from inventroy singleton remove_item() method

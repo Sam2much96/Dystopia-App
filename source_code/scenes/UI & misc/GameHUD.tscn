@@ -152,5 +152,4 @@ unique_name_in_owner = true
 enabled = true
 
 [node name="RainFx" parent="." instance=ExtResource( 5 )]
-modulate = Color( 0, 0, 0, 0.611765 )
 emitting = false

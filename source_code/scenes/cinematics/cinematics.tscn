@@ -707,9 +707,9 @@ input_pass_on_modal_close_click = false
 modulate = Color( 0.584314, 0.152941, 0.152941, 1 )
 show_behind_parent = true
 margin_left = 76.0
-margin_top = 146.0
+margin_top = 298.0
 margin_right = 436.0
-margin_bottom = 458.0
+margin_bottom = 610.0
 rect_scale = Vector2( 0.2, 0.192 )
 texture_normal = ExtResource( 3 )
 

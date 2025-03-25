@@ -87,7 +87,7 @@ func _ready():
 	# Make Self global via scene Tree
 	# Safe
 	if is_instance_valid(globalInput):
-		globalInput.set_gameHUD(self)
+		globalInput.gameHUD = self
 	if is_instance_valid(android_):
 		
 		android_.GameHUD_ = self

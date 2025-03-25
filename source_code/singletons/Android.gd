@@ -7,6 +7,7 @@
 # (3) Should Contain All Mobile Optimizations In a single script
 # (4) Should COntain Admob implementation when possible
 # (5) SHould Map to Debug Signleton for Web Browser Debug
+# (6) Ads Logic SHould Add banner ads as backup for failed video ads
 
 
 extends Node
@@ -51,7 +52,8 @@ var Chrome = null
 # Ad Mob Ads Node
 onready var _ads : AdMob = self.get_child(0)
 
-
+var VIDEO_READY : bool = false
+var BANNER_READY : bool = false
 
 func _ready():
 	
@@ -108,25 +110,27 @@ func ads() -> void:
 	# config ads
 	_ads.banner_id = "ca-app-pub-3900377589557710/5127703243"
 	_ads.rewarded_id = "ca-app-pub-3900377589557710/4046256488"
-	_ads.is_real_set(false) # Test Ads & Ads Initialisation
-	_ads.is_real = false
+	_ads.is_real_set(true) # Test Ads & Ads Initialisation
+	_ads.is_real = true
 	#_ads.initialize_on_background_thread()
 	_ads.load_banner()
-	
-	_ads.show_banner()
+	_ads.load_rewarded_video()
 	_ads.move_banner(false)
-
+	_ads.show_banner()
+	# Ad some sud to this account
+	Globals.suds += 1000
+	
 func ads_video()-> void:
 	
 	
-	_ads.load_rewarded_video()
+
 	
 	pass
 
 
 
 func _no_ads() -> void:
-	print_stack() # debug the stack
+	#print_stack() # debug the stack
 	
 	if is_instance_valid(_ads):
 		#print_debug("Hiding Adds Banner")
@@ -274,11 +278,10 @@ func get_GameMenu() -> Game_Menu:
 # Optimise android ads
 func _on_AdMob_banner_loaded():
 	print_debug("Banner Ads Loaded")
+	BANNER_READY = true
 	
-	# Ad some sud to this account
+	Dialogs.show_dialog("Here's Your Reward! $SUD 1,000", "Admin")
 	Globals.suds += 1000
-	
-
 
 
 func _on_AdMob_banner_failed_to_load(error_code):
@@ -288,23 +291,39 @@ func _on_AdMob_banner_failed_to_load(error_code):
 	_debug.Ads_debug += "Banner Ads failed err" + str(error_code)
 
 	print_debug(_debug.Ads_debug)
-
+	BANNER_READY = false
 	
 
 
 func _on_AdMob_rewarded_video_loaded():
 	# offer the player a random item spin for 1 video
 	print_debug("rewarded video loaded")
-	
+	VIDEO_READY = true
 
 func show_rewarded_video_ads():
-	_ads.show_rewarded_video() # Show the rewarded video ad
+	# Rewarded Ads Logic accounts for 
+	# failure to load video ads
+	#
+	
+	print_debug("Showing Ads VIdeos / Banner Logic")
+	if VIDEO_READY && BANNER_READY:
+		_ads.show_rewarded_video() # Show the rewarded video ad
+
+	if !VIDEO_READY && BANNER_READY:
+		_ads.show_banner()
+		Globals.suds += 5_000
+		Dialogs.show_dialog("Here's Your Reward! $SUD 5,000", "A.T.M")
+	if !VIDEO_READY && !BANNER_READY:
+		print_debug("Ads was unable to load")
+		Dialogs.show_dialog("Wasn't Able to connect to the net, try again later", "A.T.M")
 
 
 
 func _on_AdMob_rewarded_video_opened():
 	print_debug("rewarded video opened")
 	Globals.suds += 10_000
+	#		Globals.suds += 10_000
+	Dialogs.show_dialog("Here's Your Reward! $SUD 10,000", "Admin")
 
 func _on_AdMob_rewarded_video_failed_to_load(error_code):
 	print_debug("rewarded video failed loading: ", error_code)

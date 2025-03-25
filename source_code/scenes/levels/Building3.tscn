@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/building3.webp" type="Texture" id=1]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/item1.webp" type="Texture" id=2]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/item2.webp" type="Texture" id=3]
 [ext_resource path="res://scenes/levels/Exit.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/UI & misc/dialog_trigger.tscn" type="PackedScene" id=6]
 
 [node name="Node2D" type="Node2D"]
 position = Vector2( 35.349, 384.143 )
@@ -38,3 +39,11 @@ scale = Vector2( 1.3579, 1.3579 )
 position = Vector2( 881.753, -405.318 )
 scale = Vector2( 8.56712, 0.674645 )
 to_scene = "res://scenes/levels/Building1.tscn"
+
+[node name="DialogueTrigger" parent="." instance=ExtResource( 6 )]
+position = Vector2( 646.143, 2250.12 )
+scale = Vector2( 8.37131, 1 )
+enabled = true
+dialogue = "Elevator is broken, Come Back Later"
+speaker = "Maintenance"
+DIALOGUE = true

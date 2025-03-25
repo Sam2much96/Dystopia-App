@@ -8,8 +8,10 @@ script = ExtResource( 2 )
 
 [node name="AdMob" type="Node" parent="."]
 script = ExtResource( 1 )
-banner_on_top = true
+is_real = true
+banner_size = "BANNER"
 rewarded_id = "ca-app-pub-3900377589557710/4046256488"
+child_directed = true
 
 [connection signal="banner_failed_to_load" from="AdMob" to="." method="_on_AdMob_banner_failed_to_load"]
 [connection signal="banner_loaded" from="AdMob" to="." method="_on_AdMob_banner_loaded"]

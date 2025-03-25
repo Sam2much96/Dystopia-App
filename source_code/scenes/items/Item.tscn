@@ -146,8 +146,6 @@ script = ExtResource( 2 )
 item_type = "Generic Item"
 
 [node name="sprite" type="Sprite" parent="."]
-position = Vector2( 0, -5.29408 )
-scale = Vector2( 1.4432, 0.417599 )
 texture = ExtResource( 1 )
 offset = Vector2( 0.36261, -19.2809 )
 

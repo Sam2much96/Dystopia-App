@@ -34,7 +34,8 @@ onready var anims : AnimationPlayer = $anims
 
 func _ready():
 	connect("body_entered", self, "_on_Item_body_entered")
-	pass
+	anims.play("spawn")
+	anims.play("idle")
 
 func _on_Item_body_entered(body): # use body : Player to make priority process
 	if body is Player:

@@ -62,9 +62,10 @@ func _on_coins_body_entered(body): # Priority Process
 		if amount != null:
 			call_deferred("disconnect", "body_entered", self, "_on_coins_body_entered")
 			#Inventory.add_item(item_type, amount)
-			Globals.algos = Globals.algos + amount #should be Algos instead
+			Globals.suds = Globals.suds + amount #should be Algos instead
 			
-			
+			# send update to status text hud via inventory route
+			Inventory.emit_signal("item_changed", "added", "$SUD", amount)
 			anims.play("collected")
 			Music.play_track("res://sounds/item_collected.ogg")
 			

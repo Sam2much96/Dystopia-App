@@ -23,4 +23,4 @@ Its a web 3.0 multimedia app with Top down RPG action game, Comics and Animated 
 
 **Trailer Video**
 
-[![Trailer video](https://img.youtube.com/vi/_ECBwS4xxlc/hqdefault.jpg)](https://youtu.be/_ECBwS4xxlc)
+[![Trailer video](https://img.youtube.com/vi/1uCnBV8EfCA/hqdefault.jpg)](https://youtu.be/1uCnBV8EfCA)

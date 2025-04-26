@@ -4,11 +4,10 @@
 
 [node name="Trees_TileMap" type="TileMap"]
 light_mask = 0
-position = Vector2( -65606, 2364 )
-scale = Vector2( 10, 10 )
+position = Vector2( -9557, 344 )
 tile_set = ExtResource( 10 )
-cell_size = Vector2( 85, 85 )
-cell_quadrant_size = 30
+cell_size = Vector2( 127, 127 )
+cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
 cell_tile_origin = 1
 show_collision = true
 centered_textures = true

@@ -124,11 +124,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://singletons/Globals.gd"
 }, {
-"base": "Node",
-"class": "GooglePlay",
-"language": "GDScript",
-"path": "res://New game code and features/google_play_games_services.gd"
-}, {
 "base": "HBoxContainer",
 "class": "Healthbar",
 "language": "GDScript",
@@ -198,11 +193,6 @@ _global_script_classes=[ {
 "class": "NPC",
 "language": "GDScript",
 "path": "res://scenes/characters/Npc.gd"
-}, {
-"base": "Node",
-"class": "OnlineLeaderboard",
-"language": "GDScript",
-"path": "res://New game code and features/online_leaderboard.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "Player",
@@ -453,7 +443,6 @@ _global_script_class_icons={
 "GameHUD": "",
 "Game_Menu": "",
 "GlobalsVar": "",
-"GooglePlay": "",
 "Healthbar": "res://resources/misc/Pixel Heart 32x32.png",
 "Help": "",
 "Idol": "",
@@ -468,7 +457,6 @@ _global_script_class_icons={
 "Login": "",
 "MarketPlace2D": "",
 "NPC": "",
-"OnlineLeaderboard": "",
 "Player": "",
 "Player_v1_TopDown": "",
 "Player_v2_networking": "",

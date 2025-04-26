@@ -19,9 +19,9 @@ position = Vector2( 242.552, 309.087 )
 script = ExtResource( 2 )
 speed = 1200
 jump_speed = -1800
-gravity = 4000
 GRAVITY_TIMEOUT = 0.5
 velocity = Vector2( 0, 0 )
+apply_GRAVITY = false
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 

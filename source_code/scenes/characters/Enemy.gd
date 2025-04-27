@@ -17,7 +17,6 @@
 # (4) Object pool processing
 # (5) Boids Algorithm
 # (6) Fix Projectile System
-# (7) Temporarily disabling Enemy AI for debugging and refactoring
 # (8) Mob state should implement boids algorith using Enemy Object Pool
 # (9) Enemy Simulation should be runnable from external scripts via exported functoins and variables
 # (10 ) Navigarion agent code should be thoroughtly debugged
@@ -76,7 +75,7 @@ var selected_frame_rate : int
 
 "Enemy Movement & Path Finding"
 
-export (Vector2) var velocity = Vector2.ZERO #the movement vector
+#export (Vector2) var velocity = Vector2.ZERO #the movement vector
 export (Vector2) var target_speed = Vector2() # used for walking State calculation
 #var m=0;  #distance variable
 
@@ -104,7 +103,6 @@ export(int) var hitpoints = 3 #enemy life
 
 
 export (Vector2) var linear_vel = Vector2.ZERO
-export (Vector2) var enemy_direction = Vector2(0,0)
 export (Vector2) var random_walk_direction : Vector2 = Vector2(100,100)
 
 
@@ -142,11 +140,11 @@ func _enter_tree():
 	
 	
 	# set processor's rate as a correlation of the enemy type
-	if self.enemy_type == "Easy":
+	if enemy_type == "Easy":
 		self.selected_frame_rate = SLOW_FRAME_RATE
-	if self.enemy_type == "Intermediate":
+	if enemy_type == "Intermediate":
 		self.selected_frame_rate = AVERAGE_FRAME_RATE
-	if self.enemy_type == "Hard":
+	if enemy_type == "Hard":
 		self.selected_frame_rate = FAST_FRAME_RATE
 	
 	# randomize seed generator
@@ -678,14 +676,4 @@ class Behaviour extends Reference:
 	static func rotate_pointer(point_direction: Vector2, pointer) -> void:
 		var temp =rad2deg(atan2(point_direction.x, point_direction.y))
 		pointer.rotation_degrees = temp
-
-
-#class Functions extends Reference:
-#	
-#	# calculates the center btw two vectors (player and target) as a static method callable from any script
-#	depreciated in favour for dynaamically typed singleton function
-#	static func calculate_center(player_position : Vector2, initial_position : Vector2)-> Vector2:
-#		
-#		var center = Utils.restaVectores(player_position, initial_position) 
-#		return center
 

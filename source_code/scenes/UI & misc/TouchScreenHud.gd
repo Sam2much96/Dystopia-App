@@ -521,22 +521,22 @@ func Horizontal():
 	# Position UI Nodes For Horizontal Screens
 	_left.rect_position =Vector2(83.482,453.99)
 	_left.rect_size =Vector2(87,87)
-	_left.rect_rotation =179.7
+	#_left.rect_rotation =179.7
 	_left.rect_scale = Vector2(1,1)
 	
 	_up.rect_position = Vector2(69.482,392.99)
 	_up.rect_size = Vector2(87,87)
-	_up.rect_rotation = -89.1
+	#_up.rect_rotation = -89.1
 	_up.rect_scale =Vector2(1,1)
 	
 	_right.rect_position = Vector2(127.482,372.99)
 	_right.rect_size = Vector2(87,87)
-	_right.rect_rotation = 0.8
+	#_right.rect_rotation = 0.8
 	_right.rect_scale = Vector2(1,1)
 	
 	_down.rect_position =Vector2(147.482,440.989)
 	_down.rect_size = Vector2(87,87)
-	_down.rect_rotation = 90.3
+	#_down.rect_rotation = 90.3
 	_down.rect_scale = Vector2(1,1)
 	
 	
@@ -576,22 +576,22 @@ func Vertical():
 	# Position UI Nodes HFor Horizontal Screens
 	_left.rect_position =Vector2(133.964,1920.99)
 	_left.rect_size =Vector2(87,87)
-	_left.rect_rotation =179.7
+	#_left.rect_rotation =179.7
 	_left.rect_scale = Vector2(2,2)
 	
 	_up.rect_position = Vector2(95.446,1786.98)
 	_up.rect_size = Vector2(87,87)
-	_up.rect_rotation = -89.1
+	#_up.rect_rotation = -89.1
 	_up.rect_scale =Vector2(2,2)
 	
 	_right.rect_position = Vector2(213.964,1742.99)
 	_right.rect_size = Vector2(87,87)
-	_right.rect_rotation = 0.8
+	#_right.rect_rotation = 0.8
 	_right.rect_scale = Vector2(2,2)
 	
 	_down.rect_position =Vector2(254.964,1865.99)
 	_down.rect_size = Vector2(87,87)
-	_down.rect_rotation = 90.3
+	#_down.rect_rotation = 90.3
 	_down.rect_scale = Vector2(2,2)
 	
 	

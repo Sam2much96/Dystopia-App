@@ -17,8 +17,8 @@ extends Control
 # ********************************************************************
 # Bugs:
 #(1) Redraw animation video assets to scale to mobile 
-#(2) 
-#(3)  
+#(2) Redo animation to use spritesheets & cutout animation nodes in godot for smoother video loading experience
+#(3) Reduse vram usage
 # *************************************************
 # 
 # 

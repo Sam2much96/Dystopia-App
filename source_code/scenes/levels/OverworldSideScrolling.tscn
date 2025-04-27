@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/DesertTiles-sheet.png" type="Texture" id=1]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/Desert_background_1.png" type="Texture" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=5]
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/Desert_background_3.png" type="Texture" id=6]
 [ext_resource path="res://scenes/UI & misc/Exit.gd" type="Script" id=7]
+[ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=8]
 
 [sub_resource type="TileSet" id=2]
 0/name = "DesertTiles-sheet.png 0"
@@ -259,3 +260,6 @@ to_scene = "res://scenes/levels/DuneProcedural.tscn"
 position = Vector2( 9359, 2719 )
 scale = Vector2( 32.76, 8.72 )
 shape = SubResource( 3 )
+
+[node name="Enemy" parent="." instance=ExtResource( 8 )]
+position = Vector2( 811, 1211 )

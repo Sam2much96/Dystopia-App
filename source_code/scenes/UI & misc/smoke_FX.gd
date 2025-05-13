@@ -7,13 +7,19 @@
 #(1) It processes and emits smoke effects using the cpu
 # (2) Read the Documentation for proper coding
 # (3) Features a state changer function to change the state from lower down the scene tree
+#
 # Bugs 
-#(1) it is a perfomance hog (fixed) 
+#
 #(2) It should be added to a class so other parent scenes can read and control it's state (Done)
 # (3) It should emit at least 2 signals
 # (4) Unable to turn emitting off programmatically
 # (5) Use State Machine to emit signals
 # (6) It's throtling between on and off states
+#
+# To DO
+# (1) Use in player's animation scene movements
+
+
 # *************************************************
 
 

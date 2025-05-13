@@ -3,7 +3,7 @@
 # Released under MIT License
 # *************************************************
 #
-# Enemy AI State Machine
+# Top Down Enemy AI State Machine
 #
 # This is the enemy mob AI machine
 # information used by the Enemy mob.
@@ -50,6 +50,8 @@
 # (7) Enemy Pathfinding Visual Debugging
 # (8) Spawn Randomized Items Upon Despawn
 # (9) Proximity Attack : Attacks player when in range
+
+
 
 
 extends KinematicBody2D
@@ -127,16 +129,19 @@ export (int) var state = STATE_MOB #Fixed
 
 
 "Enemy FX"
-var despawn_particles
+var despawn_particles : DeSpawnFX
 var blood : BloodSplatter
 
 var kick_back_distance : int 
 var pushback_direction : Vector2
 
+
+"Memory Safe Global Singleton Pointers"
+onready var local_utils = get_tree().get_root().get_node("/root/Utils") # Utils pointer
+onready var local_debug = Debug #get_tree().get_root().get_node("root/Debug") # Debug Pointer
+
+
 func _enter_tree():
-	# Create A Global reference to self
-	# To DO: Use Enemy Object Pool to run enemy ai via simulations
-	Utils.EnemyObjPool.append(self)
 	
 	
 	# set processor's rate as a correlation of the enemy type
@@ -152,15 +157,24 @@ func _enter_tree():
 
 
 func _ready():
+	# Create A Global reference to self
+	# To DO: Use Enemy Object Pool to run enemy ai via simulations
+	
+	local_utils.EnemyObjPool.append(self)
+	
+	
 	#player =get_tree().get_nodes_in_group('player').pop_front()
 	
 	# Disable Raycast
 	raycast.set_enabled(false) 
 	
+	# singleton data debugs
+	print_debug("Debug: ", local_debug, "/ ", "Utils: ", local_utils)
+	
 		# If the Frame Rate is Low, Optimizze Processor
 	# Bug: THis creates a scenerio where a players that hack the games enemies by overloading the processors
 	# Bug: Bugt It also allows for a smoothe framerate
-	if Debug.FPS_debug < 15:
+	if local_debug.FPS_debug < 15:
 		self.selected_frame_rate = IDIOT_FRAME_RATE
 	
 	kick_back_distance = Utils.calc_rand_number() # Calculates a random kickback distance
@@ -288,7 +302,7 @@ func _physics_process(_delta):
 		STATE_ROLL:
 			"Calculate DIstance to Player"
 			if player != null:
-				linear_vel = Utils.restaVectores(player.position, self.position) 
+				linear_vel = local_utils.restaVectores(player.position, self.position) 
 				linear_vel = move_and_slide(linear_vel) # THis line breaks if player is null
 				#var target_speed = Vector2()
 				if facing == "up":
@@ -473,7 +487,7 @@ func despawn()->  void:
 		get_node("item_spawner").spawn()
 	
 	#Remove Object from Ojbject pool
-	Utils.EnemyObjPool.erase(self)
+	local_utils.EnemyObjPool.erase(self)
 	
 	#Prevents memory leaks
 	#get_parent().remove_child(self)

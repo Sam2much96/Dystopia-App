@@ -77,7 +77,7 @@ _global_script_classes=[ {
 "base": "KinematicBody2D",
 "class": "Enemy",
 "language": "GDScript",
-"path": "res://scenes/characters/Enemy.gd"
+"path": "res://scenes/characters/TopDownEnemy.gd"
 }, {
 "base": "Area2D",
 "class": "Exit",

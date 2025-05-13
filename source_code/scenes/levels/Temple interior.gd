@@ -12,7 +12,3 @@ extends Node
 
 class_name TempleInterior
 
-#Play fx once the scene is ready
-
-func _ready():
-	$house_inside/AnimationPlayer.play("flames")

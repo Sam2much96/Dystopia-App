@@ -132,9 +132,10 @@ var viewport_size : Vector2
 var center_of_viewport : Vector2 
 
 "In Game FX"
-onready var blood_fx = load ('res://scenes/UI & misc/Blood_Splatter_FX.tscn') #only load this once gameplay is on (optimization)
-onready var despawn_fx = load ("res://scenes/UI & misc/DespawnFX.tscn")
+onready var blood_fx : PackedScene = load ('res://scenes/UI & misc/Blood_Splatter_FX.tscn') #only load this once gameplay is on (optimization)
+onready var despawn_fx : PackedScene = load ("res://scenes/UI & misc/DespawnFX.tscn")
 #onready var bullet_fx : PackedScene
+
 
 "Node Pointer"
 #var _smoke_fx_ 
@@ -206,13 +207,3 @@ func set_PlayerCam(camera_ref : FightCam):
 func get_PlayerCam() -> FightCam:
 	return player_cam
 
-
-
-#func _exit_tree():
-	
-#	"Deletes all Orphaned Nodes"
-
-#	"Prints All Orphaned Nodes"
-	# For proper Memory Leak Management
-	#Utils.MemoryManagement.queue_free_array(nodes)
-#	pass

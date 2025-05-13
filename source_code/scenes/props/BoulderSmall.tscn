@@ -11,7 +11,8 @@ radius = 22.5561
 position = Vector2( 25, -19 )
 scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 1 )
-hframes = 10
+hframes = 14
+vframes = 7
 frame = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

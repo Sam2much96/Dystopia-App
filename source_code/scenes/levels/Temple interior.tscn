@@ -31,24 +31,28 @@ texture = ExtResource( 1 )
 position = Vector2( 184.734, -1338.88 )
 rotation = 0.441097
 scale = Vector2( 3.26504, 3.26504 )
+enabled = true
 
 [node name="fire2" parent="house_inside" instance=ExtResource( 8 )]
 position = Vector2( -254.373, -1410.09 )
 rotation = -0.504928
 scale = Vector2( 3.26504, 3.26504 )
 flip_h = true
+enabled = true
 
 [node name="fire3" parent="house_inside" instance=ExtResource( 8 )]
 position = Vector2( -761.239, -642.466 )
 rotation = -1.44492
 scale = Vector2( 3.26504, 3.26504 )
 flip_h = true
+enabled = true
 
 [node name="fire4" parent="house_inside" instance=ExtResource( 8 )]
 position = Vector2( -763.299, 278.408 )
 rotation = -1.44492
 scale = Vector2( 3.26504, 3.26504 )
 flip_h = true
+enabled = true
 
 [node name="walls" type="StaticBody2D" parent="house_inside"]
 position = Vector2( 82.9004, 277.574 )

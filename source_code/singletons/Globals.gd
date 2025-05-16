@@ -126,8 +126,9 @@ onready var user_data_dir : String =OS.get_user_data_dir()
 
 
 "Screen Orientation"
-# for upscaling and wonscaling UI
-onready var screenOrientation : int = Utils.Screen.Orientation() 
+# for upscaling and downscaling UI
+onready var utils_singleton = get_node("/root/Utils")
+onready var screenOrientation : int = utils_singleton.Screen.Orientation() 
 var viewport_size : Vector2
 var center_of_viewport : Vector2 
 
@@ -191,12 +192,12 @@ func _go_to_title():
 	"Loads Large Scene"
 	# prep loading scene by setting the level to load as titlescreen
 	current_level = global_scenes["Title screen"]
-	Utils.Functions.change_scene_to(Globals.loading_scene, get_tree())
+	utils_singleton.Functions.change_scene_to(self.loading_scene, get_tree())
 
 
 func _go_to_cinematics():
 	cinematics = load(global_scenes["cinematics"])
-	Utils.Functions.change_scene_to(cinematics, get_tree())#get_tree().change_scene() 
+	utils_singleton.Functions.change_scene_to(cinematics, get_tree())#get_tree().change_scene() 
 	return 0
 
 

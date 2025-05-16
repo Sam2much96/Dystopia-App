@@ -80,16 +80,21 @@ var local_heart_box = null # Pointer To Heart Box HUD
 export(int) var peer_id: int = -99 # Dummpy Placeholder Peer id
 
 
-# For Despawn and Hit Collission Fx
-onready var blood: BloodSplatter = Globals.blood_fx.instance()
-onready var despawn_particles: DeSpawnFX = Globals.despawn_fx.instance()
-
-onready var die_sfx: String = Music.nokia_soundpack[27]
-onready var hurt_sfx: String = Music.nokia_soundpack[20]
-onready var dash_sfx : String = Music.wind_sfx[1]
-
-# Get Singletons
+# Get Global Singletons
 onready var music_singleton_: music_singleton = get_node("/root/Music")
+onready var global_singleton_= get_node("/root/Globals") #  : GlobalsVar 
+onready var utils_singleton_= get_node("/root/Utils") #  : GlobalsVar 
+
+
+# For Despawn and Hit Collission Fx
+onready var blood: BloodSplatter = global_singleton_.blood_fx.instance()
+onready var despawn_particles: DeSpawnFX = global_singleton_.despawn_fx.instance()
+
+onready var die_sfx: String = music_singleton_.nokia_soundpack[27]
+onready var hurt_sfx: String = music_singleton_.nokia_soundpack[20]
+onready var dash_sfx : String = music_singleton_.wind_sfx[1]
+
+
 
 """
 Update Global Scripts SO Other Nodes Are Aware Of Player
@@ -100,19 +105,12 @@ func _enter_tree():
 	# IF THis Code Bloc Breaks Its cuz youre running the scene from Overworld
 	# so it doesnt have time to load game hud scene into memeory and provide a safe pointer
 	
-	Globals.update_curr_scene()
-	Globals.players.append(self) # saves player to the Global player variable
+	global_singleton_.update_curr_scene()
+	global_singleton_.players.append(self) # saves player to the Global player variable
 	
 	'Makes Player Hitpoint a Global Variable'
-	Globals.player_hitpoints = hitpoints
+	global_singleton_.player_hitpoints = hitpoints
 	
-
-	# Enable TOuch HuD
-	#print_debug("Enabling Touch HUD For Player Input")
-	
-	
-	#"Check If Online" #Depreciated for Networking Enumerator
-	#OFFLINE = Simulation.all_player_objects.empty()
 
 
 func _ready():
@@ -177,7 +175,7 @@ func despawn():
 		blood.global_position = global_position
 	
 	# increase player's death count
-	Globals.death_count +=1
+	global_singleton_.death_count +=1
 	
 	self.hide()
 	
@@ -198,8 +196,8 @@ func respawn():
 	#Reboots the current scene if the Player Dies
 	# Reusing the preloaded scene resource
 	# Triggered with animation player
-	if Globals.scene_resource != null:
-		Utils.Functions.change_scene_to(Globals.scene_resource, get_tree())
+	if global_singleton_.scene_resource != null:
+		utils_singleton_.Functions.change_scene_to(global_singleton_.scene_resource, get_tree())
 	else:
 		get_tree().reload_current_scene()
 		emit_signal("health_changed", hitpoints)
@@ -207,7 +205,7 @@ func respawn():
 
 
 func shake(): # Shaky Cam FX
-	Globals.player_cam.shake()
+	global_singleton_.player_cam.shake()
 
 
 func hurt(from_position: Vector2):

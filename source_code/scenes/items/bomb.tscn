@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://resources/misc/bomb_128x128.webp" type="Texture" id=1]
+[ext_resource path="res://resources/Environment Tilesets & Tilemaps/godot_128x_dungeon_tileset.webp" type="Texture" id=1]
 [ext_resource path="res://scenes/items/Item.gd" type="Script" id=2]
 [ext_resource path="res://sounds/item_collected.ogg" type="AudioStream" id=3]
 [ext_resource path="res://scenes/Shaders/outline.shader" type="Shader" id=4]
@@ -158,6 +158,9 @@ amount = 5
 material = SubResource( 5 )
 texture = ExtResource( 1 )
 offset = Vector2( 0.36261, -19.2809 )
+hframes = 14
+vframes = 13
+frame = 20
 __meta__ = {
 "_edit_lock_": true
 }

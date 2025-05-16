@@ -7,11 +7,11 @@
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 31, -65 )
+position = Vector2( 32, -66 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 1 )
 hframes = 14
-vframes = 7
+vframes = 13
 frame = 7
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]

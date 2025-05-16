@@ -3,7 +3,7 @@
 [ext_resource path="res://scenes/Shaders/outline.shader" type="Shader" id=1]
 [ext_resource path="res://resources/misc/bomb_128x128.webp" type="Texture" id=2]
 [ext_resource path="res://scenes/items/bombexplosion.gd" type="Script" id=3]
-[ext_resource path="res://resources/FX/fire_tileset_128x128.webp" type="Texture" id=4]
+[ext_resource path="res://resources/Environment Tilesets & Tilemaps/godot_128x_dungeon_tileset.webp" type="Texture" id=4]
 [ext_resource path="res://scenes/Shaders/Impact.tscn" type="PackedScene" id=5]
 
 [sub_resource type="ShaderMaterial" id=2]
@@ -19,7 +19,7 @@ height = 30.0
 resource_name = "EXPLODE"
 length = 0.7
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite2:visible")
+tracks/0/path = NodePath("flames_sprite:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -31,7 +31,7 @@ tracks/0/keys = {
 "values": [ true, false ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:visible")
+tracks/1/path = NodePath("bomb_sprite:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -43,19 +43,19 @@ tracks/1/keys = {
 "values": [ false ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Sprite2:frame")
+tracks/2/path = NodePath("flames_sprite:frame")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 0, 1, 2, 3, 4, 5 ]
+"values": [ 35, 36, 37, 38, 39 ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("Sprite2:self_modulate")
+tracks/3/path = NodePath("flames_sprite:self_modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -114,7 +114,7 @@ tracks/6/keys = {
 resource_name = "FLASHING"
 length = 1.4
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:visible")
+tracks/0/path = NodePath("bomb_sprite:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -126,7 +126,7 @@ tracks/0/keys = {
 "values": [ true, false ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:self_modulate")
+tracks/1/path = NodePath("bomb_sprite:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -138,7 +138,7 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 0, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 0, 0, 0, 1 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Sprite2:visible")
+tracks/2/path = NodePath("flames_sprite:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -165,7 +165,7 @@ tracks/3/keys = {
 [sub_resource type="Animation" id=5]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:self_modulate")
+tracks/0/path = NodePath("bomb_sprite:self_modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -177,7 +177,7 @@ tracks/0/keys = {
 "values": [ Color( 0, 0, 0, 1 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite2:frame")
+tracks/1/path = NodePath("flames_sprite:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -189,7 +189,7 @@ tracks/1/keys = {
 "values": [ 2 ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Sprite2:visible")
+tracks/2/path = NodePath("flames_sprite:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -201,7 +201,7 @@ tracks/2/keys = {
 "values": [ false ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("Sprite2:self_modulate")
+tracks/3/path = NodePath("flames_sprite:self_modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -213,7 +213,7 @@ tracks/3/keys = {
 "values": [ Color( 1, 1, 1, 0 ) ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("Sprite:visible")
+tracks/4/path = NodePath("bomb_sprite:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
@@ -228,20 +228,20 @@ tracks/4/keys = {
 [node name="Area2D" type="Area2D"]
 script = ExtResource( 3 )
 
-[node name="Sprite" type="Sprite" parent="." groups=["weapon"]]
+[node name="bomb_sprite" type="Sprite" parent="." groups=["weapon"]]
 self_modulate = Color( 0, 0, 0, 1 )
 material = SubResource( 2 )
 position = Vector2( 11.0905, 13.6862 )
 texture = ExtResource( 2 )
 
-[node name="Sprite2" type="Sprite" parent="."]
+[node name="flames_sprite" type="Sprite" parent="."]
 visible = false
 self_modulate = Color( 1, 1, 1, 0 )
 position = Vector2( -25.3984, -161.915 )
 scale = Vector2( 3, 3 )
 texture = ExtResource( 4 )
-hframes = 3
-vframes = 2
+hframes = 14
+vframes = 13
 frame = 2
 
 [node name="Impact" parent="." instance=ExtResource( 5 )]

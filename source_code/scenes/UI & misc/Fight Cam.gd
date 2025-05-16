@@ -38,12 +38,15 @@ var trauma_power = 2  # Trauma exponent. Use [2, 3].
 onready var noise = OpenSimplexNoise.new() # Use procedural generation class code
 var noise_y = 0
 
+# safe pointer to global singletons
+onready var globals_singleton_ = get_node("/root/Globals") # : GlobalsVar
+
 func _ready():
 	
 	
 	# Make Global
 	# using a setter getter functions
-	Globals.player_cam = self
+	globals_singleton_.player_cam = self
 	
 	# seed random number generator
 	#Utils._randomize(self)

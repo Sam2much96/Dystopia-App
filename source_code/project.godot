@@ -422,7 +422,7 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "AdMob": "res://scenes/UI & misc/admob-lib/icon.png",
 "Algodot": "",
-"BloodSplatter": "res://resources/FX/Blood splatter fx.webp",
+"BloodSplatter": "",
 "Boulder_Big": "",
 "BrokenShip": "",
 "Bullet": "",

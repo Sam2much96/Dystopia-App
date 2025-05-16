@@ -37,11 +37,11 @@ tracks/0/keys = {
 [sub_resource type="CircleShape2D" id=1]
 radius = 26.9258
 
-[node name="Sprite" type="Sprite"]
+[node name="fire" type="Sprite"]
 position = Vector2( -19, -24 )
 texture = ExtResource( 1 )
 hframes = 14
-vframes = 7
+vframes = 13
 frame = 35
 script = ExtResource( 2 )
 

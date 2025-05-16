@@ -11,12 +11,17 @@ extends Node2D
 # (2) Collision detection in grass and other items
 # (3) Area 2d is currently disabled
 
-
+export (bool) var enabled : bool 
 onready var anim : AnimationPlayer = $AnimationPlayer
 
 
 func _ready():
+	if enabled:
+		# Plays the Flames animation in a recursive loop
+		#
+		anim.play("flames")
+
+func flames():
+	# plays the flames animation via script in external scenes
 	
-	# Plays the Flames animation in a recursive loop
-	#
 	anim.play("flames")

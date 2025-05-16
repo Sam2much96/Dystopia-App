@@ -3,5 +3,5 @@
 [ext_resource path="res://resources/Environment Tilesets & Tilemaps/desert dunes 3d.webp" type="Texture" id=1]
 
 [node name="Sprite" type="Sprite"]
-position = Vector2( 648, 360 )
+position = Vector2( 649, 360 )
 texture = ExtResource( 1 )

@@ -260,32 +260,32 @@ HINT = true
 
 [node name="DialogueTrigger2" parent="DialogueEvents" instance=ExtResource( 15 )]
 position = Vector2( 883, 2444 )
-enabled = true
 dialogue = "Left: Merchant
 Up : Temple"
+enabled = true
 DIALOGUE = true
 
 [node name="DialogueTrigger3" parent="DialogueEvents" instance=ExtResource( 15 )]
 position = Vector2( 2667, -4885 )
-enabled = true
 dialogue = "Left :Abbi city
 Down : Deserts"
+enabled = true
 DIALOGUE = true
 
 [node name="DialogueTrigger6" parent="DialogueEvents" instance=ExtResource( 15 )]
 position = Vector2( 8573, -4781 )
-enabled = true
 dialogue = "Dangerous Hole!!!
 Avoid!!! 
 Don't Fall Inside!!!"
+enabled = true
 DIALOGUE = true
 
 [node name="DialogueTrigger4" parent="DialogueEvents" instance=ExtResource( 15 )]
 position = Vector2( 11334, -4684 )
 rotation = -1.54857
 scale = Vector2( 15, -0.126 )
-enabled = true
 dialogue = "Abbi CIty, Enemies here are tougher to beat, be careful"
+enabled = true
 speaker = "Aarin"
 DIALOGUE = true
 
@@ -293,8 +293,8 @@ DIALOGUE = true
 position = Vector2( 3613, 3703 )
 rotation = -1.54857
 scale = Vector2( 7.68892, -1.45012 )
-enabled = true
 dialogue = "Does It Still Fly?"
+enabled = true
 speaker = "Aarin"
 DIALOGUE = true
 

@@ -20,7 +20,10 @@ extends Control
 #(2) Redo animation to use spritesheets & cutout animation nodes in godot for smoother video loading experience
 #(3) Reduse vram usage
 # *************************************************
-# 
+# To DO:
+# (1) Map to multiple cutscenes 
+# (2) Include a click to continue and pause_waiting_for_input function for all cutscenes
+# (3) Create 2d and 3d cutscenes using player 3d models, shape space + uv unwrap for expressions and 2d char rig for 2d cutscenes
 # 
 # *************************************************
 

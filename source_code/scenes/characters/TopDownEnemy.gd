@@ -115,11 +115,11 @@ export (String) var anim = ""
 export (String) var new_anim = ""
 
 enum { 
-	STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, # implemented 
-	STATE_DIE, STATE_HURT, STATE_MOB, # implemented
+	STATE_IDLE, STATE_WALKING, STATE_ATTACK, STATE_ROLL, 
+	STATE_DIE, STATE_HURT, STATE_MOB, 
 	STATE_PROJECTILE, STATE_PLAYER_SIGHTED, # unimplemented
 	STATE_PLAYER_HIDDEN , STATE_NAVIGATION_AI #unimplemented
-	} # state machine needs expansion
+	}
 
 
 # Enemy Animation Player
@@ -189,22 +189,6 @@ func _process(_delta):
 	#debug() #turn off when not debugging
 	
 	
-	# Debug MOb Calculation
-	#print_debug(abs(linear_vel.x),"/",abs(linear_vel.y))
-	
-	#if player != null:
-	
-	"Proximity Attack Logic"
-	# buggy
-	# use behavoiural logic instead
-	#if abs(linear_vel.x) && abs(linear_vel.y) <= 8 and player != null: # Player is in clo9se proximity
-	#	state = STATE_ATTACK
-	#else : state = STATE_IDLE # change to state walk for random enemy parterns
-	
-	# Raises up a Frame Counter
-	#frame_counter += 1
-	
-
 	"""
 	ENEMY PROCESS LOGIC
 	"""
@@ -238,19 +222,6 @@ func _process(_delta):
 			enemy_distance_to_player,
 			center
 			)
-	#	
-	#if player == null: # DUplicate State, TUrning off
-	#	facing = Behaviour.update_facing(self.position, random_walk_direction, null, pointer, facing, Vector2(0,0))
-	#	
-	#	
-	#	"Enemy Behaviour Logic 2"
-	#	# Creates predictable enemy behaviour depending on certain parameters
-	#	#state = Behaviour.behaviour_logic(hitpoints, raycast, player, player.position, self.position , self, enemy_type, state, enemy_distance_to_player)
-	#	state = STATE_WALKING
-
-
-	#if hitpoints <= 0: # Dies if hitpoint is zero # DUplicate state
-	#	state = STATE_DIE
 
 
 func _physics_process(_delta):

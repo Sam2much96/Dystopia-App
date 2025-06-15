@@ -114,7 +114,6 @@ resource_name = "play"
 [node name="Music" type="Node"]
 pause_mode = 2
 script = ExtResource( 1 )
-music_on = true
 sfx_on = true
 volume = 10
 

@@ -119,7 +119,7 @@ func _ready():
 	# Make self global 
 	# uses setter and getter functions for proper code handling 
 	Inventory.stats_ui = self
-	GlobalInput.Stats_ = self
+	GameHud.Stats_ = self
 	
 	#Regex for Inventory Update
 	regex.compile("(\\d+)")
@@ -159,7 +159,9 @@ func _fetch_prices():
 	if !local_networking.Data.empty():
 		#push_warning("Price Data has been fetched")
 		return
-		
+	
+	print_debug("port api to version 2")
+	
 	if local_networking.Data.empty():
 		print_debug ("fetching price data from Vestige API")
 		local_networking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , local_networking) #
@@ -229,7 +231,7 @@ func _update_inventory_button_cache(item : String, amount : int) : # COde Bloc C
 
 func _update_inventory_listing():
 	"Inventory UI Logic"
-	# Refactoring?
+	# Stats ui -> inventory connection
 	
 	# Updates the Inventroy Button with the Items the Player holds
 	# Note: As the Number of Items grow, inventory might require a more encompassing method && UI
@@ -291,7 +293,7 @@ func _update_inventory_listing():
 					
 					# connect button to inventory singleton method
 					#
-					new_item_button.connect("pressed", _inventory, "remove_item",[item, 1]) # button presses 
+					new_item_button.connect("pressed", _inventory, "useItem",[item, 1]) # button presses 
 					
 					# Create a pointer to Inventory ui buttons
 					_stats_buttons.append(new_item_button)

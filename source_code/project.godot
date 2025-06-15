@@ -14,20 +14,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/admob-lib/admob.gd"
 }, {
-"base": "Node",
-"class": "Algodot",
-"language": "GDScript",
-"path": "res://scenes/Wallet/Algod.gd"
-}, {
 "base": "CPUParticles2D",
 "class": "BloodSplatter",
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Blood_Splatter_FX.gd"
-}, {
-"base": "StaticBody2D",
-"class": "Boulder_Big",
-"language": "GDScript",
-"path": "res://scenes/props/Boulder Big.gd"
 }, {
 "base": "StaticBody2D",
 "class": "BrokenShip",
@@ -134,20 +124,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Help.gd"
 }, {
-"base": "Area2D",
-"class": "Idol",
-"language": "GDScript",
-"path": "res://scenes/props/idol.gd"
-}, {
 "base": "Node2D",
 "class": "ImpactFX",
 "language": "GDScript",
 "path": "res://scenes/Shaders/impact_effect_script.gd"
-}, {
-"base": "Control",
-"class": "Input_Buffer",
-"language": "GDScript",
-"path": "res://singletons/Input.gd"
 }, {
 "base": "HTTPRequest",
 "class": "Internet",
@@ -409,11 +389,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/smoke_FX.gd"
 }, {
-"base": "Control",
-"class": "wallet",
-"language": "GDScript",
-"path": "res://scenes/Wallet/Wallet.gd"
-}, {
 "base": "OptionButton",
 "class": "wallet_controller",
 "language": "GDScript",
@@ -421,9 +396,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AdMob": "res://scenes/UI & misc/admob-lib/icon.png",
-"Algodot": "",
 "BloodSplatter": "",
-"Boulder_Big": "",
 "BrokenShip": "",
 "Bullet": "",
 "ChatGPTAPI": "",
@@ -445,9 +418,7 @@ _global_script_class_icons={
 "GlobalsVar": "",
 "Healthbar": "res://resources/misc/Pixel Heart 32x32.png",
 "Help": "",
-"Idol": "",
 "ImpactFX": "",
-"Input_Buffer": "",
 "Internet": "",
 "JoyStickUI": "",
 "JoystickCircle": "",
@@ -500,7 +471,6 @@ _global_script_class_icons={
 "projectile": "",
 "quest": "",
 "smoke_fx": "",
-"wallet": "",
 "wallet_controller": ""
 }
 
@@ -527,8 +497,7 @@ Networking="*res://singletons/Networking.tscn"
 Utils="*res://singletons/Utils.gd"
 Simulation="*res://singletons/Simulation.tscn"
 Android="*res://singletons/Android.tscn"
-GlobalInput="*res://singletons/Input.tscn"
-FPSGraphOverlay="*res://addons/fps_graph_overlay/FPSGraphOverlay.tscn"
+GameHud="*res://scenes/UI & misc/GameHUD.tscn"
 
 [debug]
 
@@ -549,7 +518,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/fps_graph_overlay/plugin.cfg", "res://addons/orphan_import_file_cleaner/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/orphan_import_file_cleaner/plugin.cfg" )
 
 [gdnative]
 
@@ -660,10 +629,11 @@ file_logging/max_log_files=1
 [physics]
 
 2d/thread_model=2
+3d/default_gravity=12.0
 
 [rendering]
 
-quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
 misc/lossless_compression/webp_compression_level=9
+gles2/compatibility/disable_half_float=true
 gles2/compatibility/disable_half_float.iOS=false

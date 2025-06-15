@@ -62,21 +62,24 @@ func _on_Exit_body_entered(body):
 		
 		
 		# Save Game
+		# To DO: 
+		# (1) Save game should only save the parameters it needs rather than the whole thing
 		
-		Utils.Functions.save_game(
-			[body], 
-			body.hitpoints, 
-			body.position.x, 
-			body.position.y, 
-			to_scene, 
-			"", 
-			Globals.kill_count, 
-			"", 
-			null, 
-			""
-		) 
+		# Temporarily disabling for refactor jun 15/2025
+		#Utils.Functions.save_game(
+		#	[body], 
+		#	body.hitpoints, 
+		#	body.position.x, 
+		#	body.position.y, 
+		#	to_scene, 
+		#	"", 
+		#	Globals.kill_count, 
+		#	"", 
+		#	null, 
+		#	""
+		#) 
 		
-		print_debug ("Finished Saving Game")
+		#print_debug ("Finished Saving Game")
 		
 		if  to_scene.empty(): # Error Catcher 1
 			push_error("Error changing scenes: to_scene has no assigned scene")

@@ -108,8 +108,7 @@ func _on_Area2D_body_exited(_body):
 
 # Triggers a Spawn When Player Body Enters the Collision
 func _on_Area2D_body_entered(body):
-	if body is 
-	Player:
+	if body is Player:
 		
 		#print_debug("Player Enters Enemy Spawn Range")
 		spawn_enemy()
@@ -118,18 +117,18 @@ func _on_Area2D_body_entered(body):
 		#
 		#
 		
-		Utils.Functions.save_game(
-		[body], 
-		body.hitpoints, 
-		body.position.x, 
-		body.position.y, 
-		Globals.curr_scene, 
-		"", 
-		Globals.kill_count, 
-		"", 
-		null, 
-		""
-		) 
+		#Utils.Functions.save_game(
+		#[body], 
+		#body.hitpoints, 
+		#body.position.x, 
+		#body.position.y, 
+		#Globals.curr_scene, 
+		#"", 
+		#Globals.kill_count, 
+		#"", 
+		#null, 
+		#""
+		#) 
 
 
 

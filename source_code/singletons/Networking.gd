@@ -84,7 +84,7 @@ signal Timeout
 
 #******************Pointer To Child Nodes********************#
 onready var timer :Timer  = $Timer2
-onready var Wallet_ : wallet
+#onready var Wallet_ : wallet
 #onready var _reference_to_self = self#get_node('/root/Networking') #formerly _y
 onready var _reference_to_debug =get_node('/root/Debug') #formerly _y
 

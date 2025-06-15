@@ -1,7 +1,7 @@
 [gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://scenes/characters/TopDownPlayer.gd" type="Script" id=1]
-[ext_resource path="res://resources/Aarin/spritesheet_5.webp" type="Texture" id=2]
+[ext_resource path="res://resources/Aarin/player_tileset_128x128.webp" type="Texture" id=2]
 [ext_resource path="res://scenes/Shaders/BlueNoise.webp" type="Texture" id=3]
 [ext_resource path="res://scenes/Shaders/DirectionalBlur.shader" type="Shader" id=4]
 [ext_resource path="res://scenes/Shaders/Impact.tscn" type="PackedScene" id=5]
@@ -1465,8 +1465,6 @@ ROLL_SPEED = 1500
 
 [node name="sprite" type="Sprite" parent="."]
 material = SubResource( 1 )
-position = Vector2( -14.72, -115.004 )
-scale = Vector2( 0.676, 0.676 )
 texture = ExtResource( 2 )
 hframes = 8
 vframes = 7
@@ -1488,9 +1486,8 @@ rotation = 2.30938
 polygon = PoolVector2Array( -91.5168, 17.4712, -49.7053, 33.7712, -36.5348, 110.047, 35.867, 113.696, 44.7355, 32.9416, 90.0337, 28.9744, 135.867, -41.8589, 45.4412, -44.8453, 33.0892, -126.582, -28.0219, -121.026, -35.1723, -51.082, -122.466, -43.2478 )
 
 [node name="camera" type="Camera2D" parent="."]
-position = Vector2( 6.30249, -86.9744 )
 current = true
-zoom = Vector2( 1.8, 1.8 )
+zoom = Vector2( 0.5, 0.5 )
 script = ExtResource( 6 )
 min_zoom = 0.5
 max_zoom = 2

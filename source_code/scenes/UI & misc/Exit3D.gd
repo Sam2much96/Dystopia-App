@@ -70,6 +70,7 @@ func _on_body_entered(body):
 
 
 func _on_Timer_timeout():
+	# disabled for 3d scene prototyping
 	#print_debug(Globals.curr_scene)
 	if  to_scene == "":
 		push_error("Error changing scenes: to_scene has no assigned scene")

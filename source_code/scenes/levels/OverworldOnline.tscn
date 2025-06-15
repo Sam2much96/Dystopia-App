@@ -6,7 +6,7 @@
 [ext_resource path="res://scenes/levels/ForestTilemap.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/props/Temple exterior.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/items/Arrow.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/levels/Tilemap_1_overworld.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/levels/Overworld_TopDown.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/props/flowers.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/levels/Exit.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/props/Grass.tscn" type="PackedScene" id=11]

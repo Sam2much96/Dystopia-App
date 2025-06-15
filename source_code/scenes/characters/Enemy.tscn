@@ -1,7 +1,7 @@
 [gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://scenes/characters/TopDownEnemy.gd" type="Script" id=1]
-[ext_resource path="res://resources/FX/pj.png" type="Texture" id=2]
+[ext_resource path="res://resources/pj/enemy_tileset_128x128.webp" type="Texture" id=2]
 [ext_resource path="res://scenes/items/ItemSpawner.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/items/Item.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/items/coins.tscn" type="PackedScene" id=5]
@@ -1176,13 +1176,12 @@ script = ExtResource( 1 )
 hitpoints = 1
 
 [node name="sprite" type="Sprite" parent="."]
-modulate = Color( 0, 0, 0, 1 )
 position = Vector2( 6.30249, -86.9744 )
 texture = ExtResource( 2 )
 flip_h = true
 hframes = 8
-vframes = 4
-frame = 9
+vframes = 5
+frame = 21
 
 [node name="hitbox" type="CollisionShape2D" parent="."]
 position = Vector2( -0.882385, -27.9806 )
@@ -1215,6 +1214,7 @@ collision_mask = 2
 
 [node name="slash" type="CollisionPolygon2D" parent="enemy_sword"]
 polygon = PoolVector2Array( -134.513, -92.9393, -124.246, 19.4555, -59.4026, 109.155, 76.2278, 112.938, 75.147, 26.4802, -2.66479, 20.5363, -36.1671, -8.64319, -57.2411, -40.5244 )
+disabled = true
 
 [node name="hurtbox" type="Area2D" parent="."]
 position = Vector2( 0, -75.3193 )

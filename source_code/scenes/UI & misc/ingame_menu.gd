@@ -83,7 +83,9 @@ func _ready():
 	
 	# Make Global
 	Android.ingameMenu = self
-	GlobalInput.menu = self
+	
+	print_debug("todo: connect to GameHUD Menu", self.name)
+	#GlobalInput.menu = self
 	
 	#Buttons
 	comics  = $ScrollContainer/HSeparator/lore

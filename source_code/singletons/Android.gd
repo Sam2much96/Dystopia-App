@@ -257,7 +257,7 @@ func _process(_delta):
 func _on_player_ready():
 	if _is_android == true:
 		GlobalInput.TouchInterface.enabled = true
-		Android.show_all_buttons() # Show Touch HUD UI
+		#Android.show_all_buttons() # Show Touch HUD UI
 
 
 func set_TouchInterface(hud : TouchScreenHUD):

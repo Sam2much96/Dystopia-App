@@ -48,6 +48,10 @@ var buffer : Dictionary = {
 var stats_ui : Stats setget set_Stats_UI, get_Stats_UI 
 
 
+# Safe pointer to music singleton
+onready var local_music_singletion = Music
+onready var item_use_sfx : String = local_music_singletion.item_use_sfx[0]
+
 # Intanciable items
 onready var bullet : PackedScene = preload("res://scenes/items/Bullet.tscn")
 onready var bomb_explosion : PackedScene = preload("res://scenes/items/bombexplosion.tscn")
@@ -85,17 +89,21 @@ func add_item(type:String, amount:int) -> bool:
 """
 REMOVES ITEMS FROM THE INVENTORY DICTIONARY
 """
-# Logic : Uses INventory keys as a parameter
-func remove_item(type:String, amount:int) -> bool:
+# Features : 
+# (1) Uses Inventory keys as a parameter
+#
+#
+func useItem(type:String, amount:int) -> bool:
 	# Refactor remove item to connect to Stats amd Update properly
 	#print_debug("Inventory button pressed", type, amount)
 	
 	
 	
-	Music.play_track("res://sounds/item_collected.ogg")
+	local_music_singletion.play_track(item_use_sfx)
+	
 	var player = get_tree().get_nodes_in_group("player")[0] 
 	
-	if inventory.has(type) and inventory[type] >= amount:
+	if inventory.has(type) and inventory[type] >= amount: 
 		inventory[type] -= amount
 		
 		stats_ui._update_inventory_button_cache(type, amount) # Testing Functions

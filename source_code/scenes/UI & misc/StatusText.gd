@@ -34,7 +34,7 @@ var messages : Array = []
 onready var anims : AnimationPlayer = $anims
 func _enter_tree():
 	# Make GLobal
-	GlobalInput._Status_text = self
+	GameHUD.TouchInterface.input_buffer._Status_text = self
 
 
 func _ready():

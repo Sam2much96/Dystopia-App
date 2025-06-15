@@ -41,7 +41,7 @@ class_name music_singleton
 signal music_finished
 
 #add more controls to this script, it breaks the singleton
-export (bool) var music_on 
+export (bool) var enable 
 export (bool) var sfx_on
 export (int) var volume # volume controller code is not yet written
 export (int) var play_back_position : float
@@ -63,23 +63,7 @@ export (Dictionary) var default_playlist : Dictionary ={
 	10:"res://music/Marble Tower 4.ogg",
 }
 
-# Files Hosted on AWS S3 Bucket
-# file checker should loop through playlist
-export (Dictionary) var local_playlist_one : Dictionary = {
-	0:'res://music/310-world-map-loop.ogg', 
-	1:'user://Music/Dystopia-App/source_code/music/chike san afro 1.ogg',
-	2:'user://Music/Dystopia-App/source_code/music/chike san afro 2.ogg',
-	3:'user://Music/Dystopia-App/source_code/music/chike san afro 3.ogg',
-	4:'user://Music/Dystopia-App/source_code/music/Astrolife chike san.ogg',
-	5:'user://Music/Dystopia-App/source_code/music/a-2-3-groovy-bgm.ogg',
-	6:'user://Music/Dystopia-App/source_code/music/Spooky-Chike-san song.ogg',
-	7:'user://Music/Dystopia-App/source_code/music/6Feet.ogg',
-	8:'user://Music/Dystopia-App/source_code/music/Blow.ogg',
-	9:'user://Music/Dystopia-App/source_code/music/HENSONN_SAHARA.ogg',
-	10:'user://Music/Dystopia-App/source_code/music/Moya.ogg',
-	11:'user://Music/Dystopia-App/source_code/music/Turn up.ogg',
-	12:'user://Music/Dystopia-App/source_code/music/310-world-map-loop.ogg',
-}
+
 
 export (Dictionary) var comic_sfx : Dictionary = {
 	0: 'res://sounds/book_flip.1.ogg',
@@ -97,6 +81,11 @@ export (Dictionary) var comic_sfx : Dictionary = {
 export (Dictionary) var ui_sfx : Dictionary = {
 	0:'res://sounds/Menu1A.ogg',
 	1:'res://sounds/Menu1B.ogg',
+}
+
+
+export (Dictionary) var item_use_sfx : Dictionary = {
+	0: "res://sounds/item_collected.ogg"
 }
 
 export (Dictionary) var blood_fx : Dictionary = {
@@ -249,32 +238,25 @@ func _ready():
 	
 	
 	"load on/off music settings"
-	Utils.Functions.load_game(true, Globals)
+	#Utils.Functions.load_game(true, Globals)
 	
 	"Check If Node Paths Are Broken"
 	Utils.UI.check_for_broken_links(my_nodes)
 
-	print_debug("Music_on_settings :",bool (music_on))
+	print_debug("Music_on_settings :",bool (enable))
 	#	music_on = bool (Music_on_settings)
 	
 	
 	"Music Player Logic"
-	if music_on == true:
+	if enable :
 		
 		"Default Music"
 		randomize()
 		music_track = shuffle(default_playlist)
-		
-		
-		# Debug Music Track
 		#print_debug("Mus Track Debug: ",music_track)
-	if music_on:
-		
 		play(music_track) #Not needed for release
 		
-		
-		
-	if music_on == false:
+	if !enable:
 		A.stop()
 
 
@@ -298,7 +280,7 @@ func _process(_delta):
 	"""
 	# Bugs:
 	# (1) Bugs Out In Headless Server Build
-	if music_on == false:
+	if enable == false:
 		return
 	
 	if Music_streamer == null:
@@ -353,25 +335,30 @@ func play(_stream: String):
 	#it bugs out when the music track node is added to a scene
 	# Bugs:
 	# (1) Method is called Twice During process funtion and loads 2 different music tracks
-	if _stream != null or !_stream.empty(): #null error
-		if current_track == "a":
-			print_debug("Load Track A: ", _stream)
-			B.stream = load(_stream) #invalid funtion load, cannot convert arguement from nil to string
-			transitions.play("AtoB")
-			current_track = "b"
-			music_on = true
-			return
-		else:
-			print_debug("Load Track B: ", current_track, "/", _stream)
-			A.stream = load(_stream)
-			transitions.play("BtoA")
-			current_track = "a"
-			music_on = true
-			return
-	if _stream.empty() :
+	if _stream == null: return # guard clauses
+	if _stream.empty(): return
+	if _stream.empty() : # debug
 		push_error('Music stream is null, fix')
 		print_debug('Stream:',stream, _stream)
 		print_debug('Music Track',music_track)
+	
+	if !enable : return
+	
+	
+	if current_track == "a":
+		print_debug("Load Track A: ", _stream)
+		B.stream = load(_stream) #invalid funtion load, cannot convert arguement from nil to string
+		transitions.play("AtoB")
+		current_track = "b"
+		enable = true
+		return
+	else:
+		print_debug("Load Track B: ", current_track, "/", _stream)
+		A.stream = load(_stream)
+		transitions.play("BtoA")
+		current_track = "a"
+		enable = true
+		return
 	
 	Utils.Functions.save_game(
 		[], 
@@ -385,7 +372,7 @@ func play(_stream: String):
 		null,
 		""
 		)
-	print_debug('Play Music setting debug: ', music_on) #For Debug purposes only
+	print_debug('Play Music setting debug: ', enable) #For Debug purposes only
 
 
 func clear():# triggers an autodelete in music track nodes
@@ -515,7 +502,7 @@ func _exit_tree():
 	grass_sfx.clear()
 	ui_sfx.clear()
 	comic_sfx.clear()
-	local_playlist_one.clear()
+	item_use_sfx.clear()
 	nokia_soundpack.clear()
 	sword_sfx.clear()
 	wind_sfx.clear()

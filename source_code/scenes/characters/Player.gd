@@ -104,13 +104,15 @@ func _enter_tree():
 	
 	# IF THis Code Bloc Breaks Its cuz youre running the scene from Overworld
 	# so it doesnt have time to load game hud scene into memeory and provide a safe pointer
+	# temporarily disabling for refactor 2/June 2025. Would turn on later
+	if global_singleton_:
+		global_singleton_.update_curr_scene()
+		global_singleton_.players.append(self) # saves player to the Global player variable
 	
-	global_singleton_.update_curr_scene()
-	global_singleton_.players.append(self) # saves player to the Global player variable
-	
-	'Makes Player Hitpoint a Global Variable'
-	global_singleton_.player_hitpoints = hitpoints
-	
+		'Makes Player Hitpoint a Global Variable'
+		global_singleton_.player_hitpoints = hitpoints
+	else:
+		push_error("player script not detecting  global singleton on start")
 
 
 func _ready():
@@ -119,7 +121,7 @@ func _ready():
 	#Behaviour.AutoSpawn(self)
 	# Set Player Object To The Minimap
 	# TO DO : Use Signals for cleaner Implementation
-	GlobalInput.gameHUD._Stats._Mini_map.player_node = self # TO Do : Fix Onready var bug
+	GameHud._Stats._Mini_map.player_node = self # TO Do : Fix Onready var bug
 	
 	Android.emit_signal("player_ready") # Triggers Android Specific Config for Player Movement
 	
@@ -132,12 +134,12 @@ func _ready():
 		print_debug("Error connecting to dialog system")
 	
 	# COnnect To Health Bar Node via Global Input Singleton
-	if not is_instance_valid(GlobalInput.gameHUD.heart_box):
+	if not is_instance_valid(GameHud.heart_box):
 		push_error("Error Connecting To The Heart Box System")
 		print_debug("Error Connecting To The Heart Box System")
 	
-	if is_instance_valid(GlobalInput.gameHUD.heart_box):
-		local_heart_box = GlobalInput.gameHUD.heart_box
+	if is_instance_valid(GameHud.heart_box):
+		local_heart_box = GameHud.heart_box
 		self.connect("health_changed", local_heart_box, "_on_health_changed")
 		
 		update_heart_box()

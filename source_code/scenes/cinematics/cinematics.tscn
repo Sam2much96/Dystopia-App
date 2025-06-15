@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=2]
+[gd_scene load_steps=50 format=2]
 
 [ext_resource path="res://scenes/cinematics/cinematics V2.gd" type="Script" id=1]
 [ext_resource path="res://resources/title animation/Dystopia Logo Drop shadow.png" type="Texture" id=2]
@@ -44,11 +44,6 @@
 [ext_resource path="res://resources/title animation/intro_animation_sprites/hands_1.webp" type="Texture" id=42]
 [ext_resource path="res://resources/title animation/intro_animation_sprites/hands_3.webp" type="Texture" id=43]
 [ext_resource path="res://resources/title animation/intro_animation_sprites/hands_2.webp" type="Texture" id=44]
-[ext_resource path="res://resources/title animation/TypeScript.webp" type="Texture" id=45]
-[ext_resource path="res://resources/title animation/GitHub.webp" type="Texture" id=46]
-[ext_resource path="res://resources/title animation/Kotlin.webp" type="Texture" id=47]
-[ext_resource path="res://resources/title animation/Node.js.webp" type="Texture" id=48]
-[ext_resource path="res://resources/title animation/Rust_Transparent.webp" type="Texture" id=49]
 
 [sub_resource type="SpriteFrames" id=5]
 animations = [ {
@@ -233,7 +228,7 @@ tracks/12/keys = {
 "values": [ false ]
 }
 tracks/13/type = "value"
-tracks/13/path = NodePath("rust:visible")
+tracks/13/path = NodePath("front_view:position")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/imported = false
@@ -241,76 +236,16 @@ tracks/13/enabled = true
 tracks/13/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
+"update": 0,
+"values": [ Vector2( 505, 304 ) ]
 }
 tracks/14/type = "value"
-tracks/14/path = NodePath("github:visible")
+tracks/14/path = NodePath("cape:position")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/imported = false
 tracks/14/enabled = true
 tracks/14/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
-tracks/15/type = "value"
-tracks/15/path = NodePath("typescript:visible")
-tracks/15/interp = 1
-tracks/15/loop_wrap = true
-tracks/15/imported = false
-tracks/15/enabled = true
-tracks/15/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
-tracks/16/type = "value"
-tracks/16/path = NodePath("kotlin:visible")
-tracks/16/interp = 1
-tracks/16/loop_wrap = true
-tracks/16/imported = false
-tracks/16/enabled = true
-tracks/16/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
-tracks/17/type = "value"
-tracks/17/path = NodePath("nodejs:visible")
-tracks/17/interp = 1
-tracks/17/loop_wrap = true
-tracks/17/imported = false
-tracks/17/enabled = true
-tracks/17/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
-tracks/18/type = "value"
-tracks/18/path = NodePath("front_view:position")
-tracks/18/interp = 1
-tracks/18/loop_wrap = true
-tracks/18/imported = false
-tracks/18/enabled = true
-tracks/18/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 505, 304 ) ]
-}
-tracks/19/type = "value"
-tracks/19/path = NodePath("cape:position")
-tracks/19/interp = 1
-tracks/19/loop_wrap = true
-tracks/19/imported = false
-tracks/19/enabled = true
-tracks/19/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
@@ -319,7 +254,7 @@ tracks/19/keys = {
 
 [sub_resource type="Animation" id=2]
 resource_name = "opening_cinematic"
-length = 30.0
+length = 25.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("logo:rect_position")
 tracks/0/interp = 1
@@ -369,127 +304,127 @@ tracks/3/keys = {
 "values": [ false, true, false ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("github:visible")
+tracks/4/path = NodePath("logo:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 8.2, 9.4 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 5.4 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ false, true, false ]
+"values": [ true, false ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("typescript:visible")
+tracks/5/path = NodePath("splatter:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 9.4, 10.1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 5.4 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ false, true, false ]
+"values": [ true, false ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("kotlin:visible")
+tracks/6/path = NodePath("side_view:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0, 10.2, 11 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ false, true, false ]
-}
-tracks/7/type = "value"
-tracks/7/path = NodePath("nodejs:visible")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/keys = {
-"times": PoolRealArray( 0, 11, 11.8 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ false, true, false ]
-}
-tracks/8/type = "value"
-tracks/8/path = NodePath("rust:visible")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/imported = false
-tracks/8/enabled = false
-tracks/8/keys = {
-"times": PoolRealArray( 0, 11.8, 12.6 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ false, true, false ]
-}
-tracks/9/type = "value"
-tracks/9/path = NodePath("logo:visible")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/keys = {
-"times": PoolRealArray( 0, 5.4 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ true, false ]
-}
-tracks/10/type = "value"
-tracks/10/path = NodePath("splatter:visible")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/keys = {
-"times": PoolRealArray( 0, 5.4 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ true, false ]
-}
-tracks/11/type = "value"
-tracks/11/path = NodePath("side_view:visible")
-tracks/11/interp = 1
-tracks/11/loop_wrap = true
-tracks/11/imported = false
-tracks/11/enabled = true
-tracks/11/keys = {
 "times": PoolRealArray( 0.3, 12.8, 16 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ false, true, false ]
 }
-tracks/12/type = "value"
-tracks/12/path = NodePath("side_view:position")
-tracks/12/interp = 1
-tracks/12/loop_wrap = true
-tracks/12/imported = false
-tracks/12/enabled = true
-tracks/12/keys = {
+tracks/7/type = "value"
+tracks/7/path = NodePath("side_view:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
 "times": PoolRealArray( 12.8, 13.9, 15, 16 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Vector2( 1199, 268 ), Vector2( 784, 336 ), Vector2( 546, 274 ), Vector2( 481, 290 ) ]
 }
-tracks/13/type = "value"
-tracks/13/path = NodePath("front_view:visible")
-tracks/13/interp = 1
-tracks/13/loop_wrap = true
-tracks/13/imported = false
-tracks/13/enabled = true
-tracks/13/keys = {
+tracks/8/type = "value"
+tracks/8/path = NodePath("front_view:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
 "times": PoolRealArray( 0.3, 16, 19 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ false, true, false ]
 }
+tracks/9/type = "value"
+tracks/9/path = NodePath("front_view:scale")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 16, 19 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.520001, 0.520001 ), Vector2( 0.660824, 0.660824 ) ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("3_4_view:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0.3, 19, 21.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("3_4_view:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 19.1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 521, 318 ) ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("3_4_view:scale")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 19.1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0.486048, 0.486048 ) ]
+}
+tracks/13/type = "value"
+tracks/13/path = NodePath("cape:visible")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0.3, 21.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
 tracks/14/type = "value"
-tracks/14/path = NodePath("front_view:scale")
+tracks/14/path = NodePath("front_view:position")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/imported = false
@@ -498,75 +433,15 @@ tracks/14/keys = {
 "times": PoolRealArray( 16, 19 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0.520001, 0.520001 ), Vector2( 0.660824, 0.660824 ) ]
+"values": [ Vector2( 505, 304 ), Vector2( 493, 406 ) ]
 }
 tracks/15/type = "value"
-tracks/15/path = NodePath("3_4_view:visible")
+tracks/15/path = NodePath("cape:position")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/imported = false
 tracks/15/enabled = true
 tracks/15/keys = {
-"times": PoolRealArray( 0.3, 19, 21.3 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ false, true, false ]
-}
-tracks/16/type = "value"
-tracks/16/path = NodePath("3_4_view:position")
-tracks/16/interp = 1
-tracks/16/loop_wrap = true
-tracks/16/imported = false
-tracks/16/enabled = true
-tracks/16/keys = {
-"times": PoolRealArray( 19.1 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 521, 318 ) ]
-}
-tracks/17/type = "value"
-tracks/17/path = NodePath("3_4_view:scale")
-tracks/17/interp = 1
-tracks/17/loop_wrap = true
-tracks/17/imported = false
-tracks/17/enabled = true
-tracks/17/keys = {
-"times": PoolRealArray( 19.1 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 0.486048, 0.486048 ) ]
-}
-tracks/18/type = "value"
-tracks/18/path = NodePath("cape:visible")
-tracks/18/interp = 1
-tracks/18/loop_wrap = true
-tracks/18/imported = false
-tracks/18/enabled = true
-tracks/18/keys = {
-"times": PoolRealArray( 0.3, 21.3 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ false, true ]
-}
-tracks/19/type = "value"
-tracks/19/path = NodePath("front_view:position")
-tracks/19/interp = 1
-tracks/19/loop_wrap = true
-tracks/19/imported = false
-tracks/19/enabled = true
-tracks/19/keys = {
-"times": PoolRealArray( 16, 19 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 505, 304 ), Vector2( 493, 406 ) ]
-}
-tracks/20/type = "value"
-tracks/20/path = NodePath("cape:position")
-tracks/20/interp = 1
-tracks/20/loop_wrap = true
-tracks/20/imported = false
-tracks/20/enabled = true
-tracks/20/keys = {
 "times": PoolRealArray( 21.3, 30 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
@@ -580,15 +455,6 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": true
 }
-
-[node name="VideoPlayer" type="VideoPlayer" parent="."]
-visible = false
-margin_left = 8.48529
-margin_top = 8.48523
-margin_right = 8.48529
-margin_bottom = 8.48523
-mouse_filter = 2
-input_pass_on_modal_close_click = false
 
 [node name="godot" type="TextureRect" parent="."]
 visible = false
@@ -621,41 +487,6 @@ texture = ExtResource( 5 )
 [node name="3d render" parent="." instance=ExtResource( 10 )]
 mouse_filter = 2
 input_pass_on_modal_close_click = false
-
-[node name="github" type="TextureRect" parent="."]
-visible = false
-margin_right = 3840.0
-margin_bottom = 2160.0
-rect_scale = Vector2( 0.302325, 0.302325 )
-texture = ExtResource( 46 )
-
-[node name="typescript" type="TextureRect" parent="."]
-visible = false
-margin_right = 1920.0
-margin_bottom = 1080.0
-rect_scale = Vector2( 0.57631, 0.57631 )
-texture = ExtResource( 45 )
-
-[node name="kotlin" type="TextureRect" parent="."]
-visible = false
-margin_right = 1920.0
-margin_bottom = 1080.0
-rect_scale = Vector2( 0.506104, 0.506104 )
-texture = ExtResource( 47 )
-
-[node name="nodejs" type="TextureRect" parent="."]
-visible = false
-margin_right = 1920.0
-margin_bottom = 1080.0
-rect_scale = Vector2( 0.576857, 0.576857 )
-texture = ExtResource( 48 )
-
-[node name="rust" type="TextureRect" parent="."]
-visible = false
-margin_right = 1920.0
-margin_bottom = 1080.0
-rect_scale = Vector2( 0.63535, 0.63535 )
-texture = ExtResource( 49 )
 
 [node name="side_view" type="Sprite" parent="."]
 visible = false

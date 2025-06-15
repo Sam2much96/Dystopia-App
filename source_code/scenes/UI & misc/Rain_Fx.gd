@@ -22,6 +22,9 @@
 # How TO USe:
 # (1) Use as CHild of CanvasLayer
 #
+# To DO:
+# (1) Move to overworld scene
+# (2) Temporarily turn off for refactoring
 #
 #
 

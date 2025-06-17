@@ -46,6 +46,9 @@ export (int) var gravity = 3500 # default gravity
 # Frame ID
 onready var frame_id : int 
 
+# Safe Singleton Pointers
+onready var safe_Utils = get_node("/root/Utils")
+
 # Frame Counter
 export (int) var frame_counter = 0
 
@@ -64,7 +67,7 @@ var id_as_string : String #= Networking.id_as_string
 # My Player Networking object
 # for simulation calculations
 # 
-var player : Player_v2_networking
+var player #: Player_v2_networking
 
 export (Array) var all_player_objects = [] # kinematic2d and integers
 export (Array) var player_IDs = [] # IDs
@@ -437,7 +440,7 @@ remote func pi(id : int,player_data : PoolByteArray):
 				
 				# Input Buffer
 				# decoded
-				_input_buffer_decoded = Utils.int_to_array(i[id_as_string]["in"])
+				_input_buffer_decoded = safe_Utils.int_to_array(i[id_as_string]["in"])
 				#print_debug("Input Buffer: ", _input_buffer_decoded)
 				
 				# Inventory Buffer
@@ -446,7 +449,7 @@ remote func pi(id : int,player_data : PoolByteArray):
 				
 				# State Buffer
 				# decoded
-				_state_buffer_decoded = Utils.int_to_array(i[id_as_string]["st"])
+				_state_buffer_decoded = safe_Utils.int_to_array(i[id_as_string]["st"])
 				#print_debug("State Buffer: ", _state_buffer_decoded)
 				
 				# Facing
@@ -783,5 +786,5 @@ func get_smokeFx() -> smoke_fx:
 func _exit_tree():
 	# Delete all simulated objects
 	
-	Utils.MemoryManagement.queue_free_array([rainFX])
-
+	safe_Utils.MemoryManagement.queue_free_array([rainFX])
+	self.queue_free()

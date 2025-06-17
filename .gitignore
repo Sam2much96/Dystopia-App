@@ -17,3 +17,11 @@
 *.stex
 *.import
 *.hdr
+
+# All Material & 3d files
+*.material
+*.gltf
+
+# My recent unfinished codes Jun 17th
+**/source_code/singletons/input/
+*/source_code/resources/3D/

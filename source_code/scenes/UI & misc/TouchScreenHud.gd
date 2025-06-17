@@ -22,37 +22,54 @@
 # (10) Calling Attack and Roll signal twince when pressed and when down introduces double punch/ double click
 #
 # (12) Connects to Signals from the Stats, Menu and Dilog box objects in GameHUD
-
 #
-# Bugs :
-
-
-
+#
+#
 # TO DO:
-
-# (1) Fix the joystick code  (1/2)
+#
+# (1) 
 # (2) Update the interract state to be usable
-#(4) Edit Documentation to be neater (Online documetation)
-# (5) Joystick Colors?
-# (6) Fix Brken Ingame Controller changer (fixed 1/2)
-# (7) Should Resize to fit Screen Diameters using Global Scripts & Variables
+# (4) Edit Documentation to be neater (Online documetation)
+# (5) Joystick Colors? (touch debug colors done)
+# (6) Fix Brken Ingame Controller changer (fixed 2/3)
+# (7) 
 # # (a) Write a Resize function using Global Screen Orientation Calculation and Screen Size
 #	#	# (b) Variables available : Globals.os, Globals.screen Orientation, Globals.screenSize,Globals.viewport_size, GLobals.center_of_viewport
 #		#(c) set grouped buttons positioning programmatically (Done)
-# (10) TOuch Interface should be adjustible on mobile using drag and drop
-# (11) TOuch Interface Format and Scaling should be exported function to android singleton (DOne)
+# (10) 
+# (11) 
 # (12) Implement Drag and Drop Customization using state machines and postion registers
-# (15) Shoud Export An Inspector Item String List THat Triggers Different HUD States 
-# (16) Implement Stylus and Swipe COntrolls for Mobile Devices like LOZ Phantom Hourglass
-
- 
-# (19) Add touch hud drag and drop using refactored comics script (1/2)
+# (15) Shoud Export An Inspector Item String List THat Triggers Different HUD States for faster debugging 
+# (16) Implement Stylus and Swipe COntrolls for Mobile Devices like LOZ Phantom Hourglass (1/3) 
+# (19) Add touch hud drag and drop (1/2)
 # # (21) Implement procedural animation for Touch Interface Via Functions to be called from Game HUD -> Android Setup
 #
-# (22) Touch hud should hold the previous states for the TOuch interface to reset back to previous state
+# (22) Touch hud should hold the previous states for the TOuch interface to reset back to previous state (1/2)
 # (23) Create functions that export the state controller 
 # (24) Make Global screen class containing all screen code similar to LOZ spirit tracks
-# 	- it should contain multitouch and export path finding code
+# 	- it should contain multitouch and export path finding code (1/2)
+# (25) Expose custom screen touch classes safely to the scene tree via this object, with safe multitouch debug
+# *************************************************
+#
+# INPUT SINGLE4TON
+#
+# Code Logic handles all input in the game/app project
+# *************************************************
+# Features:
+# (1) It implements an Input Buffer for netwoked multiplayer
+# (2) The Input Buffer stores players 12 last input
+#
+# *************************************************
+# TO-DO:
+#
+# (1) Should implement Vibrations for haptic feedback (1/2)
+# (2) Implement Input Lag (Delay) For Multiplayer Gameplay
+# (3)Create pointer to all nodes that connect and interract with game hud and Touchhud
+# (4) Refactor to sub class within Touch interface
+# *************************************************
+# Notes:
+# (1) Vibration is a Battery & Performance hog
+# (2) Vibration is currently only implemented on Android, porting would require custom libraries
 # *************************************************
 
 
@@ -67,42 +84,24 @@ class_name TouchScreenHUD, "res://resources/misc/Android 32x32.png"
 
 
 #Safe Global Input Ponter
-onready var _Input = get_tree().get_root().get_node("/root/GlobalInput")
+
 onready var node_input = Input  # Generates this nodes Node _input()
 
-
-# Pointer to menu node from Parent
-
-onready var menuObj : Game_Menu = Android.ingameMenu
-
-onready var StatsObj : Stats = $"%Stats"
 
 # Pointer to Global Menu Pointer
 # use a setget function for this call to menu objed
 #onready var menu3 = _Input.menu
 
-#State Machine
-# Use A Match Conditional for differentiating Input Types
-# Stylus Should Only Catch TOuch Screen Inputs
-# add functions to state machine
-enum DragNDrop { D_PAD_, JOYSTICK, STYLUS , CONFIG, DEBUG } # Config State for Drag ANd Drop Mode
 
 
-enum { DOWN, LEFT, UP, RIGHT, MENU, SLASH, ROLL, INTERACT, STATS, RESET, SHOW, HIDE} # Touch interface Internal State Machine
+# Touch interface statemachine is expanded below June 17/2024
+#enum { DOWN, LEFT, UP, RIGHT, MENU, SLASH, ROLL, INTERACT, STATS, RESET, SHOW, HIDE} # Touch interface Internal State Machine
 
-export (int) var touch_controller = MENU
+export (int) var touch_controller = INPUT.MENU
 
-# for storing data for state transition logic
-#var current_state = touch_controller
-#var previous_state = touch_controller
-
-
-#export (String, 'modern', 'classic', "stylus") var _control # Dupli9cate of Globals._controller_type
-
-#var _Debug_Run : bool = false
 
 export (bool) var enabled # Local Variant for stroing if device is android from adnroid singleton
-
+export (bool) var DEBUG
 #signal menu
 #signal interract
 signal attack
@@ -110,7 +109,7 @@ signal attack
 #signal comics
 #signal reset
 
-
+"UI Buttons"
 var _menu : TextureButton 
 var _interract : TextureButton 
 var stats_ : TextureButton
@@ -118,8 +117,8 @@ var roll : TextureButton
 var slash  : TextureButton 
 
 #var comics_ : TextureButton 
-var _joystick : TouchScreenButton
-var joystick2 : TouchScreenButton 
+#var _joystick : TouchScreenButton
+#var joystick2 : TouchScreenButton 
 #var D_pad : Control 
 
 #var Anim : AnimationPlayer 
@@ -139,8 +138,7 @@ var dimensional_diff : Vector2
 #var buttons_positional_data : Array
 
 #var LineDebug : Line2D 
-
-onready var joystick_parent: Control # = $Joystick
+#onready var joystick_parent: Control # = $Joystick
 
 'UI button as arrays'
 onready var all_UI_Nodes : Array
@@ -150,20 +148,84 @@ onready var action_buttons : Array
 "Scene Tree"
 onready var __scene_tree : SceneTree = get_tree()
 
-var input_buffer : Control
 
 
+"Screen Variables"
+var screenOrientation : int
+var screenOrientationSettings : int = OS.get_screen_orientation()
+
+# This Apps Global Screen Orientation
+enum SCREEN { SCREEN_HORIZONTAL, SCREEN_VERTICAL} 
+
+
+
+"Input Buffer Variables"
+
+# For Storing An Array of Input Data FOr Networking Multiplayer
+var input_buffer = []
+enum INPUT {LEFT,RIGHT,UP,DOWN,ATTACK,ROLL,BLOCK, RESET, 
+	COMICS, NEXTPANEL, PREVPANEL, DRAG, PAUSE, MENU, 
+	INTERACT, DIALOGUE, SLASH, STATS, SHOW, HIDE, GYROSCOPE
+}
+
+var reg_inputs : Array = ["move_left", "move_right","move_up", "move_down", "attack", "roll", "interact", "menu", "pause"]
+
+
+"State Machine"
+
+export (int) var state  
+var pressed : bool = false
+
+# Vibration Settings
+export (bool) var vibrate_ = true
+export (bool) var saveBuffer = false;
+
+"Safe Singleton Pointers"
+onready var safe_Utils = get_node("/root/Utils")
+onready var safe_Dialogs = get_node("/root/Dialogs")
+onready var safe_Simulation = get_node("/root/Simulation")
+onready var safe_GameHUD = get_node("/root/GameHud")
+onready var safe_Android = get_node("/root/Android")
+onready var safe_Globals = get_node("/root/Globals")
+
+
+# Pointer to menu node 
+onready var menuObj = $"%Menu " #Android.ingameMenu
+onready var StatsObj = $"%Stats" # : Stats
+
+onready var op_sys : String = safe_Globals.os
+
+
+# Game HUD : pointers updated from game hud
+# Each of these Objects Use/ REquire Player input
+# Having them always in memory is a good thing
+# *************************************************
+var menu : Game_Menu setget set_gameMenu, get_gameMenu
+var TouchInterface : TouchScreenHUD setget set_touchHUD, get_touchHUD
+
+var Stats_ : Stats setget set_statsHUD, get_statsHUD
+var _Status_text : StatusText setget set_statusText, get_statusText
+
+# Game HUD + set get functions
+#onready var gameHUD = get_parent() #setget set_gameHUD, get_gameHUD #: GameHUD
+
+
+
+var NodeInput = Input # Generates this nodes Node _input()
+
+onready var children : Array = self.get_children()
 
 func _ready():
 	
-		# Make Global Pointer
+	# Make Global Pointer backup
+	# initial call is from parent class
 	#
-	#GlobalInput.TouchInterface = self # global input is depreciated to to a Touch Interface sub class
-	Android.TouchInterface = self
+	safe_GameHUD.TouchInterface = self # global input is depreciated to to a Touch Interface sub class
+	safe_Android.TouchInterface = self
 	
-	input_buffer = Input_Buffer.new()
-	
-	add_child(input_buffer)
+	# debug menu and stat object pointers
+	print_debug("Menu & Stats Debug 2: ", menuObj, "/", StatsObj)
+
 	
 	# Code Mutates Enabled
 	#
@@ -203,7 +265,7 @@ func _ready():
 	all_UI_Nodes = [_menu ,stats_, _interract, roll, slash, _up, _down, _left, _right ]
 	
 	# Error Catcher For Broken UI Links
-	Utils.UI.check_for_broken_links(all_UI_Nodes)
+	safe_Utils.UI.check_for_broken_links(all_UI_Nodes)
 	
 	# Check For Broken signal connections
 	
@@ -223,7 +285,7 @@ func _ready():
 	
 	
 		# Select Users Preferred Direction Controls 
-		
+		# This should ideally be routed to forms to get the player's hand type? left or right?
 	#if str(Globals.direction_control )== "classic" :
 	#	direction_buttons = d_pad
 	#elif str(Globals.direction_control) == "modern" :
@@ -253,7 +315,7 @@ func _ready():
 		
 		"Touch Menu Button Customization"
 		# Customizes 
-		if Globals.curr_scene == "HouseInside":
+		if safe_Globals.curr_scene == "HouseInside":
 			_menu.self_modulate = Color(255,255,255) # white
 		else: _menu.self_modulate = Color(0,0,0) # black
 		
@@ -262,7 +324,7 @@ func _ready():
 		
 		
 		"Display Screen Calculations"
-		Utils.Screen.display_calculations(get_tree().get_root(), Utils)
+		safe_GameHUD.TouchInterface.Screen.display_calculations(get_tree().get_root(), safe_Utils)
 		
 		# Calculates the Length and Breadth of All Touchscreen HUD buttons
 		# To DO: 
@@ -287,8 +349,8 @@ func _ready():
 		
 		# COnnect signals from dialogue
 		# Dialogues to self
-		Dialogs.dialog_box.connect("dialog_started", self, "interract")
-		Dialogs.dialog_box.connect("dialog_ended", self, "show_all_buttons")
+		safe_Dialogs.dialog_box.connect("dialog_started", self, "interract")
+		safe_Dialogs.dialog_box.connect("dialog_ended", self, "show_all_buttons")
 
 		# Menu to Touch Interface Connection
 		# Temporarily disabled for UI refactor
@@ -319,7 +381,7 @@ func _ready():
 		
 		
 		
-		menu() # triggers default menu scene on start of game application
+		menu_() # triggers default menu scene on start of game application
 	if not enabled:
 		pass
 
@@ -337,31 +399,156 @@ func _process(_delta):
 		
 		# Touch Interface Simple State Machine
 		match touch_controller:
-			MENU:
-				return menu() # shows only menu button
-			INTERACT:
+			INPUT.MENU:
+				return menu_() # shows only menu button
+			INPUT.INTERACT:
 				return interract() # shows only interract button
-			DOWN:
+			INPUT.DOWN:
 				return
-			UP: 
+			INPUT.UP: 
 				return
-			LEFT :
+			INPUT.LEFT :
 				return
-			RIGHT : 
+			INPUT.RIGHT : 
 				return
-			SLASH:
+			INPUT.SLASH:
 				return
-			ROLL :
+			INPUT.ROLL :
 				return
 			#RESET:
 			#	return reset() # hides all UI buttons
-			STATS:
+			INPUT.STATS:
 				return status() # shows only status Button
-			SHOW:
+			INPUT.SHOW:
 				return show_all_buttons() # shows all touch hud buttons
-			HIDE:
+			INPUT.HIDE:
 				return hide_buttons()
+
+
+func _unhandled_input(event):
+	# This is the last input that gets propagated on the scene tree
+	#
+	# State Buffer Logic
+	# Player Input
+	# Implement Player Objects Movement State Machine Simplified
 	
+	if Input.is_action_pressed("move_left"):
+		
+		state = INPUT.LEFT
+		#facing = LEFT
+		pressed = true
+		vibrate(40, op_sys)
+	if Input.is_action_just_released("move_left"):
+		
+		state = INPUT.RESET
+		pressed = false
+		#pass
+	
+	if Input.is_action_pressed("move_right"):
+		
+		state = INPUT.RIGHT
+		#facing = RIGHT
+		vibrate(40,op_sys)
+	if Input.is_action_just_released("move_right"):
+		
+		state = INPUT.RESET
+		#facing = RIGHT
+		#pass
+	if Input.is_action_pressed("move_up"):
+		
+		state = INPUT.UP
+		#facing = UP
+		vibrate(40,op_sys)
+	if Input.is_action_just_released("move_up"):
+			
+			state = INPUT.RESET
+			#facing = UP
+			#pass
+	if Input.is_action_pressed("move_down"):
+		
+		state = INPUT.DOWN
+		#facing = DOWN
+		vibrate(40,op_sys)
+	if Input.is_action_just_released("move_down"):
+		
+		state = INPUT.RESET
+		#facing = DOWN
+		#pass
+	if Input.is_action_just_pressed("attack"):
+		
+		state = INPUT.ATTACK
+		
+		vibrate(75,op_sys)
+	if Input.is_action_just_released("attack"):
+		
+		state = INPUT.RESET
+		
+	if Input.is_action_just_pressed("roll"):
+		
+		state = INPUT.ROLL
+		vibrate(40, op_sys)
+		
+	if Input.is_action_just_released("roll"):
+		
+		state = INPUT.RESET
+		#pass
+		vibrate(40,op_sys)
+	
+	# Comics Input
+	if event.is_action_pressed("reset"):
+		
+		state = INPUT.RESET
+		#pass
+	if event.is_action_pressed("next_panel"):
+		
+		state = INPUT.NEXTPANEL
+		#pass
+	if event.is_action_pressed("comics"):
+		
+		state = INPUT.COMICS
+	
+	# This state would require proper debugging as of Jun 17/2025 refactor
+	# which brings in Better quality of life updates for the mobile inputs
+	if event is InputEventScreenDrag : 
+		state = INPUT.DRAG
+	# Ingame Menu
+	
+	if event.is_action_pressed("menu"):
+		state = INPUT.MENU
+	
+	if event.is_action_released("menu"):
+		state = INPUT.RESET
+	
+	# Dialogues
+	if event.is_action_pressed("interact") :
+		state = INPUT.INTERACT
+	
+	if event.is_action_released("interact") :
+		#_state = RESET
+		pass
+	# HUD
+	if Input.is_action_just_pressed("pause"):
+		state = INPUT.PAUSE
+	
+	if Input.is_action_just_released("pause"):
+		state = INPUT.RESET
+	
+	
+	if saveBuffer:
+		if input_buffer.empty() == true && pressed:
+			input_buffer.append(state)
+			return
+		
+		if not input_buffer.empty() && int(input_buffer[input_buffer.size()-1]) != state:
+			input_buffer.append(state)
+			return
+		
+		# Prevent Memory Leak/ Stack Overflow error 
+		if input_buffer.size() > 12:
+			#	print(input_buffer, _state, input_buffer.pop_front())
+				input_buffer.clear()
+				#return
+
 
 
 """
@@ -371,19 +558,19 @@ THE STATE MACHINE CALLS WITH FUNCTIONS
 "Exported Global State Machine Functions"
 
 func menu__():
-	touch_controller = MENU
+	touch_controller = INPUT.MENU
 
 func show__():
-	touch_controller = SHOW
+	touch_controller = INPUT.SHOW
 
 func hide__():
-	touch_controller = HIDE
+	touch_controller = INPUT.HIDE
 
 func stats__():
-	touch_controller = STATS
+	touch_controller = INPUT.STATS
 
 func interact__():
-	touch_controller = INTERACT
+	touch_controller = INPUT.INTERACT
 
 "Local State Machine Functions"
 
@@ -396,7 +583,7 @@ func status():  #used by ui scene when status is clicked
 
 
 
-func menu(): 
+func menu_(): 
 	#used by ui scene when menu is clicked
 	# hides all buttons aand shows the menu ui button only
 	#print_debug("Menu Showing Triggered")
@@ -623,30 +810,36 @@ func Vertical():
 """
 UI Button Connections
 """
+# UI button connections is depreciated because of the reasons below
 # via Global Input Singleton
 # Bugs : 
 # (1) Pressed Signals Introduces Stuct Input Bug On Mobile Devices
+# (2) Android touch interface was refactored for mobiles on June 17/2023
 func _on_menu_pressed():
+	print_debug("Menu Pressed")
 	return 0
 
 
 func _on_stats_pressed():
+	print_debug("stats pressed")
 	return 0
 
 
 
 func _on_interact_pressed():
+	print_debug("Interract Pressed")
 	return 0 
 
+"Programmatically Press Buttons"
 
 func _on_roll_pressed():
 	#print_debug("Roll Button Pressed")
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"roll", true)
+	return parse_input(NodeInput,__scene_tree, safe_Simulation,"roll", true)
 
 
 func _on_slash_pressed():
 	#print_debug("Attack Button Pressed")
-	return _Input.parse_input(_Input.NodeInput,__scene_tree,"attack", true)
+	return parse_input(NodeInput,__scene_tree,safe_Simulation,"attack", true)
 
 
 func _on_right_pressed():
@@ -670,78 +863,82 @@ func _on_down_pressed():
 
 
 func _on_down_button_down():
-	return _Input.parse_input(node_input,__scene_tree,"move_down", true)
+	print_debug("Jun 12/2025 Refactor : Map dpad ui buttons to other onscreen UI elements")
+	return parse_input(node_input,__scene_tree,safe_Simulation,"move_down", true)
 
 
 func _on_down_button_up():
-	return _Input.parse_input(node_input,__scene_tree,"move_down", false)
+	return parse_input(node_input,__scene_tree,safe_Simulation,"move_down", false)
 
 
 func _on_left_button_down():
-	return _Input.parse_input(node_input,__scene_tree,"move_left", true)
+	print_debug("Jun 12/2025 Refactor : Map dpad ui buttons to other onscreen UI elements")
+	return parse_input(node_input,__scene_tree,safe_Simulation,"move_left", true)
 
 
 func _on_left_button_up():
-	return _Input.parse_input(node_input,__scene_tree,"move_left", false)
+	return parse_input(node_input,__scene_tree,safe_Simulation,"move_left", false)
 
 
 func _on_up_button_up():
-	return _Input.parse_input(node_input,__scene_tree,"move_up", false)
+	return parse_input(node_input,__scene_tree,safe_Simulation,"move_up", false)
 
 
 func _on_up_button_down():
-	return _Input.parse_input(node_input,__scene_tree,"move_up", true)
+	print_debug("JUn 12/2025 Refactor : Map dpad ui buttons to other onscreen UI elements")
+	return parse_input(node_input,__scene_tree,safe_Simulation,"move_up", true)
 
 
 
 
 func _on_right_button_up():
-	return _Input.parse_input(node_input,__scene_tree,"move_right", false)
+	return parse_input(node_input,__scene_tree,safe_Simulation,"move_right", false)
 
 
 func _on_right_button_down():
-	return _Input.parse_input(node_input,__scene_tree,"move_right", true)
+	print_debug("JUn 12/2025 Refactor : Map dpad ui buttons to other onscreen UI elements")
+	return parse_input(node_input,__scene_tree,safe_Simulation,"move_right", true)
 
 
 func _on_stats_button_up():
-	return _Input.parse_input(node_input,__scene_tree,"pause", false)
+	return parse_input(node_input,__scene_tree,safe_Simulation,"pause", false)
 
 
 func _on_stats_button_down():
-	return _Input.parse_input(node_input,__scene_tree,"pause", true)
+	return parse_input(node_input,__scene_tree,safe_Simulation,"pause", true)
 
 
 
 func _on_interact_button_up():
-	return _Input.parse_input(node_input,__scene_tree,"interact", false)
+	return parse_input(node_input,__scene_tree,safe_Simulation,"interact", false)
 
 
 
 func _on_interact_button_down():
-	return _Input.parse_input(node_input,__scene_tree,"interact", true)
+	return parse_input(node_input,__scene_tree,safe_Simulation,"interact", true)
 
 
 func _on_roll_button_up():
-	return _Input.parse_input(node_input,__scene_tree,"roll", false)
+	return parse_input(node_input,__scene_tree,safe_Simulation,"roll", false)
 
 func _on_roll_button_down():
-	return _Input.parse_input(node_input,__scene_tree,"roll", true)
+	return parse_input(node_input,__scene_tree,safe_Simulation,"roll", true)
 
 func _on_slash_button_up():
-	return _Input.parse_input(node_input,__scene_tree,"attack", false)
+	return parse_input(node_input,__scene_tree,safe_Simulation,"attack", false)
 
 
 func _on_slash_button_down():
-	return _Input.parse_input(node_input,__scene_tree,"attack", true)
+	return parse_input(node_input,__scene_tree,safe_Simulation,"attack", true)
 
 
 func _on_menu_button_up():
-	return _Input.parse_input(node_input,__scene_tree,"menu", false)
+	return parse_input(node_input,__scene_tree,safe_Simulation,"menu", false)
 
 
 func _on_menu_button_down():
 	print_debug("Menu Button Pressed")
-	return _Input.parse_input(node_input,__scene_tree,"menu", true)
+	return parse_input(node_input,__scene_tree,safe_Simulation,"menu", true)
 
 
 
@@ -755,310 +952,121 @@ func check_screen_orientation(orientation : int):
 	orientation = Screen.Orientation()
 
 
-class Input_Buffer extends Control:
-	# *************************************************
-	# godot3-RPG by Samuel Harrison
-	# Released under MIT License
-	# *************************************************
-	# INPUT SINGLE4TON
-	#
-	# Code Logic handles all input in the game/app project
-	# *************************************************
-	# Features:
-	# (1) It implements an Input Buffer for netwoked multiplayer
-	# (2) The Input Buffer stores players 12 last input
-	#
-	# *************************************************
-	# TO-DO:
-	#
-	# (1) Should implement Vibrations for haptic feedback (1/2)
-	# (2) Implement Input Lag (Delay) For Multiplayer Gameplay
-	# (3)Create pointer to all nodes that connect and interract with game hud and Touchhud
-	# (4) Refactor to sub class within Touch interface
-	# *************************************************
-	# Notes:
-	# (1) Vibration is a Battery & Performance hog
-	# (2) Vibration is currently only implemented on Android, porting would require custom libraries
-	# *************************************************
-	# Bugs:
-	# (1) Fix Joystick v2 vibration spams 
-	#
-	# *************************************************
+func check_device_gyroscope() -> Vector3:
+	"Gyro Controls on Mobile Android & Ios"
+	var g = node_input.get_gyroscope()
+	return g
 
-
-
-	# For Storing An Array of Input Data FOr Networking Multiplayer
-	var input_buffer = []
-
-	enum {LEFT,RIGHT,UP,DOWN,ATTACK,ROLL,BLOCK, RESET, 
-	COMICS, NEXTPANEL, PREVPANEL, DRAG, PAUSE, MENU, 
-	INTERRACT, DIALOGUE
-	}
-	var reg_inputs : Array = ["move_left", "move_right","move_up", "move_down", "attack", "roll", "interact", "menu", "pause"]
-
-
-	# State Machine
-	export (int) var state  
-
-
-	var pressed : bool = false
-
-	# Vibration Settings
-	export (bool) var vibrate_ = true
-	export (bool) var saveBuffer = false;
-
-
-	# Game HUD : pointers updated from game hud
-	# Each of these Objects Use/ REquire Player input
-	# Having them always in memory is a good thing
-	# *************************************************
-	var menu : Game_Menu setget set_gameMenu, get_gameMenu
-	var TouchInterface : TouchScreenHUD setget set_touchHUD, get_touchHUD
-
-	var Stats_ : Stats setget set_statsHUD, get_statsHUD
-	var _Status_text : StatusText setget set_statusText, get_statusText
-
-	# Game HUD + set get functions
-	var gameHUD : GameHUD setget set_gameHUD, get_gameHUD
-
-	# Mobile Joystick
-	var joystick 
-
-
-	var NodeInput = Input # Generates this nodes Node _input()
-
-	onready var children : Array = self.get_children()
-
-	func _unhandled_input(event):
-		# Player Input
-		# Implement Player Objects Movement State Machine Simplified
+"Input Buffer functions"
+	# To do:  Add More Parameters To Determine Button Press Length via a timer
+static func parse_input(node_input_ : Input ,tree: SceneTree, safe_Simulation_ : Simulationv1 ,action : String, _pressed : bool) -> int:
+	#This Logic Creates and Parses Input actions programmatically
+	# Bugs: Holds Input, Should Press and Release Input
+	var a = InputEventAction.new()
+	var end_frame : int = (safe_Simulation_.get_frame_counter() + 50)
+	a.action = action
+	
+	# Handle Input
+	# Node Imput Is used TO generate Node._input() methods
+	if (safe_Simulation_.get_frame_counter() < end_frame):
+		# To DO : 
+		# (1) Implement Combo System
+		#print_debug("Input Debug: ",Simulation.get_frame_counter(), "/", end_frame)
+		a.pressed = _pressed
+		node_input_.parse_input_event(a)
+	
+	# Release Input
+	elif (safe_Simulation_.get_frame_counter() >= end_frame):
+		a.pressed = false
+		#print_debug("Input Debug: ",Simulation.get_frame_counter(), "/", end_frame)
+		node_input_.parse_input_event(a)
+	
+	
+	
+	tree.set_input_as_handled()
 		
-		if Input.is_action_pressed("move_left"):
-			
-			state = LEFT
-			#facing = LEFT
-			pressed = true
-			vibrate(40, Globals.os)
-		if Input.is_action_just_released("move_left"):
-			
-			state = RESET
-			pressed = false
-			#pass
-		
-		if Input.is_action_pressed("move_right"):
-			
-			state = RIGHT
-			#facing = RIGHT
-			vibrate(40,Globals.os)
-		if Input.is_action_just_released("move_right"):
-			
-			state = RESET
-			#facing = RIGHT
-			#pass
-		if Input.is_action_pressed("move_up"):
-			
-			state = UP
-			#facing = UP
-			vibrate(40,Globals.os)
-		if Input.is_action_just_released("move_up"):
-			
-			state = RESET
-			#facing = UP
-			#pass
-		if Input.is_action_pressed("move_down"):
-			
-			state = DOWN
-			#facing = DOWN
-			vibrate(40,Globals.os)
-		if Input.is_action_just_released("move_down"):
-			
-			state = RESET
-			#facing = DOWN
-			#pass
-		if Input.is_action_just_pressed("attack"):
-			
-			state = ATTACK
-			
-			vibrate(75,Globals.os)
-		if Input.is_action_just_released("attack"):
-			
-			state = RESET
-			
-		if Input.is_action_just_pressed("roll"):
-			
-			state = ROLL
-			#pass
-		if Input.is_action_just_released("roll"):
-			
-			state = RESET
-			#pass
-			vibrate(40,Globals.os)
-		
-		# Comics Input
-		if event.is_action_pressed("reset"):
-			
-			state = RESET
-			#pass
-		if event.is_action_pressed("next_panel"):
-			
-			state = NEXTPANEL
-			#pass
-		if event.is_action_pressed("comics"):
-			
-			state = COMICS
-			
-		if event is InputEventScreenDrag : 
-			state = DRAG
+	return 0
 
-		# Ingame Menu
-		if event.is_action_pressed("menu"):
-			state = MENU
-		
-		if event.is_action_released("menu"):
-			state = RESET
-		
-		# Dialogues
-		if event.is_action_pressed("interact") :
-			state = INTERRACT
-		
-		if event.is_action_released("interact") :
-			#_state = RESET
-			pass
-		# HUD
-		if Input.is_action_just_pressed("pause"):
-			state = PAUSE
-		
-		if Input.is_action_just_released("pause"):
-			state = RESET
-		
-		
-		if saveBuffer:
-			if input_buffer.empty() == true && pressed:
-				input_buffer.append(state)
-				return
-			
-			if not input_buffer.empty() && int(input_buffer[input_buffer.size()-1]) != state:
-				input_buffer.append(state)
-				return
-
-			# Prevent Memory Leak/ Stack Overflow error 
-			if input_buffer.size() > 12:
-				#	print(input_buffer, _state, input_buffer.pop_front())
-					input_buffer.clear()
-					#return
-
-
-	# Add More Parameters To Determine Button Press Length
-	static func parse_input(node_input : Input ,tree: SceneTree, action : String, _pressed : bool) -> int:
-		#This Logic Creates and Parses Input actions programmatically
-		# Bugs: Holds Input, Should Press and Release Input
-		var a = InputEventAction.new()
-		var end_frame : int = (Simulation.get_frame_counter() + 50)
-		a.action = action
-		
-		# Handle Input
-		# Node Imput Is used TO generate Node._input() methods
-		if (Simulation.get_frame_counter() < end_frame):
-			# To DO : 
-			# (1) Implement Combo System
-			#print_debug("Input Debug: ",Simulation.get_frame_counter(), "/", end_frame)
-			a.pressed = _pressed
-			node_input.parse_input_event(a)
-		
-		# Release Input
-		elif (Simulation.get_frame_counter() >= end_frame):
-			a.pressed = false
-			#print_debug("Input Debug: ",Simulation.get_frame_counter(), "/", end_frame)
-			node_input.parse_input_event(a)
+func vibrate(duration_ms : int, os : String):
+	
+	# to do: write safe singleton pointer that calls this stack
+	if os == "Android" && vibrate_ : #or "iOS" or "HTML5":
 		
 		
 		
-		tree.set_input_as_handled()
+		# Vibration on Mobile Devices
+		node_input.vibrate_handheld(duration_ms)
+		# 2 seconds wait time before next vibratino
+		#Networking.start_check_v2(5)
 
-		
-		return 0
 
-	func vibrate(duration_ms : int, os : String):
-		
-		if Globals.os == "Android" && vibrate_ : #or "iOS" or "HTML5":
-			
-			if joystick == null :# Fixes Mobile joystick spamm vibration bug
-				# Shoud Connect to Controls so it can be turned on/off
-				
-				# Vibration on Mobile Devices
-				Input.vibrate_handheld(duration_ms)
-				# 2 seconds wait time before next vibratino
-				#Networking.start_check_v2(5)
-				
-
-	func roll_direction_calculation()-> Vector2:
-		var calc = Vector2(- int( Input.is_action_pressed("move_left") ) + int( Input.is_action_pressed("move_right") ), -int( Input.is_action_pressed("move_up") ) + int( Input.is_action_pressed("move_down") )).normalized()
-		return calc
+func roll_direction_calculation()-> Vector2:
+	var calc = Vector2(- int( Input.is_action_pressed("move_left") ) + int( Input.is_action_pressed("move_right") ), -int( Input.is_action_pressed("move_up") ) + int( Input.is_action_pressed("move_down") )).normalized()
+	return calc
 
 
 	# Returns an Input Buffer for simulations calculations
 	# concats the input buffer array into a string
-	func _get_input_buffer() -> int:
-		return int(Utils.array_to_string(input_buffer.duplicate()))
+func _get_input_buffer() -> int:
+	return int(safe_Utils.array_to_string(input_buffer.duplicate()))
 
 
-	func set_gameHUD(hud : GameHUD):
-		gameHUD = hud
+#func set_gameHUD(hud: GameHUD): #  : GameHUD
+#	gameHUD = hud
 
-	func get_gameHUD() -> GameHUD:
-		return gameHUD
-
-
-	func set_statsHUD(stats_hud: Stats):
-		Stats_ = stats_hud
-
-	func get_statsHUD() -> Stats:
-		return Stats_
-
-	func set_statusText(st_Text: StatusText) :
-		_Status_text = st_Text
+#func get_gameHUD() -> GameHUD:
+#	return gameHUD
 
 
-	func get_statusText() -> StatusText :
-		return _Status_text
+func set_statsHUD(stats_hud: Stats):
+	Stats_ = stats_hud
 
-	func set_touchHUD(obj : TouchScreenHUD): 
-		TouchInterface = obj
+func get_statsHUD() -> Stats:
+	return Stats_
 
-	func get_touchHUD() -> TouchScreenHUD:
-		return TouchInterface
-
-
-
-	func set_gameMenu(obj : Game_Menu):
-		menu = obj 
-
-	func get_gameMenu() -> Game_Menu:
-		return menu
+func set_statusText(st_Text: StatusText) :
+	_Status_text = st_Text
 
 
-	func _exit_tree():
-		# Memory Leak Management
-		#
-		# Clears all ui buttons
-		
-		Utils.MemoryManagement.queue_free_array(children)
-		self.queue_free()
+func get_statusText() -> StatusText :
+	return _Status_text
+
+func set_touchHUD(obj : TouchScreenHUD): 
+	TouchInterface = obj
+
+func get_touchHUD() -> TouchScreenHUD:
+	return TouchInterface
 
 
 
+func set_gameMenu(obj : Game_Menu):
+	menu = obj 
+
+func get_gameMenu() -> Game_Menu:
+	return menu
 
 
-"Screen Class "
+func _exit_tree():
+	# Memory Leak Management
+	#
+	# Clears all ui buttons
+	
+	safe_Utils.MemoryManagement.queue_free_array(children)
+	self.queue_free()
+
+
+
+
+"""
+Screen  
+
+Features:
+	(1) All screen logic in a single class
+	(2) Static function implementations
+"""
 class Screen  :
 	
 	
-	var screenOrientation : int
-	var screenOrientationSettings : int = OS.get_screen_orientation()
-	
-	# This Apps Global Screen Orientation
-	enum { SCREEN_HORIZONTAL, SCREEN_VERTICAL} 
-		
 	
 	# Should Get Screen Size, Screen Scale and All screen properties
 	# Should Debug this data to the Debug Singleton
@@ -1074,11 +1082,16 @@ class Screen  :
 
 	"""
 	SCREEN ORIENTATION ALGORITHM
+	
+	Features:
+	
 	"""
 	# (1) Checks Device  Screen orentation
 	# (2) Sets the Global Script for Screen Orientation
 	#(3) This ALgorithm should be run periodically on a separate device like mobile
 	static func Orientation() -> int:
+		print_debug("running orientation algorithm")
+		
 		'Screen Size Resolution'
 		var screenSize : Vector2
 		
@@ -1091,37 +1104,18 @@ class Screen  :
 		var screen : Vector2 =OS.get_screen_size(-1) # get the current screen size
 		
 		
-		# screen orientation enum copied from Globals main
-		# To Do: Write an algorithm that compares the x and y values for OS.get_screen_size(-1) and the OS.get_screen_orientation() parameters
-		# to determine if Screen is Horizontal or vertical. Use the Result to set Screen Orientation
-		# in a process function
-		
-		
-		# Resizes window the preselected sizes
-		# Sets Default Screen Orientation for Android
-		# Disabled
-		#if GlobalScript.os == "Android":
-		#	screenOrientation = GlobalScript.SCREEN_VERTICAL
-		#else: screenOrientation = GlobalScript.SCREEN_HORIZONTAL 
-		
-		
 		
 		# Algorithmic calculation using screen orientation
 		# And screen size to determine if the screen 
 		# is horizontal or vertical
 		
 		if screen.x > screen.y:
-			screenOrientation = SCREEN_HORIZONTAL
+			screenOrientation = SCREEN.SCREEN_HORIZONTAL
 		if screen.x < screen.y:
-			screenOrientation = SCREEN_VERTICAL
+			screenOrientation = SCREEN.SCREEN_VERTICAL
 
 		# for debug purposes only
-		#print_debug("Screen orientation is: ", screenOrientation, "/",'screen size :',screen)
-
-
-		
-		#screenOrientation = OS.get_screen_orientation() # Should return a 6 for AutoRotate on Ndroid # Should ideally be a process function
-		
+		print_debug("Screen orientation is: ", screenOrientation, "/",'screen size :',screen)
 		return screenOrientation
 		
 	static func calculateViewportSize( t : CanvasItem ) -> Vector2 :
@@ -1261,13 +1255,3 @@ class Screen  :
 		else: pass
 	
 	
-	# Deprecoated
-	static func resize_window(x : int,y : int): #resizes the game window
-		Globals.screenSize = Vector2(x,y);
-		return OS.set_window_size(Vector2(x,y));
-
-	# Convert bytes to Megabytes
-	static func _ram_convert(bytes) :
-		if bytes >= int(1):
-			var _mb = String(round(float(bytes) / 1_048_576))
-			return _mb

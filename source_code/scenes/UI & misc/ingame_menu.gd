@@ -70,19 +70,24 @@ var scroller : ScrollContainer
 
 var MenuButtons : Array = []
 
-#var initialScale : Vector2 =self.get_scale()
-#export (Vector2) var newScale : Vector2 = Vector2(2,2)
+"Safe Pointers To global Singletons"
+onready var safe_Music = get_node("/root/Music")
+onready var safe_Android = get_node("/root/Android")
+onready var safe_Globals = get_node("/root/Globals")
+onready var safe_Utils = get_node("/root/Utils")
 
-onready var _ui_sfx : String = Music.ui_sfx[0]
-onready var _ui_sfx_1 : String = Music.ui_sfx[1]
+
+onready var _ui_sfx : String = safe_Music.ui_sfx.get(0)
+onready var _ui_sfx_1 : String = safe_Music.ui_sfx.get(1)
 
 const newScale = Vector2 (2,2)
 const initialScale = Vector2(1,1)
 
 func _ready():
 	
-	# Make Global
-	Android.ingameMenu = self
+	# Make Globalm but don't overwrite memory address
+	if safe_Android.ingameMenu == null:
+		safe_Android.ingameMenu = self
 	
 	print_debug("todo: connect to GameHUD Menu", self.name)
 	#GlobalInput.menu = self
@@ -213,6 +218,10 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 		#prev_scene_spawnpoint,
 		#direction_control,
 		#Music_on_settings
+		# Disabling Save Game Test for refactoring
+		
+		# three of the parametes in this list can be simplified to get_tree()
+		# and their derivatives gotten from th
 		if Utils.Functions.save_game(
 			[], 
 			0, 
@@ -223,7 +232,8 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 			0, 
 			"", 
 			null, 
-			Globals.direction_control 
+			Globals.direction_control,
+			get_tree()
 			) == false: push_error("Error saving game")
 
 		Music.play_track(_ui_sfx) #plays ui sfx in a loop

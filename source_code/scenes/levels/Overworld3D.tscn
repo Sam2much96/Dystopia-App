@@ -1,8 +1,8 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://resources/3D/overworld mesh.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/characters/3DMeshPlayer.gd" type="Script" id=2]
-[ext_resource path="res://resources/3D/HDR_3d_background_bw.webp" type="Texture" id=3]
+[ext_resource path="res://scenes/characters/Aarin_3D.tscn" type="PackedScene" id=2]
+[ext_resource path="res://resources/3D/550px-TLoZTWW_Vr_boxcloud1.png" type="Texture" id=3]
 [ext_resource path="res://resources/3D/city_exterior.gltf" type="PackedScene" id=4]
 
 [sub_resource type="PanoramaSky" id=2]
@@ -21,36 +21,10 @@ tonemap_white = 4.0
 dof_blur_far_distance = 2.95
 dof_blur_far_quality = 0
 
-[sub_resource type="CapsuleMesh" id=3]
-
-[sub_resource type="CapsuleShape" id=4]
-
 [node name="Overworld3D" type="Spatial"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 1 )
-
-[node name="player" type="KinematicBody" parent="WorldEnvironment"]
-transform = Transform( 0.0022467, -0.104704, -0.00776063, -0.0156374, 0.00713492, -0.106609, 0.104165, 0.00335101, -0.0150547, -5.45746, 1.46367, -0.183781 )
-script = ExtResource( 2 )
-speed = 5.0
-
-[node name="player" type="MeshInstance" parent="WorldEnvironment/player"]
-transform = Transform( 1, -3.72529e-09, 1.49012e-08, 3.72529e-09, 1, 1.07102e-08, -2.98023e-08, 1.07102e-08, 1, 0, 0, 0 )
-mesh = SubResource( 3 )
-skeleton = NodePath("Camera")
-
-[node name="Camera" type="Camera" parent="WorldEnvironment/player/player"]
-transform = Transform( 9.19843, -0.729004, -2.2255, 1.64192, -4.45725, 8.25466, -1.69775, -8.14999, -4.0644, -4.68361, 18.614, -16.0554 )
-current = true
-
-[node name="OmniLight" type="OmniLight" parent="WorldEnvironment/player/player/Camera"]
-transform = Transform( -0.142953, -0.0318954, 0.989215, -0.00279304, 0.99949, 0.031823, -0.989725, 0.00178628, -0.142969, -0.279844, -0.307488, -0.744312 )
-omni_range = 3.065
-
-[node name="CollisionShape" type="CollisionShape" parent="WorldEnvironment/player"]
-transform = Transform( 1, -7.45058e-09, -1.49012e-08, 3.72529e-09, 1, -5.58794e-09, -2.98023e-08, 1.39698e-09, 1, 0, 0, 0 )
-shape = SubResource( 4 )
 
 [node name="overworld map" parent="WorldEnvironment" instance=ExtResource( 1 )]
 
@@ -65,9 +39,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20.3178, 0, 0 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="WorldEnvironment"]
 transform = Transform( -0.544412, 0.597265, -0.588974, -0.836207, -0.331069, 0.437208, 0.0661377, 0.730526, 0.679675, -48.4343, 44.0589, 64.33 )
-light_energy = 2.0
+light_energy = 0.7
 light_indirect_energy = 0.0
 shadow_enabled = true
+
+[node name="player" parent="WorldEnvironment" instance=ExtResource( 2 )]
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 10.0

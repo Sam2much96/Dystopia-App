@@ -124,11 +124,13 @@ var suds : int
 "Device Variables"
 onready var user_data_dir : String =OS.get_user_data_dir()
 
+"safe Pointers to Global Singletons"
+onready var safe_GameHud = get_node("/root/GameHud/TouchInterface")
+onready var utils_singleton = get_node("/root/Utils")
 
 "Screen Orientation"
 # for upscaling and downscaling UI
-onready var utils_singleton = get_node("/root/Utils")
-onready var screenOrientation : int = utils_singleton.Screen.Orientation() 
+onready var screenOrientation : int = safe_GameHud.Screen.Orientation() 
 var viewport_size : Vector2
 var center_of_viewport : Vector2 
 

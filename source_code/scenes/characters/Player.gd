@@ -81,14 +81,14 @@ export(int) var peer_id: int = -99 # Dummpy Placeholder Peer id
 
 
 # Get Global Singletons
-onready var music_singleton_: music_singleton = get_node("/root/Music")
+onready var music_singleton_ = get_node("/root/Music") # : music_singleton
 onready var global_singleton_= get_node("/root/Globals") #  : GlobalsVar 
 onready var utils_singleton_= get_node("/root/Utils") #  : GlobalsVar 
 
 
 # For Despawn and Hit Collission Fx
-onready var blood: BloodSplatter = global_singleton_.blood_fx.instance()
-onready var despawn_particles: DeSpawnFX = global_singleton_.despawn_fx.instance()
+onready var blood = global_singleton_.blood_fx.instance() # : BloodSplatter
+onready var despawn_particles = global_singleton_.despawn_fx.instance() # : DeSpawnFX
 
 onready var die_sfx: String = music_singleton_.nokia_soundpack[27]
 onready var hurt_sfx: String = music_singleton_.nokia_soundpack[20]

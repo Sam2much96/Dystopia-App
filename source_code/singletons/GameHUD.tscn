@@ -6,7 +6,7 @@
 [ext_resource path="res://scenes/UI & misc/Healthbar.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/UI & misc/ingame_menu.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/UI & misc/TouchScreen HUD.tscn" type="PackedScene" id=8]
-[ext_resource path="res://scenes/UI & misc/GameHUD.gd" type="Script" id=9]
+[ext_resource path="res://singletons/GameHUD.gd" type="Script" id=9]
 
 [sub_resource type="Animation" id=1]
 resource_name = "SCREEN_HORIZONTAL"

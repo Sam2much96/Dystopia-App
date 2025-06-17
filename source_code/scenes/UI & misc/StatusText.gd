@@ -32,10 +32,15 @@ var messages : Array = []
 #var nodes : Array = [self]
 
 onready var anims : AnimationPlayer = $anims
+
+# safe pointer to global singletons
+onready var safe_dialogs_singleton = get_node("/root/Dialogs")
+
 func _enter_tree():
 	# Make GLobal
-	GameHUD.TouchInterface.input_buffer._Status_text = self
-
+	# rewrite with safe pointer
+	#GameHUD.TouchInterface.input_buffer._Status_text = self
+	pass
 
 func _ready():
 	
@@ -83,17 +88,17 @@ func _inventory_updated(action : String, type: String, amount : int):
 	
 	var txt : String
 
-	var _type : String = Dialogs.translate_to(type , Dialogs.language)
+	var _type : String = safe_dialogs_singleton.translate_to(type , safe_dialogs_singleton.language)
 	
 	
 	match action:
 		"added":
-			var obtained : String = Dialogs.translate_to("Obtained", Dialogs.language)
+			var obtained : String = safe_dialogs_singleton.translate_to("Obtained", safe_dialogs_singleton.language)
 			
 			txt = "%s  %s x %s" % [obtained,_type, amount]
 		"removed":
 			
-			var lost : String = Dialogs.translate_to("Lost", Dialogs.language)
+			var lost : String = safe_dialogs_singleton.translate_to("Lost", safe_dialogs_singleton.language)
 			txt =  "%s %s x %s" % [lost,_type, amount]
 	# Print a translated version of this text for debugging 
 	

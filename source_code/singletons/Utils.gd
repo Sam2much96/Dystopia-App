@@ -120,7 +120,7 @@ class Player_utils extends Reference:
 
 
 # Calculates the center of a Rectangle
-func calc_center_of_rectangle(rect : Vector2) -> Vector2:
+static func calc_center_of_rectangle(rect : Vector2) -> Vector2:
 	return Vector2((rect.x/2), (rect.y/2))
 
 # Produces Truely Randomized Results
@@ -135,7 +135,7 @@ func randomize_enemy_type() -> String:
 	#node.get_script().
 #	return randomize()
 
-func array_to_string(arr: Array) -> String:
+static func array_to_string(arr: Array) -> String:
 	# Used For Multiplayer data Encoding
 	# Converts an array to a string and concatonates it
 	# The result s is then converted to an integer
@@ -145,7 +145,7 @@ func array_to_string(arr: Array) -> String:
 		s += String(i)
 	return s
 
-func int_to_array(data : int)-> Array:
+static func int_to_array(data : int)-> Array:
 	# Used For Multiplayer Data decoding
 	# converts a large integer into separate value and encodes the result into an array
 	# essentialy decoding the data that array_to_string encodes
@@ -155,6 +155,15 @@ func int_to_array(data : int)-> Array:
 	for i in range(num_str.length()):
 		num_array.append(int(num_str[i]))
 	return num_array
+
+
+
+
+	# Convert bytes to Megabytes
+static func _ram_convert(bytes) :
+	if bytes >= int(1):
+		var _mb = String(round(float(bytes) / 1_048_576))
+		return _mb
 
 "Memory Leak/ Orphaned Nodes Management System"
 class MemoryManagement extends Reference :
@@ -285,12 +294,28 @@ class Functions extends Reference:
 		kill_count : int, 
 		prev_scene : String, 
 		prev_scene_spawnpoint,
-		direction_control : String
+		direction_control : String,
+		safeTree : SceneTree
 		)-> bool: 
 		
 		print_debug ("-------Saving Game -------")
+		# because this is a static function, i will get getting all the required 
+		# global variable data safely to avoid crashing bugs 
+		
+		
+		# this function saves state data from each of the autoload singleton to
+		# an on device json file
+		var safe_Utils = safeTree.get_node("/root/Utils") 
+		var safe_Inv = safeTree.get_node("/root/Inventory") 
+		var safe_Globals = safeTree.get_node("/root/Globals") 
+		var safe_Diag = safeTree.get_node("/root/Dialogs")
+		var safe_Music = safeTree.get_node("/root/Music")  
+		var safe_Quest = safeTree.get_node("/root/Quest") 
+		var safe_HUD = safeTree.get_node("/root/GameHud")
+		var safe_Screen = safe_HUD.TouchInterface
+		
 		var save_dict : Dictionary = {}
-		var save_game = Utils.file 
+		var save_game = safe_Utils.file #File.new() #Utils.file 
 		save_game.open("user://savegeme.save", File.WRITE_READ)
 		if !player.empty():
 			save_dict.player = player #saves the player node 
@@ -302,19 +327,19 @@ class Functions extends Reference:
 			save_dict.current_level = current_level
 		
 		# Inventory List is saved individually
-		if !Inventory.list().empty():
-			save_dict.inventory = Inventory.list()
-		if !Quest.get_quest_list().empty():
-			save_dict.quests = Quest.get_quest_list()
+		if !safe_Inv.list().empty():
+			save_dict.inventory = safe_Inv.list()
+		if !safe_Quest.get_quest_list().empty():
+			save_dict.quests = safe_Quest.get_quest_list()
 		if not os.empty():
 			save_dict.os = os
 		if kill_count != 0 :
 			save_dict.kill_count = kill_count
-		if Globals.death_count != 0:
-			save_dict.death_count = Globals.death_count
+		if safe_Globals.death_count != 0:
+			save_dict.death_count = safe_Globals.death_count
 		# Save Device's Tokens
-		if Globals.suds != 0:
-			save_dict.suds = Globals.suds
+		if safe_Globals.suds != 0:
+			save_dict.suds = safe_Globals.suds
 		
 		# For preserving scene changing information
 		if not prev_scene.empty() :
@@ -329,16 +354,16 @@ class Functions extends Reference:
 			save_dict.direction_control = direction_control
 		
 		#Music on settings is a boolean converted to int
-		if Music != null : 
-			save_dict.music = int(Music.music_on) #add other variables to save
+		if safe_Music != null : 
+			save_dict.music = int(safe_Music.music_on) #add other variables to save
 		
 		# Language is saved independently
-		if not Dialogs.language.empty():
-			save_dict.languague = Dialogs.language
+		if not safe_Diag.language.empty():
+			save_dict.languague = safe_Diag.language
 		
 		# Control Settings
 		# Vibration
-		save_dict.vibrate = GlobalInput.vibrate_
+		save_dict.vibrate = safe_Screen.vibrate_
 		
 		save_game.store_line(to_json(save_dict))
 		save_game.close()
@@ -346,13 +371,24 @@ class Functions extends Reference:
 		return true
 
 	"""
-	If check_only is true it will only check for a valid save file and return true or false without
-	restoring any data
+	LOAD GAME
+	
+	Features:
+		(1) If check_only is true it will only check for a valid save file and return true or false 
+		without restoring any data
 	"""
-	static func load_game(check_only : bool, GlobalScript) -> bool:
+	static func load_game(check_only : bool, safeTree : SceneTree) -> bool:
 		check_only = false
 		print ("-------Loading Game -------")
-		var save_game : File = Utils.file #= File.new()
+		# because this is a static function, i will get getting all the required 
+		# global variable data safely to avoid crashing bugs 
+		
+		
+		# this function saves state data from each of the autoload singleton to
+		# an on device json file
+		var safe_Utils = safeTree.get_node("/root/Utils") 
+
+		var save_game : File = safe_Utils.file #= File.new()
 		var save_dict : Dictionary
 		
 		if not save_game.file_exists("user://savegeme.save"):
@@ -367,8 +403,9 @@ class Functions extends Reference:
 			save_dict = parse_json(save_game.get_line())
 			if typeof(save_dict) != TYPE_DICTIONARY:
 				return false
-			if not check_only:
-				_restore_data(save_dict, GlobalScript)
+			
+			if not check_only: #update the global singeton with restored data
+				_restore_data(save_dict, safeTree)
 		
 			save_game.close()
 			return true
@@ -380,7 +417,23 @@ class Functions extends Reference:
 	"""
 	Restores data from the JSON dictionary inside the save files
 	"""
-	static func _restore_data(save_dict : Dictionary, GlobalScript ):
+	static func _restore_data(save_dict : Dictionary, safeTree: SceneTree):
+		
+		# because this is a static function, i will get getting all the required 
+		# global variable data safely to avoid crashing bugs 
+		
+		
+		# this function saves state data from each of the autoload singleton to
+		# an on device json file
+		var safe_Utils = safeTree.get_node("/root/Utils") 
+		var safe_Inv = safeTree.get_node("/root/Inventory") 
+		var safe_Globals = safeTree.get_node("/root/Globals") 
+		var safe_Diag = safeTree.get_node("/root/Dialogs")
+		var safe_Music = safeTree.get_node("/root/Music")  
+		var safe_Quest = safeTree.get_node("/root/Quest") 
+		var safe_HUD = safeTree.get_node("/root/GameHud")
+		var safe_Screen = safe_HUD.TouchInterface
+		
 		
 		"Quest Loader"
 		
@@ -388,7 +441,7 @@ class Functions extends Reference:
 			# JSON numbers are always parsed as floats. In this case we need to turn them into ints
 			for key in save_dict.quests:
 				save_dict.quests[key] = int(save_dict.quests[key])
-			Quest.quest_list = save_dict.quests
+			safe_Quest.quest_list = save_dict.quests
 		
 		"Inventory Loader"
 		
@@ -396,67 +449,71 @@ class Functions extends Reference:
 			# JSON numbers are always parsed as floats. In this case we need to turn them into ints
 			for key in save_dict.inventory:
 				save_dict.inventory[key] = int(save_dict.inventory[key])
-			Inventory.inventory = save_dict.inventory
+			safe_Inv.inventory = save_dict.inventory
 		
 		'OS loader'
 		
 		if save_dict.has('os'):
-			GlobalScript.os = save_dict.os
+			safe_Globals.os = save_dict.os
 		
 		if save_dict.has("suds"):
-			GlobalScript.suds = save_dict.suds
+			safe_Globals.suds = save_dict.suds
 		
 		'Player'
 		if save_dict.has('player'):
-			GlobalScript.player = save_dict.player
+			# restores the player object id? 
+			# this is not needded tbh, 
+			# to do : rewrite to save and restore player name saved from form
+			
+			safe_Globals.player = save_dict.player
 			
 		if save_dict.has("kill_count"):
-			GlobalScript.kill_count = save_dict.kill_count  
+			safe_Globals.kill_count = save_dict.kill_count  
 			
 		
 		if save_dict.has('player_hitpoints'):
-			GlobalScript.player_hitpoints = int(save_dict.player_hitpoints)
+			safe_Globals.player_hitpoints = int(save_dict.player_hitpoints)
 		
 		if save_dict.has('death_count'):
-			GlobalScript.death_count = int(save_dict.death_count)
+			safe_Globals.death_count = int(save_dict.death_count)
 		
 		
 		
 		'Player Object Spawn Position'
 		if save_dict.has('spawn_x'):
-			GlobalScript.spawn_x = save_dict.spawn_x 
+			safe_Globals.spawn_x = save_dict.spawn_x 
 		
 		if save_dict.has('spawn_y'):
-			GlobalScript.spawn_y = save_dict.spawn_y
+			safe_Globals.spawn_y = save_dict.spawn_y
 		
 		'Saves Player Spawn Point'
 		if save_dict.has('current_level'):
-			GlobalScript.current_level = save_dict.current_level
+			safe_Globals.current_level = save_dict.current_level
 		
 		 
 		"Scene Loader"
+		# tbh this is rubbish data if it's not being used in the code game loop
 		if save_dict.has('prev_scene'):
 			# Presumably a bugfix for scene changing
-			GlobalScript.prev_scene =save_dict.prev_scene 
-			GlobalScript.prev_scene_spawnpoint = save_dict.prev_scene_spawnpoint 
+			safe_Globals.prev_scene =save_dict.prev_scene 
+			safe_Globals.prev_scene_spawnpoint = save_dict.prev_scene_spawnpoint 
 		
 		'Control Settings'
 		# Direction controller
+		# another rubbish depreciated data
 		if save_dict.has('direction_control') && str(save_dict.direction_control) != 'Null':
-			GlobalScript.direction_control = str(save_dict.direction_control)
+			safe_Globals.direction_control = str(save_dict.direction_control)
 		
 		if save_dict.has("languague"):
-			Dialogs.language = save_dict.languague
+			safe_Diag.language = save_dict.languague
 
-		if save_dict.has("vibrate"):
-			GlobalInput.vibrate_ = bool(save_dict.vibrate)
+		#if save_dict.has("vibrate"):
+		#	GlobalInput.vibrate_ = bool(save_dict.vibrate)
 
 		if save_dict.has("music"):
-			print_debug("Mus: ",bool(save_dict.music)) # For Debug Purposes Only
-			Music.enable = bool(save_dict.music)
+			#print_debug("Mus: ",bool(save_dict.music)) # For Debug Purposes Only
+			safe_Music.enable = bool(save_dict.music)
 
-		
-		######################################################
 		print_debug("Loaded gameplay")
 
 	# Loads Singular User Data from local storage
@@ -464,7 +521,7 @@ class Functions extends Reference:
 	# Should allow for loading individual variables from Local
 	static func load_user_data( data: String ):
 		
-		var save_game = Utils.file 
+		var save_game = File.new() #Utils.file 
 		if not save_game.file_exists("user://savegeme.save"):
 			return false
 		save_game.open("user://savegeme.save", File.READ)
@@ -474,8 +531,9 @@ class Functions extends Reference:
 
 		if save_dict.has(data):
 			print_debug ("Loading user data: ", data)
-			if data == 'languague':
-				Dialogs.language = save_dict.languague
+		#	if data == 'languague':
+		#		Dialogs.language = save_dict.languague
+		
 		#	if data == "Music_on_settings":
 		#		Music.Music_on_settings = save_dict.Music_on_settings
 		#		Music._ready()
@@ -756,16 +814,17 @@ class Downloader extends Node:
 		"""
 
 
-	# Rewrite this code
+	# Rewrite this code to make reference to save global pointer
 	func _verify_Online_downloaded_video():
 		# Verifies if the downloaded video is valid
-		Utils.dir.open ("user://")
+		#Utils.dir.open ("user://")
 		var file_exists
 		if Globals.os != str ('Android'):
-			file_exists = Utils.dir.file_exists('user://video.webm')
+			pass
+			#file_exists = Utils.dir.file_exists('user://video.webm')
 		if Globals.os == str ('Android'):
-			file_exists = Utils.dir.file_exists('user://video.ogv')
-		
+			#file_exists = Utils.dir.file_exists('user://video.ogv')
+			pass
 		print ('Video File Exists: ', file_exists)
 		if not file_exists : # && downloading_video != true:
 			print ('Video File Doesn.t exist,downloading' )#;_check_download_size(int(Networking.get_body_size()), Networking.get_downloaded_bytes())
@@ -784,7 +843,7 @@ class Downloader extends Node:
 			#stop_playing_laoding_cinematic()
 			#downloading_video = false
 			var err
-			var video_file : File = Utils.file #File.new()
+			var video_file : File = File.new() #Utils.file #File.new()
 			var video_file_path = "user://video.ogv"
 			video_file.open(video_file_path, File.READ_WRITE)
 			err = (video_file.open(video_file_path, File.READ))
@@ -811,40 +870,40 @@ class Downloader extends Node:
 	parses the poopbyte array as a video stream
 	"""
 	# Refactor into proper clas/static function
-	func _http_request_completed(result, response_code, _headers, body): # dOWNLOADS A VIDEO FROM A SERVER via tls/ftp and pipes the output to a video
-		if body.empty() != true: #Executes once a Connection is established 
+	#func _http_request_completed(result, response_code, _headers, body): # dOWNLOADS A VIDEO FROM A SERVER via tls/ftp and pipes the output to a video
+	#	if body.empty() != true: #Executes once a Connection is established 
 
-			Utils.dir.open ("user://")
-			var file_exists = Utils.dir.file_exists('user://video.webm')
-			print ('Video File Exists: ', file_exists)
+			#Utils.dir.open ("user://")
+			#var file_exists = Utils.dir.file_exists('user://video.webm')
+			#print ('Video File Exists: ', file_exists)
 			
 			#Checks if video file exits
-			if not file_exists : #executes if videofile doesnt exit
-				Utils.dir.open("user://")
-				var _absolute_path = Utils.dir.get_current_dir ( )
+			#if not file_exists : #executes if videofile doesnt exit
+			#	Utils.dir.open("user://")
+			#	var _absolute_path = Utils.dir.get_current_dir ( )
 				
-				print ('Directory //', _absolute_path)
-				var err : int
-				var video_file = cinematic.Function.store_video_files(body)
-				print ('Video file is open: ',video_file.is_open(), '/error :', err) #Debugs if file can open
-				if video_file.is_open() && err == 0: #error catcher 2
+			#	print ('Directory //', _absolute_path)
+			#	var err : int
+			#	var video_file = cinematic.Function.store_video_files(body)
+			#	print ('Video file is open: ',video_file.is_open(), '/error :', err) #Debugs if file can open
+			#	if video_file.is_open() && err == 0: #error catcher 2
 					
 					#download_video_size = Networking.get_body_size()#8gets video size from servers
 					
 					
 					#downloading_video: bool, download_video_size : int
-					cinematic.Function._check_download_size(int(Networking.get_body_size()), Networking.get_downloaded_bytes(), false, false)
+			#		cinematic.Function._check_download_size(int(Networking.get_body_size()), Networking.get_downloaded_bytes(), false, false)
 					#var parser = _body.decompress(download_video_size) #decompresses the poolbyte
 					
 
 
 					#downloading_video = false
 				#return Globals.video_stream
-			if file_exists:
-				print ('File Exists', file_exists)
-		if body.empty() == true:
-			print ('Streaming Site '+ Networking.url+ ' is unavailable ')
-			print ('It could be a myriad of problems. Please debug carefully')
+	#		if file_exists:
+	#			print ('File Exists', file_exists)
+	#	if body.empty() == true:
+	#		print ('Streaming Site '+ Networking.url+ ' is unavailable ')
+	#		print ('It could be a myriad of problems. Please debug carefully')
 
 
 
@@ -872,7 +931,7 @@ THIS IS THE LOGIC FOR THE ANIME VIDEO STREAMER. iT WILL RENDER THE PILOT AND THE
 class Film :
 	
 	static func store_video_files(_body : PoolByteArray):
-		var video_file : File = Utils.file #= File.new()
+		var video_file : File = File.new() #Utils.file #= File.new()
 		video_file.open('user://video.ogv',File.WRITE)
 		var _err = (video_file.open('user://video.ogv', File.WRITE_READ))
 		if _err != OK:
@@ -922,8 +981,8 @@ class Film :
 
 	# It needs a video file size and it will run as a loop as long as both aren't equal
 	func _store_video_files(_body, size) -> VideoStreamTheora: # FUnvtion breaks here
-		var video_file = Utils.file #File.new()
-		var error_checker = Utils.file #File.new()
+		var video_file = File.new() #Utils.file #File.new()
+		var error_checker = File.new() #Utils.file #File.new()
 		
 		if _body != null:
 			# Add more error File error checkers
@@ -972,28 +1031,9 @@ class Film :
 
 
 
-class Advertising:
-	"""
-	An Advertising Class for optimising and controlling the ads / ads data for each player
-	"""
-	# To DO :
-	# (1) Implement in Android Singleton
-	var t = 0
-	
-	
-	static func start_ads_timer(_timer : Timer):
-		_timer.start()
-	
-	func hash_ads_data():
-		pass
-		
-	func stop_ads_timer(_timer : Timer):
-		_timer.stop()
-		
-		# log the data
+
 
 func _exit_tree():
 	# Memory Management And removing script warnings
 	screenOrientation = 0
-	
-	pass
+	self.queue_free()

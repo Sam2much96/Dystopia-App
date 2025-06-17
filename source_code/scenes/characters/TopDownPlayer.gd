@@ -85,16 +85,16 @@ func facing_logic(node : Player, peed_id : int):
 	# TO DO: Implement Polymorphism for Multiplayer Gameplay
 	
 	#print_debug(node)
-	if Input.is_action_pressed("move_left") or GlobalInput._state == GlobalInput.LEFT:
+	if Input.is_action_pressed("move_left") : #or GlobalInput._state == GlobalInput.LEFT:
 		
 		node.facing = FACING.LEFT
-	if Input.is_action_pressed("move_right") or GlobalInput._state == GlobalInput.RIGHT:
+	if Input.is_action_pressed("move_right") : #or GlobalInput._state == GlobalInput.RIGHT:
 		
 		facing = FACING.RIGHT
-	if Input.is_action_pressed("move_up") or GlobalInput._state == GlobalInput.UP:
+	if Input.is_action_pressed("move_up") : #or GlobalInput._state == GlobalInput.UP:
 		
 		node.facing = FACING.UP
-	if Input.is_action_pressed("move_down") or GlobalInput._state == GlobalInput.DOWN:
+	if Input.is_action_pressed("move_down") : #or GlobalInput._state == GlobalInput.DOWN:
 		
 		node.facing = FACING.DOWN
 
@@ -138,12 +138,12 @@ func state_machine_logic(node, peer_id : int):
 					Input.is_action_pressed("move_down") or
 					Input.is_action_pressed("move_left") or
 					Input.is_action_pressed("move_right") or
-					Input.is_action_pressed("move_up") or
+					Input.is_action_pressed("move_up") #or
 					
-					GlobalInput._state == GlobalInput.UP or
-					GlobalInput._state == GlobalInput.DOWN or
-					GlobalInput._state == GlobalInput.LEFT or
-					GlobalInput._state == GlobalInput.RIGHT
+					#GlobalInput._state == GlobalInput.UP or
+					#GlobalInput._state == GlobalInput.DOWN or
+					#GlobalInput._state == GlobalInput.LEFT or
+					#GlobalInput._state == GlobalInput.RIGHT
 				):
 					node.state = TOP_DOWN.STATE_WALKING
 					
@@ -158,7 +158,7 @@ func state_machine_logic(node, peer_id : int):
 				node.state = TOP_DOWN.STATE_ROLL
 				if err > 0 : emit_signal("state_changed", node.state)
 				# Roll DIrection Calcualatin
-				node.roll_direction = GlobalInput.roll_direction_calculation()
+				node.roll_direction = GameHud.TouchInterface.roll_direction_calculation()
 			
 			node.new_anim = "idle_" + node._facing
 			if Input.is_action_just_pressed("interact"):
@@ -247,12 +247,12 @@ func state_machine_logic(node, peer_id : int):
 					Input.is_action_pressed("move_down") or
 					Input.is_action_pressed("move_left") or
 					Input.is_action_pressed("move_right") or
-					Input.is_action_pressed("move_up") or
+					Input.is_action_pressed("move_up") #or
 					
-					GlobalInput._state == GlobalInput.UP or
-					GlobalInput._state == GlobalInput.DOWN or
-					GlobalInput._state == GlobalInput.LEFT or
-					GlobalInput._state == GlobalInput.RIGHT
+					#GlobalInput._state == GlobalInput.UP or
+					#GlobalInput._state == GlobalInput.DOWN or
+					#GlobalInput._state == GlobalInput.LEFT or
+					#GlobalInput._state == GlobalInput.RIGHT
 				):
 					node.state = TOP_DOWN.STATE_WALKING
 			

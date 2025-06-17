@@ -102,7 +102,7 @@ _global_script_classes=[ {
 "base": "CanvasLayer",
 "class": "GameHUD",
 "language": "GDScript",
-"path": "res://scenes/UI & misc/GameHUD.gd"
+"path": "res://singletons/GameHUD.gd"
 }, {
 "base": "Control",
 "class": "Game_Menu",
@@ -128,6 +128,36 @@ _global_script_classes=[ {
 "class": "ImpactFX",
 "language": "GDScript",
 "path": "res://scenes/Shaders/impact_effect_script.gd"
+}, {
+"base": "InputEventAction",
+"class": "InputEventMultiScreenDrag",
+"language": "GDScript",
+"path": "res://singletons/input/CustomInputEvents/InputEventMultiScreenDrag.gd"
+}, {
+"base": "InputEventAction",
+"class": "InputEventScreenPinch",
+"language": "GDScript",
+"path": "res://singletons/input/CustomInputEvents/InputEventScreenPinch.gd"
+}, {
+"base": "InputEventAction",
+"class": "InputEventScreenTwist",
+"language": "GDScript",
+"path": "res://singletons/input/CustomInputEvents/InputEventScreenTwist.gd"
+}, {
+"base": "InputEventAction",
+"class": "InputEventSingleScreenDrag",
+"language": "GDScript",
+"path": "res://singletons/input/CustomInputEvents/InputEventSingleScreenDrag.gd"
+}, {
+"base": "InputEventAction",
+"class": "InputEventSingleScreenTap",
+"language": "GDScript",
+"path": "res://singletons/input/CustomInputEvents/InputEventSingleScreenTap.gd"
+}, {
+"base": "InputEventAction",
+"class": "InputEventSingleScreenTouch",
+"language": "GDScript",
+"path": "res://singletons/input/CustomInputEvents/InputEventSingleScreenTouch.gd"
 }, {
 "base": "HTTPRequest",
 "class": "Internet",
@@ -419,6 +449,12 @@ _global_script_class_icons={
 "Healthbar": "res://resources/misc/Pixel Heart 32x32.png",
 "Help": "",
 "ImpactFX": "",
+"InputEventMultiScreenDrag": "",
+"InputEventScreenPinch": "",
+"InputEventScreenTwist": "",
+"InputEventSingleScreenDrag": "",
+"InputEventSingleScreenTap": "",
+"InputEventSingleScreenTouch": "",
 "Internet": "",
 "JoyStickUI": "",
 "JoystickCircle": "",
@@ -497,7 +533,7 @@ Networking="*res://singletons/Networking.tscn"
 Utils="*res://singletons/Utils.gd"
 Simulation="*res://singletons/Simulation.tscn"
 Android="*res://singletons/Android.tscn"
-GameHud="*res://scenes/UI & misc/GameHUD.tscn"
+GameHud="*res://singletons/GameHUD.tscn"
 
 [debug]
 

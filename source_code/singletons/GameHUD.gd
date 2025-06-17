@@ -7,7 +7,7 @@
 # information used by the player's Dialogue, Inventory, Health bar,.
 # Kill count, Directional, Comics.
 #
-#
+# # Exposes Sub Nodes TO Scene Tree Via Global Input Singleton
 #
 #
 # Features: 
@@ -26,9 +26,9 @@
 
 # *************************************************
 # Bugs :
-#(1) Ingame menu bug (fixed)
+#(1) 
 # (2) Multiple State can be active at the same time Bug
-# (4) Fix Intteract UI
+# (4) Fix Interact UI (1/3)
 # (5) Doesn't implement Mobile Gyroscope (f1/2 fixed)
 # (6) TouchInterface State Machine is buggy
 # (7) Touch Interface INterract State  State is Buggy
@@ -44,50 +44,59 @@ extends CanvasLayer
 
 class_name GameHUD
 
-# Exposes Sub Nodes TO Scene Tree Via Global Input Singleton
 
+"Safe Pointers To Singletons"
+#onready var globalInput = get_tree().get_root().get_node("/root/GlobalInput")
+onready var android_ = get_node("/root/Android")
+onready var safe_Utils = get_node("/root/Utils")
 
-onready var globalInput = get_tree().get_root().get_node("/root/GlobalInput")
-onready var android_ = get_tree().get_root().get_node("/root/Android")
 
 # Export Null Pointer TO Other Scene Setters
 var menu : Game_Menu
 var TouchInterface : TouchScreenHUD setget set_TouchInterface, get_TouchInterface
 var _Stats : Stats
-var _Status_text : StatusText
-var heart_box : Healthbar
+var _Status_text  #: StatusText
+var heart_box  #: Healthbar
 var dialog_box : DialogBox
 var Anim : AnimationPlayer
 var children : Array
 
 
-func _ready():
+"Safe Pointer To Singletons"
 
-	menu = $"%Menu "#$"%Menu"
-	
-	set_TouchInterface($"%TouchInterface")
-	
-	#_Comics = GlobalInput.get_child(1) #Comics Node Pointer
-	_Stats = $"%Stats"
-	_Status_text = $"%Status_text"
-	heart_box = $"%Healthbar"
-	dialog_box =$"%Dialog_box"
-	
+
+func _ready():
+	# Individually set each variable when ready if they are null
+	# This prevents memory address overwrites and updates from redundancy code on object
+	# Each sub object has ready codes to update to this global parent class
+	# But the code may trigger slower or faster that this parent loop
+	if menu == null:
+		menu = $"%Menu "#$"%Menu"
+	if _Stats == null:
+		_Stats = $"%Stats"
+	if _Status_text == null:
+		_Status_text = $"%Status_text"
+	if heart_box == null:
+		heart_box = $"%Healthbar"
+	if dialog_box == null:
+		dialog_box =$"%Dialog_box"
+	if TouchInterface == null:
+		TouchInterface = $"%TouchInterface"
 	Anim = $AnimationPlayer
+	
 	children = [menu, TouchInterface, _Stats, _Status_text,dialog_box, heart_box, Anim]
 	
 	#print_debug("HUD Debug 1 :", children)
 	
 	# Check For Broken Links
-	Utils.UI.check_for_broken_links(children)
+	#Utils.UI.check_for_broken_links(children)
 	
 	# make self Global via singleton
 	# using setter and getter functions
 	
 	# Make Self global via scene Tree
 	# Safe
-	if is_instance_valid(globalInput):
-		globalInput.gameHUD = self
+
 	if is_instance_valid(android_):
 		
 		android_.GameHUD_ = self
@@ -109,4 +118,5 @@ func _exit_tree():
 	#
 	# Clears all ui buttons
 	
-	Utils.MemoryManagement.queue_free_array(children)
+	safe_Utils.MemoryManagement.queue_free_array(children)
+	self.queue_free()

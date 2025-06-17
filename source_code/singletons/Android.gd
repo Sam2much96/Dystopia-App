@@ -23,25 +23,31 @@ const MINUMUM_FPS : int = 25
 
 
 var TouchInterface : TouchScreenHUD  setget set_TouchInterface, get_TouchInterface 
-var GameHUD_ : GameHUD 
+var GameHUD_ #: GameHUD 
 
 
 var ingameMenu : Game_Menu setget set_GameMenu, get_GameMenu
 
 export (bool) var _is_android = false
 
+
+
+
+"Safe Pointers To Global Singletons"
+
+onready var _debug = get_node("/root/Debug")
+onready var safe_Utils = get_node("/root/Utils")
+onready var _simulation = get_node("/root/Simulation")
+onready var screen = get_node("/root/GameHud/TouchInterface")
+onready var _globals = get_node("/root/Globals")
+
+
+"Screen Extension"
+# Extends screen logic calculations from touch interface, a child of gamehud
 # To reduce memory over write of Global scerenn orientation integer unless necessary
 # and reduce memory calls between singletons unless necessary
 var local_screen_orientation : int 
-onready var initial_screen_orientation : int = Utils.Screen.Orientation() # for comparison
-
-# Get Debug Singleton for Debugging
-onready var _debug = get_node("/root/Debug")
-
-# SImulation SIngleton Pointer
-onready var _simulation = get_node("/root/Simulation")
-
-onready var _globals = get_node("/root/Globals")
+onready var initial_screen_orientation : int = screen.Screen.Orientation() # for comparison
 
 #*********** Android Plugins *************#
 
@@ -191,11 +197,11 @@ func _process(_delta):
 			_globals.screenOrientation  = local_screen_orientation
 	
 		if local_screen_orientation == 0: #.SCREEN_HORIZONTAL:
-			Simulation.rainFX.lifetime = Short_lifetime
+			_simulation.rainFX.lifetime = Short_lifetime
 			#TouchInterface.Horizontal() # doesn't work yet
 		
 		if local_screen_orientation == 1: #SCREEN_VERTICAL:
-			Simulation.rainFX.lifetime = Long_lifetime
+			_simulation.rainFX.lifetime = Long_lifetime
 			
 			# Touch Interface downscaling
 			# TOuch Interface Format and Scaling should be exported functionis
@@ -234,7 +240,7 @@ func _process(_delta):
 		# compare previous orientation and adjust hud
 		#if local_screen_orientation != initial_screen_orientation:
 			
-		Utils.Screen._adjust_touchHUD_length(GameHUD_.Anim) # sets touch interface layout
+		GameHUD_.TouchInterface.Screen._adjust_touchHUD_length(GameHUD_.Anim) # sets touch interface layout
 	
 	
 	if _simulation.frame_counter % 130 == 00 && is_instance_valid(ingameMenu):
@@ -249,14 +255,14 @@ func _process(_delta):
 		if local_screen_orientation == 1: #SCREEN_VERTICAL is 1
 			
 			#var newPosition = Vector2(-650,250)
-			Utils.UI.upscale_ui(ingameMenu, ingameMenu.newScale, ingameMenu.get_position())
+			safe_Utils.UI.upscale_ui(ingameMenu, ingameMenu.newScale, ingameMenu.get_position())
 		if local_screen_orientation == 0:
-			Utils.UI.upscale_ui(ingameMenu, ingameMenu.initialScale, ingameMenu.get_position())
+			safe_Utils.UI.upscale_ui(ingameMenu, ingameMenu.initialScale, ingameMenu.get_position())
 		
 
 func _on_player_ready():
 	if _is_android == true:
-		GlobalInput.TouchInterface.enabled = true
+		GameHUD_.TouchInterface.enabled = true
 		#Android.show_all_buttons() # Show Touch HUD UI
 
 
@@ -331,3 +337,25 @@ func _on_AdMob_rewarded_video_failed_to_load(error_code):
 
 func _on_AdMob_rewarded(currency, amount):
 	print_debug(currency, amount)
+
+
+class Advertising:
+	"""
+	An Advertising Class for optimising and controlling the ads / ads data for each player
+	"""
+	# To DO :
+	# (1) Implement in Android Singleton
+	var t = 0
+	
+	
+	static func start_ads_timer(_timer : Timer):
+		_timer.start()
+	
+	func hash_ads_data():
+		pass
+		
+	func stop_ads_timer(_timer : Timer):
+		_timer.stop()
+		
+		# log the data
+

@@ -83,11 +83,12 @@ var regex : RegEx = RegEx.new()
 
 enum {ENABLED, DISABLED, NULL}
 
-#export (int) var _state = DISABLED
+"Safe Pointers to global singletons"
 
-onready var local_networking : Internet = get_node("/root/Networking")
-
-
+onready var local_networking = get_node("/root/Networking") # : Internet
+onready var safeInventory = get_node("/root/Inventory")
+onready var safeUtils = get_node("/root/Utils")
+onready var safeInput = get_parent()#get_node("root/GameHud")
 
 
 func _ready():
@@ -111,15 +112,22 @@ func _ready():
 	]
 	
 	
-	Utils.UI.check_for_broken_links(_Stats_UI_Elements)
+	safeUtils.UI.check_for_broken_links(_Stats_UI_Elements)
 	
 
 	hide()
 	
+	print_debug("making stats UI global", safeInput)
+	
 	# Make self global 
 	# uses setter and getter functions for proper code handling 
-	Inventory.stats_ui = self
-	GameHud.Stats_ = self
+	safeInventory.stats_ui = self
+	
+	# redundancy code to save stats object to touch interface
+	# for signal connection visibility logic to ui buttons
+	# synchronises stats ui visibility state with touch hud visibility logic 
+	if safeInput._Stats == null:
+		safeInput._Stats = self
 	
 	#Regex for Inventory Update
 	regex.compile("(\\d+)")

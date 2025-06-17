@@ -49,7 +49,6 @@ class_name Player_v2_networking
 var update_id : int = 0
 
 
-var world_radius = Networking.WORLD_SIZE / 2
 var my_info
 
 var SIMULATING : bool = false
@@ -64,7 +63,12 @@ var v : Vector2 = Vector2.ZERO
 
 onready var _label : Label = $Label
 
-
+"Safe Pointer to Global Singletons"
+onready var safe_Buffer = get_node("/root/GameHud").TouchInterface
+onready var safe_Networking = get_node("/root/Networking")
+onready var world_radius = safe_Networking.WORLD_SIZE / 2
+onready var safe_Simulation = get_node("/root/Simulation")
+onready var safe_Utils = get_node("/root/Utils")
 
 func _ready():
 	randomize() # Random Seed Generator
@@ -88,7 +92,7 @@ func _ready():
 	
 	# Save Player Details
 	#CLient Peer Details Locally
-	Simulation.register_player(peer_id)
+	safe_Simulation.register_player(peer_id)
 	
 	#print_debug ("Client Peer Data ", Simulation.player_info[peer_id])
 	
@@ -99,24 +103,24 @@ func _ready():
 	
 	"Register Player Error Catcher"
 	# Error Catcher 2
-	if Simulation.player_info.keys().empty():
-		Simulation.player_info = {peer_id : {}}
-		print_debug(Simulation.player_info.keys())# For Debug Purposes ONly
+	if safe_Simulation.player_info.keys().empty():
+		safe_Simulation.player_info = {peer_id : {}}
+		print_debug(safe_Simulation.player_info.keys())# For Debug Purposes ONly
 
 	# Connect SIgnals
 	# (1) Networking Singleton to SImulation SIngleton
 	if is_network_master():
 		
-		Simulation.connect("pi", Simulation,"simulate", [peer_id, self])
-		print_debug("Simulation signal is connected: ",Simulation.is_connected("pi", Simulation,"simulate"))
+		safe_Simulation.connect("pi", safe_Simulation,"simulate", [peer_id, self])
+		print_debug("Simulation signal is connected: ",safe_Simulation.is_connected("pi", safe_Simulation,"simulate"))
 
 	"Active Camera"
 	
 	if not is_network_master():
-		if Networking.GamePlay == Networking.LOCAL_COOP:
+		if safe_Networking.GamePlay == safe_Networking.LOCAL_COOP:
 			# Fixes Client Player Inactive Camera
 			# Breaks in Online MMO Gameplay
-			Simulation.all_player_objects[2].player_camera.make_current()
+			safe_Simulation.all_player_objects[2].player_camera.make_current()
 
 
 
@@ -158,9 +162,9 @@ func _input(_event):
 		
 		
 		if not is_network_master():
-			if Networking.GamePlay == Networking.LOCAL_COOP:
-				facing_logic(Simulation.all_player_objects[2], 0) # Where Zero is the default server player id
-			if Networking.GamePlay == Networking.MMO_SERVER:
+			if safe_Networking.GamePlay == safe_Networking.LOCAL_COOP:
+				facing_logic(safe_Simulation.all_player_objects[2], 0) # Where Zero is the default server player id
+			if safe_Networking.GamePlay == safe_Networking.MMO_SERVER:
 				facing_logic(self, peer_id) 
 			if (Input.is_action_just_pressed("move_up") or 
 			Input.is_action_just_pressed("move_down") or
@@ -199,7 +203,7 @@ func _input(_event):
 			Input.is_action_just_pressed("roll") ):
 				
 				"Updates Player Input Data Across Client/Server Peers"
-				Simulation.rpc_unreliable_id(1, "pi", peer_id, Simulation.RawData) # Packet Loss Error
+				safe_Simulation.rpc_unreliable_id(1, "pi", peer_id, safe_Simulation.RawData) # Packet Loss Error
 		
 		
 	# Server Side Code
@@ -208,8 +212,8 @@ func _input(_event):
 		
 		if is_network_master(): # Server player
 			# call the refactored state machine logic with the peed id parameter
-			if Networking.GamePlay == Networking.LOCAL_COOP:
-				facing_logic(Simulation.all_player_objects[3], 0) # Where Zero is the default server player id
+			if safe_Networking.GamePlay == safe_Networking.LOCAL_COOP:
+				facing_logic(safe_Simulation.all_player_objects[3], 0) # Where Zero is the default server player id
 			
 				"""
 				Server Logic : Should only process inputs in local coop
@@ -231,7 +235,7 @@ func _input(_event):
 				Input.is_action_just_released("move_right") or
 				Input.is_action_just_pressed("attack") or 
 				Input.is_action_just_pressed("roll") ):
-					Networking.broadcast_world_positions()
+					safe_Networking.broadcast_world_positions()
 
 
 
@@ -259,22 +263,22 @@ func _physics_process(_delta):
 
 		# Server
 		if is_network_master():
-			if Networking.GamePlay == Networking.LOCAL_COOP:
+			if safe_Networking.GamePlay == safe_Networking.LOCAL_COOP:
 				# Server Class
 				
-				state_machine_logic(Simulation.all_player_objects[3],0)
+				state_machine_logic(safe_Simulation.all_player_objects[3],0)
 			
 		# Client
 		if not is_network_master():
-			if Networking.GamePlay == Networking. LOCAL_COOP:
+			if safe_Networking.GamePlay == safe_Networking. LOCAL_COOP:
 				# Place Error Catcher Here
 				# Client Class
 				# (1) Update facing based on my input
 				# (2) Simulate Physics process for only my player object using peed id
 				#print(Simulation.all_player_objects)
-				state_machine_logic(Simulation.all_player_objects[2],0)
+				state_machine_logic(safe_Simulation.all_player_objects[2],0)
 			
-			if Networking.GamePlay == Networking.MMO_SERVER:
+			if safe_Networking.GamePlay == safe_Networking.MMO_SERVER:
 				state_machine_logic(self,peer_id)
 
 
@@ -282,7 +286,7 @@ func _physics_process(_delta):
 
 
 func _get_state_buffer() : #-> int:
-	return int(Utils.array_to_string(StateBuffer.duplicate()))
+	return int(safe_Utils.array_to_string(StateBuffer.duplicate()))
 
 
 	"""
@@ -301,7 +305,7 @@ func _get_state_buffer() : #-> int:
 	# Simulation Logic
 	if is_network_master():
 	
-		if Simulation.player_info.keys().size() > 1:
+		if safe_Simulation.player_info.keys().size() > 1:
 			pass
 
 
@@ -341,7 +345,7 @@ func update_player_info():
 	
 
 	# update Input buffer
-	Simulation.player_info[peer_id]["in"] = GlobalInput._get_input_buffer()
+	Simulation.player_info[peer_id]["in"] = safe_Buffer._get_input_buffer()
 	
 	# Hitpoints
 	Simulation.player_info[peer_id]["hp"] = self.hitpoints

@@ -279,7 +279,7 @@ func _on_AdMob_banner_loaded():
 	BANNER_READY = true
 	
 	safe_Dialogs.show_dialog("Here's Your Reward! $SUD 1,000", "Admin")
-	Globals.suds += 1000
+	_globals.suds += 1000
 
 
 func _on_AdMob_banner_failed_to_load(error_code):
@@ -309,19 +309,19 @@ func show_rewarded_video_ads():
 
 	if !VIDEO_READY && BANNER_READY:
 		_ads.show_banner()
-		Globals.suds += 5_000
-		Dialogs.show_dialog("Here's Your Reward! $SUD 5,000", "A.T.M")
+		_globals.suds += 5_000
+		safe_Dialogs.show_dialog("Here's Your Reward! $SUD 5,000", "A.T.M")
 	if !VIDEO_READY && !BANNER_READY:
 		print_debug("Ads was unable to load")
-		Dialogs.show_dialog("Wasn't Able to connect to the net, try again later", "A.T.M")
+		safe_Dialogs.show_dialog("Wasn't Able to connect to the net, try again later", "A.T.M")
 
 
 
 func _on_AdMob_rewarded_video_opened():
 	print_debug("rewarded video opened")
-	Globals.suds += 10_000
+	_globals.suds += 10_000
 	#		Globals.suds += 10_000
-	Dialogs.show_dialog("Here's Your Reward! $SUD 10,000", "Admin")
+	safe_Dialogs.show_dialog("Here's Your Reward! $SUD 10,000", "Admin")
 
 func _on_AdMob_rewarded_video_failed_to_load(error_code):
 	print_debug("rewarded video failed loading: ", error_code)

@@ -84,7 +84,7 @@ scale = Vector2( 0.55068, 0.55068 )
 z_index = 1
 
 [node name="RainFx" parent="Player" instance=ExtResource( 2 )]
-position = Vector2( -3.63199, -301.445 )
+position = Vector2( -3.63196, -724.559 )
 scale = Vector2( 2.36072, 2.36072 )
 amount = 350
 emission_rect_extents = Vector2( 250, 10 )

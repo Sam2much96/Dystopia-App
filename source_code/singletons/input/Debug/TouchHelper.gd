@@ -8,6 +8,7 @@ extends Node
 # To Do: This code would be exposed under the input singleton # inside the class definitions for the custom inputs
 var state = {}
 
+# stores all input touch data to a gloabl script to be reference / called later
 
 func _unhandled_input(event):
 	if event is InputEventScreenTouch:

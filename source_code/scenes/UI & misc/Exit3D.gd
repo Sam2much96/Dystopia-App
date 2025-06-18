@@ -44,26 +44,27 @@ func _ready():
 func _on_body_entered(body):
 	# Buggy not workinh
 	# Using timer node instead
-	if body is Camera:
-		print_debug("11111111111")
+	if body is KinematicBody: # 3d player parent class
+		#print_debug("11111111111")
 		Globals.current_level = to_scene
 		Globals.spawn_x = body.position.x+ 200 
 		Globals.spawn_y = body.position.y +200
 		Globals.player_hitpoints = body.hitpoints
 		
-		
-		Utils.Functions.save_game(
-			[body], 
-			body.hitpoints, 
-			(body.position.x+ 200), 
-			(body.position.y +200), 
-			to_scene, 
-			"", 
-			Globals.kill_count, 
-			"", 
-			null, 
-			""
-			) 
+		# temporarily disable for touch interface refactor
+		#
+		#Utils.Functions.save_game(
+		#	[body], 
+		#	body.hitpoints, 
+		#	(body.position.x+ 200), 
+		#	(body.position.y +200), 
+		#	to_scene, 
+		#	"", 
+		#	Globals.kill_count, 
+		#	"", 
+		#	null, 
+		#	""
+		#	) 
 			
 			
 

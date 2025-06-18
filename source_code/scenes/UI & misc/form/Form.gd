@@ -24,12 +24,18 @@ class_name Login
 """
 This is a gate-keeper script to keep check user's internet connections, restrict their access
 """
-var film : String = Globals.global_scenes["cinematics"]
 
-var cinematics : PackedScene = load(film) # Bug : 
+# safe pointer to global singletons
+onready var safe_Globals = get_node("/root/Globals")
+onready var safe_Utils = get_node("/root/Utils")
+onready var safe_Diag = get_node("/root/Dialogs")
+
+onready var film : String = safe_Globals.global_scenes.get("cinematics")
+
+onready var cinematics : PackedScene = load(film) # Bug : 
 #var index : int = 0
 
-onready var play_button : Button = $ui/grid/play
+onready var play_button : Button = $ui/grid/PlayButton/play
 #onready var dialgue_box = $Dialog_box
 onready var language : OptionButton = $ui/grid/language
 
@@ -50,21 +56,23 @@ func _ready():
 		label_spacer2, label_spacer3
 	]
 	
-	Utils.UI.check_for_broken_links(UI_buttons)
+	safe_Utils.UI.check_for_broken_links(UI_buttons)
 	
-	# Load Users Prefered DIalogue 
-	Utils.Functions.load_user_data('languague')
+	# Load Users Prefered Dialogue
+	# to do:
+	# (1) rewrite all save function inplementations to this format to save individual variables 
+	safe_Utils.Functions.load_user_data('languague')
 	
 	
 	# Load Users Prefered DIalogue 
 	#Globals.Functions.load_user_data('Music_on_settings')
 	
 	# If Dialogue Already Preset, Skip to Cinematics.
-	print_debug("User Preloaded Language: ", Dialogs.language)
+	print_debug("User Preloaded Language: ", safe_Diag.language)
 	print_debug("Changing to Cinematics")
-	if not Dialogs.language.empty() :
+	if not safe_Diag.language.empty() :
 		#get_tree().change_scene_to(cinematics)
-		Utils.Functions.change_scene_to(cinematics, get_tree())
+		safe_Utils.Functions.change_scene_to(cinematics, get_tree())
 	
 
 	#Adds 3 new languague selection
@@ -118,7 +126,7 @@ func _on_play_pressed():
 
 	#print_debug(Dialogs.language) # for debug purposes only
 
-	Utils.Functions.change_scene_to(cinematics, get_tree())
+	safe_Utils.Functions.change_scene_to(cinematics, get_tree())
 
 
 
@@ -158,6 +166,8 @@ func translate()-> void:
 
 
 func _exit_tree():
-	print_debug ("Selected Language: ",Dialogs.language)
+	print_debug ("Selected Language: ",safe_Diag.language)
 	
-	Utils.MemoryManagement.queue_free_array(UI_buttons)
+	safe_Utils.MemoryManagement.queue_free_array(UI_buttons)
+
+

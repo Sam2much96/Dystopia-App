@@ -132,32 +132,32 @@ _global_script_classes=[ {
 "base": "InputEventAction",
 "class": "InputEventMultiScreenDrag",
 "language": "GDScript",
-"path": "res://singletons/input/CustomInputEvents/InputEventMultiScreenDrag.gd"
+"path": "res://scenes/UI & misc/CustomInputEvents/InputEventMultiScreenDrag.gd"
 }, {
 "base": "InputEventAction",
 "class": "InputEventScreenPinch",
 "language": "GDScript",
-"path": "res://singletons/input/CustomInputEvents/InputEventScreenPinch.gd"
+"path": "res://scenes/UI & misc/CustomInputEvents/InputEventScreenPinch.gd"
 }, {
 "base": "InputEventAction",
 "class": "InputEventScreenTwist",
 "language": "GDScript",
-"path": "res://singletons/input/CustomInputEvents/InputEventScreenTwist.gd"
+"path": "res://scenes/UI & misc/CustomInputEvents/InputEventScreenTwist.gd"
 }, {
 "base": "InputEventAction",
 "class": "InputEventSingleScreenDrag",
 "language": "GDScript",
-"path": "res://singletons/input/CustomInputEvents/InputEventSingleScreenDrag.gd"
+"path": "res://scenes/UI & misc/CustomInputEvents/InputEventSingleScreenDrag.gd"
 }, {
 "base": "InputEventAction",
 "class": "InputEventSingleScreenTap",
 "language": "GDScript",
-"path": "res://singletons/input/CustomInputEvents/InputEventSingleScreenTap.gd"
+"path": "res://scenes/UI & misc/CustomInputEvents/InputEventSingleScreenTap.gd"
 }, {
 "base": "InputEventAction",
 "class": "InputEventSingleScreenTouch",
 "language": "GDScript",
-"path": "res://singletons/input/CustomInputEvents/InputEventSingleScreenTouch.gd"
+"path": "res://scenes/UI & misc/CustomInputEvents/InputEventSingleScreenTouch.gd"
 }, {
 "base": "HTTPRequest",
 "class": "Internet",
@@ -304,10 +304,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Title screen.gd"
 }, {
-"base": "Control",
+"base": "Node",
+"class": "TouchControls",
+"language": "GDScript",
+"path": "res://singletons/input/InputManager.gd"
+}, {
+"base": "TouchControls",
 "class": "TouchScreenHUD",
 "language": "GDScript",
 "path": "res://scenes/UI & misc/TouchScreenHud.gd"
+}, {
+"base": "Node2D",
+"class": "Touch_Debug",
+"language": "GDScript",
+"path": "res://singletons/input/Debug/TouchDebug.gd"
 }, {
 "base": "Control",
 "class": "WebBrowser",
@@ -484,7 +494,9 @@ _global_script_class_icons={
 "TempleExterior": "",
 "TempleInterior": "",
 "TitleScreen": "",
+"TouchControls": "",
 "TouchScreenHUD": "res://resources/misc/Android 32x32.png",
+"Touch_Debug": "",
 "WebBrowser": "",
 "WebConnection": "",
 "android": "res://resources/misc/Android 32x32.png",
@@ -643,6 +655,10 @@ reset={
 "deadzone": 0.5,
 "events": [  ]
 }
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
 
 [layer_names]
 

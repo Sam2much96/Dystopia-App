@@ -67,7 +67,8 @@
 # (1) Should implement Vibrations for haptic feedback (1/2)
 # (2) Implement Input Lag (Delay) For Multiplayer Gameplay
 # (3)Create pointer to all nodes that connect and interract with game hud and Touchhud
-# (4) Refactor to sub class within Touch interface
+# (4) Refactor to sub class within Touch interface (done)
+# (5) 
 # *************************************************
 # Notes:
 # (1) Vibration is a Battery & Performance hog
@@ -75,7 +76,7 @@
 # *************************************************
 
 
-extends Control
+extends TouchControls # it extends touch controls from an input manager class
 
 
 class_name TouchScreenHUD, "res://resources/misc/Android 32x32.png"
@@ -99,9 +100,6 @@ export (int) var touch_controller = INPUT.MENU
 export (bool) var enabled # Local Variant for stroing if device is android from adnroid singleton
 export (bool) var DEBUG = false # map this option to multi touch debug and debug singleton state
 
-# Touch Input Constants.
-export (float) var DRAG_STARTUP_TIME = 0.02
-export (float) var TAP_TIME_THRESHOLD = 0.2
 
 
 
@@ -112,16 +110,7 @@ signal attack
 #signal comics
 #signal reset
 
-# Touch screen Signals.
-# The are emited when the logic 
-# for each custom screen input is triggered
-signal single_tap
-signal single_touch
-signal single_drag
-signal multi_drag
-signal pinch
-signal twist
-signal any_gesture
+
 
 "UI Buttons"
 var _menu : TextureButton 
@@ -171,8 +160,6 @@ var screenOrientationSettings : int = OS.get_screen_orientation()
 # This Apps Global Screen Orientation
 enum SCREEN { SCREEN_HORIZONTAL, SCREEN_VERTICAL} 
 
-# Touch Input Enum.
-enum Gestures {PINCH, MULTI_DRAG, TWIST}
 
 "Input Buffer Variables"
 
@@ -190,7 +177,7 @@ var reg_inputs : Array = ["move_left", "move_right","move_up", "move_down", "att
 
 export (int) var state  
 var pressed : bool = false
-
+var touch_pos = {}
 # Vibration Settings
 export (bool) var vibrate_ = true
 export (bool) var saveBuffer = false;
@@ -206,8 +193,8 @@ onready var safe_Debug = get_node("/root/Debug")
 
 
 # Pointer to menu node 
-onready var menuObj = $"%Menu " #Android.ingameMenu
-onready var StatsObj = $"%Stats" # : Stats
+onready var menuObj = safe_GameHUD.menu #$"%Menu " #Android.ingameMenu
+onready var StatsObj = safe_GameHUD._Stats#$"%Stats" # : Stats
 
 onready var op_sys : String = safe_Globals.os
 
@@ -231,21 +218,19 @@ var NodeInput = Input # Generates this nodes Node _input()
 
 onready var children : Array = self.get_children()
 
-# Touch controls
-# 
-var last_mouse_press = null  # Last mouse button pressed.
 
 # to do : 
 #(1) Add a queue free conditional to prevent memory leaks
 #(2) Debug and add variable types
-var touches : Dictionary = {} # Keeps track of all the touches.
-var drags : Dictionary = {}   # Keeps track of all the drags.
-var tap_delay_timer = Timer.new()
-var only_touch = null # Last touch if there wasn't another touch at the same time.
+#var touches : Dictionary = {} # Keeps track of all the touches.
+#var drags : Dictionary = {}   # Keeps track of all the drags.
+#var tap_delay_timer = Timer.new()
+#var only_touch = null # Last touch if there wasn't another touch at the same time.
+#
+#var drag_startup_timer = Timer.new()
+#var drag_enabled = false 
 
-var drag_startup_timer = Timer.new()
-var drag_enabled = false 
-
+export (String) var ScreenDebug = ""
 
 func _ready():
 	
@@ -325,15 +310,6 @@ func _ready():
 	# Turn off this setup script if not running on Android
 	if enabled:
 		
-		# Connect Button Signals
-		#print_debug("Connect Body Signals")
-		
-		# Add signals for screen touch
-		Screen._add_timer(tap_delay_timer, "",self)
-		Screen._add_timer(drag_startup_timer, "on_drag_startup_timeout", self)
-		
-		#print_debug(direction_buttons, Globals.direction_control)
-
 		"Touch UI Visibility"
 		# moved to ANdroid singleton
 		
@@ -386,13 +362,14 @@ func _ready():
 		# Bugs : 
 		# (1) Signal Spammer from Menu State machine
 		#	#Fix : Boolean checker for signal emitting
+		#print_debug("menu obj debug 2: ", menuObj)
+		if is_instance_valid(menuObj):
+			menuObj.connect("menu_hidden_in_ui", self, "menu__") 
+			menuObj.connect("menu_hidden_in_game", self, "show__") 
+			menuObj.connect("menu_showing", self, "menu__") 
 		
-		menuObj.connect("menu_hidden_in_ui", self, "menu__") 
-		menuObj.connect("menu_hidden_in_game", self, "show__") 
-		menuObj.connect("menu_showing", self, "menu__") 
-		
-		# debug signal connections
-		print_debug("Menu Signals Debug: ",menuObj.is_connected("menu_hidden_in_ui", self, "menu") , menuObj.is_connected("menu_hidden_in_game", self, "show_all_buttons"), menuObj.is_connected("menu_showing", self, "menu") )
+			# debug signal connections
+			print_debug("Menu Signals Debug: ",menuObj.is_connected("menu_hidden_in_ui", self, "menu") , menuObj.is_connected("menu_hidden_in_game", self, "show_all_buttons"), menuObj.is_connected("menu_showing", self, "menu") )
 		
 		
 		
@@ -415,12 +392,7 @@ func _ready():
 
 func _process(_delta):
 	
-	# only check for button press events
-	# Guard clause: Only proceed if the event is an InputEventKey or InputEventMouseButton and is pressed
-	#if not ((event is InputEventKey or event is InputEventMouseButton) and event.pressed):
-	#	return
 	
-	#print("Button pressed:", event)
 	if enabled:
 		
 		
@@ -458,34 +430,62 @@ func _process(_delta):
 
 func _input(event):
 	# the input event bloc for this global child would be called first before unhandled inputs
+	# save debug data to local string thats exported outside the class rather than directly referencing data
+	# in another object
+	#if event is InputEventMouse: #works
+	#	print_debug("Mouse test working")
+	#if event is InputEventScreenDrag: #works
+	#	print_debug("Screen test working 1")
+	
+	# To do :
+	# (1) Map input from Input manager to debug
+	# (2) Write proper types for input manager
+	# it captures event but doesnt propagate each of these events
+	if event is InputEventSingleScreenTouch:
+		print_debug("Screen Test working 2")
+	
 	if (event is InputEventMultiScreenDrag or
 		event is InputEventSingleScreenDrag or
 		event is InputEventScreenPinch or
 		event is InputEventScreenTwist or
 		event is InputEventSingleScreenTap or
 		event is InputEventSingleScreenTouch):
-			safe_Debug.Screen_debug = event.as_text()
+			#print_debug("event debug: ",event.to_string())
+			#print_debug("Screen Test working")
+			ScreenDebug = event.as_text()
+			
+			# save input position for debugging
+			if event.pressed: # Down.
+				touch_pos[event.to_string()] = event.position
+			else: # Up.
+				touch_pos.erase(event.to_string())
+			get_tree().set_input_as_handled()
+		
 	if event is InputEventMultiScreenDrag:
-		safe_Debug.Screen_debug = "Multiple finger drag"
-		print_debug("Multiple finger drag")
+		ScreenDebug += "Multiple finger drag"
+		#print_debug("Multiple finger drag")
 	elif event is InputEventSingleScreenDrag:
-		safe_Debug.Screen_debug = "Single finger drag"
-		print_debug("Single finger drag")
+		ScreenDebug += "Single finger drag"
+		#print_debug("Single finger drag")
 	elif event is InputEventScreenPinch:
-		safe_Debug.Screen_debug = "Pinch"
-		print_debug("Pinch")
+		ScreenDebug += "Pinch"
+		#print_debug("Pinch")
 	elif event is InputEventScreenTwist:
-		safe_Debug.Screen_debug = "Twist"
-		print_debug("Twist")
+		ScreenDebug += "Twist"
+		#print_debug("Twist")
 	elif event is InputEventSingleScreenTap:
-		safe_Debug.Screen_debug = "Single finger tap"
-		print_debug("Screen Tap")
+		ScreenDebug += "Single finger tap"
+		#print_debug("Screen Tap")
 	elif event is InputEventSingleScreenTouch:
-		safe_Debug.Screen_debug = "Single finger touch"
-		print_debug("Single finger touch")
+		ScreenDebug += "Single finger touch"
+		#print_debug("Single finger touch")
 
 
 func _unhandled_input(event):
+	
+	
+	
+	
 	# This is the last input that gets propagated on the scene tree
 	#
 	# State Buffer Logic
@@ -571,8 +571,8 @@ func _unhandled_input(event):
 	
 	# This state would require proper debugging as of Jun 17/2025 refactor
 	# which brings in Better quality of life updates for the mobile inputs
-	if event is InputEventScreenDrag : 
-		state = INPUT.DRAG
+	#if event is InputEventScreenDrag : 
+	#	state = INPUT.DRAG
 	# Ingame Menu
 	
 	if event.is_action_pressed("menu"):
@@ -611,64 +611,9 @@ func _unhandled_input(event):
 				input_buffer.clear()
 				#return
 	
-	# Mouse gestures
-	# Mouse to gesture.
-	if event is InputEventMouseButton:
-		if event.pressed:
-			if event.button_index == BUTTON_WHEEL_DOWN:
-				emit("pinch", InputEventScreenPinch.new({
-					"position": event.position,
-					"distance": 200.0,
-					"relative": -40.0,
-					"speed"   : 25.0
-				}))
-			elif event.button_index == BUTTON_WHEEL_UP:
-				emit("pinch", InputEventScreenPinch.new({
-					"position": event.position,
-					"distance": 200.0,
-					"relative": 40.0,
-					"speed"   : 25.0
-				}))
-			last_mouse_press = event
-		else:
-			last_mouse_press = null
-		
-	elif event is InputEventMouseMotion:
-		if last_mouse_press:
-			if last_mouse_press.button_index == BUTTON_MIDDLE:
-				emit("multi_drag", InputEventMultiScreenDrag.new({"position": event.position,
-																  "relative": event.relative,
-																  "speed": event.speed}))
-			elif last_mouse_press.button_index == BUTTON_RIGHT:
-				var rel1 = event.position - last_mouse_press.position
-				var rel2 = rel1 + event.relative
-				emit("twist", InputEventScreenTwist.new({"position": last_mouse_press.position,
-														 "relative": rel1.angle_to(rel2),
-														 "speed": event.speed}))
 
 
 
-# Touch Input Helper Functions
-func emit(sig: String, val):
-	
-	if DEBUG: 
-		print_debug(val.as_text())
-	
-	
-	emit_signal("any_gesture", sig, val)
-	emit_signal(sig, val)
-	
-	# parse input parameters
-	#node_input_ : Input ,
-	#tree: SceneTree, 
-	#safe_Simulation_ : Simulationv1 ,
-	#action : String, 
-	#_pressed : bool
-	
-	parse_input(node_input, __scene_tree, safe_Simulation, val ,true)
-	# to do: 
-	# (1) route to parse input function
-	#Input.parse_input_event(val)
 
 
 """
@@ -734,22 +679,6 @@ func attack(): #used by ui scene when attack is clicked
 	slash.show()
 	roll.show()
 	
-	#if _control == Globals._controller_type[1]: # modern
-	#	#D_pad.hide()
-	#	#
-	#	for i in d_pad:
-	#		i.hide()
-	#	joystick_parent.show()
-
-	#if _control == Globals._controller_type[2]: # classic
-	#	joystick_parent.hide()
-	#	for i in d_pad:
-	#		i.show()
-
-
-
-
-
 
 
 func show_all_buttons():
@@ -790,14 +719,6 @@ func show_action_buttons() :
 	if enabled:
 		for j in action_buttons:
 			j.show()
-
-
-#func show_direction_buttons() -> void:
-	#print_debug("Showing Direction Buttons")
-#	if enabled:
-#		for j in direction_buttons:
-#			j.show()
-
 
 
 """
@@ -1185,13 +1106,7 @@ Features:
 	(2) Static function implementations
 """
 class Screen  :
-	
-	# Macro for Touch Input Manager to add a timer and connect it's timeout to func_name.
-	static func _add_timer(timer : Timer, func_name: String, Selfnode):
-		timer.one_shot = true
-		if !func_name.empty():
-			timer.connect("timeout", Selfnode, func_name)
-		Selfnode.add_child(timer)
+
 	
 	
 	
@@ -1213,6 +1128,11 @@ class Screen  :
 	Features:
 	
 	"""
+	
+	# Just a way of getting different colors for screen touch debug.
+	static func _get_color_for_ptr_index(index : int) -> Color:
+		var x = (index % 7) + 1
+		return Color(float(bool(x & 1)), float(bool(x & 2)), float(bool(x & 4)))
 	# (1) Checks Device  Screen orentation
 	# (2) Sets the Global Script for Screen Orientation
 	#(3) This ALgorithm should be run periodically on a separate device like mobile
@@ -1381,45 +1301,7 @@ class Screen  :
 			Anim.play("SCREEN_HORIZONTAL");
 		else: pass
 	
-	# Checks if the gesture is pinch.
-	static func identify_gesture(gesture_drags):
-		
-		print_debug("Gesture debug: ", gesture_drags) # Debug function's data type
-		var center = Vector2()
-		for e in gesture_drags.values():
-			center += e.position
-		center /= gesture_drags.size()
-		
-		var sector = null
-		for e in gesture_drags.values():
-			var adjusted_position = center - e.position
-			var raw_angle = fmod(adjusted_position.angle_to(e.relative) + (PI/4), TAU) 
-			var adjusted_angle = raw_angle if raw_angle >= 0 else raw_angle + TAU
-			var e_sector = floor(adjusted_angle / (PI/2))
-			if sector == null: 
-				sector = e_sector
-			elif sector != e_sector:
-				sector = -1
-		
-		if sector == -1:               return Gestures.MULTI_DRAG
-		if sector == 0 or sector == 2: return Gestures.PINCH
-		if sector == 1 or sector == 3: return Gestures.TWIST
 
 
-# Other Touch Input functionss
-
-# Checks if complex gesture (more than one finger) is in progress.
-func complex_gesture_in_progress() -> bool:
-	print_stack()
-	print_debug("gesture debug 2: ", (touches.size()))
-	
-	return touches.size() > 1 # ternirary statement to check touch input data size
-
-func on_drag_startup_timeout(): # Drag timeout signal implementation
-	drag_enabled = !complex_gesture_in_progress() and drags.size() > 0
 
 
-# Disables drag and stops the drag enabling timer.
-func cancel_single_drag():
-	drag_enabled = false
-	drag_startup_timer.stop()

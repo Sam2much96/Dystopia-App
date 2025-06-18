@@ -10,7 +10,7 @@
 
 [node name="TouchScreenHUD" type="Control"]
 modulate = Color( 1, 1, 1, 0.67451 )
-mouse_filter = 2
+mouse_filter = 1
 script = ExtResource( 4 )
 enabled = true
 
@@ -34,6 +34,7 @@ margin_left = 864.0
 margin_top = 142.0
 margin_right = 1030.0
 margin_bottom = 245.0
+mouse_filter = 1
 texture_normal = ExtResource( 11 )
 
 [node name="roll" type="TextureButton" parent="."]
@@ -42,6 +43,7 @@ margin_left = 736.0
 margin_top = 447.0
 margin_right = 846.0
 margin_bottom = 550.0
+mouse_filter = 1
 texture_normal = ExtResource( 14 )
 
 [node name="slash" type="TextureButton" parent="."]
@@ -50,6 +52,7 @@ margin_left = 839.0
 margin_top = 342.0
 margin_right = 949.0
 margin_bottom = 548.0
+mouse_filter = 1
 texture_normal = ExtResource( 6 )
 
 [node name="menu" type="TextureButton" parent="."]
@@ -60,6 +63,7 @@ margin_top = 39.0
 margin_right = 129.0
 margin_bottom = 88.0
 rect_scale = Vector2( 2.47467, 2.47467 )
+mouse_filter = 1
 texture_normal = ExtResource( 8 )
 texture_pressed = ExtResource( 9 )
 
@@ -89,6 +93,7 @@ margin_top = 352.0
 margin_right = 146.0
 margin_bottom = 401.0
 rect_scale = Vector2( 1.5, 1.5 )
+mouse_filter = 1
 action_mode = 0
 
 [node name="left" type="TextureButton" parent="."]
@@ -99,6 +104,7 @@ margin_top = 427.0
 margin_right = 69.0
 margin_bottom = 476.0
 rect_scale = Vector2( 1.5, 1.5 )
+mouse_filter = 1
 
 [node name="down" type="TextureButton" parent="."]
 unique_name_in_owner = true
@@ -109,13 +115,12 @@ margin_top = 503.0
 margin_right = 152.0
 margin_bottom = 552.0
 rect_scale = Vector2( 1.5, 1.5 )
+mouse_filter = 1
 action_mode = 0
 
 [node name="Position2D" type="Position2D" parent="."]
 visible = false
 position = Vector2( 839, 1594 )
-
-[node name="TouchInputManager" type="Node" parent="."]
 
 [connection signal="button_down" from="stats" to="." method="_on_stats_button_down"]
 [connection signal="button_up" from="stats" to="." method="_on_stats_button_up"]

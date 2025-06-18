@@ -12,7 +12,7 @@
 class_name InputEventSingleScreenDrag
 extends InputEventAction
 
-var position
+var position : Vector2 setget set_position, get_position
 var relative
 var speed
 
@@ -24,3 +24,10 @@ func _init(e):
 
 func as_text():
 	return "InputEventSingleScreenDrag : position=" + str(position) + ", relative=" + str(relative) + ", speed=" + str(speed)
+
+func get_position():
+	return position
+
+func set_position(e):
+	position = e.position
+	pass

@@ -29,8 +29,8 @@ signal state_changed(state_)
 onready var err = Networking.GamePlay
 
 func _unhandled_input(event):
-#func _input(event):
-	# Node Individual Input Processes were depreciated in favor of GlobalInput Singleton
+
+
 	"""
 	Facing State Machine
 	"""
@@ -45,6 +45,7 @@ func _unhandled_input(event):
 		facing_logic(self, -99) # the default peer id
 
 	# Online Player Input is captured in PlayerOnline.gd script
+	
 
 func _physics_process(delta):
 	
@@ -84,7 +85,7 @@ func facing_logic(node : Player, peed_id : int):
 	# Called in the Input Process
 	# TO DO: Implement Polymorphism for Multiplayer Gameplay
 	
-	#print_debug(node)
+	#Keyboard Input
 	if Input.is_action_pressed("move_left") : #or GlobalInput._state == GlobalInput.LEFT:
 		
 		node.facing = FACING.LEFT
@@ -97,6 +98,18 @@ func facing_logic(node : Player, peed_id : int):
 	if Input.is_action_pressed("move_down") : #or GlobalInput._state == GlobalInput.DOWN:
 		
 		node.facing = FACING.DOWN
+	
+	# Touch Screen Input
+	if safe_TouchScreen.direction == Vector2.ZERO: return # guard clause
+	if safe_TouchScreen.direction.x > 0.5:
+		node.facing = FACING.RIGHT
+	if safe_TouchScreen.direction.x < -0.5:
+		node.facing = FACING.LEFT
+	if safe_TouchScreen.direction.y > 0.5:
+		node.facing = FACING.DOWN
+	if safe_TouchScreen.direction.y < -0.5:
+		node.facing = FACING.UP
+
 
 func state_machine_logic(node, peer_id : int):
 	"""
@@ -134,16 +147,24 @@ func state_machine_logic(node, peer_id : int):
 			
 		TOP_DOWN.STATE_IDLE:
 			if (
-				# should be moved to input class imho
+					# Keyboard Input
 					Input.is_action_pressed("move_down") or
 					Input.is_action_pressed("move_left") or
 					Input.is_action_pressed("move_right") or
-					Input.is_action_pressed("move_up") #or
+					Input.is_action_pressed("move_up") or
 					
-					#GlobalInput._state == GlobalInput.UP or
-					#GlobalInput._state == GlobalInput.DOWN or
-					#GlobalInput._state == GlobalInput.LEFT or
-					#GlobalInput._state == GlobalInput.RIGHT
+					# Touch Interface state
+					# redundancy code for input
+					safe_TouchScreen.state == safe_TouchScreen.INPUT.UP or
+					safe_TouchScreen.state == safe_TouchScreen.INPUT.DOWN or
+					safe_TouchScreen.state == safe_TouchScreen.INPUT.LEFT or
+					safe_TouchScreen.state == safe_TouchScreen.INPUT.RIGHT or 
+					
+					# Touch screen inputs
+					InputEventSingleScreenDrag
+					
+					
+					
 				):
 					node.state = TOP_DOWN.STATE_WALKING
 					
@@ -164,10 +185,12 @@ func state_machine_logic(node, peer_id : int):
 			if Input.is_action_just_pressed("interact"):
 				node.state = TOP_DOWN.STATE_DANCE
 		TOP_DOWN.STATE_WALKING:
+			
+			# state transition
 			if Input.is_action_just_pressed("attack"):
 				node.state = TOP_DOWN.STATE_ATTACK
 				
-			
+			#state transition
 			if Input.is_action_just_pressed("roll"):
 				node.state = TOP_DOWN.STATE_ROLL
 				#emit_signal("state_changed")
@@ -178,14 +201,26 @@ func state_machine_logic(node, peer_id : int):
 			
 			var target_speed = Vector2()
 			
+			# movement controls 
 			if Input.is_action_pressed("move_down"):
+				safe_TouchScreen.direction = Vector2.ZERO # reset Touchscreen directions when using keyboard input
 				target_speed += Vector2.DOWN
 			if Input.is_action_pressed("move_left"):
+				safe_TouchScreen.direction = Vector2.ZERO # reset Touchscreen directions when using keyboard input
 				target_speed += Vector2.LEFT
 			if Input.is_action_pressed("move_right"):
+				safe_TouchScreen.direction = Vector2.ZERO # reset Touchscreen directions when using keyboard input
 				target_speed += Vector2.RIGHT
 			if Input.is_action_pressed("move_up"):
+				safe_TouchScreen.direction = Vector2.ZERO # reset Touchscreen directions when using keyboard input
 				target_speed += Vector2.UP
+			
+			# auto matically set direction to touch screen input serialisation
+			if safe_TouchScreen.direction != Vector2.ZERO : # bug no button release for idle state
+				target_speed += safe_TouchScreen.direction
+				
+				# it needs a reset timeout for dirction
+				
 			
 			target_speed *= WALK_SPEED
 			#linear_vel = linear_vel.linear_interpolate(target_speed, 0.9)

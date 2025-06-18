@@ -22,8 +22,8 @@ var velocity = Vector3.ZERO
 var jump = false
 onready var head = $player
 
-#func _ready():
-#	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+# safely get Global Singletons
+onready var safe_TouchScreen = get_node("/root/GameHud").TouchInterface
 
 
 func _input(event):
@@ -60,8 +60,19 @@ func _physics_process(delta):
 		velocity.y -= gravity * delta
 	if jump and is_on_floor():
 		velocity.y = jump_velocity
+	
+	if (Input.is_action_pressed("move_up") or 
+		Input.is_action_pressed("move_down") or
+		Input.is_action_pressed("move_left") or
+		Input.is_action_pressed("move_right")
+	): 
 		
-	move_dir = Vector3(Input.get_axis("move_up","move_down"),0, Input.get_axis("move_left","move_right")).normalized().rotated(Vector3.UP, rotation.y)
+		# keyboard move direction
+		move_dir = Vector3(Input.get_axis("move_up","move_down"),0, Input.get_axis("move_left","move_right")).normalized().rotated(Vector3.UP, rotation.y)
+	
+	
+	# Touchscreen Move Direction
+	move_dir = Vector3(safe_TouchScreen.direction.y, 0, safe_TouchScreen.direction.x)
 	
 	velocity.x = lerp(velocity.x, move_dir.x * speed, acceleration * delta)
 	velocity.z = lerp(velocity.z, move_dir.z * speed, acceleration * delta)

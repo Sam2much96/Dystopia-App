@@ -157,6 +157,8 @@ onready var __scene_tree : SceneTree = get_tree()
 var screenOrientation : int
 var screenOrientationSettings : int = OS.get_screen_orientation()
 
+var direction : Vector2
+
 # This Apps Global Screen Orientation
 enum SCREEN { SCREEN_HORIZONTAL, SCREEN_VERTICAL} 
 
@@ -217,8 +219,8 @@ var _Status_text : StatusText setget set_statusText, get_statusText
 var NodeInput = Input # Generates this nodes Node _input()
 
 onready var children : Array = self.get_children()
-
-
+onready var viewportSize = Screen.calculateViewportSize($Position2D) 
+onready var center = viewportSize / 2
 # to do : 
 #(1) Add a queue free conditional to prevent memory leaks
 #(2) Debug and add variable types
@@ -455,10 +457,19 @@ func _input(event):
 			ScreenDebug = event.as_text()
 			
 			# save input position for debugging
-			if event.pressed: # Down.
-				touch_pos[event.to_string()] = event.position
-			else: # Up.
+			if event.pressed: # Press Down for Tap and Stop
+				touch_pos[event.to_string()] = event.position # save the touch position for use by the child debugging node
+				
+				
+				# serialise touch input to direction
+				direction = (event.position - center).normalized() #get viewport size from  screen class
+				#print_debug("Touch Direction dbg: ", direction)
+				
+				# Converting this screen co-ordinates to Vector Enums
+				
+			else: 
 				touch_pos.erase(event.to_string())
+				#direction = Vector2.ZERO
 			get_tree().set_input_as_handled()
 		
 	if event is InputEventMultiScreenDrag:

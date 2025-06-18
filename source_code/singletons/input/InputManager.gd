@@ -180,6 +180,7 @@ func on_tap_delay_timer_timeout():
 
 
 func on_drag_startup_timeout():
+	print_debug("drag timeout")
 	drag_enabled = !complex_gesture_in_progress() and drags.size() > 0
 
 

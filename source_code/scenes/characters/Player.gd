@@ -81,18 +81,24 @@ export(int) var peer_id: int = -99 # Dummpy Placeholder Peer id
 
 
 # Get Global Singletons
+# for safe calls 
 onready var music_singleton_ = get_node("/root/Music") # : music_singleton
 onready var global_singleton_= get_node("/root/Globals") #  : GlobalsVar 
 onready var utils_singleton_= get_node("/root/Utils") #  : GlobalsVar 
-
+onready var safe_Android = get_node("/root/Android")
+onready var safe_GameHud = get_node("/root/GameHud")
+onready var safe_Dialogs = get_node("/root/Dialogs")
+onready var safe_TouchScreen = safe_GameHud.TouchInterface
 
 # For Despawn and Hit Collission Fx
+# to do:
+# (1) set get function for parent class in charge of blood fx
 onready var blood = global_singleton_.blood_fx.instance() # : BloodSplatter
 onready var despawn_particles = global_singleton_.despawn_fx.instance() # : DeSpawnFX
 
-onready var die_sfx: String = music_singleton_.nokia_soundpack[27]
-onready var hurt_sfx: String = music_singleton_.nokia_soundpack[20]
-onready var dash_sfx : String = music_singleton_.wind_sfx[1]
+onready var die_sfx: String = music_singleton_.nokia_soundpack.get(27)
+onready var hurt_sfx: String = music_singleton_.nokia_soundpack.get(20)
+onready var dash_sfx : String = music_singleton_.wind_sfx.get(1)
 
 
 
@@ -121,25 +127,25 @@ func _ready():
 	#Behaviour.AutoSpawn(self)
 	# Set Player Object To The Minimap
 	# TO DO : Use Signals for cleaner Implementation
-	GameHud._Stats._Mini_map.player_node = self # TO Do : Fix Onready var bug
+	safe_GameHud._Stats._Mini_map.player_node = self # TO Do : Fix Onready var bug
 	
-	Android.emit_signal("player_ready") # Triggers Android Specific Config for Player Movement
+	safe_Android.emit_signal("player_ready") # Triggers Android Specific Config for Player Movement
 	
 	# Connect To Dialogue Singleton
 	
 	if not (
-			Dialogs.connect("singleton_dialog_started", self, "_on_dialog_started") == OK and
-			Dialogs.connect("singleton_dialog_ended", self, "_on_dialog_ended") == OK):
+			safe_Dialogs.connect("singleton_dialog_started", self, "_on_dialog_started") == OK and
+			safe_Dialogs.connect("singleton_dialog_ended", self, "_on_dialog_ended") == OK):
 		push_error("Error Connecting To The Dialog System")
 		print_debug("Error connecting to dialog system")
 	
 	# COnnect To Health Bar Node via Global Input Singleton
-	if not is_instance_valid(GameHud.heart_box):
+	if not is_instance_valid(safe_GameHud.heart_box):
 		push_error("Error Connecting To The Heart Box System")
 		print_debug("Error Connecting To The Heart Box System")
 	
-	if is_instance_valid(GameHud.heart_box):
-		local_heart_box = GameHud.heart_box
+	if is_instance_valid(safe_GameHud.heart_box):
+		local_heart_box = safe_GameHud.heart_box
 		self.connect("health_changed", local_heart_box, "_on_health_changed")
 		
 		update_heart_box()

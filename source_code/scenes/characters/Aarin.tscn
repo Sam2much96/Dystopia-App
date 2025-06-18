@@ -1466,6 +1466,7 @@ ROLL_SPEED = 1500
 [node name="sprite" type="Sprite" parent="."]
 material = SubResource( 1 )
 texture = ExtResource( 2 )
+flip_h = true
 hframes = 8
 vframes = 7
 frame = 27

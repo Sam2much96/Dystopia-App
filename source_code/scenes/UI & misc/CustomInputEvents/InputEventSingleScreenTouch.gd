@@ -12,7 +12,7 @@
 class_name InputEventSingleScreenTouch
 extends InputEventAction
 
-var position
+var position : Vector2
 
 func _init(e):
 	position = e.position

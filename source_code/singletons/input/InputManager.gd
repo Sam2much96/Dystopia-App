@@ -37,7 +37,7 @@ signal any_gesture
 enum Gestures {PINCH, MULTI_DRAG, TWIST}
 
 # Constants.
-const debug = true
+const debug = false
 const DRAG_STARTUP_TIME = 0.02
 const TOUCH_DELAY_TIME = 0.2
 
@@ -133,7 +133,8 @@ func _unhandled_input(event):
 
 # Emits signal sig with the specified args.
 func emit(sig, val):
-	if debug: print(val.as_text())
+	if self.debug: 
+		print_debug(val.as_text())
 	emit_signal("any_gesture", sig, val)
 	emit_signal(sig, val)
 	Input.parse_input_event(val)

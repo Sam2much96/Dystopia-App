@@ -441,8 +441,8 @@ func _input(event):
 	# (1) Map input from Input manager to debug
 	# (2) Write proper types for input manager
 	# it captures event but doesnt propagate each of these events
-	if event is InputEventSingleScreenTouch:
-		print_debug("Screen Test working 2")
+	#if event is InputEventSingleScreenTouch:
+	#	print_debug("Screen Test working 2")
 	
 	if (event is InputEventMultiScreenDrag or
 		event is InputEventSingleScreenDrag or

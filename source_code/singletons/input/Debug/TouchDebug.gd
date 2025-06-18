@@ -21,10 +21,13 @@ export (bool) var Debug_ = false
 # Declare member variables here. Examples:
 
 onready var Touch = get_parent()
+onready var safe_Debug = get_node("/root/Debug")
 
 func _process(_delta):
-	Debug_ = Debug.enabled # sync state with global debug
+	Debug_ = safe_Debug.enabled # sync state with global debug
 	if Debug_:
+		self.show()
+		
 		# Keep redrawing on every frame.
 		update()
 	else:

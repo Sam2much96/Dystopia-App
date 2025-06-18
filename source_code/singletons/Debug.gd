@@ -135,7 +135,7 @@ func _process(_delta):
 					#'FPS: '+ str(Engine.get_frames_per_second())
 					Enemy_debug = 'Enemy debug:' + str('Killcount:' , Globals.kill_count)
 					Autosave_debug = Autosave_debug
-					Screen_debug = "Screen : " + str (GameHud.TouchInterface.ScreenDebug) 
+					Screen_debug = str (GameHud.TouchInterface.ScreenDebug) 
 					Network_debug =  ""#str(Networking.debug )
 					misc_debug = "misc debug: "+ str("/")  + str(Ads_debug)
 					Globals_debug='Direction type' + '/'+ str(Globals.direction_control)
@@ -208,7 +208,7 @@ func start_debug_v1():  #Creates multiple instances bug
 	
 	"Changes Font Size for Mobile Ui"
 	if Globals.screenOrientation == 1:
-		dynamic_font.size = 50
+		dynamic_font.size = 40
 	else : dynamic_font.size = 26
 	
 	#dynamic_font.size = 26

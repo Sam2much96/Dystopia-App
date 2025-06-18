@@ -68,9 +68,11 @@ onready var ControlButtons : Array =  [
 # COntroller Help
 onready var _controller_help : Help = $"Help popup/Control"
 
-onready var debug__ = get_tree().get_root().get_node("/root/Debug")
-onready var music_ = get_tree().get_root().get_node("/root/Music")
-onready var GInput_ = get_tree().get_root().get_node("/root/GlobalInput") # use set get functions for this logic
+# safe pointers to global singletons
+onready var safe_Debug = get_node("/root/Debug")
+onready var safe_Music = get_node("/root/Music")
+onready var touchInterface = get_node("/root/GameHud").TouchInterface # use set get functions for this logic
+onready var safe_Simulation = get_node("/root/Simulation")
 
 func _ready():
 	#if get_tree().get_root().has_node("/root/Debug") == true:
@@ -106,12 +108,13 @@ Turns Music on and off & shuffles current track. Fix code later
 """
 #toggles Debug panel on and off
 func _on_Debug_toggled(button_pressed): 
-	if get_tree().get_root().get_node("/root/Debug") != null:
+	if safe_Debug != null:
 		if button_pressed:
 			# Gets the Input node from the Touch Interface and uses that to parse input programmatically
 			
-			# node_input : Input ,tree: SceneTree, action : String, _pressed : bool
-			GInput_.parse_input(GInput_.get_gameHUD().get_TouchInterface().TouchInput, get_tree(),"Debug", true)
+			# parameters
+			#node_input_ : Input ,tree: SceneTree, safe_Simulation_ : Simulationv1 ,action : String, _pressed : bool
+			touchInterface.parse_input(touchInterface.node_input, get_tree(), safe_Simulation,"Debug", true)
 
 'Changes Button Sizes for mobile UI'
 # Scales UI up for Android Mobile Devices
@@ -171,17 +174,18 @@ func manual_translate()-> void:
 func _exit_tree():
 	
 	"Saves Player's PreferedConfiguration"
-	Utils.Functions.save_game(
-		[],
-		0,
-		0, 
-		0, 
-		Globals.current_level, 
-		Globals.os, 
-		0, 
-		"", 
-		null, 
-		Globals.direction_control)
+	#temporarily disabled for refactor
+	#Utils.Functions.save_game(
+	#	[],
+	#	0,
+	#	0, 
+	#	0, 
+	#	Globals.current_level, 
+	#	Globals.os, 
+	#	0, 
+	#	"", 
+	#	null, 
+	#	Globals.direction_control)
 	
 	# FOr Memorey Management ( Garbage Collector)
 	Utils.MemoryManagement.queue_free_array(ControlButtons)
@@ -204,8 +208,8 @@ func _on_vibration_toggled(button_pressed):
 	# Toggle Vibrations on/off for mobile devices
 	# TO Do: Implement Saving Vibration settings (Done)
 	if button_pressed:
-		GlobalInput.vibrate = !GlobalInput.vibrate_
-		vibration.set_text(str(GlobalInput.vibrate_))
+		touchInterface.vibrate = !touchInterface.vibrate
+		vibration.set_text(str(touchInterface.vibrate))
 	else: pass
 
 

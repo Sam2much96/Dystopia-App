@@ -15,7 +15,7 @@
 #(8) Implement font size increase
 # *************************************************
 # To DO:
-# (1) Refactor to use one RichText Label for all debug parameters
+# (1) Refactor to use one RichText Label for all debug parameters (not needed)
 # (2) Refactor TO Fetch And Read Previous Data Logs from user://logs folder
 # *************************************************
 
@@ -42,29 +42,32 @@ var ram_label : Label
 var fps_label : Label
 var enemy_label : Label
 var network_label : Label
-var comics_label : Label
+#var comics_label : Label
 var autosave_label : Label
 var misc_label : Label
 var globals_label : Label
 var ads_label : Label
 var avail_thread_label : Label
+var screen_label : Label
 #
 
-var Autosave_debug : String ='' 
-var Music_debug : String
-var Player_debug : String
-var Ram_debug : String
+# Each Of the individual states to be debugged is mapped to an individual label
+export (String) var Autosave_debug : String ='' 
+export (String) var Music_debug : String
+export (String) var Player_debug : String
+export (String) var Ram_debug : String
 export (float) var FPS_debug : float 
-var Enemy_debug : String
+export (String) var Enemy_debug : String
+
 var debug_panel  : Node
-var Comics_debug : String = ''
-var misc_debug : String = ''
+export (String) var Screen_debug : String = ''
+export (String) var misc_debug : String = ''
 #var kill_count : int = 0
 #var enemy : String = ''
-var Network_debug : String = ''
-var Globals_debug : String
-var Ads_debug : String = ''
-var avail_thread : String = "0"
+export (String) var Network_debug : String = ''
+export (String) var Globals_debug : String
+export (String) var Ads_debug : String = ''
+export (String) var avail_thread : String = "0"
 
 # State Machine Variables
 enum {START_DEBUG, STOP_DEBUG}
@@ -73,9 +76,14 @@ var _state_ = START_DEBUG
 # Debug panel cannot be more than 1
 var debug_panels_cr8ted : Array = [] # append the debug pannel to this array to stop double instance bug
 
+var all_labels : Array = []
 
 """
 THE DEBUG SINGLETON
+
+Features:
+(1) Serialises data from each of the singletons to a seprate ui for ingame debugging
+(2) 
 """
 
 
@@ -228,58 +236,47 @@ func start_debug_v1():  #Creates multiple instances bug
 	fps_label= Label.new()
 	enemy_label= Label.new()
 	network_label= Label.new()
-	comics_label= Label.new()
+	screen_label= Label.new()
 	autosave_label= Label.new()
 	misc_label =Label.new()
 	globals_label = Label.new()
 	ads_label = Label.new()
 	avail_thread_label = Label.new()
-	vbox.add_child(music_label) #update code to use for loop
-	vbox.add_child(player_label)
-	vbox.add_child(ram_label)
-	vbox.add_child(fps_label)
-	vbox.add_child(enemy_label)
-	vbox.add_child(network_label)
-	vbox.add_child(comics_label)
-	vbox.add_child(autosave_label)
-	vbox.add_child(misc_label)
-	vbox.add_child(globals_label)
-	vbox.add_child(ads_label)
-	vbox.add_child(avail_thread_label)
 	
-	#add font data #use label.rect_size.x and .y= 100 to manually increase label size
-	#vbox.ALIGN_CENTER #aligns vbox to center #fix code
-	music_label.add_font_override('font', dynamic_font) #adds dynamc font data
-	player_label.add_font_override('font', dynamic_font) #use a forloop for this
-	ram_label.add_font_override('font', dynamic_font)
-	fps_label.add_font_override('font', dynamic_font)
-	enemy_label.add_font_override('font', dynamic_font)
-	network_label.add_font_override('font', dynamic_font)
-	comics_label.add_font_override('font', dynamic_font)
-	autosave_label.add_font_override('font', dynamic_font)
-	misc_label.add_font_override('font', dynamic_font)
-	globals_label.add_font_override('font', dynamic_font)
-	ads_label.add_font_override('font', dynamic_font)
-	avail_thread_label.add_font_override('font', dynamic_font)
+	# save all label objets to an array for recursive programming
+	all_labels = [music_label, player_label,ram_label, fps_label, 
+	enemy_label, network_label, screen_label,autosave_label, 
+	globals_label, ads_label, avail_thread_label]
+	
+	
+	for i in all_labels:
+		# make all text vertically formatted
+		vbox.add_child(i)
+		
+		#add dynamic font data
+		i.add_font_override('font', dynamic_font)
+	
+	
+	
 	
 	_state_ = START_DEBUG
 
-func start_debug_2():  #Works with some bugs
-	enabled = true
-	debug_panel =CanvasLayer.new() 
-	__label =  RichTextLabel.new()
-	debug_panel.add_to_group('debug') 
-	debug_panel.set_layer(1) 
-	debug_panel.add_child(__label) #draws vbox on screen
-	__label.set_mouse_filter(2)
-	'Error Catcher 1- Makes script a child of globals if debug singleton goes down'
-	if get_tree().get_root().get_node("/root/Debug") == null:
-		#add debug layer as child of debug singleton 
-		get_tree().get_root().get_node("/root/Globals").call_deferred('add_child',debug_panel)
-		return false
-	elif get_tree().get_root().get_node("/root/Debug") != null:
-		get_tree().get_root().get_node("/root/Debug").call_deferred('add_child',debug_panel)
-		return true
+#func start_debug_2():  #Works with some bugs
+#	enabled = true
+#	debug_panel =CanvasLayer.new() 
+#	__label =  RichTextLabel.new()
+#	debug_panel.add_to_group('debug') 
+#	debug_panel.set_layer(1) 
+#	debug_panel.add_child(__label) #draws vbox on screen
+#	__label.set_mouse_filter(2)
+#	'Error Catcher 1- Makes script a child of globals if debug singleton goes down'
+#	if get_tree().get_root().get_node("/root/Debug") == null:
+#		#add debug layer as child of debug singleton 
+#		get_tree().get_root().get_node("/root/Globals").call_deferred('add_child',debug_panel)
+#		return false
+#	elif get_tree().get_root().get_node("/root/Debug") != null:
+#		get_tree().get_root().get_node("/root/Debug").call_deferred('add_child',debug_panel)
+#		return true
 
 
 """
@@ -299,8 +296,8 @@ func show_debug_v1():
 			enemy_label.set_text (Enemy_debug)
 		if Network_debug != null && network_label != null:
 			network_label.set_text (Network_debug)
-		if Comics_debug != null && comics_label != null:
-			comics_label.set_text  (Comics_debug)
+		if Screen_debug != null && screen_label != null:
+			screen_label.set_text  (Screen_debug)
 		if Autosave_debug != null && autosave_label != null:
 			autosave_label.set_text (Autosave_debug)
 		if misc_debug != null && misc_label != null:
@@ -339,7 +336,7 @@ func log_debug(): #improvve logging code run at exit tree  #Copy log files to do
 		var _log = Utils.file
 		_log.open('user://logs/godot.log', File.READ_WRITE)
 		_log.store_string ( 'dystopia_app_log'+ str(OS.get_time(true)) +
-			Music_debug + Player_debug + Ram_debug + str(FPS_debug) + Enemy_debug + Network_debug + Comics_debug +
+			Music_debug + Player_debug + Ram_debug + str(FPS_debug) + Enemy_debug + Network_debug + Screen_debug +
 			Autosave_debug + misc_debug + Globals_debug + Ads_debug + avail_thread
 			) 
 		

@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=2]
+[gd_scene load_steps=49 format=2]
 
 [ext_resource path="res://scenes/cinematics/cinematics V2.gd" type="Script" id=1]
 [ext_resource path="res://resources/title animation/Dystopia Logo Drop shadow.png" type="Texture" id=2]
@@ -9,7 +9,6 @@
 [ext_resource path="res://scenes/Shaders/CRT.tscn" type="PackedScene" id=7]
 [ext_resource path="res://resources/title animation/cape_animation_sprites/cape_22.webp" type="Texture" id=8]
 [ext_resource path="res://resources/title animation/cape_animation_sprites/cape_31.webp" type="Texture" id=9]
-[ext_resource path="res://scenes/UI & misc/3d in 2d.tscn" type="PackedScene" id=10]
 [ext_resource path="res://resources/title animation/cape_animation_sprites/cape_63.webp" type="Texture" id=11]
 [ext_resource path="res://resources/title animation/cape_animation_sprites/cape_34.webp" type="Texture" id=12]
 [ext_resource path="res://resources/title animation/cape_animation_sprites/cape_7.webp" type="Texture" id=13]
@@ -484,10 +483,6 @@ margin_bottom = 449.804
 rect_scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 5 )
 
-[node name="3d render" parent="." instance=ExtResource( 10 )]
-mouse_filter = 2
-input_pass_on_modal_close_click = false
-
 [node name="side_view" type="Sprite" parent="."]
 visible = false
 position = Vector2( 256, 290 )
@@ -526,6 +521,7 @@ frames = SubResource( 4 )
 playing = true
 
 [node name="ColorRect" parent="." instance=ExtResource( 7 )]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 0.0

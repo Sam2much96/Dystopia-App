@@ -305,13 +305,13 @@ class Functions extends Reference:
 		
 		# this function saves state data from each of the autoload singleton to
 		# an on device json file
-		var safe_Utils = safeTree.get_node("/root/Utils") 
-		var safe_Inv = safeTree.get_node("/root/Inventory") 
-		var safe_Globals = safeTree.get_node("/root/Globals") 
-		var safe_Diag = safeTree.get_node("/root/Dialogs")
-		var safe_Music = safeTree.get_node("/root/Music")  
-		var safe_Quest = safeTree.get_node("/root/Quest") 
-		var safe_HUD = safeTree.get_node("/root/GameHud")
+		var safe_Utils = safeTree.get_root().get_node("/root/Utils") 
+		var safe_Inv = safeTree.get_root().get_node("/root/Inventory") 
+		var safe_Globals = safeTree.get_root().get_node("/root/Globals") 
+		var safe_Diag = safeTree.get_root().get_node("/root/Dialogs")
+		var safe_Music = safeTree.get_root().get_node("/root/Music")  
+		var safe_Quest = safeTree.get_root().get_node("/root/Quest") 
+		var safe_HUD = safeTree.get_root().get_node("/root/GameHud")
 		var safe_Screen = safe_HUD.TouchInterface
 		
 		var save_dict : Dictionary = {}
@@ -355,7 +355,7 @@ class Functions extends Reference:
 		
 		#Music on settings is a boolean converted to int
 		if safe_Music != null : 
-			save_dict.music = int(safe_Music.music_on) #add other variables to save
+			save_dict.music = int(safe_Music.enable) #add other variables to save
 		
 		# Language is saved independently
 		if not safe_Diag.language.empty():
@@ -386,7 +386,7 @@ class Functions extends Reference:
 		
 		# this function saves state data from each of the autoload singleton to
 		# an on device json file
-		var safe_Utils = safeTree.get_node("/root/Utils") 
+		var safe_Utils = safeTree.get_root().get_node("/root/Utils") 
 
 		var save_game : File = safe_Utils.file #= File.new()
 		var save_dict : Dictionary
@@ -425,13 +425,13 @@ class Functions extends Reference:
 		
 		# this function saves state data from each of the autoload singleton to
 		# an on device json file
-		var safe_Utils = safeTree.get_node("/root/Utils") 
-		var safe_Inv = safeTree.get_node("/root/Inventory") 
-		var safe_Globals = safeTree.get_node("/root/Globals") 
-		var safe_Diag = safeTree.get_node("/root/Dialogs")
-		var safe_Music = safeTree.get_node("/root/Music")  
-		var safe_Quest = safeTree.get_node("/root/Quest") 
-		var safe_HUD = safeTree.get_node("/root/GameHud")
+		var safe_Utils = safeTree.get_root().get_node("/root/Utils") 
+		var safe_Inv = safeTree.get_root().get_node("/root/Inventory") 
+		var safe_Globals = safeTree.get_root().get_node("/root/Globals") 
+		var safe_Diag = safeTree.get_root().get_node("/root/Dialogs")
+		var safe_Music = safeTree.get_root().get_node("/root/Music")  
+		var safe_Quest = safeTree.get_root().get_node("/root/Quest") 
+		var safe_HUD = safeTree.get_root().get_node("/root/GameHud")
 		var safe_Screen = safe_HUD.TouchInterface
 		
 		

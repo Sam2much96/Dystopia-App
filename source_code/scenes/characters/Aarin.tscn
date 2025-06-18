@@ -1511,7 +1511,8 @@ __meta__ = {
 wait_time = 0.1
 
 [node name="Impact" parent="." instance=ExtResource( 5 )]
-position = Vector2( 20.7633, -48.054 )
+position = Vector2( 7.4472, -4.28752 )
+scale = Vector2( 0.590637, 0.590637 )
 _impact = true
 
 [node name="AnimationTree" type="AnimationTree" parent="."]

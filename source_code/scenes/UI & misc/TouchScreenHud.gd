@@ -8,6 +8,8 @@
 # Created Using Godot UI Noes And Texture Buttons For Better UI functionality
 
 # Features:
+# (-1) Implements Custom Input classes that expose input actions
+# (0) Global Input Manager For Mobile and PC exposed via global hud 
 # (1) A State Machine for the touch interface to hint the player and not clutter the ui
 # (2) Emits it's state as a signal
 # (3) Touch OS enables or Disables the touch interface depending on if a touch screen is present and the Globals.os. _Hide_touch_interface boolean variable
@@ -88,12 +90,6 @@ class_name TouchScreenHUD, "res://resources/misc/Android 32x32.png"
 onready var node_input = Input  # Generates this nodes Node _input()
 
 
-# Pointer to Global Menu Pointer
-# use a setget function for this call to menu objed
-#onready var menu3 = _Input.menu
-
-
-
 # Touch interface statemachine is expanded below June 17/2024
 #enum { DOWN, LEFT, UP, RIGHT, MENU, SLASH, ROLL, INTERACT, STATS, RESET, SHOW, HIDE} # Touch interface Internal State Machine
 
@@ -101,13 +97,31 @@ export (int) var touch_controller = INPUT.MENU
 
 
 export (bool) var enabled # Local Variant for stroing if device is android from adnroid singleton
-export (bool) var DEBUG
+export (bool) var DEBUG = false # map this option to multi touch debug and debug singleton state
+
+# Touch Input Constants.
+export (float) var DRAG_STARTUP_TIME = 0.02
+export (float) var TAP_TIME_THRESHOLD = 0.2
+
+
+
 #signal menu
 #signal interract
 signal attack
 #signal stats
 #signal comics
 #signal reset
+
+# Touch screen Signals.
+# The are emited when the logic 
+# for each custom screen input is triggered
+signal single_tap
+signal single_touch
+signal single_drag
+signal multi_drag
+signal pinch
+signal twist
+signal any_gesture
 
 "UI Buttons"
 var _menu : TextureButton 
@@ -157,7 +171,8 @@ var screenOrientationSettings : int = OS.get_screen_orientation()
 # This Apps Global Screen Orientation
 enum SCREEN { SCREEN_HORIZONTAL, SCREEN_VERTICAL} 
 
-
+# Touch Input Enum.
+enum Gestures {PINCH, MULTI_DRAG, TWIST}
 
 "Input Buffer Variables"
 
@@ -187,6 +202,7 @@ onready var safe_Simulation = get_node("/root/Simulation")
 onready var safe_GameHUD = get_node("/root/GameHud")
 onready var safe_Android = get_node("/root/Android")
 onready var safe_Globals = get_node("/root/Globals")
+onready var safe_Debug = get_node("/root/Debug")
 
 
 # Pointer to menu node 
@@ -215,6 +231,22 @@ var NodeInput = Input # Generates this nodes Node _input()
 
 onready var children : Array = self.get_children()
 
+# Touch controls
+# 
+var last_mouse_press = null  # Last mouse button pressed.
+
+# to do : 
+#(1) Add a queue free conditional to prevent memory leaks
+#(2) Debug and add variable types
+var touches : Dictionary = {} # Keeps track of all the touches.
+var drags : Dictionary = {}   # Keeps track of all the drags.
+var tap_delay_timer = Timer.new()
+var only_touch = null # Last touch if there wasn't another touch at the same time.
+
+var drag_startup_timer = Timer.new()
+var drag_enabled = false 
+
+
 func _ready():
 	
 	# Make Global Pointer backup
@@ -225,16 +257,8 @@ func _ready():
 	
 	# debug menu and stat object pointers
 	print_debug("Menu & Stats Debug 2: ", menuObj, "/", StatsObj)
-
 	
-	# Code Mutates Enabled
-	#
-	# 
-	#if Android.is_android() == false:
-	#	self.hide()
-	#	enabled = false
-	#	self.set_process(false)
-
+	
 	
 	######## Begin Setting Nodes #
 	_menu = $"%menu"
@@ -304,6 +328,9 @@ func _ready():
 		# Connect Button Signals
 		#print_debug("Connect Body Signals")
 		
+		# Add signals for screen touch
+		Screen._add_timer(tap_delay_timer, "",self)
+		Screen._add_timer(drag_startup_timer, "on_drag_startup_timeout", self)
 		
 		#print_debug(direction_buttons, Globals.direction_control)
 
@@ -324,7 +351,7 @@ func _ready():
 		
 		
 		"Display Screen Calculations"
-		safe_GameHUD.TouchInterface.Screen.display_calculations(get_tree().get_root(), safe_Utils)
+		Screen.display_calculations(get_tree().get_root(), safe_Utils)
 		
 		# Calculates the Length and Breadth of All Touchscreen HUD buttons
 		# To DO: 
@@ -425,13 +452,48 @@ func _process(_delta):
 				return hide_buttons()
 
 
+# To Do: 
+# (1) Map to Debug Singleton (done)
+# (2) Implement Multitouch debug once in debug state
+
+func _input(event):
+	# the input event bloc for this global child would be called first before unhandled inputs
+	if (event is InputEventMultiScreenDrag or
+		event is InputEventSingleScreenDrag or
+		event is InputEventScreenPinch or
+		event is InputEventScreenTwist or
+		event is InputEventSingleScreenTap or
+		event is InputEventSingleScreenTouch):
+			safe_Debug.Screen_debug = event.as_text()
+	if event is InputEventMultiScreenDrag:
+		safe_Debug.Screen_debug = "Multiple finger drag"
+		print_debug("Multiple finger drag")
+	elif event is InputEventSingleScreenDrag:
+		safe_Debug.Screen_debug = "Single finger drag"
+		print_debug("Single finger drag")
+	elif event is InputEventScreenPinch:
+		safe_Debug.Screen_debug = "Pinch"
+		print_debug("Pinch")
+	elif event is InputEventScreenTwist:
+		safe_Debug.Screen_debug = "Twist"
+		print_debug("Twist")
+	elif event is InputEventSingleScreenTap:
+		safe_Debug.Screen_debug = "Single finger tap"
+		print_debug("Screen Tap")
+	elif event is InputEventSingleScreenTouch:
+		safe_Debug.Screen_debug = "Single finger touch"
+		print_debug("Single finger touch")
+
+
 func _unhandled_input(event):
 	# This is the last input that gets propagated on the scene tree
 	#
 	# State Buffer Logic
 	# Player Input
 	# Implement Player Objects Movement State Machine Simplified
-	
+	#
+	# Keyboard Inputs
+	#
 	if Input.is_action_pressed("move_left"):
 		
 		state = INPUT.LEFT
@@ -533,7 +595,7 @@ func _unhandled_input(event):
 	if Input.is_action_just_released("pause"):
 		state = INPUT.RESET
 	
-	
+	# Input Buffer
 	if saveBuffer:
 		if input_buffer.empty() == true && pressed:
 			input_buffer.append(state)
@@ -548,7 +610,65 @@ func _unhandled_input(event):
 			#	print(input_buffer, _state, input_buffer.pop_front())
 				input_buffer.clear()
 				#return
+	
+	# Mouse gestures
+	# Mouse to gesture.
+	if event is InputEventMouseButton:
+		if event.pressed:
+			if event.button_index == BUTTON_WHEEL_DOWN:
+				emit("pinch", InputEventScreenPinch.new({
+					"position": event.position,
+					"distance": 200.0,
+					"relative": -40.0,
+					"speed"   : 25.0
+				}))
+			elif event.button_index == BUTTON_WHEEL_UP:
+				emit("pinch", InputEventScreenPinch.new({
+					"position": event.position,
+					"distance": 200.0,
+					"relative": 40.0,
+					"speed"   : 25.0
+				}))
+			last_mouse_press = event
+		else:
+			last_mouse_press = null
+		
+	elif event is InputEventMouseMotion:
+		if last_mouse_press:
+			if last_mouse_press.button_index == BUTTON_MIDDLE:
+				emit("multi_drag", InputEventMultiScreenDrag.new({"position": event.position,
+																  "relative": event.relative,
+																  "speed": event.speed}))
+			elif last_mouse_press.button_index == BUTTON_RIGHT:
+				var rel1 = event.position - last_mouse_press.position
+				var rel2 = rel1 + event.relative
+				emit("twist", InputEventScreenTwist.new({"position": last_mouse_press.position,
+														 "relative": rel1.angle_to(rel2),
+														 "speed": event.speed}))
 
+
+
+# Touch Input Helper Functions
+func emit(sig: String, val):
+	
+	if DEBUG: 
+		print_debug(val.as_text())
+	
+	
+	emit_signal("any_gesture", sig, val)
+	emit_signal(sig, val)
+	
+	# parse input parameters
+	#node_input_ : Input ,
+	#tree: SceneTree, 
+	#safe_Simulation_ : Simulationv1 ,
+	#action : String, 
+	#_pressed : bool
+	
+	parse_input(node_input, __scene_tree, safe_Simulation, val ,true)
+	# to do: 
+	# (1) route to parse input function
+	#Input.parse_input_event(val)
 
 
 """
@@ -1066,6 +1186,13 @@ Features:
 """
 class Screen  :
 	
+	# Macro for Touch Input Manager to add a timer and connect it's timeout to func_name.
+	static func _add_timer(timer : Timer, func_name: String, Selfnode):
+		timer.one_shot = true
+		if !func_name.empty():
+			timer.connect("timeout", Selfnode, func_name)
+		Selfnode.add_child(timer)
+	
 	
 	
 	# Should Get Screen Size, Screen Scale and All screen properties
@@ -1166,14 +1293,14 @@ class Screen  :
 	
 	
 	static func calculate_button_positional_data(
-	menu : TextureButton, 
-	_interract : TextureButton,
-	stats : TextureButton, 
-	roll : TextureButton, 
-	slash : TextureButton, 
-	comics : TextureButton, 
-	joystick : TouchScreenButton,
-	 D_pad : Control
+		menu : TextureButton, 
+		_interract : TextureButton,
+		stats : TextureButton, 
+		roll : TextureButton, 
+		slash : TextureButton, 
+		comics : TextureButton, 
+		joystick : TouchScreenButton,
+		 D_pad : Control
 	)-> Array:
 		
 		print_stack()
@@ -1254,4 +1381,45 @@ class Screen  :
 			Anim.play("SCREEN_HORIZONTAL");
 		else: pass
 	
+	# Checks if the gesture is pinch.
+	static func identify_gesture(gesture_drags):
+		
+		print_debug("Gesture debug: ", gesture_drags) # Debug function's data type
+		var center = Vector2()
+		for e in gesture_drags.values():
+			center += e.position
+		center /= gesture_drags.size()
+		
+		var sector = null
+		for e in gesture_drags.values():
+			var adjusted_position = center - e.position
+			var raw_angle = fmod(adjusted_position.angle_to(e.relative) + (PI/4), TAU) 
+			var adjusted_angle = raw_angle if raw_angle >= 0 else raw_angle + TAU
+			var e_sector = floor(adjusted_angle / (PI/2))
+			if sector == null: 
+				sector = e_sector
+			elif sector != e_sector:
+				sector = -1
+		
+		if sector == -1:               return Gestures.MULTI_DRAG
+		if sector == 0 or sector == 2: return Gestures.PINCH
+		if sector == 1 or sector == 3: return Gestures.TWIST
+
+
+# Other Touch Input functionss
+
+# Checks if complex gesture (more than one finger) is in progress.
+func complex_gesture_in_progress() -> bool:
+	print_stack()
+	print_debug("gesture debug 2: ", (touches.size()))
 	
+	return touches.size() > 1 # ternirary statement to check touch input data size
+
+func on_drag_startup_timeout(): # Drag timeout signal implementation
+	drag_enabled = !complex_gesture_in_progress() and drags.size() > 0
+
+
+# Disables drag and stops the drag enabling timer.
+func cancel_single_drag():
+	drag_enabled = false
+	drag_startup_timer.stop()

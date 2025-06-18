@@ -40,7 +40,9 @@ onready var safe_Utils = get_node("/root/Utils")
 onready var _simulation = get_node("/root/Simulation")
 onready var screen = get_node("/root/GameHud/TouchInterface")
 onready var _globals = get_node("/root/Globals")
-
+onready var safe_GameHUD = get_node("/root/GameHud")
+onready var safe_Dialogs = get_node("/root/Dialogs")
+onready var safe_TouchInterface = safe_GameHUD.TouchInterface
 
 "Screen Extension"
 # Extends screen logic calculations from touch interface, a child of gamehud
@@ -124,7 +126,7 @@ func ads() -> void:
 	_ads.move_banner(false)
 	_ads.show_banner()
 	# Ad some sud to this account
-	Globals.suds += 1000
+	_globals.suds += 1000
 	
 func ads_video()-> void:
 	
@@ -208,20 +210,8 @@ func _process(_delta):
 			# doesn't work yet
 			#TouchInterface.Vertical()
 
-	# Functions:
-	#toggles touch interface visibility depending on the os and screen orientation (Pc or Mobiles)
-	#
-	# (1) Moved to ANdroid singleton for more polling
-	# what???
-		#TouchInterface._Hide_touch_interface = false
-		#TouchInterface.show()
-		#print_debug('Hiding touch interface for ', Globals.os)
 
-
-	
-	
 	# Update Global Screen Orientation every 100th frame
-
 	"""
 	SCREEN ORIENTATION ALGORITHM
 	"""
@@ -230,16 +220,17 @@ func _process(_delta):
 	# (1) Checks Device  Screen orentation
 	# (2) Sets the Global Script for Screen Orientation
 	#(3) This ALgorithm should be run periodically on a separate device like mobile every 100th frame
-	if _simulation.frame_counter % 250 == 0:
+	if _simulation.frame_counter % 250 == 0 && is_instance_valid(GameHUD_):
 		# update local screen orientation 
-		local_screen_orientation = Utils.Screen.Orientation()
+		local_screen_orientation = GameHUD_.TouchInterface.Screen.Orientation()
 	
 	# Sets Screen Orientation 
 	if _simulation.frame_counter % 120 == 0 && is_instance_valid(GameHUD_):
 		
 		# compare previous orientation and adjust hud
 		#if local_screen_orientation != initial_screen_orientation:
-			
+		#Invalid get index 'Screen' (on base: 'Nil').
+		#jjj
 		GameHUD_.TouchInterface.Screen._adjust_touchHUD_length(GameHUD_.Anim) # sets touch interface layout
 	
 	
@@ -261,10 +252,11 @@ func _process(_delta):
 		
 
 func _on_player_ready():
-	if _is_android == true:
-		GameHUD_.TouchInterface.enabled = true
-		#Android.show_all_buttons() # Show Touch HUD UI
-
+	#if _is_android == true:
+	#	print_stack()
+	#	safe_TouchInterface.enabled = true
+	#Android.show_all_buttons() # Show Touch HUD UI
+	pass
 
 func set_TouchInterface(hud : TouchScreenHUD):
 	#print_stack()
@@ -286,7 +278,7 @@ func _on_AdMob_banner_loaded():
 	print_debug("Banner Ads Loaded")
 	BANNER_READY = true
 	
-	Dialogs.show_dialog("Here's Your Reward! $SUD 1,000", "Admin")
+	safe_Dialogs.show_dialog("Here's Your Reward! $SUD 1,000", "Admin")
 	Globals.suds += 1000
 
 

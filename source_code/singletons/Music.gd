@@ -359,39 +359,16 @@ func play(_stream: String):
 		current_track = "a"
 		enable = true
 		return
+	# settings saving should be done in controls scene
 	
-	Utils.Functions.save_game(
-		[], 
-		0, 
-		0, 
-		0, 
-		"", 
-		"", 
-		0, 
-		"", 
-		null,
-		""
-		)
-	print_debug('Play Music setting debug: ', enable) #For Debug purposes only
+	#print_debug('Play Music setting debug: ', enable) #For Debug purposes only
 
 
 func clear():# triggers an autodelete in music track nodes
 	music_track = ''
 	print_debug('Music cleared')
 	self.music_on = false
-	Utils.Functions.save_game(
-		[], 
-		0, 
-		0, 
-		0, 
-		"", 
-		"", 
-		0, 
-		"", 
-		null,
-		""
-		)
-	print_debug('Clear Music setting debug: ', self.music_on) #For Debug purposes only
+	#print_debug('Clear Music setting debug: ', self.music_on) #For Debug purposes only
 	return self.music_on
 
 

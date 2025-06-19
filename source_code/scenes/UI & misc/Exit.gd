@@ -27,9 +27,10 @@ Add this to any area2d and it will send the player to the indicated scene and sp
 export(String, FILE, "*.tscn") var to_scene
 export(String) var spawnpoint = ""
 
-#export (bool) var TRIGGERED = false
+# safe pointers to global singletons
+onready var safe_Globals = get_node("/root/Globals")
+onready var safe_Utils = get_node("/root/Utils")
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	
 	# Signals Connection Redundancy Code
@@ -56,9 +57,9 @@ func _on_Exit_body_entered(body):
 		"Loads Large Scene Precursour"
 		
 		#Globals.current_level = to_scene
-		Globals.spawn_x = body.position.x 
-		Globals.spawn_y = body.position.y
-		Globals.player_hitpoints = body.hitpoints
+		safe_Globals.spawn_x = body.position.x 
+		safe_Globals.spawn_y = body.position.y
+		safe_Globals.player_hitpoints = body.hitpoints
 		
 		
 		# Save Game
@@ -88,9 +89,9 @@ func _on_Exit_body_entered(body):
 		if !to_scene.empty():
 			print_debug("To Scene Debug: ", to_scene)
 
-		Globals.current_level = to_scene
+		safe_Globals.current_level = to_scene
 		#print_debug("changing scene to :", to_scene)
 		#get_tree().change_scene(to_scene)
 			# Global Scene Transition
-		Utils.Functions.change_scene_to(Globals.loading_scene, get_tree())
+		safe_Utils.Functions.change_scene_to(safe_Globals.loading_scene, get_tree())
 		#	push_error("Error changing scene")

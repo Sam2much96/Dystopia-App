@@ -118,6 +118,7 @@ func _enter_tree():
 		'Makes Player Hitpoint a Global Variable'
 		global_singleton_.player_hitpoints = hitpoints
 	else:
+		# use signals to fix this error
 		push_error("player script not detecting  global singleton on start")
 
 

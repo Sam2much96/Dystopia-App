@@ -104,7 +104,8 @@ var Overworld_Scenes : Dictionary = {0 : "res://scenes/levels/Temple interior.ts
 2: "res://scenes/levels/Building3.tscn",
 3: "res://scenes/levels/Overworld3D.tscn",
 4: "res://scenes/levels/Building1.tscn",
-5: "res://scenes/levels/Overworld.tscn"
+5: "res://scenes/levels/Overworld.tscn",
+6: "res://scenes/levels/OverworldSideScrolling.tscn"
 } # for simplifying loading and scene changes states
 
 

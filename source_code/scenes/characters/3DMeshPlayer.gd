@@ -27,15 +27,12 @@ onready var safe_TouchScreen = get_node("/root/GameHud").TouchInterface
 
 
 func _input(event):
-	# rotation
+	#view rotation
 	if event is InputEventMouseMotion:
 		look_rot.y -= (event.relative.x * sensitivity)
 		look_rot.x -= (event.relative.y * sensitivity)
 		look_rot.x = clamp(look_rot.x, min_angle, max_angle)
 		
-#	var vy = velocity.y
-#	velocity = Vector3()
-	
 
 	#if Input.is_action_pressed("move_up"):
 		
@@ -68,11 +65,20 @@ func _physics_process(delta):
 	): 
 		
 		# keyboard move direction
-		move_dir = Vector3(Input.get_axis("move_up","move_down"),0, Input.get_axis("move_left","move_right")).normalized().rotated(Vector3.UP, rotation.y)
+		move_dir = Vector3(Input.get_axis("move_up","move_down"),0, Input.get_axis("move_right","move_left")).normalized().rotated(Vector3.UP, rotation.y)
 	
-	
-	# Touchscreen Move Direction
-	move_dir = Vector3(safe_TouchScreen.direction.y, 0, safe_TouchScreen.direction.x)
+	if (InputEventMultiScreenDrag or
+		InputEventSingleScreenDrag or
+		InputEventScreenPinch or
+		InputEventScreenTwist or
+		InputEventSingleScreenTap or
+		InputEventSingleScreenTouch
+	):
+		# Touchscreen Move Direction
+		# bug:
+		# (1) breaks keyboard inputs
+		move_dir = Vector3(safe_TouchScreen.direction.y, 0, safe_TouchScreen.direction.x)
+		
 	
 	velocity.x = lerp(velocity.x, move_dir.x * speed, acceleration * delta)
 	velocity.z = lerp(velocity.z, move_dir.z * speed, acceleration * delta)

@@ -59,6 +59,7 @@ var Chrome = null
 
 # Ad Mob Ads Node
 onready var _ads : AdMob = self.get_child(0)
+onready var ADS_TRIGGERED : bool = false
 
 var VIDEO_READY : bool = false
 var BANNER_READY : bool = false
@@ -87,8 +88,10 @@ func _ready():
 		connect("player_ready",self, "_on_player_ready")
 		
 		
-		
-		ads() # Enable ads here
+		# Enable ads here
+		# bugs: 
+		# (1) huge performance hog on startup
+		#ads() 
 		
 		#initial_screen_orientation = Utils.Screen.Orientation()
 	
@@ -111,6 +114,7 @@ func is_android() -> bool:
 
 
 func ads() -> void:
+	print_debug("Running Mobile Ads")
 	# create ads parameters for rewarded video and banner ads
 	
 	# Config and Inititalise Ads Programmatically
@@ -122,11 +126,15 @@ func ads() -> void:
 	_ads.is_real = true
 	#_ads.initialize_on_background_thread()
 	_ads.load_banner()
-	_ads.load_rewarded_video()
+	
+	# temporarily disabling for refactor Jun 19.2025
+	#_ads.load_rewarded_video()
 	_ads.move_banner(false)
 	_ads.show_banner()
 	# Ad some sud to this account
 	_globals.suds += 1000
+	
+	ADS_TRIGGERED = true
 	
 func ads_video()-> void:
 	
@@ -173,8 +181,12 @@ func _process(_delta):
 	#if is_instance_valid(TouchInterface) && _is_android == false : # PC Browser
 	#	TouchInterface.hide__()
 	#	#TouchInterface.enabled = _is_android
-	
-	
+	"ADS OPTIMIZATION"
+	# ads startup hogs startup time cuz it's a singleton
+	# i'll instead trigger it using the simulaiton frame counter
+	if _simulation.frame_counter % 1000 == 0 && !ADS_TRIGGERED: # trigger on the 1000th frame
+		# Enable ads here
+		ads()
 	
 	"""
 	RAIN FX OPTIMIZATION

@@ -115,7 +115,8 @@ func _ready():
 			# (2) Turns off loading scene for low resource heavy scenes using a Glopbal scne dictionary
 			# (3) Uses Dictionary keyys number to set loading animation time
 			if (Globals.current_level == Globals.Overworld_Scenes.get(1) or
-			Globals.current_level == Globals.Overworld_Scenes.get(5)
+			Globals.current_level == Globals.Overworld_Scenes.get(5) or 
+			Globals.current_level == Globals.Overworld_Scenes.get(3) 
 			):
 				
 				# Only show long loading scene for overworld scenes 1 and 5 which are resource heavy

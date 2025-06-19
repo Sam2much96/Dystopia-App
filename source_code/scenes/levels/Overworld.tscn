@@ -92,14 +92,16 @@ emission_rect_extents = Vector2( 250, 10 )
 scale_amount = 2.0
 
 [node name="Enemy" parent="." instance=ExtResource( 12 )]
-position = Vector2( 2792.15, 705.99 )
+position = Vector2( 3013, 1782 )
 
 [node name="Old Woman NPC" parent="." instance=ExtResource( 20 )]
+visible = false
 position = Vector2( -215.521, 1749.43 )
 rotation = 0.0423461
 scale = Vector2( 0.8, 0.8 )
 
 [node name="enemy_spawner" parent="." instance=ExtResource( 3 )]
+visible = false
 position = Vector2( 2522.96, 656.199 )
 _hitpoints = 1
 enemy_type = "Hard"
@@ -107,6 +109,7 @@ enemy_spawn_1 = ExtResource( 12 )
 spawn_count = 5
 
 [node name="enemy_spawner4" parent="." instance=ExtResource( 3 )]
+visible = false
 position = Vector2( 5516.38, 2138.66 )
 _hitpoints = 1
 enemy_type = "Hard"
@@ -114,13 +117,15 @@ enemy_spawn_1 = ExtResource( 12 )
 spawn_count = 5
 
 [node name="enemy_spawner5" parent="." instance=ExtResource( 3 )]
-position = Vector2( -213.881, 1682.51 )
-_hitpoints = 1
+position = Vector2( 2189, 1928 )
+enabled = true
+_hitpoints = 3
 enemy_type = "Hard"
 enemy_spawn_1 = ExtResource( 12 )
 spawn_count = 5
 
 [node name="enemy_spawner2" parent="." instance=ExtResource( 3 )]
+visible = false
 position = Vector2( 6833.48, -4887.52 )
 _hitpoints = 2
 enemy_type = "Intermediate"
@@ -128,6 +133,7 @@ enemy_spawn_1 = ExtResource( 12 )
 spawn_count = 5
 
 [node name="enemy_spawner3" parent="." instance=ExtResource( 3 )]
+visible = false
 position = Vector2( 17739.9, -4751.76 )
 _hitpoints = 3
 enemy_type = "Hard"
@@ -203,7 +209,7 @@ DIALOGUE = true
 [node name="items" type="YSort" parent="."]
 
 [node name="Arrow" parent="items" instance=ExtResource( 17 )]
-position = Vector2( 3248.91, 674.174 )
+position = Vector2( 3256, 2406 )
 
 [node name="extra life" parent="items" instance=ExtResource( 13 )]
-position = Vector2( 3348, 797 )
+position = Vector2( 3355.09, 2528.83 )

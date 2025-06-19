@@ -62,3 +62,5 @@ extends Node2D
 # (5) Scene uses to much RAM 
 
 
+func _exit_tree():
+	Utils.MemoryManagement.queue_free_array([self])

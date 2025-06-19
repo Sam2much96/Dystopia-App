@@ -367,9 +367,9 @@ func play(_stream: String):
 func clear():# triggers an autodelete in music track nodes
 	music_track = ''
 	print_debug('Music cleared')
-	self.music_on = false
+	enable = false
 	#print_debug('Clear Music setting debug: ', self.music_on) #For Debug purposes only
-	return self.music_on
+	#return self.music_on
 
 
 "Simple 'muffled music' effect on pause using a low pass filter"

@@ -685,7 +685,7 @@ file_logging/max_log_files=1
 
 [rendering]
 
+quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
 misc/lossless_compression/webp_compression_level=9
-gles2/compatibility/disable_half_float=true
 gles2/compatibility/disable_half_float.iOS=false

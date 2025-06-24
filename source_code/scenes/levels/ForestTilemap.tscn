@@ -6,7 +6,8 @@
 light_mask = 0
 position = Vector2( -9557, 344 )
 tile_set = ExtResource( 10 )
-cell_size = Vector2( 127, 127 )
+cell_size = Vector2( 128, 128 )
+cell_quadrant_size = 128
 cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
 cell_tile_origin = 1
 show_collision = true

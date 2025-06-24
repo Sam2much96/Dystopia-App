@@ -22,7 +22,7 @@ extends Player
 class_name Player_v3_Platformer
 
 export (int) var speed = 10
-export (int) var jump_speed = -1800
+export (int) var jump_speed = -500
 var gravity = Simulation.gravity # default gravity
 
 

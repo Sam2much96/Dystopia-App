@@ -64,7 +64,7 @@ var counter = 0 # for counting how many calcs are needed for this loop
 # Random World Seed Generator
 # To Do :
 # (1) Increase Seed Variation
-var word_seeds = Music.local_playlist_one.duplicate() # THe word seed is a random playlist song
+var word_seeds = Music.default_playlist.duplicate() # THe word seed is a random playlist song
 
 
 # Chunk size (tiles processed per frame)

@@ -1377,8 +1377,7 @@ vframes = 7
 frame = 27
 
 [node name="hitbox" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( 0.502747, 30.4347 )
+position = Vector2( 1.89166, 15.1569 )
 rotation = 1.5708
 shape = SubResource( 2 )
 

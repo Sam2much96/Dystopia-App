@@ -36,11 +36,7 @@ onready var anims : AnimationPlayer = $anims
 # safe pointer to global singletons
 onready var safe_dialogs_singleton = get_node("/root/Dialogs")
 
-func _enter_tree():
-	# Make GLobal
-	# rewrite with safe pointer
-	#GameHUD.TouchInterface.input_buffer._Status_text = self
-	pass
+
 
 func _ready():
 	
@@ -53,10 +49,10 @@ func _ready():
 	Inventory.connect("item_changed", self, "_inventory_updated")
 	
 	#Debug Signals
-	print_debug(
-		Inventory.is_connected("item_changed", self, "_inventory_updated"), 
-		Quest.is_connected("quest_changed", self, "_questlog_updated")
-		)
+	#print_debug(
+	#	Inventory.is_connected("item_changed", self, "_inventory_updated"), 
+	#	Quest.is_connected("quest_changed", self, "_questlog_updated")
+	#	)
 	
 	
 	#Dialogs.set_font(nodes, 42, "", 4)

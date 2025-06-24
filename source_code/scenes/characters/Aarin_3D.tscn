@@ -14,7 +14,7 @@ script = ExtResource( 1 )
 speed = 5.0
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 9.19843, -0.729, -2.22549, 1.64192, -4.45725, 8.25466, -1.69775, -8.14999, -4.0644, -1.14875, 6.22328, -8.0048 )
+transform = Transform( 9.19843, -0.728999, -2.22549, 1.64192, -4.45725, 8.25466, -1.69775, -8.14999, -4.0644, -1.54044, 6.21068, -7.94819 )
 current = true
 
 [node name="OmniLight" type="OmniLight" parent="Camera"]
@@ -34,4 +34,4 @@ transform = Transform( 1, -7.45058e-09, -1.49012e-08, 3.72529e-09, 1, -5.58794e-
 shape = SubResource( 4 )
 
 [node name="link-windwaker" parent="." instance=ExtResource( 3 )]
-transform = Transform( -0.0497223, -0.00460786, 0.00209676, -0.00238401, 0.0029042, -0.0498689, 0.00466516, -0.0496806, -0.00334697, 0.80073, -3.42857, 0.537897 )
+transform = Transform( -0.0497223, -0.00460786, 0.00209676, -0.00238401, 0.0029042, -0.0498689, 0.00466516, -0.0496806, -0.00334697, 0.737335, -0.550964, 0.739785 )

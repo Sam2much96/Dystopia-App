@@ -12,10 +12,9 @@ panorama = ExtResource( 3 )
 [sub_resource type="Environment" id=1]
 background_mode = 2
 background_sky = SubResource( 2 )
-background_energy = 4.0
 ambient_light_color = Color( 1, 1, 1, 1 )
-ambient_light_energy = 0.45
-ambient_light_sky_contribution = 0.7
+ambient_light_energy = 0.7
+ambient_light_sky_contribution = 0.0
 tonemap_mode = 2
 tonemap_white = 4.0
 dof_blur_far_distance = 2.95
@@ -30,19 +29,20 @@ environment = SubResource( 1 )
 
 [node name="OmniLight2" type="OmniLight" parent="WorldEnvironment"]
 transform = Transform( 0.999955, 1.98448e-09, 0.00945957, -1.97906e-09, 1, -5.82077e-10, -0.00945957, 5.6333e-10, 0.999955, 23.1197, 3.38803, 3.42475 )
+visible = false
 
 [node name="city_exterior" parent="WorldEnvironment" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20.3178, 0, 0 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="WorldEnvironment"]
 transform = Transform( -0.544412, 0.597265, -0.588974, -0.836207, -0.331069, 0.437208, 0.0661377, 0.730526, 0.679675, -48.4343, 44.0589, 64.33 )
-light_energy = 0.3
+light_energy = 0.7
 light_indirect_energy = 0.0
-light_bake_mode = 2
-shadow_enabled = true
+directional_shadow_mode = 0
 
 [node name="OmniLight" type="OmniLight" parent="WorldEnvironment"]
 transform = Transform( 0.999955, -5.49539e-08, 0.0094596, 5.96046e-08, 1, -4.91364e-07, -0.0094596, 4.91906e-07, 0.999955, -8.32674, 2.80857, -0.329724 )
+visible = false
 light_bake_mode = 2
 
 [node name="player" parent="WorldEnvironment" instance=ExtResource( 2 )]

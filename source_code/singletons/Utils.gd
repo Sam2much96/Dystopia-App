@@ -371,11 +371,13 @@ class Functions extends Reference:
 		return true
 
 	"""
-	LOAD GAME
+	LOAD GAME version 1
 	
 	Features:
 		(1) If check_only is true it will only check for a valid save file and return true or false 
 		without restoring any data
+		(2) Saves and loads data to and from the game's global data
+		(3) Saves and loads all data rather than individual data
 	"""
 	static func load_game(check_only : bool, safeTree : SceneTree) -> bool:
 		check_only = false
@@ -459,13 +461,8 @@ class Functions extends Reference:
 		if save_dict.has("suds"):
 			safe_Globals.suds = save_dict.suds
 		
-		'Player'
-		if save_dict.has('player'):
-			# restores the player object id? 
-			# this is not needded tbh, 
-			# to do : rewrite to save and restore player name saved from form
-			
-			safe_Globals.player = save_dict.player
+		'Player details'
+		
 			
 		if save_dict.has("kill_count"):
 			safe_Globals.kill_count = save_dict.kill_count  
@@ -492,17 +489,10 @@ class Functions extends Reference:
 		
 		 
 		"Scene Loader"
-		# tbh this is rubbish data if it's not being used in the code game loop
-		if save_dict.has('prev_scene'):
-			# Presumably a bugfix for scene changing
-			safe_Globals.prev_scene =save_dict.prev_scene 
-			safe_Globals.prev_scene_spawnpoint = save_dict.prev_scene_spawnpoint 
+		# to do:
+		# (1) simplify to an event system as a child of the dialogs system
 		
-		'Control Settings'
-		# Direction controller
-		# another rubbish depreciated data
-		if save_dict.has('direction_control') && str(save_dict.direction_control) != 'Null':
-			safe_Globals.direction_control = str(save_dict.direction_control)
+		
 		
 		if save_dict.has("languague"):
 			safe_Diag.language = save_dict.languague
@@ -516,10 +506,29 @@ class Functions extends Reference:
 
 		print_debug("Loaded gameplay")
 
+	"""
+	Version 2 save game and load game Functions
+	
+	features:
+	(1) less verbose
+	(2) Better error handling
+	(3) Saves and loads only one variant rather than the entire global states
+	"""
+
 	# Loads Singular User Data from local storage
 	# Version 2 of Load_game function
 	# Should allow for loading individual variables from Local
-	static func load_user_data( data: String ):
+	# uses a default params
+	static func load_user_data( data: String = "", safeTree : SceneTree = null): 
+		var safe_Utils = safeTree.get_root().get_node("/root/Utils") 
+		var safe_Inv = safeTree.get_root().get_node("/root/Inventory") 
+		var safe_Globals = safeTree.get_root().get_node("/root/Globals") 
+		var safe_Diag = safeTree.get_root().get_node("/root/Dialogs")
+		var safe_Music = safeTree.get_root().get_node("/root/Music")  
+		var safe_Quest = safeTree.get_root().get_node("/root/Quest") 
+		#var safe_HUD = safeTree.get_root().get_node("/root/GameHud")
+		#var safe_Screen = safe_HUD.TouchInterface
+		
 		
 		var save_game = File.new() #Utils.file 
 		if not save_game.file_exists("user://savegeme.save"):
@@ -528,17 +537,45 @@ class Functions extends Reference:
 		var save_dict = parse_json(save_game.get_line())
 		if typeof(save_dict) != TYPE_DICTIONARY:
 			return false
+		
+		if !save_dict.has(data): # guard clause
+			push_error("data loaded not present in save file: " + data)
+
+		#if save_dict.has(data):
+		#	print_debug ("Loading user data: ", data)
+		if data == "language":
+			pass
+		if data == "music":
+			safe_Music.enable = bool(save_dict.music)
+		if data == "kill_count":
+			pass
+		if data == "death_count":
+			pass
+		if data == "suds":
+			pass
+		if data == "quests":
+			pass
+		if data == "inventory":
+			pass
+		if data == "current_level":
+			pass
+	
+	static func save_user_data( data: String = ""): 
+		
+		var save_game = File.new() #Utils.file 
+		if not save_game.file_exists("user://savegeme.save"):
+			return false
+		save_game.open("user://savegeme.save", File.READ)
+		var save_dict = parse_json(save_game.get_line())
+		if typeof(save_dict) != TYPE_DICTIONARY:
+			return false
+		
+		if !save_dict.has(data):
+			push_error("data loaded not present in save file: " + data)
 
 		if save_dict.has(data):
 			print_debug ("Loading user data: ", data)
-		#	if data == 'languague':
-		#		Dialogs.language = save_dict.languague
 		
-		#	if data == "Music_on_settings":
-		#		Music.Music_on_settings = save_dict.Music_on_settings
-		#		Music._ready()
-		#pass
-		#ljpoj]-ju
 
 
 

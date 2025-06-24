@@ -82,9 +82,7 @@ func _ready():
 
 	$ScrollContainer/VBoxContainer/back.grab_focus() #Back button grabs focus
 
-	#$TextureRect.hide()
-	#hide ingame menu
-	#Android.show_only_menu()
+	Utils.Functions.load_user_data("music", get_tree())
 	
 
 	if Globals.screenOrientation == 1 && Globals.os == "Android":
@@ -228,24 +226,7 @@ func _on_multiplayer_toggled(button_pressed):
 			Networking.GamePlay = Networking.MMO_SERVER
 
 
-func _on_CRT_toggled(button_pressed):
-	"""
-	Turn Filter on/ off and save config settings
-	"""
-	
-	pass
-
 """
 THIRD PARTY SOFTWARE
 """
 
-func _on_github_pressed():
-	Utils.Functions.change_scene_to(Globals.github, get_tree())
-
-
-func _on_wallet_pressed():
-	Utils.Functions.change_scene_to(Globals._wallet, get_tree())
-
-
-func _on_notifications_pressed():
-	Android.Notifications.schedule("dkjfskjdf","sadfjshdfsdhf")

@@ -320,9 +320,10 @@ func _ready():
 		
 		"Touch Menu Button Customization"
 		# Customizes 
-		if safe_Globals.curr_scene == "HouseInside":
-			_menu.self_modulate = Color(255,255,255) # white
-		else: _menu.self_modulate = Color(0,0,0) # black
+		# temporarily disabled for ui / ux/ tileset update June 24, 2025
+		#if safe_Globals.curr_scene == "HouseInside":
+		#	_menu.self_modulate = Color(255,255,255) # white
+		#else: _menu.self_modulate = Color(0,0,0) # black
 		
 		
 		

@@ -63,7 +63,8 @@ func _physics_process(delta):
 			velocity.x = -MAX_SPEED
 		animation.play("walk_left")
 
-	if InputEventSc
+	# To do :
+	# (1) Add and finetune controls for screen touch input
 
 
 	

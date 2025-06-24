@@ -115,7 +115,6 @@ resource_name = "play"
 pause_mode = 2
 script = ExtResource( 1 )
 sfx_on = true
-volume = 10
 
 [node name="A" type="AudioStreamPlayer" parent="."]
 bus = "B"

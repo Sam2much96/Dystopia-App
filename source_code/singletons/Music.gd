@@ -43,7 +43,7 @@ signal music_finished
 #add more controls to this script, it breaks the singleton
 export (bool) var enable 
 export (bool) var sfx_on
-export (int) var volume # volume controller code is not yet written
+#export (int) var volume # volume controller code is not yet written
 export (int) var play_back_position : float
 export (int) var track_length : float
 
@@ -184,7 +184,7 @@ and map the buttons to the game's UI when finished
 Music singleton that handles crossfading when a new song starts
 and applies a low pass filter when the game is paused. Nothing too wise
 """
-var music_debug : String =''
+#var music_debug : String =''
 onready var current_track : String
 
 onready var A : AudioStreamPlayer = $A
@@ -196,12 +196,12 @@ onready var music_bus_2 = AudioServer.get_bus_index(B.bus)
 onready var music_bus = AudioServer.get_bus_index(A.bus)
 
 
-var _music
+#var _music
 onready var Music_streamer : AudioStreamPlayer = A #get_node("A")  #Refrences the music player node
 onready var Music_streamer_3 : AudioStreamPlayer = B #get_node("B")  #Refrences the music player node
 onready var  Music_streamer_2  : AudioStreamPlayer= D#get_node("D")
 #onready var sfx_streamer 
-onready var track : String 
+#onready var track : String 
 
 
 onready var transitions : AnimationPlayer = $anims
@@ -211,15 +211,11 @@ onready var my_nodes : Array = [Music_streamer, A,B,C,D,Music_streamer_2,transit
 
 
 
-onready var FileCheck= Utils.file  # checks Music Files
-onready var FileDirectory=Utils.dir #checks Music Irectory
-
-
 # Debug Variables
 var stream : AudioStream
-var stream_length : int
-var Playback_position : int
-var _track : String
+#var stream_length : int
+#var Playback_position : int
+#var _track : String
 
 # Audio FX Enumeration
 # Matches The Audio Fx Layout Arrangement In Audio Bus Layout

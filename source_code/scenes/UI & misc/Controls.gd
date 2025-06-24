@@ -8,11 +8,9 @@
 # local device as user's preferred settings, preloaded on runtime
 # ************************************************* 
 # To-Do:
-# (1) Finish D-pad to Joystick button change illustration 
-# (2) Add Swipe Gestures on/off controls
-# (3) Include a GitHub Login, to encourage Players to Inspect the Code Base ( Done in Game HUD)
-# (4) Implement Keyboard Layout for  player's help
-# (5) Show Player's Gameplay stats
+
+# (1) Serialise input states to controll ui
+# 
 # *************************************************
 #
 # Bugs:
@@ -82,7 +80,7 @@ func _ready():
 
 	$ScrollContainer/VBoxContainer/back.grab_focus() #Back button grabs focus
 
-	Utils.Functions.load_user_data("music", get_tree())
+	Utils.Functions.load_user_data("music", get_tree()) # works
 	
 
 	if Globals.screenOrientation == 1 && Globals.os == "Android":

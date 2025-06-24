@@ -58,10 +58,9 @@ func _ready():
 	
 	safe_Utils.UI.check_for_broken_links(UI_buttons)
 	
-	# Load Users Prefered Dialogue
-	# to do:
-	# (1) rewrite all save function inplementations to this format to save individual variables 
-	safe_Utils.Functions.load_user_data('languague')
+	# Load Users Prefered Dialogue settings
+	
+	safe_Utils.Functions.load_user_data('languague', get_tree())
 	
 	
 	# Load Users Prefered DIalogue 
@@ -102,27 +101,27 @@ func _on_play_pressed():
 	
 	
 	if language.get_selected() == 0:
-		Dialogs.language = "en_US"
+		safe_Diag.language = "en_US"
 		#Globals.save_game()
 	elif language.get_selected() == 1:
-		Dialogs.language = "pt_BR"
+		safe_Diag.language = "pt_BR"
 		#Globals.save_game()
 	elif language.get_selected() == 2:
-		Dialogs.language = "fr"
+		safe_Diag.language = "fr"
 	elif language.get_selected() == 3:
-		Dialogs.language = "te_IN"
+		safe_Diag.language = "te_IN"
 	elif language.get_selected() == 4:
-		Dialogs.language = "hi_IN"
+		safe_Diag.language = "hi_IN"
 	elif language.get_selected() == 5:
-		Dialogs.language = "ja"
+		safe_Diag.language = "ja"
 	elif language.get_selected() == 6:
-		Dialogs.language = "zh_CN"
+		safe_Diag.language = "zh_CN"
 	elif language.get_selected() == 7:
-		Dialogs.language = "yo_NG"
+		safe_Diag.language = "yo_NG"
 	elif language.get_selected() == 8:
-		Dialogs.language = "ar"
+		safe_Diag.language = "ar"
 		#Globals.save_game()
-	else : Dialogs.language = ""
+	else : safe_Diag.language = ""
 
 	#print_debug(Dialogs.language) # for debug purposes only
 
@@ -167,7 +166,7 @@ func translate()-> void:
 
 func _exit_tree():
 	print_debug ("Selected Language: ",safe_Diag.language)
-	
+	safe_Utils.Functions.save_game(get_tree())
 	safe_Utils.MemoryManagement.queue_free_array(UI_buttons)
 
 

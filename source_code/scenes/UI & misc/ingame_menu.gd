@@ -75,7 +75,8 @@ onready var safe_Music = get_node("/root/Music")
 onready var safe_Android = get_node("/root/Android")
 onready var safe_Globals = get_node("/root/Globals")
 onready var safe_Utils = get_node("/root/Utils")
-
+onready var safe_Dialogs = get_node("/root/Dialogs")
+onready var safe_Networking = get_node("/root/Networking")
 
 onready var _ui_sfx : String = safe_Music.ui_sfx.get(0)
 onready var _ui_sfx_1 : String = safe_Music.ui_sfx.get(1)
@@ -152,7 +153,7 @@ func _input(event):
 		
 		set_focus_mode(Control.FOCUS_CLICK)
 		set_mouse_filter(Control.MOUSE_FILTER_STOP)
-		Music.play_track(_ui_sfx)
+		safe_Music.play_track(_ui_sfx)
 		
 		#print_debug("Current Scene debug 1: ", Globals.curr_scene, "/", Globals.current_level)
 		emit_signal("menu_showing")
@@ -166,20 +167,11 @@ func _input(event):
 		set_focus_mode(Control.FOCUS_NONE)
 		set_mouse_filter(Control.MOUSE_FILTER_IGNORE)
 		
-		Music.play_track(_ui_sfx_1)
+		safe_Music.play_track(_ui_sfx_1)
 		
-		
-		#print_debug("Check if the current scene is a global scene: ", Globals.global_scenes.has(Globals.curr_scene)) # works
-
-		#print_debug("Current Scene debug 2: ", Globals.curr_scene, "/", Globals.current_level)
-		# Current Level Debug is iffy
-		# Current level is Overworld but it ought to be "form"
-		#
-		# menu hidden in game
 		
 		# check if current scene is a global scene or a game scene
 		if !Globals.global_scenes.has(Globals.curr_scene):
-			#print_debug("Current Level Debug 1: ", Globals.current_level)
 			emit_signal("menu_hidden_in_game")
 		
 		# menu hidden outside main game loop
@@ -195,17 +187,17 @@ func _input(event):
 
 func _on_new_game_pressed(): #breaks the Globals.current_level script
 	print_debug("new game pressed")
-	if Globals.initial_level != "":
+	if safe_Globals.initial_level != "":
 		
 		# current way to load game
 		
 		# Sets the Current Level to the defauult initial level
-		Globals.current_level = Globals.initial_level
+		safe_Globals.current_level = safe_Globals.initial_level
 		
 		
 
 		# shance scene to loading scene with nspecialized logic for device loadi handling
-		Utils.Functions.change_scene_to(Globals.loading_scene,get_tree() )
+		safe_Utils.Functions.change_scene_to(Globals.loading_scene,get_tree() )
 		
 		# Required Variables
 		#player: Array, 
@@ -218,25 +210,10 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 		#prev_scene_spawnpoint,
 		#direction_control,
 		#Music_on_settings
-		# Disabling Save Game Test for refactoring
 		
-		# three of the parametes in this list can be simplified to get_tree()
-		# and their derivatives gotten from th
-		if Utils.Functions.save_game(
-			[], 
-			0, 
-			0, 
-			0, 
-			Globals.current_level, 
-			Globals.os, 
-			0, 
-			"", 
-			null, 
-			Globals.direction_control,
-			get_tree()
-			) == false: push_error("Error saving game")
+		safe_Utils.Functions.save_game(get_tree())
 
-		Music.play_track(_ui_sfx) #plays ui sfx in a loop
+		safe_Music.play_track(_ui_sfx) #plays ui sfx in a loop
 		
 		
 		menu_state = HIDDEN
@@ -246,10 +223,7 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 #Handles Displaying the menu
 func _menu_showing(): 
 	"Menu Logic"
-	
-	
 	enabled = true 
-	
 	return show()
 
 #Handles Hiding the menu
@@ -267,43 +241,40 @@ func _menu_pause_and_play(boolean): #pass it a boolean to custom pause and play
 
 func _on_lore_pressed():
 	print_debug ('comics pressed')
-	Music.play_track(_ui_sfx)
+	safe_Music.play_track(_ui_sfx)
 	#Utils.Functions.change_scene_to(Globals.comics___2, get_tree())
 	
 	# Open URL to My Website
-	Networking.open_browser("https://dystopia-app.site")
-	
-	
-
+	safe_Networking.open_browser("https://dystopia-app.site")
 
 
 func _on_controls_pressed():
-	Music.play_track(_ui_sfx)
-	Utils.Functions.change_scene_to(load(Globals.global_scenes["Controls"]), get_tree())
+	safe_Music.play_track(_ui_sfx)
+	safe_Utils.Functions.change_scene_to(load(safe_Globals.global_scenes["Controls"]), get_tree())
 	
 	menu_state = HIDDEN
 	
 	return 0
 
 func _on_quit_pressed():
-	if Globals.curr_scene == 'Title screen': # Title Screen Custom Quit
-		Music.play_track(_ui_sfx_1)
+	if safe_Globals.curr_scene == 'Title screen': # Title Screen Custom Quit
+		safe_Music.play_track(_ui_sfx_1)
 		get_tree().quit()
 	
-	if Globals.curr_scene == 'form': # Mutiplayer Login Custom Quit
-		Music.play_track(_ui_sfx_1)
+	if safe_Globals.curr_scene == 'form': # Mutiplayer Login Custom Quit
+		safe_Music.play_track(_ui_sfx_1)
 		get_tree().quit()
 	else:
-		Music.play_track(_ui_sfx_1)
+		safe_Music.play_track(_ui_sfx_1)
 		#Globals.memory_leak_management()
 		#Utils.Functions.change_scene_to(Globals.title_screen, get_tree())
-		Globals._go_to_title()
+		safe_Globals._go_to_title()
 
 
 func _on_multiplayer_pressed(): # Experimental feature
-	Music.play_track(_ui_sfx)
+	safe_Music.play_track(_ui_sfx)
 	
-	return Utils.Functions.change_scene_to(load(Globals.global_scenes.get("login")), get_tree())
+	return safe_Utils.Functions.change_scene_to(load(Globals.global_scenes.get("login")), get_tree())
 
 
 
@@ -312,33 +283,16 @@ func _exit_tree():
 	#
 	# Clears all ui buttons
 	
-	Utils.MemoryManagement.queue_free_array(MenuButtons)
-	Music._notification(NOTIFICATION_UNPAUSED) #resets music when exiting scene tree
-
-
-
+	safe_Utils.MemoryManagement.queue_free_array(MenuButtons)
+	safe_Music._notification(NOTIFICATION_UNPAUSED) #resets music when exiting scene tree
 
 
 func _on_practice_pressed(): # turn off in release build
 	# To DO:
 	# (1) refactor practice scene to forced tutorial scene for new players
 	# (2) Fix audo delete save file bug in form.tscn
-	Globals.current_level = Globals.global_scenes["practice"] #'res://scenes/levels/Testing Scene 2.tscn' #breaks the Globals.current_level script
-	
-	Utils.Functions.change_scene_to(Globals.loading_scene,get_tree() )
-	
-	#Utils.Functions.change_scene_to(Utils.Functions.LoadLargeScene(
-	#	Globals.current_level, 
-	#	Globals.scene_resource, 
-	#	Globals._o, 
-	#	Globals.scene_loader, 
-	#	Globals.loading_resource, 
-	#	Globals.a, 
-	#	Globals.b, 
-	#	Globals.progress
-	#	), get_tree())
-
-
+	safe_Globals.current_level = safe_Globals.global_scenes["practice"] #'res://scenes/levels/Testing Scene 2.tscn' #breaks the Globals.current_level script
+	safe_Utils.Functions.change_scene_to(safe_Globals.loading_scene,get_tree() )
 
 
 func manually_translate()-> void:
@@ -346,11 +300,11 @@ func manually_translate()-> void:
 	#SHould Ideally Use Hashmap tuple + for loops  for translations
 	#print_debug(MenuButtons)
 	
-	if Dialogs.language != "" or null:
+	if safe_Dialogs.language != "" or null:
 		#print_debug(Dialogs.language)
 		
 		#UI Array & Font Size
-		Dialogs.set_font(MenuButtons, 44, "", 2)
+		safe_Dialogs.set_font(MenuButtons, 44, "", 2)
 		
 		# Set UI Text to Translated Names
 		for i in MenuButtons:
@@ -358,7 +312,7 @@ func manually_translate()-> void:
 			# Note: If it breaks with a null object error, it means that the scene layout has been changed
 			# Update the button links then
 			
-			i.set_text(Dialogs.translate_to(i.name, Dialogs.language))
+			i.set_text(safe_Dialogs.translate_to(i.name, safe_Dialogs.language))
 
 
 

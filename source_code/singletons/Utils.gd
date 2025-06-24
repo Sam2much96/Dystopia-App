@@ -26,8 +26,8 @@ export (Vector2) var center_of_viewport : Vector2
 
 export (Array) var EnemyObjPool : Array = [] #Stores shared pointer to enemy Mob instances
 
-var dir : Directory = Directory.new() # Global FIle And Directory Paths
-var file : File = File.new()
+onready var dir : Directory = Directory.new() # Global FIle And Directory Paths
+onready var file : File = File.new()
 
 "Compression and Uncompression Algorithm"
 # Documentation: https://git.sr.ht/~jelle/gdunzip
@@ -284,17 +284,7 @@ class Functions extends Reference:
 	# Can Save individual parameters by setting other parameters to Null
 	#
 	#
-	static func save_game(
-		player: Array, 
-		player_hitpoints : int, 
-		spawn_x : int, 
-		spawn_y : int, 
-		current_level : String, 
-		os : String, 
-		kill_count : int, 
-		prev_scene : String, 
-		prev_scene_spawnpoint,
-		direction_control : String,
+	static func save_game( 
 		safeTree : SceneTree
 		)-> bool: 
 		
@@ -317,41 +307,33 @@ class Functions extends Reference:
 		var save_dict : Dictionary = {}
 		var save_game = safe_Utils.file #File.new() #Utils.file 
 		save_game.open("user://savegeme.save", File.WRITE_READ)
-		if !player.empty():
-			save_dict.player = player #saves the player node 
-		if spawn_x != 0:
-			save_dict.spawn_x = spawn_x
-		if spawn_y != 0:
-			save_dict.spawn_y =spawn_y
-		if not current_level.empty() :
-			save_dict.current_level = current_level
+		#if !player.empty():
+		#	save_dict.player = player #saves the player node 
+		#if spawn_x != 0:
+		#	save_dict.spawn_x = spawn_x
+		#if spawn_y != 0:
+		#	save_dict.spawn_y =spawn_y
+		
+		if not safe_Globals.current_level.empty() :
+			save_dict.current_level = safe_Globals.current_level
 		
 		# Inventory List is saved individually
 		if !safe_Inv.list().empty():
 			save_dict.inventory = safe_Inv.list()
 		if !safe_Quest.get_quest_list().empty():
 			save_dict.quests = safe_Quest.get_quest_list()
-		if not os.empty():
-			save_dict.os = os
-		if kill_count != 0 :
-			save_dict.kill_count = kill_count
+		if not safe_Globals.os.empty():
+			save_dict.os = safe_Globals.os
+		if safe_Globals.kill_count != 0 :
+			save_dict.kill_count = safe_Globals.kill_count
 		if safe_Globals.death_count != 0:
 			save_dict.death_count = safe_Globals.death_count
 		# Save Device's Tokens
 		if safe_Globals.suds != 0:
 			save_dict.suds = safe_Globals.suds
 		
-		# For preserving scene changing information
-		if not prev_scene.empty() :
-			save_dict.prev_scene = prev_scene
-			
-		if prev_scene_spawnpoint != null: # Depreciate in favor of a singular spawpoint variable
-			save_dict.prev_scene_spawnpoint = prev_scene_spawnpoint
-		
-		if player_hitpoints != 0:
-			save_dict.player_hitpoints = player_hitpoints
-		if not direction_control.empty():
-			save_dict.direction_control = direction_control
+		if safe_Globals.player_hitpoints != 0:
+			save_dict.player_hitpoints = safe_Globals.player_hitpoints
 		
 		#Music on settings is a boolean converted to int
 		if safe_Music != null : 
@@ -433,8 +415,8 @@ class Functions extends Reference:
 		var safe_Diag = safeTree.get_root().get_node("/root/Dialogs")
 		var safe_Music = safeTree.get_root().get_node("/root/Music")  
 		var safe_Quest = safeTree.get_root().get_node("/root/Quest") 
-		var safe_HUD = safeTree.get_root().get_node("/root/GameHud")
-		var safe_Screen = safe_HUD.TouchInterface
+		#var safe_HUD = safeTree.get_root().get_node("/root/GameHud")
+		#var safe_Screen = safe_HUD.TouchInterface
 		
 		
 		"Quest Loader"
@@ -477,11 +459,7 @@ class Functions extends Reference:
 		
 		
 		'Player Object Spawn Position'
-		if save_dict.has('spawn_x'):
-			safe_Globals.spawn_x = save_dict.spawn_x 
 		
-		if save_dict.has('spawn_y'):
-			safe_Globals.spawn_y = save_dict.spawn_y
 		
 		'Saves Player Spawn Point'
 		if save_dict.has('current_level'):
@@ -519,7 +497,7 @@ class Functions extends Reference:
 	# Version 2 of Load_game function
 	# Should allow for loading individual variables from Local
 	# uses a default params
-	static func load_user_data( data: String = "", safeTree : SceneTree = null): 
+	static func load_user_data( data: String , safeTree : SceneTree ): 
 		var safe_Utils = safeTree.get_root().get_node("/root/Utils") 
 		var safe_Inv = safeTree.get_root().get_node("/root/Inventory") 
 		var safe_Globals = safeTree.get_root().get_node("/root/Globals") 
@@ -530,7 +508,7 @@ class Functions extends Reference:
 		#var safe_Screen = safe_HUD.TouchInterface
 		
 		
-		var save_game = File.new() #Utils.file 
+		var save_game = safe_Utils.file 
 		if not save_game.file_exists("user://savegeme.save"):
 			return false
 		save_game.open("user://savegeme.save", File.READ)
@@ -544,39 +522,29 @@ class Functions extends Reference:
 		#if save_dict.has(data):
 		#	print_debug ("Loading user data: ", data)
 		if data == "language":
-			pass
+			safe_Diag.language = save_dict.languague
 		if data == "music":
 			safe_Music.enable = bool(save_dict.music)
 		if data == "kill_count":
-			pass
+			safe_Globals.kill_count = save_dict.kill_count  
 		if data == "death_count":
-			pass
+			safe_Globals.death_count = int(save_dict.death_count)
 		if data == "suds":
-			pass
+			safe_Globals.suds = save_dict.suds
 		if data == "quests":
-			pass
+			# JSON numbers are always parsed as floats. In this case we need to turn them into ints
+			for key in save_dict.quests:
+				save_dict.quests[key] = int(save_dict.quests[key])
+			safe_Quest.quest_list = save_dict.quests
 		if data == "inventory":
-			pass
+			for key in save_dict.inventory:
+				save_dict.inventory[key] = int(save_dict.inventory[key])
+			safe_Inv.inventory = save_dict.inventory
 		if data == "current_level":
-			pass
+			safe_Globals.current_level = save_dict.current_level
 	
-	static func save_user_data( data: String = ""): 
-		
-		var save_game = File.new() #Utils.file 
-		if not save_game.file_exists("user://savegeme.save"):
-			return false
-		save_game.open("user://savegeme.save", File.READ)
-		var save_dict = parse_json(save_game.get_line())
-		if typeof(save_dict) != TYPE_DICTIONARY:
-			return false
-		
-		if !save_dict.has(data):
-			push_error("data loaded not present in save file: " + data)
-
-		if save_dict.has(data):
-			print_debug ("Loading user data: ", data)
-		
-
+	
+	
 
 
 
@@ -1074,3 +1042,5 @@ func _exit_tree():
 	# Memory Management And removing script warnings
 	screenOrientation = 0
 	self.queue_free()
+	file = null
+	dir = null

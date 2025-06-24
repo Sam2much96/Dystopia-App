@@ -118,7 +118,6 @@ spawn_count = 5
 
 [node name="enemy_spawner5" parent="." instance=ExtResource( 3 )]
 position = Vector2( 2189, 1928 )
-enabled = true
 _hitpoints = 3
 enemy_type = "Hard"
 enemy_spawn_1 = ExtResource( 12 )

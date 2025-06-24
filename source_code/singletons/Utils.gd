@@ -345,7 +345,7 @@ class Functions extends Reference:
 		
 		# Control Settings
 		# Vibration
-		save_dict.vibrate = safe_Screen.vibrate_
+		save_dict.vibrate = int(safe_Screen.vibrate_)
 		
 		save_game.store_line(to_json(save_dict))
 		save_game.close()

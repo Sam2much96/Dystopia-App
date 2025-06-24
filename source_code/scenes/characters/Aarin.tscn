@@ -15,11 +15,12 @@ shader_param/strength = 0.0
 shader_param/noise = ExtResource( 3 )
 
 [sub_resource type="CapsuleShape2D" id=2]
-radius = 35.8589
+radius = 19.4445
+height = 0.0
 
 [sub_resource type="CapsuleShape2D" id=19]
-radius = 60.225
-height = 162.07
+radius = 19.4444
+height = 45.9716
 
 [sub_resource type="AnimationNodeAnimation" id=23]
 
@@ -1376,11 +1377,13 @@ vframes = 7
 frame = 27
 
 [node name="hitbox" type="CollisionShape2D" parent="."]
-position = Vector2( -0.882385, -27.9806 )
+visible = false
+position = Vector2( 0.502747, 30.4347 )
 rotation = 1.5708
 shape = SubResource( 2 )
 
 [node name="player_sword" type="Area2D" parent="."]
+visible = false
 position = Vector2( 6.30249, -86.9744 )
 collision_layer = 2
 collision_mask = 269
@@ -1406,7 +1409,7 @@ __meta__ = {
 }
 
 [node name="col" type="CollisionShape2D" parent="hurtbox"]
-position = Vector2( 4.16663, -82.1878 )
+position = Vector2( 1.89167, -1.50973 )
 shape = SubResource( 19 )
 __meta__ = {
 "_editor_description_": ""
@@ -1416,7 +1419,7 @@ __meta__ = {
 wait_time = 0.1
 
 [node name="Impact" parent="." instance=ExtResource( 5 )]
-position = Vector2( 7.4472, -4.28752 )
+position = Vector2( 3.28052, -22.3431 )
 scale = Vector2( 0.590637, 0.590637 )
 _impact = true
 

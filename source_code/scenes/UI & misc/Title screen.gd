@@ -29,10 +29,10 @@ onready var logo : TextureRect = $logo
 
 
 
-onready var viewport : TextureRect = $Sprite
+#onready var viewport : TextureRect = $Sprite
 #onready var position : Position2D = $Position2D 
 
-onready var title_nodes : Array = [art1, logo, viewport]
+onready var title_nodes : Array = [art1, logo] #, viewport
 
 onready var _local_android : android = get_node("/root/Android")
 

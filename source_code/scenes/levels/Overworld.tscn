@@ -33,11 +33,9 @@ navpoly = SubResource( 1 )
 position = Vector2( -53.8173, -83.4771 )
 
 [node name="Exit_2" parent="Outside" instance=ExtResource( 6 )]
-visible = false
-position = Vector2( 185.817, -281.523 )
+position = Vector2( 1051.82, 2056.48 )
 rotation = 3.09728
-scale = Vector2( 1.61925, 2.04034 )
-monitoring = false
+scale = Vector2( 0.560662, 0.275862 )
 monitorable = false
 to_scene = "res://scenes/levels/Temple interior.tscn"
 
@@ -117,7 +115,7 @@ enemy_spawn_1 = ExtResource( 12 )
 spawn_count = 5
 
 [node name="enemy_spawner5" parent="." instance=ExtResource( 3 )]
-position = Vector2( 2189, 1928 )
+position = Vector2( 2567, 1825 )
 _hitpoints = 3
 enemy_type = "Hard"
 enemy_spawn_1 = ExtResource( 12 )

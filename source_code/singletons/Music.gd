@@ -203,6 +203,7 @@ onready var  Music_streamer_2  : AudioStreamPlayer= D#get_node("D")
 #onready var sfx_streamer 
 #onready var track : String 
 
+onready var music_debug : String = "" 
 
 onready var transitions : AnimationPlayer = $anims
 

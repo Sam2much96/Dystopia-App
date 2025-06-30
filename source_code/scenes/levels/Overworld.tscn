@@ -18,9 +18,9 @@
 [ext_resource path="res://scenes/levels/Overworld_Level_Properties.gd" type="Script" id=28]
 
 [sub_resource type="NavigationPolygon" id=1]
-vertices = PoolVector2Array( 20238.3, -5171.15, 20198, -7267.66, 21407.5, -7106.39, 21300.8, -3597.04, 16932.2, -5534.01, 17698.3, -5493.69, 15992.5, -3520.84, 15789.3, -4003.41, 15480.8, -4848.61, -1832.39, 1550.66, -1832.39, -951.084, -1489.51, -925.686, -1514.91, 1588.76, -1734.75, 4424.4, 7256.05, 4343.77, 2167.86, 1525.26, 3425.89, -816.867, 7377, -937.819, 2066.27, -722.498, 2409.15, -836.791, 15256, -3139.87, 15319.5, 191.069, 13747.2, 150.752, 13858.5, -3166.83, 2417.95, -4929.25, 3425.89, -4324.49 )
-polygons = [ PoolIntArray( 0, 1, 2, 3 ), PoolIntArray( 4, 5, 0, 3, 6, 7, 8 ), PoolIntArray( 9, 10, 11, 12, 13 ), PoolIntArray( 14, 13, 12, 15 ), PoolIntArray( 16, 17, 14, 15, 18 ), PoolIntArray( 16, 18, 19 ), PoolIntArray( 20, 21, 22, 23 ), PoolIntArray( 20, 23, 7, 6 ), PoolIntArray( 24, 4, 8, 25 ), PoolIntArray( 19, 24, 25, 16 ) ]
-outlines = [ PoolVector2Array( 2417.95, -4929.25, 2409.15, -836.791, 2066.27, -722.498, 2167.86, 1525.26, -1514.91, 1588.76, -1489.51, -925.686, -1832.39, -951.084, -1832.39, 1550.66, -1734.75, 4424.4, 7256.05, 4343.77, 7377, -937.819, 3425.89, -816.867, 3425.89, -4324.49, 15480.8, -4848.61, 15789.3, -4003.41, 13858.5, -3166.83, 13747.2, 150.752, 15319.5, 191.069, 15256, -3139.87, 15992.5, -3520.84, 21300.8, -3597.04, 21407.5, -7106.39, 20198, -7267.66, 20238.3, -5171.15, 17698.3, -5493.69, 16932.2, -5534.01 ) ]
+vertices = PoolVector2Array( 1991, 347, 2604, 290, 2575, 1213, 1998, 1223, 4308, 1204, 4298, 4015, 3785, 4026, 2562, 3826, 246, 3788, 309, 1232, 2569, 4068, 3781, 4087 )
+polygons = [ PoolIntArray( 0, 1, 2, 3 ), PoolIntArray( 2, 4, 5, 6, 7, 3 ), PoolIntArray( 7, 8, 9, 3 ), PoolIntArray( 10, 7, 6, 11 ) ]
+outlines = [ PoolVector2Array( 2604, 290, 1991, 347, 1998, 1223, 309, 1232, 246, 3788, 2562, 3826, 2569, 4068, 3781, 4087, 3785, 4026, 4298, 4015, 4308, 1204, 2575, 1213 ) ]
 
 [node name="Outside" type="Node2D"]
 position = Vector2( 135, -21 )
@@ -39,13 +39,6 @@ scale = Vector2( 0.560662, 0.275862 )
 monitorable = false
 to_scene = "res://scenes/levels/Temple interior.tscn"
 
-[node name="Exit_3" parent="Outside" instance=ExtResource( 6 )]
-visible = false
-position = Vector2( 8926.21, -4652.41 )
-rotation = 4.57069
-scale = Vector2( 1.61925, 2.04034 )
-to_scene = "res://scenes/levels/OverworldSideScrolling.tscn"
-
 [node name="Exit_4" parent="Outside" instance=ExtResource( 6 )]
 visible = false
 position = Vector2( 4434.88, 3289.24 )
@@ -60,6 +53,7 @@ scale = Vector2( 1.02571, 0.414348 )
 to_scene = "res://scenes/levels/marketplace_2d.tscn"
 
 [node name="Outside City" parent="." instance=ExtResource( 5 )]
+visible = false
 position = Vector2( 12571.8, -3727.55 )
 __meta__ = {
 "_edit_lock_": true
@@ -138,7 +132,14 @@ enemy_spawn_1 = ExtResource( 12 )
 spawn_count = 5
 
 [node name="hole" parent="." instance=ExtResource( 4 )]
-position = Vector2( 8881.06, -4751.42 )
+position = Vector2( 2325, 512 )
+z_index = 0
+
+[node name="Exit_3" parent="hole" instance=ExtResource( 6 )]
+position = Vector2( -2.78259, 0.93895 )
+rotation = -1.71079
+scale = Vector2( 0.742842, 0.744675 )
+to_scene = "res://scenes/levels/OverworldSideScrolling.tscn"
 
 [node name="signpost" parent="." instance=ExtResource( 14 )]
 position = Vector2( 646, 649 )

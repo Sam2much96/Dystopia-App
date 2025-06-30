@@ -833,9 +833,10 @@ func Vertical():
 	_down.rect_scale = Vector2(2,2)
 	
 	
-	_menu.rect_position = Vector2(32,48)
-	_menu.rect_size = Vector2(166,143)
-	_menu.rect_scale = Vector2(1,1)
+	# menu positionioning is okay now
+	#_menu.rect_position = Vector2(32,48)
+	#_menu.rect_size = Vector2(166,143)
+	#_menu.rect_scale = Vector2(1,1)
 	
 	# move down only the slash and roll buttons
 	

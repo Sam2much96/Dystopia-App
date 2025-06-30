@@ -46,9 +46,9 @@ export (bool) var apply_GRAVITY = false
 
 
 func _physics_process(delta):
-	# left & right
+	# Touchscreen Input
 	
-	
+	# Keyboard Input
 	# Left & Right
 	if Input.is_action_pressed("move_right"):
 		velocity.x += speed

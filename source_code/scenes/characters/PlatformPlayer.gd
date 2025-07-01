@@ -118,6 +118,14 @@ func moveLeft():
 
 func platformFacing_input_logic( node : Player, peer_id : int):
 	
+			# Keyboard Input
+	# Left & Right
+	if Input.is_action_pressed("move_right"):
+		moveRight()
+		
+	if Input.is_action_pressed("move_left"):
+		moveLeft()
+	
 	# unused function to organinse input logic into one funcitonal bloc
 	if safe_TouchScreen.direction == Vector2.ZERO: return # guard clause
 	if safe_TouchScreen.direction.x > 0.5:
@@ -129,11 +137,6 @@ func platformFacing_input_logic( node : Player, peer_id : int):
 	if safe_TouchScreen.direction.y < -0.5:
 		return
 
-		# Keyboard Input
-	# Left & Right
-	if Input.is_action_pressed("move_right"):
-		moveRight()
-		
-	if Input.is_action_pressed("move_left"):
-		moveLeft()
-	
+
+func _on_hurtbox_area_entered(area):
+	print_debug("Area Entered, Trigger hit collision tetection on Player")

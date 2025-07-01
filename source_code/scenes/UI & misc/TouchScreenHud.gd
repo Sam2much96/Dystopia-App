@@ -242,6 +242,7 @@ func _ready():
 	safe_GameHUD.TouchInterface = self # global input is depreciated to to a Touch Interface sub class
 	safe_Android.TouchInterface = self
 	
+	
 	# debug menu and stat object pointers
 	print_debug("Menu & Stats Debug 2: ", menuObj, "/", StatsObj)
 	
@@ -427,6 +428,7 @@ func _process(_delta):
 				return hide_buttons()
 
 
+"Screen Touch Input Logic"
 # To Do: 
 # (1) Map to Debug Singleton (done)
 # (2) Implement Multitouch debug once in debug state
@@ -435,17 +437,13 @@ func _input(event):
 	# the input event bloc for this global child would be called first before unhandled inputs
 	# save debug data to local string thats exported outside the class rather than directly referencing data
 	# in another object
-	#if event is InputEventMouse: #works
-	#	print_debug("Mouse test working")
-	#if event is InputEventScreenDrag: #works
-	#	print_debug("Screen test working 1")
+	
 	
 	# To do :
-	# (1) Map input from Input manager to debug
+	# (1) Map input from Input manager to debug (done)
 	# (2) Write proper types for input manager
 	# it captures event but doesnt propagate each of these events
-	#if event is InputEventSingleScreenTouch:
-	#	print_debug("Screen Test working 2")
+	# (3) Map each action to multiple actions
 	
 	if (event is InputEventMultiScreenDrag or
 		event is InputEventSingleScreenDrag or
@@ -455,18 +453,18 @@ func _input(event):
 		event is InputEventSingleScreenTouch):
 			#print_debug("event debug: ",event.to_string())
 			#print_debug("Screen Test working")
-			ScreenDebug = event.as_text()
+			if DEBUG:
+				ScreenDebug = event.as_text()
 			
 			# save input position for debugging
 			if event.pressed: # Press Down for Tap and Stop
 				touch_pos[event.to_string()] = event.position # save the touch position for use by the child debugging node
 				
 				
-				# serialise touch input to direction
+				"serialise touch input to direction"
+				# hacky method used to control player's direction
 				direction = (event.position - center).normalized() #get viewport size from  screen class
-				#print_debug("Touch Direction dbg: ", direction)
 				
-				# Converting this screen co-ordinates to Vector Enums
 				
 			else: 
 				touch_pos.erase(event.to_string())

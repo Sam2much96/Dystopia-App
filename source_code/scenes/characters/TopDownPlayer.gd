@@ -22,11 +22,52 @@ class_name Player_v1_TopDown
 
 signal state_changed(state_)
 
-# Client & Server Logic for Top Down Player Movement
 
-# Error Catcher for physics logic
-# Checks if Peer Id can be called and Network Is Set up
-onready var err = Networking.GamePlay
+
+
+"Triggers a Pause state on the player if dialogue is triggered"
+func _ready():
+	# Connect To Dialogue Singleton
+	
+	if not (
+			safe_Dialogs.connect("singleton_dialog_started", self, "_on_dialog_started") == OK and
+			safe_Dialogs.connect("singleton_dialog_ended", self, "_on_dialog_ended") == OK):
+		push_error("Error Connecting To The Dialog System")
+		print_debug("Error connecting to dialog system")
+	
+
+
+func _on_dialog_started():
+	state = TOP_DOWN.STATE_BLOCKED
+
+func _on_dialog_ended():
+	state = TOP_DOWN.STATE_IDLE
+
+
+# to do: debug the stack that calls this function
+func hurt(from_position: Vector2):
+	print_debug("Hurt function called, debug stack")
+	# Duplicate of _on_hurtbox_area_entered
+	if state != TOP_DOWN.STATE_DIE:
+		hitpoints -= 1
+		emit_signal("health_changed", hitpoints)
+		var pushback_direction: Vector2 = (global_position - from_position).normalized()
+		move_and_slide(pushback_direction * pushback)
+		state = TOP_DOWN.STATE_HURT
+		
+		blood.global_position = global_position
+		get_parent().add_child(blood)
+		
+		music_singleton_.play_track(hurt_sfx)
+		if hitpoints <= 2:
+			# Play Music With SFX
+			music_singleton_.set_sound_effect(music_singleton_.FX.PITCH_SHIFT, true)
+		
+		if hitpoints <= 0:
+			state = TOP_DOWN.STATE_DIE
+			# turn off music sfx
+			music_singleton_.set_sound_effect(music_singleton_.FX.PITCH_SHIFT, false)
+			music_singleton_.play_track(die_sfx)
 
 func _unhandled_input(event):
 
@@ -42,8 +83,8 @@ func _unhandled_input(event):
 	
 	# Single Player Input
 	if err == 0: # Local Playay 
-		facing_logic(self, -99) # the default peer id
-
+		facing_input_logic(self, -99) # the default peer id
+	
 	# Online Player Input is captured in PlayerOnline.gd script
 	
 
@@ -64,6 +105,7 @@ func _physics_process(delta):
 	# Offline Physics Calculations
 	# Online Physics Calculation would be shared by both CLient and Player Classes
 	# Only One Player object in scene tree
+	# err is a parent variable that stores the Networking state
 	if  err == 0: # Error Catcher
 		state_machine_logic(self, peer_id) # uses dummy -99 peer id for offline play
 	
@@ -72,7 +114,8 @@ func _physics_process(delta):
 
 func _on_hurtbox_area_entered(area):
 	"""Player Hit Collision Detection"""
-	Simulation.Player_.hit_collision_detected(
+	# gets singleton pointer from player class
+	safe_Simulation.Player_.hit_collision_detected(
 		area , 
 		state, 
 		hitpoints, 
@@ -81,8 +124,14 @@ func _on_hurtbox_area_entered(area):
 		)
 
 
-func facing_logic(node : Player, peed_id : int):
-	# Called in the Input Process
+func facing_input_logic(node : Player, peed_id : int):
+	# Called in the unhandled Input Process
+	# manages the single player's input and maps it to the player top down state
+	# it takes peer id as a parameter but it is unused
+	# implements facing logic and input for the top down player object
+	# code is repeted in side scrolling player logic
+	# code is also used in playeronline.gd for mesh network mulitplayer
+	# warning: code would break if there's any bugs in the player.gd player class
 	# TO DO: Implement Polymorphism for Multiplayer Gameplay
 	
 	#Keyboard Input

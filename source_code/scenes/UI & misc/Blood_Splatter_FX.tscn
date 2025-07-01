@@ -4,7 +4,6 @@
 [ext_resource path="res://scenes/UI & misc/Blood_Splatter_FX.gd" type="Script" id=2]
 
 [sub_resource type="CanvasItemMaterial" id=4]
-blend_mode = 1
 particles_animation = true
 particles_anim_h_frames = 1
 particles_anim_v_frames = 1

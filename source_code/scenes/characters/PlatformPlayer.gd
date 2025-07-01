@@ -45,23 +45,15 @@ export (bool) var apply_GRAVITY = false
 
 
 
+
 func _physics_process(delta):
 	# Touchscreen Input
+	# to do : (1) implement animation tree for top down player with screen controls and expand code from base player class
 	
-	# Keyboard Input
-	# Left & Right
-	if Input.is_action_pressed("move_right"):
-		velocity.x += speed
-		#print (velocity.x) # for debug purposes only 
-		if velocity.x >= MAX_SPEED:
-			velocity.x = MAX_SPEED
-		animation.play("walk_right")
-		
-	if Input.is_action_pressed("move_left"):
-		velocity.x -= speed 
-		if velocity.x <= (-MAX_SPEED):
-			velocity.x = -MAX_SPEED
-		animation.play("walk_left")
+	# Touch Screen Input
+	platformFacing_input_logic(self, -99)
+	
+
 
 	# To do :
 	# (1) Add and finetune controls for screen touch input
@@ -109,3 +101,39 @@ func get_wall_normal() -> Vector2:
 		if collision.normal.x != 0:  # Check if hitting a wall
 			return collision.normal
 	return Vector2.ZERO  # Default value if no wall is detected
+
+func moveRight():
+	velocity.x += speed
+	#print (velocity.x) # for debug purposes only 
+	if velocity.x >= MAX_SPEED:
+		velocity.x = MAX_SPEED
+	animation.play("walk_right")
+
+func moveLeft():
+	velocity.x -= speed 
+	if velocity.x <= (-MAX_SPEED):
+		velocity.x = -MAX_SPEED
+	animation.play("walk_left")
+
+
+func platformFacing_input_logic( node : Player, peer_id : int):
+	
+	# unused function to organinse input logic into one funcitonal bloc
+	if safe_TouchScreen.direction == Vector2.ZERO: return # guard clause
+	if safe_TouchScreen.direction.x > 0.5:
+		moveRight() #ode.facing = FACING.RIGHT
+	if safe_TouchScreen.direction.x < -0.5:
+		moveLeft()
+	if safe_TouchScreen.direction.y > 0.5:
+		return
+	if safe_TouchScreen.direction.y < -0.5:
+		return
+
+		# Keyboard Input
+	# Left & Right
+	if Input.is_action_pressed("move_right"):
+		moveRight()
+		
+	if Input.is_action_pressed("move_left"):
+		moveLeft()
+	

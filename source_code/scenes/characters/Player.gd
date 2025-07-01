@@ -9,21 +9,21 @@
 # (2) Player hitboxes
 # (3) It's a class and stores variables to the UI, Globals singleton, PlayersSave Files, and the Debug SIngleton
 # (4) Extend input from Global Input Singleton
-# (5) Extends to Top DOwn and SideScrolling Player Scripts
+# (5) Extends to Top DOwn, Online and SideScrolling Player Scripts
 # (6) Player & Enemy SFX is handled by simulation singleton
 # (7) Connects Dialog Signals From Dialogs Singleton
 # (8) Collision detectin is done from simulation singleton
 # *************************************************
 # To Do:
-# (1) Implement State Buffer (Done)
+# (1) 
 # (2) 
-# (3) State blocked is unimplemented
+# (3) 
 # (4) State Hurt Should Implement Blood Spawning FX not Process
-# (5) Implement State Emote for Dancing with New Dancing (Emote) Animation
+# (5) Implement State Emote for Dancing with New Dancing (Emote) Animation (Done)
 # (6) 
 # (7) Implement Item Equip Animation From Inventory.gd
 # (8) Player Sword Attack is unimplemented
-# (9) Player animation should be callable via exported scripts
+# (9) Player animation should be callable via exported scripts (1/2)
 
 # (11) Impact fx should take a player & enemy colliding boolean parameter and should only trigger then, rather than whenever the attack button is pressed
 
@@ -89,6 +89,7 @@ onready var safe_Android = get_node("/root/Android")
 onready var safe_GameHud = get_node("/root/GameHud")
 onready var safe_Dialogs = get_node("/root/Dialogs")
 onready var safe_TouchScreen = safe_GameHud.TouchInterface
+onready var safe_Simulation = get_node("/root/Simulation")
 
 # For Despawn and Hit Collission Fx
 # to do:
@@ -100,7 +101,11 @@ onready var die_sfx: String = music_singleton_.nokia_soundpack.get(27)
 onready var hurt_sfx: String = music_singleton_.nokia_soundpack.get(20)
 onready var dash_sfx : String = music_singleton_.wind_sfx.get(1)
 
+# Client & Server Logic for Top Down Player Movement
 
+# Error Catcher for physics logic
+# Checks if Peer Id can be called and Network Is Set up
+onready var err = Networking.GamePlay
 
 """
 Update Global Scripts SO Other Nodes Are Aware Of Player
@@ -132,13 +137,6 @@ func _ready():
 	
 	safe_Android.emit_signal("player_ready") # Triggers Android Specific Config for Player Movement
 	
-	# Connect To Dialogue Singleton
-	
-	if not (
-			safe_Dialogs.connect("singleton_dialog_started", self, "_on_dialog_started") == OK and
-			safe_Dialogs.connect("singleton_dialog_ended", self, "_on_dialog_ended") == OK):
-		push_error("Error Connecting To The Dialog System")
-		print_debug("Error connecting to dialog system")
 	
 	# COnnect To Health Bar Node via Global Input Singleton
 	if not is_instance_valid(safe_GameHud.heart_box):
@@ -155,12 +153,6 @@ func _ready():
 		if not self.is_connected("health_changed", local_heart_box, "_on_health_changed") == true:
 			print_debug("Heart Box Node Not Connected")
 			push_error("Heart Box Node Not Connected")
-
-func _on_dialog_started():
-	state = TOP_DOWN.STATE_BLOCKED
-
-func _on_dialog_ended():
-	state = TOP_DOWN.STATE_IDLE
 
 
 ## HELPER FUNCS
@@ -217,28 +209,6 @@ func shake(): # Shaky Cam FX
 	global_singleton_.player_cam.shake()
 
 
-func hurt(from_position: Vector2):
-	# Duplicate of _on_hurtbox_area_entered
-	if state != TOP_DOWN.STATE_DIE:
-		hitpoints -= 1
-		emit_signal("health_changed", hitpoints)
-		var pushback_direction: Vector2 = (global_position - from_position).normalized()
-		move_and_slide(pushback_direction * pushback)
-		state = TOP_DOWN.STATE_HURT
-		
-		blood.global_position = global_position
-		get_parent().add_child(blood)
-		
-		music_singleton_.play_track(hurt_sfx)
-		if hitpoints <= 2:
-			# Play Music With SFX
-			music_singleton_.set_sound_effect(music_singleton_.FX.PITCH_SHIFT, true)
-		
-		if hitpoints <= 0:
-			state = TOP_DOWN.STATE_DIE
-			# turn off music sfx
-			music_singleton_.set_sound_effect(music_singleton_.FX.PITCH_SHIFT, false)
-			music_singleton_.play_track(die_sfx)
 
 
 func dash():

@@ -64,10 +64,10 @@ var v : Vector2 = Vector2.ZERO
 onready var _label : Label = $Label
 
 "Safe Pointer to Global Singletons"
-onready var safe_Buffer = get_node("/root/GameHud").TouchInterface
+onready var safe_Buffer = safe_TouchScreen #get_node("/root/GameHud").TouchInterface
 onready var safe_Networking = get_node("/root/Networking")
 onready var world_radius = safe_Networking.WORLD_SIZE / 2
-onready var safe_Simulation = get_node("/root/Simulation")
+#onready var safe_Simulation = get_node("/root/Simulation")
 onready var safe_Utils = get_node("/root/Utils")
 
 func _ready():
@@ -163,9 +163,9 @@ func _input(_event):
 		
 		if not is_network_master():
 			if safe_Networking.GamePlay == safe_Networking.LOCAL_COOP:
-				facing_logic(safe_Simulation.all_player_objects[2], 0) # Where Zero is the default server player id
+				facing_input_logic(safe_Simulation.all_player_objects[2], 0) # Where Zero is the default server player id
 			if safe_Networking.GamePlay == safe_Networking.MMO_SERVER:
-				facing_logic(self, peer_id) 
+				facing_input_logic(self, peer_id) 
 			if (Input.is_action_just_pressed("move_up") or 
 			Input.is_action_just_pressed("move_down") or
 			Input.is_action_just_pressed("move_left") or
@@ -213,7 +213,7 @@ func _input(_event):
 		if is_network_master(): # Server player
 			# call the refactored state machine logic with the peed id parameter
 			if safe_Networking.GamePlay == safe_Networking.LOCAL_COOP:
-				facing_logic(safe_Simulation.all_player_objects[3], 0) # Where Zero is the default server player id
+				facing_input_logic(safe_Simulation.all_player_objects[3], 0) # Where Zero is the default server player id
 			
 				"""
 				Server Logic : Should only process inputs in local coop

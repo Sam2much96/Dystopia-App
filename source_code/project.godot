@@ -119,11 +119,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Healthbar.gd"
 }, {
-"base": "Control",
-"class": "Help",
-"language": "GDScript",
-"path": "res://scenes/UI & misc/Help.gd"
-}, {
 "base": "Node2D",
 "class": "ImpactFX",
 "language": "GDScript",
@@ -457,7 +452,6 @@ _global_script_class_icons={
 "Game_Menu": "",
 "GlobalsVar": "",
 "Healthbar": "res://resources/misc/Pixel Heart 32x32.png",
-"Help": "",
 "ImpactFX": "",
 "InputEventMultiScreenDrag": "",
 "InputEventScreenPinch": "",

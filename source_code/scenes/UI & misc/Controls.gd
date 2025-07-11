@@ -65,7 +65,7 @@ onready var ControlButtons : Array =  [
 
 
 # COntroller Help
-onready var _controller_help : Help = $"Help popup/Control"
+#onready var _controller_help : Help = $"Help popup/Control"
 
 # safe pointers to global singletons
 onready var safe_Globals = get_node("/root/Globals")
@@ -114,7 +114,7 @@ func _on_Debug_toggled(button_pressed):
 	if safe_Debug != null:
 		if button_pressed:
 			# Gets the Input node from the Touch Interface and uses that to parse input programmatically
-			
+			debugCheckbox.pressed = safe_Debug.enabled # supposed to be safe_Debug.enabled but the variant is buggy
 			# parameters
 			#node_input_ : Input ,tree: SceneTree, safe_Simulation_ : Simulationv1 ,action : String, _pressed : bool
 			touchInterface.parse_input(touchInterface.node_input, get_tree(), safe_Simulation,"Debug", true)

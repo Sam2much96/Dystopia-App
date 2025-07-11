@@ -32,19 +32,21 @@ var selector #for the menu cycle selector
 
 onready var back : Button = $ScrollContainer/VBoxContainer/back
 onready var music : Button = $ScrollContainer/VBoxContainer/HBoxContainer2/music
-onready var _debug : Button = $ScrollContainer/VBoxContainer/debug
+onready var music_checkbox : CheckBox = $ScrollContainer/VBoxContainer/HBoxContainer2/CheckBox
+onready var _debug : Button = $ScrollContainer/VBoxContainer/HBoxContainer4/debug
+onready var debugCheckbox : CheckBox = $ScrollContainer/VBoxContainer/HBoxContainer4/CheckBox2
 onready var Shuffle : Button =$ScrollContainer/VBoxContainer/shuffle
-onready var Change_Controller_type : Button = get_node("ScrollContainer/VBoxContainer/change controller")
 
 onready var languague : Button = $ScrollContainer/VBoxContainer/languague
 onready var help : Button = $ScrollContainer/VBoxContainer/help
 
 # Auto Scroll with Swipe Gestures 
 onready var scroller : ScrollContainer= get_node("ScrollContainer")
-onready var _Help_hint : hint = get_node("Help popup")
+#onready var _Help_hint : hint = get_node("Help popup")
 
 # vibration
 onready var vibration : Button = $ScrollContainer/VBoxContainer/HBoxContainer/vibration
+onready var vibration_Checkbox : CheckBox = $ScrollContainer/VBoxContainer/HBoxContainer/CheckBox
 
 # multiplayer
 onready var _multiplayer : Button = $ScrollContainer/VBoxContainer/HBoxContainer3/multiplayer
@@ -54,7 +56,6 @@ onready var ControlButtons : Array =  [
 	music,
 	_debug,
 	Shuffle,
-	Change_Controller_type, 
 	languague, 
 	help, 
 	vibration,
@@ -67,6 +68,8 @@ onready var ControlButtons : Array =  [
 onready var _controller_help : Help = $"Help popup/Control"
 
 # safe pointers to global singletons
+onready var safe_Globals = get_node("/root/Globals")
+onready var safe_Utils = get_node("/root/Utils")
 onready var safe_Debug = get_node("/root/Debug")
 onready var safe_Music = get_node("/root/Music")
 onready var touchInterface = get_node("/root/GameHud").TouchInterface # use set get functions for this logic
@@ -78,20 +81,24 @@ func _ready():
 	#	# OK bloc
 	#	
 
-	$ScrollContainer/VBoxContainer/back.grab_focus() #Back button grabs focus
+	#$ScrollContainer/VBoxContainer/back.grab_focus() #Back button grabs focus
 
-	Utils.Functions.load_user_data("music", get_tree()) # works
+	safe_Utils.Functions.load_user_data("music", get_tree()) # works
 	
 
-	if Globals.screenOrientation == 1 && Globals.os == "Android":
+	if safe_Globals.screenOrientation == 1 && safe_Globals.os == "Android":
 		upscale_ui()
 
 	manual_translate()
 
+	music_checkbox.toggle_mode = true
+	vibration_Checkbox.toggle_mode = true
+	
+	music_checkbox.pressed = Music.enable
 
 
-func _on_Button_pressed():
-	Globals._go_to_title() #changes scene to main title
+func _on_back_pressed():
+	safe_Globals._go_to_title() #changes scene to main title
 
 
 """
@@ -130,26 +137,18 @@ func _on_Shuffle_pressed():
 
 func _on_music_toggled(button_pressed): #Music on and off settings
 	if button_pressed :
-		Music._notification(NOTIFICATION_APP_PAUSED)
+		safe_Music._notification(NOTIFICATION_APP_PAUSED)
+		music_checkbox.pressed = true
 	if not button_pressed  :
-		Music._notification(NOTIFICATION_APP_RESUMED)
+		safe_Music._notification(NOTIFICATION_APP_RESUMED)
+		music_checkbox.pressed = false
 
 
 func _on_Help_pressed():
-	_Help_hint.state = 0 # popup
+	# uses a pop up node to show the help scene
+	# help scene requires graphics refactoring
+	#_Help_hint.state = 0 # popup
 	pass
-
-
-func _on_Direction_controls_toggled(button_pressed):
-	if button_pressed:
-		#'direction'
-		# To Do : Should Connect To TOuchScreenHUD Directly for changing controller values
-		Globals.direction_control = Globals._controller_type[1]
-		Change_Controller_type.set_text(Globals.direction_control)
-	else:
-		#'analogue'
-		Globals.direction_control = Globals._controller_type[2]
-		Change_Controller_type.set_text(Globals.direction_control)
 
 
 
@@ -204,8 +203,12 @@ func _on_vibration_toggled(button_pressed):
 	# Toggle Vibrations on/off for mobile devices
 	# TO Do: Implement Saving Vibration settings (Done)
 	if button_pressed:
-		touchInterface.vibrate = !touchInterface.vibrate
-		vibration.set_text(str(touchInterface.vibrate))
+		# bug: (1) vibrate is not available on touch interface 
+		touchInterface.vibrate_ = !touchInterface.vibrate_
+		vibration_Checkbox.pressed = touchInterface.vibrate_
+		
+		
+		# to do : set vibration checkbox to touch interface vibrate state
 	else: pass
 
 

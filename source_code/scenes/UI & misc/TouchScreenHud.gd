@@ -102,7 +102,6 @@ export (bool) var DEBUG = false # map this option to multi touch debug and debug
 
 
 
-
 #signal menu
 #signal interract
 signal attack
@@ -181,7 +180,7 @@ export (int) var state
 var pressed : bool = false
 var touch_pos = {}
 # Vibration Settings
-export (bool) var vibrate_ = true
+export (bool) var vibrate_ = true setget set_vibe, get_vibe
 export (bool) var saveBuffer = false;
 
 "Safe Singleton Pointers"
@@ -1050,6 +1049,14 @@ func vibrate(duration_ms : int, os : String):
 		node_input.vibrate_handheld(duration_ms)
 		# 2 seconds wait time before next vibratino
 		#Networking.start_check_v2(5)
+
+
+func set_vibe(vibe : bool):
+	vibrate_ = vibe
+
+func get_vibe()-> bool:
+	return vibrate_
+
 
 
 func roll_direction_calculation()-> Vector2:

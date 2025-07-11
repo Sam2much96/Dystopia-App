@@ -44,8 +44,8 @@ func _ready():
 	if Globals.screenOrientation == 1:
 		art1.show()
 	if Globals.screenOrientation == 0:
-		art1.hide()
-	
+		#art1.hide()
+		pass
 	
 	# depreciated for touch hud refactor
 	# Show THe Menu Button On Android

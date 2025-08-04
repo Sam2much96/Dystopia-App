@@ -44,8 +44,8 @@ signal music_finished
 export (bool) var enable 
 export (bool) var sfx_on
 #export (int) var volume # volume controller code is not yet written
-export (int) var play_back_position : float
-export (int) var track_length : float
+export (int) var play_back_position : int
+export (int) var track_length : int
 
 export(String, FILE, "*.ogg") var music_track : String = ""
 
@@ -55,11 +55,11 @@ export (Dictionary) var default_playlist : Dictionary ={
 	2:"res://music/chike san afro 1.ogg",
 	3:"res://music/chike san afro 2.ogg",
 	4:"res://music/chike san afro 3.ogg",
-	5: "res://music/Inhumanity Game Track 3.ogg",
-	6:"res://music/paranoia.ogg",
-	7:"res://music/Gregorian-Chant(chosic.com).ogg",
-	8: "res://music/Track 1-1.ogg",
-	9:"res://music/Marble Tower 4.ogg",
+	5:"res://music/paranoia.ogg",
+	6: "res://music/Inhumanity Game Track 3.ogg",
+	
+	7: "res://music/Track 1-1.ogg",
+	8:"res://music/Marble Tower 4.ogg",
 }
 
 
@@ -212,7 +212,7 @@ onready var my_nodes : Array = [Music_streamer, A,B,C,D,Music_streamer_2,transit
 
 
 # Debug Variables
-var stream : AudioStream
+#var stream : AudioStream
 #var stream_length : int
 #var Playback_position : int
 #var _track : String
@@ -227,7 +227,7 @@ RECORD, REVERB, SPECTRUM_ANALYSER, STERIO_ENCHANCE
 
 export (int) var selected_sound_fx : int = get_random_sound_effect()
 
-
+onready var safe_Utils = get_node("/root/Utils")
 
 func _ready():
 	
@@ -238,7 +238,7 @@ func _ready():
 	#Utils.Functions.load_game(true, Globals)
 	
 	"Check If Node Paths Are Broken"
-	Utils.UI.check_for_broken_links(my_nodes)
+	safe_Utils.UI.check_for_broken_links(my_nodes)
 
 	print_debug("Music_on_settings :",bool (enable))
 	#	music_on = bool (Music_on_settings)
@@ -246,12 +246,13 @@ func _ready():
 	
 	"Music Player Logic"
 	if enable :
-		
+		randomize() # randomise the engine's seed generator
 		"Default Music"
-		randomize()
+		# bug:
+		# (1) does not shuffle music
 		music_track = shuffle(default_playlist)
-		#print_debug("Mus Track Debug: ",music_track)
 		play(music_track) #Not needed for release
+		#play_track(music_track)
 		
 	if !enable:
 		A.stop()
@@ -264,13 +265,7 @@ func _process(_delta):
 	
 	"Music On.Off"
 	
-	
-	"""
-	Music Uncompress
-	"""
-	
-	
-	#Auto sets Globals Music Settings
+
 	
 	"""
 	AUTO SHUFFLE
@@ -291,28 +286,29 @@ func _process(_delta):
 	
 
 	# Get The Current Music Streamer And Feed The Data to The inspector Tab
+	
 	if Music_streamer.is_playing():
-		play_back_position = Music_streamer.get_playback_position()
-		track_length = Music_streamer.get_stream().get_length()
+		play_back_position = int(Music_streamer.get_playback_position() )#works
+		track_length = int(Music_streamer.get_stream().get_length() - 1 )
 		Music_streamer_3.stop()
+		
+		if play_back_position == track_length:
+			print_debug ('autoshuffle debug 1')
+			
+			#emit_signal("music_finished")
+			Music_streamer.emit_signal("finished")
+			return
+
 	
-	#if Music_streamer_3.stream == null:
-	#	return 
-	
-	#if Music_streamer_3.is_playing():
-	#	play_back_position = Music_streamer_3.get_playback_position()
-	#	track_length = Music_streamer_3.get_stream().get_length()
-	#	Music_streamer.stop()
+	if Music_streamer_3.stream == null:
+		return 
+		
+	if Music_streamer_3.is_playing(): # audio error catcher 1
+		play_back_position = Music_streamer_3.get_playback_position()
+		track_length = Music_streamer_3.get_stream().get_length()
+		Music_streamer.stop()
 	
 	#print_debug(current_track)
-	if play_back_position==track_length:
-		#print_debug ('autoshuffle')
-		# write code to check if te selected music track played last and account for it
-		# Bug : 
-		# (1) Doesn't shuffle track
-		#print_debug(music_track)
-		#return play(music_track)
-		emit_signal("music_finished")
 
 
 
@@ -332,13 +328,14 @@ func play(_stream: String):
 	#it bugs out when the music track node is added to a scene
 	# Bugs:
 	# (1) Method is called Twice During process funtion and loads 2 different music tracks
+	# (2) This method triggers the audio to play at another pitch?
+	print_stack()
+	print_debug('Stream:', _stream,'Music Track',music_track,"Current Track: ", current_track)
 	if _stream == null: return # guard clauses
 	if _stream.empty(): return
 	if _stream.empty() : # debug
 		push_error('Music stream is null, fix')
-		print_debug('Stream:',stream, _stream)
-		print_debug('Music Track',music_track)
-	
+		
 	if !enable : return
 	
 	
@@ -348,8 +345,9 @@ func play(_stream: String):
 		transitions.play("AtoB")
 		current_track = "b"
 		enable = true
+		Music_streamer_3.stop() #hacky fix
 		return
-	else:
+	if current_track == "b" or current_track.empty():
 		print_debug("Load Track B: ", current_track, "/", _stream)
 		A.stream = load(_stream)
 		transitions.play("BtoA")
@@ -429,19 +427,21 @@ static func shuffle_array(_fx : Array) -> int : # selects a random number of an 
 
 # Play the Next Track and Shuffle
 func _on_A_finished(): #This  signals when the music has finished and autoshuffles
-	#randomize() #  reset the random seed in the random number generator
+	randomize() #  reset the random seed in the random number generator
 	# shuffle music track
 	music_track = shuffle(default_playlist)
 	get_random_sound_effect()
-	print_debug('music finished A /', music_track, selected_sound_fx) #code block works
+	print_debug('music finished A /', music_track, "| sfx: ", selected_sound_fx) #code block works
 	transitions.play("AtoB")
 	#plays the music trac twuce
+	
+	play(music_track)
 
 # Play the Next Track And Shuffle
 func _on_B_finished():
 	
 	
-	#print_debug('music finished B/', music_track,"/",selected_sound_fx) 
+	print_debug('music finished B/', music_track,"/",selected_sound_fx) 
 	transitions.play("BtoA") # B to A Has higher Pitch
 	# plays the music track twice
 
@@ -452,7 +452,7 @@ func play_sfx(list : Dictionary): #a separate bus channel for sfx using dictiona
 		
 		C.stream = load(sfx)
 		C.play()
-		print_debug ('playing sfx: ',sfx.get_file())
+		#print_debug ('playing sfx: ',sfx.get_file()) #works
 		yield(get_tree().create_timer(0.8), "timeout")
 		C.stop()
 
@@ -462,13 +462,13 @@ func play_track(_track : String):
 	if _track != null  and Music_streamer_2 != null :
 		D.set_stream ( load (_track)) #Children Scripts should not load the soundtracks
 		D.play(0.0)
-		#print_debug ('playing sfx: ',_track.get_file()) # for debug purposes only
+		print_debug ('playing sfx: ',_track.get_file()) # for debug purposes only
 		yield(get_tree().create_timer(0.8), "timeout")
 		D.stop()
 
 
 func _exit_tree(): 
-	Utils.MemoryManagement.queue_free_array(my_nodes)
+	safe_Utils.MemoryManagement.queue_free_array(my_nodes)
 	
 	# memory management
 	blood_fx.clear()
@@ -498,6 +498,7 @@ func set_sound_effect(fx_ : int, state : bool):
 
 # Music Finished Playing
 func _on_Music_music_finished():
+	print_debug("music funished playing B")
 	randomize()
 	music_track = shuffle(default_playlist)
 	play(music_track)

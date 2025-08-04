@@ -118,10 +118,10 @@ enable = true
 sfx_on = true
 
 [node name="A" type="AudioStreamPlayer" parent="."]
+volume_db = -30.0
 bus = "B"
 
 [node name="B" type="AudioStreamPlayer" parent="."]
-volume_db = -30.0
 pitch_scale = 4.0
 bus = "B"
 

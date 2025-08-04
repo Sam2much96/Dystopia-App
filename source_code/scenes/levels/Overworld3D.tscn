@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://resources/3D/overworld mesh.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/characters/Aarin_3D.tscn" type="PackedScene" id=2]
 [ext_resource path="res://resources/3D/550px-TLoZTWW_Vr_boxcloud1.png" type="Texture" id=3]
 [ext_resource path="res://resources/3D/city_exterior.gltf" type="PackedScene" id=4]
+[ext_resource path="res://resources/3D/acacia_tree_lowpoly.tscn" type="PackedScene" id=5]
 
 [sub_resource type="PanoramaSky" id=2]
 radiance_size = 1
@@ -47,6 +48,21 @@ light_bake_mode = 2
 
 [node name="player" parent="WorldEnvironment" instance=ExtResource( 2 )]
 transform = Transform( -0.0132577, -0.0982618, -0.0356565, -0.0124227, 0.0360858, -0.100652, 0.103778, -0.00821171, -0.0158185, -3.18596, 0.679643, -0.133056 )
+
+[node name="acacia_tree_lowpoly" parent="WorldEnvironment" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.03687, 13.9543 )
+
+[node name="acacia_tree_lowpoly2" parent="WorldEnvironment" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.20606, -1.03687, 13.9543 )
+
+[node name="acacia_tree_lowpoly3" parent="WorldEnvironment" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.52832, -1.03687, 13.9543 )
+
+[node name="acacia_tree_lowpoly4" parent="WorldEnvironment" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.57969, -1.03687, 13.9543 )
+
+[node name="acacia_tree_lowpoly5" parent="WorldEnvironment" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.59839, -1.03687, 13.9543 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 10.0

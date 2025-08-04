@@ -30,7 +30,7 @@ export(int) var amount = 1
 
 onready var anims : AnimationPlayer = $anims
 
-
+onready var safe_Music = get_node("/root/Music")
 
 func _ready():
 	connect("body_entered", self, "_on_Item_body_entered")
@@ -50,6 +50,7 @@ func _on_Item_body_entered(body): # use body : Player to make priority process
 		#anims.play("collected")
 		#yield(get_tree().create_timer(0.8), "timeout")
 		#$pickup.stop()
+		safe_Music.play_track("res://sounds/item_collected.ogg") # Plays sound via singleton
 		
 		self.queue_free()
 

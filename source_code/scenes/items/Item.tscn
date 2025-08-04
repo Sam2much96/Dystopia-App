@@ -148,7 +148,7 @@ item_type = "Generic Item"
 position = Vector2( 4, -20 )
 texture = ExtResource( 1 )
 hframes = 14
-vframes = 13
+vframes = 19
 frame = 50
 
 [node name="hitbox" type="CollisionShape2D" parent="."]

@@ -8,7 +8,7 @@
 # 
 # ************************************************* 
 # To-Do:
-# (1) Graphics Art 
+# (1) Graphics Art (1/3)
 # (2) Connect Signals
 # (3) Should Connect To wallet From Networking.Wallet Class
 # (4) Connect Accept SIgnal TO Admob Open Video Ads Signal

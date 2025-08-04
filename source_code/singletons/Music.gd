@@ -50,7 +50,7 @@ export (int) var track_length : float
 export(String, FILE, "*.ogg") var music_track : String = ""
 
 export (Dictionary) var default_playlist : Dictionary ={
-	0:"res://music/310-world-map-loop.ogg",
+	0:"res://music/The Road Warrior.ogg",
 	1:"res://music/Astrolife chike san.ogg",
 	2:"res://music/chike san afro 1.ogg",
 	3:"res://music/chike san afro 2.ogg",
@@ -59,8 +59,7 @@ export (Dictionary) var default_playlist : Dictionary ={
 	6:"res://music/paranoia.ogg",
 	7:"res://music/Gregorian-Chant(chosic.com).ogg",
 	8: "res://music/Track 1-1.ogg",
-	9:"res://music/The Road Warrior.ogg",
-	10:"res://music/Marble Tower 4.ogg",
+	9:"res://music/Marble Tower 4.ogg",
 }
 
 
@@ -227,6 +226,7 @@ RECORD, REVERB, SPECTRUM_ANALYSER, STERIO_ENCHANCE
  }
 
 export (int) var selected_sound_fx : int = get_random_sound_effect()
+
 
 
 func _ready():

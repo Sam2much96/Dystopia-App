@@ -27,29 +27,11 @@ position = Vector2( 135, -21 )
 script = ExtResource( 28 )
 
 [node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="."]
+visible = false
 navpoly = SubResource( 1 )
 
 [node name="Outside" parent="." instance=ExtResource( 1 )]
 position = Vector2( 1514, 2589 )
-
-[node name="Exit_2" parent="Outside" instance=ExtResource( 6 )]
-position = Vector2( 1051.82, 2056.48 )
-rotation = 3.09728
-scale = Vector2( 0.560662, 0.275862 )
-monitorable = false
-to_scene = "res://scenes/levels/Temple interior.tscn"
-
-[node name="Exit_4" parent="Outside" instance=ExtResource( 6 )]
-position = Vector2( 4313.82, 3201.48 )
-rotation = 3.09728
-scale = Vector2( 0.213547, 0.36827 )
-to_scene = "res://scenes/levels/Overworld3D.tscn"
-
-[node name="Exit_5" parent="Outside" instance=ExtResource( 6 )]
-position = Vector2( 1344.82, 2234.48 )
-rotation = 3.09728
-scale = Vector2( 1.02571, 0.414348 )
-to_scene = "res://scenes/levels/marketplace_2d.tscn"
 
 [node name="Outside City" parent="." instance=ExtResource( 5 )]
 position = Vector2( 7443, -3563 )
@@ -126,8 +108,27 @@ enemy_type = "Hard"
 enemy_spawn_1 = ExtResource( 12 )
 spawn_count = 5
 
+[node name="Exit_2" parent="." instance=ExtResource( 6 )]
+position = Vector2( 418, 1408 )
+rotation = 3.09728
+scale = Vector2( 0.560662, 0.468577 )
+monitorable = false
+to_scene = "res://scenes/levels/Temple interior.tscn"
+
+[node name="Exit_4" parent="." instance=ExtResource( 6 )]
+position = Vector2( 6386, 3910 )
+rotation = 3.09728
+scale = Vector2( 0.282711, 0.279033 )
+to_scene = "res://scenes/levels/Overworld3D.tscn"
+
+[node name="Exit_5" parent="." instance=ExtResource( 6 )]
+position = Vector2( 1048, 1682 )
+rotation = 3.09728
+scale = Vector2( 1.02571, 0.414348 )
+to_scene = "res://scenes/levels/marketplace_2d.tscn"
+
 [node name="hole" parent="." instance=ExtResource( 4 )]
-position = Vector2( 2325, 512 )
+position = Vector2( 3050, -1393 )
 z_index = 0
 
 [node name="Exit_3" parent="hole" instance=ExtResource( 6 )]
@@ -149,13 +150,13 @@ position = Vector2( 2674, -4949 )
 position = Vector2( 8581, -4834 )
 
 [node name="broken ship" parent="." instance=ExtResource( 16 )]
-position = Vector2( 3125, 2580 )
+position = Vector2( 5272, 3356 )
 
 [node name="DialogueEvents" type="YSort" parent="."]
 position = Vector2( -16, 32 )
 
 [node name="DialogueTrigger" parent="DialogueEvents" instance=ExtResource( 15 )]
-position = Vector2( 218, 548 )
+position = Vector2( 290, 1680 )
 enabled = true
 HINT = true
 
@@ -205,4 +206,4 @@ DIALOGUE = true
 position = Vector2( 3256, 2406 )
 
 [node name="extra life" parent="items" instance=ExtResource( 13 )]
-position = Vector2( 3355.09, 2528.83 )
+position = Vector2( 1440, 1887 )

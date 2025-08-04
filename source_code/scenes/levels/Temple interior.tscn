@@ -740,13 +740,6 @@ points = PoolVector2Array( 0, 0, 128, 0, 128, 128, 0, 128 )
 [node name="TempleInterior" type="Node"]
 script = ExtResource( 9 )
 
-[node name="ColorRect" type="ColorRect" parent="."]
-margin_left = -1678.0
-margin_top = -4726.0
-margin_right = 2142.0
-margin_bottom = 4159.0
-color = Color( 0.0196078, 0.0196078, 0.0196078, 1 )
-
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource( 1 )
 cell_size = Vector2( 128, 128 )

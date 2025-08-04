@@ -4,7 +4,7 @@
 [ext_resource path="res://scenes/levels/Exit.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/levels/marketplace_2d_level.gd" type="Script" id=4]
-[ext_resource path="res://resources/merchant_NPC.webp" type="Texture" id=5]
+[ext_resource path="res://resources/NPC/NPC_128x128_tileset.webp" type="Texture" id=5]
 [ext_resource path="res://scenes/characters/Enemy.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/characters/Npc CHIEFPRIEST.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/items/Item.tscn" type="PackedScene" id=8]
@@ -20,13 +20,11 @@ position = Vector2( 483, 286 )
 scale = Vector2( 2.1709, 2.1709 )
 texture = ExtResource( 1 )
 
-[node name="Merchant" type="TextureRect" parent="." groups=["Merchant"]]
-margin_left = 152.0
-margin_top = 769.0
-margin_right = 652.0
-margin_bottom = 1269.0
-rect_scale = Vector2( 0.514309, 0.514309 )
+[node name="Merchant" type="Sprite" parent="." groups=["Merchant"]]
+position = Vector2( 335, 1123 )
 texture = ExtResource( 5 )
+vframes = 3
+frame = 2
 
 [node name="Daily Spins" parent="Merchant" instance=ExtResource( 10 )]
 position = Vector2( 198.324, 468.59 )
@@ -59,26 +57,25 @@ z_as_relative = false
 collision_layer = 15
 collision_mask = 15
 
-[node name="NPC_Iye" parent="." instance=ExtResource( 9 )]
-position = Vector2( 152, 769 )
-scale = Vector2( 0.930452, 0.930452 )
-
-[node name="Hints 1" parent="NPC_Iye" instance=ExtResource( 10 )]
-position = Vector2( -12.897, 117.147 )
+[node name="Hints 1" parent="." instance=ExtResource( 10 )]
+position = Vector2( 139.103, 886.147 )
 scale = Vector2( 1.07475, 1.07475 )
 enabled = true
 dialogue = "Hello Young Adventurer! You can now take quests over at the temple
 "
 DIALOGUE = true
 
-[node name="NPC_aboy" parent="." instance=ExtResource( 7 )]
-position = Vector2( 454, 842 )
-
-[node name="Hints 2" parent="NPC_aboy" instance=ExtResource( 10 )]
-position = Vector2( -11, 104 )
+[node name="Hints 2" parent="." instance=ExtResource( 10 )]
+position = Vector2( 443, 946 )
 enabled = true
 dialogue = "You can Withdraw your $Sud on the A.T.M at the corner there "
 DIALOGUE = true
+
+[node name="NPC_Iye" parent="." instance=ExtResource( 9 )]
+position = Vector2( 165, 868 )
+
+[node name="NPC_aboy" parent="." instance=ExtResource( 7 )]
+position = Vector2( 454, 842 )
 
 [node name="Enemy" parent="." instance=ExtResource( 6 )]
 position = Vector2( 300, 1241 )

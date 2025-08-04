@@ -10,7 +10,7 @@ resource_name = "idle"
 length = 2.0
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("sprite:position")
+tracks/0/path = NodePath("../sprite:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -22,7 +22,7 @@ tracks/0/keys = {
 "values": [ Vector2( 0.564087, 2.50995 ), Vector2( 0.564087, 4.44937 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("sprite:scale")
+tracks/1/path = NodePath("../sprite:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -37,34 +37,35 @@ tracks/1/keys = {
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 81.8254, 72.4125 )
 
-[node name="Node2D" type="Node2D"]
-
-[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+[node name="KinematicBody2D" type="KinematicBody2D"]
 script = ExtResource( 1 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
-scale = Vector2( 3.36, 3.56 )
-shape = SubResource( 3 )
-
-[node name="NPC" type="Area2D" parent="KinematicBody2D"]
-scale = Vector2( 0.5078, 0.5078 )
-
-[node name="sprite" type="Sprite" parent="KinematicBody2D/NPC"]
-position = Vector2( 3.93856, 98.464 )
+[node name="sprite" type="Sprite" parent="."]
+position = Vector2( 0, 104 )
 texture = ExtResource( 2 )
 offset = Vector2( 3.3446, -93.3282 )
-vframes = 2
+vframes = 3
 __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="anims" type="AnimationPlayer" parent="KinematicBody2D/NPC"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 1, -32 )
+scale = Vector2( 3.36, 3.56 )
+shape = SubResource( 3 )
+
+[node name="NPC" type="Area2D" parent="."]
+scale = Vector2( 0.5078, 0.5078 )
+
+[node name="anims" type="AnimationPlayer" parent="NPC"]
 autoplay = "idle"
 anims/idle = SubResource( 1 )
 
-[node name="trigger" type="CollisionShape2D" parent="KinematicBody2D/NPC"]
+[node name="trigger" type="CollisionShape2D" parent="NPC"]
 position = Vector2( 0, 88.8296 )
 shape = SubResource( 2 )
 
-[connection signal="body_entered" from="KinematicBody2D/NPC" to="KinematicBody2D" method="_on_NPC_body_entered"]
-[connection signal="body_exited" from="KinematicBody2D/NPC" to="KinematicBody2D" method="_on_NPC_body_exited"]
+[node name="Node2D" type="Node2D" parent="."]
+
+[connection signal="body_entered" from="NPC" to="." method="_on_NPC_body_entered"]
+[connection signal="body_exited" from="NPC" to="." method="_on_NPC_body_exited"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/characters/Npc.gd" type="Script" id=1]
-[ext_resource path="res://resources/NPC shaman.webp" type="Texture" id=2]
+[ext_resource path="res://resources/NPC/NPC_128x128_tileset.webp" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=3]
 
@@ -50,9 +50,10 @@ shape = SubResource( 3 )
 scale = Vector2( 0.5078, 0.5078 )
 
 [node name="sprite" type="Sprite" parent="KinematicBody2D/NPC"]
-position = Vector2( 0.564087, 2.50995 )
+position = Vector2( 3.93856, 98.464 )
 texture = ExtResource( 2 )
 offset = Vector2( 3.3446, -93.3282 )
+vframes = 2
 __meta__ = {
 "_editor_description_": ""
 }

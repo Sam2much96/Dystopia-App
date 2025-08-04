@@ -337,7 +337,7 @@ func play(_stream: String):
 		push_error('Music stream is null, fix')
 		
 	if !enable : return
-	
+	# note: track a is for triggering sfx, track b is for playing audio
 	# bugs:
 	# (1) bugs out on playing the second track
 	if current_track == "a":

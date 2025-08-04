@@ -1197,7 +1197,7 @@ tracks/8/keys = {
 }
 
 [sub_resource type="Animation" id=15]
-length = 0.8
+length = 0.7
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("sprite:frame")
@@ -1206,10 +1206,10 @@ tracks/0/loop_wrap = false
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ 9, 10, 11, 12, 13, 14, 15, 16 ]
+"values": [ 9, 10, 11, 12, 13, 14, 15 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("sprite:flip_h")

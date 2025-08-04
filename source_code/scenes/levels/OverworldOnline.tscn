@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=2]
 
-[ext_resource path="res://scenes/levels/buildings.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/levels/cityscapeMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/levels/Overworld_Level_Properties.gd" type="Script" id=2]
 [ext_resource path="res://scenes/levels/VisibilityOptimizer.gd" type="Script" id=3]
 [ext_resource path="res://scenes/levels/ForestTilemap.tscn" type="PackedScene" id=5]

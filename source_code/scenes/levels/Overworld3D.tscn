@@ -46,7 +46,7 @@ visible = false
 light_bake_mode = 2
 
 [node name="player" parent="WorldEnvironment" instance=ExtResource( 2 )]
-transform = Transform( -0.00924987, -0.104435, -0.00605374, -0.0156374, 0.00713492, -0.106609, 0.103778, -0.00821171, -0.0158185, -3.1422, 0.884218, -0.183781 )
+transform = Transform( -0.0132577, -0.0982618, -0.0356565, -0.0124227, 0.0360858, -0.100652, 0.103778, -0.00821171, -0.0158185, -3.18596, 0.679643, -0.133056 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 10.0

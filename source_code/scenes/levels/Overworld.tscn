@@ -4,7 +4,7 @@
 [ext_resource path="res://scenes/UI & misc/Rain_Fx.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/items/enemy spawner.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/props/hole.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/levels/buildings.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/levels/cityscapeMap.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/levels/Exit.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/levels/VisibilityOptimizer.gd" type="Script" id=9]
@@ -40,10 +40,9 @@ monitorable = false
 to_scene = "res://scenes/levels/Temple interior.tscn"
 
 [node name="Exit_4" parent="Outside" instance=ExtResource( 6 )]
-visible = false
-position = Vector2( 4434.88, 3289.24 )
+position = Vector2( 4313.82, 3201.48 )
 rotation = 3.09728
-scale = Vector2( 1.61925, 2.04034 )
+scale = Vector2( 0.213547, 0.36827 )
 to_scene = "res://scenes/levels/Overworld3D.tscn"
 
 [node name="Exit_5" parent="Outside" instance=ExtResource( 6 )]
@@ -53,21 +52,17 @@ scale = Vector2( 1.02571, 0.414348 )
 to_scene = "res://scenes/levels/marketplace_2d.tscn"
 
 [node name="Outside City" parent="." instance=ExtResource( 5 )]
-visible = false
-position = Vector2( 12571.8, -3727.55 )
-__meta__ = {
-"_edit_lock_": true
-}
+position = Vector2( 4446, -515 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="Outside City"]
-position = Vector2( 2280.12, 1071.42 )
-scale = Vector2( 380.22, 243.027 )
+position = Vector2( 243.5, 302.5 )
+scale = Vector2( 53.65, 48.05 )
 script = ExtResource( 9 )
 
 [node name="Exit" parent="Outside City" instance=ExtResource( 6 )]
-position = Vector2( 5010.28, -1093.29 )
-rotation = 1.01254
-scale = Vector2( 6.26556, 1.62012 )
+position = Vector2( 217, 585 )
+rotation = -0.0282235
+scale = Vector2( 0.847893, 0.695034 )
 to_scene = "res://scenes/levels/Building1.tscn"
 
 [node name="Player" parent="." instance=ExtResource( 7 )]
@@ -154,7 +149,7 @@ position = Vector2( 2674, -4949 )
 position = Vector2( 8581, -4834 )
 
 [node name="broken ship" parent="." instance=ExtResource( 16 )]
-position = Vector2( 3134.37, 2440.4 )
+position = Vector2( 3125, 2580 )
 
 [node name="DialogueEvents" type="YSort" parent="."]
 position = Vector2( -16, 32 )
@@ -196,11 +191,11 @@ speaker = "Aarin"
 DIALOGUE = true
 
 [node name="DialogueTrigger5" parent="DialogueEvents" instance=ExtResource( 15 )]
-position = Vector2( 3613, 3703 )
+position = Vector2( 3886, 3370 )
 rotation = -1.54857
-scale = Vector2( 7.68892, -1.45012 )
+scale = Vector2( 2.37379, -0.49658 )
 enabled = true
-dialogue = "Does It Still Fly?"
+dialogue = "Does the Dimension hopper still work??"
 speaker = "Aarin"
 DIALOGUE = true
 

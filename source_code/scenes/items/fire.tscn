@@ -41,7 +41,7 @@ radius = 26.9258
 position = Vector2( -19, -24 )
 texture = ExtResource( 1 )
 hframes = 14
-vframes = 13
+vframes = 20
 frame = 35
 script = ExtResource( 2 )
 

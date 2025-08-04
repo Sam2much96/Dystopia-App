@@ -21,10 +21,14 @@ var move_dir = Vector3.ZERO
 var velocity = Vector3.ZERO
 var jump = false
 onready var head = $player
+onready var rigged_player = $player_rigged/AnimationPlayer
 
 # safely get Global Singletons
 onready var safe_TouchScreen = get_node("/root/GameHud").TouchInterface
 
+
+func _ready():
+	print_debug("3d player debug: ", rigged_player)
 
 func _input(event):
 	#view rotation
@@ -85,7 +89,7 @@ func _physics_process(delta):
 	
 	velocity = move_and_slide(velocity, Vector3.UP)
 	
-	
+	rigged_player.play("Armature|mixamocom|Layer0")
 
 func _process(delta):
 		# create a death count to change to 2d overworld scene

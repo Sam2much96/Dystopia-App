@@ -779,7 +779,6 @@ position = Vector2( 447, -214 )
 
 [node name="NPC" parent="." instance=ExtResource( 2 )]
 position = Vector2( -202, -1465 )
-scale = Vector2( 0.520001, 0.520001 )
 
 [node name="DialogueTrigger" parent="NPC" instance=ExtResource( 6 )]
 position = Vector2( -13.8206, 86.1855 )

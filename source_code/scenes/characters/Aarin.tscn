@@ -20,7 +20,7 @@ height = 0.0
 
 [sub_resource type="CapsuleShape2D" id=19]
 radius = 19.4444
-height = 45.9716
+height = 24.2657
 
 [sub_resource type="AnimationNodeAnimation" id=23]
 
@@ -1380,10 +1380,10 @@ rotation = 1.5708
 shape = SubResource( 2 )
 
 [node name="player_sword" type="Area2D" parent="."]
-visible = false
-position = Vector2( 6.30249, -86.9744 )
+position = Vector2( 9.362, 94.913 )
 collision_layer = 2
 collision_mask = 269
+monitorable = false
 
 [node name="slash" type="CollisionPolygon2D" parent="player_sword"]
 position = Vector2( -22.4663, -100.646 )
@@ -1406,7 +1406,7 @@ __meta__ = {
 }
 
 [node name="col" type="CollisionShape2D" parent="hurtbox"]
-position = Vector2( 1.89167, -1.50973 )
+position = Vector2( 1.36201, 8.913 )
 shape = SubResource( 19 )
 __meta__ = {
 "_editor_description_": ""

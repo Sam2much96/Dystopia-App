@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://scenes/characters/TopDownEnemy.gd" type="Script" id=1]
 [ext_resource path="res://resources/pj/enemy_tileset_128x128.webp" type="Texture" id=2]
@@ -13,6 +13,21 @@
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 35.8589
+
+[sub_resource type="Animation" id=20]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("enemy_sword/slash:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=2]
 resource_name = "die"
@@ -663,7 +678,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( -18, -39 ) ]
+"values": [ Vector2( 0, 0 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("enemy_sword/slash:rotation_degrees")
@@ -752,7 +767,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 31, -43 ) ]
+"values": [ Vector2( 0, 0 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("enemy_sword/slash:rotation_degrees")
@@ -841,7 +856,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 5, 6 ) ]
+"values": [ Vector2( 3.362, -5.06592 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("enemy_sword/slash:rotation_degrees")
@@ -1177,10 +1192,9 @@ hitpoints = 1
 [node name="sprite" type="Sprite" parent="."]
 position = Vector2( 6.30249, -86.9744 )
 texture = ExtResource( 2 )
-flip_h = true
 hframes = 8
 vframes = 5
-frame = 21
+frame = 6
 
 [node name="hitbox" type="CollisionShape2D" parent="."]
 position = Vector2( -0.882385, -27.9806 )
@@ -1189,6 +1203,7 @@ shape = SubResource( 1 )
 
 [node name="anims" type="AnimationPlayer" parent="."]
 autoplay = "reset"
+anims/RESET = SubResource( 20 )
 anims/die = SubResource( 2 )
 anims/hurt = SubResource( 3 )
 anims/idle_down = SubResource( 4 )
@@ -1212,8 +1227,8 @@ collision_layer = 8
 collision_mask = 2
 
 [node name="slash" type="CollisionPolygon2D" parent="enemy_sword"]
-polygon = PoolVector2Array( -134.513, -92.9393, -124.246, 19.4555, -59.4026, 109.155, 76.2278, 112.938, 75.147, 26.4802, -2.66479, 20.5363, -36.1671, -8.64319, -57.2411, -40.5244 )
-disabled = true
+rotation = 1.93145
+polygon = PoolVector2Array( -66.638, -77.0659, -63.638, -11.0659, -53.638, 5.9341, -13.638, 47.9341, 56.362, 51.9341, 59.362, 1.9341, 19.362, 2.9341, -1.638, -24.0659, -10.638, -51.0659 )
 
 [node name="hurtbox" type="Area2D" parent="."]
 position = Vector2( 0, -75.3193 )

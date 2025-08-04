@@ -338,20 +338,22 @@ func play(_stream: String):
 		
 	if !enable : return
 	
-	
+	# bugs:
+	# (1) bugs out on playing the second track
 	if current_track == "a":
 		print_debug("Load Track A: ", _stream)
 		B.stream = load(_stream) #invalid funtion load, cannot convert arguement from nil to string
 		transitions.play("AtoB")
-		current_track = "b"
+		current_track = "a"
 		enable = true
-		Music_streamer_3.stop() #hacky fix
+		#Music_streamer_3.stop() #hacky fix
 		return
-	if current_track == "b" or current_track.empty():
+	
+	if current_track == "b" or current_track.empty(): # current track is initially empty, then it's set to a
 		print_debug("Load Track B: ", current_track, "/", _stream)
 		A.stream = load(_stream)
 		transitions.play("BtoA")
-		current_track = "a"
+		current_track = "b" # current track is set to a
 		enable = true
 		return
 	# settings saving should be done in controls scene

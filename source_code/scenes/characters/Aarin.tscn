@@ -1358,7 +1358,6 @@ tracks/2/keys = {
 
 [node name="Player" type="KinematicBody2D" groups=["player"]]
 position = Vector2( 585.638, 309.087 )
-scale = Vector2( 0.72, 0.72 )
 collision_layer = 2
 collision_mask = 269
 script = ExtResource( 1 )
@@ -1370,7 +1369,6 @@ ROLL_SPEED = 1500
 
 [node name="sprite" type="Sprite" parent="."]
 material = SubResource( 1 )
-scale = Vector2( 0.676, 0.676 )
 texture = ExtResource( 2 )
 hframes = 8
 vframes = 7

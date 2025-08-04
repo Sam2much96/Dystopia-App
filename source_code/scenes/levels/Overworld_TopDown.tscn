@@ -1392,11 +1392,8 @@ points = PoolVector2Array( 0, 0, 128, 0, 128, 128, 0, 128 )
 91/shapes = [  ]
 91/z_index = 0
 
-[node name="Outside" type="Node2D"]
-
-[node name="TileMap" type="TileMap" parent="."]
+[node name="TileMap" type="TileMap"]
 position = Vector2( 1600.61, 2690.46 )
-scale = Vector2( 0.5, 0.5 )
 tile_set = SubResource( 2 )
 cell_size = Vector2( 128, 128 )
 cell_quadrant_size = 13

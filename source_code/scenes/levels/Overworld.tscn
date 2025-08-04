@@ -18,9 +18,9 @@
 [ext_resource path="res://scenes/levels/Overworld_Level_Properties.gd" type="Script" id=28]
 
 [sub_resource type="NavigationPolygon" id=1]
-vertices = PoolVector2Array( 1991, 347, 2604, 290, 2575, 1213, 1998, 1223, 4308, 1204, 4298, 4015, 3785, 4026, 2562, 3826, 246, 3788, 309, 1232, 2569, 4068, 3781, 4087 )
-polygons = [ PoolIntArray( 0, 1, 2, 3 ), PoolIntArray( 2, 4, 5, 6, 7, 3 ), PoolIntArray( 7, 8, 9, 3 ), PoolIntArray( 10, 7, 6, 11 ) ]
-outlines = [ PoolVector2Array( 2604, 290, 1991, 347, 1998, 1223, 309, 1232, 246, 3788, 2562, 3826, 2569, 4068, 3781, 4087, 3785, 4026, 4298, 4015, 4308, 1204, 2575, 1213 ) ]
+vertices = PoolVector2Array( 3409, 5113, -995, 4999, -1089, -212, 3133, -255, 6994, -284, 7087, 5327, 6089, 5541 )
+polygons = [ PoolIntArray( 0, 1, 2, 3, 4 ), PoolIntArray( 0, 4, 5, 6 ) ]
+outlines = [ PoolVector2Array( 3133, -255, -1089, -212, -995, 4999, 3409, 5113, 6089, 5541, 7087, 5327, 6994, -284 ) ]
 
 [node name="Outside" type="Node2D"]
 position = Vector2( 135, -21 )
@@ -30,7 +30,7 @@ script = ExtResource( 28 )
 navpoly = SubResource( 1 )
 
 [node name="Outside" parent="." instance=ExtResource( 1 )]
-position = Vector2( -53.8173, -83.4771 )
+position = Vector2( 1514, 2589 )
 
 [node name="Exit_2" parent="Outside" instance=ExtResource( 6 )]
 position = Vector2( 1051.82, 2056.48 )
@@ -52,7 +52,7 @@ scale = Vector2( 1.02571, 0.414348 )
 to_scene = "res://scenes/levels/marketplace_2d.tscn"
 
 [node name="Outside City" parent="." instance=ExtResource( 5 )]
-position = Vector2( 4446, -515 )
+position = Vector2( 7443, -3563 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="Outside City"]
 position = Vector2( 243.5, 302.5 )

@@ -47,7 +47,8 @@ jobs:
           # copy android build templates
           cp ~/.local/share/godot/templates/${GODOT_VERSION}.stable/android_source.zip source_code/android/build 
 
-          #cd source_code/android && ls -al
+          # debug template file
+          cd source_code/android/build && ls -al
 
           unzip -o source_code/android/build/android_source.zip -d source_code/android/build
           touch source_code/android/.build_version

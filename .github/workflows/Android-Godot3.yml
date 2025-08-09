@@ -27,11 +27,11 @@ jobs:
           git config --global --add safe.directory /__w/Dystopia-App/Dystopia-App
 
           # Install Android command line tools
-          mkdir -p $HOME/android-sdk
-          cd $HOME/android-sdk
+          mkdir -p $HOME/android-sdk/cmd-line-tools/latest
+          cd $HOME/android-sdk/cmd-line-tools/latest
           wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
-          unzip -q commandlinetools-linux-*.zip -d cmdline-tools
-          mv cmdline-tools $HOME/android-sdk/cmdline-tools/latest
+
+          unzip -q commandlinetools-linux-*.zip -d .
 
           export ANDROID_HOME=$HOME/android-sdk
           export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH

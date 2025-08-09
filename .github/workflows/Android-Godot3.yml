@@ -48,10 +48,10 @@ jobs:
           cp ~/.local/share/godot/templates/${GODOT_VERSION}.stable/android_source.zip source_code/android/build 
 
           # debug template file
-          cd source_code/android/build && ls -al
+          cd /source_code/android/build && ls -al
 
-          unzip -o source_code/android/build/android_source.zip -d source_code/android/build
-          touch source_code/android/.build_version
+          unzip -o /source_code/android/build/android_source.zip -d /source_code/android/build
+          touch /source_code/android/.build_version
           sed -n "w /source_code/android/.build_version' <<< "${GODOT_VERSION}"
 
           # Create Android sdk path in editor settings

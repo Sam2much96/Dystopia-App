@@ -88,7 +88,7 @@ jobs:
 
 
           #export the binary as aab
-          godot --headless --verbose /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.aab
+          godot --headless --verbose /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@v4

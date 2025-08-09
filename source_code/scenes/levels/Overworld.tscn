@@ -45,11 +45,10 @@ script = ExtResource( 9 )
 position = Vector2( 217, 585 )
 rotation = -0.0282235
 scale = Vector2( 0.847893, 0.695034 )
-to_scene = "res://scenes/levels/Building1.tscn"
+to_scene = "res://scenes/levels/marketplace_2d.tscn"
 
 [node name="Player" parent="." instance=ExtResource( 7 )]
 position = Vector2( 1573, 1785 )
-scale = Vector2( 0.55068, 0.55068 )
 z_index = 1
 
 [node name="RainFx" parent="Player" instance=ExtResource( 2 )]

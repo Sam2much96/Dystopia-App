@@ -45,12 +45,12 @@ jobs:
           cd source_code && ls -al
           cp -r plugins android
 
-          cd 
+          cd ..
 
-          # debug android build templates
-          cd /root/.local/share/godot/templates/ && ls -al
+          # copy android build templates
 
-          cp /root/.local/share/godot/templates/${GODOT_VERSION}/andoid_source.zip /source_code/android/build 
+
+          cp ~/.local/share/godot/templates/${GODOT_VERSION}/android_source.zip source_code/android/build 
           unzip -o /source_code/android/build/android_source.zip -d /source_code/android/build
           touch /source_code/android/.build_version
           sed -n "w /source_code/android/.build_version' <<< "${GODOT_VERSION}"

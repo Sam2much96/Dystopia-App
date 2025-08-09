@@ -285,7 +285,7 @@ func _exit_tree():
 	
 	safe_Utils.MemoryManagement.queue_free_array(MenuButtons)
 	safe_Music._notification(NOTIFICATION_UNPAUSED) #resets music when exiting scene tree
-
+	self.queue_free()
 
 func _on_practice_pressed(): # turn off in release build
 	# To DO:

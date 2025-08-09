@@ -55,8 +55,8 @@ onready var safe_Utils = get_node("/root/Utils")
 var menu : Game_Menu
 var TouchInterface : TouchScreenHUD setget set_TouchInterface, get_TouchInterface
 var _Stats : Stats
-var _Status_text  #: StatusText
-var heart_box  #: Healthbar
+var _Status_text  : StatusText
+var heart_box  : Healthbar
 var dialog_box : DialogBox
 var Anim : AnimationPlayer
 var children : Array
@@ -119,5 +119,5 @@ func _exit_tree():
 	#
 	# Clears all ui buttons
 	
-	safe_Utils.MemoryManagement.queue_free_array(children)
+	#safe_Utils.MemoryManagement.queue_free_array(children)
 	self.queue_free()

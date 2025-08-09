@@ -26,3 +26,4 @@ func get_events_property_avg(events, property):
 	for e in events.values():
 		sum += e.get(property)
 	return sum / events.size()
+

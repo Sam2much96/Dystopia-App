@@ -189,3 +189,7 @@ func _add_timer(timer, func_name):
 	timer.one_shot = true
 	timer.connect("timeout", self, func_name)
 	self.add_child(timer)
+
+
+func _exit_tree():
+	self.queue_free()

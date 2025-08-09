@@ -344,3 +344,6 @@ func _disable():
 	hide()
 	get_tree().paused = false
 	print_debug ("Stats UI disabled") # For debug purposes only
+
+func _exit_tree():
+	self.queue_free()

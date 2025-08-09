@@ -214,3 +214,6 @@ func shake(): # Shaky Cam FX
 func dash():
 	music_singleton_.play_track(dash_sfx)
 
+
+func _exit_tree():
+	self.queue_free()

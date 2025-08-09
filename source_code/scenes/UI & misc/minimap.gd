@@ -88,3 +88,7 @@ func _draw():
 		
 	#draw_texture(texture_player, Vector2(62,62))
 	pass
+
+
+func _exit_tree():
+	self.queue_free()

@@ -114,3 +114,7 @@ func _play_next():
 	else:
 		text = messages.pop_front()
 		anims.queue("update")
+
+
+func _exit_tree():
+	self.queue_free()

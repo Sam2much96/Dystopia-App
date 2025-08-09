@@ -1,7 +1,7 @@
 name: Android CI for 3.5.3 Branch
 
 env:
-  GODOT_VERSION: 3.5.3
+  GODOT_VERSION: 3.6
   EXPORT_NAME: source_code
 
 on:
@@ -12,13 +12,11 @@ jobs:
   export-binary:
     runs-on: ubuntu-22.04
     container:
-      image: razzlegames/godot-ci:3.5.3_fixed
+      image: barichello/godot-ci:3.6
     steps:
       - name: Dependencies
         run: |
           apt-get update -y
-
-
           apt-get install libssl-dev -y 
           apt-get install android-sdk -y
           apt-get install default-jdk -y

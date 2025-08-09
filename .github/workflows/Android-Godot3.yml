@@ -1,7 +1,7 @@
 name: Android CI for 3.5.3 Branch
 
 env:
-  GODOT_VERSION: 3.6
+  GODOT_VERSION: 3.5.3
   EXPORT_NAME: source_code
 
 on:
@@ -12,7 +12,7 @@ jobs:
   export-binary:
     runs-on: ubuntu-22.04
     container:
-      image: barichello/godot-ci:3.6
+      image: razzlegames/godot-ci:3.5.3_fixed
     steps:
       - name: Dependencies
         run: |

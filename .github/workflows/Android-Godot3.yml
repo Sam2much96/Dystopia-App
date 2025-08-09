@@ -43,7 +43,7 @@ jobs:
           mkdir -v -p /source_code/android/build
 
           cd source_code && ls -al
-          cp -r source_code/plugins source_code/android
+          cp -r /plugins /android
 
           cp /root/.local/share/godot/templates/${GODOT_VERSION}/andoid_source.zip /source_code/android/build 
           unzip -o /source_code/android/build/android_source.zip -d /source_code/android/build

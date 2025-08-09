@@ -45,7 +45,10 @@ jobs:
           cd source_code && ls -al
           cp -r plugins android
 
-          cd
+          cd 
+
+          # debug android build templates
+          cd /root/.local/share/godot/templates/ && ls -al
 
           cp /root/.local/share/godot/templates/${GODOT_VERSION}/andoid_source.zip /source_code/android/build 
           unzip -o /source_code/android/build/android_source.zip -d /source_code/android/build

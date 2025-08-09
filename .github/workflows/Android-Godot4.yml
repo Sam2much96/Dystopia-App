@@ -35,6 +35,13 @@ jobs:
       - run: |
           #make template
           mkdir -v -p ~/.local/share/godot/templates
+
+          # debug folder contents
+          cd /root/.local/share/godot/templates && ls -al
+
+          # edit directory
+          cd
+
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
 
           # Android sdk path

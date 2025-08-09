@@ -220,16 +220,7 @@ var NodeInput = Input # Generates this nodes Node _input()
 onready var children : Array = self.get_children()
 onready var viewportSize = Screen.calculateViewportSize($Position2D) 
 onready var center = viewportSize / 2
-# to do : 
-#(1) Add a queue free conditional to prevent memory leaks
-#(2) Debug and add variable types
-#var touches : Dictionary = {} # Keeps track of all the touches.
-#var drags : Dictionary = {}   # Keeps track of all the drags.
-#var tap_delay_timer = Timer.new()
-#var only_touch = null # Last touch if there wasn't another touch at the same time.
-#
-#var drag_startup_timer = Timer.new()
-#var drag_enabled = false 
+
 
 export (String) var ScreenDebug = ""
 
@@ -253,14 +244,7 @@ func _ready():
 	stats_ = $"%stats"
 	roll = $"%roll"
 	slash = $"%slash"
-	#comics_ = $"%comics"
-	#_joystick = $Joystick/joystick_circle
-	#joystick2 = $Joystick/joystick_circle2
-	 
-	#Anim = $AnimationPlayer
-	#D_pad = $"D-pad"
-	#LineDebug = $Line2D
-	#touch_interface_debug() disabling for now
+
 	
 	_up = $"%up"
 	_down = $"%down"
@@ -291,24 +275,7 @@ func _ready():
 		slash
 		]
 	
-	#analogue_joystick  = [ _joystick, joystick2]
-	#d_pad = [ _up, _down, _left, _right]
-	
-	
-		# Select Users Preferred Direction Controls 
-		# This should ideally be routed to forms to get the player's hand type? left or right?
-	#if str(Globals.direction_control )== "classic" :
-	#	direction_buttons = d_pad
-	#elif str(Globals.direction_control) == "modern" :
-	#	#direction_buttons = analogue_joystick
-	#	print_debug("Joystick Inputs Require Refactoring")
-	# Default Direction Button should be Analgue
-	#else: pass #direction_buttons = analogue_joystick
-	
-	# already set with default state machine
-	#reset()
-	#menu()
-	
+
 	# Turn off this setup script if not running on Android
 	if enabled:
 		
@@ -318,35 +285,12 @@ func _ready():
 		
 		
 		
-		"Touch Menu Button Customization"
-		# Customizes 
-		# temporarily disabled for ui / ux/ tileset update June 24, 2025
-		#if safe_Globals.curr_scene == "HouseInside":
-		#	_menu.self_modulate = Color(255,255,255) # white
-		#else: _menu.self_modulate = Color(0,0,0) # black
-		
-		
 		
 		
 		
 		"Display Screen Calculations"
 		Screen.display_calculations(get_tree().get_root(), safe_Utils)
-		
-		# Calculates the Length and Breadth of All Touchscreen HUD buttons
-		# To DO: 
-		# (1) Refactor for algorithmic solution
-		#dimensions = Utils.Functions.calculate_length_breadth(buttons_positional_data)
-		
-		# calculates a dimensional difference between the center of the vuewport aand the Button onscreen positions 
-		#dimensional_diff = dimensions - Globals.center_of_viewport 
-	
-	#For debug purposes only
-	#print_debug("HUD Dimensions:", dimensions) # Breath of the wild lmao
-	#print_debug("Dimension difference: ",dimensional_diff )
-	
-	#print_debug("Global Direction COntrols : ",Globals.direction_control, "/",dimensions, "/",dimensional_diff)
-	
-	
+
 	# Debug Required Pointers
 	#print_debug(parent, menu2, menu3)
 		
@@ -1109,6 +1053,14 @@ func _exit_tree():
 	# Memory Leak Management
 	#
 	# Clears all ui buttons
+	# disconnect all signals so object can be freed
+	safe_Dialogs.dialog_box.disconnect("dialog_started", self, "interract")
+	safe_Dialogs.dialog_box.disconnect("dialog_ended", self, "show_all_buttons")
+	menuObj.disconnect("menu_hidden_in_ui", self, "menu__") 
+	menuObj.disconnect("menu_hidden_in_game", self, "show__") 
+	menuObj.disconnect("menu_showing", self, "menu__") 
+	StatsObj.disconnect("_enabled", self ,"status") 
+	StatsObj.disconnect("_not_enabled", self ,"show_all_buttons") 
 	
 	safe_Utils.MemoryManagement.queue_free_array(children)
 	self.queue_free()

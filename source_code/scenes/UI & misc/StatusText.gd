@@ -117,4 +117,11 @@ func _play_next():
 
 
 func _exit_tree():
+	# disconnect signals so object can be freed
+	Quest.disconnect("quest_changed", self, "_questlog_updated")
+	
+	# Inventory to Status Text
+	# Item changed signals contain parameters
+	Inventory.disconnect("item_changed", self, "_inventory_updated")
+	
 	self.queue_free()

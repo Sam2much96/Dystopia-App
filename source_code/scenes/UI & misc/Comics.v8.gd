@@ -18,10 +18,15 @@ export (bool) var enabled = false
 
 var _lines_pointer : Array = []
 onready var _lines := $Lines
+onready var mini_map_gui : minimap = get_parent()
 var _pressed := false
 var _current_line : Line2D
 export (float) var LineWidth = 5.0
 export (int) var LineCount : int = 0
+
+
+func _ready():
+	mini_map_gui.connect("gui_input", self, "_on_minimap_gui_input")
 
 
 func _input(event):
@@ -96,3 +101,9 @@ func _on_Pen_pressed() -> int:
 
 func _on_minimap_gui_input(event):
 	enabled = true
+
+
+func _exit_tree():
+	# disconnect signals to allow object gb collection
+	mini_map_gui.disconnect("gui_input", self, "_on_minimap_gui_input")
+	self.queue_free()

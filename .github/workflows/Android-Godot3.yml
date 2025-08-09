@@ -40,6 +40,7 @@ jobs:
           mkdir -v -p source_code/android/build
 
           cp -r source_code/plugins source_code/android
+          cp source_code/plugins/AndroidManifest.xml  source_code/android/build
 
           # copy android build templates
           cp ~/.local/share/godot/templates/${GODOT_VERSION}.stable/android_source.zip source_code/android/build 

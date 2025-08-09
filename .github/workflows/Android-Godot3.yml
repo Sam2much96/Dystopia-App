@@ -42,15 +42,11 @@ jobs:
           ls -al
           mkdir -v -p /source_code/android/build
 
-          cd source_code && ls -al
-          cp -r plugins android
-
-          cd ..
+          cp -r source_code/plugins source_code/android
 
           # copy android build templates
+          cp ~/.local/share/godot/templates/${GODOT_VERSION}.stable/android_source.zip source_code/android/build 
 
-
-          cp ~/.local/share/godot/templates/${GODOT_VERSION}/android_source.zip source_code/android/build 
           unzip -o /source_code/android/build/android_source.zip -d /source_code/android/build
           touch /source_code/android/.build_version
           sed -n "w /source_code/android/.build_version' <<< "${GODOT_VERSION}"

@@ -103,11 +103,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: android
+          path: ./android
 
-      - name: Archive site content
-        uses: thedoctor0/zip-release@master
-        with:
-          filename: android.zip
+      - name: Locate APK file
+        run: |
+          APK_PATH=$(find ./android -name "*.apk" | head -n 1)
+          echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
 
       - name: Butler Publish
         uses: manleydev/butler-publish-itchio-action@master
@@ -117,4 +118,4 @@ jobs:
           CHANNEL: android
           ITCH_GAME: dystopia-app
           ITCH_USER: inhumanity-arts
-          PACKAGE: ./android.zip
+          PACKAGE: ${{ env.APK_PATH }}

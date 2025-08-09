@@ -42,7 +42,7 @@ jobs:
           cp -r source_code/plugins source_code/android
 
 
-          # copy android build templates
+          # copy android build templates for custom builds
           cp ~/.local/share/godot/templates/${GODOT_VERSION}.stable/android_source.zip source_code/android/build 
 
           unzip -o source_code/android/build/android_source.zip -d source_code/android/build
@@ -102,12 +102,12 @@ jobs:
       - name: Download content
         uses: actions/download-artifact@v4
         with:
-          name: linux
+          name: android
 
       - name: Archive site content
         uses: thedoctor0/zip-release@master
         with:
-          filename: site.zip
+          filename: android.zip
 
       - name: Butler Publish
         uses: manleydev/butler-publish-itchio-action@master
@@ -117,4 +117,4 @@ jobs:
           CHANNEL: android
           ITCH_GAME: dystopia-app
           ITCH_USER: inhumanity-arts
-          PACKAGE: ./site.zip
+          PACKAGE: ./android.zip

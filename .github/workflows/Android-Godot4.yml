@@ -79,7 +79,7 @@ jobs:
           #sed 's@version/code=".*"@version/code=${{ github.run_number }}@g' -i export_presets.cfg
 
 
-          godot --verbose --headless --path . --export-release "Android" ../build/android/$EXPORT_NAME.aab
+          godot --verbose --headless --path . --export-release "Android" ../build/android/$EXPORT_NAME.apk
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4

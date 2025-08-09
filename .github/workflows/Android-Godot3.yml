@@ -22,10 +22,29 @@ jobs:
           apt-get install libssl-dev -y 
 
           apt-get install default-jdk -y
-          apt-get install android-sdk -y
 
           #Error Catcher 1
           git config --global --add safe.directory /__w/Dystopia-App/Dystopia-App
+
+          # Install Android command line tools
+          mkdir -p $HOME/android-sdk
+          cd $HOME/android-sdk
+          wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+          unzip -q commandlinetools-linux-*.zip -d cmdline-tools
+          mv cmdline-tools $HOME/android-sdk/cmdline-tools/latest
+
+          export ANDROID_HOME=$HOME/android-sdk
+          export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
+
+          yes | sdkmanager --sdk_root=$ANDROID_HOME --licenses
+          sdkmanager --sdk_root=$ANDROID_HOME \
+            "platform-tools" \
+            "platforms;android-33" \
+            "build-tools;33.0.2" \
+            "ndk;23.1.7779620"
+
+          echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))" >> $GITHUB_ENV
+          echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
 
       - name: Compile for android
         uses: actions/checkout@v4

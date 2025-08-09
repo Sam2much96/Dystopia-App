@@ -1,7 +1,7 @@
 name: Android CI for Vulkan Branch (not working : improper formatting) # Compiles the v4.2.2 vulkan branch to Development Pipeline on play console
 
 env:
-  GODOT_VERSION: 4.1.3
+  GODOT_VERSION: 4.4.1
   EXPORT_NAME: source_code
 
 # android push can only be used once per day without errors
@@ -10,35 +10,11 @@ on:
     branches: [main]
 
 jobs:
-  Android_Push:
-    runs-on: ubuntu-latest
-    needs: container
-    steps:
-      - name: Download-content
-        uses: actions/checkout@v2
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: android
-
-      - name: Verify Download
-        run: ls -al
-
-      - name: Google play push
-        uses: r0adkll/upload-google-play@v1.0.18
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-          packageName: dystopia.app
-          releaseName: v4.0.0_${{ github.run_number }}
-          releaseFiles: ./source_code.apk
-          track: beta
-          status: completed
-          inAppUpdatePriority: 3
 
   container:
     runs-on: ubuntu-22.04
     container:
-      image: barichello/godot-ci:4.1.3
+      image: barichello/godot-ci:4.4.1
     steps:
       - name: Dependencies
         run: |
@@ -106,3 +82,28 @@ jobs:
           path: |
             build/android/source_code.aab
           compression-level: 9 # Best compression
+
+  Android_Push:
+    runs-on: ubuntu-latest
+    needs: container
+    steps:
+      - name: Download-content
+        uses: actions/checkout@v2
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: android
+
+      - name: Verify Download
+        run: ls -al
+
+      - name: Google play push
+        uses: r0adkll/upload-google-play@v1.0.18
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: dystopia.app
+          releaseName: v4.0.0_${{ github.run_number }}
+          releaseFiles: ./source_code.aab
+          track: beta
+          status: completed
+          inAppUpdatePriority: 3

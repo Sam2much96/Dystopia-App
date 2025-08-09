@@ -1,7 +1,7 @@
-name: Android CI for 4.0 # Compiles the v4.2.2 vulkan branch to Development Pipeline on play console. needs 4.41 debugging
+name: Android CI for 4.3 # Compiles the v4.2.2 vulkan branch to Development Pipeline on play console. needs 4.41 debugging
 
 env:
-  GODOT_VERSION: 4.2.2
+  GODOT_VERSION: 4.3
   EXPORT_NAME: source_code
 
 # android push can only be used once per day without errors
@@ -13,7 +13,7 @@ jobs:
   container:
     runs-on: ubuntu-22.04
     container:
-      image: barichello/godot-ci:4.2.2
+      image: barichello/godot-ci:4.3
     steps:
       - name: Dependencies
         run: |

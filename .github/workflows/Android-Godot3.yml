@@ -86,7 +86,7 @@ jobs:
 
 
           #export the binary as aab
-          GODOT_ANDROID_BUILD_TEMPLATE_ARGS="--stacktrace --info --debug" godot --headless --verbose /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
+          godot --headless --verbose /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@v4
@@ -118,28 +118,3 @@ jobs:
           ITCH_GAME: dystopia-app
           ITCH_USER: inhumanity-arts
           PACKAGE: ./site.zip
-
-  Playstore:
-    runs-on: ubuntu-latest
-    needs: export-binary
-    steps:
-      - name: Download-content
-        uses: actions/checkout@v2
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: android
-
-      - name: Verify Download
-        run: ls -al
-
-      - name: Google play push
-        uses: r0adkll/upload-google-play@v1.0.18
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-          packageName: dystopia.app
-          releaseName: v2.1.2__${{ github.run_number }}
-          releaseFiles: ./source_code.apk
-          track: production
-          status: completed
-          inAppUpdatePriority: 3

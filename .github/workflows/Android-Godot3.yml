@@ -41,6 +41,8 @@ jobs:
           #make android export template for custom build
           ls -al
           mkdir -v -p /source_code/android/build
+
+          cd source_code && ls -al
           cp -r source_code/plugins source_code/android
 
           cp /root/.local/share/godot/templates/${GODOT_VERSION}/andoid_source.zip /source_code/android/build 

@@ -1,7 +1,7 @@
 name: Android CI for 3.5.3 Branch
 
 env:
-  GODOT_VERSION: 3.5.3
+  GODOT_VERSION: 3.6
   EXPORT_NAME: source_code
 
 on:

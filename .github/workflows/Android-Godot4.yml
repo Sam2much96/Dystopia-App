@@ -1,4 +1,4 @@
-name: Android # Compiles the v4.2.2 vulkan branch to Development Pipeline on play console
+name: Android CI for Vulkan Branch (not working : improper formatting) # Compiles the v4.2.2 vulkan branch to Development Pipeline on play console
 
 env:
   GODOT_VERSION: 4.1.3

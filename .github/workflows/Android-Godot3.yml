@@ -38,7 +38,7 @@ jobs:
           # move root godot binary into desktop local location
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
 
-          #make android export template
+          #make android export template for custom build
 
           mkdir -p /source_code/android/build
           cp -r /source_code/plugins /source_code/android

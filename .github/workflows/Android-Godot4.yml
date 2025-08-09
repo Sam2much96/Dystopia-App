@@ -1,4 +1,4 @@
-name: Android CI for 4.0 # Compiles the v4.2.2 vulkan branch to Development Pipeline on play console
+name: Android CI for 4.0 # Compiles the v4.2.2 vulkan branch to Development Pipeline on play console. needs 4.41 debugging
 
 env:
   GODOT_VERSION: 4.4.1

@@ -39,7 +39,7 @@ jobs:
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
 
           #make android export template for custom build
-
+          ls -al
           mkdir -p /source_code/android/build
           cp -r /source_code/plugins /source_code/android
 
@@ -57,6 +57,7 @@ jobs:
 
           mkdir -v -p build/android
 
+          # debug file paths
           ls -al
 
           cd $EXPORT_NAME

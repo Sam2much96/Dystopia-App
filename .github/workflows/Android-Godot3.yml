@@ -105,15 +105,6 @@ jobs:
           name: android
           path: ./android
 
-      - name: Locate APK file
-        run: |
-          APK_PATH=$(find ./android -name "*.apk" | head -n 1)
-          echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
-          # Optional: see what's in the downloaded artifact
-
-      - name: List files
-        run: ls -R
-
       - name: Butler Publish
         uses: manleydev/butler-publish-itchio-action@master
         env:
@@ -122,4 +113,4 @@ jobs:
           CHANNEL: android
           ITCH_GAME: dystopia-app
           ITCH_USER: inhumanity-arts
-          PACKAGE: ${{ env.APK_PATH }}
+          PACKAGE: ./android/source_code.apk

@@ -40,7 +40,7 @@ jobs:
           mkdir -v -p source_code/android/build
 
           cp -r source_code/plugins source_code/android
-          cp source_code/plugins/AndroidManifest.xml  source_code/android/build
+
 
           # copy android build templates
           cp ~/.local/share/godot/templates/${GODOT_VERSION}.stable/android_source.zip source_code/android/build 
@@ -48,7 +48,7 @@ jobs:
           unzip -o source_code/android/build/android_source.zip -d source_code/android/build
           touch source_code/android/.build_version
           echo "${GODOT_VERSION}.stable" > source_code/android/.build_version
-
+          cp source_code/plugins/AndroidManifest.xml  source_code/android/build
           # Create Android sdk path in editor settings
           sed 's|export/android/android_sdk_path = ".*"|export/android/android_sdk_path = "'/usr/lib/android-sdk'"|g' -i /root/.config/godot/editor_settings-3.tres
           mkdir -v -p ~/.config/godot
@@ -86,7 +86,7 @@ jobs:
 
 
           #export the binary as aab
-          godot --headless --verbose /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
+          GODOT_ANDROID_BUILD_TEMPLATE_ARGS="--stacktrace --info --debug" godot --headless --verbose /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@v4

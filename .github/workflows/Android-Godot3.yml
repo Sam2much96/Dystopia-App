@@ -87,8 +87,8 @@ jobs:
           #sed 's@version/code=".*"@version/code=${{ github.run_number }}@g' -i export_presets.cfg
 
 
-          #export the binary as apk
-          godot --headless --verbose /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.apk
+          #export the binary as aab
+          godot --headless --verbose /source_code/project.godot --export "Android" ../build/android/$EXPORT_NAME.aab
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@v4

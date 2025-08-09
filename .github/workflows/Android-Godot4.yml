@@ -1,7 +1,7 @@
 name: Android CI for 4.0 # Compiles the v4.2.2 vulkan branch to Development Pipeline on play console. needs 4.41 debugging
 
 env:
-  GODOT_VERSION: 4.4.1
+  GODOT_VERSION: 4.2.2
   EXPORT_NAME: source_code
 
 # android push can only be used once per day without errors
@@ -13,7 +13,7 @@ jobs:
   container:
     runs-on: ubuntu-22.04
     container:
-      image: barichello/godot-ci:4.4.1
+      image: barichello/godot-ci:4.2.2
     steps:
       - name: Dependencies
         run: |
@@ -79,7 +79,7 @@ jobs:
           #sed 's@version/code=".*"@version/code=${{ github.run_number }}@g' -i export_presets.cfg
 
 
-          godot --verbose --headless --path . --export-release "Android" ../build/android/$EXPORT_NAME.apk
+          godot --verbose --headless --path . --export-release "Android" ../build/android/$EXPORT_NAME.aab
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4

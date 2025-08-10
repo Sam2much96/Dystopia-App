@@ -5,8 +5,8 @@ env:
   EXPORT_NAME: source_code
 
 on:
-  push:
-    branches: [main]
+  schedule:
+    - cron: "0 0,5 30 * *"
 
 jobs:
   export-binary:
@@ -114,4 +114,3 @@ jobs:
           ITCH_GAME: dystopia-app
           ITCH_USER: inhumanity-arts
           PACKAGE: ./android/source_code.apk
-          BUTLER_EXTRA_ARGS: --userversion 1.0.0

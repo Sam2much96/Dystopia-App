@@ -110,7 +110,8 @@ jobs:
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
-          CHANNEL: android
+          CHANNEL: androids
           ITCH_GAME: dystopia-app
           ITCH_USER: inhumanity-arts
           PACKAGE: ./android/source_code.apk
+          BUTLER_EXTRA_ARGS: --userversion 1.0.0

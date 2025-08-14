@@ -1167,8 +1167,10 @@ func open_browser(url : String):
 	
 	if Globals.os == "Android":
 		
-		Android.Chrome.helloWorld(url,{},true, -99, false) # Open Chrome Embedded Browser To Url
-		Android.WebBrowserOpen = true
+		# temporarily disabled for CI refactoring
+		#Android.Chrome.helloWorld(url,{},true, -99, false) # Open Chrome Embedded Browser To Url
+		#Android.WebBrowserOpen = true
+		return OS.shell_open(url)
 		
 	if Globals.os == "X11":
 		return OS.shell_open(url)

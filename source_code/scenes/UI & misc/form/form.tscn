@@ -81,3 +81,4 @@ theme = ExtResource( 7 )
 text = "Languague"
 
 [connection signal="pressed" from="ui/grid/PlayButton" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="ui/grid/PlayButton/play" to="." method="_on_play_pressed"]

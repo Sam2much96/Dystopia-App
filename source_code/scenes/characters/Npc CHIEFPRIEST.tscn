@@ -62,6 +62,7 @@ autoplay = "idle"
 anims/idle = SubResource( 1 )
 
 [node name="trigger" type="CollisionShape2D" parent="NPC"]
+visible = false
 position = Vector2( 0, 88.8296 )
 shape = SubResource( 2 )
 

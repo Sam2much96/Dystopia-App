@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://scenes/UI & misc/Healthbar.gd" type="Script" id=1]
+[ext_resource path="res://scenes/UI & misc/HealthbarV2.gd" type="Script" id=1]
 [ext_resource path="res://scenes/UI & misc/Heart.tscn" type="PackedScene" id=2]
 
 [node name="Healthbar" type="HBoxContainer"]

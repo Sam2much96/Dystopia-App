@@ -83,7 +83,7 @@ export(int) var peer_id: int = -99 # Dummpy Placeholder Peer id
 # Get Global Singletons
 # for safe calls 
 onready var music_singleton_ = get_node("/root/Music") # : music_singleton
-onready var global_singleton_= get_node("/root/Globals") #  : GlobalsVar 
+onready var global_singleton_= Globals   
 onready var utils_singleton_= get_node("/root/Utils") #  : GlobalsVar 
 onready var safe_Android = get_node("/root/Android")
 onready var safe_GameHud = get_node("/root/GameHud")

@@ -112,7 +112,7 @@ signal attack
 
 
 "UI Buttons"
-var _menu : TextureButton 
+var menuButton : TextureButton 
 var _interract : TextureButton 
 var stats_ : TextureButton
 var roll : TextureButton 
@@ -186,15 +186,16 @@ export (bool) var saveBuffer = false;
 "Safe Singleton Pointers"
 onready var safe_Utils = get_node("/root/Utils")
 onready var safe_Dialogs = get_node("/root/Dialogs")
-onready var safe_Simulation = get_node("/root/Simulation")
 onready var safe_GameHUD = get_node("/root/GameHud")
 onready var safe_Android = get_node("/root/Android")
 onready var safe_Globals = get_node("/root/Globals")
 onready var safe_Debug = get_node("/root/Debug")
 
+# temporarily disabled for refactoring Aug 21
+#onready var safe_Simulation = get_node("/root/Simulation")
 
 # Pointer to menu node 
-onready var menuObj = safe_GameHUD.menu #$"%Menu " #Android.ingameMenu
+var menuObj : Game_Menu #= safe_GameHUD.menu #$"%Menu " #Android.ingameMenu
 onready var StatsObj = safe_GameHUD._Stats#$"%Stats" # : Stats
 
 onready var op_sys : String = safe_Globals.os
@@ -204,7 +205,7 @@ onready var op_sys : String = safe_Globals.os
 # Each of these Objects Use/ REquire Player input
 # Having them always in memory is a good thing
 # *************************************************
-var menu : Game_Menu setget set_gameMenu, get_gameMenu
+#var menu : Game_Menu setget set_gameMenu, get_gameMenu
 var TouchInterface : TouchScreenHUD setget set_touchHUD, get_touchHUD
 
 var Stats_ : Stats setget set_statsHUD, get_statsHUD
@@ -239,25 +240,20 @@ func _ready():
 	
 	
 	######## Begin Setting Nodes #
-	_menu = $"%menu"
+	menuButton = $"%menu"
 	_interract = $"%interact"
 	stats_ = $"%stats"
 	roll = $"%roll"
 	slash = $"%slash"
 
-	
-	_up = $"%up"
-	_down = $"%down"
-	_left = $"%left"
-	_right = $"%right"
-	
+
 
 	#action_interract_buttons = $Control/ActionButtons 
 	#interract_buttons = $Control/InterractButtons
 	
 	# Debug Broken Lins
 	
-	all_UI_Nodes = [_menu ,stats_, _interract, roll, slash, _up, _down, _left, _right ]
+	all_UI_Nodes = [menuButton ,stats_, _interract, roll, slash]
 	
 	# Error Catcher For Broken UI Links
 	safe_Utils.UI.check_for_broken_links(all_UI_Nodes)
@@ -268,7 +264,7 @@ func _ready():
 	
 	"Set Button Arraqys for easy on/off"
 	action_buttons = [
-		_menu ,
+		menuButton ,
 		stats_,
 		_interract,
 		roll, 
@@ -310,15 +306,21 @@ func _ready():
 		# (1) Signal Spammer from Menu State machine
 		#	#Fix : Boolean checker for signal emitting
 		#print_debug("menu obj debug 2: ", menuObj)
+		
 		if is_instance_valid(menuObj):
-			menuObj.connect("menu_hidden_in_ui", self, "menu__") 
-			menuObj.connect("menu_hidden_in_game", self, "show__") 
-			menuObj.connect("menu_showing", self, "menu__") 
+			
+			print_debug("connecting menu visibility button to Menu UI button")
+
+			# one button for all Menu visibility logic
+			menuButton.connect("button_down", menuObj, "_menu_button_pressed")
 		
-			# debug signal connections
-			print_debug("Menu Signals Debug: ",menuObj.is_connected("menu_hidden_in_ui", self, "menu") , menuObj.is_connected("menu_hidden_in_game", self, "show_all_buttons"), menuObj.is_connected("menu_showing", self, "menu") )
 		
-		
+			# debug signal connections and push error if not connected
+			print_debug("Menu Signals Debug: ",menuButton.is_connected("button_down", menuObj, "_menu_button_pressed") )
+		if !is_instance_valid(menuObj):
+			push_error("Menu Object Is not connected to Touch UI")
+		if (!menuButton.is_connected("button_down", menuObj, "_menu_button_pressed")):
+			push_error("Menu Button is Disconnected from Menu object:/ "+ str(menuButton) + str(menuObj))
 		
 		# Connects Stats Ui Signals To Touchscreen HUD for Mobile
 		StatsObj.connect("_enabled", self ,"status")
@@ -408,6 +410,9 @@ func _input(event):
 				# hacky method used to control player's direction
 				direction = (event.position - center).normalized() #get viewport size from  screen class
 				
+				# to do:
+				# (1) implement direcitonal logic for android's different screen orientations
+				#print_debug("direction debug: ", direction) # for debugging 
 				
 			else: 
 				touch_pos.erase(event.to_string())
@@ -608,14 +613,14 @@ func menu_():
 	#print_stack()
 	#print_debug("Menu Button triggered")
 	hide_buttons()
-	_menu.show()
+	menuButton.show()
 	#touch_controller = MENU
 	#debug_visibility_() # for temporarily debugging touch buttons state
 
 func interract(): #used by ui scene when interract is clicked
 	print_debug("Interract Triggered")
 	hide_buttons()
-	_menu.show()
+	menuButton.show()
 	_interract.show()
 	#return _state_controller  
 
@@ -628,7 +633,7 @@ func attack(): #used by ui scene when attack is clicked
 
 	hide_buttons()
 
-	_menu.show()
+	menuButton.show()
 	slash.show()
 	roll.show()
 	
@@ -719,9 +724,9 @@ func Horizontal():
 	_down.rect_scale = Vector2(1,1)
 	
 	
-	_menu.rect_position = Vector2(32,48)
-	_menu.rect_size = Vector2(166,143)
-	_menu.rect_scale = Vector2(0.5,0.5)
+	menuButton.rect_position = Vector2(32,48)
+	menuButton.rect_size = Vector2(166,143)
+	menuButton.rect_scale = Vector2(0.5,0.5)
 	
 	
 	# this is the default position for stats & interract buttons
@@ -777,7 +782,7 @@ func Vertical():
 	# menu positionioning is okay now
 	#_menu.rect_position = Vector2(32,48)
 	#_menu.rect_size = Vector2(166,143)
-	#_menu.rect_scale = Vector2(1,1)
+	menuButton.rect_scale = Vector2(2,2)
 	
 	# move down only the slash and roll buttons
 	
@@ -811,7 +816,7 @@ UI Button Connections
 # (1) Pressed Signals Introduces Stuct Input Bug On Mobile Devices
 # (2) Android touch interface was refactored for mobiles on June 17/2023
 func _on_menu_pressed():
-	print_debug("Menu Pressed")
+	#print_debug("Menu Pressed /", self.name)
 	return 0
 
 
@@ -829,13 +834,13 @@ func _on_interact_pressed():
 
 func _on_roll_pressed():
 	#print_debug("Roll Button Pressed")
-	return parse_input(NodeInput,__scene_tree, safe_Simulation,"roll", true)
-
+	#return parse_input(NodeInput,__scene_tree, safe_Simulation,"roll", true)
+	return 0
 
 func _on_slash_pressed():
 	#print_debug("Attack Button Pressed")
-	return parse_input(NodeInput,__scene_tree,safe_Simulation,"attack", true)
-
+	#return parse_input(NodeInput,__scene_tree,safe_Simulation,"attack", true)
+	return 0
 
 func _on_right_pressed():
 	
@@ -856,85 +861,96 @@ func _on_down_pressed():
 
 
 
+"""
+Programmatically Parse Input Only using One Simlation Delta Time
+For Synchronized multiplayer 
+Bugs:
+	(1) Huge performance hog
+Note:
+	Parse Input functionality has been duplicated in gameHUD Code
+"""
 
 func _on_down_button_down():
-	print_debug("Jun 12/2025 Refactor : Map dpad ui buttons to other onscreen UI elements")
-	return parse_input(node_input,__scene_tree,safe_Simulation,"move_down", true)
-
+	#print_debug("Jun 12/2025 Refactor : Map dpad ui buttons to other onscreen UI elements")
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"move_down", true)
+	return 0
 
 func _on_down_button_up():
-	return parse_input(node_input,__scene_tree,safe_Simulation,"move_down", false)
-
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"move_down", false)
+	return 0
 
 func _on_left_button_down():
-	print_debug("Jun 12/2025 Refactor : Map dpad ui buttons to other onscreen UI elements")
-	return parse_input(node_input,__scene_tree,safe_Simulation,"move_left", true)
-
+	#print_debug("Jun 12/2025 Refactor : Map dpad ui buttons to other onscreen UI elements")
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"move_left", true)
+	return 0
 
 func _on_left_button_up():
-	return parse_input(node_input,__scene_tree,safe_Simulation,"move_left", false)
-
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"move_left", false)
+	return 0
 
 func _on_up_button_up():
-	return parse_input(node_input,__scene_tree,safe_Simulation,"move_up", false)
-
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"move_up", false)
+	return 0
 
 func _on_up_button_down():
-	print_debug("JUn 12/2025 Refactor : Map dpad ui buttons to other onscreen UI elements")
-	return parse_input(node_input,__scene_tree,safe_Simulation,"move_up", true)
-
+	#print_debug("JUn 12/2025 Refactor : Map dpad ui buttons to other onscreen UI elements")
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"move_up", true)
+	return 0
 
 
 
 func _on_right_button_up():
-	return parse_input(node_input,__scene_tree,safe_Simulation,"move_right", false)
-
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"move_right", false)
+	return 0
 
 func _on_right_button_down():
-	print_debug("JUn 12/2025 Refactor : Map dpad ui buttons to other onscreen UI elements")
-	return parse_input(node_input,__scene_tree,safe_Simulation,"move_right", true)
-
+	#print_debug("JUn 12/2025 Refactor : Map dpad ui buttons to other onscreen UI elements")
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"move_right", true)
+	return 0
 
 func _on_stats_button_up():
-	return parse_input(node_input,__scene_tree,safe_Simulation,"pause", false)
-
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"pause", false)
+	return 0
 
 func _on_stats_button_down():
-	return parse_input(node_input,__scene_tree,safe_Simulation,"pause", true)
-
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"pause", true)
+	return 0
 
 
 func _on_interact_button_up():
-	return parse_input(node_input,__scene_tree,safe_Simulation,"interact", false)
-
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"interact", false)
+	return 0
 
 
 func _on_interact_button_down():
-	return parse_input(node_input,__scene_tree,safe_Simulation,"interact", true)
-
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"interact", true)
+	return 0
 
 func _on_roll_button_up():
-	return parse_input(node_input,__scene_tree,safe_Simulation,"roll", false)
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"roll", false)
+	return 0
 
 func _on_roll_button_down():
-	return parse_input(node_input,__scene_tree,safe_Simulation,"roll", true)
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"roll", true)
+	return 0
 
 func _on_slash_button_up():
-	return parse_input(node_input,__scene_tree,safe_Simulation,"attack", false)
-
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"attack", false)
+	return 0
 
 func _on_slash_button_down():
-	return parse_input(node_input,__scene_tree,safe_Simulation,"attack", true)
-
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"attack", true)
+	return 0
 
 func _on_menu_button_up():
-	return parse_input(node_input,__scene_tree,safe_Simulation,"menu", false)
-
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"menu", false)
+	return 0
 
 func _on_menu_button_down():
 	print_debug("Menu Button Pressed")
-	return parse_input(node_input,__scene_tree,safe_Simulation,"menu", true)
-
+	print_stack()
+	#return parse_input(node_input,__scene_tree,safe_Simulation,"menu", true)
+	return 0
 
 
 func check_screen_orientation(orientation : int):
@@ -952,35 +968,7 @@ func check_device_gyroscope() -> Vector3:
 	var g = node_input.get_gyroscope()
 	return g
 
-"Input Buffer functions"
-	# To do:  Add More Parameters To Determine Button Press Length via a timer
-static func parse_input(node_input_ : Input ,tree: SceneTree, safe_Simulation_ : Simulationv1 ,action : String, _pressed : bool) -> int:
-	#This Logic Creates and Parses Input actions programmatically
-	# Bugs: Holds Input, Should Press and Release Input
-	var a = InputEventAction.new()
-	var end_frame : int = (safe_Simulation_.get_frame_counter() + 50)
-	a.action = action
-	
-	# Handle Input
-	# Node Imput Is used TO generate Node._input() methods
-	if (safe_Simulation_.get_frame_counter() < end_frame):
-		# To DO : 
-		# (1) Implement Combo System
-		#print_debug("Input Debug: ",Simulation.get_frame_counter(), "/", end_frame)
-		a.pressed = _pressed
-		node_input_.parse_input_event(a)
-	
-	# Release Input
-	elif (safe_Simulation_.get_frame_counter() >= end_frame):
-		a.pressed = false
-		#print_debug("Input Debug: ",Simulation.get_frame_counter(), "/", end_frame)
-		node_input_.parse_input_event(a)
-	
-	
-	
-	tree.set_input_as_handled()
-		
-	return 0
+
 
 func vibrate(duration_ms : int, os : String):
 	
@@ -1043,10 +1031,10 @@ func get_touchHUD() -> TouchScreenHUD:
 
 
 func set_gameMenu(obj : Game_Menu):
-	menu = obj 
+	menuObj = obj 
 
 func get_gameMenu() -> Game_Menu:
-	return menu
+	return menuObj
 
 
 func _exit_tree():
@@ -1108,7 +1096,7 @@ class Screen  :
 	#(3) This ALgorithm should be run periodically on a separate device like mobile
 	static func Orientation() -> int:
 		print_debug("running orientation algorithm")
-		
+		print_stack()
 		'Screen Size Resolution'
 		var screenSize : Vector2
 		
@@ -1132,7 +1120,7 @@ class Screen  :
 			screenOrientation = SCREEN.SCREEN_VERTICAL
 
 		# for debug purposes only
-		print_debug("Screen orientation is: ", screenOrientation, "/",'screen size :',screen)
+		#print_debug("Screen orientation is: ", screenOrientation, "/",'screen size :',screen)
 		return screenOrientation
 		
 	static func calculateViewportSize( t : CanvasItem ) -> Vector2 :
@@ -1158,8 +1146,8 @@ class Screen  :
 		# (1) Fix double resizing bug
 		# (2) Provide GLobal framework for scaling UI nodes
 		# (3) Export ALgorithm and apply to touch hud VErtical() and Horizontal()_ functions
-		print_stack()
-		print_debug("Viewport Size: ", GlobalScript.viewport_size ,"/","Center of Viewprt: ", GlobalScript.center_of_viewport ) # for debug purposes only
+		#print_stack()
+		#print_debug("Viewport Size: ", GlobalScript.viewport_size ,"/","Center of Viewprt: ", GlobalScript.center_of_viewport ) # for debug purposes only
 		
 	
 	

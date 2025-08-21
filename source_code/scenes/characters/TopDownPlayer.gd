@@ -124,7 +124,7 @@ func _on_hurtbox_area_entered(area):
 		)
 
 
-func facing_input_logic(node : Player, peed_id : int):
+func facing_input_logic(node : KinematicBody2D, peed_id : int):
 	# Called in the unhandled Input Process
 	# manages the single player's input and maps it to the player top down state
 	# it takes peer id as a parameter but it is unused

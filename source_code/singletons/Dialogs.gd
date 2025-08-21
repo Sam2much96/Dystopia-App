@@ -3,11 +3,11 @@
 # Released under MIT License
 # *************************************************
 # Dialogue singleton
-# I sure as fvck don't know what it does. Ama fuck around and find out!
+# 
 # To Do:
 #(1) Write a documentation
 #(2) 
-#(3) Converts Text to speech (pytts equivalent) with TTS AI API
+#(3) Implement Portrait tiles
 # (4) Implement Dialogue AutoHide Using Dialogue Frame Tmer
 # *************************************************
 # Features:
@@ -66,7 +66,7 @@ export (Dictionary) var font_pack : Dictionary = {
 "W1":"res://Wallet fonts/Roboto-Medium.ttf"
 }
 
-var custom_font = DynamicFont.new()
+onready var custom_font = DynamicFont.new()
 
 # Hints
 # To Do: Implement Multiple Translations for Hint System using Spreadsheets
@@ -201,11 +201,14 @@ func set_font(nodes:  Array, size : int, prefered_font_pack : String, OutlineSiz
 		for i in nodes:
 			if i is Button:
 				#print (i.name) # for debug purposes only	
-				i.add_font_override('font', Dialogs.custom_font)
+				i.add_font_override('font', custom_font)
 			if i is StatusText:
-				i.add_font_override('font', Dialogs.custom_font)
+				i.add_font_override('font', custom_font)
 			if i is Label:
-				i.add_font_override('font', Dialogs.custom_font)
+				i.add_font_override('font', custom_font)
+
+
+
 
 # *************************************************
 # godot3-Dystopia-game by INhumanity_arts

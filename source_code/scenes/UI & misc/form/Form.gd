@@ -10,10 +10,12 @@
 # (3) It aids monetization through online advertising on Mobile
 # (4) It implements Translations UI
 # (5) It is only Called Once and sets the user's pre-entered Languague for the Duration of the Match
+# (6) Connects to menu Object stae via signals
 # *************************************************
 # To Do:
 # (1) Only show once, when installing file. Should Save Information to Globals save file and only Load once
 # (2) Add and store player's name
+
 
 
 extends CanvasLayer
@@ -44,9 +46,9 @@ onready var label_spacer : Label = $ui/grid/label_spacer
 onready var label_spacer2 : Label = $ui/grid/label_spacer2
 onready var label_spacer3 : Label =$ui/grid/label_spacer3
 
-
-
 onready var UI_buttons : Array 
+
+onready var gameMenu = get_node("/root/GameHud").getMenu()
 
 func _ready():
 
@@ -63,12 +65,22 @@ func _ready():
 	safe_Utils.Functions.load_user_data('languague', get_tree())
 	
 	
+	# Visibility signals
+	# connect game Menu visibility signals to this node's visibility
+	if is_instance_valid(gameMenu):
+		gameMenu.connect("menu_showing",self,"hide")
+		gameMenu.connect("menu_hidden",self,"show")
+		
+	if !is_instance_valid(gameMenu):
+		push_error("Debug Game Menu / Form signal connections")
+	
+	
 	# Load Users Prefered DIalogue 
 	#Globals.Functions.load_user_data('Music_on_settings')
 	
 	# If Dialogue Already Preset, Skip to Cinematics.
-	print_debug("User Preloaded Language: ", safe_Diag.language)
-	print_debug("Changing to Cinematics")
+	#print_debug("User Preloaded Language: ", safe_Diag.language)
+	#print_debug("Changing to Cinematics")
 	if not safe_Diag.language.empty() :
 		#get_tree().change_scene_to(cinematics)
 		safe_Utils.Functions.change_scene_to(cinematics, get_tree())

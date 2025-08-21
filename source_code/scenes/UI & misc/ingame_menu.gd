@@ -5,6 +5,12 @@
 # Ingame Menu for Android
 # 
 # Features:
+# (1) State Machine
+# (2) Object listens for the menu button propagated
+# (3) Auto scalling on mobile screens
+#
+# To Do:
+#
 #(1) Impement State Machine (done)
 # (2) Scales for mobile UI (done)
 # (3) Translations
@@ -17,6 +23,7 @@
 
 # To-Do
 # (1) Implement Different States (Portrait & LandScape) Using Global Screen Orientation
+# (2) Connect Menu Object to Menu Singleton to trigger Menu States
 
 
 #Bugs 
@@ -30,12 +37,13 @@ extends Control
 
 class_name Game_Menu
 
-signal menu_hidden_in_ui
-signal menu_hidden_in_game
+#signal menu_hidden_in_ui
+#signal menu_hidden_in_game
 signal menu_showing
-
+signal menu_hidden
 
 export (bool) var enabled 
+var showingObject : bool = false
 """
 The game menu script. 
 """
@@ -78,6 +86,9 @@ onready var safe_Utils = get_node("/root/Utils")
 onready var safe_Dialogs = get_node("/root/Dialogs")
 onready var safe_Networking = get_node("/root/Networking")
 
+"safe Pointers to the Menu UI elemt"
+onready var safe_UI = get_parent().get_node("TouchInterface")
+
 onready var _ui_sfx : String = safe_Music.ui_sfx.get(0)
 onready var _ui_sfx_1 : String = safe_Music.ui_sfx.get(1)
 
@@ -85,12 +96,14 @@ const newScale = Vector2 (2,2)
 const initialScale = Vector2(1,1)
 
 func _ready():
+	# set pointer to the touch interface which has the touch screen UI buttons
+	safe_UI.menuObj = self
 	
 	# Make Globalm but don't overwrite memory address
 	if safe_Android.ingameMenu == null:
 		safe_Android.ingameMenu = self
 	
-	print_debug("todo: connect to GameHUD Menu", self.name)
+	print_debug("todo: Connect Menu Object to UI button using signals", self.name, safe_UI.menuObj)
 	#GlobalInput.menu = self
 	
 	#Buttons
@@ -118,71 +131,55 @@ func _ready():
 	
 	'Hides the Menu once the scene tree is ready'
 	
-	menu_state =  HIDDEN
-	
-	
-
+	showingObject = false
+	hidden()
 	
 
-func _process(_delta):
+"""
+Menu State As Functions
+Features:
+	(1) Manipulates state machine of Menu object 
+	(2) Exports state machine via function to Touch Screen HUD UI menu button presses
+"""
+
+func showing():
 	
-
-	
-	#_hide_some_menu_options() #turning this off temporarily to debug the debug singleton
-	"Visibility State Machine"
-	match menu_state:
-		SHOWING:
-			
-			return _menu_showing()
-		HIDDEN:
-			return _menu_not_showing()
+	#print_debug("Showing Menu")
+	set_focus_mode(Control.FOCUS_CLICK)
+	set_mouse_filter(Control.MOUSE_FILTER_STOP)
+	safe_Music.play_track(_ui_sfx)
+	show()
+	emit_signal("menu_showing")
 
 
+func hidden():
+	#print_debug("Hiding Menu")
+	hide()
+	emit_signal("menu_hidden")
+	safe_Music.play_track(_ui_sfx_1)
+	set_focus_mode(Control.FOCUS_NONE)
+	set_mouse_filter(Control.MOUSE_FILTER_IGNORE)
 
-
-func _input(event): 
-	if not event.is_action_pressed("menu"): # Guard Clause
-		return
-	
-	
-	#print_debug("Menu Is Pressed")
-	if menu_state == HIDDEN:
-		print_debug("Showing Menu")
-		
-		menu_state = SHOWING
-		
-		set_focus_mode(Control.FOCUS_CLICK)
-		set_mouse_filter(Control.MOUSE_FILTER_STOP)
-		safe_Music.play_track(_ui_sfx)
-		
-		#print_debug("Current Scene debug 1: ", Globals.curr_scene, "/", Globals.current_level)
-		emit_signal("menu_showing")
-		
-		return menu_state
-	if menu_state== SHOWING:
-		
-		print_debug("Hiding Menu")
-		menu_state = HIDDEN
-		
-		set_focus_mode(Control.FOCUS_NONE)
-		set_mouse_filter(Control.MOUSE_FILTER_IGNORE)
-		
-		safe_Music.play_track(_ui_sfx_1)
 		
 		
+		
+		
+		
+		#depreciated signals
+		# duplicated signals?
 		# check if current scene is a global scene or a game scene
-		if !Globals.global_scenes.has(Globals.curr_scene):
-			emit_signal("menu_hidden_in_game")
+		#if !safe_Globals.global_scenes.has(safe_Globals.curr_scene):
+		#	emit_signal("menu_hidden_in_game")
 		
 		# menu hidden outside main game loop
-		if Globals.global_scenes.has(Globals.curr_scene):
+		#if safe_Globals.global_scenes.has(safe_Globals.curr_scene):
 			#print_debug("Current Level Debug 2: ", Globals.current_level)
-			emit_signal("menu_hidden_in_ui")
+		#	emit_signal("menu_hidden_in_ui")
 		
-		return menu_state
+		#return menu_state
 		
 	
-	get_tree().set_input_as_handled()
+	#get_tree().set_input_as_handled()
 
 
 func _on_new_game_pressed(): #breaks the Globals.current_level script
@@ -197,7 +194,7 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 		
 
 		# shance scene to loading scene with nspecialized logic for device loadi handling
-		safe_Utils.Functions.change_scene_to(Globals.loading_scene,get_tree() )
+		safe_Utils.Functions.change_scene_to(safe_Globals.loading_scene,get_tree() )
 		
 		# Required Variables
 		#player: Array, 
@@ -221,10 +218,27 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 		return 0
 
 #Handles Displaying the menu
-func _menu_showing(): 
-	"Menu Logic"
-	enabled = true 
-	return show()
+
+""" Menu Function Connected To Touch interface HUD"""
+func _menu_button_pressed() -> bool: 
+	"All Menu Visibility Logic"
+	
+	print_debug("Menu Button Pressed/ ", self.name, "/", showingObject)
+	#menu_state = SHOWING
+	if !showingObject: 
+		showing()
+		#hidden()
+		showingObject = true
+		return showingObject
+	
+	if showingObject : 
+		hidden()
+		showingObject = false
+		return showingObject
+	return showingObject
+	
+	
+	#return show() if visible else hide()
 
 #Handles Hiding the menu
 func _menu_not_showing():

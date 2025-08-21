@@ -13,9 +13,30 @@ banner_size = "BANNER"
 rewarded_id = "ca-app-pub-3900377589557710/4046256488"
 child_directed = true
 
+[node name="AdsTimer" type="Timer" parent="."]
+wait_time = 360.0
+one_shot = true
+autostart = true
+
+[node name="RainsTimer" type="Timer" parent="."]
+wait_time = 400.0
+autostart = true
+
+[node name="ScreenTimer" type="Timer" parent="."]
+wait_time = 250.0
+autostart = true
+
+[node name="OrientationTimer" type="Timer" parent="."]
+wait_time = 200.0
+autostart = true
+
 [connection signal="banner_failed_to_load" from="AdMob" to="." method="_on_AdMob_banner_failed_to_load"]
 [connection signal="banner_loaded" from="AdMob" to="." method="_on_AdMob_banner_loaded"]
 [connection signal="rewarded" from="AdMob" to="." method="_on_AdMob_rewarded"]
 [connection signal="rewarded_video_failed_to_load" from="AdMob" to="." method="_on_AdMob_rewarded_video_failed_to_load"]
 [connection signal="rewarded_video_loaded" from="AdMob" to="." method="_on_AdMob_rewarded_video_loaded"]
 [connection signal="rewarded_video_opened" from="AdMob" to="." method="_on_AdMob_rewarded_video_opened"]
+[connection signal="timeout" from="AdsTimer" to="." method="_on_AdsTimer_timeout"]
+[connection signal="timeout" from="RainsTimer" to="." method="_on_RainsTimer_timeout"]
+[connection signal="timeout" from="ScreenTimer" to="." method="_on_ScreenTimer_timeout"]
+[connection signal="timeout" from="OrientationTimer" to="." method="_on_OrientationTimer_timeout"]

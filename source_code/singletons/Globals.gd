@@ -159,7 +159,7 @@ onready var despawn_fx : PackedScene = load ("res://scenes/UI & misc/DespawnFX.t
 #var tile_map : TileMap
 var OverWorld #: PackedScene
 
-var player_cam : FightCam setget set_PlayerCam, get_PlayerCam
+var player_cam : Camera2D setget set_PlayerCam, get_PlayerCam
 
 #onready var nodes = [blood_fx,despawn_fx,self]
 func _ready():
@@ -205,9 +205,9 @@ func _go_to_cinematics():
 
 
 "Player Cam Setters and Getters"
-func set_PlayerCam(camera_ref : FightCam):
+func set_PlayerCam(camera_ref : Camera2D):
 	player_cam = camera_ref
 
-func get_PlayerCam() -> FightCam:
+func get_PlayerCam() -> Camera2D:
 	return player_cam
 

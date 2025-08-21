@@ -119,6 +119,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Healthbar.gd"
 }, {
+"base": "HBoxContainer",
+"class": "HealthbarV2",
+"language": "GDScript",
+"path": "res://scenes/UI & misc/HealthbarV2.gd"
+}, {
 "base": "Node2D",
 "class": "ImpactFX",
 "language": "GDScript",
@@ -258,6 +263,11 @@ _global_script_classes=[ {
 "class": "Simulationv1",
 "language": "GDScript",
 "path": "res://singletons/Simulation.gd"
+}, {
+"base": "Node",
+"class": "Simulationv2",
+"language": "GDScript",
+"path": "res://singletons/SimulationV2.gd"
 }, {
 "base": "Node",
 "class": "StateMachine",
@@ -452,6 +462,7 @@ _global_script_class_icons={
 "Game_Menu": "",
 "GlobalsVar": "",
 "Healthbar": "res://resources/misc/Pixel Heart 32x32.png",
+"HealthbarV2": "res://resources/misc/Pixel Heart 32x32.png",
 "ImpactFX": "",
 "InputEventMultiScreenDrag": "",
 "InputEventScreenPinch": "",
@@ -480,6 +491,7 @@ _global_script_class_icons={
 "Scent": "",
 "SignPost": "",
 "Simulationv1": "",
+"Simulationv2": "",
 "StateMachine": "",
 "Stats": "",
 "StatusText": "",

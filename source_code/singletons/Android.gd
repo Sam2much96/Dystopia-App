@@ -60,9 +60,24 @@ var Chrome = null
 # Ad Mob Ads Node
 onready var _ads : AdMob = self.get_child(0)
 onready var ADS_TRIGGERED : bool = false
+onready var TRIGGER_ADS : bool = false
 
 var VIDEO_READY : bool = false
 var BANNER_READY : bool = false
+
+# Particle FX Trigger
+var TRIGGER_RAINS : bool = false
+
+# screen triggers
+var CHECK_ORIENTATION : bool = false
+var TRIGGER_SCREEN : bool = false
+
+onready var adsTimer = $AdsTimer
+onready var rainTimer = $RainsTimer
+onready var screenTimer = $ScreenTimer
+onready var OtTimer = $OrientationTimer
+
+onready var scene_nodes = [adsTimer, rainTimer,screenTimer, OtTimer]
 
 func _ready():
 	
@@ -82,7 +97,7 @@ func _ready():
 		Chrome = Engine.get_singleton("GodotChrome")
 		
 		
-		
+		safe_Utils.UI.check_for_broken_links(scene_nodes)
 		
 		# Connect Signals 
 		connect("player_ready",self, "_on_player_ready")
@@ -184,15 +199,20 @@ func _process(_delta):
 	"ADS OPTIMIZATION"
 	# ads startup hogs startup time cuz it's a singleton
 	# i'll instead trigger it using the simulaiton frame counter
-	if _simulation.frame_counter % 1000 == 0 && !ADS_TRIGGERED: # trigger on the 1000th frame
+	#print_debug("delta debg",_simulation.frame_counter)
+	if TRIGGER_ADS && !ADS_TRIGGERED: # trigger ads after 3 minutes
 		# Enable ads here
 		ads()
 	
 	"""
 	RAIN FX OPTIMIZATION
+	
+	to do:
+		(1) decouple nested if statements
+		(2) Create separate timer objects with instance checking and programatic object signal connections for simulation triggers
 	"""
 	
-	if _simulation.frame_counter % 200 == 0 && is_instance_valid(_simulation.rainFX): 
+	if TRIGGER_RAINS && is_instance_valid(_simulation.rainFX): 
 
 		# Rain Logic In A Single Function
 		if _debug.fps_debug_() > MINUMUM_FPS:
@@ -232,21 +252,27 @@ func _process(_delta):
 	# (1) Checks Device  Screen orentation
 	# (2) Sets the Global Script for Screen Orientation
 	#(3) This ALgorithm should be run periodically on a separate device like mobile every 100th frame
-	if _simulation.frame_counter % 250 == 0 && is_instance_valid(GameHUD_):
+	# (4) Should ideally be a low level signal connected to the core engine
+	# (5) Should emit signals if orientation changes
+	if CHECK_ORIENTATION && is_instance_valid(GameHUD_):
 		# update local screen orientation 
 		local_screen_orientation = GameHUD_.TouchInterface.Screen.Orientation()
+		CHECK_ORIENTATION = false # reset timer
 	
 	# Sets Screen Orientation 
-	if _simulation.frame_counter % 120 == 0 && is_instance_valid(GameHUD_):
+	# depreciate and connect to signals instead (1/2)
+	# 
+	if TRIGGER_SCREEN && is_instance_valid(GameHUD_):
+		# set the button layout to the screen orientation
 		
 		# compare previous orientation and adjust hud
 		#if local_screen_orientation != initial_screen_orientation:
 		#Invalid get index 'Screen' (on base: 'Nil').
 		#jjj
 		GameHUD_.TouchInterface.Screen._adjust_touchHUD_length(GameHUD_.Anim) # sets touch interface layout
-	
-	
-	if _simulation.frame_counter % 130 == 00 && is_instance_valid(ingameMenu):
+		
+		
+		
 		"""
 		
 		UPSCALING && DOWNSCALING MENU
@@ -262,6 +288,7 @@ func _process(_delta):
 		if local_screen_orientation == 0:
 			safe_Utils.UI.upscale_ui(ingameMenu, ingameMenu.initialScale, ingameMenu.get_position())
 		
+		TRIGGER_SCREEN = false # turn off screen adjustments
 
 func _on_player_ready():
 	#if _is_android == true:
@@ -363,3 +390,30 @@ class Advertising:
 		
 		# log the data
 
+
+
+func _on_Timer_timeout():
+	pass # Replace with function body.
+
+
+func _on_AdsTimer_timeout():
+	# Trigger Ads
+	TRIGGER_ADS = true
+
+
+func _on_RainsTimer_timeout():
+	TRIGGER_RAINS = true
+
+
+func _on_OrientationTimer_timeout():
+	CHECK_ORIENTATION = true
+	#print_debug("Screen Orientation Triggered")
+
+
+func _on_ScreenTimer_timeout():
+	TRIGGER_SCREEN = true
+	#print_debug("Screen Resizing Triggered")
+
+
+func _exit_tree(): # Delete all TImer noews
+	Utils.MemoryManagement.queue_free_array(scene_nodes)

@@ -13,7 +13,7 @@
 # Contains Logic for querying internet access and Web3 Access.
 # ************************************************* 
 # Features :
-# (1) Smart contract implementation using GDteal and Algodot (done)
+# (1) Smart contract implementation using GDteal and Algodot (0/4)
 # (2) Multiplayer lobby room logic And Client and Server Netcodes (Done)
 # (3) Youtube Download Streamer Logic impementation (1/3 using godot-rustube)
 # (4) Proper Documentation (done)

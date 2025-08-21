@@ -21,11 +21,11 @@
 # 
 # (1) Currently Only Works in Local Player not Networked Multiplayer (fixed)
 # (2) Does'nt scale well on Mobile Devices (Fixed)
-# (3) Requires Reimplementation and Animation Player (Full Refactor)
+# (3) Requires Reimplementation and Animation Player (1/2)
 # *************************************************
 extends HBoxContainer
 
-class_name Healthbar, 'res://resources/misc/Pixel Heart 32x32.png'
+class_name HealthbarV2, 'res://resources/misc/Pixel Heart 32x32.png'
 
 """
 Connects to the player node,shows the player object hitpoints in the form of hearts,
@@ -33,11 +33,11 @@ and connects a signal to update the healthbar once player hitpoint changes
 """
 
 var player : Player 
-var networkPlayer : KinematicBody2D
+var networkPlayer : KinematicBody2D #Player_v2_networking
 var player_group : Array = []
 
 # Idea:  Rather Than Instancing the scene, why not duplicate?
-onready var HeartScene : PackedScene = load("res://scenes/UI & misc/Heart.tscn")
+#onready var HeartScene : PackedScene = load("res://scenes/UI & misc/Heart.tscn")
 onready var heart_instance : TextureRect = $heart #: PackedScene = preload("res://scenes/UI & misc/Heart.tscn")
 onready var heart_empty : TextureRect #= $heart_empty #: PackedScene = preload ("res://scenes/UI & misc/HeartEmpty.tscn")
 
@@ -174,3 +174,11 @@ func _on_health_changed(new_hp: int):
 					to_remove_hearts -= 1
 					break  # Ensure only one heart is hidden per loop iteration
 
+
+func _exit_tree(): # clear variable objects for garbage collector
+	player = null
+	networkPlayer = null
+	#HeartScene = null
+	heart_empty = null
+	
+	pass

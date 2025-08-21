@@ -2,9 +2,9 @@
 # godot3-Dystopia-game by INhumanity_arts
 # Released under MIT License
 # *************************************************
-# Simulation Version 1
+# Simulation Version 2
 # Handles all Non Player Simulations within the game core loop
-# A Good Simulator Predicts Everythin
+# A Good Simulation Predicts Everything
 # *************************************************
 # Features:
 # (1) Shares Game Code With the Networking, Player& Enemy scripts
@@ -15,7 +15,7 @@
 # Bugs:
 # (1) Client is authoritative Bug
 # (2) State Buffer is the same bug
-# (3) Simulation delta time should only be used when not in multiplayer
+# (3) Simulation delta time should only be used when not in multiplayer (1/3) refactoring
 # *************************************************
 # To-Do:
 # (1) Implement Timeline
@@ -37,7 +37,7 @@
 
 extends Node
 
-class_name Simulationv1
+class_name Simulationv2
 
 
 enum {SIMULATING, NON_SIMULATING}
@@ -51,7 +51,7 @@ onready var frame_id : int
 # Safe Singleton Pointers
 onready var safe_Utils = get_node("/root/Utils")
 
-# Frame Counter
+# Frame Counter/ Multiplayer Delta
 export (int) var frame_counter = 0
 
 var last_update = -1
@@ -228,14 +228,14 @@ func simulate(id : int): # playerclass controls all player networkinf objects
 		Networking.broadcast_world_positions()
 
 
-func _process(_delta):
+func _process(delta):
 	
-	frame_counter += 1
+	frame_counter += delta
+	#frame_counter += 1
 	
 	
 		# Reset Frame Counter TO Conserver Memory
-	if frame_counter >= 1000:
-			frame_counter = 0
+	if frame_counter >= 500: frame_counter = 0
 
 	"""
 	FRAME ID CAPTURE
@@ -245,22 +245,22 @@ func _process(_delta):
 	# 
 	if Networking.GamePlay > 0: # If Multiplayer Network is up & running
 		
-
+		# temporarily disabling for refactoring AUg 21/ 2025
 		
 		# Gets the Frame ID of this client on every 12th frame
-		if (frame_counter) % 12 == 0: # every 12th frame
-			frame_id = get_tree().get_frame() # Get the current frame id
+		#if (frame_counter) % 12 == 0: # every 12th frame
+		#	frame_id = get_tree().get_frame() # Get the current frame id
 			#print_debug(frame_id)
 		
 		"Auto Broadcast Server Database"
 		# (1) Broadcasts Server Database to All Connected Players after every 60th frame
 		# (2) Requires finetuning on the greter global internet for optimal frame times
 		# Enabled For MMO Gameplay with Dedicated Server
-		if Networking.GamePlay == Networking.MMO_SERVER:
-			if (frame_counter) % 60 == 0: # every 60th frame
+		#if Networking.GamePlay == Networking.MMO_SERVER:
+		#	if (frame_counter) % 60 == 0: # every 60th frame
 			#	
 			#	# Auto Broadcasts Server's Database every 60th frame to all 
-				Networking.broadcast_world_positions()
+		#		Networking.broadcast_world_positions()
 			#pass
 
 
@@ -378,6 +378,8 @@ static func set_position(x : Vector2):
 
 
 func get_frame_counter()-> int:
+	# return this singleton's delta time
+	# suitable for online multiplayer
 	return frame_counter 
 
 

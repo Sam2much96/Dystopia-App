@@ -52,11 +52,11 @@ onready var safe_Utils = get_node("/root/Utils")
 
 
 # Export Null Pointer TO Other Scene Setters
-var menu : Game_Menu
-var TouchInterface : TouchScreenHUD setget set_TouchInterface, get_TouchInterface
+var menu : Game_Menu setget setMenu, getMenu
+var TouchInterface setget set_TouchInterface, get_TouchInterface ##: TouchScreenHUD 
 var _Stats : Stats
 var _Status_text  : StatusText
-var heart_box  : Healthbar
+var heart_box  : HealthbarV2
 var dialog_box : DialogBox
 var Anim : AnimationPlayer
 var children : Array
@@ -108,11 +108,17 @@ func _ready():
 	
 	# Hide Game HUD WHen Ready
 
-func set_TouchInterface(hud : TouchScreenHUD):
+func set_TouchInterface(hud: TouchScreenHUD) :
 	TouchInterface = hud
 
 func get_TouchInterface() -> TouchScreenHUD:
 	return TouchInterface
+
+func setMenu(hud: Game_Menu):
+	menu = hud
+
+func getMenu() -> Game_Menu:
+	return menu
 
 func _exit_tree():
 	# Memory Leak Management

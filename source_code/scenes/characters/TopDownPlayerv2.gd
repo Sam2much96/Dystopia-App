@@ -26,6 +26,7 @@ signal state_changed(state_)
 
 onready var TouchHUD = safe_GameHud.get_TouchInterface()
 
+
 "Triggers a Pause state on the player if dialogue is triggered"
 func _ready():
 	# Connect To Dialogue Singleton
@@ -42,6 +43,7 @@ func _ready():
 		# Connect to attack pressed and roll pressed signals in touch hud object
 		TouchHUD.connect("attack_pressed", self, "attack")
 		TouchHUD.connect("roll_pressed", self, "roll")
+		TouchTimer.connect("timeout",self,"idle")
 		
 	if (!is_instance_valid(TouchHUD)):
 		push_error("Debug Touch HuD -> Player Connection")
@@ -108,6 +110,9 @@ func roll():
 	print_debug("roll state triggered")
 	state = TOP_DOWN.STATE_ROLL
 
+func idle():
+	print("idle state triggered")
+	#state = TOP_DOWN.STATE_IDLE 
 
 
 func _physics_process(delta):
@@ -367,3 +372,10 @@ func state_machine_logic(node, peer_id : int):
 		node.anim = new_anim
 		node.animation.play(anim)
 	
+
+
+func _on_TouchTimer_timeout():
+	# reset touch input
+	# temporaray fix until process state machine is decoupled into functions
+	# and into a leaner state machine with few ifs / adapted for mobile
+	idle()

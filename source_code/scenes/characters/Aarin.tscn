@@ -1413,6 +1413,10 @@ __meta__ = {
 [node name="ScentTimer" type="Timer" parent="."]
 wait_time = 0.1
 
+[node name="TouchTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
 [node name="Impact" parent="." instance=ExtResource( 5 )]
 position = Vector2( 3.28052, -22.3431 )
 scale = Vector2( 0.590637, 0.590637 )
@@ -1446,3 +1450,4 @@ anims/walk_right = SubResource( 17 )
 anims/walk_up = SubResource( 18 )
 
 [connection signal="area_entered" from="hurtbox" to="." method="_on_hurtbox_area_entered"]
+[connection signal="timeout" from="TouchTimer" to="." method="_on_TouchTimer_timeout"]

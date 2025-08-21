@@ -70,7 +70,7 @@ export(int) var facing = FACING.DOWN
 #********Miscellaneous***********#
 onready var player_camera: Camera2D = $camera # the player's camera
 onready var animation: AnimationPlayer = $AnimationTree/anims
-
+onready var TouchTimer : Timer = $TouchTimer
 
 var local_heart_box = null # Pointer To Heart Box HUD
 

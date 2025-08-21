@@ -148,8 +148,8 @@ onready var all_UI_Nodes : Array
 onready var action_buttons : Array 
 
 
-"Scene Tree"
-onready var __scene_tree : SceneTree = get_tree()
+#"Scene Tree"
+#onready var __scene_tree : SceneTree = get_tree()
 
 
 
@@ -234,7 +234,7 @@ func _ready():
 	# debug menu and stat object pointers
 	print_debug("Menu & Stats Debug 2: ", menuObj, "/", StatsObj)
 	
-	
+	push_error("direction logic only accounts for horizontal orientation")
 	
 	######## Begin Setting Nodes #
 	menuButton = $"%menu"
@@ -387,7 +387,8 @@ func _input(event):
 	# (2) Write proper types for input manager
 	# it captures event but doesnt propagate each of these events
 	# (3) Map each action to multiple actions
-	
+	# Bugs:
+	# (1) Direction logic only accounts for horizontal screen orientation, add logic to account for screen orientation
 	if (event is InputEventMultiScreenDrag or
 		event is InputEventSingleScreenDrag or
 		event is InputEventScreenPinch or
@@ -406,7 +407,9 @@ func _input(event):
 				
 				"serialise touch input to direction"
 				# hacky method used to control player's direction
+				
 				direction = (event.position - center).normalized() #get viewport size from  screen class
+				
 				
 				# to do:
 				# (1) implement direcitonal logic for android's different screen orientations
@@ -414,7 +417,7 @@ func _input(event):
 				
 			else: 
 				touch_pos.erase(event.to_string())
-				#direction = Vector2.ZERO
+				direction = Vector2.ZERO # reset the direction
 			get_tree().set_input_as_handled()
 		
 	if event is InputEventMultiScreenDrag:

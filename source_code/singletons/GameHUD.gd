@@ -49,16 +49,15 @@ class_name GameHUD
 #onready var globalInput = get_tree().get_root().get_node("/root/GlobalInput")
 onready var android_ = get_node("/root/Android")
 onready var safe_Utils = get_node("/root/Utils")
-
+onready var safe_Globals = get_node("/root/Globals")
 
 # Export Null Pointer TO Other Scene Setters
 var menu : Game_Menu setget setMenu, getMenu
-var TouchInterface setget set_TouchInterface, get_TouchInterface ##: TouchScreenHUD 
-var _Stats : Stats
+var TouchInterface : TouchControls setget set_TouchInterface, get_TouchInterface ##: TouchScreenHUD 
+var _Stats : Stats setget setStatsHUD, getStatsHUD
 var _Status_text  : StatusText
 var heart_box  : HealthbarV2
 var dialog_box : DialogBox
-var Anim : AnimationPlayer
 var children : Array
 
 
@@ -82,9 +81,9 @@ func _ready():
 		dialog_box =$"%Dialog_box"
 	if TouchInterface == null:
 		TouchInterface = $"%TouchInterface"
-	Anim = $AnimationPlayer
+
 	
-	children = [menu, TouchInterface, _Stats, _Status_text,dialog_box, heart_box, Anim]
+	children = [menu, TouchInterface, _Stats, _Status_text,dialog_box, heart_box]
 	
 	#print_debug("HUD Debug 1 :", children)
 	
@@ -103,15 +102,18 @@ func _ready():
 		android_.GameHUD_ = self
 	
 	#Update Current Scene Whenever Scene Tree Changes
-	Globals.update_curr_scene()
+	safe_Globals.update_curr_scene()
 	
 	
 	# Hide Game HUD WHen Ready
 
-func set_TouchInterface(hud: TouchScreenHUD) :
+# Connects to the following:
+# (1) Player Object
+# (2) Android Object
+func set_TouchInterface(hud: TouchControls) :
 	TouchInterface = hud
 
-func get_TouchInterface() -> TouchScreenHUD:
+func get_TouchInterface() -> TouchControls:
 	return TouchInterface
 
 func setMenu(hud: Game_Menu):
@@ -119,6 +121,12 @@ func setMenu(hud: Game_Menu):
 
 func getMenu() -> Game_Menu:
 	return menu
+
+func setStatsHUD(hud : Stats):
+	_Stats = hud
+
+func getStatsHUD()-> Stats:
+	return _Stats
 
 func _exit_tree():
 	# Memory Leak Management

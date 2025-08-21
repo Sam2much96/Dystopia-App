@@ -64,7 +64,7 @@ var _price_label : Label
 var kill_count : Label
 
 # Backup Pointer to Inventory Singleton
-onready var _inventory = get_tree().get_root().get_node("/root/Inventory")
+#onready var _inventory = get_node("/root/Inventory")
 
 # Pointer to GLobal Touch HUD
 
@@ -244,7 +244,7 @@ func _update_inventory_listing():
 	# Updates the Inventroy Button with the Items the Player holds
 	# Note: As the Number of Items grow, inventory might require a more encompassing method && UI
 	var text : String = ""
-	var inventory : Dictionary = _inventory.list()
+	var inventory : Dictionary = safeInventory.list()
 	var _inventory_size : int = inventory.size()
 	
 	#print_debug("Inventory Size Debug : ", _inventory_size) # For Debug Purposes only
@@ -301,7 +301,7 @@ func _update_inventory_listing():
 					
 					# connect button to inventory singleton method
 					#
-					new_item_button.connect("pressed", _inventory, "useItem",[item, 1]) # button presses 
+					new_item_button.connect("pressed", safeInventory, "useItem",[item, 1]) # button presses 
 					
 					# Create a pointer to Inventory ui buttons
 					_stats_buttons.append(new_item_button)
@@ -319,6 +319,7 @@ Enable And Disable Stats UI & CHildern
 """
 
 func _enable():
+	print_debug("stats enable triggered")
 	enabled = true
 	visible = enabled
 	emit_signal('_enabled')
@@ -326,8 +327,8 @@ func _enable():
 	get_tree().paused = enabled
 	
 	
-	
-	call_deferred("_fetch_prices")
+	# temporarily disabling for api refactor to v2 Aug 21/2025
+	#call_deferred("_fetch_prices")
 	
 	
 	_update_quest_listing()

@@ -26,7 +26,9 @@ export (int) var LineCount : int = 0
 
 
 func _ready():
-	mini_map_gui.connect("gui_input", self, "_on_minimap_gui_input")
+	# connect minimap draw function
+	if !mini_map_gui.is_connected("gui_input", self, "_on_minimap_gui_input") :
+		mini_map_gui.connect("gui_input", self, "_on_minimap_gui_input")
 
 
 func _input(event):
@@ -99,11 +101,12 @@ func _on_Pen_pressed() -> int:
 	return 0
 
 
-func _on_minimap_gui_input(event):
+func _on_minimap_gui_input(_event):
 	enabled = true
 
 
 func _exit_tree():
+	LineCount = 0
 	# disconnect signals to allow object gb collection
 	mini_map_gui.disconnect("gui_input", self, "_on_minimap_gui_input")
 	self.queue_free()

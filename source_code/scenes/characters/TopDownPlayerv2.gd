@@ -13,17 +13,18 @@
 # (1) Refactor Player animation Logic into core Player class (DOne)
 # (2) Player Animation Script Needs refactoring to Play animation as an extended method 
 # (3) Refactor Animation State Machine To Use Animation Tree Blend States Locally and In Simulation Logic
+# (4) Serialise Top DOwn player states to functions and connect Texture Button button down signal to the attack function
 # *************************************************
 
 extends Player
 
 
-class_name Player_v1_TopDown
+class_name Player_v2_TopDown
 
 signal state_changed(state_)
 
 
-
+onready var TouchHUD = safe_GameHud.get_TouchInterface()
 
 "Triggers a Pause state on the player if dialogue is triggered"
 func _ready():
@@ -35,7 +36,16 @@ func _ready():
 		push_error("Error Connecting To The Dialog System")
 		print_debug("Error connecting to dialog system")
 	
-
+	# connect signals to touchscreen hud
+	if (is_instance_valid(TouchHUD)):
+		print_debug("Hud debug: ", TouchHUD)
+		# Connect to attack pressed and roll pressed signals in touch hud object
+		TouchHUD.connect("attack_pressed", self, "attack")
+		TouchHUD.connect("roll_pressed", self, "roll")
+		
+	if (!is_instance_valid(TouchHUD)):
+		push_error("Debug Touch HuD -> Player Connection")
+	
 
 func _on_dialog_started():
 	state = TOP_DOWN.STATE_BLOCKED
@@ -87,6 +97,18 @@ func _unhandled_input(event):
 	
 	# Online Player Input is captured in PlayerOnline.gd script
 	
+
+# exported player state implemented for new UI refactor Aug 21/2025
+
+func attack():
+	print_debug("attack state triggered")
+	state = TOP_DOWN.STATE_ATTACK
+
+func roll():
+	print_debug("roll state triggered")
+	state = TOP_DOWN.STATE_ROLL
+
+
 
 func _physics_process(delta):
 	

@@ -212,7 +212,12 @@ _global_script_classes=[ {
 "base": "Player",
 "class": "Player_v1_TopDown",
 "language": "GDScript",
-"path": "res://scenes/characters/TopDownPlayer.gd"
+"path": "res://scenes/characters/TopDownPlayerv1.gd"
+}, {
+"base": "Player",
+"class": "Player_v2_TopDown",
+"language": "GDScript",
+"path": "res://scenes/characters/TopDownPlayerv2.gd"
 }, {
 "base": "Player_v1_TopDown",
 "class": "Player_v2_networking",
@@ -481,6 +486,7 @@ _global_script_class_icons={
 "NPC": "",
 "Player": "",
 "Player_v1_TopDown": "",
+"Player_v2_TopDown": "",
 "Player_v2_networking": "",
 "Player_v3_Platformer": "",
 "Pond": "",

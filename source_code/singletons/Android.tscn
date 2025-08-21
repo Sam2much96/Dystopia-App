@@ -23,11 +23,11 @@ wait_time = 400.0
 autostart = true
 
 [node name="ScreenTimer" type="Timer" parent="."]
-wait_time = 250.0
+wait_time = 160.0
 autostart = true
 
 [node name="OrientationTimer" type="Timer" parent="."]
-wait_time = 200.0
+wait_time = 140.0
 autostart = true
 
 [connection signal="banner_failed_to_load" from="AdMob" to="." method="_on_AdMob_banner_failed_to_load"]

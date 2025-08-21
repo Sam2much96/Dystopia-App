@@ -1,6 +1,6 @@
 [gd_scene load_steps=30 format=2]
 
-[ext_resource path="res://scenes/characters/TopDownPlayer.gd" type="Script" id=1]
+[ext_resource path="res://scenes/characters/TopDownPlayerv2.gd" type="Script" id=1]
 [ext_resource path="res://resources/Aarin/player_tileset_128x128.webp" type="Texture" id=2]
 [ext_resource path="res://scenes/Shaders/BlueNoise.webp" type="Texture" id=3]
 [ext_resource path="res://scenes/Shaders/DirectionalBlur.shader" type="Shader" id=4]
@@ -1364,8 +1364,6 @@ script = ExtResource( 1 )
 __meta__ = {
 "_editor_description_": ""
 }
-WALK_SPEED = 400
-ROLL_SPEED = 1500
 
 [node name="sprite" type="Sprite" parent="."]
 material = SubResource( 1 )

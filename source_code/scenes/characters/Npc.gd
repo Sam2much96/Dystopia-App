@@ -73,9 +73,9 @@ func _process(_delta):
 		
 		
 		# calculated every 5th frame
-		if simulation_.frame_counter % 5 == 0:
-			
-			if __body != null:
+		#if simulation_.frame_counter % 5 == 0:
+		
+		if __body != null:
 			 
 			
 			# Triggers Body Movement away from Player Object
@@ -89,7 +89,7 @@ func _process(_delta):
 				
 				# Run Away From The Player
 				# TO Do : Rewrite to use tween and navigation layer
-				move_and_slide( Behaviour.EscapePlayer(self, __body))
+			move_and_slide( Behaviour.EscapePlayer(self, __body))
 				
 
 		

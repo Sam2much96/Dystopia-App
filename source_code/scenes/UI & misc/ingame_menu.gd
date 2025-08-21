@@ -150,7 +150,7 @@ func showing():
 	safe_Music.play_track(_ui_sfx)
 	show()
 	emit_signal("menu_showing")
-
+	
 
 func hidden():
 	#print_debug("Hiding Menu")
@@ -297,7 +297,7 @@ func _exit_tree():
 	#
 	# Clears all ui buttons
 	
-	safe_Utils.MemoryManagement.queue_free_array(MenuButtons)
+	#safe_Utils.MemoryManagement.queue_free_array(MenuButtons)
 	safe_Music._notification(NOTIFICATION_UNPAUSED) #resets music when exiting scene tree
 	self.queue_free()
 

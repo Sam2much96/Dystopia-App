@@ -111,7 +111,7 @@ func hide_dialogue(): #Hides the Dialogue box
 
 func _exit_tree():
 	# Memory Management for Node
-	Utils.Functions
+	Utils.MemoryManagement.queue_free_array(all_dialogue_nodes)
 
 func _on_Timer_timeout():
 	# signal connected to TouchScreen HUD reset animation

@@ -37,6 +37,8 @@ onready var film : String = safe_Globals.global_scenes.get("cinematics")
 onready var cinematics : PackedScene = load(film) # Bug : 
 #var index : int = 0
 
+#onready var coinText : TextureRect = $TextureRect
+onready var ui_Node : Control = $ui
 onready var play_button : Button = $ui/grid/PlayButton/play
 #onready var dialgue_box = $Dialog_box
 onready var language : OptionButton = $ui/grid/language
@@ -47,13 +49,13 @@ onready var label_spacer2 : Label = $ui/grid/label_spacer2
 onready var label_spacer3 : Label =$ui/grid/label_spacer3
 
 onready var UI_buttons : Array 
-
-onready var gameMenu = get_node("/root/GameHud").getMenu()
+onready var safe_GameHUD : GameHUD = get_node("/root/GameHud")
+onready var gameMenu = safe_GameHUD.getMenu()
 
 func _ready():
 
 	UI_buttons = [
-		play_button,  
+		play_button, ui_Node,  
 		language, label_spacer, 
 		label_spacer2, label_spacer3
 	]
@@ -68,8 +70,8 @@ func _ready():
 	# Visibility signals
 	# connect game Menu visibility signals to this node's visibility
 	if is_instance_valid(gameMenu):
-		gameMenu.connect("menu_showing",self,"hide")
-		gameMenu.connect("menu_hidden",self,"show")
+		gameMenu.connect("menu_showing",ui_Node,"hide")
+		gameMenu.connect("menu_hidden",ui_Node,"show")
 		
 	if !is_instance_valid(gameMenu):
 		push_error("Debug Game Menu / Form signal connections")

@@ -94,7 +94,8 @@ func _ready():
 		
 		# load Godot Chrome Browser
 		# To do : write separate godotchrome class 
-		Chrome = Engine.get_singleton("GodotChrome")
+		if (Engine.get_singleton("GodotChrome")):
+			Chrome = Engine.get_singleton("GodotChrome")
 		
 		
 		safe_Utils.UI.check_for_broken_links(scene_nodes)
@@ -258,20 +259,7 @@ func _process(_delta):
 		# update local screen orientation 
 		local_screen_orientation = GameHUD_.TouchInterface.Screen.Orientation()
 		CHECK_ORIENTATION = false # reset timer
-	
-	# Sets Screen Orientation 
-	# depreciate and connect to signals instead (1/2)
-	# 
-	if TRIGGER_SCREEN && is_instance_valid(GameHUD_):
-		# set the button layout to the screen orientation
-		
-		# compare previous orientation and adjust hud
-		#if local_screen_orientation != initial_screen_orientation:
-		#Invalid get index 'Screen' (on base: 'Nil').
-		#jjj
-		GameHUD_.TouchInterface.Screen._adjust_touchHUD_length(GameHUD_.Anim) # sets touch interface layout
-		
-		
+
 		
 		"""
 		

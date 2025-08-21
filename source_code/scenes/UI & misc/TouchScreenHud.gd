@@ -104,8 +104,9 @@ export (bool) var DEBUG = false # map this option to multi touch debug and debug
 
 #signal menu
 #signal interract
-signal attack
-#signal stats
+signal roll_pressed
+signal attack_pressed
+#signal stats_pressed
 #signal comics
 #signal reset
 
@@ -134,8 +135,8 @@ var _right : TextureButton
 #'UI control Parents'
 
 "Dimensions Calculator"
-var dimensions : Vector2  
-var dimensional_diff : Vector2  
+#var dimensions : Vector2  
+#var dimensional_diff : Vector2  
 
 #var buttons_positional_data : Array
 
@@ -190,13 +191,11 @@ onready var safe_GameHUD = get_node("/root/GameHud")
 onready var safe_Android = get_node("/root/Android")
 onready var safe_Globals = get_node("/root/Globals")
 onready var safe_Debug = get_node("/root/Debug")
-
-# temporarily disabled for refactoring Aug 21
-#onready var safe_Simulation = get_node("/root/Simulation")
+onready var safe_Simulation = get_node("/root/Simulation")
 
 # Pointer to menu node 
-var menuObj : Game_Menu #= safe_GameHUD.menu #$"%Menu " #Android.ingameMenu
-onready var StatsObj = safe_GameHUD._Stats#$"%Stats" # : Stats
+var menuObj : Game_Menu 
+onready var StatsObj = safe_GameHUD.getStatsHUD()
 
 onready var op_sys : String = safe_Globals.os
 
@@ -211,10 +210,8 @@ var TouchInterface : TouchScreenHUD setget set_touchHUD, get_touchHUD
 var Stats_ : Stats setget set_statsHUD, get_statsHUD
 var _Status_text : StatusText setget set_statusText, get_statusText
 
-# Game HUD + set get functions
-#onready var gameHUD = get_parent() #setget set_gameHUD, get_gameHUD #: GameHUD
 
-
+var PlayerObj : Player 
 
 var NodeInput = Input # Generates this nodes Node _input()
 
@@ -277,12 +274,7 @@ func _ready():
 		
 		"Touch UI Visibility"
 		# moved to ANdroid singleton
-		
-		
-		
-		
-		
-		
+
 		
 		"Display Screen Calculations"
 		Screen.display_calculations(get_tree().get_root(), safe_Utils)
@@ -322,17 +314,23 @@ func _ready():
 		if (!menuButton.is_connected("button_down", menuObj, "_menu_button_pressed")):
 			push_error("Menu Button is Disconnected from Menu object:/ "+ str(menuButton) + str(menuObj))
 		
-		# Connects Stats Ui Signals To Touchscreen HUD for Mobile
-		StatsObj.connect("_enabled", self ,"status")
-		StatsObj.connect("_not_enabled", self ,"show_all_buttons")
+		#if is_instance_valid(StatsObj):
+			#stats_.connect("button_down",StatsObj,"_enable") # connect menu button to stats objec
+			
+			# Connects Stats Ui Signals To Touchscreen HUD for Mobile
+			#StatsObj.connect("_enabled", self ,"status")
+			#StatsObj.connect("_not_enabled", self ,"show_all_buttons")
 		
-		if (
-			StatsObj.is_connected("_enabled", self ,"status") &&
-			StatsObj.is_connected("_not_enabled", self ,"show_all_buttons") != true 
-		) :
-			push_error("Stats x TouchHUD signal is broken")
+			#connect("stats_pressed", StatsObj, "_enabled")
 		
-		
+		#	if (
+		#		StatsObj.is_connected("_enabled", self ,"status") &&
+		#		StatsObj.is_connected("_not_enabled", self ,"show_all_buttons") != true 
+		#	) :
+		#		push_error("Stats x TouchHUD signal is broken")
+			
+		if !is_instance_valid(StatsObj):
+			push_error("Stats Object is Invalid, debug stack")
 		
 		menu_() # triggers default menu scene on start of game application
 	if not enabled:
@@ -825,21 +823,35 @@ func _on_stats_pressed():
 	return 0
 
 
+func _on_stats_toggled(button_pressed):
+	print_debug("stats pressed 2")
+	if button_pressed: 
+		StatsObj._enable()
+		status() # change ui to status states
+	else: 
+		StatsObj._disable()
+		show_all_buttons() #reset ui
 
 func _on_interact_pressed():
 	print_debug("Interract Pressed")
 	return 0 
 
-"Programmatically Press Buttons"
-
+"Texture Button UI "
+# features:
+# (1) Buttons connected from TouchScreen HUD to Stats and Player Objects
+# (2) Connects to Player object via signals and directly to GameHUD children objects
 func _on_roll_pressed():
-	#print_debug("Roll Button Pressed")
-	#return parse_input(NodeInput,__scene_tree, safe_Simulation,"roll", true)
+	print_debug("Roll Button Pressed")
+	#return safe_GameHUD.parse_input(NodeInput,get_tree(), safe_Simulation,"roll", true)
+	emit_signal("roll_pressed")
+	
 	return 0
 
 func _on_slash_pressed():
-	#print_debug("Attack Button Pressed")
-	#return parse_input(NodeInput,__scene_tree,safe_Simulation,"attack", true)
+	#return safe_GameHUD.parse_input(NodeInput,__scene_tree,safe_Simulation,"attack", true)
+	print_debug("Attack Button Pressed")
+	emit_signal("attack_pressed")
+	
 	return 0
 
 func _on_right_pressed():
@@ -924,6 +936,7 @@ func _on_interact_button_up():
 
 func _on_interact_button_down():
 	#return parse_input(node_input,__scene_tree,safe_Simulation,"interact", true)
+
 	return 0
 
 func _on_roll_button_up():
@@ -932,6 +945,7 @@ func _on_roll_button_up():
 
 func _on_roll_button_down():
 	#return parse_input(node_input,__scene_tree,safe_Simulation,"roll", true)
+
 	return 0
 
 func _on_slash_button_up():
@@ -1095,8 +1109,9 @@ class Screen  :
 	# (2) Sets the Global Script for Screen Orientation
 	#(3) This ALgorithm should be run periodically on a separate device like mobile
 	static func Orientation() -> int:
-		print_debug("running orientation algorithm")
-		print_stack()
+		# first called in Android singleton onready variable for the inital Screen orientation 
+		#print_debug("running orientation algorithm")
+		#print_stack()
 		'Screen Size Resolution'
 		var screenSize : Vector2
 		
@@ -1227,39 +1242,6 @@ class Screen  :
 		]
 		return buttons_positional_data
 	
-	
-	static func _adjust_touchHUD_length(Anim : AnimationPlayer):
-		
-		# *************************************************
-		"Touch Screen UI"
-		#
-		# Features
-		# (1) Uses a Global Screen Orienation variable
-		# (2) Uses an Animation Player to Set Node Position
-		#
-		# Bugs
-		# (1) Disaligns on Different Mobile Devices
-		# To Do
-		# (1) Implement Globals Screnn Class Calculations
-		# (2) Use Scene Display Calculations to Fix Misalignment Bug on Mobile Devices 
-		# (3) Implement Calculations in the Animation Player
-		# *************************************************
-		
-		
-		
-		#'Changes the button Layout depending on the screen orientation for Mobile UI'
-		#implement joystick and D-pad variations
-		#print_stack() # for debugging multiple method calls
-		if Globals.screenOrientation == 1 : #&& Globals.direction_control == Globals._controller_type[2]: #worksif _action_button_showing == false
-			Anim.play("SCREEN_VERTICAL");
-		#if Globals.screenOrientation == 1 && Globals.direction_control == Globals._controller_type[1]: #works
-		#	Anim.play("SCREEN_VERTICAL");
-		##If screen Is Horizontal, it would be PC UI, making this code obsolete
-		elif Globals.screenOrientation == 0:
-			Anim.play("SCREEN_HORIZONTAL");
-		else: pass
-	
-
 
 
 

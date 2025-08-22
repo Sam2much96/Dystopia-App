@@ -15,6 +15,7 @@
 # (5) Connect signal to Wallet Send Txn once rewarded videocloses 
 # (6) Decision dialog is a global and needs a simpler way to create decision dialogs
 # (7) Dialogbox should extend pop up dialog for better quality of life features
+# (8) Update Decision Dialogue
 # *************************************************
 
 extends Node2D

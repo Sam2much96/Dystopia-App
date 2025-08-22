@@ -161,7 +161,8 @@ var direction : Vector2
 
 # This Apps Global Screen Orientation
 enum SCREEN { SCREEN_HORIZONTAL, SCREEN_VERTICAL} 
-
+onready var localscreenOrientation : int #= Screen.Orientation()
+#onready var CHECK_ORIENTATION_TRIGGER : bool = false
 
 "Input Buffer Variables"
 
@@ -206,7 +207,6 @@ onready var op_sys : String = safe_Globals.os
 # *************************************************
 #var menu : Game_Menu setget set_gameMenu, get_gameMenu
 var TouchInterface : TouchScreenHUD setget set_touchHUD, get_touchHUD
-
 var Stats_ : Stats setget set_statsHUD, get_statsHUD
 var _Status_text : StatusText setget set_statusText, get_statusText
 
@@ -226,17 +226,14 @@ func _ready():
 	
 	# Make Global Pointer backup
 	# initial call is from parent class
-	#
-	safe_GameHUD.TouchInterface = self # global input is depreciated to to a Touch Interface sub class
+	safe_GameHUD.TouchInterface = self 
 	safe_Android.TouchInterface = self
 	
 	
 	# debug menu and stat object pointers
 	print_debug("Menu & Stats Debug 2: ", menuObj, "/", StatsObj)
 	
-	push_error("direction logic only accounts for horizontal orientation")
 	
-	######## Begin Setting Nodes #
 	menuButton = $"%menu"
 	_interract = $"%interact"
 	stats_ = $"%stats"
@@ -387,8 +384,7 @@ func _input(event):
 	# (2) Write proper types for input manager
 	# it captures event but doesnt propagate each of these events
 	# (3) Map each action to multiple actions
-	# Bugs:
-	# (1) Direction logic only accounts for horizontal screen orientation, add logic to account for screen orientation
+	
 	if (event is InputEventMultiScreenDrag or
 		event is InputEventSingleScreenDrag or
 		event is InputEventScreenPinch or
@@ -404,13 +400,19 @@ func _input(event):
 			if event.pressed: # Press Down for Tap and Stop
 				touch_pos[event.to_string()] = event.position # save the touch position for use by the child debugging node
 				
+				localscreenOrientation = Screen.Orientation() # update the screen orientation
 				
 				"serialise touch input to direction"
-				# hacky method used to control player's direction
+				# works
+				if localscreenOrientation == 0: #SCREEN_VERTICAL:
+					#direction = (event.position - center).normalized() #get viewport size from  screen class
+					var diff = event.position - center
+					direction = Vector2(diff.x, diff.y).normalized()
 				
-				direction = (event.position - center).normalized() #get viewport size from  screen class
-				
-				
+				# works
+				if localscreenOrientation == 1: #SCREEN_HORIZONTAL
+					direction = (event.position - center).normalized() #get viewport size from  screen class
+					
 				# to do:
 				# (1) implement direcitonal logic for android's different screen orientations
 				#print_debug("direction debug: ", direction) # for debugging 
@@ -1248,3 +1250,7 @@ class Screen  :
 
 
 
+
+
+#func _on_OrientationTimer_timeout():
+#	CHECK_ORIENTATION_TRIGGER = true

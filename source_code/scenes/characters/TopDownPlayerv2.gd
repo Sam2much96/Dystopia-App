@@ -24,7 +24,7 @@ class_name Player_v2_TopDown
 signal state_changed(state_)
 
 
-onready var TouchHUD = safe_GameHud.get_TouchInterface()
+
 
 
 "Triggers a Pause state on the player if dialogue is triggered"
@@ -38,14 +38,14 @@ func _ready():
 		print_debug("Error connecting to dialog system")
 	
 	# connect signals to touchscreen hud
-	if (is_instance_valid(TouchHUD)):
-		print_debug("Hud debug: ", TouchHUD)
+	if (is_instance_valid(safe_TouchScreen)):
+		print_debug("Hud debug: ", safe_TouchScreen)
 		# Connect to attack pressed and roll pressed signals in touch hud object
-		TouchHUD.connect("attack_pressed", self, "attack")
-		TouchHUD.connect("roll_pressed", self, "roll")
+		safe_TouchScreen.connect("attack_pressed", self, "attack")
+		safe_TouchScreen.connect("roll_pressed", self, "roll")
 		TouchTimer.connect("timeout",self,"idle")
 		
-	if (!is_instance_valid(TouchHUD)):
+	if (!is_instance_valid(safe_TouchScreen)):
 		push_error("Debug Touch HuD -> Player Connection")
 	
 
@@ -111,7 +111,7 @@ func roll():
 	state = TOP_DOWN.STATE_ROLL
 
 func idle():
-	print("idle state triggered")
+	print_debug("idle state triggered")
 	#state = TOP_DOWN.STATE_IDLE 
 
 
@@ -379,3 +379,8 @@ func _on_TouchTimer_timeout():
 	# temporaray fix until process state machine is decoupled into functions
 	# and into a leaner state machine with few ifs / adapted for mobile
 	idle()
+
+func _exit_tree():
+	# disconnect buttons for top down player script
+	safe_TouchScreen.disconnect("attack_pressed", self, "attack")
+	safe_TouchScreen.disconnect("roll_pressed", self, "roll")

@@ -56,6 +56,6 @@ func _ready():
 func _exit_tree():
 	# Memory Leak Management
 	Utils.MemoryManagement.queue_free_array(title_nodes)
-	_local_android._no_ads()
+	#_local_android._no_ads() # disabled on Aug 22 /2025. Not needed as no dpad on screen
 
 

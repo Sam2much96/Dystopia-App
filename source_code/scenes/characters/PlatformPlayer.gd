@@ -44,6 +44,17 @@ const WALL_JUMP_VERTICAL_BOOST = 0.1  # Increase vertical jump height
 export (bool) var apply_GRAVITY = false
 
 
+func _ready():
+	# connect signals to UI buttons
+	
+		# connect signals to touchscreen hud
+	if (is_instance_valid(safe_TouchScreen)):
+		print_debug("Hud debug: ", safe_TouchScreen)
+		# Connect to attack pressed and roll pressed signals in touch hud object
+		safe_TouchScreen.connect("attack_pressed", self, "attack")
+		safe_TouchScreen.connect("roll_pressed", self, "Jump")
+		TouchTimer.connect("timeout",self,"idle")
+		
 
 
 func _physics_process(delta):
@@ -73,35 +84,21 @@ func _physics_process(delta):
 	
 	# Jump & Wall Jump Logic
 	if Input.is_action_just_pressed("roll"): 
-		if is_on_floor():
-			velocity.y = jump_speed
-			air_jump_counter = 0  # Reset air jump counter
-		elif air_jump_counter < max_air_jumps:
-			velocity.y = jump_speed
-			air_jump_counter += 1
-			animation.play("roll")
-		elif is_on_wall():  # Wall Jump Logic
-			var wall_normal = get_wall_normal()
-			velocity.y = jump_speed * WALL_JUMP_VERTICAL_BOOST  # Stronger vertical jump
-			velocity.x = MAX_SPEED * WALL_JUMP_PUSH * wall_normal.x  # Push farther away
-			animation.play("roll")
+		Jump()
+
 	# Ledge Grab
-#	if Input.is_action_just_pressed("move_up"):
-#		if not is_on_floor():
-#			
-#			# Stop Gravity
-#			gravity = 0
-#			
-#			yield(get_tree().create_timer(GRAVITY_TIMEOUT),"timeout")
-#			gravity = 4000 # Reset Gravity
-	
+
 func get_wall_normal() -> Vector2:
 	for i in range(get_slide_count()):
 		var collision = get_slide_collision(i)
 		if collision.normal.x != 0:  # Check if hitting a wall
 			return collision.normal
 	return Vector2.ZERO  # Default value if no wall is detected
+	
 
+"""
+Platforming Player States as Functions
+"""
 func moveRight():
 	velocity.x += speed
 	#print (velocity.x) # for debug purposes only 
@@ -115,6 +112,25 @@ func moveLeft():
 		velocity.x = -MAX_SPEED
 	animation.play("walk_left")
 
+func attack():
+	#animation.play("attack")
+	print_debug("attack state triggered")
+
+func Jump():
+	print_debug("Jump State Triggered")
+	if is_on_floor():
+		velocity.y = jump_speed
+		air_jump_counter = 0  # Reset air jump counter
+	elif air_jump_counter < max_air_jumps:
+		velocity.y = jump_speed
+		air_jump_counter += 1
+		animation.play("roll")
+	elif is_on_wall():  # Wall Jump Logic
+		var wall_normal = get_wall_normal()
+		velocity.y = jump_speed * WALL_JUMP_VERTICAL_BOOST  # Stronger vertical jump
+		velocity.x = MAX_SPEED * WALL_JUMP_PUSH * wall_normal.x  # Push farther away
+		animation.play("roll")
+
 
 func platformFacing_input_logic( node : Player, peer_id : int):
 	
@@ -126,6 +142,7 @@ func platformFacing_input_logic( node : Player, peer_id : int):
 	if Input.is_action_pressed("move_left"):
 		moveLeft()
 	
+	# Touch screen direction controlls
 	# unused function to organinse input logic into one funcitonal bloc
 	if safe_TouchScreen.direction == Vector2.ZERO: return # guard clause
 	if safe_TouchScreen.direction.x > 0.5:
@@ -140,3 +157,9 @@ func platformFacing_input_logic( node : Player, peer_id : int):
 
 func _on_hurtbox_area_entered(area):
 	print_debug("Area Entered, Trigger hit collision tetection on Player")
+
+
+func _exit_tree():
+	# disconnect buttons for top down player script
+	safe_TouchScreen.disconnect("attack_pressed", self, "attack")
+	safe_TouchScreen.disconnect("roll_pressed", self, "jump")

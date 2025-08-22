@@ -172,8 +172,6 @@ texture = ExtResource( 2 )
 [node name="Player" parent="." instance=ExtResource( 5 )]
 position = Vector2( -130, 1324 )
 script = ExtResource( 4 )
-WALK_SPEED = 500
-ROLL_SPEED = 1000
 speed = 10
 jump_speed = -500
 GRAVITY_TIMEOUT = 0.5

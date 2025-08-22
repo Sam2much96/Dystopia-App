@@ -180,27 +180,8 @@ func _process(_delta):
 	"Performance Optimizations"
 	# Particle Optimization for Differing Screen Orientations
 	
-	# Bug : 
-	# (1) CPU Fx SHould contain platform asychronic Optimizations
-	# (2) CPU optimization is buggy
-	#
-	# Functions :
-	# (1) Turns off CPU fx is framerate is too low
-	
-	#"""
-	#Touch HUD Visibility
-	#"""
-	
-	# code moved to Touch HUD scene instead
-	# because android processing is turned of if device is not android
-	# Temporarily disabled for debugging
-	#if is_instance_valid(TouchInterface) && _is_android == false : # PC Browser
-	#	TouchInterface.hide__()
-	#	#TouchInterface.enabled = _is_android
 	"ADS OPTIMIZATION"
-	# ads startup hogs startup time cuz it's a singleton
-	# i'll instead trigger it using the simulaiton frame counter
-	#print_debug("delta debg",_simulation.frame_counter)
+	
 	if TRIGGER_ADS && !ADS_TRIGGERED: # trigger ads after 3 minutes
 		# Enable ads here
 		ads()
@@ -258,6 +239,7 @@ func _process(_delta):
 	if CHECK_ORIENTATION && is_instance_valid(GameHUD_):
 		# update local screen orientation 
 		local_screen_orientation = GameHUD_.TouchInterface.Screen.Orientation()
+		#_globals.screenOrientation = local_screen_orientation # make the new orientation more available
 		CHECK_ORIENTATION = false # reset timer
 
 		

@@ -88,8 +88,10 @@ onready var utils_singleton_= get_node("/root/Utils") #  : GlobalsVar
 onready var safe_Android = get_node("/root/Android")
 onready var safe_GameHud = get_node("/root/GameHud")
 onready var safe_Dialogs = get_node("/root/Dialogs")
-onready var safe_TouchScreen = safe_GameHud.TouchInterface
+onready var safe_TouchScreen = safe_GameHud.get_TouchInterface()
 onready var safe_Simulation = get_node("/root/Simulation")
+
+#onready var TouchHUD = safe_GameHud
 
 # For Despawn and Hit Collission Fx
 # to do:

@@ -23,7 +23,7 @@ wait_time = 400.0
 autostart = true
 
 [node name="ScreenTimer" type="Timer" parent="."]
-wait_time = 160.0
+wait_time = 60.0
 autostart = true
 
 [node name="OrientationTimer" type="Timer" parent="."]

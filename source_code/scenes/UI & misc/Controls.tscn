@@ -75,7 +75,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="CheckBox" type="CheckBox" parent="ScrollContainer/VBoxContainer/HBoxContainer2"]
+[node name="musicCheckBox" type="CheckBox" parent="ScrollContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 130.0
 margin_right = 176.0
 margin_bottom = 78.0
@@ -99,7 +99,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="CheckBox2" type="CheckBox" parent="ScrollContainer/VBoxContainer/HBoxContainer4"]
+[node name="debugCheckbox" type="CheckBox" parent="ScrollContainer/VBoxContainer/HBoxContainer4"]
 margin_left = 140.0
 margin_right = 186.0
 margin_bottom = 78.0
@@ -188,7 +188,9 @@ __meta__ = {
 
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/back" to="." method="_on_back_pressed"]
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/HBoxContainer2/music" to="." method="_on_music_toggled"]
+[connection signal="toggled" from="ScrollContainer/VBoxContainer/HBoxContainer2/musicCheckBox" to="." method="_on_musicCheckBox_toggled"]
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/HBoxContainer4/debug" to="." method="_on_Debug_toggled"]
+[connection signal="toggled" from="ScrollContainer/VBoxContainer/HBoxContainer4/debugCheckbox" to="." method="_on_debugCheckbox_toggled"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/languague" to="." method="_on_languague_pressed"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/shuffle" to="." method="_on_Shuffle_pressed"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/help" to="." method="_on_Help_pressed"]

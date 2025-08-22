@@ -16,7 +16,7 @@
 # Bugs:
 # (1) This scene resets presaved player settings
 # (2) Fix Help UI
-# 
+# (3) Connect controls UI to menu enable and disable signals
 # *************************************************
 
 extends Control
@@ -32,9 +32,9 @@ var selector #for the menu cycle selector
 
 onready var back : Button = $ScrollContainer/VBoxContainer/back
 onready var music : Button = $ScrollContainer/VBoxContainer/HBoxContainer2/music
-onready var music_checkbox : CheckBox = $ScrollContainer/VBoxContainer/HBoxContainer2/CheckBox
+onready var music_checkbox : CheckBox = $ScrollContainer/VBoxContainer/HBoxContainer2/musicCheckBox
 onready var _debug : Button = $ScrollContainer/VBoxContainer/HBoxContainer4/debug
-onready var debugCheckbox : CheckBox = $ScrollContainer/VBoxContainer/HBoxContainer4/CheckBox2
+onready var debugCheckbox : CheckBox = $ScrollContainer/VBoxContainer/HBoxContainer4/debugCheckbox
 onready var Shuffle : Button =$ScrollContainer/VBoxContainer/shuffle
 
 onready var languague : Button = $ScrollContainer/VBoxContainer/languague
@@ -72,17 +72,18 @@ onready var safe_Globals = get_node("/root/Globals")
 onready var safe_Utils = get_node("/root/Utils")
 onready var safe_Debug = get_node("/root/Debug")
 onready var safe_Music = get_node("/root/Music")
-onready var touchInterface = get_node("/root/GameHud").TouchInterface # use set get functions for this logic
+onready var safe_GameHUD = get_node("/root/GameHud")
+onready var touchInterface = safe_GameHUD.get_TouchInterface() # use set get functions for this logic
+onready var menuUI = safe_GameHUD.getMenu()
 onready var safe_Simulation = get_node("/root/Simulation")
 
 func _ready():
-	#if get_tree().get_root().has_node("/root/Debug") == true:
-	#	
-	#	# OK bloc
-	#	
-
-	#$ScrollContainer/VBoxContainer/back.grab_focus() #Back button grabs focus
-
+	
+	safe_Utils.UI.check_for_broken_links(ControlButtons)
+	
+	# hide Menu UI
+	menuUI.hidden()
+	
 	safe_Utils.Functions.load_user_data("music", get_tree()) # works
 	
 
@@ -113,11 +114,17 @@ Turns Music on and off & shuffles current track. Fix code later
 func _on_Debug_toggled(button_pressed): 
 	if safe_Debug != null:
 		if button_pressed:
-			# Gets the Input node from the Touch Interface and uses that to parse input programmatically
-			debugCheckbox.pressed = safe_Debug.enabled # supposed to be safe_Debug.enabled but the variant is buggy
-			# parameters
-			#node_input_ : Input ,tree: SceneTree, safe_Simulation_ : Simulationv1 ,action : String, _pressed : bool
-			touchInterface.parse_input(touchInterface.node_input, get_tree(), safe_Simulation,"Debug", true)
+			safe_Debug.start_debug_v1()
+		else:
+			safe_Debug.stop_debug()
+		debugCheckbox.pressed = safe_Debug.enabled
+
+func _on_debugCheckbox_toggled(button_pressed):
+	if safe_Debug != null:
+		if button_pressed:
+			safe_Debug.start_debug_v1()
+		else:
+			safe_Debug.stop_debug()
 
 'Changes Button Sizes for mobile UI'
 # Scales UI up for Android Mobile Devices
@@ -138,12 +145,19 @@ func _on_Shuffle_pressed():
 func _on_music_toggled(button_pressed): #Music on and off settings
 	if button_pressed :
 		safe_Music._notification(NOTIFICATION_APP_PAUSED)
-		music_checkbox.pressed = true
+		music_checkbox.pressed = false
 	if not button_pressed  :
 		safe_Music._notification(NOTIFICATION_APP_RESUMED)
-		music_checkbox.pressed = false
+		music_checkbox.pressed = true
 
-
+func _on_musicCheckBox_toggled(button_pressed):
+	if button_pressed :
+		safe_Music._notification(NOTIFICATION_APP_RESUMED)
+		#music_checkbox.pressed = true
+	else  :
+		safe_Music._notification(NOTIFICATION_APP_PAUSED)
+		#music_checkbox.pressed = false
+		
 func _on_Help_pressed():
 	# uses a pop up node to show the help scene
 	# help scene requires graphics refactoring
@@ -184,9 +198,7 @@ func _exit_tree():
 	
 	# FOr Memorey Management ( Garbage Collector)
 	Utils.MemoryManagement.queue_free_array(ControlButtons)
-#	for i in ControlButtons:
-#		i.queue_free()
-		
+
 
 
 "Triggers Translation subsystem by changing scene to Form"
@@ -230,4 +242,9 @@ func _on_multiplayer_toggled(button_pressed):
 """
 THIRD PARTY SOFTWARE
 """
+
+
+
+
+
 

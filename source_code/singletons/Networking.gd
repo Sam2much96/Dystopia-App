@@ -176,7 +176,6 @@ func _ready():
 	# moved to status UI
 	#_check_connection("https://free-api.vestige.fi/asset/2717482658/price" , Networking) #
 
-
  
 # Creates a Networking timer
 func _init_timer() : 
@@ -1167,10 +1166,10 @@ func open_browser(url : String):
 	
 	if Globals.os == "Android":
 		
-		# temporarily disabled for CI refactoring
-		#Android.Chrome.helloWorld(url,{},true, -99, false) # Open Chrome Embedded Browser To Url
-		#Android.WebBrowserOpen = true
-		return OS.shell_open(url)
+		# godot chrome browser
+		Android.Chrome.helloWorld(url,{},true, -99, false) # Open Chrome Embedded Browser To Url
+		Android.WebBrowserOpen = true
+		#return OS.shell_open(url)
 		
 	if Globals.os == "X11":
 		return OS.shell_open(url)

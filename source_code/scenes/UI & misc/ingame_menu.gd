@@ -103,7 +103,7 @@ func _ready():
 	if safe_Android.ingameMenu == null:
 		safe_Android.ingameMenu = self
 	
-	print_debug("todo: Connect Menu Object to UI button using signals", self.name, safe_UI.menuObj)
+	#print_debug("todo: Connect Menu Object to UI button using signals", self.name, safe_UI.menuObj)
 	#GlobalInput.menu = self
 	
 	#Buttons
@@ -160,26 +160,6 @@ func hidden():
 	set_focus_mode(Control.FOCUS_NONE)
 	set_mouse_filter(Control.MOUSE_FILTER_IGNORE)
 
-		
-		
-		
-		
-		
-		#depreciated signals
-		# duplicated signals?
-		# check if current scene is a global scene or a game scene
-		#if !safe_Globals.global_scenes.has(safe_Globals.curr_scene):
-		#	emit_signal("menu_hidden_in_game")
-		
-		# menu hidden outside main game loop
-		#if safe_Globals.global_scenes.has(safe_Globals.curr_scene):
-			#print_debug("Current Level Debug 2: ", Globals.current_level)
-		#	emit_signal("menu_hidden_in_ui")
-		
-		#return menu_state
-		
-	
-	#get_tree().set_input_as_handled()
 
 
 func _on_new_game_pressed(): #breaks the Globals.current_level script

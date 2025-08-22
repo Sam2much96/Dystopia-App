@@ -16,6 +16,8 @@
 # (1) Only show once, when installing file. Should Save Information to Globals save file and only Load once
 # (2) Add and store player's name
 
+# Bug:
+# (1) Save Function overwrites presaved file
 
 
 extends CanvasLayer
@@ -61,6 +63,10 @@ func _ready():
 	]
 	
 	safe_Utils.UI.check_for_broken_links(UI_buttons)
+	
+	# check for
+	# load user data 
+	
 	
 	# Load Users Prefered Dialogue settings
 	

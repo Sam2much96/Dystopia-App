@@ -97,7 +97,7 @@ func useItem(type:String, amount:int) -> bool:
 	# Refactor remove item to connect to Stats amd Update properly
 	#print_debug("Inventory button pressed", type, amount)
 	
-	
+	print_debug("use item trigered: ", type , "/", amount)
 	
 	local_music_singletion.play_track(item_use_sfx)
 	

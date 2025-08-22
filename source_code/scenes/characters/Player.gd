@@ -83,7 +83,7 @@ export(int) var peer_id: int = -99 # Dummpy Placeholder Peer id
 # Get Global Singletons
 # for safe calls 
 onready var music_singleton_ = get_node("/root/Music") # : music_singleton
-onready var global_singleton_= Globals   
+var global_singleton_ 
 onready var utils_singleton_= get_node("/root/Utils") #  : GlobalsVar 
 onready var safe_Android = get_node("/root/Android")
 onready var safe_GameHud = get_node("/root/GameHud")
@@ -114,17 +114,19 @@ Update Global Scripts SO Other Nodes Are Aware Of Player
 """
 	
 func _enter_tree():
+	global_singleton_= get_node("/root/Globals")  
+	
 	
 	# IF THis Code Bloc Breaks Its cuz youre running the scene from Overworld
 	# so it doesnt have time to load game hud scene into memeory and provide a safe pointer
 	# temporarily disabling for refactor 2/June 2025. Would turn on later
-	if global_singleton_:
+	if is_instance_valid(global_singleton_):
 		global_singleton_.update_curr_scene()
 		global_singleton_.players.append(self) # saves player to the Global player variable
 	
 		'Makes Player Hitpoint a Global Variable'
 		global_singleton_.player_hitpoints = hitpoints
-	else:
+	if !is_instance_valid(global_singleton_):
 		# use signals to fix this error
 		push_error("player script not detecting  global singleton on start")
 

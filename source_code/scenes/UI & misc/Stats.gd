@@ -24,7 +24,7 @@
 # *************************************************
 # Bugs:
 # (1) Regex For Inventroy Update is buggy
-# 
+# (2) Inventory Item use button is not working Aug 22/2025
 # *************************************************
 
 extends PanelContainer
@@ -85,10 +85,10 @@ enum {ENABLED, DISABLED, NULL}
 
 "Safe Pointers to global singletons"
 
-onready var local_networking = get_node("/root/Networking") # : Internet
+onready var safeNetworking = get_node("/root/Networking") # : Internet
 onready var safeInventory = get_node("/root/Inventory")
 onready var safeUtils = get_node("/root/Utils")
-onready var safeInput = get_parent()#get_node("root/GameHud")
+onready var safeGameHUD = get_node("/root/GameHud")
 
 
 func _ready():
@@ -117,7 +117,7 @@ func _ready():
 
 	hide()
 	
-	print_debug("making stats UI global", safeInput)
+	#print_debug("making stats UI global", safeInput)
 	
 	# Make self global 
 	# uses setter and getter functions for proper code handling 
@@ -126,8 +126,8 @@ func _ready():
 	# redundancy code to save stats object to touch interface
 	# for signal connection visibility logic to ui buttons
 	# synchronises stats ui visibility state with touch hud visibility logic 
-	if safeInput._Stats == null:
-		safeInput._Stats = self
+	if safeGameHUD._Stats == null:
+		safeGameHUD._Stats = self
 	
 	#Regex for Inventory Update
 	regex.compile("(\\d+)")
@@ -160,28 +160,30 @@ func _input(event):
 
 
 
-func _fetch_prices():
+func _fetch_prices(): # temporarily disabled for refactoring Aug 22/2025
 	"Update Price From Vestigefi API"
 	
 	#Price Data has been fetched
-	if !local_networking.Data.empty():
+	if !safeNetworking.Data.empty():
 		#push_warning("Price Data has been fetched")
 		return
 	
 	print_debug("port api to version 2")
 	
-	if local_networking.Data.empty():
+	if safeNetworking.Data.empty():
 		print_debug ("fetching price data from Vestige API")
-		local_networking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , local_networking) #
+		safeNetworking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , safeNetworking) #
 
 
 
 func _update_wallet_stats(): #Updates killcount and Algos
-	if Networking.good_internet && !local_networking.Data.empty():
-		_coin_label.text = 'Suds: ' + str (Globals.suds) + "\n Worth: " + str(Globals.suds * float(local_networking.price_usd))
+	if safeNetworking.good_internet && !safeNetworking.Data.empty():
+		_coin_label.text = 'Suds: ' + str (Globals.suds) + "\n Worth: " + str(Globals.suds * float(safeNetworking.price_usd))
 		
 		# serialises sud price data from vestigefi + Globals storage
-		_price_label.text = "Prices: \n" + "USD: " + local_networking.price_usd + "\n EUR: " + local_networking.price_eur + "\n" + "GBP: " + local_networking.price_gbp + "\n" + "BTC: " + local_networking.price_btc + "\n" + "ALGO: "+ local_networking.price_algo
+		# to do: (1) simplify code serialisation logic
+		# note : thank you!
+		#_price_label.text = "Prices: \n" + "USD: " + safeNetworking.price_usd + "\n EUR: " + safeNetworking.price_eur + "\n" + "GBP: " + safeNetworking.price_gbp + "\n" + "BTC: " + safeNetworking.price_btc + "\n" + "ALGO: "+ local_networking.price_algo
 
 
 
@@ -230,7 +232,7 @@ func _update_inventory_button_cache(item : String, amount : int) : # COde Bloc C
 				result = regex.search(i.text)
 			
 				if result:
-					#print_debug(i.text) # for debug purposes only
+					print_debug(i.text) # for debug purposes only
 					
 					i.set_text("%s x %s\n" % [i.name, int(result.get_string()) - amount])
 				
@@ -302,6 +304,9 @@ func _update_inventory_listing():
 					# connect button to inventory singleton method
 					#
 					new_item_button.connect("pressed", safeInventory, "useItem",[item, 1]) # button presses 
+					
+					# debug button signal connection
+					print_debug("inventory use item signal debg: ",new_item_button.is_connected("pressed", safeInventory, "useItem"))
 					
 					# Create a pointer to Inventory ui buttons
 					_stats_buttons.append(new_item_button)

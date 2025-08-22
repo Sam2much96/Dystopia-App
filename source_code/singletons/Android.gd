@@ -219,10 +219,7 @@ func _process(_delta):
 		if local_screen_orientation == 1: #SCREEN_VERTICAL:
 			_simulation.rainFX.lifetime = Long_lifetime
 			
-			# Touch Interface downscaling
-			# TOuch Interface Format and Scaling should be exported functionis
-			# doesn't work yet
-			#TouchInterface.Vertical()
+
 
 
 	# Update Global Screen Orientation every 100th frame

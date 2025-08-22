@@ -9,6 +9,7 @@
 # (1) Saves Player Information to Local Storage once Player Object is Detected.
 # (2) Connects to Globals Functions class for Saving Player Object Information
 # (3) Exit Should Be on Collision Layer 3
+# (4) Saves game Data to disk
 
 # To Do:
 #(1) Document Functions (Done)
@@ -63,22 +64,9 @@ func _on_Exit_body_entered(body):
 		
 		
 		# Save Game
-		# To DO: 
-		# (1) Save game should only save the parameters it needs rather than the whole thing
-		
-		# Temporarily disabling for refactor jun 15/2025
-		#Utils.Functions.save_game(
-		#	[body], 
-		#	body.hitpoints, 
-		#	body.position.x, 
-		#	body.position.y, 
-		#	to_scene, 
-		#	"", 
-		#	Globals.kill_count, 
-		#	"", 
-		#	null, 
-		#	""
-		#) 
+		#
+		#
+		Utils.Functions.save_game(get_tree()) 
 		
 		#print_debug ("Finished Saving Game")
 		

@@ -38,7 +38,7 @@ onready var film : String = safe_Globals.global_scenes.get("cinematics")
 
 onready var cinematics : PackedScene = load(film) # Bug : 
 #var index : int = 0
-
+onready var Art : TextureRect = $TextureRect
 #onready var coinText : TextureRect = $TextureRect
 onready var ui_Node : Control = $ui
 onready var play_button : Button = $ui/grid/PlayButton/play
@@ -59,18 +59,23 @@ func _ready():
 	UI_buttons = [
 		play_button, ui_Node,  
 		language, label_spacer, 
-		label_spacer2, label_spacer3
+		label_spacer2, label_spacer3, Art
 	]
 	
 	safe_Utils.UI.check_for_broken_links(UI_buttons)
 	
-	# check for
-	# load user data 
-	
-	
+	# check for saved data, if there is, load the code data files and change to cinematics
+	if safe_Utils.Functions.hasSave(safe_Utils.file):
+		# load all user data individually
+		# 
+		#safe_Utils.Functions.load_user_data('inventory', get_tree())
+		safe_Utils.Functions.load_user_data('languague', get_tree())
+		#safe_Utils.Functions.load_user_data('music', get_tree())
+		
+		# change tree to cinematics
+		go_to_cinematics()
 	# Load Users Prefered Dialogue settings
 	
-	safe_Utils.Functions.load_user_data('languague', get_tree())
 	
 	
 	# Visibility signals
@@ -144,9 +149,10 @@ func _on_play_pressed():
 	else : safe_Diag.language = ""
 
 	#print_debug(Dialogs.language) # for debug purposes only
-
+	go_to_cinematics()
+	
+func go_to_cinematics():
 	safe_Utils.Functions.change_scene_to(cinematics, get_tree())
-
 
 
 func show_play_button() :

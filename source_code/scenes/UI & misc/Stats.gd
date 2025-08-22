@@ -114,7 +114,15 @@ func _ready():
 	
 	safeUtils.UI.check_for_broken_links(_Stats_UI_Elements)
 	
-
+	if safeUtils.Functions.hasSave(safeUtils.file):
+		# load all user inventory & coin data 
+		# 
+		safeUtils.Functions.load_user_data('inventory', get_tree())
+		safeUtils.Functions.load_user_data('kill_count', get_tree())
+		safeUtils.Functions.load_user_data('death_count', get_tree())
+		safeUtils.Functions.load_user_data('suds', get_tree())
+		safeUtils.Functions.load_user_data('quests', get_tree())
+	
 	hide()
 	
 	#print_debug("making stats UI global", safeInput)

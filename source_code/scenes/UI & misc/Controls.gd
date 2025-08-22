@@ -51,15 +51,19 @@ onready var vibration_Checkbox : CheckBox = $ScrollContainer/VBoxContainer/HBoxC
 # multiplayer
 onready var _multiplayer : Button = $ScrollContainer/VBoxContainer/HBoxContainer3/multiplayer
 
+#delete save checkbox
+onready var resetCheckbox : CheckBox = $ScrollContainer/VBoxContainer/HBoxContainer5/deleteCheckBox2
+
 onready var ControlButtons : Array =  [
 	back, 
 	music,
-	_debug,
+	_debug, debugCheckbox,
 	Shuffle,
 	languague, 
 	help, 
-	vibration,
-	_multiplayer
+	vibration, vibration_Checkbox,
+	_multiplayer, 
+	resetCheckbox,
 	]
 
 
@@ -179,22 +183,13 @@ func manual_translate()-> void:
 			i.set_text(Dialogs.translate_to(i.name, Dialogs.language))
 
 
+
 "Memory Leak Management"
 func _exit_tree():
 	
-	"Saves Player's PreferedConfiguration"
-	#temporarily disabled for refactor
-	#Utils.Functions.save_game(
-	#	[],
-	#	0,
-	#	0, 
-	#	0, 
-	#	Globals.current_level, 
-	#	Globals.os, 
-	#	0, 
-	#	"", 
-	#	null, 
-	#	Globals.direction_control)
+	"Saves Player's Prefered Configuration"
+	
+	Utils.Functions.save_game(get_tree())
 	
 	# FOr Memorey Management ( Garbage Collector)
 	Utils.MemoryManagement.queue_free_array(ControlButtons)
@@ -248,3 +243,14 @@ THIRD PARTY SOFTWARE
 
 
 
+
+
+func _on_deleteSave_pressed():
+	# works
+	safe_Utils.Functions.deleteSave(safe_Utils.file, safe_Utils.dir)
+	resetCheckbox.pressed = true
+
+
+func _on_deleteCheckBox2_toggled(button_pressed):
+	if button_pressed:
+		safe_Utils.Functions.deleteSave(safe_Utils.file, safe_Utils.dir)

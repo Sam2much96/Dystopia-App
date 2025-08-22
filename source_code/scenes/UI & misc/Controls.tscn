@@ -43,7 +43,7 @@ theme = ExtResource( 3 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_right = 292.0
-margin_bottom = 570.0
+margin_bottom = 652.0
 
 [node name="back" type="Button" parent="ScrollContainer/VBoxContainer"]
 margin_right = 292.0
@@ -186,6 +186,30 @@ __meta__ = {
 "_editor_description_": ""
 }
 
+[node name="HBoxContainer5" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
+margin_top = 574.0
+margin_right = 292.0
+margin_bottom = 652.0
+
+[node name="deleteSave" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer5"]
+margin_right = 230.0
+margin_bottom = 78.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = true
+shortcut_in_tooltip = false
+text = "reset save"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="deleteCheckBox2" type="CheckBox" parent="ScrollContainer/VBoxContainer/HBoxContainer5"]
+margin_left = 234.0
+margin_right = 280.0
+margin_bottom = 78.0
+theme = ExtResource( 6 )
+
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/back" to="." method="_on_back_pressed"]
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/HBoxContainer2/music" to="." method="_on_music_toggled"]
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/HBoxContainer2/musicCheckBox" to="." method="_on_musicCheckBox_toggled"]
@@ -196,3 +220,5 @@ __meta__ = {
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/help" to="." method="_on_Help_pressed"]
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/HBoxContainer/vibration" to="." method="_on_vibration_toggled"]
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/HBoxContainer3/multiplayer" to="." method="_on_multiplayer_toggled"]
+[connection signal="pressed" from="ScrollContainer/VBoxContainer/HBoxContainer5/deleteSave" to="." method="_on_deleteSave_pressed"]
+[connection signal="toggled" from="ScrollContainer/VBoxContainer/HBoxContainer5/deleteCheckBox2" to="." method="_on_deleteCheckBox2_toggled"]

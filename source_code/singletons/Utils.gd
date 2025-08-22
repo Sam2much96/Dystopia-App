@@ -2,19 +2,13 @@
 # godot3-Dystopia-game by INhumanity_arts
 # Released under MIT License
 # *************************************************
-# Utils
+# Utils Version 2
 # Contains Shared Calculation Codes between scenes
 # Features:
 # (1) Handles all Gameplay Calculations
-# (2) Implements Multithreading
-
-# To Do:
-# (1) Document
-# (2) Refactor codebase to move all calculation code from Globals Singleton
+# (2) Implements Multithreading and Share Core Utility Functionality
+# (3) Codebase is structured in reference classes that auto garbage collect
 #
-# 
-# Bugs 
-# (1) 
 # *************************************************
 
 extends Node
@@ -200,8 +194,22 @@ class Functions extends Reference:
 	
 
 	
+	static func hasSave(utilsFile: File) -> bool:
+		#var safe_Utils = safeTree.get_root().get_node("/root/Utils")
+		# simple logic to check if the player already has a saved file
+		var save_game = utilsFile
+		
+		if save_game.file_exists("user://savegeme.save"):
+			return true
+		else : return false
 	
-	
+	static func deleteSave(utilsFile : File, utilsDir : Directory):
+		 # Deletes the game's save file and resets all player stats and settings
+		if utilsFile.file_exists("user://savegeme.save"):
+			print_debug("deleting save file user://savegeme.save")
+			
+			# delete the file using directory
+			utilsDir.remove("user://savegeme.save")
 	
 	static func change_scene_to(scene : PackedScene, tree : SceneTree): #Loads scenes faster?
 		#print_stack()
@@ -376,6 +384,7 @@ class Functions extends Reference:
 		var save_dict : Dictionary
 		
 		if not save_game.file_exists("user://savegeme.save"):
+			push_error("no saved game file in user://savegame.save")
 			return false
 		var err = save_game.open("user://savegeme.save", File.READ)
 		var length = save_game.get_len() # checks for corrupted
@@ -498,6 +507,8 @@ class Functions extends Reference:
 	# Should allow for loading individual variables from Local
 	# uses a default params
 	static func load_user_data( data: String , safeTree : SceneTree ): 
+		
+		print_debug("Loading User Data >>>", data)
 		var safe_Utils = safeTree.get_root().get_node("/root/Utils") 
 		var safe_Inv = safeTree.get_root().get_node("/root/Inventory") 
 		var safe_Globals = safeTree.get_root().get_node("/root/Globals") 
@@ -509,6 +520,8 @@ class Functions extends Reference:
 		
 		
 		var save_game = safe_Utils.file 
+		if (!save_game): save_game = File.new()
+		
 		if not save_game.file_exists("user://savegeme.save"):
 			return false
 		save_game.open("user://savegeme.save", File.READ)
@@ -525,18 +538,18 @@ class Functions extends Reference:
 			safe_Diag.language = save_dict.languague
 		if data == "music":
 			safe_Music.enable = bool(save_dict.music)
-		if data == "kill_count":
+		if data == "kill_count" &&save_dict.has("kill_count"):
 			safe_Globals.kill_count = save_dict.kill_count  
-		if data == "death_count":
+		if data == "death_count" && save_dict.has("death_count"):
 			safe_Globals.death_count = int(save_dict.death_count)
-		if data == "suds":
+		if data == "suds"&& save_dict.has("suds"):
 			safe_Globals.suds = save_dict.suds
-		if data == "quests":
+		if data == "quests" && save_dict.has("quests"):
 			# JSON numbers are always parsed as floats. In this case we need to turn them into ints
 			for key in save_dict.quests:
 				save_dict.quests[key] = int(save_dict.quests[key])
 			safe_Quest.quest_list = save_dict.quests
-		if data == "inventory":
+		if data == "inventory" && save_dict.has("inventory"):
 			for key in save_dict.inventory:
 				save_dict.inventory[key] = int(save_dict.inventory[key])
 			safe_Inv.inventory = save_dict.inventory

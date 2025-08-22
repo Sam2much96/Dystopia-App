@@ -240,6 +240,11 @@ func _ready():
 	"Check If Node Paths Are Broken"
 	safe_Utils.UI.check_for_broken_links(my_nodes)
 
+	if safe_Utils.Functions.hasSave(File.new()):
+		# load all user data individually
+		# 
+		safe_Utils.Functions.load_user_data('music', get_tree())
+
 	print_debug("Music_on_settings :",bool (enable))
 	#	music_on = bool (Music_on_settings)
 	

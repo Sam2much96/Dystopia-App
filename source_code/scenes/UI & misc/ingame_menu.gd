@@ -30,6 +30,7 @@
 # (1) Buggy on Screen Orientation Rotation
 # (2) Implements Swipe Gestures for Auto Scroll using refactores swipe detection
 # (3) Should implement Touch Input without emulation, maybe by morhing the button type or autogenerating /duplicating body
+# (4) Button translations don't work because i'm not using a theme for it (fixed)
 # *************************************************
 
 extends Control
@@ -96,6 +97,8 @@ const newScale = Vector2 (2,2)
 const initialScale = Vector2(1,1)
 
 func _ready():
+	
+
 	# set pointer to the touch interface which has the touch screen UI buttons
 	safe_UI.menuObj = self
 	
@@ -123,7 +126,8 @@ func _ready():
 
 	" Translation"
 	
-	manually_translate()
+
+	#manually_translate()
 	
 	"Scales for Mobile UI"
 	# Disabling for debuggin
@@ -143,6 +147,10 @@ Features:
 """
 
 func showing():
+	# debug locale translations
+	print_debug("debug locale translation: ",TranslationServer.get_locale())
+	
+	
 	
 	#print_debug("Showing Menu")
 	set_focus_mode(Control.FOCUS_CLICK)
@@ -289,24 +297,24 @@ func _on_practice_pressed(): # turn off in release build
 	safe_Utils.Functions.change_scene_to(safe_Globals.loading_scene,get_tree() )
 
 
-func manually_translate()-> void:
-	#print_debug ("Selected Language: ",Dialogs.language)
-	#SHould Ideally Use Hashmap tuple + for loops  for translations
-	#print_debug(MenuButtons)
-	
-	if safe_Dialogs.language != "" or null:
-		#print_debug(Dialogs.language)
-		
-		#UI Array & Font Size
-		safe_Dialogs.set_font(MenuButtons, 44, "", 2)
-		
-		# Set UI Text to Translated Names
-		for i in MenuButtons:
-			
-			# Note: If it breaks with a null object error, it means that the scene layout has been changed
-			# Update the button links then
-			
-			i.set_text(safe_Dialogs.translate_to(i.name, safe_Dialogs.language))
-
+#func manually_translate()-> void: #depreicated function
+#	print_debug ("Selected Language: ",safe_Dialogs.language)
+#	#SHould Ideally Use Hashmap tuple + for loops  for translations
+#	#print_debug(MenuButtons)
+#	
+#	if safe_Dialogs.language != "" or null:
+#		#print_debug(Dialogs.language)
+#		
+#		#UI Array & Font Size
+#		safe_Dialogs.set_font(MenuButtons, 44, "", 2)
+#		
+#		# Set UI Text to Translated Names
+#		for i in MenuButtons:
+#			
+#			# Note: If it breaks with a null object error, it means that the scene layout has been changed
+#			# Update the button links then
+#			
+#			i.set_text(safe_Dialogs.translate_to(i.name, safe_Dialogs.language))
+#
 
 

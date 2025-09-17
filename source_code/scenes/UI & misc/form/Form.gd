@@ -15,9 +15,16 @@
 # To Do:
 # (1) Only show once, when installing file. Should Save Information to Globals save file and only Load once
 # (2) Add and store player's name
+# (3) Lock all UI elementss into single global Control themes
+# (4) Store font data to theme, and a theme manager that sychnornised selected parent theme with language server locale
 
 # Bug:
+# (0) Fix entire game dialogue translation and translation files
 # (1) Save Function overwrites presaved file
+# (2) Game Translate is broken and needed for the game's screenshots
+# (3) Game User Language doesn't save
+# (4) The entire game translation UI requires an Audit 
+
 
 
 extends CanvasLayer
@@ -64,16 +71,17 @@ func _ready():
 	
 	safe_Utils.UI.check_for_broken_links(UI_buttons)
 	
+	# temporarily disabled for refactoring on September 17, 20225
 	# check for saved data, if there is, load the code data files and change to cinematics
-	if safe_Utils.Functions.hasSave(safe_Utils.file):
+	#if safe_Utils.Functions.hasSave(safe_Utils.file):
 		# load all user data individually
 		# 
-		#safe_Utils.Functions.load_user_data('inventory', get_tree())
-		safe_Utils.Functions.load_user_data('languague', get_tree())
+		
+	#	safe_Utils.Functions.load_user_data('languague', get_tree())
 		#safe_Utils.Functions.load_user_data('music', get_tree())
 		
 		# change tree to cinematics
-		go_to_cinematics()
+	#	go_to_cinematics()
 	# Load Users Prefered Dialogue settings
 	
 	
@@ -103,7 +111,7 @@ func _ready():
 	language.add_item('English') 
 	language.add_item('Brazilian Portuguese') 
 	language.add_item('French')
-	language.add_item('Telugu')
+	language.add_item('Russian')
 	language.add_item('Hindi')
 	language.add_item('Japanese')
 	language.add_item('Mandarin')
@@ -134,7 +142,7 @@ func _on_play_pressed():
 	elif language.get_selected() == 2:
 		safe_Diag.language = "fr"
 	elif language.get_selected() == 3:
-		safe_Diag.language = "te_IN"
+		safe_Diag.language = "ru_RU"
 	elif language.get_selected() == 4:
 		safe_Diag.language = "hi_IN"
 	elif language.get_selected() == 5:
@@ -180,7 +188,7 @@ func translate()-> void:
 	print ("En: ",Dialogs.translate_to("char3", "en_US")) 
 	print ("Es: ", Dialogs.translate_to("char3", "pt_BR"))
 	print ("Es: ", Dialogs.translate_to("char3", "fr"))
-	print ("Te: ", Dialogs.translate_to("char3", "te_IN")) # Not working i 3.5 only in 4.0
+	print ("Te: ", Dialogs.translate_to("char3", "ru_RU")) # Not working i 3.5 only in 4.0
 	print ("hi: ", Dialogs.translate_to("char3", "hi_IN"))
 	print ("ja: ", Dialogs.translate_to("char3", "ja"))
 	print ("cn: ", Dialogs.translate_to("char3", "zh_CN"))

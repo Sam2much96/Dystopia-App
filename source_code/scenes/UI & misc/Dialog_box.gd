@@ -15,7 +15,7 @@
 #
 # To DO:
 # (1) Add Redundancy Code For node Signals
-# (2) Refactor to Popup dialog class
+# (2) Refactor to Popup dialog class | and call visibility function programmatically
 # *************************************************
 
 extends NinePatchRect

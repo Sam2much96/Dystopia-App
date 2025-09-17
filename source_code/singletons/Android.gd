@@ -104,10 +104,9 @@ func _ready():
 		connect("player_ready",self, "_on_player_ready")
 		
 		
-		# Enable ads here
-		# bugs: 
-		# (1) huge performance hog on startup
-		#ads() 
+		# Enable forced ads here
+		# and reward players with coins
+		ads() 
 		
 		#initial_screen_orientation = Utils.Screen.Orientation()
 	

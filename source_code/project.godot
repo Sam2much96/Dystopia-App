@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/admob-lib/admob.gd"
 }, {
+"base": "Reference",
+"class": "AuthProvider",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/auth/auth_provider.gd"
+}, {
 "base": "CPUParticles2D",
 "class": "BloodSplatter",
 "language": "GDScript",
@@ -79,15 +84,95 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Exit3D.gd"
 }, {
+"base": "AuthProvider",
+"class": "FacebookProvider",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/auth/providers/facebook.gd"
+}, {
 "base": "Camera2D",
 "class": "FightCam",
 "language": "GDScript",
 "path": "res://scenes/UI & misc/Fight Cam.gd"
 }, {
+"base": "HTTPRequest",
+"class": "FirebaseAuth",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/auth/auth.gd"
+}, {
+"base": "Node",
+"class": "FirebaseDatabase",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/database/database.gd"
+}, {
+"base": "Node",
+"class": "FirebaseDatabaseReference",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/database/reference.gd"
+}, {
+"base": "Node",
+"class": "FirebaseDatabaseStore",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/database/database_store.gd"
+}, {
+"base": "Node",
+"class": "FirebaseDynamicLinks",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/dynamiclinks/dynamiclinks.gd"
+}, {
+"base": "Node",
+"class": "FirebaseFirestore",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/firestore/firestore.gd"
+}, {
+"base": "Node",
+"class": "FirebaseFunctions",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/functions/functions.gd"
+}, {
+"base": "Resource",
+"class": "FirebaseResource",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/database/resource.gd"
+}, {
+"base": "Node",
+"class": "FirebaseStorage",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/storage/storage.gd"
+}, {
+"base": "Reference",
+"class": "FirebaseUserData",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/auth/user_data.gd"
+}, {
+"base": "Node",
+"class": "FirestoreCollection",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/firestore/firestore_collection.gd"
+}, {
+"base": "Node",
+"class": "FirestoreDocument",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/firestore/firestore_document.gd"
+}, {
+"base": "Reference",
+"class": "FirestoreQuery",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/firestore/firestore_query.gd"
+}, {
+"base": "Reference",
+"class": "FirestoreTask",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/firestore/firestore_task.gd"
+}, {
 "base": "Camera",
 "class": "FreeLookCamera",
 "language": "GDScript",
 "path": "res://scenes/characters/3DPlayer.gd"
+}, {
+"base": "Reference",
+"class": "FunctionTask",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/functions/function_task.gd"
 }, {
 "base": "Node",
 "class": "GDunzip",
@@ -109,10 +194,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/UI & misc/ingame_menu.gd"
 }, {
+"base": "AuthProvider",
+"class": "GitHubProvider",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/auth/providers/github.gd"
+}, {
 "base": "Node",
 "class": "GlobalsVar",
 "language": "GDScript",
 "path": "res://singletons/Globals.gd"
+}, {
+"base": "AuthProvider",
+"class": "GoogleProvider",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/auth/providers/google.gd"
 }, {
 "base": "HBoxContainer",
 "class": "Healthbar",
@@ -294,6 +389,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://singletons/Inventory.gd"
 }, {
+"base": "Reference",
+"class": "StorageReference",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/storage/storage_reference.gd"
+}, {
+"base": "Reference",
+"class": "StorageTask",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/storage/storage_task.gd"
+}, {
 "base": "TabContainer",
 "class": "TabIcons",
 "language": "GDScript",
@@ -328,6 +433,16 @@ _global_script_classes=[ {
 "class": "Touch_Debug",
 "language": "GDScript",
 "path": "res://singletons/input/Debug/TouchDebug.gd"
+}, {
+"base": "AuthProvider",
+"class": "TwitterProvider",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/auth/providers/twitter.gd"
+}, {
+"base": "Node",
+"class": "Utilities",
+"language": "GDScript",
+"path": "res://addons/godot-firebase/Utilities.gd"
 }, {
 "base": "Control",
 "class": "WebBrowser",
@@ -446,6 +561,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AdMob": "res://scenes/UI & misc/admob-lib/icon.png",
+"AuthProvider": "",
 "BloodSplatter": "",
 "BrokenShip": "",
 "Bullet": "",
@@ -459,13 +575,31 @@ _global_script_class_icons={
 "Enemy": "",
 "Exit": "",
 "Exit3D": "",
+"FacebookProvider": "",
 "FightCam": "",
+"FirebaseAuth": "",
+"FirebaseDatabase": "",
+"FirebaseDatabaseReference": "",
+"FirebaseDatabaseStore": "",
+"FirebaseDynamicLinks": "",
+"FirebaseFirestore": "",
+"FirebaseFunctions": "",
+"FirebaseResource": "",
+"FirebaseStorage": "",
+"FirebaseUserData": "",
+"FirestoreCollection": "",
+"FirestoreDocument": "",
+"FirestoreQuery": "",
+"FirestoreTask": "",
 "FreeLookCamera": "",
+"FunctionTask": "",
 "GDunzip": "",
 "GameControls": "",
 "GameHUD": "",
 "Game_Menu": "",
+"GitHubProvider": "",
 "GlobalsVar": "",
+"GoogleProvider": "",
 "Healthbar": "res://resources/misc/Pixel Heart 32x32.png",
 "HealthbarV2": "res://resources/misc/Pixel Heart 32x32.png",
 "ImpactFX": "",
@@ -502,6 +636,8 @@ _global_script_class_icons={
 "Stats": "",
 "StatusText": "",
 "Storage": "",
+"StorageReference": "",
+"StorageTask": "",
 "TabIcons": "",
 "TempleExterior": "",
 "TempleInterior": "",
@@ -509,6 +645,8 @@ _global_script_class_icons={
 "TouchControls": "",
 "TouchScreenHUD": "res://resources/misc/Android 32x32.png",
 "Touch_Debug": "",
+"TwitterProvider": "",
+"Utilities": "",
 "WebBrowser": "",
 "WebConnection": "",
 "android": "res://resources/misc/Android 32x32.png",
@@ -536,7 +674,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Dystopia App stable"
+config/name="Dystopia RPG"
 run/main_scene="res://scenes/UI & misc/form/form.tscn"
 run/delta_smoothing=false
 boot_splash/image="res://resources/title animation/Dystopia Logo Drop shadow copy.png"
@@ -544,6 +682,12 @@ boot_splash/fullsize=false
 boot_splash/use_filter=false
 boot_splash/bg_color=Color( 1, 1, 1, 1 )
 config/icon="res://icon.png"
+config/name_fr="RPG Dystopie"
+config/name_ja="ディストピアRPG"
+config/name_pt_BR="Dystopia RPG"
+config/name_hi_IN="डिस्टोपिया RPG"
+config/name_zh_CN="反乌托邦RPG"
+config/name_ru_RU="Дистопия RPG"
 
 [autoload]
 
@@ -558,6 +702,7 @@ Utils="*res://singletons/Utils.gd"
 Simulation="*res://singletons/Simulation.tscn"
 Android="*res://singletons/Android.tscn"
 GameHud="*res://singletons/GameHUD.tscn"
+Firebase="*res://addons/godot-firebase/firebase/firebase.tscn"
 
 [debug]
 
@@ -575,6 +720,10 @@ window/handheld/orientation="sensor"
 window/ios/hide_home_indicator=false
 window/stretch/mode="2d"
 window/stretch/aspect="expand"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/godot-firebase/plugin.cfg", "res://addons/http-sse-client/plugin.cfg", "res://addons/orphan_import_file_cleaner/plugin.cfg" )
 
 [input]
 
@@ -675,7 +824,7 @@ pointing/emulate_touch_from_mouse=true
 
 [locale]
 
-translations=PoolStringArray( "res://Translation/Translation_1.en_US.translation", "res://Translation/Translation_1.fr.translation", "res://Translation/Translation_1.ha_NG.translation", "res://Translation/Translation_1.hi_IN.translation", "res://Translation/Translation_1.ig_NG.translation", "res://Translation/Translation_1.ja.translation", "res://Translation/Translation_1.pt_BR.translation", "res://Translation/Translation_1.te_IN.translation", "res://Translation/Translation_1.yo_NG.translation", "res://Translation/Translation_1.zh_CN.translation" )
+translations=PoolStringArray( "res://Translation/Translation_1.en_US.translation", "res://Translation/Translation_1.fr.translation", "res://Translation/Translation_1.ha_NG.translation", "res://Translation/Translation_1.hi_IN.translation", "res://Translation/Translation_1.ig_NG.translation", "res://Translation/Translation_1.ja.translation", "res://Translation/Translation_1.pt_BR.translation", "res://Translation/Translation_1.yo_NG.translation", "res://Translation/Translation_1.zh_CN.translation", "res://Translation/Translation_1.ru_RU.translation" )
 
 [logging]
 

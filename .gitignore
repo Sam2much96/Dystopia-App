@@ -23,5 +23,5 @@
 *.gltf
 
 # My recent unfinished codes Jun 17th
-
+.~lock.Translation_1.csv#
 */source_code/resources/3D/

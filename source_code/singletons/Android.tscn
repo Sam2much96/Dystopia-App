@@ -30,6 +30,8 @@ autostart = true
 wait_time = 140.0
 autostart = true
 
+[node name="GooglePlayGames" type="Node" parent="."]
+
 [connection signal="banner_failed_to_load" from="AdMob" to="." method="_on_AdMob_banner_failed_to_load"]
 [connection signal="banner_loaded" from="AdMob" to="." method="_on_AdMob_banner_loaded"]
 [connection signal="rewarded" from="AdMob" to="." method="_on_AdMob_rewarded"]

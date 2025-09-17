@@ -10,7 +10,7 @@
 # To-Do:
 
 # (1) Serialise input states to controll ui
-# 
+# (2) Lock UI settings into default theme
 # *************************************************
 #
 # Bugs:
@@ -94,13 +94,13 @@ func _ready():
 	if safe_Globals.screenOrientation == 1 && safe_Globals.os == "Android":
 		upscale_ui()
 
-	manual_translate()
+	#manual_translate()
 
 	music_checkbox.toggle_mode = true
 	vibration_Checkbox.toggle_mode = true
 	
 	music_checkbox.pressed = Music.enable
-
+	#self.theme = load("res://fonts/Dystopia-App-Light-en-theme.tres") #theme setting testing
 
 func _on_back_pressed():
 	safe_Globals._go_to_title() #changes scene to main title
@@ -170,17 +170,17 @@ func _on_Help_pressed():
 
 
 
-
-func manual_translate()-> void:
-	if Dialogs.language != "" or null:
-		
-		#print(ControlButtons) # for debug purposes only
-		Dialogs.set_font(ControlButtons, 44, "",3)
-		
-		for i in ControlButtons:
-			# Note: If it breaks with a null object error, it means that the scene layout has been changed
-			# Update the button links then
-			i.set_text(Dialogs.translate_to(i.name, Dialogs.language))
+#depreciated in favor of global themes
+#func manual_translate()-> void:
+#	if Dialogs.language != "" or null:
+#		
+#		#print(ControlButtons) # for debug purposes only
+#		Dialogs.set_font(ControlButtons, 44, "",3)
+#		
+#		for i in ControlButtons:
+#			# Note: If it breaks with a null object error, it means that the scene layout has been changed
+#			# Update the button links then
+#			i.set_text(Dialogs.translate_to(i.name, Dialogs.language))
 
 
 

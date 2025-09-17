@@ -8,7 +8,7 @@
 [ext_resource path="res://scenes/UI & misc/minimap.gd" type="Script" id=7]
 [ext_resource path="res://resources/misc/coins_128x128_2.webp" type="Texture" id=8]
 [ext_resource path="res://resources/misc/compass_64x64.webp" type="Texture" id=9]
-[ext_resource path="res://fonts/Dystopia-App-Light-theme.tres" type="Theme" id=10]
+[ext_resource path="res://fonts/Dystopia-App-Light-en-theme.tres" type="Theme" id=10]
 [ext_resource path="res://resources/misc/map ui 64x64.webp" type="Texture" id=11]
 [ext_resource path="res://scenes/UI & misc/Comics.v8.gd" type="Script" id=12]
 [ext_resource path="res://scenes/multiplayer/images/minimap/player.png" type="Texture" id=13]

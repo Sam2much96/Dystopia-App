@@ -7,6 +7,11 @@
 # It controls gameplay global settings and stores those values to
 # 
 # ************************************************* 
+# Features:
+# (1) Uses google play games services
+# (2) Uses google admob
+#
+# ************************************************* 
 # To-Do:
 # (1) Graphics Art (1/3)
 # (2) Connect Signals
@@ -16,6 +21,14 @@
 # (6) Decision dialog is a global and needs a simpler way to create decision dialogs
 # (7) Dialogbox should extend pop up dialog for better quality of life features
 # (8) Update Decision Dialogue
+# (9) Implement all time sales
+# (10) Implement dungeon item collection on death animation
+# (11) Implement Items sell UI
+# (12) Implement Firebase analytics api
+# (13) Implement Admob UI
+# (14) Implement Google play games services api
+# (15) Update Decision dialog box functionality
+# (16) Update dialog box class to pop up class and call visibility animation via functions
 # *************************************************
 
 extends Node2D

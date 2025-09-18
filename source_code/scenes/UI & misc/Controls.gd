@@ -94,7 +94,7 @@ func _ready():
 	if safe_Globals.screenOrientation == 1 && safe_Globals.os == "Android":
 		upscale_ui()
 
-	#manual_translate()
+	manual_translate()
 
 	music_checkbox.toggle_mode = true
 	vibration_Checkbox.toggle_mode = true
@@ -168,7 +168,8 @@ func _on_Help_pressed():
 	#_Help_hint.state = 0 # popup
 	pass
 
-
+func manual_translate():
+	Dialogs.Ui_translate(self)
 
 #depreciated in favor of global themes
 #func manual_translate()-> void:

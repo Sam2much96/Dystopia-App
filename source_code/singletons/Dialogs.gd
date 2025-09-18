@@ -50,20 +50,35 @@ var language : String = ""# stores the current language the user selects
 #var _script_testing : String = 'res://resources/dialogues/script_testing.gd'
 
 const WAIT_TIME = 6 # Wait time before hiding dialogue box
-
+# depreciated code logic
 # Contains path to supported languague paired with supported language packs
-export (Dictionary) var font_pack : Dictionary = {
-"en":"res://fonts/Comic_Andy.ttf",
-"en_US": "res://fonts/Comic_Andy.ttf",
-"pt_BR": "res://fonts/Comic_Andy.ttf",
-"fr": "res://fonts/Comic_Andy.ttf",
-"ru_RU":"res://fonts/RussoOne-Regular.ttf",
-"hi_IN":"res://fonts/TiroDevanagariHindi-Regular.ttf",
-"yo_NG":"res://fonts/WarowniaBlkNrw.ttf",
-"ja":"res://fonts/NotoSerifJP-Regular.otf",
-"zh_CN":"res://fonts/NotoSerifJP-Regular.otf",
-"ar":"res://fonts/NotoSansArabic_Condensed-Bold.ttf",
-"W1":"res://Wallet fonts/Roboto-Medium.ttf"
+#var font_pack : Dictionary = {
+#"en":"res://fonts/Comic_Andy.ttf",
+#"en_US": "res://fonts/Comic_Andy.ttf",
+#"pt_BR": "res://fonts/Comic_Andy.ttf",
+#"fr": "res://fonts/Comic_Andy.ttf",
+#"ru_RU":"res://fonts/RussoOne-Regular.ttf",
+#"hi_IN":"res://fonts/TiroDevanagariHindi-Regular.ttf",
+#"yo_NG":"res://fonts/WarowniaBlkNrw.ttf",
+#"ja":"res://fonts/NotoSerifJP-Regular.otf",
+#"zh_CN":"res://fonts/NotoSerifJP-Regular.otf",
+#"ar":"res://fonts/NotoSansArabic_Condensed-Bold.ttf",
+#"W1":"res://Wallet fonts/Roboto-Medium.ttf"
+#}
+
+var theme_pack : Dictionary = {
+"":"res://fonts/Dystopia-App-Light-en-theme.tres", # guard clause of empty dialog language variable
+"en":"res://fonts/Dystopia-App-Light-en-theme.tres",
+"en_US": "res://fonts/Dystopia-App-Light-en-theme.tres",
+"pt_BR": "res://fonts/Dystopia-App-Light-en-theme.tres",
+"fr": "res://fonts/Dystopia-App-Light-en-theme.tres",
+"ru_RU":"res://fonts/Dystopia-App-Light-ru-theme.tres",
+"hi_IN":"",
+"yo_NG":"",
+"ja":"res://fonts/Dystopia-App-Light-ja-theme.tres", # buggy
+"zh_CN":"",
+"ar":"",
+"W1":""
 }
 
 onready var custom_font = DynamicFont.new()
@@ -126,86 +141,29 @@ func _on_dialog_ended():
 			dialog_box.hide_dialogue()
 
 
- # Uses the translate feature from the Form at res://scenes/UI & misc/form/form.tscn
- # It parses from translations .csv and returns a string
- # Edit the translation sources .ods file to expand translations
-
+#depreciated in favour of ui translate funtion
+# Uses the translate feature from the Form at res://scenes/UI & misc/form/form.tscn
+# It parses from translations .csv and returns a string
+# Edit the translation sources .ods file to expand translations
 # should implement Language Based Font
 #Documentation: https://www.gotut.net/localisation-godot/
-func translate_to(_language : String, locale: String)-> String:
-	
-	TranslationServer.set_locale(locale)
-	return (tr(_language))
-	#else: return ("sdgdsdhdh") # returns an empty string
+#func translate_to(_language : String, locale: String)-> String:
+#	
+#	TranslationServer.set_locale(locale)
+#	return (tr(_language))
+#	#else: return ("sdgdsdhdh") # returns an empty string
 
+func Ui_translate(node : Control): # works
+	# debug the ui theme
+	TranslationServer.set_locale(language)
+	print_debug("theme: ", node.get_theme(), "/", theme_pack[language] , "/", language, "/", TranslationServer.get_locale())
+	node.set_theme(load(theme_pack[language]))
+	#print_debug("theme 2: ", node.get_theme())
 
 func reset() -> void:
 	# Resets Dialogue Key Variables
 	language = ""
 
-
-# Dynamic function
-# Creates a CUstom Font Pack for UI with different Paramenters
-func create_font_pack(Size : int, prefered_font_pack : String, OutlineSize : int ) -> DynamicFont:
-	# Loads A Custom Font Pack For Hindi, Telugu, Jpanese, Mandarin Languages
-	# (1) Should take Language as a parameter
-	
-	
-	
-	# Default Languague Font Pack is English
-	if prefered_font_pack.empty():
-		# Uses font pack path dictionary to create custom languague packs per languague
-		# IF Language is not supported, English is the deefault
-		# Fetches the Used front from the Font Pack by Matching Dialgues.language with it
-		var used_font : String = font_pack.get(language, "en")
-		
-		custom_font.font_data = load(used_font)  # English is the default backup font
-		
-		# Font Size
-		custom_font.size = Size
-		
-		# Fonrt Outline
-		custom_font.outline_size = OutlineSize
-		custom_font.outline_color= Color(0,0,0,1)
-		custom_font.use_filter = true
-		
-		#print_debug("Translations Debug: : ", custom_font.font_data)
-		
-	# Custom Font Pack
-	if not prefered_font_pack.empty():
-		# Uses font pack path dictionary to create custom languague packs per languague
-		# IF Language is not supported, English is the deefault
-		custom_font.font_data = load(prefered_font_pack) 
-		custom_font.size = Size
-		custom_font.outline_size = OutlineSize
-		custom_font.outline_color= Color(0,0,0,1)
-		custom_font.use_filter = true
-
-	return custom_font
-
-#Dynamic function
-func set_font(nodes:  Array, size : int, prefered_font_pack : String, OutlineSize : int) :
-	#TO DO
-	# (1) Match Dialogues Language to Font Pack dictionary
-	# (2) Causes Translations Bug in Game Menu for Mandarin, Hindu, Telugu
-	
-	
-	create_font_pack(
-		size, 
-		prefered_font_pack,
-		OutlineSize
-		)
-
-	# Font Overide simple state machine
-	if not nodes.empty():
-		for i in nodes:
-			if i is Button:
-				#print (i.name) # for debug purposes only	
-				i.add_font_override('font', custom_font)
-			if i is StatusText:
-				i.add_font_override('font', custom_font)
-			if i is Label:
-				i.add_font_override('font', custom_font)
 
 
 

@@ -2,8 +2,8 @@
 
 [ext_resource path="res://scenes/UI & misc/Controls.gd" type="Script" id=1]
 [ext_resource path="res://resources/illustrations/settings_cover_384x512_transparent.webp" type="Texture" id=2]
+[ext_resource path="res://fonts/Dystopia-App-Light-ar-theme.tres" type="Theme" id=3]
 [ext_resource path="res://fonts/Dystopia-App-Light-en-theme.tres" type="Theme" id=6]
-[ext_resource path="res://fonts/Menu_dynamicfont.tres" type="DynamicFont" id=8]
 
 [node name="Controls" type="Control"]
 anchor_right = 1.0
@@ -42,7 +42,7 @@ margin_bottom = 573.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_right = 255.0
-margin_bottom = 660.0
+margin_bottom = 650.0
 
 [node name="back" type="Button" parent="ScrollContainer/VBoxContainer"]
 margin_right = 255.0
@@ -59,12 +59,11 @@ __meta__ = {
 [node name="HBoxContainer2" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
 margin_top = 72.0
 margin_right = 255.0
-margin_bottom = 150.0
+margin_bottom = 140.0
 
 [node name="music" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer2"]
-margin_right = 126.0
-margin_bottom = 78.0
-custom_fonts/font = ExtResource( 8 )
+margin_right = 111.0
+margin_bottom = 68.0
 toggle_mode = true
 text = "music "
 flat = true
@@ -74,15 +73,15 @@ __meta__ = {
 }
 
 [node name="musicCheckBox" type="CheckBox" parent="ScrollContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 130.0
-margin_right = 176.0
-margin_bottom = 78.0
-theme = ExtResource( 6 )
+margin_left = 115.0
+margin_right = 161.0
+margin_bottom = 68.0
+theme = ExtResource( 3 )
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-margin_top = 154.0
+margin_top = 144.0
 margin_right = 255.0
-margin_bottom = 224.0
+margin_bottom = 214.0
 
 [node name="debug" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer4"]
 margin_right = 119.0
@@ -102,9 +101,9 @@ margin_right = 169.0
 margin_bottom = 70.0
 
 [node name="languague" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 228.0
+margin_top = 218.0
 margin_right = 255.0
-margin_bottom = 296.0
+margin_bottom = 286.0
 toggle_mode = true
 shortcut_in_tooltip = false
 text = "languague      "
@@ -115,9 +114,9 @@ __meta__ = {
 }
 
 [node name="shuffle" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 300.0
+margin_top = 290.0
 margin_right = 255.0
-margin_bottom = 368.0
+margin_bottom = 358.0
 toggle_mode = true
 shortcut_in_tooltip = false
 text = "Shuffle Music "
@@ -128,17 +127,17 @@ __meta__ = {
 }
 
 [node name="help" type="Button" parent="ScrollContainer/VBoxContainer"]
-margin_top = 372.0
+margin_top = 362.0
 margin_right = 255.0
-margin_bottom = 440.0
+margin_bottom = 430.0
 text = "help"
 flat = true
 align = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-margin_top = 444.0
+margin_top = 434.0
 margin_right = 255.0
-margin_bottom = 514.0
+margin_bottom = 504.0
 
 [node name="vibration" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer"]
 margin_right = 160.0
@@ -153,9 +152,9 @@ margin_right = 210.0
 margin_bottom = 70.0
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-margin_top = 518.0
+margin_top = 508.0
 margin_right = 255.0
-margin_bottom = 586.0
+margin_bottom = 576.0
 
 [node name="multiplayer" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer3"]
 margin_right = 190.0
@@ -170,9 +169,9 @@ __meta__ = {
 }
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-margin_top = 590.0
+margin_top = 580.0
 margin_right = 255.0
-margin_bottom = 660.0
+margin_bottom = 650.0
 
 [node name="deleteSave" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer5"]
 margin_right = 199.0

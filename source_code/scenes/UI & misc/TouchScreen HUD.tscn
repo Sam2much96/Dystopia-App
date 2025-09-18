@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://fonts/Dystopia-App-Light-en-theme.tres" type="Theme" id=1]
+[ext_resource path="res://fonts/Dystopia-App-Light-ru-theme.tres" type="Theme" id=1]
 [ext_resource path="res://scenes/UI & misc/TouchScreenHud.gd" type="Script" id=4]
 [ext_resource path="res://resources/Buttons/btn-hands.png" type="Texture" id=6]
 [ext_resource path="res://resources/kenny ui-pack/grey_button08.png" type="Texture" id=8]
@@ -114,11 +114,9 @@ texture_normal = ExtResource( 8 )
 texture_pressed = ExtResource( 9 )
 
 [node name="Label" type="Label" parent="MarginContainer/menu"]
-modulate = Color( 0, 0, 0, 1 )
 margin_left = 1.0
-margin_right = 60.0
-margin_bottom = 45.0
-rect_scale = Vector2( 0.8, 0.8 )
+margin_right = 106.0
+margin_bottom = 36.0
 text = "Menu"
 
 [node name="Line2D" type="Line2D" parent="."]

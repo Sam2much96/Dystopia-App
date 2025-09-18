@@ -99,8 +99,10 @@ func _ready():
 	
 	# Shows Random Hints using a Dictionary shuffle algorithm
 	randomHints = Music.shuffle(Dialogs.hints)
-		# Translates them to the User's Language
-	message.set_text(Dialogs.translate_to( randomHints, Dialogs.language))
+	
+	# depreciated in favour of translations server implementation
+	# Translates them to the User's Language
+	#message.set_text(Dialogs.translate_to( randomHints, Dialogs.language))
 	
 	
 	if Globals.current_level.empty():

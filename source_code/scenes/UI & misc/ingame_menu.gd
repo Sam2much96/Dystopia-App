@@ -98,7 +98,7 @@ const initialScale = Vector2(1,1)
 
 func _ready():
 	
-
+	
 	# set pointer to the touch interface which has the touch screen UI buttons
 	safe_UI.menuObj = self
 	
@@ -137,7 +137,7 @@ func _ready():
 	
 	showingObject = false
 	hidden()
-	
+
 
 """
 Menu State As Functions
@@ -149,7 +149,7 @@ Features:
 func showing():
 	# debug locale translations
 	print_debug("debug locale translation: ",TranslationServer.get_locale())
-	
+	manually_translate()
 	
 	
 	#print_debug("Showing Menu")
@@ -296,6 +296,9 @@ func _on_practice_pressed(): # turn off in release build
 	safe_Globals.current_level = safe_Globals.global_scenes["practice"] #'res://scenes/levels/Testing Scene 2.tscn' #breaks the Globals.current_level script
 	safe_Utils.Functions.change_scene_to(safe_Globals.loading_scene,get_tree() )
 
+func manually_translate():
+	print_debug("language debug: ", safe_Dialogs.language)
+	safe_Dialogs.Ui_translate(self)
 
 #func manually_translate()-> void: #depreicated function
 #	print_debug ("Selected Language: ",safe_Dialogs.language)

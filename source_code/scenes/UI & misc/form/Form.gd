@@ -129,34 +129,8 @@ func _ready():
 
 func _on_play_pressed():
 	
-	# Saves User's Language to Global Variable
-	# Language Sub system has to be reworked to load/create font packs for every supported Languague
-	
-	
-	if language.get_selected() == 0:
-		safe_Diag.language = "en_US"
-		#Globals.save_game()
-	elif language.get_selected() == 1:
-		safe_Diag.language = "pt_BR"
-		#Globals.save_game()
-	elif language.get_selected() == 2:
-		safe_Diag.language = "fr"
-	elif language.get_selected() == 3:
-		safe_Diag.language = "ru_RU"
-	elif language.get_selected() == 4:
-		safe_Diag.language = "hi_IN"
-	elif language.get_selected() == 5:
-		safe_Diag.language = "ja"
-	elif language.get_selected() == 6:
-		safe_Diag.language = "zh_CN"
-	elif language.get_selected() == 7:
-		safe_Diag.language = "yo_NG"
-	elif language.get_selected() == 8:
-		safe_Diag.language = "ar"
-		#Globals.save_game()
-	else : safe_Diag.language = ""
 
-	#print_debug(Dialogs.language) # for debug purposes only
+	
 	go_to_cinematics()
 	
 func go_to_cinematics():
@@ -203,4 +177,44 @@ func _exit_tree():
 	safe_Utils.Functions.save_game(get_tree())
 	safe_Utils.MemoryManagement.queue_free_array(UI_buttons)
 
+
+
+
+func _on_language_item_selected(index):
+	# connected to language select option buttons
+	# should trigger language change by appylying theme to root object
+	# Saves User's Language to Global Variable
+	# Language Sub system has to be reworked to load/create font packs for every supported Languague
+	
+	
+	if index == 0:
+		safe_Diag.language = "en_US"
+		#Globals.save_game()
+	elif index == 1:
+		safe_Diag.language = "pt_BR"
+		#Globals.save_game()
+	elif index == 2:
+		safe_Diag.language = "fr"
+	elif index == 3:
+		safe_Diag.language = "ru_RU"
+	elif index == 4:
+		safe_Diag.language = "hi_IN"
+	elif index == 5:
+		safe_Diag.language = "ja"
+	elif index == 6:
+		safe_Diag.language = "zh_CN"
+	elif index == 7:
+		safe_Diag.language = "yo_NG"
+	elif index == 8:
+		safe_Diag.language = "ar"
+		#Globals.save_game()
+	else : safe_Diag.language = ""
+	
+	print_debug("selected language: ", safe_Diag.language) # for debug purposes only
+	manually_translate()
+
+func manually_translate():
+	# pass the parent node to the dialogs singleton
+	# to match the user language with the language theme
+	safe_Diag.Ui_translate(ui_Node)
 

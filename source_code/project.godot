@@ -824,7 +824,7 @@ pointing/emulate_touch_from_mouse=true
 
 [locale]
 
-translations=PoolStringArray( "res://Translation/Translation_1.en_US.translation", "res://Translation/Translation_1.fr.translation", "res://Translation/Translation_1.ha_NG.translation", "res://Translation/Translation_1.hi_IN.translation", "res://Translation/Translation_1.ig_NG.translation", "res://Translation/Translation_1.ja.translation", "res://Translation/Translation_1.pt_BR.translation", "res://Translation/Translation_1.yo_NG.translation", "res://Translation/Translation_1.zh_CN.translation", "res://Translation/Translation_1.ru_RU.translation" )
+translations=PoolStringArray( "res://Translation/Translation_1.en_US.translation", "res://Translation/Translation_1.fr.translation", "res://Translation/Translation_1.ha_NG.translation", "res://Translation/Translation_1.hi_IN.translation", "res://Translation/Translation_1.ig_NG.translation", "res://Translation/Translation_1.ja.translation", "res://Translation/Translation_1.pt_BR.translation", "res://Translation/Translation_1.yo_NG.translation", "res://Translation/Translation_1.zh_CN.translation", "res://Translation/Translation_1.ru_RU.translation", "res://Translation/Translation_1.ar.translation" )
 
 [logging]
 

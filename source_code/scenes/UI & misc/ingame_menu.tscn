@@ -47,7 +47,7 @@ margin_right = 198.0
 margin_bottom = 212.0
 focus_previous = NodePath("../continue")
 shortcut_in_tooltip = false
-text = "Multiplayer"
+text = "multiplayer"
 flat = true
 
 [node name="lore" type="Button" parent="ScrollContainer/HSeparator"]

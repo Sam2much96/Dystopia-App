@@ -20,7 +20,7 @@
 # (4) Implement Character Customization UI (1/2)
 # (5) 
 # (7) Item Button should ideally be low poly texture buttons (1/2)
-#
+# (8) Lock tab styling into Default Dystopia light theme and implement translated ui using the manual_translate() function
 # *************************************************
 # Bugs:
 # (1) Regex For Inventroy Update is buggy

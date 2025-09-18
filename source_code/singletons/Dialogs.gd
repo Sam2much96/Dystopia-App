@@ -77,7 +77,7 @@ var theme_pack : Dictionary = {
 "yo_NG":"",
 "ja":"res://fonts/Dystopia-App-Light-ja-theme.tres", # buggy
 "zh_CN":"",
-"ar":"",
+"ar":"res://fonts/Dystopia-App-Light-ar-theme.tres",
 "W1":""
 }
 

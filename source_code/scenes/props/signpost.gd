@@ -7,7 +7,8 @@
 # SHows Random Hints to Player
 
 # To Do:
-# SHould connect to a signal from UI to trigger the UI once player is nearby
+# (1) SHould connect to a signal from UI to trigger the UI once player is nearby
+# (2) Implement translated signpost texts
 # *************************************************
 # Bugs:
 # (1) Dialog box bugs out if there's a single error in the script

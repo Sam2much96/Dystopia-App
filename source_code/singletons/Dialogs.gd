@@ -66,6 +66,9 @@ const WAIT_TIME = 6 # Wait time before hiding dialogue box
 #"W1":"res://Wallet fonts/Roboto-Medium.ttf"
 #}
 
+# to do:
+# (1) finish theme packs for all supported locales
+# (2) Test theme pack implementation
 var theme_pack : Dictionary = {
 "":"res://fonts/Dystopia-App-Light-en-theme.tres", # guard clause of empty dialog language variable
 "en":"res://fonts/Dystopia-App-Light-en-theme.tres",
@@ -154,6 +157,10 @@ func _on_dialog_ended():
 #	#else: return ("sdgdsdhdh") # returns an empty string
 
 func Ui_translate(node : Control): # works
+	# Logic:
+	# (1) Maps the language local to a theme that supports the font pack for that local
+	# (2) Sets the theme on the parent node, automatically translating all children nodes
+	
 	# debug the ui theme
 	TranslationServer.set_locale(language)
 	print_debug("theme: ", node.get_theme(), "/", theme_pack[language] , "/", language, "/", TranslationServer.get_locale())

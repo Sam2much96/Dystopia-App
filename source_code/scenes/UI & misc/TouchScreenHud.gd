@@ -82,17 +82,11 @@ extends TouchControls # it extends touch controls from an input manager class
 class_name TouchScreenHUD, "res://resources/misc/Android 32x32.png"
 
 
-#Debug
-#onready var _debug = get_tree().get_root().get_node("/root/Debug")
-
 
 #Safe Global Input Ponter
-
 onready var node_input = Input  # Generates this nodes Node _input()
 
 
-# Touch interface statemachine is expanded below June 17/2024
-#enum { DOWN, LEFT, UP, RIGHT, MENU, SLASH, ROLL, INTERACT, STATS, RESET, SHOW, HIDE} # Touch interface Internal State Machine
 
 export (int) var touch_controller = INPUT.MENU
 
@@ -119,39 +113,13 @@ var stats_ : TextureButton
 var roll : TextureButton 
 var slash  : TextureButton 
 
-#var comics_ : TextureButton 
-#var _joystick : TouchScreenButton
-#var joystick2 : TouchScreenButton 
-#var D_pad : Control 
-
-#var Anim : AnimationPlayer 
-
-var _up : TextureButton
-var _down : TextureButton
-var _left : TextureButton
-var _right : TextureButton
+var menuLabel : Label
 
 
-#'UI control Parents'
-
-"Dimensions Calculator"
-#var dimensions : Vector2  
-#var dimensional_diff : Vector2  
-
-#var buttons_positional_data : Array
-
-#var LineDebug : Line2D 
-#onready var joystick_parent: Control # = $Joystick
 
 'UI button as arrays'
 onready var all_UI_Nodes : Array
 onready var action_buttons : Array 
-
-
-#"Scene Tree"
-#onready var __scene_tree : SceneTree = get_tree()
-
-
 
 "Screen Variables"
 var screenOrientation : int
@@ -165,6 +133,7 @@ onready var localscreenOrientation : int #= Screen.Orientation()
 #onready var CHECK_ORIENTATION_TRIGGER : bool = false
 
 "Input Buffer Variables"
+# separate the input buffer into a separate class Nov 3, 2025
 
 # For Storing An Array of Input Data FOr Networking Multiplayer
 var input_buffer = []
@@ -235,6 +204,7 @@ func _ready():
 	
 	
 	menuButton = $"%menu"
+	menuLabel = $MarginContainer/menu/Label
 	_interract = $"%interact"
 	stats_ = $"%stats"
 	roll = $"%roll"
@@ -328,6 +298,10 @@ func _ready():
 			
 		if !is_instance_valid(StatsObj):
 			push_error("Stats Object is Invalid, debug stack")
+		
+		# translate menu ui
+		#safe_Dialogs.Ui_translate(menuLabel)
+		
 		
 		menu_() # triggers default menu scene on start of game application
 	if not enabled:
@@ -612,13 +586,9 @@ func status():  #used by ui scene when status is clicked
 func menu_(): 
 	#used by ui scene when menu is clicked
 	# hides all buttons aand shows the menu ui button only
-	#print_debug("Menu Showing Triggered")
-	#print_stack()
-	#print_debug("Menu Button triggered")
 	hide_buttons()
 	menuButton.show()
-	#touch_controller = MENU
-	#debug_visibility_() # for temporarily debugging touch buttons state
+
 
 func interract(): #used by ui scene when interract is clicked
 	print_debug("Interract Triggered")
@@ -705,26 +675,7 @@ PROCEDURAL ANIMATION FOR UI POSITIONING
 #
 # (1) Methods Are TO Be called from GameHUD animation player Via ANdroid Singleton for Screen Orientation Positioning
 func Horizontal():
-	# Position UI Nodes For Horizontal Screens
-	_left.rect_position =Vector2(83.482,453.99)
-	_left.rect_size =Vector2(87,87)
-	#_left.rect_rotation =179.7
-	_left.rect_scale = Vector2(1,1)
-	
-	_up.rect_position = Vector2(69.482,392.99)
-	_up.rect_size = Vector2(87,87)
-	#_up.rect_rotation = -89.1
-	_up.rect_scale =Vector2(1,1)
-	
-	_right.rect_position = Vector2(127.482,372.99)
-	_right.rect_size = Vector2(87,87)
-	#_right.rect_rotation = 0.8
-	_right.rect_scale = Vector2(1,1)
-	
-	_down.rect_position =Vector2(147.482,440.989)
-	_down.rect_size = Vector2(87,87)
-	#_down.rect_rotation = 90.3
-	_down.rect_scale = Vector2(1,1)
+
 	
 	
 	menuButton.rect_position = Vector2(32,48)
@@ -761,25 +712,7 @@ func Horizontal():
 
 func Vertical():
 	# Position UI Nodes HFor Horizontal Screens
-	_left.rect_position =Vector2(133.964,1920.99)
-	_left.rect_size =Vector2(87,87)
-	#_left.rect_rotation =179.7
-	_left.rect_scale = Vector2(2,2)
-	
-	_up.rect_position = Vector2(95.446,1786.98)
-	_up.rect_size = Vector2(87,87)
-	#_up.rect_rotation = -89.1
-	_up.rect_scale =Vector2(2,2)
-	
-	_right.rect_position = Vector2(213.964,1742.99)
-	_right.rect_size = Vector2(87,87)
-	#_right.rect_rotation = 0.8
-	_right.rect_scale = Vector2(2,2)
-	
-	_down.rect_position =Vector2(254.964,1865.99)
-	_down.rect_size = Vector2(87,87)
-	#_down.rect_rotation = 90.3
-	_down.rect_scale = Vector2(2,2)
+
 	
 	
 	# menu positionioning is okay now

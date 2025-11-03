@@ -9,6 +9,7 @@
 # (2) Connect to Playstore through the Networking singleton (Depreciated)
 # (3) Match Quest Logic From CSV File
 # (4) Match Quest Rewards From CSV Files
+# (5) Implement Quest Translations from translations csv
 # *************************************************
 
 

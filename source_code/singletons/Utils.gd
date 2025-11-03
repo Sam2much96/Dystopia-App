@@ -340,8 +340,8 @@ class Functions extends Reference:
 		if safe_Globals.suds != 0:
 			save_dict.suds = safe_Globals.suds
 		
-		if safe_Globals.player_hitpoints != 0:
-			save_dict.player_hitpoints = safe_Globals.player_hitpoints
+		if safe_Globals.hp != 0: # why not HP acronym?
+			save_dict.hp = safe_Globals.hp
 		
 		#Music on settings is a boolean converted to int
 		if safe_Music != null : 
@@ -460,7 +460,7 @@ class Functions extends Reference:
 			
 		
 		if save_dict.has('player_hitpoints'):
-			safe_Globals.player_hitpoints = int(save_dict.player_hitpoints)
+			safe_Globals.hp = int(save_dict.hp)
 		
 		if save_dict.has('death_count'):
 			safe_Globals.death_count = int(save_dict.death_count)

@@ -14,6 +14,8 @@
 # (1) Add type safety for every functions / variable
 # (2) 
 # (3) Static functions
+# (4) Expand Class functions
+# (5) Expand class debug functions
 # *************************************************
 
 extends Node

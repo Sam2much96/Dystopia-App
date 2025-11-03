@@ -44,7 +44,7 @@ var player : Player # My Player
 #var player_cam 
 
 #var _p # Player placeholder
-var player_hitpoints : int
+var hp : int
 var enemy = null
 var enemy_debug : String 
 const initial_level : String = "res://scenes/levels/Overworld.tscn"  # loading outside environment bug fixed

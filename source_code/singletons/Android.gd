@@ -104,9 +104,7 @@ func _ready():
 		connect("player_ready",self, "_on_player_ready")
 		
 		
-		# Enable forced ads here
-		# and reward players with coins
-		ads() 
+		
 		
 		#initial_screen_orientation = Utils.Screen.Orientation()
 	
@@ -142,14 +140,14 @@ func ads() -> void:
 	#_ads.initialize_on_background_thread()
 	_ads.load_banner()
 	
-	# temporarily disabling for refactor Jun 19.2025
-	#_ads.load_rewarded_video()
+	# 
+	_ads.load_rewarded_video()
 	_ads.move_banner(false)
 	_ads.show_banner()
 	# Ad some sud to this account
 	_globals.suds += 1000
 	
-	ADS_TRIGGERED = true
+
 	
 func ads_video()-> void:
 	
@@ -183,7 +181,9 @@ func _process(_delta):
 	
 	if TRIGGER_ADS && !ADS_TRIGGERED: # trigger ads after 3 minutes
 		# Enable ads here
+		ADS_TRIGGERED = true
 		ads()
+		return ADS_TRIGGERED
 	
 	"""
 	RAIN FX OPTIMIZATION

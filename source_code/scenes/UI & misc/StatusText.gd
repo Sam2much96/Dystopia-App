@@ -14,6 +14,7 @@
 
 # To Do:
 #(1) Fix Bugs
+# (2) lock design into theme and inplement status text translation with manual_translate() functions
 # *************************************************
 
 

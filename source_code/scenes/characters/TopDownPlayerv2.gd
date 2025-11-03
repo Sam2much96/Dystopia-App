@@ -10,10 +10,11 @@
 # (2) Implements State Buffer For Multiplayer 
 #
 # To Do:
-# (1) Refactor Player animation Logic into core Player class (DOne)
+# (1) 
 # (2) Player Animation Script Needs refactoring to Play animation as an extended method 
 # (3) Refactor Animation State Machine To Use Animation Tree Blend States Locally and In Simulation Logic
 # (4) Serialise Top DOwn player states to functions and connect Texture Button button down signal to the attack function
+# (5) Implement animation tree for better state machine controller
 # *************************************************
 
 extends Player

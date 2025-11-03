@@ -300,24 +300,4 @@ func manually_translate():
 	print_debug("language debug: ", safe_Dialogs.language)
 	safe_Dialogs.Ui_translate(self)
 
-#func manually_translate()-> void: #depreicated function
-#	print_debug ("Selected Language: ",safe_Dialogs.language)
-#	#SHould Ideally Use Hashmap tuple + for loops  for translations
-#	#print_debug(MenuButtons)
-#	
-#	if safe_Dialogs.language != "" or null:
-#		#print_debug(Dialogs.language)
-#		
-#		#UI Array & Font Size
-#		safe_Dialogs.set_font(MenuButtons, 44, "", 2)
-#		
-#		# Set UI Text to Translated Names
-#		for i in MenuButtons:
-#			
-#			# Note: If it breaks with a null object error, it means that the scene layout has been changed
-#			# Update the button links then
-#			
-#			i.set_text(safe_Dialogs.translate_to(i.name, safe_Dialogs.language))
-#
-
 

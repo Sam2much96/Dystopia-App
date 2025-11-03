@@ -60,13 +60,13 @@ func _on_Exit_body_entered(body):
 		#Globals.current_level = to_scene
 		safe_Globals.spawn_x = body.position.x 
 		safe_Globals.spawn_y = body.position.y
-		safe_Globals.player_hitpoints = body.hitpoints
+		safe_Globals.hp = body.hitpoints
 		
 		
 		# Save Game
 		#
 		#
-		Utils.Functions.save_game(get_tree()) 
+		safe_Utils.Functions.save_game(get_tree()) 
 		
 		#print_debug ("Finished Saving Game")
 		

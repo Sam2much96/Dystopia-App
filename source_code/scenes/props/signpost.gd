@@ -16,6 +16,7 @@
 # (3) Doesnt't Trigger UI changes in Touch HUD
 # (4) Node can only show 1 dialogue per scene
 # (5) Replace Player with Global Name / Wallet Address by modifying forms.gd
+# (6) Buggy signpost item logic, 
 # *************************************************
 
 
@@ -57,6 +58,10 @@ export(String, MULTILINE) var pending_text = "You forgot? I want 10 thingies"
 export(String, MULTILINE) var delivered_text = "Thank you! Here's your reward.."
 
 
+# safe pointers to global singleton objects
+onready var safe_Music = get_node("/root/Music")
+onready var safe_Dialogs = get_node("/root/Dialogs")
+onready var safe_Quest = get_node("/root/Quest")
 
 func _ready():
 	
@@ -85,24 +90,28 @@ func _ready():
 		#	push_error("Debug Connected Signals")
 
 
-func show_signpost(): # rename to trigger dialogue
-	if not is_instance_valid(Dialogs.dialog_box): # Error Catcher 1
+func show_signpost(): 
+	# to do:
+	# (1) rename to trigger dialogue
+	# (2) fix ui translations to work with new UI system
+	# (3) Replace singleton calls with memory safe pointers
+	if not is_instance_valid(safe_Dialogs.dialog_box): # Error Catcher 1
 		return
 	
 	#print_debug("showing signpost")
 	
 	if HINT:
 		# Shows Random Hints using a Dictionary shuffle algorithm
-		dialogue = Music.shuffle(Dialogs.hints)
+		dialogue = safe_Music.shuffle(safe_Dialogs.hints)
 		# Translates them to the User's Language
-		return Dialogs.dialog_box.show_dialog(
-			Dialogs.translate_to( dialogue, Dialogs.language), 'Player', false
+		return safe_Dialogs.dialog_box.show_dialog(
+			tr(dialogue), tr('Player'), false
 			)
 	if DIALOGUE:
-		return Dialogs.dialog_box.show_dialog(Dialogs.translate_to(dialogue, Dialogs.language), speaker, false)
+		return safe_Dialogs.dialog_box.show_dialog(tr(dialogue), tr(speaker), false)
 	
 	if DECISION:
-		return Dialogs.dialog_box.show_dialog(Dialogs.translate_to(dialogue, Dialogs.language), speaker, true)
+		return safe_Dialogs.dialog_box.show_dialog(tr(dialogue), tr(speaker), true)
 	
 	if QUEST:
 		
@@ -113,14 +122,14 @@ func show_signpost(): # rename to trigger dialogue
 		# (1) Rewrite to show players options to accept quest
 		# (2) Debug Quest Stats UI and update to serialize quest data
 		
-		var quest_dialog = Quest.QuestGivers.process(quest_name, initial_text, required_item, required_amount, reward_item, reward_amount, delivered_text, pending_text) # call 
+		var quest_dialog = safe_Quest.QuestGivers.process(quest_name, initial_text, required_item, required_amount, reward_item, reward_amount, delivered_text, pending_text) # call 
 		
 		print_debug("Has Quest: ", quest_dialog, "empty : " , quest_dialog.empty())
 		
 		
 		if quest_dialog != "":
 			#print_debug("Show Quest Dialogue Decisions")
-			return Dialogs.dialog_box.show_dialog(quest_dialog, speaker, false)
+			return safe_Dialogs.dialog_box.show_dialog(quest_dialog, speaker, false)
 			#return
 		if quest_dialog == "":
 			pass
@@ -134,7 +143,7 @@ func show_signpost(): # rename to trigger dialogue
 
 func hide_signpost():
 	print("hiding signpost")
-	Dialogs.dialog_box.hide_dialogue()
+	safe_Dialogs.dialog_box.hide_dialogue()
 
 
 # Detect Player

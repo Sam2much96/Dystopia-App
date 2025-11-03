@@ -17,6 +17,7 @@
 # (2) Add and store player's name
 # (3) Lock all UI elementss into single global Control themes
 # (4) Store font data to theme, and a theme manager that sychnornised selected parent theme with language server locale
+# (5) Finish theme packs for all supported locales
 
 # Bug:
 # (0) Fix entire game dialogue translation and translation files
@@ -151,23 +152,24 @@ func hide_play_button():
 	label_spacer3.hide()
 	label_spacer2.show()
 
-"""
-TRANSLATES THE ENTIRE APP TO ONE OF THE PRESELECTED lANGUAGUES INDICATED
-"""
+#""" depreciated Nov 3, 2025
+#TRANSLATES THE ENTIRE APP TO ONE OF THE PRESELECTED lANGUAGUES INDICATED
+#"""
 #Documentation: https://www.gotut.net/localisation-godot/
 
-func translate()-> void:
+#func translate()-> void:
 
 	# For Debug Purposes only
-	print ("En: ",Dialogs.translate_to("char3", "en_US")) 
-	print ("Es: ", Dialogs.translate_to("char3", "pt_BR"))
-	print ("Es: ", Dialogs.translate_to("char3", "fr"))
-	print ("Te: ", Dialogs.translate_to("char3", "ru_RU")) # Not working i 3.5 only in 4.0
-	print ("hi: ", Dialogs.translate_to("char3", "hi_IN"))
-	print ("ja: ", Dialogs.translate_to("char3", "ja"))
-	print ("cn: ", Dialogs.translate_to("char3", "zh_CN"))
-	print ("yo: ", Dialogs.translate_to("char3", "yo_NG"))
-	print_debug ("Error: ", Dialogs.translate_to("char7", "en"))
+	# depreciated translation debug function
+#	print ("En: ",tr("char3", "en_US")) 
+#	print ("Es: ", Dialogs.translate_to("char3", "pt_BR"))
+#	print ("Es: ", Dialogs.translate_to("char3", "fr"))
+#	print ("Te: ", Dialogs.translate_to("char3", "ru_RU")) # Not working i 3.5 only in 4.0
+#	print ("hi: ", Dialogs.translate_to("char3", "hi_IN"))
+#	print ("ja: ", Dialogs.translate_to("char3", "ja"))
+#	print ("cn: ", Dialogs.translate_to("char3", "zh_CN"))
+#	print ("yo: ", Dialogs.translate_to("char3", "yo_NG"))
+#	print_debug ("Error: ", Dialogs.translate_to("char7", "en"))
 
 
 

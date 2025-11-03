@@ -11,7 +11,7 @@
 #
 # TO DO:
 # (1) Bomb timeout shout be adjustible
-#
+# (2) Lock animation behaviour into a gdscript state machine for easier portability
 #
 #
 # *************************************************

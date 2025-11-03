@@ -75,9 +75,27 @@ onready var progress : float
 onready var timer  = $Timer
 #signal loaded(a,b)
 
+# android singleton safe pointer
+onready var safe_Android = get_node("/root/Android")
 
+# global singleton 
+onready var safe_Globals = get_node("/root/Globals")
+
+# music singleton
+onready var safe_Music = get_node("/root/Music")
+
+# dialogs singleton
+onready var safe_Dialogs = get_node("/root/Dialogs")
+
+# utils singleton
+onready var safe_Utils = get_node("/root/Utils")
 
 func _ready():
+	# Enable forced ads here
+	# and reward players with coins
+	if safe_Android.is_android():
+		safe_Android.TRIGGER_ADS = true;
+	
 	#Progress.hide()
 	Number.hide()
 	
@@ -93,32 +111,32 @@ func _ready():
 	
 	#connect("loaded", self,"show_progress", [a,b])
 	
-	print_debug("laading scene %s :",[Globals.current_level])
+	print_debug("laading scene %s :",[safe_Globals.current_level])
 	
 	# show random hints
 	
 	# Shows Random Hints using a Dictionary shuffle algorithm
-	randomHints = Music.shuffle(Dialogs.hints)
+	randomHints = safe_Music.shuffle(safe_Dialogs.hints)
 	
 	# depreciated in favour of translations server implementation
 	# Translates them to the User's Language
 	#message.set_text(Dialogs.translate_to( randomHints, Dialogs.language))
 	
 	
-	if Globals.current_level.empty():
+	if safe_Globals.current_level.empty():
 		push_error("Error: initial_level shouldn't be empty")
 		LOADING = false
 		
-	if not Globals.current_level.empty():
+	if not safe_Globals.current_level.empty():
 		
-		if Globals.os == "Android" or "iOS":
+		if safe_Globals.os == "Android" or "iOS":
 			# Features:
 			# (1) run a timer then start loading for mobile devices
 			# (2) Turns off loading scene for low resource heavy scenes using a Glopbal scne dictionary
 			# (3) Uses Dictionary keyys number to set loading animation time
-			if (Globals.current_level == Globals.Overworld_Scenes.get(1) or
-			Globals.current_level == Globals.Overworld_Scenes.get(5) or 
-			Globals.current_level == Globals.Overworld_Scenes.get(3) 
+			if (safe_Globals.current_level == safe_Globals.Overworld_Scenes.get(1) or
+			safe_Globals.current_level == safe_Globals.Overworld_Scenes.get(5) or 
+			safe_Globals.current_level == safe_Globals.Overworld_Scenes.get(3) 
 			):
 				
 				# Only show long loading scene for overworld scenes 1 and 5 which are resource heavy
@@ -128,7 +146,7 @@ func _ready():
 				timer.start(3)
 				return
 				
-		if Globals.os == "X11" or "Windows" or "HTML5"or "OSX"or "Server"or "UWP":
+		if safe_Globals.os == "X11" or "Windows" or "HTML5"or "OSX"or "Server"or "UWP":
 			#timer.start(1) # start loading immediately
 			LOADING = true
 
@@ -150,11 +168,11 @@ func _process(_delta):
 	# (2) Show Loading Icon WHile Scene is being Loaded
 	# (3) Implement Redundancy loading code
 	# Emptry current level initiator
-	if LOADING && not Globals.current_level.empty():
+	if LOADING && not safe_Globals.current_level.empty():
 		
 		# this function loads the scene resource into a global script and returns it
 		loaded_scene_temp = LoadLargeScene(
-		Globals.current_level, 
+		safe_Globals.current_level, 
 		loaded_scene_temp, 
 		_o, 
 		scene_loader, 
@@ -174,15 +192,15 @@ func _process(_delta):
 			print_debug("Loading successfull")
 			
 			# only show progress bars for these scenes else change instantly
-			if (Globals.current_level == Globals.Overworld_Scenes.get(1) or
-			Globals.current_level == Globals.Overworld_Scenes.get(5)
+			if (safe_Globals.current_level == safe_Globals.Overworld_Scenes.get(1) or
+			safe_Globals.current_level == safe_Globals.Overworld_Scenes.get(5)
 			):
 				show_progress(20,20)
 				yield(get_tree().create_timer(2),"timeout")
 				
 				# show touch hud on android
 				#Android.TouchInterface.touch_controller = Android.TouchInterface.SHOW
-				Android.TouchInterface.show__()
+				safe_Android.TouchInterface.show__()
 			
 			# TO DO : 
 			# connect a signal from the loading screen to Touchscreen HUD
@@ -190,7 +208,7 @@ func _process(_delta):
 			# and will also connect to menu() once no game scene is loaded 
 			
 			
-			Utils.Functions.change_scene_to( loaded_scene_temp, get_tree())
+			safe_Utils.Functions.change_scene_to( loaded_scene_temp, get_tree())
 		if loaded_scene_temp == null : # unsuccessfull load redundancy code backported from 4.2.2 Vulkan
 			push_error("Loading failed")
 			#get_tree().change_scene_to(load(Globals.current_level))

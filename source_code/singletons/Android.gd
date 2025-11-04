@@ -126,7 +126,7 @@ func is_android() -> bool:
 	return _is_android
 
 
-func ads() -> void:
+func ads(type: String) -> void:
 	print_debug("Running Mobile Ads")
 	# create ads parameters for rewarded video and banner ads
 	
@@ -135,15 +135,22 @@ func ads() -> void:
 	# config ads
 	_ads.banner_id = "ca-app-pub-3900377589557710/5127703243"
 	_ads.rewarded_id = "ca-app-pub-3900377589557710/4046256488"
+	_ads.interstitial_id = "ca-app-pub-3900377589557710/8498824198"
+	
 	_ads.is_real_set(true) # Test Ads & Ads Initialisation
 	_ads.is_real = true
 	#_ads.initialize_on_background_thread()
-	_ads.load_banner()
 	
-	# 
-	_ads.load_rewarded_video()
-	_ads.move_banner(false)
-	_ads.show_banner()
+	if type == "interstitial":
+		_ads.load_interstitial()
+		_ads.show_interstitial()
+	elif type == "banner":
+		_ads.load_banner() 
+		_ads.move_banner(false)
+		_ads.show_banner()
+	elif type == "rewarded video":
+		_ads.load_rewarded_video()
+		_ads.show_rewarded_video()
 	# Ad some sud to this account
 	_globals.suds += 1000
 	
@@ -182,7 +189,7 @@ func _process(_delta):
 	if TRIGGER_ADS && !ADS_TRIGGERED: # trigger ads after 3 minutes
 		# Enable ads here
 		ADS_TRIGGERED = true
-		ads()
+		ads("banner")
 		return ADS_TRIGGERED
 	
 	"""

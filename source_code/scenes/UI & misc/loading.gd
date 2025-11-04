@@ -331,8 +331,11 @@ static func LoadLargeScene(
 	return sc_resource
 
 
-
-
 # used for timing load times
 func _on_Timer_timeout():
 	LOADING = true
+
+
+# disable interstitial ads
+func _exit_tree():
+	safe_Android._ads.hide_banner()

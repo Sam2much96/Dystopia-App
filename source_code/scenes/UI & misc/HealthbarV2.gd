@@ -89,7 +89,7 @@ func get_heart_count() -> int:
 
 
 func _on_health_changed(new_hp: int):
-	push_warning("Health Change Function Called: "+  str(new_hp))
+	#push_warning("Health Change Function Called: "+  str(new_hp))
 	
 	# Update Heart Count Variables
 	get_heart_count()

@@ -69,8 +69,8 @@ func _ready():
 	# IT shouldn't call Randomize
 	
 	#randomize()
-	if enemy_spawn_1 != null:
-		push_warning(" Enemy Spawn is Null, It Cannot Be Null")
+	#if enemy_spawn_1 != null:
+	#	push_warning(" Enemy Spawn is Null, It Cannot Be Null")
 	anim.play("normal") #hides spriite animation by default
 	
 

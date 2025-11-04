@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/UI & misc/admob-lib/admob.gd" type="Script" id=1]
 [ext_resource path="res://singletons/Android.gd" type="Script" id=2]
+[ext_resource path="res://scenes/UI & misc/GooglePlayGames.gd" type="Script" id=3]
 
 [node name="Android" type="Node"]
 script = ExtResource( 2 )
@@ -31,6 +32,7 @@ wait_time = 140.0
 autostart = true
 
 [node name="GooglePlayGames" type="Node" parent="."]
+script = ExtResource( 3 )
 
 [connection signal="banner_failed_to_load" from="AdMob" to="." method="_on_AdMob_banner_failed_to_load"]
 [connection signal="banner_loaded" from="AdMob" to="." method="_on_AdMob_banner_loaded"]

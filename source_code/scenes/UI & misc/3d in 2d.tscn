@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://resources/3D/landscape mesh.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/UI & misc/TitleScreenViewport.gd" type="Script" id=7]
 [ext_resource path="res://scenes/Shaders/softedge.shader" type="Shader" id=8]
-[ext_resource path="res://scenes/levels/Overworld3D.tscn" type="PackedScene" id=9]
 
 [sub_resource type="ShaderMaterial" id=10]
 shader = ExtResource( 8 )
@@ -40,6 +40,7 @@ gui_disable_input = true
 gui_snap_controls_to_pixels = false
 script = ExtResource( 7 )
 
-[node name="Spatial" parent="Viewport" instance=ExtResource( 9 )]
+[node name="Spatial" type="Spatial" parent="Viewport"]
 unique_name_in_owner = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.660889, 0, -3.24523 )
+
+[node name="Landscape" parent="Viewport/Spatial" instance=ExtResource( 2 )]

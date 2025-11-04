@@ -49,7 +49,7 @@ export var testing_consent:bool setget testing_consent_set
 
 
 # "private" properties
-var _admob_singleton = null
+var _admob_singleton : JNISingleton = null
 var _is_interstitial_loaded:bool = false
 var _is_rewarded_video_loaded:bool = false
 var _is_rewarded_interstitial_loaded:bool = false

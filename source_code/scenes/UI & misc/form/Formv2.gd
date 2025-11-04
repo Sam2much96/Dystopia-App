@@ -28,10 +28,10 @@
 
 
 
-extends CanvasLayer
+extends Control
 
 
-#class_name Login 
+#class_name Login_v2
 
 """
 This is a gate-keeper script to keep check user's internet connections, restrict their access
@@ -46,17 +46,18 @@ onready var film : String = safe_Globals.global_scenes.get("cinematics")
 
 onready var cinematics : PackedScene = load(film) # Bug : 
 #var index : int = 0
-onready var Art : TextureRect = $TextureRect
+#onready var Art : TextureRect = $TextureRect
 #onready var coinText : TextureRect = $TextureRect
-onready var ui_Node : Control = $ui
-onready var play_button : Button = $ui/grid/PlayButton/play
+onready var ui_Node  = self
+onready var play_button1 : Button = $PlayButton/play
+onready var play_button2 : TextureButton = $PlayButton
 #onready var dialgue_box = $Dialog_box
-onready var language : OptionButton = $ui/grid/language
+onready var language : OptionButton = $language
 
 ########Label Spacer Codes Are Used For Aesthetics#########
-onready var label_spacer : Label = $ui/grid/label_spacer
-onready var label_spacer2 : Label = $ui/grid/label_spacer2
-onready var label_spacer3 : Label =$ui/grid/label_spacer3
+onready var label_spacer : Label = $label_spacer
+onready var label_spacer2 : Label = $label_spacer2
+onready var label_spacer3 : Label =$label_spacer3
 
 onready var UI_buttons : Array 
 onready var safe_GameHUD : GameHUD = get_node("/root/GameHud")
@@ -65,9 +66,9 @@ onready var gameMenu = safe_GameHUD.getMenu()
 func _ready():
 
 	UI_buttons = [
-		play_button, ui_Node,  
+		play_button1, play_button2, ui_Node,  
 		language, label_spacer, 
-		label_spacer2, label_spacer3, Art
+		label_spacer2, label_spacer3,# Art
 	]
 	
 	safe_Utils.UI.check_for_broken_links(UI_buttons)
@@ -127,7 +128,8 @@ func _ready():
 	#print_debug("Globals scenes and level debug:", Globals.curr_scene, "/", Globals.current_level)
 	#print_debug("Check if the current scene is a global scene: ", Globals.global_scenes.has(Globals.curr_scene))
 
-
+# to do:
+#(1) connect buttons programmatically
 func _on_play_pressed():
 	
 
@@ -139,7 +141,8 @@ func go_to_cinematics():
 
 
 func show_play_button() :
-	play_button.show()
+	play_button1.show()
+	play_button2.show()
 	label_spacer.show()
 	label_spacer3.show()
 	label_spacer2.hide()
@@ -147,7 +150,8 @@ func show_play_button() :
 	#dialgue_box.hide()
 
 func hide_play_button():
-	play_button.hide()
+	play_button1.hide()
+	play_button2.hide()
 	label_spacer.hide()
 	label_spacer3.hide()
 	label_spacer2.show()
@@ -181,7 +185,8 @@ func _exit_tree():
 
 
 
-
+# to do:
+# (1) connect ui buttons programmatically instead of manually
 func _on_language_item_selected(index):
 	# connected to language select option buttons
 	# should trigger language change by appylying theme to root object
@@ -220,3 +225,7 @@ func manually_translate():
 	# to match the user language with the language theme
 	safe_Diag.Ui_translate(ui_Node)
 
+
+
+func _on_PlayButton_pressed():
+	go_to_cinematics()

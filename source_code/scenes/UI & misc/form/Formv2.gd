@@ -133,9 +133,10 @@ func _ready():
 func _on_play_pressed():
 	
 
-	
+	# cinematics scene temporarily disabled for optimization refactoring Nov 4, 2025
 	go_to_cinematics()
-	
+	#safe_Globals._go_to_title()
+
 func go_to_cinematics():
 	safe_Utils.Functions.change_scene_to(cinematics, get_tree())
 
@@ -228,4 +229,7 @@ func manually_translate():
 
 
 func _on_PlayButton_pressed():
+	# cinematics scene is being depreciated to freeup vram resosurces
+	# Nov 4/ 2025 refactor
 	go_to_cinematics()
+	#safe_Globals._go_to_title()

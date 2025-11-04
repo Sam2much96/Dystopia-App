@@ -58,8 +58,9 @@ func handle_mouse(event):
 	if event is InputEventMouseButton or event is InputEventScreenTouch:
 		is_mouse_held = event.pressed
 	
+	
 	# Find mouse position in Area
-	var mouse_pos3D = find_mouse(event.global_position)
+	var mouse_pos3D = find_mouse(event.position)
 	
 	# Check if the mouse is outside of bounds, use last position to avoid errors
 	# NOTE: mouse_exited signal was unrealiable in this situation
@@ -94,7 +95,8 @@ func handle_mouse(event):
 	
 	# Set the event's position and global position.
 	event.position = mouse_pos2D
-	event.global_position = mouse_pos2D
+	if !event is InputEventScreenTouch:
+		event.global_position = mouse_pos2D
 	
 	# If the event is a mouse motion event...
 	if event is InputEventMouseMotion:

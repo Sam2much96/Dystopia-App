@@ -40,8 +40,7 @@ visible = false
 light_bake_mode = 2
 
 [node name="Landscape" parent="WorldEnvironment" instance=ExtResource( 2 )]
-transform = Transform( 6.0688, 0, 0, 0, 6.0688, 0, 0, 0, 6.0688, -0.0356876, -3.367, 0 )
-material/0 = null
+transform = Transform( 6.0688, 0, 0, 0, 6.0688, 0, 0, 0, 6.0688, -0.0356876, -2.82374, 0 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 10.0

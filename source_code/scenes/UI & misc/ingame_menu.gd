@@ -24,6 +24,7 @@
 # To-Do
 # (1) Implement Different States (Portrait & LandScape) Using Global Screen Orientation
 # (2) Connect Menu Object to Menu Singleton to trigger Menu States
+# (3) Connect menu visible state to Touch interface state machine
 
 
 #Bugs 
@@ -164,7 +165,7 @@ func hidden():
 	#print_debug("Hiding Menu")
 	hide()
 	emit_signal("menu_hidden")
-	safe_Music.play_track(_ui_sfx_1)
+	#safe_Music.play_track(_ui_sfx_1)
 	set_focus_mode(Control.FOCUS_NONE)
 	set_mouse_filter(Control.MOUSE_FILTER_IGNORE)
 

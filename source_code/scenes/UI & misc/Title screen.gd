@@ -35,27 +35,29 @@ onready var logo : TextureRect = $logo
 onready var title_nodes : Array = [art1, logo] #, viewport
 
 onready var _local_android : android = get_node("/root/Android")
-
+onready var safe_Globals = get_node("/root/Globals")
+onready var safe_Utils = get_node("/root/Utils")
 
 
 func _ready():
 	
 	# Controls_illustratins.gd has texture positional bug
-	if Globals.screenOrientation == 1:
+	if safe_Globals.screenOrientation == 1:
 		art1.show()
-	if Globals.screenOrientation == 0:
+	if safe_Globals.screenOrientation == 0:
 		#art1.hide()
 		pass
 	
-	# depreciated for touch hud refactor
-	# Show THe Menu Button On Android
-	#_local_android.show_only_menu()
+	# Titlescreen ads trigger
+	if _local_android.BANNER_READY:
+		_local_android._ads.show_banner()
 
 
 
 func _exit_tree():
 	# Memory Leak Management
-	Utils.MemoryManagement.queue_free_array(title_nodes)
+	safe_Utils.MemoryManagement.queue_free_array(title_nodes)
 	#_local_android._no_ads() # disabled on Aug 22 /2025. Not needed as no dpad on screen
-
-
+# disable banner ads
+	print_debug("Disabling Banner Ads on game start")
+	_local_android._ads.hide_banner()

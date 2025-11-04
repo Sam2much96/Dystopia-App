@@ -90,11 +90,13 @@ onready var safe_Dialogs = get_node("/root/Dialogs")
 # utils singleton
 onready var safe_Utils = get_node("/root/Utils")
 
+# game hud singleton
+onready var safe_HUD = get_node("/root/GameHud")
+
 func _ready():
-	# Enable forced ads here
-	# and reward players with coins
-	if safe_Android.is_android():
-		safe_Android.TRIGGER_ADS = true;
+	
+	# trigger the menu hidden state
+	safe_HUD.menu.hidden()
 	
 	#Progress.hide()
 	Number.hide()
@@ -336,6 +338,4 @@ func _on_Timer_timeout():
 	LOADING = true
 
 
-# disable interstitial ads
-func _exit_tree():
-	safe_Android._ads.hide_banner()
+

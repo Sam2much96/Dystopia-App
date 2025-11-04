@@ -64,6 +64,8 @@ onready var TRIGGER_ADS : bool = false
 
 var VIDEO_READY : bool = false
 var BANNER_READY : bool = false
+var ADS_CONFIG : bool = false
+
 
 # Particle FX Trigger
 var TRIGGER_RAINS : bool = false
@@ -92,6 +94,7 @@ func _ready():
 	if _globals.os == "Android": # Android Native
 		_is_android = true
 		
+		
 		# load Godot Chrome Browser
 		# To do : write separate godotchrome class 
 		if (Engine.get_singleton("GodotChrome")):
@@ -115,6 +118,9 @@ func _ready():
 		self.set_process(false)
 	#	self.set_physics_process(false)
 	
+	# initialise the banner ads loading & showing
+	# triggers forced ads on game start
+	ads("banner")
 	
 	#print_debug("Android :", _is_android, "/", _globals.os)
 
@@ -132,22 +138,27 @@ func ads(type: String) -> void:
 	
 	# Config and Inititalise Ads Programmatically
 	
-	# config ads
-	_ads.banner_id = "ca-app-pub-3900377589557710/5127703243"
-	_ads.rewarded_id = "ca-app-pub-3900377589557710/4046256488"
-	_ads.interstitial_id = "ca-app-pub-3900377589557710/8498824198"
-	
-	_ads.is_real_set(true) # Test Ads & Ads Initialisation
-	_ads.is_real = true
-	#_ads.initialize_on_background_thread()
+	if !ADS_CONFIG:
+		# config ads
+		_ads.banner_id = "ca-app-pub-3900377589557710/5127703243"
+		_ads.rewarded_id = "ca-app-pub-3900377589557710/4046256488"
+		_ads.interstitial_id = "ca-app-pub-3900377589557710/8498824198"
+		
+		_ads.is_real_set(true) # Test Ads & Ads Initialisation
+		_ads.is_real = true
+		ADS_CONFIG= true
+		#_ads.initialize_on_background_thread()
 	
 	if type == "interstitial":
 		_ads.load_interstitial()
 		_ads.show_interstitial()
-	elif type == "banner":
+	elif type == "banner" && !BANNER_READY: # banner loading logic
 		_ads.load_banner() 
+		
+	elif type == "banner" && BANNER_READY: # banner showing logic
 		_ads.move_banner(false)
 		_ads.show_banner()
+		
 	elif type == "rewarded video":
 		_ads.load_rewarded_video()
 		_ads.show_rewarded_video()
@@ -189,7 +200,7 @@ func _process(_delta):
 	if TRIGGER_ADS && !ADS_TRIGGERED: # trigger ads after 3 minutes
 		# Enable ads here
 		ADS_TRIGGERED = true
-		ads("banner")
+		
 		return ADS_TRIGGERED
 	
 	"""
@@ -289,7 +300,7 @@ func get_GameMenu() -> Game_Menu:
 func _on_AdMob_banner_loaded():
 	print_debug("Banner Ads Loaded")
 	BANNER_READY = true
-	
+	_ads.show_banner()
 	safe_Dialogs.show_dialog("Here's Your Reward! $SUD 1,000", "Admin")
 	_globals.suds += 1000
 
@@ -302,6 +313,8 @@ func _on_AdMob_banner_failed_to_load(error_code):
 
 	print_debug(_debug.Ads_debug)
 	BANNER_READY = false
+	# trigger the ads logic again
+	ads("banner")
 	
 
 

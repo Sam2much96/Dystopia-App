@@ -39,16 +39,19 @@ class_name MarketPlace2D
 signal open_video_ads
 signal send_txn
 
+# safe pointers to global singeltons
+onready var safe_Dialogs = get_node("/root/Dialogs")
+onready var safe_Android = get_node("/root/Android")
 
 func _ready():
 	
 	
-	Dialogs.dialog_box.connect("dialog_accept", self, "show_video_ads")
-	print_debug("Marketplace signal debug:",Dialogs.dialog_box.is_connected("dialog_accept", self, "show_video_ads"))
+	safe_Dialogs.dialog_box.connect("dialog_accept", self, "show_video_ads")
+	print_debug("Marketplace signal debug:",safe_Dialogs.dialog_box.is_connected("dialog_accept", self, "show_video_ads"))
 	# Debug Signal
 
 func show_video_ads():
-	Android.show_rewarded_video_ads()
+	safe_Android.ads("banner")
 	
 
 
@@ -56,3 +59,4 @@ func _exit_tree():
 	# disconnect signals
 	Dialogs.dialog_box.disconnect("dialog_accept", self, "show_video_ads")
 	
+	# hide banner add if showing

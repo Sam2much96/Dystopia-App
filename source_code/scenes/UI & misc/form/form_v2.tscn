@@ -1,19 +1,19 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://themes/Buttons_white+Black.tres" type="Theme" id=1]
 [ext_resource path="res://scenes/UI & misc/form/Formv2.gd" type="Script" id=2]
 [ext_resource path="res://resources/kenny ui-pack/grey_button01.png" type="Texture" id=3]
-[ext_resource path="res://resources/illustrations/coins silver.png" type="Texture" id=4]
 [ext_resource path="res://resources/kenny ui-pack/grey_button00.png" type="Texture" id=5]
 [ext_resource path="res://themes/option+button_Red.tres" type="Theme" id=6]
 
 [node name="grid" type="GridContainer"]
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_top = -43.5
-margin_right = 194.0
-margin_bottom = 43.5
-rect_scale = Vector2( 2.12613, 2.12613 )
+margin_left = 192.0
+margin_top = -49.0
+margin_right = 386.0
+margin_bottom = 38.0
+rect_scale = Vector2( 3, 3 )
 mouse_filter = 2
 columns = 2
 script = ExtResource( 2 )
@@ -57,34 +57,6 @@ margin_right = 190.0
 margin_bottom = 73.0
 theme = ExtResource( 6 )
 text = "Languague"
-
-[node name="form" type="Control" parent="."]
-margin_left = 194.0
-margin_top = 53.0
-margin_right = 194.0
-margin_bottom = 73.0
-
-[node name="TextureRect" type="TextureRect" parent="form"]
-visible = false
-self_modulate = Color( 1, 1, 1, 0.564706 )
-margin_left = 486.445
-margin_top = 51.7433
-margin_right = 899.445
-margin_bottom = 394.743
-mouse_filter = 2
-texture = ExtResource( 4 )
-
-[node name="ui" type="Control" parent="form"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -512.0
-margin_top = -300.0
-margin_right = 122.0
-margin_bottom = 300.0
-rect_scale = Vector2( 2, 2 )
-mouse_filter = 2
 
 [connection signal="pressed" from="PlayButton" to="." method="_on_PlayButton_pressed"]
 [connection signal="pressed" from="PlayButton/play" to="." method="_on_play_pressed"]

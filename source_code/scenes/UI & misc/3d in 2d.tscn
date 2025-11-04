@@ -42,5 +42,7 @@ script = ExtResource( 7 )
 
 [node name="Spatial" type="Spatial" parent="Viewport"]
 unique_name_in_owner = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.313187, 0 )
 
 [node name="Landscape" parent="Viewport/Spatial" instance=ExtResource( 2 )]
+transform = Transform( 6.0688, 0, 0, 0, 6.0688, 0, 0, 0, 6.0688, -0.0356876, -0.212871, 0 )

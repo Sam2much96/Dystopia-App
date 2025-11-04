@@ -669,7 +669,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Dystopia RPG"
-run/main_scene="res://scenes/UI & misc/form/form.tscn"
+run/main_scene="res://scenes/UI & misc/form/form3D.tscn"
 run/delta_smoothing=false
 boot_splash/image="res://resources/title animation/Dystopia Logo Drop shadow copy.png"
 boot_splash/fullsize=false
@@ -801,6 +801,10 @@ reset={
 "deadzone": 0.5,
 "events": [  ]
 }
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
 
 [layer_names]
 

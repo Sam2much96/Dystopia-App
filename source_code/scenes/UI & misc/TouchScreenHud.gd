@@ -996,9 +996,15 @@ func _exit_tree():
 	# disconnect all signals so object can be freed
 	safe_Dialogs.dialog_box.disconnect("dialog_started", self, "interract")
 	safe_Dialogs.dialog_box.disconnect("dialog_ended", self, "show_all_buttons")
+	
+	# ingame menu signals disconnect
+	# to do:
+	# (1) refactor to connect to current menu object buttons
 	menuObj.disconnect("menu_hidden_in_ui", self, "menu__") 
 	menuObj.disconnect("menu_hidden_in_game", self, "show__") 
 	menuObj.disconnect("menu_showing", self, "menu__") 
+	
+	# status hud signals disconnect
 	StatsObj.disconnect("_enabled", self ,"status") 
 	StatsObj.disconnect("_not_enabled", self ,"show_all_buttons") 
 	

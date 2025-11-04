@@ -112,11 +112,11 @@ func _ready():
 	#Adds 3 new languague selection
 	language.add_item('English') 
 	language.add_item('Brazilian Portuguese') 
-	language.add_item('French')
-	language.add_item('Russian')
+	language.add_item('Francaise')
+	language.add_item('Russia')
 	language.add_item('Hindi')
-	language.add_item('Japanese')
-	language.add_item('Mandarin')
+	language.add_item('Japan')
+	language.add_item('China')
 	language.add_item('Yoruba')
 	language.add_item('Arabic')
 

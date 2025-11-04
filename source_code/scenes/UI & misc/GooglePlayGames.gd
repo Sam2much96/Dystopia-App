@@ -18,12 +18,15 @@ signal achievements_revealed(revealed, achievement_id)
 signal events_loaded(events)
 
 
-
+# safe pointer to android singleton
+onready var safe_Android = get_node("/root/Android")
 
 func _ready() -> void:
-
-	GooglePlayGames=Engine.get_singleton("GodotGooglePlayGameServices")
-#	pass # Replace with function body.
+	
+	if safe_Android.is_android():
+		GooglePlayGames=Engine.get_singleton("GodotGooglePlayGameServices")
+	else:
+		pass 
 
 
 

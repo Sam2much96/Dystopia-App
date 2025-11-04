@@ -149,6 +149,7 @@ func ads(type: String) -> void:
 		ADS_CONFIG= true
 		#_ads.initialize_on_background_thread()
 	
+	#untested implementation
 	if type == "interstitial":
 		_ads.load_interstitial()
 		_ads.show_interstitial()
@@ -158,7 +159,8 @@ func ads(type: String) -> void:
 	elif type == "banner" && BANNER_READY: # banner showing logic
 		_ads.move_banner(false)
 		_ads.show_banner()
-		
+	
+	# rewarded video ux needs better optimization
 	elif type == "rewarded video":
 		_ads.load_rewarded_video()
 		_ads.show_rewarded_video()

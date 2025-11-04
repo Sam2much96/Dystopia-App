@@ -30,8 +30,8 @@
 
 extends CanvasLayer
 
-
-#class_name Login 
+# Depreciated login form Nov 4, 2025
+class_name Login 
 
 """
 This is a gate-keeper script to keep check user's internet connections, restrict their access

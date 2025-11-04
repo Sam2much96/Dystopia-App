@@ -2,7 +2,7 @@
 
 [ext_resource path="res://resources/kenny ui-pack/black_boxCheckmark.png" type="Texture" id=1]
 [ext_resource path="res://resources/kenny ui-pack/grey_box.png" type="Texture" id=2]
-[ext_resource path="res://fonts/MPLUS1p-Regular.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://fonts/Agbalumo-Regular.ttf" type="DynamicFontData" id=4]
 
 [sub_resource type="DynamicFont" id=4]
 size = 36

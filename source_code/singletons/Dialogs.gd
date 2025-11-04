@@ -76,10 +76,10 @@ var theme_pack : Dictionary = {
 "pt_BR": "res://fonts/Dystopia-App-Light-en-theme.tres",
 "fr": "res://fonts/Dystopia-App-Light-en-theme.tres",
 "ru_RU":"res://fonts/Dystopia-App-Light-ru-theme.tres",
-"hi_IN":"",
-"yo_NG":"",
-"ja":"res://fonts/Dystopia-App-Light-ja-theme.tres", # buggy
-"zh_CN":"",
+"hi_IN":"res://fonts/Dystopia-App-Light-hi_IN-theme.tres",
+"yo_NG":"res://fonts/Dystopia-App-Light-yo_NG-theme.tres",
+"ja":"res://fonts/Dystopia-App-Light-ja-theme.tres",
+"zh_CN":"res://fonts/Dystopia-App-Light-zh_CN-theme.tres",
 "ar":"res://fonts/Dystopia-App-Light-ar-theme.tres",
 "W1":""
 }

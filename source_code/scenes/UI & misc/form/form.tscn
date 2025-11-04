@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://resources/kenny ui-pack/grey_button00.png" type="Texture" id=1]
-[ext_resource path="res://scenes/UI & misc/form/Formv2.gd" type="Script" id=2]
+[ext_resource path="res://scenes/UI & misc/form/Form.gd" type="Script" id=2]
 [ext_resource path="res://resources/illustrations/coins silver.png" type="Texture" id=3]
 [ext_resource path="res://resources/kenny ui-pack/grey_button01.png" type="Texture" id=4]
 [ext_resource path="res://themes/Buttons_white+Black.tres" type="Theme" id=6]

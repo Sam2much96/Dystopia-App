@@ -10,7 +10,7 @@
 # (3) Fetches Global Screen Orientation calculated from cinematics class and uses it for Self Positioning
 # (4) Implements 2 Dialog box icons for different screen orientations
 # Bugs:
-
+# (1) buggy translations implementation
 
 #
 # To DO:
@@ -46,16 +46,23 @@ signal dialog_ended
 signal dialog_accept
 signal dialog_decline 
 
-onready var all_dialogue_nodes = [dialog_text, timer, character_text, anims, yes_accept, no_decline]
+# singleton pointers
+onready var safe_Dialogs = get_node("/root/Dialogs")
+onready var safe_Globals = get_node("/root/Globals")
+#onready var safe_Utils = get_node("/root/Utils")
+
+#onready var all_dialogue_nodes = [dialog_text, timer, character_text, anims, yes_accept, no_decline]
 
 func _ready():
+	# buggy method Nov 4 , 2025
+	#manually_translate()
 	
 	# Make Self Global and connect signals
-	Dialogs.dialog_box = self
+	safe_Dialogs.dialog_box = self
 	hide()
 	
 	self_set_position()
-	
+
 	
 	# Dialogue box scaling on mobile devices
 	# Load Different textures depending on the Screen Orientation
@@ -98,9 +105,9 @@ func self_set_position():
 	#Quick Fix for Upscaing/ Positioning On Mobile
 	# Porting the class to pop us class would make this code redundant
 	# you're using the wrong node type
-	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
+	if safe_Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
 		anims.play("MOBILE")
-	if Globals.screenOrientation == 0: #SCREEN_VERTICAL is 0
+	elif safe_Globals.screenOrientation == 0: #SCREEN_VERTICAL is 0
 		anims.play("PC")
 	
 
@@ -109,9 +116,9 @@ func hide_dialogue(): #Hides the Dialogue box
 	anims.play("disappear")
 
 
-func _exit_tree():
-	# Memory Management for Node
-	Utils.MemoryManagement.queue_free_array(all_dialogue_nodes)
+#func _exit_tree(): # unnecessary code tbh because its a child object of a global singleton that take responsibility over it
+#	# Memory Management for Node
+#	safe_Utils.MemoryManagement.queue_free_array(all_dialogue_nodes)
 
 func _on_Timer_timeout():
 	# signal connected to TouchScreen HUD reset animation
@@ -134,3 +141,11 @@ func _on_decline_pressed():
 	emit_signal("dialog_decline")
 	emit_signal("dialog_ended")
 	hide_dialogue()
+
+
+# to do:
+# (1) fix dialogue translations
+
+#func manually_translate()-> void:
+#	print_debug("language debug: ", safe_Dialogs.language)
+#	safe_Dialogs.Ui_translate(self)

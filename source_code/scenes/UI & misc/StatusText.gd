@@ -36,18 +36,19 @@ onready var anims : AnimationPlayer = $anims
 
 # safe pointer to global singletons
 onready var safe_dialogs_singleton = get_node("/root/Dialogs")
-
+onready var safe_Quest = get_node("/root/Quest")
+onready var safe_Inventory = get_node("/root/Inventory")
 
 
 func _ready():
 	
 	# connect Signals
 	# Connects to Both Quest and Item Singleton
-	Quest.connect("quest_changed", self, "_questlog_updated")
+	safe_Quest.connect("quest_changed", self, "_questlog_updated")
 	
 	# Inventory to Status Text
 	# Item changed signals contain parameters
-	Inventory.connect("item_changed", self, "_inventory_updated")
+	safe_Inventory.connect("item_changed", self, "_inventory_updated")
 	
 	#Debug Signals
 	#print_debug(
@@ -70,9 +71,9 @@ func _ready():
 func _questlog_updated(quest_name, status):
 	var txt : String
 	match status:
-		Quest.STATUS.STARTED:
+		safe_Quest.STATUS.STARTED:
 			txt = "Quest aquired: %s." % quest_name
-		Quest.STATUS.COMPLETE:
+		safe_Quest.STATUS.COMPLETE:
 			txt = "Quest complete! %s." % quest_name
 	
 	# Print a translated version of this text for debugging
@@ -85,12 +86,12 @@ func _inventory_updated(action : String, type: String, amount : int):
 	
 	var txt : String
 
-	var _type : String = safe_dialogs_singleton.translate_to(type , safe_dialogs_singleton.language)
+	var _type : String = tr(type) #safe_dialogs_singleton.translate_to(type , safe_dialogs_singleton.language)
 	
 	
 	match action:
 		"added":
-			var obtained : String = safe_dialogs_singleton.translate_to("Obtained", safe_dialogs_singleton.language)
+			var obtained : String = tr("obtained")
 			
 			txt = "%s  %s x %s" % [obtained,_type, amount]
 		"removed":
@@ -119,10 +120,10 @@ func _play_next():
 
 func _exit_tree():
 	# disconnect signals so object can be freed
-	Quest.disconnect("quest_changed", self, "_questlog_updated")
+	safe_Quest.disconnect("quest_changed", self, "_questlog_updated")
 	
 	# Inventory to Status Text
 	# Item changed signals contain parameters
-	Inventory.disconnect("item_changed", self, "_inventory_updated")
+	safe_Inventory.disconnect("item_changed", self, "_inventory_updated")
 	
 	self.queue_free()

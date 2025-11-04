@@ -34,6 +34,7 @@ autostart = true
 
 [node name="GooglePlayGames" type="Node" parent="."]
 script = ExtResource( 3 )
+enabled = true
 
 [connection signal="banner_failed_to_load" from="AdMob" to="." method="_on_AdMob_banner_failed_to_load"]
 [connection signal="banner_loaded" from="AdMob" to="." method="_on_AdMob_banner_loaded"]

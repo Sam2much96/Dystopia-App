@@ -25,6 +25,7 @@
 # Bugs:
 # (1) Regex For Inventroy Update is buggy
 # (2) Inventory Item use button is not working Aug 22/2025
+# (3) Update UI text to use translations dialogue
 # *************************************************
 
 extends PanelContainer

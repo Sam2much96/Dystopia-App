@@ -2,7 +2,7 @@
 
 [ext_resource path="res://resources/kenny ui-pack/black_boxCheckmark.png" type="Texture" id=1]
 [ext_resource path="res://resources/kenny ui-pack/grey_box.png" type="Texture" id=2]
-[ext_resource path="res://fonts/NIRIHINDI.otf" type="DynamicFontData" id=3]
+[ext_resource path="res://fonts/TiroDevanagariHindi-Regular.ttf" type="DynamicFontData" id=3]
 
 [sub_resource type="DynamicFont" id=4]
 size = 36

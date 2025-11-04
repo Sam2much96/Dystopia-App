@@ -296,9 +296,6 @@ custom_fonts/font = SubResource( 2 )
 text = "Character Name"
 align = 1
 clip_text = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="anims" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true

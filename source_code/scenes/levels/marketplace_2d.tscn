@@ -270,7 +270,7 @@ frame = 2
 position = Vector2( -50, 178 )
 scale = Vector2( 1.94436, 1.22436 )
 enabled = true
-dialogue = "Do you want to Buy Something?"
+dialogue = "diag1"
 DECISION = true
 
 [node name="Exit" parent="." instance=ExtResource( 2 )]

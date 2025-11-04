@@ -112,9 +112,9 @@ func roll():
 	state = TOP_DOWN.STATE_ROLL
 
 func idle():
-	print_debug("idle state triggered")
+	#print_debug("idle state triggered")
 	#state = TOP_DOWN.STATE_IDLE 
-
+	pass
 
 func _physics_process(delta):
 	

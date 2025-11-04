@@ -298,7 +298,7 @@ func _on_practice_pressed(): # turn off in release build
 	safe_Utils.Functions.change_scene_to(safe_Globals.loading_scene,get_tree() )
 
 func manually_translate():
-	print_debug("language debug: ", safe_Dialogs.language)
+	#print_debug("language debug: ", safe_Dialogs.language)
 	safe_Dialogs.Ui_translate(self)
 
 

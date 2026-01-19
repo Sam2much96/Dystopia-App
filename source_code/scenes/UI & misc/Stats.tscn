@@ -1,249 +1,208 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=16 format=3 uid="uid://dtrufnkwowb7h"]
 
-[ext_resource path="res://scenes/UI & misc/Stats.gd" type="Script" id=1]
-[ext_resource path="res://fonts/dialog.tres" type="FontFile" id=2]
-[ext_resource path="res://fonts/stats.tres" type="FontFile" id=3]
-[ext_resource path="res://scenes/UI & misc/stats.stylebox" type="StyleBox" id=4]
-[ext_resource path="res://fonts/scroll_bar_theme.tres" type="Theme" id=5]
-[ext_resource path="res://scenes/UI & misc/StatsIcons.gd" type="Script" id=6]
-[ext_resource path="res://scenes/UI & misc/minimap.gd" type="Script" id=7]
-[ext_resource path="res://resources/Aarin/spritesheet_4.webp" type="Texture2D" id=8]
-[ext_resource path="res://resources/misc/compass.webp" type="Texture2D" id=9]
-[ext_resource path="res://resources/misc/rupees.webp" type="Texture2D" id=10]
-[ext_resource path="res://resources/misc/map ui 64x64.webp" type="Texture2D" id=11]
-[ext_resource path="res://scenes/UI & misc/Third_Party_Software.tscn" type="PackedScene" id=12]
+[ext_resource type="Script" uid="uid://cpvcc1kvynacv" path="res://scenes/UI & misc/Stats.gd" id="1"]
+[ext_resource type="FontFile" path="res://fonts/dialog.tres" id="2"]
+[ext_resource type="FontFile" uid="uid://cltyfyyl3vfgw" path="res://fonts/stats.tres" id="3"]
+[ext_resource type="StyleBox" path="res://scenes/UI & misc/stats.stylebox" id="4"]
+[ext_resource type="Theme" uid="uid://dbpub1p1sa5p3" path="res://fonts/scroll_bar_theme.tres" id="5"]
+[ext_resource type="Script" uid="uid://cck0t446u0yal" path="res://scenes/UI & misc/StatsIcons.gd" id="6"]
+[ext_resource type="Script" uid="uid://b87yr2lub8p0" path="res://scenes/UI & misc/minimap.gd" id="7"]
+[ext_resource type="Texture2D" uid="uid://cnq3epm88h30e" path="res://resources/Aarin/spritesheet_4.webp" id="8"]
+[ext_resource type="Texture2D" uid="uid://b6lrhxiau8f7a" path="res://resources/misc/compass.webp" id="9"]
+[ext_resource type="Texture2D" uid="uid://cbna0dbm5qkwv" path="res://resources/misc/rupees.webp" id="10"]
+[ext_resource type="Texture2D" uid="uid://hjtnd7rxhjmo" path="res://resources/misc/map ui 64x64.webp" id="11"]
 
-[sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.792157, 0.792157, 0.792157, 0.415686 )
-border_color = Color( 0.84375, 0.84375, 0.84375, 1 )
+[sub_resource type="StyleBoxFlat" id="2"]
+bg_color = Color(0.792157, 0.792157, 0.792157, 0.415686)
+border_color = Color(0.84375, 0.84375, 0.84375, 1)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-[sub_resource type="StyleBoxFlat" id=4]
-bg_color = Color( 0.14902, 0.14902, 0.14902, 0.67451 )
+[sub_resource type="StyleBoxFlat" id="4"]
+bg_color = Color(0.14902, 0.14902, 0.14902, 0.67451)
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id="6"]
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="Theme" id=3]
-TabContainer/styles/panel = SubResource( 2 )
-TabContainer/styles/tab_bg = SubResource( 4 )
-TabContainer/styles/tab_fg = SubResource( 6 )
+[sub_resource type="Theme" id="3"]
+TabContainer/styles/panel = SubResource("2")
+TabContainer/styles/tab_bg = SubResource("4")
+TabContainer/styles/tab_fg = SubResource("6")
 
 [node name="Stats" type="PanelContainer"]
 process_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = 4.0
 focus_neighbor_top = NodePath("VBoxContainer/Exit")
 focus_neighbor_bottom = NodePath("VBoxContainer/Exit")
 focus_mode = 2
-theme_override_styles/panel = ExtResource( 4 )
-script = ExtResource( 1 )
-enabled = true
+theme_override_styles/panel = ExtResource("4")
+script = ExtResource("1")
 
 [node name="TabContainer" type="TabContainer" parent="."]
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 1008.0
-offset_bottom = 580.0
-theme = SubResource( 3 )
-theme_override_colors/font_color_bg = Color( 0, 0, 0, 1 )
-theme_override_fonts/font = ExtResource( 3 )
-script = ExtResource( 6 )
+layout_mode = 2
+theme = SubResource("3")
+theme_override_fonts/font = ExtResource("3")
+current_tab = 0
+script = ExtResource("6")
 
 [node name="0" type="TabBar" parent="TabContainer"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 74.0
+layout_mode = 2
+metadata/_tab_index = 0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/0"]
+layout_mode = 0
 offset_left = 3.07108
 offset_top = 3.35535
 offset_right = 991.071
 offset_bottom = 905.355
-theme = ExtResource( 5 )
-scroll_horizontal_enabled = false
+theme = ExtResource("5")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/0/ScrollContainer"]
-offset_right = 62.0
-offset_bottom = 178.0
+layout_mode = 2
 
 [node name="Title" type="Label" parent="TabContainer/0/ScrollContainer/VBoxContainer"]
-offset_right = 62.0
-offset_bottom = 43.0
+layout_mode = 2
 size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource( 2 )
+theme_override_fonts/font = ExtResource("2")
 text = "Stats"
-align = 1
+horizontal_alignment = 1
 
 [node name="Kill_count" type="Label" parent="TabContainer/0/ScrollContainer/VBoxContainer"]
-offset_top = 47.0
-offset_right = 62.0
-offset_bottom = 178.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_fonts/font = ExtResource( 3 )
+theme_override_fonts/font = ExtResource("3")
 text = "KC
 "
-align = 1
+horizontal_alignment = 1
 
 [node name="1" type="TabBar" parent="TabContainer"]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 32.0
-offset_right = -4.0
-offset_bottom = -4.0
+layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/1"]
+layout_mode = 0
 offset_right = 77.0
 offset_bottom = 224.0
 
 [node name="TextureRect" type="TextureRect" parent="TabContainer/1/VBoxContainer"]
-offset_right = 77.0
-offset_bottom = 32.0
-scale = Vector2( 1.5, 1.5 )
-texture = ExtResource( 10 )
+layout_mode = 2
+texture = ExtResource("10")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/1/VBoxContainer"]
-offset_top = 36.0
-offset_right = 77.0
-offset_bottom = 167.0
+layout_mode = 2
 
 [node name="Algos" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
-offset_right = 77.0
-offset_bottom = 131.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_fonts/font = ExtResource( 3 )
+theme_override_fonts/font = ExtResource("3")
 text = "Coins
 "
-align = 1
+horizontal_alignment = 1
 
 [node name="2" type="TabBar" parent="TabContainer"]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 32.0
-offset_right = -4.0
-offset_bottom = -4.0
+layout_mode = 2
+metadata/_tab_index = 2
 
 [node name="ScrollContainer2" type="ScrollContainer" parent="TabContainer/2"]
+layout_mode = 0
 offset_left = 3.07108
 offset_top = 3.35535
 offset_right = 991.071
 offset_bottom = 905.355
-theme = ExtResource( 5 )
-scroll_horizontal_enabled = false
+theme = ExtResource("5")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/2/ScrollContainer2"]
-offset_right = 122.0
-offset_bottom = 245.0
+layout_mode = 2
 
 [node name="Title2" type="Label" parent="TabContainer/2/ScrollContainer2/VBoxContainer"]
-offset_right = 122.0
-offset_bottom = 43.0
+layout_mode = 2
 size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource( 2 )
+theme_override_fonts/font = ExtResource("2")
 text = "Quests"
-align = 1
+horizontal_alignment = 1
 
 [node name="Quests" type="Label" parent="TabContainer/2/ScrollContainer2/VBoxContainer"]
-offset_top = 47.0
-offset_right = 122.0
-offset_bottom = 245.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_fonts/font = ExtResource( 3 )
+theme_override_fonts/font = ExtResource("3")
 text = "Quest 1
 Quest 2
 "
-align = 1
+horizontal_alignment = 1
 
 [node name="3" type="TabBar" parent="TabContainer"]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 32.0
-offset_right = -4.0
-offset_bottom = -4.0
+layout_mode = 2
+metadata/_tab_index = 3
 
 [node name="ScrollContainer3" type="ScrollContainer" parent="TabContainer/3"]
+layout_mode = 0
 offset_left = 3.07108
 offset_top = 3.35535
 offset_right = 991.071
 offset_bottom = 905.355
-theme = ExtResource( 5 )
-scroll_horizontal_enabled = false
+theme = ExtResource("5")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/3/ScrollContainer3"]
-offset_right = 103.0
-offset_bottom = 117.0
+layout_mode = 2
 
 [node name="Title3" type="Label" parent="TabContainer/3/ScrollContainer3/VBoxContainer"]
-offset_right = 103.0
-offset_bottom = 43.0
-theme_override_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "Inventory"
-align = 1
+horizontal_alignment = 1
 
 [node name="Inventory" type="Button" parent="TabContainer/3/ScrollContainer3/VBoxContainer"]
-offset_top = 47.0
-offset_right = 103.0
-offset_bottom = 117.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_fonts/font = ExtResource( 3 )
+theme_override_fonts/font = ExtResource("3")
 text = "Item 1
 "
 flat = true
 
 [node name="4" type="TabBar" parent="TabContainer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 32.0
-offset_right = -4.0
-offset_bottom = -4.0
+visible = false
+layout_mode = 2
+metadata/_tab_index = 4
 
 [node name="minimap" type="TextureRect" parent="TabContainer/4"]
-modulate = Color( 1, 1, 1, 0.411765 )
+modulate = Color(1, 1, 1, 0.411765)
+layout_mode = 0
 offset_left = 180.164
 offset_top = 8.13399
 offset_right = 246.164
 offset_bottom = 72.134
-scale = Vector2( 6, 6 )
-texture = ExtResource( 11 )
-script = ExtResource( 7 )
+scale = Vector2(6, 6)
+texture = ExtResource("11")
+script = ExtResource("7")
 
 [node name="Sprite2D" type="Sprite2D" parent="TabContainer/4"]
-position = Vector2( 791.076, 258.768 )
-scale = Vector2( 0.623425, 0.623425 )
-texture = ExtResource( 8 )
+position = Vector2(791.076, 258.768)
+scale = Vector2(0.623425, 0.623425)
+texture = ExtResource("8")
 hframes = 10
 vframes = 7
 frame = 29
 
 [node name="TextureRect" type="TextureRect" parent="TabContainer/4"]
+layout_mode = 0
 offset_left = 12.3471
 offset_top = 59.4905
 offset_right = 52.3471
 offset_bottom = 99.4905
-scale = Vector2( 4, 4 )
-texture = ExtResource( 9 )
-
-[node name="Third Party Software" parent="TabContainer/4" instance=ExtResource( 12 )]
-offset_left = 40.6463
-offset_top = 199.975
-offset_right = -1010.35
-offset_bottom = 71.9753
+scale = Vector2(4, 4)
+texture = ExtResource("9")

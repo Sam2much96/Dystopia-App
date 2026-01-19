@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://b5ni8ntgce7bp"]
+[gd_scene load_steps=9 format=3 uid="uid://b5ni8ntgce7bp"]
 
-[ext_resource type="Script" path="res://singletons/Music.gd" id="1"]
+[ext_resource type="Script" uid="uid://ho4hwbqh6r4j" path="res://singletons/Music.gd" id="1"]
+[ext_resource type="Resource" uid="uid://dr1n4v5pwcbfd" path="res://singletons/MusicConfig.tres" id="2_4jlp2"]
 
 [sub_resource type="Animation" id="1"]
 tracks/0/type = "value"
@@ -113,18 +114,17 @@ resource_name = "play"
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_u7p04"]
 _data = {
-"AtoB": SubResource("1"),
-"BtoA": SubResource("2"),
-"Change track (straight)": SubResource("3"),
-"pause": SubResource("4"),
-"play": SubResource("5")
+&"AtoB": SubResource("1"),
+&"BtoA": SubResource("2"),
+&"Change track (straight)": SubResource("3"),
+&"pause": SubResource("4"),
+&"play": SubResource("5")
 }
 
 [node name="Music" type="Node"]
 process_mode = 3
 script = ExtResource("1")
-sfx_on = true
-volume = 10
+MusicConfig = ExtResource("2_4jlp2")
 
 [node name="A" type="AudioStreamPlayer" parent="."]
 
@@ -137,7 +137,7 @@ volume_db = -30.0
 
 [node name="anims" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_u7p04")
+&"": SubResource("AnimationLibrary_u7p04")
 }
 
 [connection signal="finished" from="A" to="." method="_on_A_finished"]

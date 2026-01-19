@@ -846,6 +846,11 @@ class UI extends RefCounted:
 		node.set_scale(size) 
 		node.set_position(position)
 
+	static func check_for_broken_links(nodes_array : Array) -> void:
+		for i in nodes_array:
+			if not is_instance_valid(i):
+				push_error(" Node Path Broken : " + str(i))
+				print_stack()
 
 
 

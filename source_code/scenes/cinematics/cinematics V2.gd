@@ -47,7 +47,7 @@ class_name cinematic
 @onready var local_dialoges : DialogsVar = get_node("/root/Dialogs")
 
 @onready var local_music : music_singleton = get_node("/root/Music")
-@onready var wind_sfx : String = local_music.wind_sfx.get(0)
+@onready var wind_sfx : String = local_music.MusicConfig.wind_sfx.get(0)
 
 """
 CINEMATICS

@@ -14,18 +14,18 @@ extends ColorRect
 
 class_name loading
 
+@export var LOADING = false
+
 @export var VISIBLE : bool
 
 @onready var Progress : ProgressBar = $VBoxContainer/ProgressBar
 @onready var Number : Label= $VBoxContainer/Number
 @onready var message : Label = $VBoxContainer/Message
 
-
+# loading throbber
 @onready var  loading2 : TextureRect = get_node("VBoxContainer/loading2")#$VBoxContainer/loading2
 
 
-# related to Github scene
-@onready var RestHandler_ = get_parent().get_node_or_null("RestHandler")
 
 
 
@@ -33,9 +33,7 @@ func _ready():
 	Progress.hide()
 	Number.hide()
 	
-	# Codebase for GitHUB scenes
-	if is_instance_valid(RestHandler_):
-		RestHandler_._loading = self
+	
 	
 	
 	# COnnect Signals for redundancy errors

@@ -77,7 +77,9 @@ var player_cam
 var player_hitpoints : int
 var enemy = null
 var enemy_debug : String 
-var initial_level : String = "res://scenes/levels/Overworld.tscn"  # loading outside environment bug fixed
+
+# to do: (1) move all level data to external resource class (2) move all global variables to external resource objects too
+var initial_level : String = "res://scenes/levels/overworld_1.tscn"  # loading outside environment bug fixed
 
 var video_stream #for the video streamers
 
@@ -114,7 +116,7 @@ var loading_resource : bool = false
 @onready var scene_loader= ResourceLoader
 @onready var progress : float
 
-var loading_scene : PackedScene = preload("res://scenes/UI & misc/LoadingScene.tscn")
+var loading_scene : PackedScene = load("res://scenes/UI & misc/LoadingScene.tscn")
 
 var Overworld_Scenes : Dictionary = {0 : "res://scenes/levels/Temple interior.tscn",
 1 : "res://scenes/levels/DuneProcedural.tscn",
@@ -194,7 +196,7 @@ func _go_to_title():
 	'Quits if already at title screen'
 	if get_tree().get_current_scene().get_name() == 'Menu':
 		get_tree().quit()
-	Music.play_track(Music.ui_sfx[1])
+	Music.play_track(Music.MusicConfig.ui_sfx[1])
 	
 	'changes scene to title_screen'
 	title = load(global_scenes["title_scene"])

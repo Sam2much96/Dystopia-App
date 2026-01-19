@@ -67,9 +67,9 @@ var MenuButtons : Array = []
 @onready var safe_Globals = get_node("/root/Globals")
 
 
-#to do: rewrite music singleton to use music config file
-@onready var _ui_sfx : String = safe_Music.ui_sfx[0]
-@onready var _ui_sfx_1 : String = safe_Music.ui_sfx[1]
+#
+@onready var _ui_sfx : String = safe_Music.MusicConfig.ui_sfx[0]
+@onready var _ui_sfx_1 : String = safe_Music.MusicConfig.ui_sfx[1]
 
 
 func _ready():
@@ -293,26 +293,5 @@ func _on_practice_pressed(): # turn off in release build
 
 
 func manually_translate()-> void:
-	#print_debug ("Selected Language: ",Dialogs.language)
-	#SHould Ideally Use Hashmap tuple + for loops  for translations
-	#print_debug(MenuButtons)
-	
-	if Dialogs.language != "" or null:
-		#print_debug(Dialogs.language)
-		
-		#UI Array & Font Size
-		Dialogs.set_font(MenuButtons, 44, "", 2)
-		
-		# Set UI Text to Translated Names
-		for i in MenuButtons:
-			
-			# Note: If it breaks with a null object error, it means that the scene layout has been changed
-			# Update the button links then
-			
-			i.set_text(Dialogs.translate_to(i.name, Dialogs.language))
-		
-		#comics.set_text(Dialogs.translate_to("comics", Dialogs.language))
-
-
-#func _on_github_pressed():
-#	get_tree().change_scene("res://addons/github-integration/scenes/GitHub.tscn")
+	# temporarily disabled for refactoring Jan 19, 26
+	pass

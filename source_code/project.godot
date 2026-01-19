@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Dystopia App stable"
-run/main_scene="res://scenes/UI & misc/form/form.tscn"
+run/main_scene="uid://crk5n0vv0ppv3"
 config/features=PackedStringArray("4.5")
 run/delta_smoothing=false
 boot_splash/bg_color=Color(1, 1, 1, 1)

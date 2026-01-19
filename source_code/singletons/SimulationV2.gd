@@ -758,17 +758,20 @@ class Player_:
 			#var pushback_direction = (global_position - area.global_position).normalized()
 			#move_and_slide( pushback_direction * pushback)
 			
+			# Get the Singletons safely
+			#var safeGlobals = get_node("/root/Globals")
+			
 			_body.state = _body.TOP_DOWN.STATE_HURT
 			var blood = Globals.blood_fx.instance()
 			blood.global_position = _global_position
 			_body.get_parent().add_child(blood)
 			Globals.player_cam.shake()
-			Music.play_sfx(Music.sword_sfx)
-			Music.play_track(Music.nokia_soundpack[20]) # Hurt Sound Track
+			Music.play_sfx(Music.MusicConfig.sword_sfx)
+			Music.play_track(Music.MusicConfig.nokia_soundpack[20]) # Hurt Sound Track
 			
 			if _body.hitpoints <= 0:
 				_body.state = _body.TOP_DOWN.STATE_DIE
-				Music.play_track(Music.nokia_soundpack[27]) # Death Sound Track
+				Music.play_track(Music.MusicConfig.nokia_soundpack[27]) # Death Sound Track
 
 
 # Setter and Getter functions for Singleton objects handling

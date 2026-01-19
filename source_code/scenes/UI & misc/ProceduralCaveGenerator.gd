@@ -18,7 +18,7 @@
 # *************************************************
 # To DO : 
 # (1) Decouple Codebase
-#
+# (2) Port code and level implementation to java script
 #
 extends Line2D
 # Procedurally generated tilemap creator
@@ -62,9 +62,11 @@ var point_data : PoolVector2Array
 
 var counter = 0 # for counting how many calcs are needed for this loop
 # Random World Seed Generator
-# To Do :
-# (1) Increase Seed Variation
-var word_seeds = Music.default_playlist.duplicate() # THe word seed is a random playlist song
+# Features:
+# (1) It uses the music playlist to generate a procedural world
+
+onready var safe_Music= get_node("/root/Music") #safe pointer to music singleton
+onready var word_seeds = Music.MusicConfig.default_playlist.duplicate() # THe word seed is a random playlist song
 
 
 # Chunk size (tiles processed per frame)

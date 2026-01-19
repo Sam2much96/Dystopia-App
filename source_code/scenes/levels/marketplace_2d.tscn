@@ -1,11 +1,11 @@
 [gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://resources/Environment Tilesets & Tilemaps/godot_128x_dungeon_tileset.webp" type="Texture" id=1]
+[ext_resource path="res://scenes/levels/godot_128x_dungeon_tileset.webp" type="Texture" id=1]
 [ext_resource path="res://scenes/levels/Exit.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/characters/Aarin.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/levels/marketplace_2d_level.gd" type="Script" id=4]
 [ext_resource path="res://resources/NPC/NPC_128x128_tileset.webp" type="Texture" id=5]
-[ext_resource path="res://scenes/items/Item.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/items/GenericItem.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/UI & misc/dialog_trigger.tscn" type="PackedScene" id=10]
 
 [sub_resource type="ConvexPolygonShape2D" id=3]
@@ -282,8 +282,6 @@ to_scene = "res://scenes/levels/Overworld.tscn"
 [node name="Item" parent="." instance=ExtResource( 8 )]
 position = Vector2( 111, 799 )
 scale = Vector2( 0.72, 0.72 )
-monitoring = false
-monitorable = false
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( -76, 909 )

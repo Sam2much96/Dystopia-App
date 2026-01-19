@@ -345,7 +345,7 @@ class Functions extends Reference:
 		
 		#Music on settings is a boolean converted to int
 		if safe_Music != null : 
-			save_dict.music = int(safe_Music.enable) #add other variables to save
+			save_dict.music = int(safe_Music.MusicConfig.enable) #add other variables to save
 		
 		# Language is saved independently
 		if not safe_Diag.language.empty():
@@ -532,12 +532,12 @@ class Functions extends Reference:
 		if !save_dict.has(data): # guard clause
 			push_error("data loaded not present in save file: " + data)
 
-		#if save_dict.has(data):
-		#	print_debug ("Loading user data: ", data)
+
+		# Temporarily disabling saving and loading for refactoring Jan 17 26
 		if data == "language":
 			safe_Diag.language = save_dict.languague
-		if data == "music":
-			safe_Music.enable = bool(save_dict.music)
+		#if data == "music":
+		#	safe_Music.enable = bool(save_dict.music)
 		if data == "kill_count" &&save_dict.has("kill_count"):
 			safe_Globals.kill_count = save_dict.kill_count  
 		if data == "death_count" && save_dict.has("death_count"):

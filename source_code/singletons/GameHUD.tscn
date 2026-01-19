@@ -1,10 +1,9 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/UI & misc/Stats.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/UI & misc/StatusText.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/UI & misc/Healthbar.tscn" type="PackedScene" id=4]
-[ext_resource path="res://singletons/input/Debug/TouchDebug.gd" type="Script" id=5]
 [ext_resource path="res://scenes/UI & misc/ingame_menu.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/UI & misc/TouchScreen HUD.tscn" type="PackedScene" id=8]
 [ext_resource path="res://singletons/GameHUD.gd" type="Script" id=9]
@@ -45,12 +44,7 @@ mouse_filter = 1
 [node name="Stats" parent="." instance=ExtResource( 2 )]
 unique_name_in_owner = true
 
-[node name="TouchInterface" parent="." instance=ExtResource( 8 )]
-unique_name_in_owner = true
-DEBUG = true
-
-[node name="TouchDebug" type="Node2D" parent="TouchInterface"]
-script = ExtResource( 5 )
+[node name="TouchScreenHUD" parent="." instance=ExtResource( 8 )]
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 margin_left = 50.0

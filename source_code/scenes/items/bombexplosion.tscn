@@ -3,7 +3,7 @@
 [ext_resource path="res://scenes/Shaders/outline.shader" type="Shader" id=1]
 [ext_resource path="res://resources/misc/bomb_128x128.webp" type="Texture" id=2]
 [ext_resource path="res://scenes/items/bombexplosion.gd" type="Script" id=3]
-[ext_resource path="res://resources/Environment Tilesets & Tilemaps/godot_128x_dungeon_tileset.webp" type="Texture" id=4]
+[ext_resource path="res://scenes/levels/godot_128x_dungeon_tileset.webp" type="Texture" id=4]
 [ext_resource path="res://scenes/Shaders/Impact.tscn" type="PackedScene" id=5]
 
 [sub_resource type="ShaderMaterial" id=2]

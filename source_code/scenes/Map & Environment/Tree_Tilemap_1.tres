@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" load_steps=2 format=2]
 
-[ext_resource path="res://resources/Environment Tilesets & Tilemaps/godot_128x_dungeon_tileset.webp" type="Texture" id=1]
+[ext_resource path="res://scenes/levels/godot_128x_dungeon_tileset.webp" type="Texture" id=1]
 
 [resource]
 0/name = "godot_128x_dungeon_tileset.webp 0"

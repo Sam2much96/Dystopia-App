@@ -29,9 +29,9 @@
 
 #Bugs 
 # (1) Buggy on Screen Orientation Rotation
-# (2) Implements Swipe Gestures for Auto Scroll using refactores swipe detection
-# (3) Should implement Touch Input without emulation, maybe by morhing the button type or autogenerating /duplicating body
-# (4) Button translations don't work because i'm not using a theme for it (fixed)
+# (2)
+# (3) 
+# (4) 
 # *************************************************
 
 extends Control
@@ -39,8 +39,6 @@ extends Control
 
 class_name Game_Menu
 
-#signal menu_hidden_in_ui
-#signal menu_hidden_in_game
 signal menu_showing
 signal menu_hidden
 
@@ -55,21 +53,11 @@ enum { SHOWING, HIDDEN}
 export (String) var menu_state
 
 
-#export (bool) var ENABLE  : bool 
-
-# Stops ooverflow of Upscaling Method
-# stops signal spamming
-
-#var counter : int = 0 
 
 var comics : Button 
 var new_game : Button 
-
 var continue_game : Button  
-
 var _multiplayer : Button 
-
-#var anime : Button 
 var practice : Button 
 var controls : Button 
 var quit : Button 
@@ -77,7 +65,6 @@ var quit : Button
 
 # Auto Scroll with Swipe Gestures
 var scroller : ScrollContainer
-
 var MenuButtons : Array = []
 
 "Safe Pointers To global Singletons"
@@ -91,24 +78,22 @@ onready var safe_Networking = get_node("/root/Networking")
 "safe Pointers to the Menu UI elemt"
 onready var safe_UI = get_parent().get_node("TouchInterface")
 
-onready var _ui_sfx : String = safe_Music.ui_sfx.get(0)
-onready var _ui_sfx_1 : String = safe_Music.ui_sfx.get(1)
+onready var _ui_sfx : String = safe_Music.MusicConfig.ui_sfx.get(0)
+onready var _ui_sfx_1 : String = safe_Music.MusicConfig.ui_sfx.get(1)
 
-const newScale = Vector2 (2,2)
-const initialScale = Vector2(1,1)
+#const newScale = Vector2 (2,2)
+#const initialScale = Vector2(1,1)
 
 func _ready():
 	
 	
 	# set pointer to the touch interface which has the touch screen UI buttons
-	safe_UI.menuObj = self
+	#safe_UI.menuObj = self
 	
 	# Make Globalm but don't overwrite memory address
 	if safe_Android.ingameMenu == null:
 		safe_Android.ingameMenu = self
 	
-	#print_debug("todo: Connect Menu Object to UI button using signals", self.name, safe_UI.menuObj)
-	#GlobalInput.menu = self
 	
 	#Buttons
 	comics  = $ScrollContainer/HSeparator/lore
@@ -147,9 +132,22 @@ Features:
 	(2) Exports state machine via function to Touch Screen HUD UI menu button presses
 """
 
+func _unhandled_input(event):
+	# Keyboard Input
+	if event.is_action_pressed("menu"):
+		get_viewport().set_input_as_handled()
+		toggled()
+
+func toggled():
+	showingObject = !showingObject
+	if showingObject:
+		showing()
+	else:
+		hidden()
+
 func showing():
 	# debug locale translations
-	print_debug("debug locale translation: ",TranslationServer.get_locale())
+	#print_debug("debug locale translation: ",TranslationServer.get_locale())
 	manually_translate()
 	
 	
@@ -184,18 +182,7 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 
 		# shance scene to loading scene with nspecialized logic for device loadi handling
 		safe_Utils.Functions.change_scene_to(safe_Globals.loading_scene,get_tree() )
-		
-		# Required Variables
-		#player: Array, 
-		#player_hitpoints : int, 
-		#spawn_x, spawn_y, 
-		#current_level, 
-		#os : String, 
-		#kill_count : int, 
-		#prev_scene, 
-		#prev_scene_spawnpoint,
-		#direction_control,
-		#Music_on_settings
+
 		
 		safe_Utils.Functions.save_game(get_tree())
 

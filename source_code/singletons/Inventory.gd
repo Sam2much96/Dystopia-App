@@ -49,12 +49,12 @@ var stats_ui : Stats setget set_Stats_UI, get_Stats_UI
 
 
 # Safe pointer to music singleton
-onready var local_music_singletion = Music
-onready var item_use_sfx : String = local_music_singletion.item_use_sfx[0]
+onready var local_music_singletion = get_node("/root/Music") #use direct paths
+onready var item_use_sfx : String = local_music_singletion.MusicConfig.item_use_sfx[0]
 
 # Intanciable items
-onready var bullet : PackedScene = preload("res://scenes/items/Bullet.tscn")
-onready var bomb_explosion : PackedScene = preload("res://scenes/items/bombexplosion.tscn")
+onready var bullet : PackedScene = load("res://scenes/items/Bullet.tscn")
+onready var bomb_explosion : PackedScene = load("res://scenes/items/bombexplosion.tscn")
 
 # Hard COding Items for 
 # items

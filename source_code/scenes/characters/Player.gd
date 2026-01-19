@@ -99,9 +99,9 @@ onready var safe_Simulation = get_node("/root/Simulation")
 onready var blood = global_singleton_.blood_fx.instance() # : BloodSplatter
 onready var despawn_particles = global_singleton_.despawn_fx.instance() # : DeSpawnFX
 
-onready var die_sfx: String = music_singleton_.nokia_soundpack.get(27)
-onready var hurt_sfx: String = music_singleton_.nokia_soundpack.get(20)
-onready var dash_sfx : String = music_singleton_.wind_sfx.get(1)
+onready var die_sfx: String = music_singleton_.MusicConfig.nokia_soundpack.get(27)
+onready var hurt_sfx: String = music_singleton_.MusicConfig.nokia_soundpack.get(20)
+onready var dash_sfx : String = music_singleton_.MusicConfig.wind_sfx.get(1)
 
 # Client & Server Logic for Top Down Player Movement
 

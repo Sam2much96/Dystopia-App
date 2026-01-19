@@ -1,0 +1,41 @@
+{ "compressionlevel":-1,
+ "height":10,
+ "infinite":false,
+ "layers":[
+        {
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            84, 84, 84, 84, 84, 84, 84, 84, 84, 84,
+            84, 84, 215, 202, 216, 203, 84, 0, 0, 84,
+            84, 84, 217, 204, 218, 205, 84, 0, 0, 84,
+            84, 84, 219, 206, 220, 84, 84, 0, 0, 84,
+            84, 84, 221, 208, 222, 52, 84, 0, 0, 84,
+            84, 84, 0, 54, 0, 0, 84, 0, 0, 84,
+            84, 84, 0, 0, 0, 0, 84, 0, 0, 84,
+            84, 84, 84, 56, 84, 84, 84, 84, 84, 84],
+         "height":10,
+         "id":1,
+         "name":"Tile Layer 1",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":10,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":2,
+ "nextobjectid":1,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tiledversion":"1.11.0",
+ "tileheight":128,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "source":"..\/..\/..\/..\/Dystopia-App-Web\/source_code\/scenes\/levels\/godot_128x_dungeon_tileset.tsj"
+        }],
+ "tilewidth":128,
+ "type":"map",
+ "version":"1.10",
+ "width":10
+}

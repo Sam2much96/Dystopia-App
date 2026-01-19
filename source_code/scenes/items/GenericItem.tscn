@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scenes/levels/godot_128x_dungeon_tileset.webp" type="Texture" id=1]
+[ext_resource path="res://scenes/items/Item.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 67.5, 68 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "collected"
+length = 0.4
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+
+[sub_resource type="Animation" id=4]
+length = 0.3
+step = 0.01
+
+[node name="sprite" type="Sprite"]
+position = Vector2( 4, -20 )
+texture = ExtResource( 1 )
+hframes = 14
+vframes = 19
+frame = 50
+
+[node name="Item" type="Area2D" parent="." groups=["items"]]
+collision_mask = 2
+script = ExtResource( 2 )
+item_type = "Generic Item"
+
+[node name="hitbox" type="CollisionShape2D" parent="Item"]
+position = Vector2( -0.5, -3 )
+shape = SubResource( 5 )
+
+[node name="anims" type="AnimationPlayer" parent="Item"]
+autoplay = "spawn"
+anims/collected = SubResource( 2 )
+anims/reset = SubResource( 3 )
+anims/spawn = SubResource( 4 )
+
+[connection signal="body_entered" from="Item" to="Item" method="_on_Item_body_entered"]

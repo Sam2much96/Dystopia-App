@@ -89,6 +89,7 @@ enum {ENABLED, DISABLED, NULL}
 onready var safeNetworking = get_node("/root/Networking") # : Internet
 onready var safeInventory = get_node("/root/Inventory")
 onready var safeUtils = get_node("/root/Utils")
+onready var safeMusic = get_node("/root/Music")
 onready var safeGameHUD = get_node("/root/GameHud")
 
 
@@ -355,7 +356,7 @@ func _disable():
 	enabled = false
 	visible = enabled
 	emit_signal("_not_enabled")
-	Music.play_track(Music.ui_sfx[1])
+	safeMusic.play_track(safeMusic.MusicConfig.ui_sfx[1])
 	hide()
 	get_tree().paused = false
 	print_debug ("Stats UI disabled") # For debug purposes only

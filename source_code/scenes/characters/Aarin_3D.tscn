@@ -14,13 +14,12 @@ script = ExtResource( 1 )
 speed = 5.0
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 9.38358, -1.41297, 0.217456, 0.110565, 2.17412, 9.27165, -1.4566, -8.90368, 2.10398, -0.391535, 14.5186, 1.84101 )
+transform = Transform( 9.42727, -1.10755, 0.160638, 0.110422, 2.17132, 9.24485, -1.14014, -8.94749, 2.2236, 0.176, 14.519, 1.841 )
 current = true
 fov = 32.5213
 
 [node name="OmniLight" type="OmniLight" parent="Camera"]
 transform = Transform( -0.142953, -0.0318955, 0.989215, -0.00279309, 0.99949, 0.0318232, -0.989726, 0.00178628, -0.142969, -0.0318258, 0.17039, -0.94134 )
-visible = false
 omni_range = 0.861651
 
 [node name="player" type="MeshInstance" parent="."]

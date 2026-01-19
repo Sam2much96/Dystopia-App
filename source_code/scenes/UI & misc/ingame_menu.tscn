@@ -12,7 +12,7 @@ enabled = true
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 margin_left = -226.289
 margin_top = -280.358
-margin_right = 1.71097
+margin_right = 1.711
 margin_bottom = 26.6423
 rect_scale = Vector2( 1.9286, 1.9286 )
 scroll_horizontal_enabled = false

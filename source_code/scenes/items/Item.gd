@@ -8,7 +8,8 @@
 # Item Use Logic is in the Logic Singleton
 #
 # To Do:
-#(1) 
+#(1) Modify code to play music from Audio singleton
+# (2) Separate implementation into resource types and code
 # *************************************************
 
 extends Area2D
@@ -20,7 +21,7 @@ export(int) var amount = 1
 
 onready var anims : AnimationPlayer = $anims
 
-onready var sub_nodes : Array = [self, anims]
+
 onready var safe_Music = get_node("/root/Music")
 onready var safe_Inventory = get_node("/root/Inventory")
 
@@ -34,12 +35,10 @@ func _on_Item_body_entered(body):
 		call_deferred("disconnect", "body_entered", self, "_on_Item_body_entered")
 		# Adds Items to the Inventory Singleton
 		safe_Inventory.add_item(item_type, amount)
-		anims.play("collected")
+		anims.play("collected") 
 		safe_Music.play_track("res://sounds/item_collected.ogg") # Plays sound via singleton
 		
-		queue_free()
+		get_parent().queue_free()
 	else : pass
 
 
-func _exit_tree():
-	Utils.MemoryManagement.queue_free_array(sub_nodes)

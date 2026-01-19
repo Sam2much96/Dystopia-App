@@ -22,7 +22,9 @@
 # (4) Refactor into state machines
 # (5) Implement Attack Button As Inventory item UI
 # (6) Make Child Of Global Input SIngleton To Remove Multiple Instance and and update curr scene every loop
-
+# (7) Refactor Game HUD UI
+# (8) Lock UI into TIleset and Resource files
+# (9) Export UI Data to and from the engine
 
 # *************************************************
 # Bugs :
@@ -37,6 +39,7 @@
 # (9) Dialogue Box positioning for mobiles is Buggy in GameHUD.tscn
 # (10) Dialogue Box is Buggy (fixed)
 # (11) Node and Sub Nodes Do Not Handle Or Register Inputs Well
+# (12) Touch Screen UI code is buggy
 # *************************************************
 
 
@@ -80,7 +83,7 @@ func _ready():
 	if dialog_box == null:
 		dialog_box =$"%Dialog_box"
 	if TouchInterface == null:
-		TouchInterface = $"%TouchInterface"
+		TouchInterface = $"TouchScreenHUD"
 
 	
 	children = [menu, TouchInterface, _Stats, _Status_text,dialog_box, heart_box]

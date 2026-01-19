@@ -43,7 +43,7 @@ onready var local_globals : GlobalsVar = get_node("/root/Globals")
 #onready var local_dialogs : DialogsVar = get_node("/root/Dialogs")
 onready var local_android  : android = get_node("/root/Android")
 onready var local_music : music_singleton = get_node("/root/Music")
-onready var wind_sfx : String = Music.wind_sfx.get(0)
+onready var wind_sfx : String = Music.MusicConfig.wind_sfx.get(0)
 
 func _ready(): 
 	

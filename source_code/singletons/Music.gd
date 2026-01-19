@@ -21,6 +21,7 @@
 # (5) Organize code into states {Finite State Machine}
 # (6) Implement Global file checker and Directory Checker
 # (7) Implement Spotify API (Depreciated)
+# (8) Map buttons to UI
 
 # *************************************************
 # Bugs:
@@ -39,151 +40,14 @@ extends Node
 class_name music_singleton
 
 signal music_finished
+export(Resource) var MusicConfig 
 
-#add more controls to this script, it breaks the singleton
-export (bool) var enable 
-export (bool) var sfx_on
+#export (bool) var enable 
+#export (bool) var sfx_on
 #export (int) var volume # volume controller code is not yet written
-export (int) var play_back_position : int
-export (int) var track_length : int
+#export (int) var play_back_position : int
+#export (int) var track_length : int
 
-export(String, FILE, "*.ogg") var music_track : String = ""
-
-export (Dictionary) var default_playlist : Dictionary ={
-	0:"res://music/The Road Warrior.ogg",
-	1:"res://music/Astrolife chike san.ogg",
-	2:"res://music/chike san afro 1.ogg",
-	3:"res://music/chike san afro 2.ogg",
-	4:"res://music/chike san afro 3.ogg",
-	5:"res://music/paranoia.ogg",
-	6: "res://music/Inhumanity Game Track 3.ogg",
-	
-	7: "res://music/Track 1-1.ogg",
-	8:"res://music/Marble Tower 4.ogg",
-}
-
-
-
-export (Dictionary) var comic_sfx : Dictionary = {
-	0: 'res://sounds/book_flip.1.ogg',
-	1:'res://sounds/book_flip.10.ogg',
-	2:'res://sounds/book_flip.2.ogg',
-	3:'res://sounds/book_flip.3.ogg',
-	4:'res://sounds/book_flip.4.ogg',
-	5:'res://sounds/book_flip.5.ogg',
-	6:'res://sounds/book_flip.6.ogg',
-	7:'res://sounds/book_flip.7.ogg',
-	8:'res://sounds/book_flip.8.ogg',
-	9:'res://sounds/book_flip.9.ogg'
-}
-
-export (Dictionary) var ui_sfx : Dictionary = {
-	0:'res://sounds/Menu1A.ogg',
-	1:'res://sounds/Menu1B.ogg',
-}
-
-
-export (Dictionary) var item_use_sfx : Dictionary = {
-	0: "res://sounds/item_collected.ogg"
-}
-
-export (Dictionary) var blood_fx : Dictionary = {
-	0 :"res://sounds/blood-spilling.ogg" 
-	
-}
-
-export (Dictionary) var hit_sfx : Dictionary = {
-	0:'res://sounds/Dragon Ball Z Punch Sound Effect N°9.wav',
-	1:'res://sounds/Dragon Ball Z Punch Sound Effect N°10.wav',
-	2:'res://sounds/Dragon Ball Z Punch Sound Effect N°11.wav',
-	3:'res://sounds/Dragon Ball Z Punch Sound Effect N°12.wav',
-	4:'res://sounds/Dragon Ball Z Punch Sound Effect N°13.wav',
-	5:'res://sounds/Dragon Ball Z Punch Sound Effect N°14.wav',
-	6:'res://sounds/Dragon Ball Z Punch Sound Effect N°15.wav',
-	7:'res://sounds/Dragon Ball Z Punch Sound Effect N°16.wav',
-	8:'res://sounds/Dragon Ball Z Punch Sound Effect N°17.wav',
-	9:'res://sounds/Dragon Ball Z Punch Sound Effect N°18.wav',
-	10:'res://sounds/Dragon Ball Z Punch Sound Effect N°19.wav',
-	11:'res://sounds/Dragon Ball Z Punch Sound Effect N°20.wav',
-	12:'res://sounds/Dragon Ball Z Punch Sound Effect N°21.wav',
-	13:'res://sounds/Dragon Ball Z Punch Sound Effect N°22.wav',
-	14:'res://sounds/Dragon Ball Z Punch Sound Effect N°23.wav',
-	15:'res://sounds/Dragon Ball Z Punch Sound Effect N°24.wav',
-	16:'res://sounds/Dragon Ball Z Punch Sound Effect N°25.wav'
-
-}
-
-export (Dictionary) var grass_sfx : Dictionary  = {0:'res://sounds/Fantozzi-SandR3.ogg'}
-
-export (Dictionary) var wind_sfx : Dictionary = {
-	0:'res://sounds/wind_2.ogg',
-	1: 'res://sounds/gogeta-gogeta-instant-teleportation-sound-effect.ogg'
-	}
-
-export (Dictionary) var sword_sfx : Dictionary = {
-	0 : "res://sounds/Dragon Ball Z Trunks Sword In Sound Effect n°2.wav",
-	1 : "res://sounds/Dragon Ball Z Trunks Sword In Sound Effect n°4.wav",
-	2 : "res://sounds/Dragon Ball Z Trunks Sword Out Sound Effect n°1.wav",
-	3 : "res://sounds/Dragon Ball Z Trunks Sword Slash Sound Effect n°4.wav",
-	4 : "res://sounds/Dragon Ball Z Trunks Sword Slash Sound Effect n°5.wav",
-	5 : "res://sounds/Dragon Ball Z Trunks Sword Slash Sound Effect n°6.wav",
-	6 : "res://sounds/Dragon Ball Z Trunks Sword Slash Sound Effect n°7.wav",
-	7 : "res://sounds/Dragon Ball Z Trunks Sword Slash Sound Effect n°8.wav",
-	8 : "res://sounds/Dragon Ball Z Trunks Sword Slash Sound Effect n°9.wav"
-}
-
-export (Dictionary) var nokia_soundpack : Dictionary = {
-	0: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/bad_melody.ogg",
-	1: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip1.ogg",
-	2: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip2.ogg",
-	3: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip3.ogg",
-	4: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip4.ogg",
-	5: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip5.ogg",
-	6: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip6.ogg",
-	7: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip7.ogg",
-	8: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip8.ogg",
-	9: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip9.ogg",
-	10: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip10.ogg",
-	11: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip11.ogg",
-	12: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip12.ogg",
-	13: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip13.ogg",
-	14: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/blip14.ogg",
-	15: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/C5.ogg",
-	16: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/crust.ogg",
-	17: "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/good1.ogg",
-	18 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/good2.ogg",
-	19 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/good3.ogg",
-	20 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/hit1.ogg",
-	21 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/hit2.ogg",
-	22 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/hit3.ogg",
-	23 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/hit4.ogg",
-	24 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/hit5.ogg",
-	25 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/hit6.ogg",
-	26 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/jingle1.ogg",
-	27 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/negative1.ogg",
-	28 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/negative2.ogg",
-	29 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/odd1.ogg",
-	30 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/odd2.ogg",
-	31 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/odd3.ogg",
-	32 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/odd4.ogg",
-	33 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/ring1.ogg",
-	34 : "res://sounds/nokai_3310_soundpack_2023/nokia_soundpack_@trix/soundtest.ogg",
-}
-
-
-#create all your music actions here as animated nodes
-"""
-I put in an automatic music shuffling script in here. Feel free to update it 
-and map the buttons to the game's UI when finished
-"""
-
-
-
-"""
-Music singleton that handles crossfading when a new song starts
-and applies a low pass filter when the game is paused. Nothing too wise
-"""
-#var music_debug : String =''
 onready var current_track : String
 
 onready var A : AudioStreamPlayer = $A
@@ -217,19 +81,18 @@ onready var my_nodes : Array = [Music_streamer, A,B,C,D,Music_streamer_2,transit
 #var Playback_position : int
 #var _track : String
 
-# Audio FX Enumeration
-# Matches The Audio Fx Layout Arrangement In Audio Bus Layout
-enum FX {AMPLIFY, BAND_LIMIT_FILTER, BAND_PASS_FILTER, CAPTURE, CHORUS, COMPRESSOR, 
-DELAY, DISTORTION, EQ, EQ10, EQ21, EQ6, FILTER, HIGH_PASS_FILTER, HIGH_SHELF_FILTER,
-LIMITER, LOW_PASS_FILTER, LOW_SHELF_FILTER, NOTCH_FILTER, PANNER, PHASER, PITCH_SHIFT,
-RECORD, REVERB, SPECTRUM_ANALYSER, STERIO_ENCHANCE
- }
 
-export (int) var selected_sound_fx : int = get_random_sound_effect()
+
+onready var selected_sound_fx : int = get_random_sound_effect()
 
 onready var safe_Utils = get_node("/root/Utils")
 
 func _ready():
+	
+	if MusicConfig == null:
+		push_error("Music Config resource not assigned!")
+		return
+	
 	
 	print_debug("Sound Fx Debug: ",selected_sound_fx)
 	
@@ -245,21 +108,21 @@ func _ready():
 		# 
 		safe_Utils.Functions.load_user_data('music', get_tree())
 
-	print_debug("Music_on_settings :",bool (enable))
+	print_debug("Music_on_settings :",bool (MusicConfig.enable))
 	#	music_on = bool (Music_on_settings)
 	
 	
 	"Music Player Logic"
-	if enable :
+	if MusicConfig.enable :
 		randomize() # randomise the engine's seed generator
 		"Default Music"
 		# bug:
 		# (1) does not shuffle music
-		music_track = shuffle(default_playlist)
+		var music_track = shuffle(MusicConfig.default_playlist)
 		play(music_track) #Not needed for release
 		#play_track(music_track)
 		
-	if !enable:
+	if !MusicConfig.enable:
 		A.stop()
 
 
@@ -277,7 +140,7 @@ func _process(_delta):
 	"""
 	# Bugs:
 	# (1) Bugs Out In Headless Server Build
-	if enable == false:
+	if MusicConfig.enable == false:
 		return
 	
 	if Music_streamer == null:
@@ -293,11 +156,11 @@ func _process(_delta):
 	# Get The Current Music Streamer And Feed The Data to The inspector Tab
 	
 	if Music_streamer.is_playing():
-		play_back_position = int(Music_streamer.get_playback_position() )#works
-		track_length = int(Music_streamer.get_stream().get_length() - 1 )
+		MusicConfig.play_back_position = int(Music_streamer.get_playback_position() )#works
+		MusicConfig.track_length = int(Music_streamer.get_stream().get_length() - 1 )
 		Music_streamer_3.stop()
 		
-		if play_back_position == track_length:
+		if MusicConfig.play_back_position == MusicConfig.track_length:
 			print_debug ('autoshuffle debug 1')
 			
 			#emit_signal("music_finished")
@@ -309,8 +172,8 @@ func _process(_delta):
 		return 
 		
 	if Music_streamer_3.is_playing(): # audio error catcher 1
-		play_back_position = Music_streamer_3.get_playback_position()
-		track_length = Music_streamer_3.get_stream().get_length()
+		MusicConfig.play_back_position = Music_streamer_3.get_playback_position()
+		MusicConfig.track_length = Music_streamer_3.get_stream().get_length()
 		Music_streamer.stop()
 	
 	#print_debug(current_track)
@@ -335,13 +198,13 @@ func play(_stream: String):
 	# (1) Method is called Twice During process funtion and loads 2 different music tracks
 	# (2) This method triggers the audio to play at another pitch?
 	print_stack()
-	print_debug('Stream:', _stream,'Music Track',music_track,"Current Track: ", current_track)
+	print_debug('Stream:', _stream,'Music Track',MusicConfig.music_track,"Current Track: ", current_track)
 	if _stream == null: return # guard clauses
 	if _stream.empty(): return
 	if _stream.empty() : # debug
 		push_error('Music stream is null, fix')
 		
-	if !enable : return
+	if !MusicConfig.enable : return
 	# note: track a is for triggering sfx, track b is for playing audio
 	# bugs:
 	# (1) bugs out on playing the second track
@@ -350,7 +213,7 @@ func play(_stream: String):
 		B.stream = load(_stream) #invalid funtion load, cannot convert arguement from nil to string
 		transitions.play("AtoB")
 		current_track = "a"
-		enable = true
+		MusicConfig.enable = true
 		#Music_streamer_3.stop() #hacky fix
 		return
 	
@@ -359,7 +222,7 @@ func play(_stream: String):
 		A.stream = load(_stream)
 		transitions.play("BtoA")
 		current_track = "b" # current track is set to a
-		enable = true
+		MusicConfig.enable = true
 		return
 	# settings saving should be done in controls scene
 	
@@ -367,9 +230,9 @@ func play(_stream: String):
 
 
 func clear():# triggers an autodelete in music track nodes
-	music_track = ''
+	MusicConfig.music_track = ''
 	print_debug('Music cleared')
-	enable = false
+	MusicConfig.enable = false
 	#print_debug('Clear Music setting debug: ', self.music_on) #For Debug purposes only
 	#return self.music_on
 
@@ -436,25 +299,25 @@ static func shuffle_array(_fx : Array) -> int : # selects a random number of an 
 func _on_A_finished(): #This  signals when the music has finished and autoshuffles
 	randomize() #  reset the random seed in the random number generator
 	# shuffle music track
-	music_track = shuffle(default_playlist)
+	MusicConfig.music_track = shuffle(MusicConfig.default_playlist)
 	get_random_sound_effect()
-	print_debug('music finished A /', music_track, "| sfx: ", selected_sound_fx) #code block works
+	print_debug('music finished A /', MusicConfig.music_track, "| sfx: ", selected_sound_fx) #code block works
 	transitions.play("AtoB")
 	#plays the music trac twuce
 	
-	play(music_track)
+	play(MusicConfig.music_track)
 
 # Play the Next Track And Shuffle
 func _on_B_finished():
 	
 	
-	print_debug('music finished B/', music_track,"/",selected_sound_fx) 
+	print_debug('music finished B/', MusicConfig.music_track,"/",selected_sound_fx) 
 	transitions.play("BtoA") # B to A Has higher Pitch
 	# plays the music track twice
 
 func play_sfx(list : Dictionary): #a separate bus channel for sfx using dictionary playlist
 	# 
-	if sfx_on== true:
+	if MusicConfig.sfx_on== true:
 		var sfx : String = shuffle(list) 
 		
 		C.stream = load(sfx)
@@ -478,25 +341,25 @@ func _exit_tree():
 	safe_Utils.MemoryManagement.queue_free_array(my_nodes)
 	
 	# memory management
-	blood_fx.clear()
-	hit_sfx.clear()
-	grass_sfx.clear()
-	ui_sfx.clear()
-	comic_sfx.clear()
-	item_use_sfx.clear()
-	nokia_soundpack.clear()
-	sword_sfx.clear()
-	wind_sfx.clear()
+	#blood_fx.clear()
+	#hit_sfx.clear()
+	#grass_sfx.clear()
+	#ui_sfx.clear()
+	#comic_sfx.clear()
+	#item_use_sfx.clear()
+	#nokia_soundpack.clear()
+	#sword_sfx.clear()
+	#wind_sfx.clear()
 
 func get_random_sound_effect() -> int :
 	
-	selected_sound_fx= shuffle_array(FX.values())
+	selected_sound_fx= shuffle_array(MusicConfig.FX.values())
 	return selected_sound_fx
 
 
 func set_sound_effect(fx_ : int, state : bool):
 	# Exportable Function To Set Sound Effect From Any Scene
-	if FX.values().has(fx_):
+	if MusicConfig.FX.values().has(fx_):
 		AudioServer.set_bus_effect_enabled(music_bus,fx_,state)
 	else:
 		push_error("Selected Sound FX is Beyond The Scope Of Usable SFX")
@@ -507,5 +370,5 @@ func set_sound_effect(fx_ : int, state : bool):
 func _on_Music_music_finished():
 	print_debug("music funished playing B")
 	randomize()
-	music_track = shuffle(default_playlist)
-	play(music_track)
+	MusicConfig.music_track = shuffle(MusicConfig.default_playlist)
+	play(MusicConfig.music_track)

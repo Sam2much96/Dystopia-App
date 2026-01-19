@@ -6,11 +6,14 @@
 #(1) Simplify this level by listing all the Nodes and Effects Present in this environment
 #(2) I want to implement a Loading screen while this level loads. This Node lays the groundwork for that
 #(3) It should be able to iterate through all it's sub nodes, read ,preserve their states for sending in < 20 bytes
-
+#
+# To Do:
+# (1) Create a Sprite Atlas resource file for all resources in the project and code for player spawing
 # Bugs:
 #
 # (1) Frame rate Drop from 60 fps to 5 fps. because of too much Collision objects in the scene (3/3)
 #
+# Depreciated Old Scene. To Delete Later
 #
 # *************************************************
 
@@ -61,6 +64,5 @@ extends Node2D
 # (4) Collision Shapes Coliliding Introduces New Bugs
 # (5) Scene uses to much RAM 
 
-
-func _exit_tree():
-	Utils.MemoryManagement.queue_free_array([self])
+class TILE_CONFIG :
+	pass

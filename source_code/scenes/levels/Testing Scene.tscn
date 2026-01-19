@@ -10,7 +10,7 @@
 [ext_resource path="res://scenes/props/signpost.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/UI & misc/ingame_menu.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/items/coins.tscn" type="PackedScene" id=12]
-[ext_resource path="res://scenes/items/Item.tscn" type="PackedScene" id=15]
+[ext_resource path="res://scenes/items/GenericItem.tscn" type="PackedScene" id=15]
 
 [node name="Multiplayer" type="Node2D" groups=["Multiplayer"]]
 

@@ -38,18 +38,19 @@ export (bool) var _is_android = false
 onready var _debug = get_node("/root/Debug")
 onready var safe_Utils = get_node("/root/Utils")
 onready var _simulation = get_node("/root/Simulation")
-onready var screen = get_node("/root/GameHud/TouchInterface")
+onready var screen = get_node("/root/GameHud").TouchInterface
 onready var _globals = get_node("/root/Globals")
 onready var safe_GameHUD = get_node("/root/GameHud")
 onready var safe_Dialogs = get_node("/root/Dialogs")
 onready var safe_TouchInterface = safe_GameHUD.TouchInterface
 
 "Screen Extension"
+# screen extension code is buggy Jan 19,26
 # Extends screen logic calculations from touch interface, a child of gamehud
 # To reduce memory over write of Global scerenn orientation integer unless necessary
 # and reduce memory calls between singletons unless necessary
 var local_screen_orientation : int 
-onready var initial_screen_orientation : int = screen.Screen.Orientation() # for comparison
+onready var initial_screen_orientation : int #= screen.Screen.Orientation() # for comparison
 
 #*********** Android Plugins *************#
 
@@ -58,9 +59,9 @@ var Chrome = null
 #export (bool) var WebBrowserOpen : bool = false 
 
 # Ad Mob Ads Node
-onready var _ads : AdMob = self.get_child(0)
-onready var ADS_TRIGGERED : bool = false
-onready var TRIGGER_ADS : bool = false
+#onready var _ads : AdMob = self.get_child(0)
+#onready var ADS_TRIGGERED : bool = false
+#onready var TRIGGER_ADS : bool = false
 
 var VIDEO_READY : bool = false
 var BANNER_READY : bool = false
@@ -140,30 +141,32 @@ func ads(type: String) -> void:
 	
 	if !ADS_CONFIG:
 		# config ads
-		_ads.banner_id = "ca-app-pub-3900377589557710/5127703243"
-		_ads.rewarded_id = "ca-app-pub-3900377589557710/4046256488"
-		_ads.interstitial_id = "ca-app-pub-3900377589557710/8498824198"
-		
-		_ads.is_real_set(true) # Test Ads & Ads Initialisation
-		_ads.is_real = true
+		#_ads.banner_id = "ca-app-pub-3900377589557710/5127703243"
+		#_ads.rewarded_id = "ca-app-pub-3900377589557710/4046256488"
+		#_ads.interstitial_id = "ca-app-pub-3900377589557710/8498824198"
+		#
+		#_ads.is_real_set(true) # Test Ads & Ads Initialisation
+		#_ads.is_real = true
 		ADS_CONFIG= true
 		#_ads.initialize_on_background_thread()
 	
 	#untested implementation
 	if type == "interstitial":
-		_ads.load_interstitial()
-		_ads.show_interstitial()
+		#_ads.load_interstitial()
+		#_ads.show_interstitial()
+		pass
 	elif type == "banner" && !BANNER_READY: # banner loading logic
-		_ads.load_banner() 
-		
+		#_ads.load_banner() 
+		pass
 	elif type == "banner" && BANNER_READY: # banner showing logic
-		_ads.move_banner(false)
-		_ads.show_banner()
-	
+		#_ads.move_banner(false)
+		#_ads.show_banner()
+		pass
 	# rewarded video ux needs better optimization
 	elif type == "rewarded video":
-		_ads.load_rewarded_video()
-		_ads.show_rewarded_video()
+		#_ads.load_rewarded_video()
+		#_ads.show_rewarded_video()
+		pass
 	# Ad some sud to this account
 	_globals.suds += 1000
 	
@@ -181,10 +184,10 @@ func ads_video()-> void:
 func _no_ads() -> void:
 	#print_stack() # debug the stack
 	
-	if is_instance_valid(_ads):
+	#if is_instance_valid(_ads):
 		#print_debug("Hiding Adds Banner")
-		_ads.hide_banner()
-
+	#	_ads.hide_banner()
+	pass
 
 
 func _process(_delta):
@@ -197,13 +200,13 @@ func _process(_delta):
 	"Performance Optimizations"
 	# Particle Optimization for Differing Screen Orientations
 	
-	"ADS OPTIMIZATION"
+	#"ADS OPTIMIZATION"
 	
-	if TRIGGER_ADS && !ADS_TRIGGERED: # trigger ads after 3 minutes
+	#if TRIGGER_ADS && !ADS_TRIGGERED: # trigger ads after 3 minutes
 		# Enable ads here
-		ADS_TRIGGERED = true
+	#	ADS_TRIGGERED = true
 		
-		return ADS_TRIGGERED
+	#	return ADS_TRIGGERED
 	
 	"""
 	RAIN FX OPTIMIZATION
@@ -302,7 +305,7 @@ func get_GameMenu() -> Game_Menu:
 func _on_AdMob_banner_loaded():
 	print_debug("Banner Ads Loaded")
 	BANNER_READY = true
-	_ads.show_banner()
+	#_ads.show_banner()
 	safe_Dialogs.show_dialog("Here's Your Reward! $SUD 1,000", "Admin")
 	_globals.suds += 1000
 
@@ -332,10 +335,11 @@ func show_rewarded_video_ads():
 	
 	print_debug("Showing Ads VIdeos / Banner Logic")
 	if VIDEO_READY && BANNER_READY:
-		_ads.show_rewarded_video() # Show the rewarded video ad
+		#_ads.show_rewarded_video() # Show the rewarded video ad
+		pass
 
 	if !VIDEO_READY && BANNER_READY:
-		_ads.show_banner()
+		#_ads.show_banner()
 		_globals.suds += 5_000
 		safe_Dialogs.show_dialog("Here's Your Reward! $SUD 5,000", "A.T.M")
 	if !VIDEO_READY && !BANNER_READY:
@@ -386,8 +390,8 @@ func _on_Timer_timeout():
 
 func _on_AdsTimer_timeout():
 	# Trigger Ads
-	TRIGGER_ADS = true
-
+	#TRIGGER_ADS = true
+	pass
 
 func _on_RainsTimer_timeout():
 	TRIGGER_RAINS = true

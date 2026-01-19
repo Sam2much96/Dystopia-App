@@ -131,7 +131,7 @@ onready var utils_singleton = get_node("/root/Utils")
 
 "Screen Orientation"
 # for upscaling and downscaling UI
-onready var screenOrientation : int = safe_GameHud.Screen.Orientation() 
+onready var screenOrientation : int = 1#safe_GameHud.Screen.Orientation() 
 var viewport_size : Vector2
 var center_of_viewport : Vector2 
 

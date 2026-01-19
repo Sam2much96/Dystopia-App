@@ -1,3 +1,14 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# 3D titlescreen UI
+# bugs:
+# (1) currently broken on Godot 3 port
+# (2) Needs to be reimplemented in godot 4 port (1/2)
+# *************************************************
+
+
 extends Spatial
 
 # The size of the quad mesh itself.

@@ -753,6 +753,7 @@ UI Button Connections
 # (2) Android touch interface was refactored for mobiles on June 17/2023
 func _on_menu_pressed():
 	#print_debug("Menu Pressed /", self.name)
+	safe_GameHUD.menu.toggled() # Touchscreen and Mouse input
 	return 0
 
 

@@ -29,8 +29,6 @@ onready var logo : TextureRect = $logo
 
 
 
-#onready var viewport : TextureRect = $Sprite
-#onready var position : Position2D = $Position2D 
 
 onready var title_nodes : Array = [art1, logo] #, viewport
 
@@ -41,12 +39,7 @@ onready var safe_Utils = get_node("/root/Utils")
 
 func _ready():
 	
-	# Controls_illustratins.gd has texture positional bug
-	if safe_Globals.screenOrientation == 1:
-		art1.show()
-	if safe_Globals.screenOrientation == 0:
-		#art1.hide()
-		pass
+	
 	
 	# Titlescreen ads trigger
 	if _local_android.BANNER_READY:
@@ -60,4 +53,4 @@ func _exit_tree():
 	#_local_android._no_ads() # disabled on Aug 22 /2025. Not needed as no dpad on screen
 # disable banner ads
 	print_debug("Disabling Banner Ads on game start")
-	_local_android._ads.hide_banner()
+	#_local_android._ads.hide_banner()

@@ -1,0 +1,161 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://scenes/levels/SpriteAtlas.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+TILE_CONFIG = {
+1: {
+"collision": false,
+"draw": true
+},
+2: {
+"collision": false,
+"draw": true
+},
+3: {
+"collision": false,
+"draw": false,
+"spawn": "res://scenes/props/signpost.tscn"
+},
+4: {
+"collision": false,
+"spawn": "res://scenes/props/hole.tscn"
+},
+5: {
+"collision": true,
+"spawn": "res://scenes/props/flowers.tscn"
+},
+6: {
+"collision": false,
+"spawn": "res://scenes/props/Grass.tscn"
+},
+7: {
+},
+8: {
+},
+9: {
+"collision": true,
+"draw": true
+},
+10: {
+"collision": true,
+"draw": true
+},
+11: {
+"collision": true,
+"draw": true
+},
+12: {
+},
+13: {
+},
+14: {
+},
+21: {
+"collision": false,
+"spawn": "res://scenes/items/bomb.tscn"
+},
+22: {
+"collision": false,
+"spawn": "res://scenes/items/extra life.tscn"
+},
+23: {
+"collision": false,
+"spawn": "res://scenes/items/coins.tscn"
+},
+24: {
+"collision": false,
+"spawn": "res://scenes/items/Arrow.tscn"
+},
+25: {
+"collision": false,
+"spawn": "res://scenes/items/bow.tscn"
+},
+26: {
+"collision": false,
+"draw": false
+},
+27: {
+"collision": false,
+"draw": false
+},
+28: {
+"collision": false,
+"spawn": "res://scenes/items/ring.tscn"
+},
+29: {
+"collision": true,
+"draw": true
+},
+34: {
+"collision": true,
+"draw": true
+},
+35: {
+"collision": false,
+"spawn": "res://scenes/items/enemy spawner.tscn"
+},
+41: {
+"collision": false,
+"spawn": "res://scenes/characters/AarinSideScrolling.tscn"
+},
+42: {
+"collision": false,
+"spawn": "res://scenes/characters/Npc CHIEFPRIEST.tscn"
+},
+43: {
+},
+44: {
+},
+45: {
+"collision": true,
+"spawn": "res://scenes/Exit/TempleDoor.tscn"
+},
+46: {
+},
+47: {
+},
+48: {
+},
+49: {
+"collision": false,
+"spawn": "res://scenes/Exit/House1.tscn"
+},
+50: {
+"collision": false,
+"spawn": "res://scenes/Exit/House2.tscn"
+},
+51: {
+"collision": false,
+"spawn": "res://scenes/items/GenericItem.tscn"
+},
+52: {
+"collision": false,
+"spawn": "res://scenes/characters/Aarin.tscn"
+},
+53: {
+"collision": false,
+"spawn": "res://scenes/characters/Enemy.tscn"
+},
+54: {
+"collision": false,
+"spawn": "res://scenes/characters/NPC Merchant.tscn"
+},
+55: {
+"collision": false,
+"spawn": "res://scenes/characters/NpcOldWoman.tscn"
+},
+56: {
+"collision": false,
+"spawn": "res://scenes/Exit/Stairs.tscn"
+},
+97: {
+"collision": false,
+"spawn": "res://scenes/Exit/SpaceShip1.tscn"
+},
+98: {
+"collision": false,
+"spawn": "res://scenes/Exit/SpaceShip2.tscn"
+}
+}

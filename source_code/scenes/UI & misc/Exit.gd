@@ -14,16 +14,13 @@
 # To Do:
 #(1) Document Functions (Done)
 # (2) Write Redundancy Code for Debugging signal connections
+# (3) Rewrite Exit Logic to dtrigger decision dialogue box
 # *************************************************
 
 
 extends Area2D
 
 class_name Exit
-
-"""
-Add this to any area2d and it will send the player to the indicated scene and spawnpoint
-"""
 
 export(String, FILE, "*.tscn") var to_scene
 export(String) var spawnpoint = ""
@@ -38,7 +35,10 @@ func _ready():
 	if not is_connected("body_entered", self, "_on_Exit_body_entered"):
 		connect("body_entered", self, "_on_Exit_body_entered")
 		push_warning("Debug Exit Signal Connections")
-	#pass
+	
+	
+	
+	
 
 
 
@@ -55,6 +55,8 @@ func _on_Exit_body_entered(body):
 		#TRIGGERED = true
 		print_debug("Debugging Exit 2d code", to_scene, "/",spawnpoint)
 		
+		#get_tree().change_scene_to(load(to_scene))
+		
 		"Loads Large Scene Precursour"
 		
 		#Globals.current_level = to_scene
@@ -66,7 +68,8 @@ func _on_Exit_body_entered(body):
 		# Save Game
 		#
 		#
-		safe_Utils.Functions.save_game(get_tree()) 
+		# Temporarily disable for refactoring singleton resource files Jan 17, 26
+		#safe_Utils.Functions.save_game(get_tree()) 
 		
 		#print_debug ("Finished Saving Game")
 		
@@ -83,3 +86,4 @@ func _on_Exit_body_entered(body):
 			# Global Scene Transition
 		safe_Utils.Functions.change_scene_to(safe_Globals.loading_scene, get_tree())
 		#	push_error("Error changing scene")
+		

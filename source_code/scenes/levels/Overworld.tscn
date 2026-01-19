@@ -14,27 +14,26 @@
 [ext_resource path="res://scenes/UI & misc/dialog_trigger.tscn" type="PackedScene" id=15]
 [ext_resource path="res://scenes/props/broken ship.tscn" type="PackedScene" id=16]
 [ext_resource path="res://scenes/items/Arrow.tscn" type="PackedScene" id=17]
-[ext_resource path="res://scenes/characters/Npc.tscn" type="PackedScene" id=20]
+[ext_resource path="res://scenes/characters/NpcOldWoman.tscn" type="PackedScene" id=20]
 [ext_resource path="res://scenes/levels/Overworld_Level_Properties.gd" type="Script" id=28]
 
 [sub_resource type="NavigationPolygon" id=1]
-vertices = PoolVector2Array( 3409, 5113, -995, 4999, -1089, -212, 3133, -255, 6994, -284, 7087, 5327, 6089, 5541 )
-polygons = [ PoolIntArray( 0, 1, 2, 3, 4 ), PoolIntArray( 0, 4, 5, 6 ) ]
-outlines = [ PoolVector2Array( 3133, -255, -1089, -212, -995, 4999, 3409, 5113, 6089, 5541, 7087, 5327, 6994, -284 ) ]
+vertices = PoolVector2Array( 6994, -284, 7001, 5035, 5983, 5103, 3409, 5113, -995, 4999, -1089, -212, 3133, -255 )
+polygons = [ PoolIntArray( 0, 1, 2, 3, 4, 5, 6 ) ]
+outlines = [ PoolVector2Array( 3133, -255, -1089, -212, -995, 4999, 3409, 5113, 5983, 5103, 7001, 5035, 6994, -284 ) ]
 
 [node name="Outside" type="Node2D"]
 position = Vector2( 135, -21 )
 script = ExtResource( 28 )
 
 [node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="."]
-visible = false
 navpoly = SubResource( 1 )
 
 [node name="Outside" parent="." instance=ExtResource( 1 )]
 position = Vector2( 1514, 2589 )
 
 [node name="Outside City" parent="." instance=ExtResource( 5 )]
-position = Vector2( 7443, -3563 )
+position = Vector2( 4496, 1093 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="Outside City"]
 position = Vector2( 243.5, 302.5 )
@@ -48,7 +47,7 @@ scale = Vector2( 0.847893, 0.695034 )
 to_scene = "res://scenes/levels/marketplace_2d.tscn"
 
 [node name="Player" parent="." instance=ExtResource( 7 )]
-position = Vector2( 1573, 1785 )
+position = Vector2( 1171, 2040 )
 z_index = 1
 
 [node name="RainFx" parent="Player" instance=ExtResource( 2 )]
@@ -125,14 +124,8 @@ scale = Vector2( 1.02571, 0.414348 )
 to_scene = "res://scenes/levels/marketplace_2d.tscn"
 
 [node name="hole" parent="." instance=ExtResource( 4 )]
-position = Vector2( 3050, -1393 )
+position = Vector2( 3978, 2367 )
 z_index = 0
-
-[node name="Exit_3" parent="hole" instance=ExtResource( 6 )]
-position = Vector2( -2.78259, 0.93895 )
-rotation = -1.71079
-scale = Vector2( 0.742842, 0.744675 )
-to_scene = "res://scenes/levels/OverworldSideScrolling.tscn"
 
 [node name="signpost" parent="." instance=ExtResource( 14 )]
 position = Vector2( 646, 649 )
@@ -141,10 +134,10 @@ position = Vector2( 646, 649 )
 position = Vector2( 903, 1775 )
 
 [node name="signpost3" parent="." instance=ExtResource( 14 )]
-position = Vector2( 2870, -1219 )
+position = Vector2( 3668, 2316 )
 
 [node name="signpost4" parent="." instance=ExtResource( 14 )]
-position = Vector2( 4439, -2578 )
+position = Vector2( 4353, 1727 )
 
 [node name="broken ship" parent="." instance=ExtResource( 16 )]
 position = Vector2( 5272, 3356 )

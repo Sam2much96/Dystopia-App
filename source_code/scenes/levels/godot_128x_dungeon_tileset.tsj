@@ -1,0 +1,14 @@
+{ "columns":14,
+ "image":"godot_128x_dungeon_tileset.png",
+ "imageheight":2480,
+ "imagewidth":1804,
+ "margin":0,
+ "name":"godot_128x_dungeon_tileset",
+ "spacing":0,
+ "tilecount":266,
+ "tiledversion":"1.11.0",
+ "tileheight":128,
+ "tilewidth":128,
+ "type":"tileset",
+ "version":"1.10"
+}

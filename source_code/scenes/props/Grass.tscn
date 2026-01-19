@@ -1,7 +1,6 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/props/Grass.gd" type="Script" id=2]
-[ext_resource path="res://sounds/Fantozzi-SandR3.ogg" type="AudioStream" id=3]
 [ext_resource path="res://scenes/Shaders/Wind move.shader" type="Shader" id=4]
 [ext_resource path="res://scenes/items/extra life.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/items/ItemSpawner.gd" type="Script" id=6]
@@ -19,11 +18,10 @@ shader_param/distortion = 0.219
 shader_param/heightOffset = null
 shader_param/offset = 0.0
 
-[sub_resource type="CircleShape2D" id=2]
-radius = 44.4006
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 47.0552, 42.9276 )
 
-[sub_resource type="CircleShape2D" id=3]
-radius = 88.7598
+[sub_resource type="RectangleShape2D" id=9]
 
 [sub_resource type="Animation" id=4]
 length = 0.6
@@ -40,60 +38,24 @@ tracks/0/keys = {
 "values": [ true ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:self_modulate")
+tracks/1/path = NodePath("CPUParticles2D:one_shot")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.203922 ) ]
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }
-tracks/2/type = "value"
-tracks/2/path = NodePath("CPUParticles2D:one_shot")
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("steam:stream")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ ExtResource( 3 ) ]
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("steam:playing")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0.1 ),
-"transitions": PoolRealArray( 0.482968 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/5/type = "method"
-tracks/5/path = NodePath(".")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/keys = {
 "times": PoolRealArray( 0.5 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
@@ -101,13 +63,13 @@ tracks/5/keys = {
 "method": "_auto_delete"
 } ]
 }
-tracks/6/type = "method"
-tracks/6/path = NodePath("itemSpawner")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/keys = {
+tracks/3/type = "method"
+tracks/3/path = NodePath("../itemSpawner")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
 "times": PoolRealArray( 0.1 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
@@ -122,33 +84,38 @@ resource_name = "idle"
 [sub_resource type="Animation" id=5]
 resource_name = "move"
 
-[node name="grass" type="Area2D"]
+[node name="Sprite" type="Sprite"]
+material = SubResource( 1 )
+texture = ExtResource( 7 )
+offset = Vector2( -6.06301, -4.58121 )
+
+[node name="itemSpawner" type="Position2D" parent="."]
+position = Vector2( -7, 2 )
+scale = Vector2( 1.16146, 1.16146 )
+script = ExtResource( 6 )
+spawn_1 = ExtResource( 5 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+scale = Vector2( 1.16146, 1.16146 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( -6.45739, -2.58296 )
+scale = Vector2( 0.521474, 0.521474 )
+shape = SubResource( 8 )
+
+[node name="grass" type="Area2D" parent="."]
 scale = Vector2( 1.16146, 1.16146 )
 collision_mask = 10
 input_pickable = false
 script = ExtResource( 2 )
 
-[node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 1 )
-position = Vector2( -12.163, -33.6706 )
-scale = Vector2( 4.06512, 4.04912 )
-texture = ExtResource( 7 )
-offset = Vector2( -6.06301, -4.58121 )
-
-[node name="hurtbox" type="CollisionShape2D" parent="."]
-position = Vector2( -38.1834, -46.6691 )
+[node name="hurtbox" type="CollisionShape2D" parent="grass"]
+position = Vector2( -6.02689, 0 )
 rotation = 1.5708
 scale = Vector2( 1.60777, 1.88857 )
-shape = SubResource( 2 )
+shape = SubResource( 9 )
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2( -42.6165, -46.2693 )
-scale = Vector2( 0.521474, 0.521474 )
-shape = SubResource( 3 )
-
-[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+[node name="CPUParticles2D" type="CPUParticles2D" parent="grass"]
 position = Vector2( -43.8211, -67.7639 )
 scale = Vector2( 4.06512, 4.04912 )
 emitting = false
@@ -162,18 +129,11 @@ emission_sphere_radius = 15.0
 scale_amount = 0.4
 scale_amount_random = 0.09
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="grass"]
 anims/destroy = SubResource( 4 )
 anims/idle = SubResource( 7 )
 anims/move = SubResource( 5 )
 
-[node name="steam" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource( 3 )
+[node name="Timer" type="Timer" parent="grass"]
 
-[node name="Timer" type="Timer" parent="."]
-
-[node name="itemSpawner" type="Position2D" parent="."]
-script = ExtResource( 6 )
-spawn_1 = ExtResource( 5 )
-
-[connection signal="area_entered" from="." to="." method="_on_grass_area_entered"]
+[connection signal="area_entered" from="grass" to="grass" method="_on_grass_area_entered"]

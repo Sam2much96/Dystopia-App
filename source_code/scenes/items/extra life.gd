@@ -15,7 +15,8 @@
 # (2) Add idle animation
 # (3) Expand State to offer Full & Empty Bottle Items
 # (4) Add idle animation
-
+# (5) reimplement animation
+# (6)
 
 extends Area2D
 
@@ -31,6 +32,7 @@ export(int) var amount = 1
 onready var anims : AnimationPlayer = $anims
 
 onready var safe_Music = get_node("/root/Music")
+onready var safe_Inventory = get_node("/root/Inventory")
 
 func _ready():
 	connect("body_entered", self, "_on_Item_body_entered")
@@ -42,7 +44,7 @@ func _on_Item_body_entered(body): # use body : Player to make priority process
 		call_deferred("disconnect", "body_entered", self, "_on_Item_body_entered")
 		
 		# SHould save to inventory
-		Inventory.add_item(item_type, 1)
+		safe_Inventory.add_item(item_type, 1)
 		
 		#body.hitpoints += 1
 		anims.play("collected")
@@ -52,7 +54,7 @@ func _on_Item_body_entered(body): # use body : Player to make priority process
 		#$pickup.stop()
 		safe_Music.play_track("res://sounds/item_collected.ogg") # Plays sound via singleton
 		
-		self.queue_free()
+		get_parent().queue_free()
 
 
 func _use_item():

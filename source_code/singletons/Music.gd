@@ -444,5 +444,3 @@ func play_track(_track : String):
 
 func _exit_tree(): 
 	Utils.MemoryManagement.queue_free_array(my_nodes)
-
-

@@ -146,4 +146,3 @@ func destroy():
 func _auto_delete():
 	# An Autodelete method called in the Destroy Animation as an animated function
 	self.queue_free()
-

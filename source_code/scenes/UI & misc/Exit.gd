@@ -66,4 +66,3 @@ func _on_body_entered(body):
 		# Global Scene Transition
 	if Utils.Functions.change_scene_to_packed(Globals.loading_scene, get_tree()) != OK:
 		push_error("Error changing scene")
-

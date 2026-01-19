@@ -1,18 +1,6 @@
-[gd_resource type="Theme" load_steps=6 format=3 uid="uid://bninjevtm54d4"]
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://bninjevtm54d4"]
 
-[ext_resource type="FontFile" uid="uid://ddpsr3kpwrgtg" path="res://Wallet fonts/Roboto-Regular.ttf" id="1"]
-
-[sub_resource type="FontFile" id="1"]
-fallbacks = Array[Font]([ExtResource("1")])
-face_index = null
-embolden = null
-transform = null
-cache/0/16/0/ascent = 0.0
-cache/0/16/0/descent = 0.0
-cache/0/16/0/underline_position = 0.0
-cache/0/16/0/underline_thickness = 0.0
-cache/0/16/0/scale = 1.0
-cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
+[ext_resource type="FontFile" uid="uid://bulfmexofxbh0" path="res://fonts/Comic_Andy.ttf" id="1_pkjgn"]
 
 [sub_resource type="StyleBoxFlat" id="3"]
 bg_color = Color(1, 1, 1, 1)
@@ -42,7 +30,8 @@ corner_radius_bottom_left = 5
 Button/colors/font_color = Color(0, 0, 0, 1)
 Button/colors/font_color_hover = Color(0, 0, 0, 1)
 Button/colors/font_color_pressed = Color(0.215686, 0.215686, 0.215686, 1)
-Button/fonts/font = SubResource("1")
+Button/font_sizes/font_size = 33
+Button/fonts/font = ExtResource("1_pkjgn")
 Button/styles/hover = SubResource("3")
 Button/styles/normal = SubResource("2")
 Button/styles/pressed = SubResource("4")

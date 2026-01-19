@@ -1,30 +1,37 @@
 [gd_scene load_steps=3 format=3 uid="uid://bggltjgyfwpkc"]
 
-[ext_resource type="Script" path="res://scenes/UI & misc/ingame_menu.gd" id="2"]
-[ext_resource type="Theme" uid="uid://bm1761vr0av" path="res://fonts/ingame_menu.tres" id="4"]
+[ext_resource type="Theme" uid="uid://c560i5fcetkf" path="res://fonts/Dystopia-App-Light-en-theme.tres" id="1_6ehqc"]
+[ext_resource type="Script" uid="uid://cpkmfbdwok87v" path="res://scenes/UI & misc/ingame_menu.gd" id="2"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_6ehqc")
 script = ExtResource("2")
+metadata/_edit_use_anchors_ = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 0
 offset_left = -226.289
 offset_top = -280.358
-offset_right = 1.71097
-offset_bottom = 26.6423
+offset_right = 1.710968
+offset_bottom = -44.768433
 scale = Vector2(1.9286, 1.9286)
-theme = ExtResource("4")
 
 [node name="HSeparator" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
+alignment = 1
 
 [node name="comics" type="Button" parent="ScrollContainer/HSeparator"]
 layout_mode = 2
 focus_next = NodePath("../new game")
 focus_previous = NodePath("../quit")
-theme = ExtResource("4")
 text = "comics"
 flat = true
 

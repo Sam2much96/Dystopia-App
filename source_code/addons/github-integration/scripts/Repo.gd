@@ -555,11 +555,3 @@ func setup_gitlfs(extensions : Array):
 		gitattributes.store_line(tracking)
 	gitattributes.close()
 	get_parent().print_debug_message("New super.gitattributes created with the file extensions you want to track. It will be uploaded to you repository during the next push.")
-
-
-
-
-
-
-
-

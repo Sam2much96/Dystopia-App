@@ -341,7 +341,7 @@ func update_player_info():
 	
 
 	# update Input buffer
-	Simulation.player_info[peer_id]["in"] = GlobalInput._get_input_buffer()
+	#Simulation.player_info[peer_id]["in"] = GlobalInput._get_input_buffer()
 	
 	# Hitpoints
 	Simulation.player_info[peer_id]["hp"] = self.hitpoints

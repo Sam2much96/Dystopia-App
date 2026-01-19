@@ -75,5 +75,3 @@ func _on_Area2D_body_exited(body : Player):
 		# it saves cpu performance
 	_smoke_fx._emit(false) # Stops smoke Emits Programmatically
 	_smoke_fx_2._emit(false) # Stops smoke Emits Programmatically
-
-

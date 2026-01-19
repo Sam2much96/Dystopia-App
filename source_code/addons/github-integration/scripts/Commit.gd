@@ -580,4 +580,3 @@ func on_nothing_selected():
 
 func about_gitignore_pressed():
 	OS.shell_open("https://git-scm.com/docs/gitignore")
-

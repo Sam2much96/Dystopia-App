@@ -18,52 +18,25 @@ extends Control
 
 class_name TitleScreen
 
-"""
-The purpose of this code is to beautify the UI programmatically
-"""
-
 
 
 #changes Title Screen Art using Global Screen Orientation
 @onready var art1 :  TextureRect = $TextureRect2
 
-@onready var art3 :  TextureRect = $Sprite2D
-
-@onready var menu : TouchScreenButton = $menu
-#onready var notifications : Popup = $Notification2
 @onready var logo : TextureRect = $logo
-@onready var _ad_placeholder #: Appodeal = $Appodeal
-@onready var _comic_placehlder : Control = $Control
-@onready var _menu : Game_Menu = $"Menu "
-@onready var _viewport : SubViewport = $SubViewport
-@onready var title_nodes : Array = [art1, art3,_viewport,menu,logo,_ad_placeholder,_menu, _comic_placehlder]
 
-#res://scenes/UI & misc/controls_illustration.gd
-# 3D in 2D
-# To Do : 
-#  (1) Play Animation rendered to 2D
-@onready var viewport = $SubViewport
+@onready var title_nodes : Array = [art1, logo]
 
-#@onready var position_ : Marker2D = $Marker2D 
+@onready var safe_Utils = get_node("/root/Utils")
+
 
 func _ready():
 	
-	# Fix Menu Positioning on Mobile Devices
-	
-	#art3.set_texture(viewport.viewport_image)
-	
-	# Controls_illustratins.gd has texture positional bug
-	if Globals.screenOrientation == 1:
-		art1.show()
-	if Globals.screenOrientation == 0:
-		art1.hide()
+	pass
 
 
 
 
 func _exit_tree():
 	# Memory Leak Management
-	Utils.MemoryManagement.queue_free_array(title_nodes)
-#	_menu.queue_free()
-
-
+	safe_Utils.MemoryManagement.queue_free_array(title_nodes)

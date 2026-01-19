@@ -60,5 +60,3 @@ extends Node2D
 # (3) Scene loading scene is long. (2/3)
 # (4) Collision Shapes Coliliding Introduces New Bugs
 # (5) Scene uses to much RAM 
-
-

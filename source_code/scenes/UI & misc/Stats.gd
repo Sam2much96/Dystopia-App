@@ -92,7 +92,7 @@ func _ready():
 	
 	# Make self global 
 	Inventory._stats_ui = self
-	GlobalInput._Stats = self
+	#GlobalInput._Stats = self
 	
 	#Regex for Inventory Update
 	regex.compile("(\\d+)")
@@ -266,7 +266,7 @@ func _on_status_showing():
 	emit_signal("status_hidden")
 	#GlobalInput.TouchInterface.reset()
 	
-	print_debug("TC Status:",GlobalInput.TouchInterface._Hide_touch_interface, " SC: ", GlobalInput.TouchInterface._state_controller) # Touch Interface Debug
+	#print_debug("TC Status:",GlobalInput.TouchInterface._Hide_touch_interface, " SC: ", GlobalInput.TouchInterface._state_controller) # Touch Interface Debug
 	print_debug('status hidden') #for debug purposes
 
 func _on_status_hidden():
@@ -275,7 +275,7 @@ func _on_status_hidden():
 	# TO DO: Implement In Android SIngleton
 	#GlobalInput.TouchInterface.status()
 	emit_signal("status_showing")
-	print_debug("TC hidden:",GlobalInput.TouchInterface._Hide_touch_interface, " SC: ", GlobalInput.TouchInterface._state_controller) # Touch Interface Debug
+	#print_debug("TC hidden:",GlobalInput.TouchInterface._Hide_touch_interface, " SC: ", GlobalInput.TouchInterface._state_controller) # Touch Interface Debug
 	print_debug('status showing')
 
 
@@ -291,16 +291,7 @@ func _enable():
 	emit_signal('enabled')
 	Music.play_track(Music.ui_sfx[0])
 	get_tree().paused = enabled_
-	
-	"Mobile HUD Controller" # NANI?
-	
-	if is_instance_valid(Android.TouchInterface):
-		print_debug("Touch HUD Instance valid, this code bloc should be moved to Android singletnon")
-		emit_signal("status_showing") # sihnal connected at touch interface
-		#GlobalInput.TouchInterface.status()
-		#"Grab Focus ?"
-		#grab_focus()
-		#asasfghafhd
+
 	_update_quest_listing()
 	_update_inventory_listing() # Refactor
 	_update_wallet_stats()
@@ -314,5 +305,3 @@ func _disable():
 	hide()
 	get_tree().paused = false
 	print (self.name, "enabled") # For debug purposes only
-
-

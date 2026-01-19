@@ -104,5 +104,3 @@ func _on_NewRepo_confirmed():
 	error.hide()
 	requesting = REQUESTS.REPOS
 	#new_repo.request("https://api.github.com/user/repos",Github.UserData_.header,false,HTTPClient.METHOD_POST,JSON.stringify(load_body()))
-
-

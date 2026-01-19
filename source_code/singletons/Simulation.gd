@@ -689,5 +689,3 @@ class Enemy_ extends RefCounted:
 		#if raycast.is_enabled() == false && player == null:
 		#	#use state changer timer to turn off processing
 		#	push_error ('Debug Enenmy Behaviour Check')
-
-

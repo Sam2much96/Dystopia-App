@@ -676,4 +676,3 @@ class Behaviour extends RefCounted:
 #		
 #		var center = Utils.restaVectores(player_position, initial_position) 
 #		return center
-

@@ -15,5 +15,3 @@ extends ScrollContainer
 @export var chap_5 : bool
 @export var chap_6 : bool
 @export var chap_7 : bool
-
-

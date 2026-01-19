@@ -340,96 +340,101 @@ class Functions extends RefCounted:
 	If check_only is true it will only check for a valid save file and return true or false without
 	restoring any data
 	"""
+	#temporarily dissabling for maintenance build update
 	static func load_game(check_only : bool, GlobalScript : GlobalsVar) -> bool:
-		check_only = false
-		print_debug ("-------Loading Game-------")
-		var save_game : FileAccess =Utils.file
+	#	check_only = false
+	#	print_debug ("-------Loading Game-------")
+	#	var save_game : FileAccess =Utils.file
+	#	
 		
-		
-		if not save_game.file_exists("user://savegeme.save"):
-			return false
-		save_game.open("user://savegeme.save", FileAccess.READ)
-		var test_json_conv = JSON.new()
-		test_json_conv.parse(save_game.get_line())
-		var save_dict : Dictionary = test_json_conv.get_data()
-		if typeof(save_dict) != TYPE_DICTIONARY:
-			return false
-		if not check_only:
-			_restore_data(save_dict, GlobalScript)
-		
-		save_game.close()
+	#	if not save_game.file_exists("user://savegeme.save"):
+	#		return false
+	#	save_game.open("user://savegeme.save", FileAccess.READ)
+	#	var test_json_conv = JSON.new()
+	#	test_json_conv.parse(save_game.get_line())
+	#	var save_dict : Dictionary = test_json_conv.get_data()
+	#	if typeof(save_dict) != TYPE_DICTIONARY:
+	#		return false
+	#	if not check_only:
+	#		_restore_data(save_dict, GlobalScript)
+	#	
+	#	save_game.close()
 		return true
 
 	"""
 	Restores data from the JSON dictionary inside the save files
 	"""
+	# Temporarily disabling for refactoring
+	# Jan 19, 26
 	static func _restore_data(save_dict : Dictionary, GlobalScript ):
 		
-		"Quest Loader"
+		#"Quest Loader"
 		
-		if save_dict.has('quests'):
-			# JSON numbers are always parsed as floats. In this case we need to turn them into ints
-			for key in save_dict.quests:
-				save_dict.quests[key] = int(save_dict.quests[key])
-			Quest.quest_list = save_dict.quests
-		
-		"Inventory Loader"
-		
-		if save_dict.has('inventory'):
-			# JSON numbers are always parsed as floats. In this case we need to turn them into ints
-			for key in save_dict.inventory:
-				save_dict.inventory[key] = int(save_dict.inventory[key])
-			Inventory.inventory = save_dict.inventory
-		
-		'OS loader'
-		
-		if save_dict.has('os'):
-			GlobalScript.os = save_dict.os
-		
-		'Player'
-		if save_dict.has('player'):
-			GlobalScript.player = save_dict.player
-			
-		if save_dict.has("kill_count"):
-			GlobalScript.kill_count = save_dict.kill_count  
-			
-		
-		if save_dict.has('player_hitpoints'):
-			GlobalScript.player_hitpoints = int(save_dict.player_hitpoints)
-		
-		'Player Object Spawn Position'
-		if save_dict.has('spawn_x'):
-			GlobalScript.spawn_x = save_dict.spawn_x 
-			GlobalScript.spawn_y = save_dict.spawn_y
-		
-		'Saves Player Spawn Point'
-		if save_dict.has('current_level'):
-			GlobalScript.current_level = save_dict.current_level
-		
-		"Scene Loader"
-		if save_dict.has('prev_scene'):
-			# Presumably a bugfix for scene changing
-			GlobalScript.prev_scene =save_dict.prev_scene 
-			GlobalScript.prev_scene_spawnpoint = save_dict.prev_scene_spawnpoint 
-		
-		'Control Settings'
-		# Direction controller
-		if save_dict.has('direction_control') && str(save_dict.direction_control) != 'Null':
-			GlobalScript.direction_control = str(save_dict.direction_control)
-		
-		if save_dict.has("languague"):
-			Dialogs.language = save_dict.languague
+		#if save_dict.has('quests'):
+		#	# JSON numbers are always parsed as floats. In this case we need to turn them into ints
+		#	for key in save_dict.quests:
+		#		save_dict.quests[key] = int(save_dict.quests[key])
+		#	Quest.quest_list = save_dict.quests
+		#
+		#"Inventory Loader"
+		#
+		#if save_dict.has('inventory'):
+		#	# JSON numbers are always parsed as floats. In this case we need to turn them into ints
+		#	for key in save_dict.inventory:
+		#		save_dict.inventory[key] = int(save_dict.inventory[key])
+		#	Inventory.inventory = save_dict.inventory
+		#
+		#'OS loader'
+		#
+		#if save_dict.has('os'):
+		#	GlobalScript.os = save_dict.os
+		#
+		#'Player'
+		#if save_dict.has('player'):
+		#	GlobalScript.player = save_dict.player
+		#	
+		#if save_dict.has("kill_count"):
+		#	GlobalScript.kill_count = save_dict.kill_count  
+		#	
+		#
+		#if save_dict.has('player_hitpoints'):
+		#	GlobalScript.player_hitpoints = int(save_dict.player_hitpoints)
+		#
+		#'Player Object Spawn Position'
+		#if save_dict.has('spawn_x'):
+		#	GlobalScript.spawn_x = save_dict.spawn_x 
+		#	GlobalScript.spawn_y = save_dict.spawn_y
+		#
+		#'Saves Player Spawn Point'
+		#if save_dict.has('current_level'):
+		#	GlobalScript.current_level = save_dict.current_level
+		#
+		#"Scene Loader"
+		#if save_dict.has('prev_scene'):
+		#	# Presumably a bugfix for scene changing
+		#	GlobalScript.prev_scene =save_dict.prev_scene 
+		#	GlobalScript.prev_scene_spawnpoint = save_dict.prev_scene_spawnpoint 
+		#
+		#'Control Settings'
+		## Direction controller
+		#if save_dict.has('direction_control') && str(save_dict.direction_control) != 'Null':
+		#	GlobalScript.direction_control = str(save_dict.direction_control)
+		#
+		#if save_dict.has("languague"):
+		#	Dialogs.language = save_dict.languague
+#
+		#if save_dict.has("vibrate"):
+		#	GlobalInput.vibrate = bool(save_dict.vibrate)
 
-		if save_dict.has("vibrate"):
-			GlobalInput.vibrate = bool(save_dict.vibrate)
-
-		if save_dict.has("music"):
-			print_debug("Mus: ",bool(save_dict.music)) # For Debug Purposes Only
-			Music.music_on = bool(save_dict.music)
+		#if save_dict.has("music"):
+		#	print_debug("Mus: ",bool(save_dict.music)) # For Debug Purposes Only
+		#	Music.music_on = bool(save_dict.music)
 
 		
 		######################################################
-		print_debug("Loaded gameplay")
+		#print_debug("Loaded gameplay")
+		pass
+
 
 	# Loads Singular User Data from local storage
 	# Version 2 of Load_game function
@@ -1145,7 +1150,3 @@ class Film :
 			video_file.close()
 			return video_file
 		return video_file
-
-
-
-

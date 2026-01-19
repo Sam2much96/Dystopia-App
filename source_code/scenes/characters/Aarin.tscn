@@ -1,11 +1,11 @@
 [gd_scene load_steps=29 format=3 uid="uid://bgdyojs4v5loi"]
 
-[ext_resource type="Script" path="res://scenes/characters/TopDownPlayer.gd" id="1"]
+[ext_resource type="Script" uid="uid://jd70wmbr3tfg" path="res://scenes/characters/TopDownPlayer.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://cnq3epm88h30e" path="res://resources/Aarin/spritesheet_4.webp" id="2"]
 [ext_resource type="Texture2D" uid="uid://dfr007056gfl0" path="res://scenes/Shaders/BlueNoise.webp" id="3"]
-[ext_resource type="Shader" path="res://scenes/Shaders/DirectionalBlur.gdshader" id="4"]
-[ext_resource type="PackedScene" path="res://scenes/Shaders/Impact.tscn" id="5"]
-[ext_resource type="Script" path="res://scenes/UI & misc/Fight Cam.gd" id="6"]
+[ext_resource type="Shader" uid="uid://o8dq02y1hx5g" path="res://scenes/Shaders/DirectionalBlur.gdshader" id="4"]
+[ext_resource type="PackedScene" uid="uid://2qthf1f4ptr2" path="res://scenes/Shaders/Impact.tscn" id="5"]
+[ext_resource type="Script" uid="uid://8jiatjojdg5j" path="res://scenes/UI & misc/Fight Cam.gd" id="6"]
 
 [sub_resource type="CapsuleShape2D" id="2"]
 radius = 35.8589
@@ -673,9 +673,9 @@ tracks/7/keys = {
 [sub_resource type="ShaderMaterial" id="1"]
 shader = ExtResource("4")
 shader_parameter/angle_degrees = 0.0
+shader_parameter/noise = ExtResource("3")
 shader_parameter/Samples = 25
 shader_parameter/strength = 0.2584
-shader_parameter/noise = ExtResource("3")
 
 [sub_resource type="Animation" id="10"]
 length = 0.7
@@ -1405,24 +1405,24 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_i7sg4"]
 _data = {
-"dance": SubResource("21"),
-"die": SubResource("3"),
-"fall": SubResource("22"),
-"hurt": SubResource("4"),
-"idle_down": SubResource("5"),
-"idle_left": SubResource("6"),
-"idle_right": SubResource("7"),
-"idle_up": SubResource("8"),
-"reset": SubResource("9"),
-"roll": SubResource("10"),
-"slash_down": SubResource("11"),
-"slash_left": SubResource("12"),
-"slash_right": SubResource("13"),
-"slash_up": SubResource("14"),
-"walk_down": SubResource("15"),
-"walk_left": SubResource("16"),
-"walk_right": SubResource("17"),
-"walk_up": SubResource("18")
+&"dance": SubResource("21"),
+&"die": SubResource("3"),
+&"fall": SubResource("22"),
+&"hurt": SubResource("4"),
+&"idle_down": SubResource("5"),
+&"idle_left": SubResource("6"),
+&"idle_right": SubResource("7"),
+&"idle_up": SubResource("8"),
+&"reset": SubResource("9"),
+&"roll": SubResource("10"),
+&"slash_down": SubResource("11"),
+&"slash_left": SubResource("12"),
+&"slash_right": SubResource("13"),
+&"slash_up": SubResource("14"),
+&"walk_down": SubResource("15"),
+&"walk_left": SubResource("16"),
+&"walk_right": SubResource("17"),
+&"walk_up": SubResource("18")
 }
 
 [sub_resource type="CapsuleShape2D" id="19"]
@@ -1430,8 +1430,6 @@ radius = 60.225
 height = 162.07
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
-position = Vector2(585.638, 309.087)
-scale = Vector2(0.72, 0.72)
 script = ExtResource("1")
 WALK_SPEED = 400
 
@@ -1460,7 +1458,7 @@ polygon = PackedVector2Array(-91.5168, 17.4712, -49.7053, 33.7712, -36.5348, 110
 
 [node name="anims" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_i7sg4")
+&"": SubResource("AnimationLibrary_i7sg4")
 }
 autoplay = "reset"
 

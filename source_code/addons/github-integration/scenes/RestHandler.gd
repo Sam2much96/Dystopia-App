@@ -322,4 +322,3 @@ func request_accept_invitation(invitation_id : int):
 func request_decline_invitation(invitation_id : int):
 	notifications_requesting = REQUESTS.DECLINE_INVITATION
 	#notifications_client.request(api_endpoints.invitations+"/"+str(invitation_id), UserData.header, true, HTTPClient.METHOD_DELETE)
-

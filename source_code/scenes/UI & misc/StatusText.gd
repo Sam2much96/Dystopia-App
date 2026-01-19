@@ -32,9 +32,10 @@ var messages : Array = []
 var nodes : Array = [self]
 
 @onready var anims : AnimationPlayer = $anims
-func _enter_tree():
+
+#func _enter_tree():
 	# Make GLobal
-	GlobalInput._Status_text = self
+#	GlobalInput._Status_text = self
 
 
 func _ready():

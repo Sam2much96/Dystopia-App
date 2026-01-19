@@ -20,3 +20,6 @@
 *.stex
 *.import
 *.ctex
+*.gd.uid
+
+*/source_code/addons

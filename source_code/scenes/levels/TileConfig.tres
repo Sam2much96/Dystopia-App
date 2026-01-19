@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="TileConfig" load_steps=2 format=3 uid="uid://cuakkci8wvaiy"]
+
+[ext_resource type="Script" uid="uid://7n1ph0ry3j8f" path="res://scenes/levels/SpriteAtlas.gd" id="1_pecyg"]
+
+[resource]
+script = ExtResource("1_pecyg")
+metadata/_custom_type_script = "uid://7n1ph0ry3j8f"

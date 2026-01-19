@@ -131,4 +131,3 @@ func delete_all_files(path : String):
 	for directory in directories:
 		delete_all_files(directory)
 	dir.remove(path)
-

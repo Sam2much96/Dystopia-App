@@ -69,13 +69,13 @@ func _ready():
 	#player.connect("health_changed", Callable(self, "_on_health_changed"))
 	
 	# Debug SIgnals
-	print_debug(player.is_connected("health_changed", Callable(self, "_on_health_changed")))
+	#print_debug(player.is_connected("health_changed", Callable(self, "_on_health_changed")))
 	
 
 	
 	# Set Hitpoint to Player Object Hitpoints
-	_on_health_changed(player.hitpoints)
-
+	#_on_health_changed(player.hitpoints)
+	pass
 
 # Should Implement a New Constant for Max Health
 func _on_health_changed(new_hp : int):
@@ -93,4 +93,3 @@ func _on_health_changed(new_hp : int):
 			
 			self.call_deferred('add_child',heart) #adds more life bars
 			
-

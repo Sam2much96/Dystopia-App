@@ -316,4 +316,3 @@ class Parser extends RefCounted :
 		
 		#print (line_passage)# for debug purposes
 		return line_passage
-

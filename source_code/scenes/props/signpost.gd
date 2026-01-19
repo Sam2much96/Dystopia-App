@@ -130,4 +130,3 @@ func _on_signpost_body_exited(body):
 	if body is Player:
 		print_debug ('player near signpost: ', Globals.near_interractible_objects)
 	
-

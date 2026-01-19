@@ -48,22 +48,22 @@ vec3 uneven(vec2 _st, vec2 _uv, float _rough_amount)
 	// function but also in the noise texture.
 	//
 	// In the Noise texture, start with setting 'Period' to 15 and 'Lacunarity' to 3.
-	
+
 	vec2 _size = vec2(_rough_amount) * ratio;
 	vec2 uv = smoothstep(vec2(0.0), _size , _st);
 	uv *= smoothstep(vec2(0.0), _size , (vec2(1.0) - _st));
 	vec2 fringe = uv;
-	
+
 	vec3 rough_text = texture(rough_noise, _uv).rgb;
 	rough_text += vec3(fringe.r);
 	rough_text = smoothstep(0.35, 0.4, rough_text);
-	
+
 	return rough_text;
 }
 
 void fragment()
 {
-	// To make the pattern keep its proportions even when resizing the texture, 
+	// To make the pattern keep its proportions even when resizing the texture,
 	// add a script with this code to the node:
 	/*
 	tool
@@ -76,19 +76,19 @@ void fragment()
 		if what == NOTIFICATION_TRANSFORM_CHANGED:
 			get_material().set_shader_param("scale", scale)
 	*/
-	
+
 	// Set the brick shape
 	vec2 shape_uv = UV * scale * ratio;
-	
+
 	// Create the brick tiling
 	shape_uv = brick_tile(shape_uv, size);
-	
+
 	// Apply some grungy uneveness. You can play around with the values in the 'uneven' function for other results
 	vec3 edge = vec3(uneven(shape_uv, UV, rough_amount));
-	
+
 	// Create the "mortar" lines
 	vec3 color = vec3(box(shape_uv, vec2(thickness), ratio)) * vec3(edge);
-	
+
 	// Apply the colors
 	color = mix(mortar_color.rgb, brick_color.rgb, color.r);
 

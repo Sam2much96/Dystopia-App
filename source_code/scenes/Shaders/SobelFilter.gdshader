@@ -91,7 +91,7 @@ void fragment( )
 	);
 	float depth_sobel = clamp( sqrt( dot( depth_sobel_src, depth_sobel_src ) ), 0.0, 1.0 );
 
-	// 
+	//
 	ALBEDO = outline_color.rgb;
 	ALPHA = clamp(
 		depth_sobel * depth_coef

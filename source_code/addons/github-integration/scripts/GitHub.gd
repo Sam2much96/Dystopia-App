@@ -260,6 +260,3 @@ func _on_version_check(result, response_code, headers, body ) -> void:
 			if first_tag.name != ("v"+plugin_version):
 				print_debug_message("a new Dystopia App version has been found, current version is %s and new version is %s" % [("v"+plugin_version), first_tag.name],1)
 				#Dialogs.show_dialog(str("a new Dystopia App version has been found, current version is %s and new version is %s" % [("v"+plugin_version), first_tag.name],1), "Admin")
-
-
-

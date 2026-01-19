@@ -171,7 +171,3 @@ func hurt(from_position : Vector2):
 		if hitpoints <= 0:
 			state = STATE_DIE
 			await music_singleton_.play_track(die_sfx)
-
-
-
-

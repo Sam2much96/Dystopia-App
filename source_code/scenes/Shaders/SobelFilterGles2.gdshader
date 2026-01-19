@@ -1,26 +1,26 @@
 /*
 	Sobel/Depth Outline Shader by Firerabbit
-	
+
 	MIT License
 */
 
 shader_type spatial;
 render_mode unshaded;
 uniform sampler2D DEPTH_TEXTURE: hint_depth_texture, filter_linear_mipmap;
-uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap; 
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
 uniform int _thickness : hint_range(0,3) = 1;
 uniform float _detail : hint_range(0.0,256.0) = 256.0;
 
 varying mat4 CAMERA;
 
-void vertex() 
+void vertex()
 {
 	POSITION = vec4(VERTEX, 1.0);
 	CAMERA = INV_VIEW_MATRIX;
 }
 
 
-void fragment() 
+void fragment()
 {
 	float depth = texture(DEPTH_TEXTURE, SCREEN_UV).x;
 	vec3 ndc = vec3(SCREEN_UV, depth) * 2.0 - 1.0;
@@ -53,9 +53,9 @@ void fragment()
 	);
 	float sobel = length(vec2(sobel_src_x, sobel_src_y));
 	float outline = 1.0 - sobel * _detail * linear_depth / 8.0;
-	
+
 	outline = clamp(outline, 0.0, 1.0);
-	
+
 	ALBEDO = vec3(0.0);
 	ALPHA = float(outline < 0.5);
 }

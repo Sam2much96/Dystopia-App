@@ -16,7 +16,7 @@
 
 
 
-extends CanvasLayer
+extends Control
 
 
 class_name Login
@@ -28,14 +28,14 @@ var film : String = Globals.global_scenes["cinematics"]
 @onready var cinematics : PackedScene =load(film)#load('res://scenes/cinematics/cinematics.tscn')
 var index : int = 0
 
-@onready var play_button : Button = $ui/grid/play
-@onready var dialgue_box = $Dialog_box
-@onready var language : OptionButton = $ui/grid/language
+@onready var play_button : Button = $play
+#@onready var dialgue_box = $Dialog_box
+@onready var language : OptionButton = $language
 
 ########Label Spacer Codes Are Used For Aesthetics#########
-@onready var label_spacer : Label = $ui/grid/label_spacer
-@onready var label_spacer2 : Label = $ui/grid/label_spacer2
-@onready var label_spacer3 : Label =$ui/grid/label_spacer3
+@onready var label_spacer : Label = $label_spacer
+@onready var label_spacer2 : Label = $label_spacer2
+@onready var label_spacer3 : Label =$label_spacer3
 
 @onready var timer = $Timer
 @onready var _debug =get_tree().get_root().get_node("/root/Debug")
@@ -43,7 +43,7 @@ var index : int = 0
 var os = Globals.os # Pointer
 
 @onready var UI_buttons : Array = [
-	play_button, dialgue_box, 
+	play_button, #dialgue_box, 
 	language, label_spacer, 
 	label_spacer2, label_spacer3
 	]
@@ -55,7 +55,7 @@ func _ready():
 #	if _debug != null:
 #		_debug = get_tree().get_root().get_node("/root/Debug")
 
-	dialgue_box.hide_dialogue()
+	#dialgue_box.hide_dialogue()
 
 	# Load Users Prefered DIalogue 
 	Utils.Functions.load_user_data('languague')
@@ -66,8 +66,9 @@ func _ready():
 	
 	# If Dialogue Already Preset, Skip to Cinematics.
 	print_debug("User Preloaded Language: ", Dialogs.language)
-	if not Dialogs.language.is_empty() :
-		get_tree().change_scene_to_packed(cinematics)
+	# temporarily disabled for refactoring Sep 17, 2025
+	#if not Dialogs.language.is_empty() :
+	#	get_tree().change_scene_to_packed(cinematics)
 
 	
 
@@ -75,7 +76,7 @@ func _ready():
 	language.add_item('English') 
 	language.add_item('Brazilian Portuguese') 
 	language.add_item('French')
-	language.add_item('Telugu')
+	language.add_item('Russian')
 	language.add_item('Hindi')
 	language.add_item('Japanese')
 	language.add_item('Mandarin')
@@ -112,7 +113,7 @@ func _on_play_pressed():
 	elif language.get_selected() == 2:
 		Dialogs.language = "fr"
 	elif language.get_selected() == 3:
-		Dialogs.language = "te_IN"
+		Dialogs.language = "ru_RU"
 	elif language.get_selected() == 4:
 		Dialogs.language = "hi_IN"
 	elif language.get_selected() == 5:
@@ -150,7 +151,7 @@ func _http_request_completed(result, response_code, headers, body):
 		
 		Networking.good_internet = true #aves the internet status as a global variable
 		
-		dialgue_box.show_dialog('Device is internet connected','Admin')
+		#dialgue_box.show_dialog('Device is internet connected','Admin')
 		print ('Device is internet connected', result, response_code)
 		return
 	# Loop
@@ -214,3 +215,7 @@ func _exit_tree():
 	#	i.queue_free()
 
 	Utils.MemoryManagement.queue_free_array(UI_buttons)
+
+
+func _on_texture_button_pressed() -> void:
+	_on_play_pressed()

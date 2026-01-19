@@ -26,21 +26,20 @@ extends Control
 
 class_name Game_Menu
 
-var selector = 0
+
+
 signal menu_hidden
 signal menu_showing
-#signal loading_game
 @export var enabled : bool
 
-#var shop = load('res://scenes/UI & misc/Shop.tscn')
-
+var showingObject : bool = false
 """
 The game menu script. 
 """
 
 enum { SHOWING, HIDDEN}
 
-@export var menu_state : int
+@export var menu_state : String
 
 
 
@@ -59,24 +58,21 @@ var practice : Button
 var controls : Button 
 var quit : Button 
 
-
 # Auto Scroll with Swipe Gestures
 var scroller : ScrollContainer
-
 var MenuButtons : Array = []
 
-#var initialScale : Vector2 =self.get_scale()
-#@export var newScale : Vector2 = Vector2(2,2)
+#safe Pointers to global singletons
+@onready var safe_Music = get_node("/root/Music")
+@onready var safe_Globals = get_node("/root/Globals")
 
-@onready var _ui_sfx : String = Music.ui_sfx[0]
-@onready var _ui_sfx_1 : String = Music.ui_sfx[1]
+
+#to do: rewrite music singleton to use music config file
+@onready var _ui_sfx : String = safe_Music.ui_sfx[0]
+@onready var _ui_sfx_1 : String = safe_Music.ui_sfx[1]
 
 
 func _ready():
-	
-	# Make Global
-	Android.ingameMenu = self
-	GlobalInput.menu = self
 	
 	#Buttons
 	comics  = $ScrollContainer/HSeparator/comics
@@ -109,60 +105,28 @@ func _ready():
 	
 	'Hides the Menu once the scene tree is ready'
 	
-	menu_state =  HIDDEN
+	showingObject = false
+	hidden()
 	
-	
-
-	
-	"Continue Button Disable"#?
-	#if Utils.Functions.load_game(true, Globals) and continue_game != null:
-	#	continue_game.disabled = false 
-		
-	#else:
-	#	continue_game.disabled = true
-	#print_debug("Continue Disabled",continue_game.disabled)
 
 
-func _process(_delta):
-	
-	
-	
-	#_hide_some_menu_options() #turning this off temporarily to debug the debug singleton
-	"Visibility State Machine"
-	match menu_state:
-		SHOWING:
-			
-			return _menu_showing()
-		HIDDEN:
-			return _menu_not_showing()
+func _unhandled_input(event):
+	# Keyboard Input
+	if event.is_action_pressed("menu"):
+		get_viewport().set_input_as_handled()
+		toggled()
+
+
+func toggled():
+	#print_debug("Menu Button Triggered")
+	showingObject = !showingObject
+	if showingObject:
+		showing()
+	else:
+		hidden()
 
 
 
-
-func _input(event): 
-	#Toggles menu visibility on/off
-	# Bug: 
-	# (1) Causes Laggy Audio On Title Screen Loads
-	if event.is_action_pressed("menu") == true :# 
-		print_debug("Menu Is Pressed")
-		if menu_state == HIDDEN:
-			menu_state = SHOWING
-			set_focus_mode(Control.FOCUS_CLICK)
-			Music.play_track(_ui_sfx)
-			
-			return menu_state
-		if menu_state== SHOWING:
-			menu_state = HIDDEN
-			#Music.play_track(Music.ui_sfx[1])
-			return menu_state
-
-#input functions for gamepad
-
-
-		if event.is_action_pressed("ui_cancel") && visible == true:
-			Globals._go_to_title()
-	else : pass 
-	
 
 
 func _on_continue_pressed():
@@ -230,45 +194,28 @@ func _on_new_game_pressed(): #breaks the Globals.current_level script
 		await Music.play_track(_ui_sfx) #plays ui sfx in a loop
 		return 0
 
-#Handles Displaying the menu
-func _menu_showing(): #Broken funtions #rewrite with state machine
-	"Menu Logic"
-	
-	
-	enabled = true 
-	
 
-	
-	
-	if counter < 2: # Stops overflow of Menu Logic freeing up the main thread for oher core tasks
-		
-		"UI scaling moved to Android SIngleton"
-		
-		## Temp Disabling for debugging
-		#print_debug("UI downslacling is unimplemented")# For Debug Purposes only
-		
-		
-		emit_signal("menu_showing")
-		counter += 1
-	
-	
+func showing():
 	show()
+	manually_translate()
+	enabled = true 
+	set_focus_mode(Control.FOCUS_CLICK)
+	set_mouse_filter(Control.MOUSE_FILTER_STOP)
+	safe_Music.play_track(_ui_sfx)
+	emit_signal("menu_showing")
+
+
 
 #Handles Hiding the menu
-func _menu_not_showing():
+func hidden():
 	enabled = false
 	hide()
-	
-	#Music.play_track(Music.ui_sfx[1]) #introduces a sound bug
-	#Music._notification(NOTIFICATION_UNPAUSED) #introduces a sound bug
-	
-	set_focus_mode(0)
 	emit_signal("menu_hidden")
 	
+	
 	return
-#Handles Pausing the Menu
-func _menu_pause_and_play(boolean): #pass it a boolean to custom pause and play
-	get_tree().set_pause(boolean)
+
+
 
 
 func _on_comics_pressed():

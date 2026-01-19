@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://gnw1ypwpwkp1"]
+
+[ext_resource type="Script" uid="uid://3ot283iwwh6d" path="res://scenes/UI & misc/form/gui_3d.gd" id="1_216np"]
+[ext_resource type="PackedScene" uid="uid://pml012p2ih02" path="res://scenes/UI & misc/form/form.tscn" id="2_sjhka"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_05uth"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_sjhka"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_05uth"]
+resource_local_to_scene = true
+transparency = 1
+blend_mode = 4
+no_depth_test = true
+shading_mode = 0
+disable_fog = true
+disable_specular_occlusion = true
+albedo_color = Color(1.227624, 1.227624, 1.227624, 1)
+albedo_texture = SubResource("ViewportTexture_sjhka")
+albedo_texture_force_srgb = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sjhka"]
+
+[node name="GUIPanel3D" type="Node3D"]
+script = ExtResource("1_216np")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(800, 600)
+
+[node name="GUI" type="Control" parent="SubViewport"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="form" parent="SubViewport/GUI" instance=ExtResource("2_sjhka")]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 194.99998
+offset_bottom = 103.0
+
+[node name="Quad" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.023371845)
+mesh = SubResource("QuadMesh_05uth")
+surface_material_override/0 = SubResource("StandardMaterial3D_05uth")
+
+[node name="Area3D" type="Area3D" parent="Quad"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Quad/Area3D"]
+shape = SubResource("BoxShape3D_sjhka")

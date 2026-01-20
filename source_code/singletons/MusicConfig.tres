@@ -1,14 +1,9 @@
 [gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://MusicConfig.gd" type="Script" id=1]
+[ext_resource path="res://singletons/MusicConfig.gd" type="Script" id=1]
 
 [resource]
 script = ExtResource( 1 )
-enable = false
-sfx_on = false
-play_back_position = 0
-track_length = 0
-music_track = ""
 default_playlist = {
 0: "res://music/The Road Warrior.ogg",
 1: "res://music/Astrolife chike san.ogg",

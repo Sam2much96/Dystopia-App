@@ -12,12 +12,6 @@
 # (2) Uses a shader to load
 #
 # *************************************************
-
-# *************************************************
-# godot3-Dystopia-game by INhumanity_arts
-# Released under MIT License
-# *************************************************
-#
 # Functions:
 #
 # (1) Shows a Loading Scene Icon for performance heavy scenes
@@ -26,8 +20,8 @@
 #
 # *************************************************
 #
-# Bugs:
-# 
+# to do:
+# (1) creaete a scene atlas for loading all scenes  and lock them into a resources file
 #
 # *************************************************
 

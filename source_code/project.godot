@@ -297,7 +297,7 @@ _global_script_classes=[ {
 "base": "Resource",
 "class": "MusicConfig",
 "language": "GDScript",
-"path": "res://MusicConfig.gd"
+"path": "res://singletons/MusicConfig.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "NPC",

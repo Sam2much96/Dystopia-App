@@ -35,7 +35,7 @@ func _on_Item_body_entered(body):
 		call_deferred("disconnect", "body_entered", self, "_on_Item_body_entered")
 		# Adds Items to the Inventory Singleton
 		safe_Inventory.add_item(item_type, amount)
-		anims.play("collected") 
+		anims.play("collected") # depreciated & unused animation
 		safe_Music.play_track("res://sounds/item_collected.ogg") # Plays sound via singleton
 		
 		get_parent().queue_free()

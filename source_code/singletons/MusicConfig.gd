@@ -7,14 +7,11 @@ class_name MusicConfig
 #add more controls to this script, it breaks the singleton
 export (bool) var enable 
 export (bool) var sfx_on
-#export (int) var volume # volume controller code is not yet written
+export (int) var volume # to do: (1) implement volume controller
 export (int) var play_back_position : int
 export (int) var track_length : int
 
 export(String, FILE, "*.ogg") var music_track : String = ""
-
-	
-	
 
 
 export (Dictionary) var default_playlist : Dictionary ={

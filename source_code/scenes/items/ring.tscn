@@ -41,7 +41,7 @@ step = 0.01
 material = SubResource( 5 )
 texture = ExtResource( 1 )
 hframes = 14
-vframes = 19
+vframes = 20
 frame = 27
 
 [node name="Item" type="Area2D" parent="." groups=["items"]]

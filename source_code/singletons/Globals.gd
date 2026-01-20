@@ -17,6 +17,7 @@
 # (1) A working zip and unzip function through GDUnzip repurposed as an editor plugin #('insert GDUNzip github address')
 # (2) ArrAnge code base, make it easier to read at a glance (1/2)
 # (3) Use resource oader for video loading script
+# (4) store scene data to external resource class
 
 # Bugs
 # (1) COnnect to GDUNZIP via editor script to zip and unzip 
@@ -47,7 +48,7 @@ var player : Player # My Player
 var hp : int
 var enemy = null
 var enemy_debug : String 
-const initial_level : String = "res://scenes/levels/Overworld.tscn"  # loading outside environment bug fixed
+const initial_level : String = "res://scenes/levels/overworld_1.tscn"  # loading outside environment bug fixed
 
 var video_stream #for the video streamers
 

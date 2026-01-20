@@ -14,22 +14,15 @@
 # (5) Downloads music files from Server
 
 # To do:
-# (1) Use state machine to descibe different states for this signleton
-# (2) Turn on/ off debugging reduce draining performance
-# (3) Separate Off sfx and off music
-# (4) Document code
-# (5) Organize code into states {Finite State Machine}
-# (6) Implement Global file checker and Directory Checker
-# (7) Implement Spotify API (Depreciated)
-# (8) Map buttons to UI
+
 
 # *************************************************
 # Bugs:
-# (1) Music debug function breaks
-# (2) Debug Function breaks
+# (1) 
+# (2) 
 # (3) Music Volume is unimplemented
-# (4) Music Downloads is buggy for large (20mb) files (fixed : Public AWS s3 Bucket)
-# (5) Music Unzip takes too long (Hours) to unzip, take s up half the FPS in core game loop
+# (4) 
+# (5) 
 # (6) Music sfx plays on the wrong Track
 # *************************************************
 """

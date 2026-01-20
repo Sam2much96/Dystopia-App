@@ -28,7 +28,7 @@ var film : String = Globals.global_scenes["cinematics"]
 @onready var cinematics : PackedScene =load(film)#load('res://scenes/cinematics/cinematics.tscn')
 var index : int = 0
 
-@onready var play_button : Button = $play
+@onready var play_button : Button = $TextureButton/play
 #@onready var dialgue_box = $Dialog_box
 @onready var language : OptionButton = $language
 
@@ -37,7 +37,7 @@ var index : int = 0
 @onready var label_spacer2 : Label = $label_spacer2
 @onready var label_spacer3 : Label =$label_spacer3
 
-@onready var timer = $Timer
+#@onready var timer = $Timer
 @onready var _debug =get_tree().get_root().get_node("/root/Debug")
 
 var os = Globals.os # Pointer

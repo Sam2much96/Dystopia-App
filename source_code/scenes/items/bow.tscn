@@ -1,17 +1,17 @@
 [gd_scene load_steps=11 format=3 uid="uid://5u4kxhd8h3yh"]
 
-[ext_resource type="Texture2D" uid="uid://16xxroc4djab" path="res://resources/misc/bow.webp" id="1"]
-[ext_resource type="Script" path="res://scenes/items/Item.gd" id="2"]
+[ext_resource type="Script" uid="uid://dq4266cslopl6" path="res://scenes/items/Item.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://blg1h473lhi72" path="res://scenes/levels/godot_128x_dungeon_tileset.webp" id="2_ev5um"]
 [ext_resource type="AudioStream" uid="uid://c447a5k3onexu" path="res://sounds/item_collected.ogg" id="3"]
-[ext_resource type="Shader" path="res://scenes/Shaders/outline.gdshader" id="4"]
+[ext_resource type="Shader" uid="uid://c33xcr5ph1gn5" path="res://scenes/Shaders/outline.gdshader" id="4"]
 
 [sub_resource type="ShaderMaterial" id="5"]
 shader = ExtResource("4")
 shader_parameter/line_color = Color(1, 1, 1, 1)
 shader_parameter/line_thickness = 1.0
 
-[sub_resource type="CircleShape2D" id="1"]
-radius = 35.2284
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_njyb8"]
+size = Vector2(60.5, 64)
 
 [sub_resource type="Animation" id="2"]
 resource_name = "collected"
@@ -148,30 +148,33 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bcqcw"]
 _data = {
-"collected": SubResource("2"),
-"reset": SubResource("3"),
-"spawn": SubResource("4")
+&"collected": SubResource("2"),
+&"reset": SubResource("3"),
+&"spawn": SubResource("4")
 }
 
-[node name="Item" type="Area2D" groups=["items"]]
+[node name="sprite" type="Sprite2D"]
+material = SubResource("5")
+texture = ExtResource("2_ev5um")
+offset = Vector2(0.36261, -19.2809)
+hframes = 14
+vframes = 19
+frame = 24
+
+[node name="Item" type="Area2D" parent="." groups=["items"]]
 scale = Vector2(2, 2)
 script = ExtResource("2")
 item_type = "Bow"
 
-[node name="sprite" type="Sprite2D" parent="."]
-material = SubResource("5")
-texture = ExtResource("1")
-offset = Vector2(0.36261, -19.2809)
+[node name="hitbox" type="CollisionShape2D" parent="Item"]
+position = Vector2(2.75, -13.499999)
+shape = SubResource("RectangleShape2D_njyb8")
 
-[node name="hitbox" type="CollisionShape2D" parent="."]
-position = Vector2(0, -13.2074)
-shape = SubResource("1")
-
-[node name="pickup" type="AudioStreamPlayer2D" parent="."]
+[node name="pickup" type="AudioStreamPlayer2D" parent="Item"]
 stream = ExtResource("3")
 
-[node name="anims" type="AnimationPlayer" parent="."]
+[node name="anims" type="AnimationPlayer" parent="Item"]
 libraries = {
-"": SubResource("AnimationLibrary_bcqcw")
+&"": SubResource("AnimationLibrary_bcqcw")
 }
 autoplay = "spawn"

@@ -1,11 +1,13 @@
 # *************************************************
-# godot3-Dystopia-game by INhumanity_arts
+# godot4-Dystopia-game by INhumanity_arts
 # Released under MIT License
 # *************************************************
 # Loading
 # (1) Shows a loading screen with a message
 # (2) Uses a shader to load
 #
+# to do:
+# (1) finish porting loading scene from godot 3 into this build
 # *************************************************
 
 

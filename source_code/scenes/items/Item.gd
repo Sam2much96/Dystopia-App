@@ -22,6 +22,8 @@ class_name item
 
 @onready var sub_nodes : Array = [self, anims]
 
+@onready var safe_Music = get_node("/root/Music")
+@onready var safe_Inventory = get_node("/root/Inventory")
 func _ready():
 	connect("body_entered", Callable(self, "_on_Item_body_entered"))
 	pass
@@ -31,11 +33,11 @@ func _on_Item_body_entered(body):
 
 		call_deferred("disconnect", "body_entered", self, "_on_Item_body_entered")
 		# Adds Items to the Inventory Singleton
-		Inventory.add_item(item_type, amount)
-		anims.play("collected")
-		Music.play_track("res://sounds/item_collected.ogg") # Plays sound via singleton
+		safe_Inventory.add_item(item_type, amount)
+		anims.play("collected") #depreciated and unused animation
+		safe_Music.play_track("res://sounds/item_collected.ogg") # Plays sound via singleton
 		
-		queue_free()
+		get_parent().queue_free()
 	else : pass
 
 

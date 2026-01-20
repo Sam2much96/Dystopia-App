@@ -1,7 +1,7 @@
 [gd_scene load_steps=29 format=3 uid="uid://bgdyojs4v5loi"]
 
 [ext_resource type="Script" uid="uid://jd70wmbr3tfg" path="res://scenes/characters/TopDownPlayer.gd" id="1"]
-[ext_resource type="Texture2D" uid="uid://cnq3epm88h30e" path="res://resources/Aarin/spritesheet_4.webp" id="2"]
+[ext_resource type="Texture2D" uid="uid://8btsx8x7o0r6" path="res://resources/Aarin/player_tileset_128x128.webp" id="2_mun3s"]
 [ext_resource type="Texture2D" uid="uid://dfr007056gfl0" path="res://scenes/Shaders/BlueNoise.webp" id="3"]
 [ext_resource type="Shader" uid="uid://o8dq02y1hx5g" path="res://scenes/Shaders/DirectionalBlur.gdshader" id="4"]
 [ext_resource type="PackedScene" uid="uid://2qthf1f4ptr2" path="res://scenes/Shaders/Impact.tscn" id="5"]
@@ -1436,25 +1436,25 @@ WALK_SPEED = 400
 [node name="sprite" type="Sprite2D" parent="."]
 position = Vector2(-14.72, -115.004)
 scale = Vector2(0.676, 0.676)
-texture = ExtResource("2")
-flip_h = true
+texture = ExtResource("2_mun3s")
 hframes = 8
 vframes = 7
-frame = 27
+frame = 15
 
 [node name="hitbox" type="CollisionShape2D" parent="."]
-position = Vector2(-0.882385, -27.9806)
+position = Vector2(-18, -106.99999)
 rotation = 1.5708
+scale = Vector2(0.23530333, 0.23530333)
 shape = SubResource("2")
 
 [node name="player_sword" type="Area2D" parent="."]
 position = Vector2(6.30249, -86.9744)
 collision_layer = 32
+monitorable = false
 
 [node name="slash" type="CollisionPolygon2D" parent="player_sword"]
-position = Vector2(-15.5219, -3.42419)
-rotation = -0.0236131
-polygon = PackedVector2Array(-91.5168, 17.4712, -49.7053, 33.7712, -36.5348, 110.047, 35.867, 113.696, 44.7355, 32.9416, 90.0337, 28.9744, 135.867, -41.8589, 45.4412, -44.8453, 33.0892, -126.582, -28.0219, -121.026, -35.1723, -51.082, -122.466, -43.2478)
+position = Vector2(-28.30249, -11.025597)
+polygon = PackedVector2Array(-101, 18, -37, 21, -36.5348, 110.047, 35.867, 113.696, 40, 24, 109, 25, 135.867, -41.8589, 35, -42, 33.0892, -126.582, -28.0219, -121.026, -29, -45, -122.466, -43.2478)
 
 [node name="anims" type="AnimationPlayer" parent="."]
 libraries = {
@@ -1474,7 +1474,8 @@ trauma = 0.9
 collision_mask = 32
 
 [node name="col" type="CollisionShape2D" parent="hurtbox"]
-position = Vector2(4.16663, -82.1878)
+position = Vector2(-18, -111)
+scale = Vector2(0.17343618, 0.17343618)
 shape = SubResource("19")
 
 [node name="ScentTimer" type="Timer" parent="."]

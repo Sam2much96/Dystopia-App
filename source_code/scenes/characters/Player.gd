@@ -76,12 +76,16 @@ enum { UP, DOWN, LEFT, RIGHT}
 
 @export var peer_id : int = -99 # Dummpy Placeholder Peer id
 
+#Safe Pointers to Global singletons
+@onready var safe_Globals = get_node("/root/Globals")
+@onready var safe_Music = get_node("/root/Music")
+
 # For Despawn and Hit Collission Fx
 @onready var blood : BloodSplatter = Globals.blood_fx.instantiate()
 @onready var despawn_particles : DeSpawnFX = Globals.despawn_fx.instantiate()
 
-@onready var die_sfx : String = Music.nokia_soundpack[27]
-@onready var hurt_sfx : String = Music.nokia_soundpack[20]
+@onready var die_sfx : String = safe_Music.MusicConfig.nokia_soundpack.get(27)
+@onready var hurt_sfx : String = safe_Music.MusicConfig.nokia_soundpack.get(20)
 
 # Get Music Singleton
 @onready var music_singleton_ : music_singleton = get_node("/root/Music")

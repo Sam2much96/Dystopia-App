@@ -1,0 +1,49 @@
+[gd_scene load_steps=9 format=3 uid="uid://ddj26rnemlwkv"]
+
+[ext_resource type="Texture2D" uid="uid://blg1h473lhi72" path="res://scenes/levels/godot_128x_dungeon_tileset.webp" id="1_3lywy"]
+[ext_resource type="Script" uid="uid://dq4266cslopl6" path="res://scenes/items/Item.gd" id="2_10hcr"]
+[ext_resource type="AudioStream" uid="uid://c447a5k3onexu" path="res://sounds/item_collected.ogg" id="3_d885v"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3lywy"]
+size = Vector2(129, 132)
+
+[sub_resource type="Animation" id="2"]
+resource_name = "collected"
+length = 0.4
+
+[sub_resource type="Animation" id="3"]
+length = 0.001
+
+[sub_resource type="Animation" id="4"]
+length = 0.3
+step = 0.01
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4xrab"]
+_data = {
+&"collected": SubResource("2"),
+&"reset": SubResource("3"),
+&"spawn": SubResource("4")
+}
+
+[node name="sprite" type="Sprite2D"]
+texture = ExtResource("1_3lywy")
+hframes = 14
+vframes = 19
+frame = 50
+
+[node name="Item" type="Area2D" parent="." groups=["items"]]
+script = ExtResource("2_10hcr")
+item_type = "Generic Item"
+
+[node name="hitbox" type="CollisionShape2D" parent="Item"]
+position = Vector2(-1.5, -3.0000038)
+shape = SubResource("RectangleShape2D_3lywy")
+
+[node name="pickup" type="AudioStreamPlayer2D" parent="Item"]
+stream = ExtResource("3_d885v")
+
+[node name="anims" type="AnimationPlayer" parent="Item"]
+libraries = {
+&"": SubResource("AnimationLibrary_4xrab")
+}
+autoplay = "spawn"

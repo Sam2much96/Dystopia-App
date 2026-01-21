@@ -1,10 +1,20 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://6esqjbrt86c4"]
 
-[ext_resource path="res://scenes/UI & misc/Healthbar.gd" type="Script" id=1]
+[ext_resource type="Script" uid="uid://cg8wug8juvs0o" path="res://scenes/UI & misc/Healthbar.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://c1c2gdku26m1j" path="res://scenes/UI & misc/Heart.tscn" id="2_ruydr"]
 
 [node name="Healthbar" type="HBoxContainer"]
 offset_left = 8.0
 offset_top = 11.0
 offset_right = 115.0
 offset_bottom = 39.0
-script = ExtResource( 1 )
+script = ExtResource("1")
+
+[node name="heart" parent="." instance=ExtResource("2_ruydr")]
+layout_mode = 2
+
+[node name="heart2" parent="." instance=ExtResource("2_ruydr")]
+layout_mode = 2
+
+[node name="heart3" parent="." instance=ExtResource("2_ruydr")]
+layout_mode = 2

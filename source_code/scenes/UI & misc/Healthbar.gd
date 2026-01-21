@@ -1,5 +1,5 @@
 # *************************************************
-# godot3-Dystopia-game by INhumanity_arts
+# godot4-Dystopia-game by INhumanity_arts
 # Released under MIT License
 # *************************************************
 # Health Bar
@@ -20,9 +20,10 @@
 # (2) Does'nt scale well on Mobile Devices
 # (3) Requires Reimplementation and Animation Player (Full Refactor)
 # *************************************************
+@icon("res://resources/misc/Pixel Heart 32x32.png")
 extends HBoxContainer
 
-class_name Healthbar#, 'res://resources/misc/Pixel Heart 32x32.png'
+class_name Healthbar
 
 """
 Connects to the player node and shows a health bar in the form of hearts
@@ -92,4 +93,13 @@ func _on_health_changed(new_hp : int):
 			var heart = heart_instance.instantiate(0)
 			
 			self.call_deferred('add_child',heart) #adds more life bars
-			
+
+
+func get_heart_count()-> int:
+	return 0
+
+
+func _exit_tree() -> void:
+	player = null
+	networkPlayer = null
+	heart_empty = null

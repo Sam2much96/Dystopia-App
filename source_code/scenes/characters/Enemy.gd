@@ -434,7 +434,7 @@ func _on_hurtbox_area_entered(area):
 		set_velocity(pushback_direction *   kick_back_distance)
 		move_and_slide() # Flies back at a random distance
 		state = STATE_HURT
-		blood = Globals.blood_fx.instantiate()
+		var blood = Globals.blood_fx.instantiate()
 		get_parent().add_child(blood) # Instances Blood FX
 		blood.global_position = global_position # Makes the fx position global?
 		

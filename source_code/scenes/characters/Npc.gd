@@ -43,7 +43,7 @@ var __body : Player
 @onready var npc : Area2D = $NPC
 
 # AI API fetches Prompt from server
-@onready var _AI = $AI#: Llama2API = $AI
+#@onready var _AI = $AI#: Llama2API = $AI
 
 var frame_counter : int = 0
 
@@ -93,14 +93,7 @@ func _process(delta : float):
 				move_and_slide()
 				
 				pass
-		
-		# Fetched Durrent Dialouge from AI Prompy
-		if frame_counter % 10 == 0 && _AI != null &&_AI.output != "":
-			if not dialogs.has(_AI.output):
-				current_dialog = 0
-				dialogs[current_dialog] =_AI.output
-				#print_debug(dialogs[current_dialog])
-			else : pass
+
 
 
 func _input(event):

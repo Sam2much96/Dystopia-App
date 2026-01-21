@@ -47,7 +47,7 @@ func _on_Item_body_entered(body): # use body : Player to make priority process
 		#yield(get_tree().create_timer(0.8), "timeout")
 		#$pickup.stop()
 		
-		self.queue_free()
+		get_parent().queue_free()
 
 
 func _use_item():

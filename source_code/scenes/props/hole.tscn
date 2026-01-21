@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://kpaswayytwbv"]
 
 [ext_resource type="Texture2D" uid="uid://blg1h473lhi72" path="res://scenes/levels/godot_128x_dungeon_tileset.webp" id="1_ld0uf"]
-[ext_resource type="Script" uid="uid://d2yiypbpwiewu" path="res://scenes/UI & misc/Exit.gd" id="2_lqjbq"]
+[ext_resource type="Script" uid="uid://d2yiypbpwiewu" path="res://scenes/Exit/Exit.gd" id="2_lqjbq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lip1x"]
 size = Vector2(126, 124)

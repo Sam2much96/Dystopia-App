@@ -34,7 +34,6 @@ var global_scenes : Dictionary = {
 	"form" : 'res://scenes/UI & misc/form/form.tscn',
 	"controls" : 'res://scenes/UI & misc/Controls.tscn',
 	"loading" : "res://scenes/UI & misc/LoadingScene.tscn",
-	"wallet": 'res://scenes/Wallet/Wallet main.tscn',
 	"cinematics": 'res://scenes/cinematics/cinematics.tscn'
 }
 
@@ -49,19 +48,7 @@ var _wallet : PackedScene #= load('res://scenes/Wallet/Wallet main.tscn')
 #var title : PackedScene = load ("res://scenes/Title screen.tscn") #duplicate
 var cinematics : PackedScene #= load('res://scenes/cinematics/cinematics.tscn')
 
-"Comics  Book Module variables"
-# depreciated
-#var comics : PackedScene = load ('res://scenes/UI & misc/Comics.tscn')
-#var comics___2 : PackedScene #= load ('res://scenes/UI & misc/Comics____2.tscn') # disabled for 4.2 port
-#var comics_chapter 
-#var comics_page 
 
-
-#var game_loop
-
-#var prev_scene
-#var prev_scene_spawnpoint
-#var next_scene = null
 @onready var curr_scene : String = ""
 @onready var os: String = OS.get_name()
 @onready var kill_count : int = 0 #update to load from savefile

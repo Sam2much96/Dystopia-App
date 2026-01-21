@@ -61,7 +61,10 @@ signal status_showing
 @onready var _quest_label : Label = $"TabContainer/2/ScrollContainer2/VBoxContainer/Quests"
 
 # Backup Pointer to Inventory Singleton
-@onready var _inventory : Storage = get_tree().get_root().get_node("/root/Inventory")
+@onready var _inventory : Storage = get_node("/root/Inventory")
+
+# pointer to Music singleton
+@onready var safeMusic = get_node("/root/Music")
 
 # Pointer to GLobal Touch HUD
 
@@ -113,18 +116,18 @@ func _input(event):
 	
 	# Enable / DIsable Logic is Buggy
 	if event.is_action_pressed("pause")  && enabled_ == false:
-		print_debug("enable")
+		#print_debug("enable")
 		enabled_ = true
 		_enable()
 	#	#_state = ENABLED
-		Music.play_track(Music.ui_sfx[0])
+		safeMusic.play_track(safeMusic.MusicConfig.ui_sfx.get(0))
 		return enabled_ # _state
 	if event.is_action_pressed("pause") && enabled_ == true:
 		enabled_ = false
 		_disable()
 	#	#_state = DISABLED
-		print_debug("disable")
-		Music.play_track(Music.ui_sfx[1])
+		#print_debug("disable")
+		safeMusic.play_track(safeMusic.MusicConfig.ui_sfx.get(1))
 		return enabled #_state
 
 
@@ -136,7 +139,7 @@ func _update_wallet_stats(): #Updates killcount and Algos
 
 
 func _update_quest_listing():
-	# DOcument and refactor
+	
 	
 	var text = ""
 	text += "Started:\n"
@@ -289,7 +292,7 @@ func _enable():
 	enabled_ = true
 	visible = enabled_
 	emit_signal('enabled')
-	Music.play_track(Music.ui_sfx[0])
+	safeMusic.play_track(safeMusic.MusicConfig.ui_sfx.get(0))
 	get_tree().paused = enabled_
 
 	_update_quest_listing()
@@ -301,7 +304,7 @@ func _disable():
 	enabled_ = false
 	visible = enabled_
 	emit_signal("not_enabled")
-	Music.play_track(Music.ui_sfx[1])
+	safeMusic.play_track(safeMusic.MusicConfig.ui_sfx.get(1))
 	hide()
 	get_tree().paused = false
 	print (self.name, "enabled") # For debug purposes only

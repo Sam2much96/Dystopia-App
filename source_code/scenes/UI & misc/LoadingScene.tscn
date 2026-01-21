@@ -88,4 +88,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "message"
 
+[node name="Timer" type="Timer" parent="."]
+
 [connection signal="visibility_changed" from="." to="." method="_on_loading_visibility_changed"]

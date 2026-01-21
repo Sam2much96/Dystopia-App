@@ -47,6 +47,10 @@ window/stretch/aspect="expand"
 window/handheld/orientation="sensor"
 window/ios/hide_home_indicator=false
 
+[editor]
+
+movie_writer/movie_file="/home/samuel/Videos/Movie_Testing_1.avi"
+
 [editor_plugins]
 
 enabled=PackedStringArray()
@@ -149,7 +153,6 @@ translations=PackedStringArray("res://Translation/Translation_1.en_US.translatio
 
 [rendering]
 
-textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method.web="mobile"
 textures/vram_compression/import_etc2_astc=true
 quality/driver/driver_name="GLES2"

@@ -24,7 +24,7 @@ class_name debug
 @export var enabled : bool
 
 
-var error_splash_page : PackedScene = load ('res://New game code and features/Error splash page for crashes.tscn')
+#var error_splash_page : PackedScene = load ('res://New game code and features/Error splash page for crashes.tscn')
 
 
 var logging = false

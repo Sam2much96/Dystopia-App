@@ -50,7 +50,6 @@ _data = {
 
 [node name="sprite" type="Sprite2D"]
 material = SubResource("6")
-scale = Vector2(2, 2)
 texture = ExtResource("2_jk7a0")
 offset = Vector2(0.36261, -19.2809)
 hframes = 14

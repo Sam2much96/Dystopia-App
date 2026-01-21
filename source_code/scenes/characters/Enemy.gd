@@ -428,7 +428,7 @@ func _on_hurtbox_area_entered(area):
 	if not state == STATE_DIE && area.name == "player_sword": #if it's not dead and it's hit by the player"s sword collisssion
 		print_debug("Enemy Struck, Implement Make RPC CAll if error > 0")
 		hitpoints -= 1
-		Music.play_sfx(Music.hit_sfx) # Plays sfx from the Music singleton
+		Music.play_sfx(Music.MusicConfig.hit_sfx) # Plays sfx from the Music singleton
 		#print_debug ("enemy hitpoint: "+ str(hitpoints))# for debug purposes only
 		var pushback_direction = (global_position - area.global_position).normalized()
 		set_velocity(pushback_direction *   kick_back_distance)

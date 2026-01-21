@@ -1,5 +1,5 @@
 # *************************************************
-# godot3-Dystopia-game by INhumanity_arts
+# godot4-Dystopia-game by INhumanity_arts
 # Released under MIT License
 # *************************************************
 #
@@ -63,7 +63,8 @@ func spawn(): #organize this code to switch btw random spawn and single spawn
 	_item.global_position = global_position
 	#_item.item_type = _item
 	
-	'Exempts Coin from Amount changes'
-	if not _item.name == 'coins':
-		_item.amount = amount
+	# temporarily depreciated for godot 4 refactoring Jan 21, 26
+	#'Exempts Coin from Amount changes'
+	#if not _item.name == 'coins':
+	#	_item.amount = amount
 	return 0

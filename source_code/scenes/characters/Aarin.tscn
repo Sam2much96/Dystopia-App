@@ -1438,7 +1438,7 @@ position = Vector2(-14.72, -115.004)
 texture = ExtResource("2_mun3s")
 hframes = 8
 vframes = 7
-frame = 15
+frame = 9
 
 [node name="hitbox" type="CollisionShape2D" parent="."]
 position = Vector2(-18, -106.99999)
@@ -1452,7 +1452,6 @@ collision_layer = 32
 monitorable = false
 
 [node name="slash" type="CollisionPolygon2D" parent="player_sword"]
-position = Vector2(-28.30249, -11.025597)
 polygon = PackedVector2Array(-101, 18, -37, 21, -36.5348, 110.047, 35.867, 113.696, 40, 24, 109, 25, 135.867, -41.8589, 35, -42, 33.0892, -126.582, -28.0219, -121.026, -29, -45, -122.466, -43.2478)
 
 [node name="anims" type="AnimationPlayer" parent="."]
@@ -1464,6 +1463,7 @@ autoplay = "reset"
 [node name="camera" type="Camera2D" parent="."]
 position = Vector2(6.30249, -86.9744)
 scale = Vector2(1.76752, 1.57384)
+zoom = Vector2(1.6, 1.6)
 script = ExtResource("6")
 min_zoom = 0.5
 max_zoom = 2

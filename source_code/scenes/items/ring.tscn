@@ -48,7 +48,6 @@ _data = {
 [node name="sprite" type="Sprite2D"]
 material = SubResource("5")
 texture = ExtResource("2_1usug")
-offset = Vector2(0.36261, -19.2809)
 hframes = 14
 vframes = 20
 frame = 27
@@ -59,7 +58,7 @@ script = ExtResource("2")
 item_type = "Ring"
 
 [node name="hitbox" type="CollisionShape2D" parent="Item"]
-position = Vector2(1.333334, -13.666668)
+position = Vector2(-3.3333335, 0)
 shape = SubResource("RectangleShape2D_282oo")
 
 [node name="pickup" type="AudioStreamPlayer2D" parent="Item"]

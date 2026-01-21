@@ -1,0 +1,74 @@
+[gd_scene load_steps=7 format=3 uid="uid://dsixy224p43fr"]
+
+[ext_resource type="Script" uid="uid://5r573q3nfy47" path="res://scenes/characters/Npc.gd" id="1_8fycp"]
+[ext_resource type="Texture2D" uid="uid://s0swpjs163ku" path="res://resources/NPC/NPC_128x128_tileset.webp" id="2_8fycp"]
+
+[sub_resource type="CircleShape2D" id="3"]
+
+[sub_resource type="Animation" id="1"]
+resource_name = "idle"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.564087, 2.50995), Vector2(0.564087, 4.44937)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("sprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 0.944064)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7elgw"]
+_data = {
+&"idle": SubResource("1")
+}
+
+[sub_resource type="RectangleShape2D" id="2"]
+size = Vector2(66.95549, 120.12603)
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_8fycp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, -19)
+shape = SubResource("3")
+
+[node name="NPC" type="Area2D" parent="."]
+scale = Vector2(0.5078, 0.5078)
+
+[node name="sprite" type="Sprite2D" parent="NPC"]
+position = Vector2(0.564087, 4.06149)
+scale = Vector2(1, 0.955251)
+texture = ExtResource("2_8fycp")
+offset = Vector2(3.3446, -93.3282)
+vframes = 3
+frame = 1
+
+[node name="anims" type="AnimationPlayer" parent="NPC"]
+libraries = {
+&"": SubResource("AnimationLibrary_7elgw")
+}
+autoplay = "idle"
+
+[node name="trigger" type="CollisionShape2D" parent="NPC"]
+position = Vector2(1.9073486e-06, -85.66365)
+shape = SubResource("2")
+
+[connection signal="body_entered" from="NPC" to="." method="_on_NPC_body_entered"]
+[connection signal="body_exited" from="NPC" to="." method="_on_NPC_body_exited"]

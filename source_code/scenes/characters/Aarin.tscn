@@ -1435,7 +1435,6 @@ WALK_SPEED = 400
 
 [node name="sprite" type="Sprite2D" parent="."]
 position = Vector2(-14.72, -115.004)
-scale = Vector2(0.676, 0.676)
 texture = ExtResource("2_mun3s")
 hframes = 8
 vframes = 7

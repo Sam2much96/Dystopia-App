@@ -5,7 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://c447a5k3onexu" path="res://sounds/item_collected.ogg" id="3_d885v"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3lywy"]
-size = Vector2(129, 132)
+size = Vector2(126, 132)
 
 [sub_resource type="Animation" id="2"]
 resource_name = "collected"
@@ -36,7 +36,7 @@ script = ExtResource("2_10hcr")
 item_type = "Generic Item"
 
 [node name="hitbox" type="CollisionShape2D" parent="Item"]
-position = Vector2(-1.5, -3.0000038)
+position = Vector2(0, -2.861023e-06)
 shape = SubResource("RectangleShape2D_3lywy")
 
 [node name="pickup" type="AudioStreamPlayer2D" parent="Item"]

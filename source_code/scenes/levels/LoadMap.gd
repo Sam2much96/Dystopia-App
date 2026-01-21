@@ -20,11 +20,11 @@ func _ready():
 	loadMap()
 
 func loadMap():
-	print_debug("Loading Map Triggered")
+	#print_debug("Loading Map Triggered")
 	
 	# Get all used cells in the tilemap
 	var used_cells = get_used_cells()
-	print_debug("Total used cells: ", used_cells.size())
+	#print_debug("Total used cells: ", used_cells.size())
 	
 	for cell_pos in used_cells:
 		# Get the tile data at this position
@@ -48,11 +48,11 @@ func loadMap():
 			var atlas_size_x = 14  # ADJUST THIS: How many tiles wide is your tileset is i.e how many tiles per row?
 			tile_id = atlas_coords.x + (atlas_coords.y * atlas_size_x) + 1  # +1 because your IDs start at 1
 		
-		print_debug("Cell: ", cell_pos, " | Atlas: ", atlas_coords, " | Tile ID: ", tile_id)
+		#print_debug("Cell: ", cell_pos, " | Atlas: ", atlas_coords, " | Tile ID: ", tile_id)
 		
 		if tile_config.TILE_CONFIG.has(tile_id):
 			var config = tile_config.TILE_CONFIG[tile_id]
-			print_debug("Config found for tile ", tile_id, ": ", config)
+			#print_debug("Config found for tile ", tile_id, ": ", config)
 			
 			# Check if we should hide the tile
 			if config.has("draw") and not config["draw"]:
@@ -63,8 +63,8 @@ func loadMap():
 				print_debug("Spawning: ", config["spawn"])
 				spawn(cell_pos, config["spawn"])
 		else:
-			print_debug("No config for tile ID: ", tile_id)
-
+			#sprint_debug("No config for tile ID: ", tile_id)
+			pass
 func spawn(cell_pos: Vector2i, object_scene_path: String):
 	print_debug("Spawning object: ", object_scene_path, " at ", cell_pos)
 	

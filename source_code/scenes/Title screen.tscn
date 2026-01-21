@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dki22cvpwfmq"]
 
 [ext_resource type="Script" uid="uid://w68nqi2xqkd" path="res://scenes/UI & misc/Title screen.gd" id="1"]
-[ext_resource type="Texture2D" uid="uid://cthlt4bdxeko2" path="res://resources/title animation/Dystopia Logo webp.webp" id="2"]
+[ext_resource type="Texture2D" uid="uid://c1tyvkqrcasv5" path="res://resources/title animation/Dystopia Logo 2 webp.webp" id="3_rfneo"]
 [ext_resource type="Texture2D" uid="uid://b4q3127j1paqd" path="res://resources/illustrations/cover 1.png" id="7"]
 
 [node name="Menu" type="Control"]
@@ -41,12 +41,12 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -236.5
-offset_top = -90.00001
+offset_top = -90.0
 offset_right = 236.5
-offset_bottom = 90.00001
+offset_bottom = 90.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(1.03307, 1.03307)
-texture = ExtResource("2")
+scale = Vector2(2, 2)
+texture = ExtResource("3_rfneo")
 expand_mode = 1
 stretch_mode = 6

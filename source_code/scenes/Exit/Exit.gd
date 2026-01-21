@@ -56,13 +56,18 @@ func _on_body_entered(body):
 			""
 			) 
 			
-			
+		#var err = get_tree().change_scene_to_packed(Globals.loading_scene)
+		#print_debug("loading scene err debug: ", err)
+		#if err != OK:
+		#	push_error("Error loading scene : ", to_scene)
 	if  to_scene.is_empty():
 		push_error("Error changing scenes: to_scene has no assigned scene")
 		return false
-		
-		
-		
+	
+	Globals.current_level = to_scene
+	Utils.Functions.change_scene_to_packed(Globals.loading_scene, get_tree())
+	#Utils.Functions.change_scene_to_packed( to_scene, get_tree())
 		# Global Scene Transition
-	if Utils.Functions.change_scene_to_packed(Globals.loading_scene, get_tree()) != OK:
-		push_error("Error changing scene")
+	#if Utils.Functions.change_scene_to_packed(Globals.loading_scene, get_tree()) != OK:
+	#	push_error("Error changing scene")
+	

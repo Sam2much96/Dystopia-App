@@ -15,6 +15,7 @@ frame = 44
 [node name="Exit" type="Area2D" parent="."]
 monitorable = false
 script = ExtResource("2_e3gfh")
+to_scene = "res://scenes/levels/TempleInterior_buggy.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
 position = Vector2(-0.5, 1)

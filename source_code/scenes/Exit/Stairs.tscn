@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://d25o6xf0i68yv"]
+
+[ext_resource type="Texture2D" uid="uid://blg1h473lhi72" path="res://scenes/levels/godot_128x_dungeon_tileset.webp" id="1_1n4r4"]
+[ext_resource type="Script" uid="uid://d2yiypbpwiewu" path="res://scenes/Exit/Exit.gd" id="2_fntk1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0t7rm"]
+size = Vector2(129, 134)
+
+[node name="Sprite2D" type="Sprite2D"]
+texture = ExtResource("1_1n4r4")
+hframes = 14
+vframes = 19
+frame = 55
+
+[node name="Exit" type="Area2D" parent="."]
+monitorable = false
+script = ExtResource("2_fntk1")
+to_scene = "res://scenes/levels/overworld_1.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+position = Vector2(-0.5, 1)
+shape = SubResource("RectangleShape2D_0t7rm")

@@ -14,6 +14,7 @@ frame = 3
 
 [node name="Exit" type="Area2D" parent="."]
 script = ExtResource("2_lqjbq")
+to_scene = "res://scenes/levels/OverworldSideScrolling.tscn"
 metadata/_custom_type_script = "uid://d2yiypbpwiewu"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]

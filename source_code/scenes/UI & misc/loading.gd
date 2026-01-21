@@ -164,20 +164,18 @@ func _process(_delta):
 	# Emptry current level initiator
 	if LOADING && not safe_Globals.current_level.is_empty():
 		
-		get_tree().change_scene_to_packed(load(safe_Globals.current_level))
+		#get_tree().change_scene_to_packed(load(safe_Globals.current_level))
 		
 		# this function loads the scene resource into a global script and returns it
 		# temporarily depreciated for refactoring Jan 21, 26
-		#loaded_scene_temp = LoadLargeScene(
-		#safe_Globals.current_level, 
-		#loaded_scene_temp, 
-		#_o, 
-		#scene_loader, 
-		#a, 
-		#b, 
-		#progress,
-		#self
-		#)
+		loaded_scene_temp = await LoadLargeScene(
+		safe_Globals.current_level, 
+		loaded_scene_temp, 
+		a, 
+		b, 
+		progress,
+		self
+		)
 		
 		# Null resource load
 		#
@@ -193,7 +191,7 @@ func _process(_delta):
 			safe_Globals.current_level == safe_Globals.Overworld_Scenes.get(5)
 			):
 				show_progress(20,20)
-				await get_tree().create_timer(2)
+				await get_tree().create_timer(2).timeout
 				
 			# TO DO : 
 			# connect a signal from the loading screen to Touchscreen HUD
@@ -201,7 +199,7 @@ func _process(_delta):
 			# and will also connect to menu() once no game scene is loaded 
 			
 			
-			safe_Utils.Functions.change_scene_to( loaded_scene_temp, get_tree())
+			safe_Utils.Functions.change_scene_to_packed(loaded_scene_temp, get_tree())
 		if loaded_scene_temp == null : # unsuccessfull load redundancy code backported from 4.2.2 Vulkan
 			push_error("Loading failed")
 			#get_tree().change_scene_to(load(Globals.current_level))
@@ -247,18 +245,15 @@ func show_number(value : float , ref_value : float, type : String):
 func hide_number():
 	Number.hide()
 
-
 # Utils functions deserialised for debugging
 static func LoadLargeScene(
-	scene_to_load : String, 
-	sc_resource : PackedScene, 
-	resource_interactive_loader : ResourceFormatLoader, 
-	sc_loader : ResourceLoader, 
-	a_: int , 
-	b_ : int, 
+	scene_to_load: String, 
+	sc_resource: PackedScene, 
+	a_: int, 
+	b_: int, 
 	progress_: float, 
-	loader :loading
-	) -> PackedScene:
+	loader: loading
+) -> PackedScene:
 	
 	if scene_to_load.is_empty():
 		push_error("Error: Scene path is empty.")
@@ -266,63 +261,55 @@ static func LoadLargeScene(
 	if sc_resource != null:
 		push_error("Error: Scene resource is already loaded.")
 	
-	#if !scene_to_load.empty() : # && sc_resource == null:
-	#var time_max = 50000 #sets an estimate maximum time to load scene
-	#var current_time = OS.get_ticks_msec()
+	# Load the scene asynchronously
+	var load_status = ResourceLoader.load_threaded_request(scene_to_load)
 	
-	
-	resource_interactive_loader = (sc_loader.load_interactive(scene_to_load)) #function returns a resourceInteractiveLoader
-	
-	if resource_interactive_loader == null:
-		push_error("Error: Failed to create ResourceInteractiveLoader.")
-	
+	if load_status != OK:
+		push_error("Error: Failed to start threaded loading.")
+		return null
 	
 	print_debug("Starting asynchronous scene load >>>> : " + scene_to_load)
 	
 	loader.LOADING = true
 	
-	#while loader.LOADING:
-	while resource_interactive_loader != null && bool(loader.LOADING) == true: #OS.get_ticks_msec() < (current_time + time_max) : 
+	var progress = []
+	
+	while bool(loader.LOADING) == true:
 		
-		var err = resource_interactive_loader.poll()
+		var status = ResourceLoader.load_threaded_get_status(scene_to_load, progress)
 		
-		#print_debug("scene res: "+str(sc_resource)+"\n scene to load: "+str(scene_to_load)+"\n Error: "+str(err)+" \nLoop Debug") #Debugger
-		a_ = resource_interactive_loader.get_stage()
-		b_ = resource_interactive_loader.get_stage_count() 
-		
-		
-		match err:
-		
-			OK: # loading, partially finished
- 
-				#loader.emit_signal("loaded")
-				#resource_interactive_loader.poll()
-				
-				#yield(get_tree(), "idle_frame") # pause for idle frame breaks the loader
-				#print_debug (a_, "/",b_)
-				loader.show_progress(a_, b_)
-				
-				 
-				
-			ERR_FILE_EOF : # Finished Loading 
-				sc_resource = resource_interactive_loader.get_resource()
-				print_debug ("Resource Loaded :", sc_resource)
-				loader.LOADING = false
-				#break
+		match status:
 			
-			_: # Other Errors during loading
-				push_error("Problems loading Scene.  Debug Gloabls scene loader")
-				push_error(str(progress_) + "% " + str (scene_to_load))
+			ResourceLoader.THREAD_LOAD_IN_PROGRESS: # Still loading
+				
+				if progress.size() > 0:
+					var current_progress = progress[0]
+					# Convert 0.0-1.0 progress to stage numbers for compatibility
+					a_ = int(current_progress * 100)
+					b_ = 100
+					loader.show_progress(a_, b_)
+				
+				await loader.get_tree().process_frame # Wait for next frame
+			
+			ResourceLoader.THREAD_LOAD_LOADED: # Finished loading
+				sc_resource = ResourceLoader.load_threaded_get(scene_to_load)
+				print_debug("Resource Loaded: ", sc_resource)
 				loader.LOADING = false
-				#break
+			
+			ResourceLoader.THREAD_LOAD_FAILED: # Loading failed
+				push_error("Problems loading Scene. Debug Globals scene loader")
+				push_error(str(progress_) + "% " + str(scene_to_load))
+				loader.LOADING = false
+			
+			ResourceLoader.THREAD_LOAD_INVALID_RESOURCE: # Invalid resource
+				push_error("Invalid resource: " + scene_to_load)
+				loader.LOADING = false
 	
-	if sc_resource != null:  
+	if sc_resource != null:
 		return sc_resource
-	if sc_resource == null:
+	else:
 		push_error("There was an Error. Loading the Scene Resource is null")
-	
-	return sc_resource
-
+		return null
 
 # used for timing load times
 func _on_Timer_timeout():

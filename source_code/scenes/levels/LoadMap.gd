@@ -60,13 +60,13 @@ func loadMap():
 			
 			# Spawn objects based on tile type
 			if config.has("spawn"):
-				print_debug("Spawning: ", config["spawn"])
+				#print_debug("Spawning: ", config["spawn"])
 				spawn(cell_pos, config["spawn"])
 		else:
 			#sprint_debug("No config for tile ID: ", tile_id)
 			pass
 func spawn(cell_pos: Vector2i, object_scene_path: String):
-	print_debug("Spawning object: ", object_scene_path, " at ", cell_pos)
+	#print_debug("Spawning object: ", object_scene_path, " at ", cell_pos)
 	
 	# Load and instantiate the object
 	var object_scene = load(object_scene_path)
@@ -80,7 +80,7 @@ func spawn(cell_pos: Vector2i, object_scene_path: String):
 	var world_pos = map_to_local(cell_pos)
 	object_instance.position = world_pos
 	
-	get_parent().call_deferred("add_child", object_instance)
+	self.call_deferred("add_child", object_instance)
 	
 	# Optionally remove the tile after spawning
 	erase_cell(cell_pos)

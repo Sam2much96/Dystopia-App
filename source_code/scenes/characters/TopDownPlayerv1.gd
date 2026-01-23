@@ -21,7 +21,8 @@ extends Player
 
 class_name Player_v1_TopDown
 
-#signal state_changed(state_)
+# signal used in networking multiplayer architecture
+signal state_changed(state_)
 
 
 onready var TouchHUD = safe_GameHud.get_TouchInterface()

@@ -156,14 +156,14 @@ func simulate(id : int): # playerclass controls all player networkinf objects
 	# To DO: 
 	# (1) Refactor Logic to account for up to 4 players
 	# (2) Refactor Logic to be less hardcoded an account for multiple player count, duplicate of # 1
-	if Networking.GamePlay == Networking.LOCAL_COOP:
+	if Networking.NetConfig.GamePlay == Networking.NetConfig.LOCAL_COOP:
 		#print_debug("Simulation Debug 4: ", all_player_objects) # For Debug Purposes Only
 		# Where id 1 and above is for client devices while id 0 is for server devices
 		if id == 1: #CLient
 			player = all_player_objects[2]
 		if id == 0: # Server
 			player = all_player_objects[3]
-	if Networking.GamePlay == Networking.MMO_SERVER:
+	if Networking.NetConfig.GamePlay == Networking.NetConfig.MMO_SERVER:
 		# Bugs : 
 		# (1) Server is Authoritative, client should be more authoritative in MMO Client Server
 		# (2) Breaks in dedicate server if player-connected signals are broken
@@ -243,7 +243,7 @@ func _process(delta):
 	# Physics Simulation Only happens when Player is Online
 	#
 	# 
-	if Networking.GamePlay > 0: # If Multiplayer Network is up & running
+	if Networking.NetConfig.GamePlay > 0: # If Multiplayer Network is up & running
 		
 		# temporarily disabling for refactoring AUg 21/ 2025
 		
@@ -519,7 +519,7 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 	
 
 	
-	var id_as_string : String = var2str(Networking.peer_id) 
+	var id_as_string : String = var2str(Networking.NetConfig.peer_id) 
 	
 	# Maintain an Updated Timeline so older packets are discarded
 #	last_update = update_id
@@ -549,7 +549,7 @@ remote func pu(id : int, update_id : int, updates: PoolByteArray):
 		if not player_info.has(get_all_player_ids().pop_back()):
 			return
 		
-		if Networking.GamePlay == Networking.LOCAL_COOP:
+		if Networking.NetConfig.GamePlay == Networking.NetConfig.LOCAL_COOP:
 			# Bug: If Player Scene for Client devices takes too long to instance, this code line breaks
 			# Fix : Below
 			# 1 for single player

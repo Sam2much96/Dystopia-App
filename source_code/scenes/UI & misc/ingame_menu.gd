@@ -76,7 +76,7 @@ onready var safe_Dialogs = get_node("/root/Dialogs")
 onready var safe_Networking = get_node("/root/Networking")
 
 "safe Pointers to the Menu UI elemt"
-onready var safe_UI = get_parent().get_node("TouchInterface")
+onready var safe_UI = get_parent().get_node("TouchScreenHUD")
 
 onready var _ui_sfx : String = safe_Music.MusicConfig.ui_sfx.get(0)
 onready var _ui_sfx_1 : String = safe_Music.MusicConfig.ui_sfx.get(1)

@@ -1,5 +1,13 @@
+# *************************************************
+# godot3-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Musc Config
+# All Music Configuration Variables in One resource class
+#
+# *************************************************
 extends Resource
-class_name MusicConfig
+class_name Music_Config
 
 # All music and sfx configuration in a separate resources file
 

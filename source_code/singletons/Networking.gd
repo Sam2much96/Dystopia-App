@@ -27,7 +27,8 @@
 # (1) Implement Rollback NetCodes for Multiplayer Gameplay
 # (2) Implement Match Making via Dystopia-Site
 # (3) More Godot Chrome Implementations via open browser function
-#
+# (4) Deserialise Vestigefi api calls and data serialisation into a wallet script / node
+# (5) De-serialise Networking Singleton Variables into an external resource file
 # *************************************************
 
 
@@ -36,110 +37,13 @@ extends HTTPRequest
 class_name Internet
 
 """
-NETWORKING SINGLETON 4.0
-
-To query if there's internet access and connect to various websites
+All NetCode in One Script
 """
-export (bool) var enabled
-export(String) var connection_debug
-export (String) var cfg_server_ip 
-export (String) var cfg_client_ip 
-#########################  Web browser codes  ############################3
-export (String) var url : String = ''
-var check_timer 
-#var debug__ = ''
-#var WORLD_SIZE : int = 40000.0
 
-
-
-
-
-var peer_id : int
-
-var my_peer : NetworkedMultiplayerENet
-export (Array) var ip : Array = []
-
-#var camera #stores general camera variables
-###############################multiplayer codes########################
-# Debugs to Debugger Singleton
-var multiplayer_client_debug
-var multiplayer_server_debug
-
-# Those variables are only used by the client-side application
-
-var cfg_color : String = ""
-var cfg_player_name : String = ""
-
-
-
-
-
-signal connection_success
-signal error_connection_failed(code,message)
-signal error_ssl_handshake
-signal game_finished
-signal Timeout
-
-#onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
+export (Resource) var NetConfig : Resource
 
 #******************Pointer To Child Nodes********************#
 onready var timer :Timer  = $Timer2
-#onready var Wallet_ : wallet
-#onready var _reference_to_self = self#get_node('/root/Networking') #formerly _y
-onready var _reference_to_debug =get_node('/root/Debug') #formerly _y
-
-# Default hostname used by the login form
-#const DEFAULT_HOSTNAME = "127.0.0.1"
-const DEFAULT_HOSTNAME = "ws://localhost" # depreciated 
-const BACKUP_HOSTNAME = "127.0.0.1" # depreciated
-const SERVER_PORT = 9080
-const MAX_PLAYERS = 4
-#export (String) var CLIENT_IP : String  
-export (Dictionary) var Data : Dictionary
-
-
-const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
-
-
-
-
-
-#var youtube_dl # Replace with GodotRustube
-
-
-#**********Helper Booleans***********#
-var running_request : bool = false
-var Timeout : bool = false
-
-
-
-var random : int
-
-export (bool) var good_internet : bool
-
-# Lobby UI
-var UserInterface : Control
-
-# Multiplayer map
-var map_instance : Node2D
-
-# Server Update ID
-var update_id : int = -1
-
-# Raw Player Info Data
-
-var RawJson 
-#var peer_ids : Array
-
-# World Root Node
-var WorldRoot : Node
-
-const WORLD_SIZE = 1000
-"Local Play or Multiplayer Parameters"
-enum {OFFLINE, LOCAL_COOP, MMO_SERVER}
-export (int) var GamePlay = OFFLINE
-
-
 # Netwroked Player Object
 # I Need a way of keeping access to Player Object instancess
 onready var PlayerObject  = load("res://scenes/characters/Aarin_networking.tscn") # : Player_v2_networking
@@ -148,6 +52,7 @@ onready var PlayerObject  = load("res://scenes/characters/Aarin_networking.tscn"
 "Wallet Algo"
 # To do :
 # (1) port wallet connect for better wallet integration UX
+# (2) mover these objects to a wallet config file thats connected to the game h
 export (String) var price_usd : String
 export (String) var price_eur : String
 export (String) var price_gbp : String
@@ -160,16 +65,16 @@ func _ready():
 	
 	# check if signals connected programmatically
 	
-	if cfg_server_ip == '':
-		cfg_server_ip = DEFAULT_HOSTNAME
+	if NetConfig.cfg_server_ip == '':
+		NetConfig.cfg_server_ip = NetConfig.DEFAULT_HOSTNAME
 		
-	if cfg_client_ip == '':
-		cfg_client_ip = DEFAULT_HOSTNAME
+	if NetConfig.cfg_client_ip == '':
+		NetConfig.cfg_client_ip = NetConfig.DEFAULT_HOSTNAME
 		
-	if cfg_player_name == "":
-		cfg_player_name = DEFAULT_HOSTNAME
+	if NetConfig.cfg_player_name == "":
+		NetConfig.cfg_player_name = NetConfig.DEFAULT_HOSTNAME
 	
-	print ("Networking Server Config and Player Name: ",cfg_server_ip,cfg_player_name, "/")
+	print_debug ("Networking Server Config and Player Name: ",NetConfig.cfg_server_ip,NetConfig.cfg_player_name, "/")
 	
 	# Run this on on another thread it hogs the main thread
 	#check if device is online on a separate thread
@@ -180,27 +85,27 @@ func _ready():
 # Creates a Networking timer
 func _init_timer() : 
 	#Uses a Timer Node in the Scene
-	self.set_process(true)
-	enabled = true 
-	check_timer = timer
-	check_timer.wait_time = 5
+	#self.set_process(true)
+	NetConfig.enabled = true 
+	NetConfig.check_timer = timer
+	NetConfig.check_timer.wait_time = 5
 	
 	# connect timer timeout signal
 	"Updates the Networking Boolean of Timer State"
 	if not timer.is_connected("timeout",self, "_on_Timer2_timeout"):
 		timer.connect("timeout",self, "_on_Timer2_timeout")
 	
-	print_debug ('Check_timer :' , check_timer, " Is connected: ", timer.is_connected("timeout",self, "_on_Timer2_timeout")) #code breaks here and gives cant resolve hostname errors
+	print_debug ('Check_timer :' , NetConfig.check_timer, " Is connected: ", timer.is_connected("timeout",self, "_on_Timer2_timeout")) #code breaks here and gives cant resolve hostname errors
 
 
 
 "Stops a check using Check timer Node"
 func stop_check()-> bool: #Stops timer check
-	connection_debug = ' stop check ' # Debug Variable
-	if not check_timer.is_stopped():
+	NetConfig.connection_debug = ' stop check ' # Debug Variable
+	if not NetConfig.check_timer.is_stopped():
 		
 		
-		check_timer.stop()
+		NetConfig.check_timer.stop()
 		self.cancel_request()
 		
 		#Stopping Check Timer
@@ -211,14 +116,14 @@ func stop_check()-> bool: #Stops timer check
 
 "Starts a check using Timer Node for 3 Seconds"
 func start_check(time: int): 
-	connection_debug = str('start check') # Debug Variable
-	Timeout = false
+	NetConfig.connection_debug = str('start check') # Debug Variable
+	NetConfig.Timeout = false
 	if time != null:
-		check_timer.start(time) 
+		NetConfig.check_timer.start(time) 
 	
 	# Reset Timeout parameter
 	#
-	check_timer.start()
+	NetConfig.check_timer.start()
 	print_debug("start check")
 
 
@@ -236,7 +141,7 @@ func _check_connection_secured(url): # Check http secured Url connection
 	#Ignore Warning
 	url =url.http_escape()
 	var error = .request(url,PoolStringArray(),false,HTTPClient.METHOD_GET) 
-	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
+	NetConfig.connection_debug = str (' making request  ')  + str (' Request Error: ',error)
 	print (' Networking Request Error: ',error) #for debug purposes only
 
 
@@ -253,7 +158,7 @@ func _on_Networking_request_completed(result: int, response_code : int, headers 
 	match result:
 		RESULT_SUCCESS: #what happens to body? #always write a http request cmpleted function in the connecting script
 			emit_signal("connection_success") 
-			good_internet = true
+			NetConfig.good_internet = true
 			#_connection =(str ('connection success')) # Debugs to the Debug singleton # Depreciated--Delete
 			#print_debug (str(result) + str(response_code) + str(headers)+ str (body))  
 			#print(body.get_string_from_utf8())
@@ -262,18 +167,21 @@ func _on_Networking_request_completed(result: int, response_code : int, headers 
 			var _result = JSON.parse(_response_text)
 
 			if _result.error == OK:
-				Data = _result.result
+				NetConfig.Data = _result.result
+				
+				# TO do:
+				# (1) Port vestigefinance api implementation to aseparate wallet class
 				
 				# Fetches price data in ready function
-				print_debug("Internet Data debug: ",Data)  # 
-				print_debug("Price serialisation: ", _format_price(Data.USD))
+				print_debug("Internet Data debug: ", NetConfig.Data)  # 
+				print_debug("Price serialisation: ", _format_price(NetConfig.Data.USD))
 				
 				# data serialisation is done in Stats HUD
-				price_usd = _format_price(Data.USD)
-				price_eur = _format_price(Data.EUR)
-				price_gbp = _format_price(Data.GBP)
-				price_btc = _format_price(Data.BTC)
-				price_algo =_format_price(Data.price)
+				price_usd = _format_price(NetConfig.Data.USD)
+				price_eur = _format_price(NetConfig.Data.EUR)
+				price_gbp = _format_price(NetConfig.Data.GBP)
+				price_btc = _format_price(NetConfig.Data.BTC)
+				price_algo =_format_price(NetConfig.Data.price)
 				
 				
 				
@@ -298,7 +206,7 @@ func _on_Networking_request_completed(result: int, response_code : int, headers 
 		RESULT_CONNECTION_ERROR:
 			emit_signal("error_connection_failed",RESULT_CONNECTION_ERROR,'RESULT_CONNECTION_ERROR')
 			print_debug("error_connection_failed",RESULT_CONNECTION_ERROR,'RESULT_CONNECTION_ERROR')
-			good_internet = false
+			NetConfig.good_internet = false
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
 			#print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_SSL_HANDSHAKE_ERROR:
@@ -506,7 +414,7 @@ static func save_file_(body: PoolByteArray, Save_path: String, file_size: int ) 
 func _on_Timer2_timeout():
 	print_debug('check timer stopped')
 	print_stack()
-	Timeout = true
+	NetConfig.Timeout = true
 
 	emit_signal("Timeout")
 	stop_check()
@@ -519,13 +427,13 @@ MULTIPLAYER SIGNALS
 func _server_disconnected():
 	#emit_signal("game_finished")
 	#print_debug(int(Networking.player_info["peer id"][peer_id]))
-	Lobby._on_server_disconnected(peer_id, get_tree(), UserInterface)
+	Lobby._on_server_disconnected(NetConfig.peer_id, get_tree(), NetConfig.UserInterface)
 
 
 func _player_disconnected(_id : int):
 	 # _id, Lobby: SceneTree, UI : Control)
 	#emit_signal("game_finished")
-	Lobby._on_player_disconnected(_id, get_tree(), UserInterface)
+	Lobby._on_player_disconnected(_id, get_tree(), NetConfig.UserInterface)
 	#_end_game()
 	
 	Lobby._set_status((str (_id )+ " Disconnected"), Dialogs.dialog_box, true)
@@ -539,7 +447,7 @@ func _player_connected(_id : int):
 	#Simulation.player_info["peer id"] = {_id : {}}
 	# Player ID is registered by the player script
 	
-	peer_id = _id
+	NetConfig.peer_id = _id
 	#OS.set_window_title('Client' + str(_id))
 	
 	# Make Multiplayer Gameplay Started into Global
@@ -570,7 +478,7 @@ func _player_connected(_id : int):
 	# To DO: SHould be read from player's control settings and saved to local device
 	#GamePlay = LOCAL_COOP
 	
-	if map_instance == null:
+	if NetConfig.map_instance == null:
 		Globals.current_level = "res://scenes/levels/OverworldOnline.tscn"#"res://scenes/levels/Testing Scene.tscn"
 		# Someone connected, start the game!
 		var Map : PackedScene = load("res://scenes/levels/OverworldOnline.tscn")
@@ -585,7 +493,7 @@ func _player_connected(_id : int):
 		#	Globals.progress
 		#	)
 		
-		map_instance = Map.instance()
+		NetConfig.map_instance = Map.instance()
 	
 	
 		
@@ -601,9 +509,9 @@ func _player_connected(_id : int):
 		
 		# Add Game Scene to tree
 		# Instace As A child of Server Node
-		get_tree().get_root().add_child(map_instance)
+		get_tree().get_root().add_child(NetConfig.map_instance)
 		
-		Networking.UserInterface.hide()
+		Networking.NetConfig.UserInterface.hide()
 	
 
 	
@@ -624,7 +532,7 @@ func _instance_players(id : int ):
 	#var player_objects_spawned : Array =get_tree().get_nodes_in_group("online_player")
 	var player_ids_stored : Array = Simulation.get_all_player_ids()
 	
-	print_debug("Server Type: ",GamePlay)
+	print_debug("Server Type: ",NetConfig.GamePlay)
 	"Spawns Two Players FOr LOcal Coop"
 	
 	
@@ -634,8 +542,8 @@ func _instance_players(id : int ):
 		# Note: server player has authority in this Multiplayer architecture
 		# THis current Architecture is for testing local play
 		# Online MMO shouldn't include a server player
-	if GamePlay == LOCAL_COOP:
-		print_debug("Online Players Debug: ", "id: ",id, "/", player_ids_stored, "/ Net play: " , GamePlay )
+	if NetConfig.GamePlay == NetConfig.LOCAL_COOP:
+		print_debug("Online Players Debug: ", "id: ",id, "/", player_ids_stored, "/ Net play: " , NetConfig.GamePlay )
 		
 		var a = PlayerObject.instance() # Client Player
 		var b = PlayerObject.instance() # server player
@@ -656,8 +564,8 @@ func _instance_players(id : int ):
 		
 		# add randomization to player object spawn point to avoid stuck collision bug
 		
-		map_instance.add_child(a) 
-		map_instance.add_child(b) 
+		NetConfig.map_instance.add_child(a) 
+		NetConfig.map_instance.add_child(b) 
 		
 		#object_spawned + 2
 
@@ -665,8 +573,8 @@ func _instance_players(id : int ):
 	# TO DO : 
 	# (1) Should Account for Up to 4 Players
 	# (2) Should Account for lots of networking bugs
-	if GamePlay == MMO_SERVER:
-		print_debug("Online Players Debug: ", "id: ",id, "/", player_ids_stored, "/ Net play: " , GamePlay )
+	if NetConfig.GamePlay == NetConfig.MMO_SERVER:
+		print_debug("Online Players Debug: ", "id: ",id, "/", player_ids_stored, "/ Net play: " , NetConfig.GamePlay )
 		
 		var a = PlayerObject.instance() # Client Player
 		
@@ -679,7 +587,7 @@ func _instance_players(id : int ):
 		# Store peer ids to Local player sceipts
 		# changes it from default -99
 		a.peer_id = id
-		map_instance.add_child(a) 
+		NetConfig.map_instance.add_child(a) 
 	
 	# Seconnd Player and more Players Connection Logic
 	# Temporarily Disabling
@@ -716,11 +624,11 @@ func _end_game():
 	#Lobby.get_node(Map).free()
 	
 	var _map = get_tree().get_nodes_in_group("Multiplayer").pop_front()
-	map_instance.queue_free()
+	NetConfig.map_instance.queue_free()
 	#_map.free()
 	# UI SHow
 	# Enable UI buttons
-	UserInterface.show()
+	NetConfig.UserInterface.show()
 
 	# Update UI when current Game Ends
 	get_tree().set_network_peer(null) # Remove peer.
@@ -752,8 +660,8 @@ func poolByte2Array(data_from: PoolByteArray) -> Array:
 		for i in Simulation.RawDataArray:
 			#Returns a String. Converting to Dictionary
 			
-			RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary
-		return RawJson.get_result()
+			NetConfig.RawJson = JSON.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary
+		return NetConfig.RawJson.get_result()
  
 	else: 
 		push_error("Error calling built-in function 'bytes2var': Not enough bytes for decoding bytes, or invalid format.")
@@ -810,8 +718,8 @@ remote func broadcast_world_positions():
 		# First, Convert Player Info Dictionary to Pool Byte Array
 		
 		
-		Simulation.rpc_unreliable_id(peer_id, "pu", peer_id, update_id, array2poolByte([Simulation.player_info])) # pu call is buggy cuz of peer id error
-		update_id += 1
+		Simulation.rpc_unreliable_id(NetConfig.peer_id, "pu", NetConfig.peer_id, NetConfig.update_id, array2poolByte([Simulation.player_info])) # pu call is buggy cuz of peer id error
+		NetConfig.update_id += 1
 
 
 
@@ -1056,7 +964,7 @@ class Lobby extends Control:
 		#print_stack()
 		peer = NetworkedMultiplayerENet.new()
 		peer.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER)
-		var err = peer.create_server(DEFAULT_PORT, Networking.MAX_PLAYERS) # Maximum of % peers
+		var err = peer.create_server(DEFAULT_PORT, Networking.NetConfig.MAX_PLAYERS) # Maximum of % peers
 		
 		# If Bad COnnection
 		if err != OK:
@@ -1074,10 +982,10 @@ class Lobby extends Control:
 		join_button.set_disabled(true)
 		
 		#i/o
-		print_debug("Waiting for player..."+ str(Networking.ip[0]))
+		print_debug("Waiting for player..."+ str(Networking.NetConfig.ip[0]))
 		
 		# Sets UI Status : text : String, status : DialogBox, isok : bool
-		_set_status("Waiting for players ..." + str(Networking.ip[0]) ,dialog_box ,true)
+		_set_status("Waiting for players ..." + str(Networking.NetConfig.ip[0]) ,dialog_box ,true)
 
 		# Only show hosting instructions when relevant.
 		#

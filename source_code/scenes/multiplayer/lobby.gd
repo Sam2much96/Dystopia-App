@@ -51,7 +51,7 @@ func _ready():
 	for address in IP.get_local_addresses():
 		if (address.split(".").size() == 4):
 			#print_debug(address)
-			Networking.ip.append(address)
+			Networking.NetConfig.ip.append(address)
 		
 	
 	"Connect Lobby Signals"
@@ -62,7 +62,7 @@ func _ready():
 	_multiplayer_type.add_item("mmo")
 	
 	# Make UI Global
-	Networking.UserInterface = $ui
+	Networking.NetConfig.UserInterface = $ui
 	
 	#Request For Public Arrderss Depreciated
 	
@@ -107,9 +107,9 @@ func _on_play_pressed():
 	SELECT SERVER TYPE
 	"""
 	if _multiplayer_type.get_selected() == 0:
-		Networking.GamePlay = Networking.LOCAL_COOP
+		Networking.NetConfig.GamePlay = Networking.NetConfig.LOCAL_COOP
 	elif _multiplayer_type.get_selected() == 1:
-		Networking.GamePlay = Networking.MMO_SERVER
+		Networking.NetConfig.GamePlay = Networking.NetConfig.MMO_SERVER
 
 	
 	# Connects UI Button Signals
@@ -123,9 +123,9 @@ func _on_host_pressed():
 	SELECT SERVER TYPE
 	"""
 	if _multiplayer_type.get_selected() == 0:
-		Networking.GamePlay = Networking.LOCAL_COOP
+		Networking.NetConfig.GamePlay = Networking.NetConfig.LOCAL_COOP
 	elif _multiplayer_type.get_selected() == 1:
-		Networking.GamePlay = Networking.MMO_SERVER
+		Networking.NetConfig.GamePlay = Networking.NetConfig.MMO_SERVER
 
 	
 	# Connects UI Button Signals
@@ -145,7 +145,7 @@ func _on_back_pressed():
 func _dedicated_server():
 	# Hosts the Server at run time
 	# select game type with option id instead
-	Networking.GamePlay = Networking.MMO_SERVER # Run Logic For MMO Server
+	Networking.NetConfig.GamePlay = Networking.NetConfig.MMO_SERVER # Run Logic For MMO Server
 	
 	print_debug("Gameplay Type",Networking.GamePlay)
 	

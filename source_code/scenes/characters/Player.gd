@@ -107,7 +107,7 @@ onready var dash_sfx : String = music_singleton_.MusicConfig.wind_sfx.get(1)
 
 # Error Catcher for physics logic
 # Checks if Peer Id can be called and Network Is Set up
-onready var err = Networking.GamePlay
+onready var err = Networking.NetConfig.GamePlay
 
 """
 Update Global Scripts SO Other Nodes Are Aware Of Player

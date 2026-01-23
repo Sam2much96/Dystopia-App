@@ -66,7 +66,7 @@ onready var _label : Label = $Label
 "Safe Pointer to Global Singletons"
 onready var safe_Buffer = safe_TouchScreen #get_node("/root/GameHud").TouchInterface
 onready var safe_Networking = get_node("/root/Networking")
-onready var world_radius = safe_Networking.WORLD_SIZE / 2
+onready var world_radius = safe_Networking.NetConfig.WORLD_SIZE / 2
 #onready var safe_Simulation = get_node("/root/Simulation")
 onready var safe_Utils = get_node("/root/Utils")
 
@@ -117,7 +117,7 @@ func _ready():
 	"Active Camera"
 	
 	if not is_network_master():
-		if safe_Networking.GamePlay == safe_Networking.LOCAL_COOP:
+		if safe_Networking.NetConfig.GamePlay == safe_Networking.NetConfig.LOCAL_COOP:
 			# Fixes Client Player Inactive Camera
 			# Breaks in Online MMO Gameplay
 			safe_Simulation.all_player_objects[2].player_camera.make_current()
@@ -162,9 +162,9 @@ func _input(_event):
 		
 		
 		if not is_network_master():
-			if safe_Networking.GamePlay == safe_Networking.LOCAL_COOP:
+			if safe_Networking.NetConfig.GamePlay == safe_Networking.NetConfig.LOCAL_COOP:
 				facing_input_logic(safe_Simulation.all_player_objects[2], 0) # Where Zero is the default server player id
-			if safe_Networking.GamePlay == safe_Networking.MMO_SERVER:
+			if safe_Networking.NetConfig.GamePlay == safe_Networking.NetConfig.MMO_SERVER:
 				facing_input_logic(self, peer_id) 
 			if (Input.is_action_just_pressed("move_up") or 
 			Input.is_action_just_pressed("move_down") or
@@ -212,7 +212,7 @@ func _input(_event):
 		
 		if is_network_master(): # Server player
 			# call the refactored state machine logic with the peed id parameter
-			if safe_Networking.GamePlay == safe_Networking.LOCAL_COOP:
+			if safe_Networking.NetConfig.GamePlay == safe_Networking.NetConfig.LOCAL_COOP:
 				facing_input_logic(safe_Simulation.all_player_objects[3], 0) # Where Zero is the default server player id
 			
 				"""
@@ -270,7 +270,7 @@ func _physics_process(_delta):
 			
 		# Client
 		if not is_network_master():
-			if safe_Networking.GamePlay == safe_Networking. LOCAL_COOP:
+			if safe_Networking.NetConfig.GamePlay == safe_Networking.NetConfig.LOCAL_COOP:
 				# Place Error Catcher Here
 				# Client Class
 				# (1) Update facing based on my input
@@ -278,7 +278,7 @@ func _physics_process(_delta):
 				#print(Simulation.all_player_objects)
 				state_machine_logic(safe_Simulation.all_player_objects[2],0)
 			
-			if safe_Networking.GamePlay == safe_Networking.MMO_SERVER:
+			if safe_Networking.NetConfig.GamePlay == safe_Networking.NetConfig.MMO_SERVER:
 				state_machine_logic(self,peer_id)
 
 

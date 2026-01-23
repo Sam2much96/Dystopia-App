@@ -42,7 +42,7 @@ var list: Array = ["player_sword", "enemy_sword"]
 var similar_names : Array = [] #list comparer
 
 onready var _music_singleton = get_node_or_null("/root/Music")
-onready var _grass_sfx : String = _music_singleton.grass_sfx.get(0)
+onready var _grass_sfx : String = _music_singleton.MusicConfig.grass_sfx.get(0)
 
 func _ready():
 	#anim.play("idle",-1,1.0,0.0) 

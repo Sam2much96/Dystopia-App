@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/levels/godot_128x_dungeon_tileset.webp" type="Texture" id=1]
 [ext_resource path="res://scenes/levels/VisibilityOptimizer.gd" type="Script" id=2]
+[ext_resource path="res://scenes/props/signpost.gd" type="Script" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 64, 62 )
 
 [node name="SignpostSprite" type="Sprite"]
 texture = ExtResource( 1 )
@@ -13,3 +17,10 @@ frame = 2
 position = Vector2( -3.8147e-06, 0.499996 )
 scale = Vector2( 6.5, 6.55 )
 script = ExtResource( 2 )
+
+[node name="SignPost" type="Area2D" parent="."]
+script = ExtResource( 3 )
+HINT = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SignPost"]
+shape = SubResource( 1 )

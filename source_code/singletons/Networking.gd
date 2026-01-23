@@ -134,7 +134,7 @@ var RawJson
 # World Root Node
 var WorldRoot : Node
 
-
+const WORLD_SIZE = 1000
 "Local Play or Multiplayer Parameters"
 enum {OFFLINE, LOCAL_COOP, MMO_SERVER}
 export (int) var GamePlay = OFFLINE
@@ -573,16 +573,17 @@ func _player_connected(_id : int):
 	if map_instance == null:
 		Globals.current_level = "res://scenes/levels/OverworldOnline.tscn"#"res://scenes/levels/Testing Scene.tscn"
 		# Someone connected, start the game!
-		var Map : PackedScene = Utils.Functions.LoadLargeScene(
-			Globals.current_level, 
-			Globals.scene_resource, 
-			Globals._o, 
-			Globals.scene_loader, 
-			Globals.loading_resource, 
-			Globals.a, 
-			Globals.b, 
-			Globals.progress
-			)
+		var Map : PackedScene = load("res://scenes/levels/OverworldOnline.tscn")
+		#var Map : PackedScene = Utils.Functions.LoadLargeScene(
+		#	Globals.current_level, 
+		#	null, 
+		#	Globals._o, 
+		#	Globals.scene_loader, 
+		#	Globals.loading_resource, 
+		#	Globals.a, 
+		#	Globals.b, 
+		#	Globals.progress
+		#	)
 		
 		map_instance = Map.instance()
 	
@@ -932,13 +933,17 @@ class SceneManager extends Node2D:
 
 """
 
-All Multiplayer Networking Logics in One FIle
-Client, Server and Lobby
 """
 # Lobby 
 
 class Lobby extends Control:
-
+	"""
+	All Multiplayer Networking Logics in One FIle
+	Client, Server and Lobby. Connects Login UI scene to
+	Godot Multiplayer Implementation
+	
+	"""
+	
 	# Default game server port. Can be any number between 1024 and 49151.
 	# Not on the list of registered or common ports as of November 2020:
 	# https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
@@ -1047,6 +1052,8 @@ class Lobby extends Control:
 	# Starts Server Connections
 	# Connects to UI Buttons
 	static func _on_host_pressed( peer : NetworkedMultiplayerENet, Lobby : SceneTree, host_button : Button, join_button : Button , dialog_box : DialogBox) -> bool:
+		# bugs: (1) debugthe stack that auto presses this button
+		#print_stack()
 		peer = NetworkedMultiplayerENet.new()
 		peer.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER)
 		var err = peer.create_server(DEFAULT_PORT, Networking.MAX_PLAYERS) # Maximum of % peers

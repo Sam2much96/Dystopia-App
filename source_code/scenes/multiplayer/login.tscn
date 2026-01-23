@@ -1,123 +1,44 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://fonts/Dystopia-App-Light-en-theme.tres" type="Theme" id=1]
+[ext_resource path="res://resources/illustrations/loading_screen_art_384x512_px.webp" type="Texture" id=2]
 [ext_resource path="res://scenes/UI & misc/Dialog_box.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/multiplayer/lobby.gd" type="Script" id=5]
 [ext_resource path="res://themes/option+button_Red.tres" type="Theme" id=6]
 
-[sub_resource type="Animation" id=16]
-resource_name = "HORIZONTAL_SCREEN"
-tracks/0/type = "value"
-tracks/0/path = NodePath("ui/ScrollContainer:rect_scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 5, 5 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("ui/ScrollContainer:rect_position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 111.526, -266.127 ) ]
-}
-
-[sub_resource type="Animation" id=26]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/path = NodePath("ui/ScrollContainer:rect_scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 2, 2 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("ui/ScrollContainer:rect_position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 356.312, 23.2817 ) ]
-}
-
-[sub_resource type="Animation" id=18]
-resource_name = "VERTICAL_SCREEN"
-tracks/0/type = "value"
-tracks/0/path = NodePath("ui/ScrollContainer:rect_scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 2, 2 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("ui/ScrollContainer:rect_position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 356.312, 23.2817 ) ]
-}
-
-[node name="form" type="Node"]
+[node name="Lobby" type="Node"]
 script = ExtResource( 5 )
-DEDICATED_SERVER = true
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_left = 6.0
-margin_right = 1272.0
-margin_bottom = 543.0
-color = Color( 0.478431, 0.454902, 0.454902, 1 )
+visible = false
+margin_right = 1119.0
+margin_bottom = 376.0
+color = Color( 0.415686, 0.415686, 0.415686, 1 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -192.0
+margin_right = 192.0
+margin_bottom = 512.0
+texture = ExtResource( 2 )
 
 [node name="ui" type="Control" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -512.0
-margin_top = -300.0
-margin_right = 512.0
-margin_bottom = 300.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="ui"]
-margin_left = 356.312
-margin_top = 23.2817
-margin_right = 522.312
-margin_bottom = 303.282
-rect_scale = Vector2( 2, 2 )
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -83.0
+margin_right = 83.0
+margin_bottom = 280.0
 theme = ExtResource( 1 )
 scroll_horizontal_enabled = false
 
 [node name="grid" type="VBoxContainer" parent="ui/ScrollContainer"]
 margin_right = 128.0
-margin_bottom = 537.0
+margin_bottom = 390.0
 
 [node name="text_player" type="LineEdit" parent="ui/ScrollContainer/grid"]
 margin_right = 128.0
@@ -142,14 +63,15 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "lan"
 
 [node name="label_spacer4" type="Label" parent="ui/ScrollContainer/grid"]
+visible = false
 margin_top = 101.0
 margin_right = 128.0
 margin_bottom = 146.0
 
 [node name="address_text" type="LineEdit" parent="ui/ScrollContainer/grid"]
-margin_top = 150.0
+margin_top = 101.0
 margin_right = 128.0
-margin_bottom = 174.0
+margin_bottom = 125.0
 rect_min_size = Vector2( 128, 0 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "127.0.0.1"
@@ -157,47 +79,44 @@ caret_blink = true
 caret_blink_speed = 0.5
 
 [node name="label_spacer" type="Label" parent="ui/ScrollContainer/grid"]
+visible = false
 margin_top = 178.0
 margin_right = 128.0
 margin_bottom = 223.0
 
 [node name="play" type="Button" parent="ui/ScrollContainer/grid"]
-margin_top = 227.0
+margin_top = 129.0
 margin_right = 128.0
-margin_bottom = 295.0
+margin_bottom = 197.0
 text = "Play!"
 flat = true
 
 [node name="label_spacer2" type="Label" parent="ui/ScrollContainer/grid"]
-margin_top = 299.0
+visible = false
+margin_top = 250.0
 margin_right = 128.0
-margin_bottom = 344.0
+margin_bottom = 295.0
 
 [node name="host" type="Button" parent="ui/ScrollContainer/grid"]
-margin_top = 348.0
+margin_top = 201.0
 margin_right = 128.0
-margin_bottom = 416.0
+margin_bottom = 269.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Host"
 flat = true
 
 [node name="label_spacer3" type="Label" parent="ui/ScrollContainer/grid"]
-margin_top = 420.0
+margin_top = 273.0
 margin_right = 128.0
-margin_bottom = 465.0
+margin_bottom = 318.0
 
 [node name="back" type="Button" parent="ui/ScrollContainer/grid"]
-margin_top = 469.0
+margin_top = 322.0
 margin_right = 128.0
-margin_bottom = 537.0
+margin_bottom = 390.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "back"
 flat = true
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/HORIZONTAL_SCREEN = SubResource( 16 )
-anims/RESET = SubResource( 26 )
-anims/VERTICAL_SCREEN = SubResource( 18 )
 
 [node name="Dialog_box" parent="." instance=ExtResource( 4 )]
 

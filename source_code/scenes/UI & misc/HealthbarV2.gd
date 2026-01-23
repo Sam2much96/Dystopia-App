@@ -80,10 +80,6 @@ func get_heart_count() -> int:
 				HEALTH_COUNT +=1
 			if i.visible == false:
 				HEALTH_LOST +=1
-		if i is Tween: # unused tween animation node for healthbar anims
-			pass
-		else:
-			pass
 	#print_debug("Heart Count Debug: ",HEALTH_COUNT)
 	return HEALTH_COUNT
 
@@ -180,5 +176,4 @@ func _exit_tree(): # clear variable objects for garbage collector
 	networkPlayer = null
 	#HeartScene = null
 	heart_empty = null
-	
-	pass
+

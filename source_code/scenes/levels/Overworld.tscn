@@ -125,7 +125,6 @@ to_scene = "res://scenes/levels/marketplace_2d.tscn"
 
 [node name="hole" parent="." instance=ExtResource( 4 )]
 position = Vector2( 3978, 2367 )
-z_index = 0
 
 [node name="signpost" parent="." instance=ExtResource( 14 )]
 position = Vector2( 646, 649 )

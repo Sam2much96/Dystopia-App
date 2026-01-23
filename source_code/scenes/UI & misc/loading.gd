@@ -22,7 +22,8 @@
 #
 # to do:
 # (1) creaete a scene atlas for loading all scenes  and lock them into a resources file
-#
+# (2) implement online level loading into scene atlas and multiplayer script
+# (3) iimplement resource scene loading for all scene fules
 # *************************************************
 
 #extends Control

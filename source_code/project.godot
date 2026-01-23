@@ -693,7 +693,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Dystopia RPG"
-run/main_scene="res://scenes/UI & misc/form/form3D.tscn"
+run/main_scene="res://scenes/multiplayer/login.tscn"
 run/delta_smoothing=false
 boot_splash/image="res://resources/title animation/Dystopia Logo Drop shadow copy.png"
 boot_splash/fullsize=false
@@ -794,7 +794,7 @@ interact={
 }
 pause={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777238,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777217,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 comics={
@@ -862,6 +862,7 @@ quality/driver/fallback_to_gles2=true
 vram_compression/import_etc=true
 misc/lossless_compression/webp_compression_level=9
 quality/shading/force_vertex_shading.mobile=false
+quality/filters/use_nearest_mipmap_filter=true
 gles2/compatibility/disable_half_float.iOS=false
 
 [tiled_importer]

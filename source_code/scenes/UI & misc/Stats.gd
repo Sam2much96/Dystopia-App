@@ -334,11 +334,11 @@ Enable And Disable Stats UI & CHildern
 """
 
 func _enable():
-	print_debug("stats enable triggered")
+	#print_debug("stats enable triggered")
 	enabled = true
 	visible = enabled
 	emit_signal('_enabled')
-	Music.play_track(Music.ui_sfx[0])
+	safeMusic.play_track(safeMusic.MusicConfig.ui_sfx[0])
 	get_tree().paused = enabled
 	
 	
@@ -359,7 +359,7 @@ func _disable():
 	safeMusic.play_track(safeMusic.MusicConfig.ui_sfx[1])
 	hide()
 	get_tree().paused = false
-	print_debug ("Stats UI disabled") # For debug purposes only
+	#print_debug ("Stats UI disabled") # For debug purposes only
 
 func _exit_tree():
 	self.queue_free()

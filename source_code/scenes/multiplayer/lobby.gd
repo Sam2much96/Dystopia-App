@@ -11,6 +11,7 @@
 # (2) should parse the server's public id to the ui
 # (3) Test Both Online MMO and Local Coop with 3-5 Players and fix all bugs
 # (4) Dedicated Server Logic implementation
+# (5) Write logic to get the steam user name if playing on steam
 # *************************************************
 # Bugs
 # (1) Multiplayer is buggy (2/3)
@@ -34,7 +35,7 @@ export (String) var my_ip : String = ""
 
 # Lobby UI Items
 onready var c_react : ColorRect = $ColorRect
-#onready var image_tex : TextureRect = $TextureRect
+onready var image_tex : TextureRect = $TextureRect
 
 # Host Button for Server
 onready var _host : Button = $ui/ScrollContainer/grid/host
@@ -42,7 +43,7 @@ onready var _host : Button = $ui/ScrollContainer/grid/host
 # Selector for Local Lan or Online mmo 
 onready var _multiplayer_type : OptionButton = $ui/ScrollContainer/grid/input_game
 
-export(bool) var DEDICATED_SERVER 
+export(bool) var DEDICATED_SERVER  # boolean for quick testing. Depreciate
 
 
 func _ready():
@@ -84,8 +85,8 @@ func _ready():
 		
 	# SHould Hide The Host Button for Online MMO
 	# 
-	if Networking.GamePlay == Networking.MMO_SERVER:
-		_host.hide()
+	#if Networking.GamePlay == Networking.MMO_SERVER:
+	#	_host.hide()
 		
 	
 	if DEDICATED_SERVER:
@@ -134,8 +135,8 @@ func _on_host_pressed():
 
 
 func hide_lobby_UI_elements():
-	c_react.hide()
-
+	#c_react.hide()
+	pass
 
 func _on_back_pressed():
 	Globals._go_to_title()

@@ -87,17 +87,14 @@ scale = Vector2( 4.19165, 4.19165 )
 [node name="flowers" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( 2854.35, -447.652 )
 scale = Vector2( 4.59821, 4.59821 )
-monitorable = false
 
 [node name="flowers2" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( 2913.68, -1083.33 )
 scale = Vector2( 4.59821, 4.59821 )
-monitorable = false
 
 [node name="flowers3" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( 10625.3, -4447.36 )
 scale = Vector2( 4.59821, 4.59821 )
-monitorable = false
 
 [node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="."]
 navpoly = SubResource( 1 )
@@ -133,23 +130,15 @@ to_scene = "res://scenes/levels/Building1.tscn"
 
 [node name="pond" parent="." instance=ExtResource( 18 )]
 position = Vector2( 3618.82, 440.005 )
-enabled = true
 
 [node name="signpost" parent="." instance=ExtResource( 20 )]
 position = Vector2( 3429.35, 145.337 )
-enabled = true
-dialogue = "dir3"
-HINT = true
 
 [node name="signpost2" parent="." instance=ExtResource( 20 )]
 position = Vector2( 209.981, 2199.49 )
-enabled = true
-dialogue = "dir1"
 
 [node name="signpost3" parent="." instance=ExtResource( 20 )]
 position = Vector2( 2793.21, -4823.67 )
-enabled = true
-dialogue = "East : Abbi City / South: Ukwani Desert"
 
 [node name="broken ship" parent="." instance=ExtResource( 16 )]
 position = Vector2( 3134.37, 2440.4 )

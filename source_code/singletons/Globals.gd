@@ -127,7 +127,7 @@ var suds : int
 onready var user_data_dir : String =OS.get_user_data_dir()
 
 "safe Pointers to Global Singletons"
-onready var safe_GameHud = get_node("/root/GameHud/TouchInterface")
+onready var safe_GameHud = get_node("/root/GameHud/TouchScreenHUD")
 onready var utils_singleton = get_node("/root/Utils")
 
 "Screen Orientation"

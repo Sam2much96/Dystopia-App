@@ -31,6 +31,8 @@ signal quest_changed(quest_name, status)
 
 var quest_list : Dictionary = {}
 
+
+
 # Get the status of a quest. If it's not found it returns STATUS.NONEXISTENT
 func get_status(quest_name:String) -> int:
 	if quest_list.has(quest_name):

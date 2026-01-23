@@ -1,0 +1,113 @@
+extends Node2D
+
+
+# Simple Drawing App Logic
+#
+# A Simple Drawing Software in a single Class
+# Expandable as a Plugin for Other Software
+
+# To Do :
+# (1) Implement As Plugin
+# (2) Make Memory Safe
+# (3) Expand Functionality For Other Projects
+
+# WOrks
+
+class_name ComicsV8
+
+@export var enabled = false
+
+var _lines_pointer : Array = []
+@onready var _lines := $Lines
+@onready var mini_map_gui : minimap = get_parent()
+var _pressed := false
+var _current_line : Line2D
+@export var LineWidth : float = 5.0
+@export var LineCount : int = 0
+
+
+func _ready():
+	# connect minimap draw function
+	if !mini_map_gui.is_connected("gui_input", Callable(self, "_on_minimap_gui_input")):
+		mini_map_gui.connect("gui_input", Callable(self, "_on_minimap_gui_input"))
+
+
+func _input(event):
+	
+	if not enabled: # Guard Clause 2
+		return
+	
+	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT): # Guard Clause
+		return
+	
+	# Get Mouse Event
+	if event is InputEventMouseButton:
+		_pressed = event.is_pressed()
+	
+		# Create A New Line
+		if _pressed: # Nested Ifs?
+			_current_line = Line2D.new()
+			_current_line.set_default_color(Color.BLACK) # Set Line Colour
+			_current_line.width = LineWidth # Set Line Width
+			_lines.add_child(_current_line) # Add Line to Scene Tree
+			_lines_pointer.append(_current_line) # Store Pointer To Line In Array Memory
+
+	# Add Points To Line
+	if event is InputEventMouseMotion && _pressed:
+		_current_line.add_point(event.position)
+
+# Draw A Cirlce
+#func _draw() -> void:
+#	for point in _click_pos:
+#		draw_circle(point, 10,Color.red)
+#_click_pos.append(event.position)
+	#update()
+
+# Delete Last Stroke
+func _on_undo_pressed():
+	#Kinda Works? Not Precise
+	get_node("Lines").get_child(1).queue_free()
+
+# Clear All Drawn Lines
+func _on_clear_pressed():
+	for i in _lines.get_children():
+		i.queue_free()
+
+
+
+
+
+"""
+UI Signals
+"""
+
+# Change Brush Size
+func _on_Brush_Size_text_entered(new_text):
+	LineWidth = int(new_text)
+	return LineWidth
+
+
+func _on_save_pressed():
+	var img =get_tree().get_root().get_texture().get_data() # Get The Viewport Data
+	return img.save_png("User://") # SHould save to app's data folder
+
+
+func _on_Pen_pressed() -> int:
+	if enabled == false:
+		enabled = true
+		return 0
+	if enabled == true:
+		enabled = false
+		return 0
+	return 0
+
+
+func _on_minimap_gui_input(_event):
+	enabled = true
+
+
+func _exit_tree():
+	LineCount = 0
+	# disconnect signals to allow object gb collection
+	mini_map_gui.disconnect("gui_input", Callable(self, "_on_minimap_gui_input"))
+	self.queue_free()

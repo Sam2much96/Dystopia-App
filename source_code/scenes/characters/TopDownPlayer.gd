@@ -25,7 +25,7 @@ signal state_changed(state_)
 
 # Error Catcher for physics logic
 # Checks if Peer Id can be called and Network Is Set up
-@onready var err = Networking.GamePlay
+@onready var err = Networking.NetConfig.GamePlay
 
 func _input(event):
 	# Node Individual Input Processes were depreciated in favor of GlobalInput Singleton

@@ -11,26 +11,39 @@
 # (1) Doesn't work. Currently Disabled for debugging
 # (2) Doesnt implement polymorphism
 # *************************************************
-extends TextureRect
+extends NinePatchRect
 
 
 class_name minimap
 
-#tweak code for multiplayer
-@onready var texture_object : CompressedTexture2D = preload("res://scenes/multiplayer/images/minimap/object.png")
-@onready var texture_player : CompressedTexture2D = preload("res://scenes/multiplayer/images/minimap/player.png")
-@onready var label_position #= $label_position
-@onready var node_root #= get_node("/root/world")
+var player_node : Player # Player Node
+
+@export var zoom : float = 10.1
+@onready var player_marker : Sprite2D = $Sprite
+@onready var player2_marker : Sprite2D = $Sprite2
+@onready var grid_scale
+
+
 var total_delta = 0
 
 #onready var Networking = GDScript.new() 
 
-# Redraw the minimap once per 1/2 second
+@onready var grid = self
+
+
 func _process(delta):
-	total_delta += delta
-	if (total_delta > 0.5):
-		total_delta -= 0.5
-		#update() # update method is depreciated
+	if not player_node:
+		return
+		
+	if is_instance_valid(player_node):
+	
+		# updata Player Marker
+		#player_marker.position = player_node.position
+		# Calculate the player's position on the minimap
+		var player_pos = player_node.position * grid_scale
+		player_marker.position.x = clamp(player_pos.x, 0, size.x)
+		player_marker.position.y = clamp(player_pos.y, 0, size.y)
+
 	
 
 # Draw the players on the minimap

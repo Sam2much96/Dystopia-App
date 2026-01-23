@@ -23,11 +23,9 @@
 extends Node
 
 class_name lobbyV2
+@export_enum("Enet", "Tcp", "UDP", "Websockets", "Steam")
+var state: int = 0 # to do: (1) connect button to enet multiplayer implmenetaon (2) separate muliplayer architechture into UI states
 
-"""
-I'LL BE CONNECTING STATIC METHODS FROM THE NETWORKING SINGLETON 
-Code may be really hacky but will be thoughroughly Documented.
-"""
 @onready var network = ENetMultiplayerPeer.new()
 @export var pub_ipaddr : String = "https://icanhazip.com/" # used in match making to 
 @export var my_ip : String = ""

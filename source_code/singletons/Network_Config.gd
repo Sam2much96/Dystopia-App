@@ -105,5 +105,8 @@ var WorldRoot : Node
 
 
 "Local Play or Multiplayer Parameters"
+# to do: (1) Make this config UI accessible
+# bugs: (1) Breaks local play if not properly set
+# bugs: (2) settings not available to UI
 enum {OFFLINE, LOCAL_COOP, MMO_SERVER}
-@export var GamePlay : int = LOCAL_COOP
+@export var GamePlay : int = OFFLINE

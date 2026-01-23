@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dtrufnkwowb7h"]
+[gd_scene load_steps=18 format=3 uid="uid://dtrufnkwowb7h"]
 
 [ext_resource type="Script" uid="uid://cpvcc1kvynacv" path="res://scenes/UI & misc/Stats.gd" id="1"]
 [ext_resource type="FontFile" path="res://fonts/dialog.tres" id="2"]
@@ -7,10 +7,12 @@
 [ext_resource type="Theme" uid="uid://dbpub1p1sa5p3" path="res://fonts/scroll_bar_theme.tres" id="5"]
 [ext_resource type="Script" uid="uid://cck0t446u0yal" path="res://scenes/UI & misc/StatsIcons.gd" id="6"]
 [ext_resource type="Script" uid="uid://b87yr2lub8p0" path="res://scenes/UI & misc/minimap.gd" id="7"]
-[ext_resource type="Texture2D" uid="uid://cnq3epm88h30e" path="res://resources/Aarin/spritesheet_4.webp" id="8"]
-[ext_resource type="Texture2D" uid="uid://b6lrhxiau8f7a" path="res://resources/misc/compass.webp" id="9"]
-[ext_resource type="Texture2D" uid="uid://cbna0dbm5qkwv" path="res://resources/misc/rupees.webp" id="10"]
+[ext_resource type="Texture2D" uid="uid://cichgphxx7mut" path="res://resources/misc/coins_128x128_2.webp" id="7_cc07t"]
+[ext_resource type="Script" uid="uid://djh86qgtgbdh1" path="res://scenes/UI & misc/Comics.v8.gd" id="10_cc07t"]
 [ext_resource type="Texture2D" uid="uid://hjtnd7rxhjmo" path="res://resources/misc/map ui 64x64.webp" id="11"]
+[ext_resource type="Texture2D" uid="uid://c0a23wqpf2b7b" path="res://resources/misc/compass_64x64.webp" id="11_k86ue"]
+[ext_resource type="Texture2D" uid="uid://d1rsch14e50na" path="res://resources/Buttons/player.png" id="11_omhli"]
+[ext_resource type="Texture2D" uid="uid://ynx01yi6cle6" path="res://resources/Buttons/object.png" id="12_rch61"]
 
 [sub_resource type="StyleBoxFlat" id="2"]
 bg_color = Color(0.792157, 0.792157, 0.792157, 0.415686)
@@ -50,10 +52,11 @@ script = ExtResource("1")
 layout_mode = 2
 theme = SubResource("3")
 theme_override_fonts/font = ExtResource("3")
-current_tab = 0
+current_tab = 1
 script = ExtResource("6")
 
 [node name="0" type="TabBar" parent="TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -85,7 +88,6 @@ text = "KC
 horizontal_alignment = 1
 
 [node name="1" type="TabBar" parent="TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -94,14 +96,13 @@ layout_mode = 0
 offset_right = 77.0
 offset_bottom = 224.0
 
-[node name="TextureRect" type="TextureRect" parent="TabContainer/1/VBoxContainer"]
+[node name="Label_Spacer" type="Label" parent="TabContainer/1/VBoxContainer"]
 layout_mode = 2
-texture = ExtResource("10")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/1/VBoxContainer"]
 layout_mode = 2
 
-[node name="Algos" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
+[node name="Sud" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -109,6 +110,19 @@ theme_override_fonts/font = ExtResource("3")
 text = "Coins
 "
 horizontal_alignment = 1
+
+[node name="price" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("3")
+text = "Coins
+"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("7_cc07t")
 
 [node name="2" type="TabBar" parent="TabContainer"]
 visible = false
@@ -179,30 +193,37 @@ visible = false
 layout_mode = 2
 metadata/_tab_index = 4
 
-[node name="minimap" type="TextureRect" parent="TabContainer/4"]
-modulate = Color(1, 1, 1, 0.411765)
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/4"]
 layout_mode = 0
-offset_left = 180.164
-offset_top = 8.13399
-offset_right = 246.164
-offset_bottom = 72.134
-scale = Vector2(6, 6)
+offset_top = -23.0
+offset_right = 1146.0
+offset_bottom = 637.0
+
+[node name="minimap" type="NinePatchRect" parent="TabContainer/4/MarginContainer"]
+modulate = Color(1, 1, 1, 0.411765)
+layout_mode = 2
 texture = ExtResource("11")
+region_rect = Rect2(0, 12, 66, 43)
 script = ExtResource("7")
 
-[node name="Sprite2D" type="Sprite2D" parent="TabContainer/4"]
-position = Vector2(791.076, 258.768)
-scale = Vector2(0.623425, 0.623425)
-texture = ExtResource("8")
-hframes = 10
-vframes = 7
-frame = 29
+[node name="ComicsV8" type="Node2D" parent="TabContainer/4/MarginContainer/minimap"]
+script = ExtResource("10_cc07t")
+enabled = true
+
+[node name="Lines" type="Node2D" parent="TabContainer/4/MarginContainer/minimap/ComicsV8"]
+
+[node name="Sprite2D" type="Sprite2D" parent="TabContainer/4/MarginContainer/minimap"]
+position = Vector2(457, 244)
+scale = Vector2(9, 9)
+texture = ExtResource("11_omhli")
+
+[node name="Sprite2D2" type="Sprite2D" parent="TabContainer/4/MarginContainer/minimap"]
+position = Vector2(687, 221)
+scale = Vector2(9, 9)
+texture = ExtResource("12_rch61")
 
 [node name="TextureRect" type="TextureRect" parent="TabContainer/4"]
 layout_mode = 0
-offset_left = 12.3471
-offset_top = 59.4905
-offset_right = 52.3471
-offset_bottom = 99.4905
-scale = Vector2(4, 4)
-texture = ExtResource("9")
+offset_right = 64.0
+offset_bottom = 64.0
+texture = ExtResource("11_k86ue")

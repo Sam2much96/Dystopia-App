@@ -4,6 +4,7 @@
 
 [node name="RainFx" type="CPUParticles2D"]
 modulate = Color(0, 0, 0, 1)
+emitting = false
 amount = 1000
 lifetime = 3.0
 speed_scale = 2.0

@@ -96,7 +96,23 @@ func _on_health_changed(new_hp : int):
 
 
 func get_heart_count()-> int:
-	return 0
+	# Gets The Number Of Heart Nodes Created
+	# Updates It To The Inspector Tab
+	# Parses Through It's Childern and Gets a Count of Certain Types
+	# Updates Health Count TO Inspector Tab and Houts Hidden Health Tabs
+	# *************************************************
+	
+	var hp_child : Array = self.get_children()
+	var HEALTH_COUNT = 0 # Clear Prev Health COunt
+	var HEALTH_LOST = 0
+	for i in hp_child:
+		if i is TextureRect :
+			if i.visible == true: # Counts Only Visible Heart Boxes
+				HEALTH_COUNT +=1
+			if i.visible == false:
+				HEALTH_LOST +=1
+				
+	return HEALTH_COUNT
 
 
 func _exit_tree() -> void:

@@ -1,5 +1,5 @@
 # *************************************************
-# godot3-Dystopia-game by INhumanity_arts
+# godot4-Dystopia-game by INhumanity_arts
 # Released under MIT License
 # *************************************************
 # Status Text

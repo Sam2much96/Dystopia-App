@@ -29,8 +29,8 @@ I'LL BE CONNECTING STATIC METHODS FROM THE NETWORKING SINGLETON
 Code may be really hacky but will be thoughroughly Documented.
 """
 @onready var network = ENetMultiplayerPeer.new()
-@export (String) var pub_ipaddr = "https://icanhazip.com/" # used in match making to 
-@export (String) var my_ip : String = ""
+@export var pub_ipaddr : String = "https://icanhazip.com/" # used in match making to 
+@export var my_ip : String = ""
 
 # Lobby UI Items
 @onready var c_react : ColorRect = $ColorRect
@@ -74,14 +74,7 @@ func _ready():
 	
 
 	
-	# UI Scaling on mobile Devices 
-			#Quick Fix for Upscaing
-	if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
-		#if Globals.screenOrientation == 1: #SCREEN_VERTICAL is 1
-		var newScale = Vector2(2,2)
-		var newPosition = Vector2(-650,250)
-		Utils.UI.upscale_ui($ui, newScale, newPosition)
-		
+
 	# SHould Hide The Host Button for Online MMO
 	# 
 	if Networking.GamePlay == Networking.MMO_SERVER:

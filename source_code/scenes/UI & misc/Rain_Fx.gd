@@ -19,10 +19,11 @@
 # (1)  It Emits a Particle 2D and turnis it off and on through a timer.
 # (2) Is Optimized for android in Android singleton
 #
-# How TO USe:
+# How To Use:
 # (1) Use as CHild of CanvasLayer
 #
-#
+# To do:
+# (1) implement Overworld Only feature for emitting this cpu fx
 #
 
 extends CPUParticles2D

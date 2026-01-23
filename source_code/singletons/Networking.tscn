@@ -1,12 +1,16 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://cnd24ngqxbhps"]
 
-[ext_resource path="res://singletons/Networking.gd" type="Script" id=1]
+[ext_resource type="Script" uid="uid://dg48pauhw8q07" path="res://singletons/Networking.gd" id="1"]
+[ext_resource type="Script" uid="uid://dyi3rbauhy2p3" path="res://scenes/UI & misc/SteamController.gd" id="2_l4mps"]
 
 [node name="Networking" type="HTTPRequest"]
-script = ExtResource( 1 )
+script = ExtResource("1")
 enabled = true
 
 [node name="Timer2" type="Timer" parent="."]
 wait_time = 10.0
+
+[node name="Steam" type="Node" parent="."]
+script = ExtResource("2_l4mps")
 
 [connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]

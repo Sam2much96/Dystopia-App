@@ -1,6 +1,14 @@
 extends TabContainer
 class_name TabIcons 
 # Code Called in the Tab conttainer child class
+
+# generic set get function in godot 4
+#var t : int 
+#	set(value):
+#		t = value
+#	get():
+#		return t
+	
 func _ready():
 	# Should recursively set tab icons for Tab container child node
 	print_debug("Setting Tab Icons: Unfinished Code Implementation")

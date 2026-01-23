@@ -143,7 +143,7 @@ var WorldRoot : Node
 
 "Local Play or Multiplayer Parameters"
 enum {OFFLINE, LOCAL_COOP, MMO_SERVER}
-@export var GamePlay : int = OFFLINE
+@export var GamePlay : int = LOCAL_COOP
 
 
 # Netwroked Player Object
@@ -841,7 +841,7 @@ BROADCAST WORLD POSITIONS
 		# First, Convert Player Info Dictionary to Pool Byte Array
 		
 		
-		Simulation.rpc_unreliable_id(peer_id, "pu", peer_id, update_id, array2poolByte([Simulation.player_info])) # pu call is buggy cuz of peer id error
+		Simulation.rpc_id(peer_id, "pu", peer_id, update_id, array2poolByte([Simulation.player_info])) # pu call is buggy cuz of peer id error
 		update_id += 1
 
 
@@ -1101,8 +1101,8 @@ class Lobby extends Control:
 		#get_window().set_title('Server')
 		
 		# Sets Network Peer
-		Lobby.set_multiplayer_peer(peer)
-		
+		Lobby.get_multiplayer().multiplayer_peer = peer #Lobby.set_multiplayer_peer(peer)
+	
 		
 		host_button.set_disabled(true)
 		join_button.set_disabled(true)
@@ -1130,8 +1130,13 @@ class Lobby extends Control:
 
 		#peer = NetworkedMultiplayerENet.new()
 		#ClientPeer.set_compression_mode(ENetMultiplayerPeer.COMPRESS_RANGE_CODER)
-		ClientPeer.create_client(ip, DEFAULT_PORT)
-		Lobby.set_multiplayer_peer(ClientPeer)
+		var err = ClientPeer.create_client(ip, DEFAULT_PORT)
+		if err != OK:
+			print_debug("Failed to create client. Error code: ", str(err))
+			_set_status("Failed to create client connection.", Dialogs.dialog_box, false)
+			return false
+		print_debug("Client created successfully for IP: " + ip + " on port: " + str(DEFAULT_PORT))
+		Lobby.get_multiplayer().multiplayer_peer = ClientPeer
 
 		_set_status("Connecting...", Dialogs.dialog_box, true)
 		print_debug(" Connecting...")

@@ -92,7 +92,7 @@ _data = {
 &"VERTICAL_SCREEN": SubResource("18")
 }
 
-[node name="form" type="Node"]
+[node name="Lobby" type="Node"]
 script = ExtResource("5")
 
 [node name="ColorRect" type="ColorRect" parent="."]

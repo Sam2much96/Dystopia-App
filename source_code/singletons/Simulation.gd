@@ -236,7 +236,7 @@ func _process(_delta):
 	# Physics Simulation Only happens when Player is Online
 	#
 	# 
-	if Networking.GamePlay > 0: # If Multiplayer Network is up & running
+	if Networking.NetConfig.GamePlay > 0: # If Multiplayer Network is up & running
 		
 
 		
@@ -249,7 +249,7 @@ func _process(_delta):
 		# (1) Broadcasts Server Database to All Connected Players after every 60th frame
 		# (2) Requires finetuning on the greter global internet for optimal frame times
 		# Enabled For MMO Gameplay with Dedicated Server
-		if Networking.GamePlay == Networking.MMO_SERVER:
+		if Networking.NetConfig.GamePlay == Networking.NetConfig.MMO_SERVER:
 			if (frame_counter) % 60 == 0: # every 60th frame
 			#	
 			#	# Auto Broadcasts Server's Database every 60th frame to all 

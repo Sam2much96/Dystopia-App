@@ -1,6 +1,15 @@
+# *************************************************
+# godot4-Dystopia-game by INhumanity_arts
+# Released under MIT License
+# *************************************************
+# Musc Config
+# All Music Configuration Variables in One resource class
+#
+# *************************************************
+
 extends Resource
 
-class_name MusicConfig
+class_name Music_Config
 
 @export var enable : bool
 @export var sfx_on : bool

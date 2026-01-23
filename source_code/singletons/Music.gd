@@ -94,7 +94,7 @@ func _ready():
 	#Utils.Functions.load_game(true, Globals)
 	
 	"Check If Node Paths Are Broken"
-	safe_Utils.UI.check_for_broken_links(my_nodes)
+	Utils.UI.check_for_broken_links(my_nodes)
 
 # Temporarily disabled for refactroing Jan 19, 26
 	#if safe_Utils.Functions.hasSave(File.new()):
@@ -102,7 +102,7 @@ func _ready():
 		# 
 	#	safe_Utils.Functions.load_user_data('music', get_tree())
 
-	print_debug("Music_on_settings :",bool (MusicConfig.enable))
+	print_debug("Music_on_settings :",MusicConfig.enable)
 	#	music_on = bool (Music_on_settings)
 	
 	
@@ -300,6 +300,7 @@ func _on_A_finished(): #This  signals when the music has finished and autoshuffl
 	#plays the music trac twuce
 	
 	play(MusicConfig.music_track)
+	emit_signal("music_finished")
 
 # Play the Next Track And Shuffle
 func _on_B_finished():

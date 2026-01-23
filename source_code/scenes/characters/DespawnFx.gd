@@ -13,7 +13,7 @@ extends CPUParticles2D
 
 class_name DeSpawnFX
 
-@onready var timer : Node = $Timer
+@onready var timer : Timer = $Timer
 
 func _ready():
 	set_timer()
@@ -26,10 +26,3 @@ func set_timer()->void:
 	timer.one_shot = true
 	timer.autostart = true
 	timer.start(0.8)
-
-
-#func _on_Timer_timeout():
-#	queue_free()
-
-#func queue_free():
-#	self.queue_free()

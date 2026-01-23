@@ -36,114 +36,21 @@ extends HTTPRequest
 class_name Internet
 
 """
-NETWORKING SINGLETON 4.0
-
-To query if there's internet access and connect to various websites
+All Net Code In One Script
 """
-@export var enabled : bool
-@export var connection_debug: String
-@export var cfg_server_ip : String 
-@export var cfg_client_ip : String
-#########################  Web browser codes  ############################3
-@export var url : String = ''
-var check_timer 
-var debug = ''
-var WORLD_SIZE : int = 40000.0
+
+@export var NetConfig : Resource 
 
 
 
 
 
-var peer_id : int
 
-var my_peer : ENetMultiplayerPeer
-@export var ip : Array = []
-
-#var camera #stores general camera variables
-###############################multiplayer codes########################
-# Debugs to Debugger Singleton
-var multiplayer_client_debug
-var multiplayer_server_debug
-
-# Those variables are only used by the client-side application
-
-var cfg_color : String = ""
-var cfg_player_name : String = ""
-
-
-
-
-
-signal connection_success
-signal error_connection_failed(code,message)
-signal error_ssl_handshake
-signal game_finished
-signal Timeout
 
 @onready var world #= get_tree().get_nodes_in_group('online_world').pop_front()
 
 
 @onready var timer :Timer  = $Timer2
-@onready var _reference_to_self =get_node('/root/Networking') #formerly _y
-@onready var _reference_to_debug =get_node('/root/Debug') #formerly _y
-
-# Default hostname used by the login form
-#const DEFAULT_HOSTNAME = "127.0.0.1"
-const DEFAULT_HOSTNAME = "ws://localhost" # depreciated 
-const BACKUP_HOSTNAME = "127.0.0.1" # depreciated
-const SERVER_PORT = 9080
-const MAX_PLAYERS = 4
-@export var CLIENT_IP : String  
-
-const TICK_DURATION = 50 # In milliseconds, it means 20 network updates/second
-
-
-
-
-
-#var youtube_dl # Replace with GodotRustube
-
-
-#**********Helper Booleans***********#
-var running_request : bool = false
-var Timeout_ : bool = false
-
-
-#*********IPFS Gateway***************#
-# from https://ipfs.github.io/public-gateway-checker/
-# 1 ,2 , 3 work
-@export var gateway : Array = [
-	'gateway.ipfs.io', "dweb.link", "ipfs.io",
-	"ipfs.runfission.com", "jorropo.net", "via0.com", 
-	"cloudflare-ipfs.com", "hardbin.com"
-	]
-
-var random : int
-var selected_gateway : String
-
-@export var good_internet : bool
-
-# Lobby UI
-var UserInterface : Control
-
-# Multiplayer map
-var map_instance : Node2D
-
-# Server Update ID
-var update_id : int = -1
-
-# Raw Player Info Data
-
-var RawJson 
-#var peer_ids : Array
-
-# World Root Node
-var WorldRoot : Node
-
-
-"Local Play or Multiplayer Parameters"
-enum {OFFLINE, LOCAL_COOP, MMO_SERVER}
-@export var GamePlay : int = LOCAL_COOP
 
 
 # Netwroked Player Object
@@ -151,73 +58,57 @@ enum {OFFLINE, LOCAL_COOP, MMO_SERVER}
 
 # I Need a way of keeping access to Player Object instancess
 
+"Wallet Algo"
+# To do :
+# (1) port wallet connect for better wallet integration UX
+@export var price_usd : String
+@export var price_eur : String
+@export var price_gbp : String
+@export var price_btc : String 
+@export var price_algo : String 
+
 func _ready():
 	_init_timer()
 	
 	
-	if cfg_server_ip == '':
-		cfg_server_ip = DEFAULT_HOSTNAME
+	if NetConfig.cfg_server_ip == '':
+		NetConfig.cfg_server_ip = NetConfig.DEFAULT_HOSTNAME
 		
-	if cfg_client_ip == '':
-		cfg_client_ip = DEFAULT_HOSTNAME
+	if NetConfig.cfg_client_ip == '':
+		NetConfig.cfg_client_ip = NetConfig.DEFAULT_HOSTNAME
 		
-	if cfg_player_name == "":
-		cfg_player_name = DEFAULT_HOSTNAME
+	if NetConfig.cfg_player_name == "":
+		NetConfig.cfg_player_name = NetConfig.DEFAULT_HOSTNAME
 	
-	print ("Networking Server Config and Player Name: ",cfg_server_ip,cfg_player_name, "/")
+	print_debug ("Networking Server Config and Player Name: ",NetConfig.cfg_server_ip,NetConfig.cfg_player_name, "/")
 	
 
-
-
-func _process(_delta): 
-	
-	#debug = ( str(connection_debug)  + str (multiplayer_server_debug) + str(multiplayer_client_debug)) # Debugs the Networking and Multiplayer states
-	
-	
-	
-	"Checks Nodes Connections"
-	for child in _reference_to_self.get_children():
-		if child is Timer:
-			check_timer = child
-			if not child.is_connected("timeout", Callable(self, '_check_connection')) :
-				child.connect("timeout", Callable(self, '_check_connection')) # connects timeout signal to check connection 
-		if child is HTTPRequest:
-			#
-			# Checks connection status -> Force connect HTTP request's signals
-			#
-			#
-			if child.is_connected("connection_success", Callable(self, '_on_success')) != true:
-				return connect("request_completed", Callable(self, 'on_request_result'))
-		
-				return connect("connection_success", Callable(self, '_on_success'))
-				return connect("error_connection_failed", Callable(self, '_on_failure'))
-				return connect("error_ssl_handshake", Callable(self, '_on_fail_ssl_handshake'))
 
  
 # Creates a Networking timer
 func _init_timer() : 
 	#Uses a Timer Node in the Scene
-	self.set_process(true)
-	enabled = true 
-	check_timer = timer
-	check_timer.wait_time = 5
+	#self.set_process(true)
+	NetConfig.enabled = true 
+	NetConfig.check_timer = timer
+	NetConfig.check_timer.wait_time = 5
 	
 	# connect timer timeout signal
 	"Updates the Networking Boolean of Timer State"
 	if not timer.is_connected("timeout", Callable(self, "_on_Timer2_timeout")):
 		timer.connect("timeout", Callable(self, "_on_Timer2_timeout"))
 	
-	print_debug ('Check_timer :' , check_timer, " Is connected: ", timer.is_connected("timeout", Callable(self, "_on_Timer2_timeout"))) #code breaks here and gives cant resolve hostname errors
+	print_debug ('Check_timer :' , NetConfig.check_timer, " Is connected: ", timer.is_connected("timeout", Callable(self, "_on_Timer2_timeout"))) #code breaks here and gives cant resolve hostname errors
 
 
 
 "Stops a check using Check timer Node"
 func stop_check()-> bool: #Stops timer check
-	connection_debug = ' stop check ' # Debug Variable
-	if not check_timer.is_stopped():
+	NetConfig.connection_debug = ' stop check ' # Debug Variable
+	if not NetConfig.check_timer.is_stopped():
 		
 		
-		check_timer.stop()
+		NetConfig.check_timer.stop()
 		self.cancel_request()
 		
 		#Stopping Check Timer
@@ -228,14 +119,14 @@ func stop_check()-> bool: #Stops timer check
 
 "Starts a check using Timer Node for 3 Seconds"
 func start_check(time: int): 
-	connection_debug = str('start check') # Debug Variable
-	Timeout_ = false
+	NetConfig.connection_debug = str('start check') # Debug Variable
+	NetConfig.Timeout_ = false
 	if time != null:
-		check_timer.start(time) 
+		NetConfig.check_timer.start(time) 
 	
 	# Reset Timeout parameter
 	#
-	check_timer.start()
+	NetConfig.check_timer.start()
 
 
 func start_check_v2(wait_time : int):
@@ -255,14 +146,111 @@ func _check_connection_secured(url): # Check http secured Url connection
 	#Ignore Warning
 	url =url.uri_encode()
 	var error #= super.request(url,PackedStringArray(),false,HTTPClient.METHOD_GET) 
-	connection_debug = str (' making request  ')  + str (' Request Error: ',error)
+	NetConfig.connection_debug = str (' making request  ')  + str (' Request Error: ',error)
 	print (' Networking Request Error: ',error) #for debug purposes only
 
 
+"""
+HTTP REQUEST STATE MACHINE
+"""
+
+func _on_Networking_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray): # I need to pass variables to this code bloc
+	"HTTP REQUEST RESULT'S STATE MACHINE"
+	print_debug("request completed")
+	#print_stack()
+	
+	match result:
+		HTTPRequest.RESULT_SUCCESS: #what happens to body? #always write a http request completed function in the connecting script
+			emit_signal("connection_success") 
+			NetConfig.good_internet = true
+			#_connection =(str ('connection success')) # Debugs to the Debug singleton # Depreciated--Delete
+			#print_debug (str(result) + str(response_code) + str(headers)+ str (body))  
+			#print(body.get_string_from_utf8())
+			# Parses API Get Result TO Json
+			var _response_text = body.get_string_from_utf8()
+			var json = JSON.new()
+			var _result = json.parse(_response_text)
+
+			if _result == OK:
+				NetConfig.Data = json.data
+				
+				# to do:
+				# (1) serialise vestige api data into a wallet config object class
+				# Fetches price data in ready function
+				print_debug("Internet Data debug: ", NetConfig.Data)  # 
+				print_debug("Price serialisation: ", _format_price(NetConfig.Data.USD))
+				
+				# data serialisation is done in Stats HUD
+				price_usd = _format_price(NetConfig.Data.USD)
+				price_eur = _format_price(NetConfig.Data.EUR)
+				price_gbp = _format_price(NetConfig.Data.GBP)
+				price_btc = _format_price(NetConfig.Data.BTC)
+				price_algo = _format_price(NetConfig.Data.price)
+				
+			else:
+				print_debug("Failed to parse JSON. Error: ", json.get_error_message(), " at line ", json.get_error_line())
+			#print_debug(body.get_string_from_utf8())
+			#print_debug(body.get_string_from_utf8())
+			
+		HTTPRequest.RESULT_CHUNKED_BODY_SIZE_MISMATCH:
+			emit_signal("error_connection_failed", HTTPRequest.RESULT_CHUNKED_BODY_SIZE_MISMATCH, 'RESULT_CHUNKED_BODY_SIZE_MISMATCH')
+			print_debug("error_connection_failed", HTTPRequest.RESULT_CHUNKED_BODY_SIZE_MISMATCH, 'RESULT_CHUNKED_BODY_SIZE_MISMATCH')
+			
+		HTTPRequest.RESULT_CANT_CONNECT:
+			emit_signal("error_connection_failed", HTTPRequest.RESULT_CANT_CONNECT, 'RESULT_CANT_CONNECT')
+			print_debug("error_connection_failed", HTTPRequest.RESULT_CANT_CONNECT, 'RESULT_CANT_CONNECT')
+			
+		HTTPRequest.RESULT_CANT_RESOLVE:
+			emit_signal("error_connection_failed", HTTPRequest.RESULT_CANT_RESOLVE, 'RESULT_CANT_RESOLVE')
+			print_debug("error_connection_failed", HTTPRequest.RESULT_CANT_RESOLVE, 'RESULT_CANT_RESOLVE')
+			#good_internet = false
+			#_connection = (str ('connection failed')) # Debugs to the Debug singleton
+			#print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			
+		HTTPRequest.RESULT_CONNECTION_ERROR:
+			emit_signal("error_connection_failed", HTTPRequest.RESULT_CONNECTION_ERROR, 'RESULT_CONNECTION_ERROR')
+			print_debug("error_connection_failed", HTTPRequest.RESULT_CONNECTION_ERROR, 'RESULT_CONNECTION_ERROR')
+			NetConfig.good_internet = false
+			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
+			#print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			
+		HTTPRequest.RESULT_TLS_HANDSHAKE_ERROR:
+			emit_signal("error_ssl_handshake")
+			print_debug("error_ssl_handshake")
+			
+		HTTPRequest.RESULT_NO_RESPONSE:
+			emit_signal("error_connection_failed", HTTPRequest.RESULT_NO_RESPONSE, 'RESULT_NO_RESPONSE')
+			print_debug("error_connection_failed", HTTPRequest.RESULT_NO_RESPONSE, 'RESULT_NO_RESPONSE')
+			
+		HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED:
+			emit_signal("error_connection_failed", HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED, 'RESULT_BODY_SIZE_LIMIT_EXCEEDED')
+			print_debug("error_connection_failed", HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED, 'RESULT_BODY_SIZE_LIMIT_EXCEEDED')
+			
+		HTTPRequest.RESULT_REQUEST_FAILED:
+			emit_signal("error_connection_failed", HTTPRequest.RESULT_REQUEST_FAILED, 'RESULT_REQUEST_FAILED')
+			print_debug("error_connection_failed", HTTPRequest.RESULT_REQUEST_FAILED, 'RESULT_REQUEST_FAILED')
+			
+		HTTPRequest.RESULT_DOWNLOAD_FILE_CANT_OPEN:
+			emit_signal("error_connection_failed", HTTPRequest.RESULT_DOWNLOAD_FILE_CANT_OPEN, 'RESULT_DOWNLOAD_FILE_CANT_OPEN')
+			print_debug("error_connection_failed", HTTPRequest.RESULT_DOWNLOAD_FILE_CANT_OPEN, 'RESULT_DOWNLOAD_FILE_CANT_OPEN')
+			
+		HTTPRequest.RESULT_DOWNLOAD_FILE_WRITE_ERROR:
+			emit_signal("error_connection_failed", HTTPRequest.RESULT_DOWNLOAD_FILE_WRITE_ERROR, 'RESULT_DOWNLOAD_FILE_WRITE_ERROR')
+			print_debug("error_connection_failed", HTTPRequest.RESULT_DOWNLOAD_FILE_WRITE_ERROR, 'RESULT_DOWNLOAD_FILE_WRITE_ERROR')
+			 
+		HTTPRequest.RESULT_REDIRECT_LIMIT_REACHED:
+			emit_signal("error_connection_failed", HTTPRequest.RESULT_REDIRECT_LIMIT_REACHED, 'RESULT_REDIRECT_LIMIT_REACHED')
+			print_debug("error_connection_failed", HTTPRequest.RESULT_REDIRECT_LIMIT_REACHED, 'RESULT_REDIRECT_LIMIT_REACHED')
+
+func _format_price(value):
+	# formats vestigefi price data to 12 places
+	return "%.12f" % value
+
 func genrate_random_gateway():
-	Utils._randomize(self)
-	random = int(randf_range(-1,gateway.size())) #selects a random track number
-	selected_gateway = gateway[random]
+	randomize()
+	#Utils._randomize(self)
+	NetConfig.random = int(randf_range(-1,NetConfig.gateway.size())) #selects a random track number
+	NetConfig.selected_gateway = NetConfig.gateway[NetConfig.random]
 
 # List of valid IPFS web 2.0 Gateways
 # An array may be a better fit
@@ -308,29 +296,33 @@ static func _check_if_device_is_online(node: HTTPRequest):
 func on_request_result(result, response_code, headers, body): # I need to pass variables to this code bloc
 	"HTTP REQUEST RESULT'S STATE MACHINE"
 	#resets result if completed successfully
-	running_request = false
+	# to do:
+	# (1) export and connect http request signals to game hud animations
+	#
+	
+	NetConfig.running_request = false
 	#connected to results and works as an auto emitter
 	match result:
 		RESULT_SUCCESS: #what happens to body? #always write a http request cmpleted function in the connecting script
 			emit_signal("connection_success") 
 			#_connection =(str ('connection success')) # Debugs to the Debug singleton # Depreciated--Delete
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body))  
+			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body))  
 		RESULT_CHUNKED_BODY_SIZE_MISMATCH:
 			emit_signal("error_connection_failed", RESULT_CHUNKED_BODY_SIZE_MISMATCH,'RESULT_CHUNKED_BODY_SIZE_MISMATCH')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_CANT_CONNECT:
 			emit_signal("error_connection_failed",RESULT_CANT_CONNECT,'RESULT_CANT_CONNECT')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_CANT_RESOLVE:
 			emit_signal("error_connection_failed",RESULT_CANT_RESOLVE,'RESULT_CANT_RESOLVE')
 			#_connection = (str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_CONNECTION_ERROR:
 			emit_signal("error_connection_failed",RESULT_CONNECTION_ERROR,'RESULT_CONNECTION_ERROR')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		#RESULT_SSL_HANDSHAKE_ERROR:
 		#	emit_signal("error_ssl_handshake")
 			#_connection = (str ('connection failed')) # Debugs to the Debug singleton
@@ -338,27 +330,27 @@ func on_request_result(result, response_code, headers, body): # I need to pass v
 		RESULT_NO_RESPONSE:
 			emit_signal("error_connection_failed",RESULT_NO_RESPONSE,'RESULT_NO_RESPONSE')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_BODY_SIZE_LIMIT_EXCEEDED:
 			emit_signal("error_connection_failed", RESULT_BODY_SIZE_LIMIT_EXCEEDED,'RESULT_BODY_SIZE_LIMIT_EXCEEDED')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
+			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_REQUEST_FAILED:
 			emit_signal("error_connection_failed", RESULT_REQUEST_FAILED, 'RESULT_REQUEST_FAILED')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
+			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
 		RESULT_DOWNLOAD_FILE_CANT_OPEN:
 			emit_signal("error_connection_failed",RESULT_DOWNLOAD_FILE_CANT_OPEN,'RESULT_DOWNLOAD_FILE_CANT_OPEN')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
+			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
 		RESULT_DOWNLOAD_FILE_WRITE_ERROR:
 			emit_signal("error_connection_failed", RESULT_DOWNLOAD_FILE_WRITE_ERROR, 'RESULT_DOWNLOAD_FILE_WRITE_ERROR')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
+			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
 		RESULT_REDIRECT_LIMIT_REACHED:
 			emit_signal("error_connection_failed",RESULT_REDIRECT_LIMIT_REACHED, 'RESULT_REDIRECT_LIMIT_REACHED')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
+			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
 	#stop_check() # Disabled
 	
 	
@@ -536,7 +528,7 @@ static func save_file_(body: PackedByteArray, Save_path: String, file_size: int 
 
 func _on_Timer2_timeout():
 	print ('check timer stopped')
-	Timeout_ = true
+	NetConfig.Timeout_ = true
 
 	emit_signal("Timeout")
 	stop_check()
@@ -550,13 +542,13 @@ MULTIPLAYER SIGNALS
 func _server_disconnected():
 	#emit_signal("game_finished")
 	#print_debug(int(Networking.player_info["peer id"][peer_id]))
-	Lobby._on_server_disconnected(peer_id, get_tree(), UserInterface)
+	Lobby._on_server_disconnected(NetConfig.peer_id, get_tree(), NetConfig.UserInterface)
 
 
 func _player_disconnected(_id : int):
 	# _id, Lobby: SceneTree, UI : Control)
 	#emit_signal("game_finished")
-	Lobby._on_player_disconnected(_id, get_tree(), UserInterface)
+	Lobby._on_player_disconnected(_id, get_tree(), NetConfig.UserInterface)
 	#_end_game()
 	
 	Lobby._set_status((str (_id )+ " Disconnected"), Dialogs.dialog_box, true)
@@ -570,7 +562,7 @@ func _player_connected(_id : int):
 	#Simulation.player_info["peer id"] = {_id : {}}
 	# Player ID is registered by the player script
 	
-	peer_id = _id
+	NetConfig.peer_id = _id
 	#OS.set_window_title('Client' + str(_id))
 	
 	# Make Multiplayer Gameplay Started into Global
@@ -601,7 +593,7 @@ func _player_connected(_id : int):
 	# To DO: SHould be read from player's control settings and saved to local device
 	#GamePlay = LOCAL_COOP
 	
-	if map_instance == null:
+	if NetConfig.map_instance == null:
 		Globals.current_level = "res://scenes/levels/OverworldOnline.tscn"#"res://scenes/levels/Testing Scene.tscn"
 		# Someone connected, start the game!
 		var Map : PackedScene = Utils.Functions.LoadLargeScene(
@@ -615,7 +607,7 @@ func _player_connected(_id : int):
 			Globals.progress
 			)
 		
-		map_instance = Map.instance()
+		NetConfig.map_instance = Map.instance()
 	
 	
 		
@@ -631,7 +623,7 @@ func _player_connected(_id : int):
 		
 		# Add Game Scene to tree
 		# Instace As A child of Server Node
-		get_tree().get_root().add_child(map_instance)
+		get_tree().get_root().add_child(NetConfig.map_instance)
 		
 		Networking.UserInterface.hide()
 	
@@ -654,7 +646,7 @@ func _instance_players(id : int ):
 	#var player_objects_spawned : Array =get_tree().get_nodes_in_group("online_player")
 	var player_ids_stored : Array = Simulation.get_all_player_ids()
 	
-	print_debug("Server Type: ",GamePlay)
+	print_debug("Server Type: ",NetConfig.GamePlay)
 	"Spawns Two Players FOr LOcal Coop"
 	
 	
@@ -664,8 +656,8 @@ func _instance_players(id : int ):
 		# Note: server player has authority in this Multiplayer architecture
 		# THis current Architecture is for testing local play
 		# Online MMO shouldn't include a server player
-	if GamePlay == LOCAL_COOP:
-		print_debug("Online Players Debug: ", "id: ",id, "/", player_ids_stored, "/ Net play: " , GamePlay )
+	if NetConfig.GamePlay == NetConfig.LOCAL_COOP:
+		print_debug("Online Players Debug: ", "id: ",id, "/", player_ids_stored, "/ Net play: " , NetConfig.GamePlay )
 		
 		var a = PlayerObject.instantiate() # Client Player
 		var b = PlayerObject.instantiate() # server player
@@ -685,8 +677,8 @@ func _instance_players(id : int ):
 		
 		# add randomization to player object spawn point to avoid stuck collision bug
 		
-		map_instance.add_child(a) 
-		map_instance.add_child(b) 
+		NetConfig.map_instance.add_child(a) 
+		NetConfig.map_instance.add_child(b) 
 		
 		#object_spawned + 2
 
@@ -694,8 +686,8 @@ func _instance_players(id : int ):
 	# TO DO : 
 	# (1) Should Account for Up to 4 Players
 	# (2) Should Account for lots of networking bugs
-	if GamePlay == MMO_SERVER:
-		print_debug("Online Players Debug: ", "id: ",id, "/", player_ids_stored, "/ Net play: " , GamePlay )
+	if NetConfig.GamePlay == NetConfig.MMO_SERVER:
+		print_debug("Online Players Debug: ", "id: ",id, "/", player_ids_stored, "/ Net play: " , NetConfig.GamePlay )
 		
 		var a = PlayerObject.instantiate() # Client Player
 		
@@ -708,7 +700,7 @@ func _instance_players(id : int ):
 		# Store peer ids to Local player sceipts
 		# changes it from default -99
 		a.peer_id = id
-		map_instance.add_child(a) 
+		NetConfig.map_instance.add_child(a) 
 	
 	# Seconnd Player and more Players Connection Logic
 	# Temporarily Disabling
@@ -745,11 +737,11 @@ func _end_game():
 	#Lobby.get_node(Map).free()
 	
 	var _map = get_tree().get_nodes_in_group("Multiplayer").pop_front()
-	map_instance.queue_free()
+	NetConfig.map_instance.queue_free()
 	#_map.free()
 	# UI SHow
 	# Enable UI buttons
-	UserInterface.show()
+	NetConfig.UserInterface.show()
 
 	# Update UI when current Game Ends
 	get_tree().set_multiplayer_peer(null) # Remove peer.
@@ -783,8 +775,8 @@ func poolByte2Array(data_from: PackedByteArray) -> Array:
 			
 			var test_json_conv = JSON.new()
 			test_json_conv.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary
-			RawJson = test_json_conv.get_data()
-		return RawJson.get_data()
+			NetConfig.RawJson = test_json_conv.get_data()
+		return NetConfig.RawJson.get_data()
  
 	else: 
 		push_error("Error calling built-in function 'bytes_to_var': Not enough bytes for decoding bytes, or invalid format.")
@@ -841,8 +833,8 @@ BROADCAST WORLD POSITIONS
 		# First, Convert Player Info Dictionary to Pool Byte Array
 		
 		
-		Simulation.rpc_id(peer_id, "pu", peer_id, update_id, array2poolByte([Simulation.player_info])) # pu call is buggy cuz of peer id error
-		update_id += 1
+		Simulation.rpc_id(NetConfig.peer_id, "pu", NetConfig.peer_id, NetConfig.update_id, array2poolByte([Simulation.player_info])) # pu call is buggy cuz of peer id error
+		NetConfig.update_id += 1
 
 
 

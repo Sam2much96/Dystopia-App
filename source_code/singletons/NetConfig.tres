@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Network_Config" load_steps=2 format=3 uid="uid://dallhheh6nd8i"]
+
+[ext_resource type="Script" uid="uid://m1h27pu0m8mr" path="res://singletons/Network_Config.gd" id="1_bg3nk"]
+
+[resource]
+script = ExtResource("1_bg3nk")
+enabled = true
+metadata/_custom_type_script = "uid://m1h27pu0m8mr"

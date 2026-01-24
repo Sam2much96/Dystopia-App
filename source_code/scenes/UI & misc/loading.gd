@@ -83,9 +83,10 @@ var b : int
 @onready var safe_HUD = get_node("/root/GameHud")
 
 func _ready():
-	
+	var menu = safe_HUD.menu
 	# trigger the menu hidden state
-	safe_HUD.menu.hidden()
+	if (is_instance_valid(menu)):
+		menu.hidden()
 	
 	#Progress.hide()
 	Number.hide()

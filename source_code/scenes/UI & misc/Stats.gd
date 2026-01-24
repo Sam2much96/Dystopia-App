@@ -116,14 +116,14 @@ func _ready():
 func _input(event):
 	
 	# Enable / DIsable Logic is Buggy
-	if event.is_action_pressed("pause")  && enabled_ == false:
+	if event.is_action_pressed("stats")  && enabled_ == false:
 		#print_debug("enable")
 		enabled_ = true
 		_enable()
 	#	#_state = ENABLED
 		safeMusic.play_track(safeMusic.MusicConfig.ui_sfx.get(0))
 		return enabled_ # _state
-	if event.is_action_pressed("pause") && enabled_ == true:
+	if event.is_action_pressed("stats") && enabled_ == true:
 		enabled_ = false
 		_disable()
 	#	#_state = DISABLED
@@ -134,7 +134,8 @@ func _input(event):
 
 
 
-
+# to do: 
+# (1) move wallet script, api calls and api return data type to a new script and reference that resource
 func _update_wallet_stats(): #Updates killcount and Algos
 	_coin_label.text = 'mAlgos: ' + str (Globals.algos)
 

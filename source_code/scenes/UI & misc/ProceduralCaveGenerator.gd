@@ -25,8 +25,8 @@ class_name ProceduralGeneration
 #How to Use
 # Attach this NOde As a child top the Tilemap with AutoTIle
 
-@export (bool) var enabled
-@export (bool) var STATIC # Determine if To use Dynamic or static memory / For RAM Load Balancing
+@export var enabled : bool
+@export var STATIC : bool # Determine if To use Dynamic or static memory / For RAM Load Balancing
 
 
 # Specifies the Draw Map Area so the Tilemap drawn isnt infinite
@@ -41,7 +41,7 @@ class_name ProceduralGeneration
 @export var noise_threshold: float = 0.5
 
 # set get method to update Map generated on the fly
-@export var redraw: bool: set = redraw
+@export var redraw: bool: set = _redraw
 
 # Acces the Parent TileMap with the AutoTile
 @onready var tile_map : TileMap
@@ -76,8 +76,8 @@ func _enter_tree()-> void:
 	
 	#map_dimensions = Utils.Functions.edge_length(point_data)
 	
-	map__width = map_dimensions.x/10
-	map__height = map_dimensions.y/10
+	map__width = int(map_dimensions.x/10)
+	map__height = int(map_dimensions.y/10)
 	
 	# Debug Point data
 	# poolVector Array
@@ -109,7 +109,7 @@ func _ready():
 		generate()
 
 
-func redraw(value = null) -> void:
+func _redraw(value = null) -> void:
 	if tile_map == null :#&& Globals.tile_map == null:
 		return
 	
@@ -171,8 +171,8 @@ func generate() :
 					if simplex_noise.get_noise_2d(x, y) < noise_threshold:
 						
 						# generataes a tilemap
-						
-						tile_map.set_cell(x,y, tile_map.get_tileset().get_tiles_ids()[0], false, false, false,tile_map.get_cell_autotile_coord(x, y )) # co-ordinate of the TileSet
+						tile_map.set_cell(0, Vector2i(x, y), 0, Vector2i(0, 0))
+						#tile_map.set_cell(x,y, tile_map.get_tileset().get_tiles_ids()[0], false, false, false,tile_map.get_cell_autotile_coord(x, y )) # co-ordinate of the TileSet
 						
 						tile_map.update_bitmask_area(Vector2(x, y)) # so the engine knows where to configure the autotiling
 			tile_map.update_dirty_quadrants()

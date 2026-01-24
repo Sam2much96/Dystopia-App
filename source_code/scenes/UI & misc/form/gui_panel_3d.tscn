@@ -43,7 +43,7 @@ offset_right = 194.99998
 offset_bottom = 103.0
 
 [node name="Quad" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.023371845)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.11464995, 0, 0, -0.023371845)
 mesh = SubResource("QuadMesh_05uth")
 surface_material_override/0 = SubResource("StandardMaterial3D_05uth")
 

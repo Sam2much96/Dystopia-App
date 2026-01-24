@@ -19,8 +19,8 @@ class_name minimap
 var player_node : Player # Player Node
 
 @export var zoom : float = 10.1
-@onready var player_marker : Sprite2D = $Sprite
-@onready var player2_marker : Sprite2D = $Sprite2
+@onready var player_marker : Sprite2D = $Sprite2D
+@onready var player2_marker : Sprite2D = $Sprite2D2
 @onready var grid_scale
 
 

@@ -22,11 +22,12 @@ var last_mouse_pos3D = null
 var last_mouse_pos2D = null
 
 @onready var node_viewport = $SubViewport
-@onready var node_quad = $Quad
-@onready var node_area = $Quad/Area3D
+@onready var node_quad : MeshInstance3D = $Quad
+@onready var node_area : Area3D = $Quad/Area3D
 
 func _ready():
-	node_area.mouse_entered.connect(_mouse_entered_area)
+	if !node_area.mouse_entered.is_connected(_mouse_entered_area):
+		node_area.mouse_entered.connect(_mouse_entered_area)
 	
 	# If the material is NOT set to use billboard settings, then avoid running billboard specific code
 	if node_quad.get_surface_override_material(0).billboard_mode == BaseMaterial3D.BILLBOARD_DISABLED:
@@ -125,12 +126,12 @@ func handle_mouse(event):
 
 
 func find_mouse(global_position):
-	var camera = get_viewport().get_camera_3d()
+	var camera_ = get_viewport().get_camera_3d()
 	
 	# From camera center to the mouse position in the Area
-	var from = camera.project_ray_origin(global_position)
-	var dist = find_further_distance_to(camera.transform.origin)
-	var to = from + camera.project_ray_normal(global_position) * dist
+	var from = camera_.project_ray_origin(global_position)
+	var dist = find_further_distance_to(camera_.transform.origin)
+	var to = from + camera_.project_ray_normal(global_position) * dist
 	
 	
 	# Manually raycasts the area to find the mouse position

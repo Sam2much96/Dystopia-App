@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://endi2tywgaf1"]
+
+[ext_resource type="Script" uid="uid://cfoyp2uikhf1q" path="res://scenes/characters/Player3D_3rd_person.gd" id="1_4eo2j"]
+[ext_resource type="PackedScene" uid="uid://b4h1vhrdwq7e7" path="res://resources/3D/player_rigged.tscn" id="2_v6xsw"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hjbdp"]
+height = 1.3813477
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_v6xsw"]
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_4eo2j")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.30932617, 0)
+shape = SubResource("CapsuleShape3D_hjbdp")
+
+[node name="player_rigged" parent="." instance=ExtResource("2_v6xsw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.72500455, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.9976522, 0, -0.06848542, 0, 1, 0, 0.06848542, 0, -0.9976522, 0, 0, -0.81007266)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Camera3D"]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0.06639702, 0, -0.9672297)
+omni_range = 0.862
+
+[node name="player" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.8696129, 0, 0, 0, 0.64815295, 0, 0, 0, 1, 0, -0.15930635, 0)
+visible = false
+mesh = SubResource("CapsuleMesh_v6xsw")

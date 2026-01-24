@@ -1,0 +1,26 @@
+[gd_scene load_steps=7 format=3 uid="uid://b288viros8dyk"]
+
+[ext_resource type="Texture2D" uid="uid://bet3ob1uolkg" path="res://resources/3D/550px-TLoZTWW_Vr_boxcloud1.png" id="1_evfpv"]
+[ext_resource type="PackedScene" uid="uid://b0ok6pw1iidhr" path="res://resources/3D/overworld_map.tscn" id="2_x681s"]
+[ext_resource type="PackedScene" uid="uid://endi2tywgaf1" path="res://scenes/characters/Aarin_3d.tscn" id="3_j0mot"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_mk56a"]
+panorama = ExtResource("1_evfpv")
+
+[sub_resource type="Sky" id="Sky_x681s"]
+sky_material = SubResource("PanoramaSkyMaterial_mk56a")
+radiance_size = 1
+
+[sub_resource type="Environment" id="Environment_j0mot"]
+background_mode = 2
+sky = SubResource("Sky_x681s")
+
+[node name="Overworld3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_j0mot")
+
+[node name="overworld map" parent="WorldEnvironment" instance=ExtResource("2_x681s")]
+
+[node name="Player" parent="WorldEnvironment/overworld map" instance=ExtResource("3_j0mot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2270808, 1.2855667)

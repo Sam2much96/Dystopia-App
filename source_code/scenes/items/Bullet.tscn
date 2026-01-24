@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://dtr3qklfiwrlo"]
 
-[ext_resource type="Script" path="res://scenes/items/Bullet.gd" id="1"]
-[ext_resource type="Shader" path="res://scenes/Shaders/outline.gdshader" id="2"]
+[ext_resource type="Script" uid="uid://tsmb0ojcnyte" path="res://scenes/items/Bullet.gd" id="1"]
+[ext_resource type="Shader" uid="uid://c33xcr5ph1gn5" path="res://scenes/Shaders/outline.gdshader" id="2"]
 [ext_resource type="Texture2D" uid="uid://dtsfpfdrqf6e2" path="res://resources/misc/arrow.webp" id="3"]
 
 [sub_resource type="ShaderMaterial" id="2"]
@@ -257,11 +257,11 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g3yna"]
 _data = {
-"RESET": SubResource("4"),
-"down": SubResource("5"),
-"left": SubResource("6"),
-"right": SubResource("7"),
-"up": SubResource("3")
+&"RESET": SubResource("4"),
+&"down": SubResource("5"),
+&"left": SubResource("6"),
+&"right": SubResource("7"),
+&"up": SubResource("3")
 }
 
 [node name="Area2D" type="Area2D"]
@@ -272,12 +272,12 @@ speed = 1500
 [node name="Sprite2D" type="Sprite2D" parent="." groups=["weapon"]]
 material = SubResource("2")
 position = Vector2(11.0905, 13.6862)
-rotation = -1.5708
+rotation = -1.5707964
 texture = ExtResource("3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(11.9936, 14.095)
-rotation = -1.5708
+rotation = -1.5707964
 shape = SubResource("1")
 
 [node name="Timer" type="Timer" parent="."]
@@ -286,12 +286,12 @@ autostart = true
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 position = Vector2(10.6066, 13.435)
-rotation = -1.5708
+rotation = -1.5707964
 scale = Vector2(0.893934, 2.64402)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_g3yna")
+&"": SubResource("AnimationLibrary_g3yna")
 }
 
 [connection signal="body_entered" from="." to="." method="_on_Area2D_body_entered"]

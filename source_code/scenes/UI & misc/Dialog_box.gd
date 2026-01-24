@@ -24,8 +24,9 @@
 # (5) Add dialogue box Icon (Done)
 # *************************************************
 
+@icon("res://resources/misc/dialoguebox 32x32.png")
 extends TextureRect
-class_name DialogBox #, "res://resources/misc/dialoguebox 32x32.png"
+class_name DialogBox 
 
 """
 Exposes the show_dialog function to the Dialogs singleton.

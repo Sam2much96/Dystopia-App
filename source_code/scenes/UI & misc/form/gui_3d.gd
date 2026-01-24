@@ -106,7 +106,7 @@ func handle_mouse(event):
 	# Set the event's position and global position.
 	event.position = mouse_pos2D
 	if not event is InputEventScreenTouch:
-		event.global_position = mouse_pos2D
+		event.position = mouse_pos2D
 	
 	# If the event is a mouse motion event...
 	if event is InputEventMouseMotion:

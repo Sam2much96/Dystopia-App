@@ -1,5 +1,5 @@
 # *************************************************
-# godot3-Dystopia-game by INhumanity_arts
+# godot4-Dystopia-game by INhumanity_arts
 # Released under MIT License
 # *************************************************
 # Game Control settings
@@ -12,6 +12,7 @@
 # (2) Add Swipe Gestures on/off controls
 # (3) Include a GitHub Login, to encourage Players to Inspect the Code Base ( Done in Game HUD)
 # (4) Implement Keyboard Layout for  player's help
+# (5) Finish Controls implementation with Unique Node paths
 # *************************************************
 #
 # Bugs:
@@ -34,6 +35,7 @@ var selector #for the menu cycle selector
 @onready var back : Button = $ScrollContainer/VBoxContainer/back
 @onready var music : Button = $ScrollContainer/VBoxContainer/HBoxContainer2/music
 @onready var _debug : Button = $ScrollContainer/VBoxContainer/debug
+@onready var debugCheckbox : CheckBox = $ScrollContainer/VBoxContainer/HBoxContainer4/debugCheckBox
 @onready var Shuffle : Button =$ScrollContainer/VBoxContainer/shuffle
 @onready var Change_Controller_type : Button = get_node("ScrollContainer/VBoxContainer/change controller")
 
@@ -65,7 +67,19 @@ var selector #for the menu cycle selector
 
 
 # COntroller Help
-@onready var _controller_help : Help = $"Help popup/Control"
+#@onready var _controller_help : Help = $"Help popup/Control"
+
+
+# safe pointer to singletons
+# safe pointers to global singletons
+@onready var safe_Globals = get_node("/root/Globals")
+@onready var safe_Utils = get_node("/root/Utils")
+@onready var safe_Debug : debug = get_node("/root/Debug")
+@onready var safe_Music = get_node("/root/Music")
+@onready var safe_GameHUD = get_node("/root/GameHud")
+#@onready var touchInterface = safe_GameHUD.get_TouchInterface() # use set get functions for this logic
+#@onready var menuUI = safe_GameHUD.getMenu()
+@onready var safe_Simulation = get_node("/root/Simulation")
 
 func _ready():
 	if get_tree().get_root().has_node("/root/Debug") == true:
@@ -120,12 +134,12 @@ Turns Music on and off & shuffles current track. Fix code later
 """
 #toggles Debug panel on and off
 func _on_Debug_toggled(button_pressed): 
-	if get_tree().get_root().get_node("/root/Debug") != null:
+	if safe_Debug != null:
 		if button_pressed:
-		
-			GlobalInput.parse_input("Debug", true)
-			$TextureRect2.show() #Shows Debug hint when in debug mode
-			$TextureRect.hide()
+			safe_Debug.start_debug_v1()
+		else:
+			safe_Debug.stop_debug()
+		debugCheckbox.set_pressed(safe_Debug.enabled)
 
 'Changes Button Sizes for mobile UI'
 # Scales UI up for Android Mobile Devices
@@ -216,8 +230,7 @@ func _on_vibration_toggled(button_pressed):
 	# Toggle Vibrations on/off for mobile devices
 	# TO Do: Implement Saving Vibration settings (Done)
 	if button_pressed:
-		GlobalInput.vibrate = !GlobalInput.vibrate
-		vibration.set_text(str(GlobalInput.vibrate))
+		pass
 	else: pass
 
 

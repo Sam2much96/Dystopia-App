@@ -1,11 +1,5 @@
-extends Node3D
+extends AnimationPlayer
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	$AnimationPlayer.play("Move_camera")
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+	play("Move_camera")

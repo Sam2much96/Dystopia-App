@@ -289,7 +289,7 @@ static func LoadLargeScene(
 					b_ = 100
 					loader.show_progress(a_, b_)
 				
-				await loader.get_tree().process_frame # Wait for next frame
+				#await loader.get_tree().process_frame # Wait for next frame
 			
 			ResourceLoader.THREAD_LOAD_LOADED: # Finished loading
 				sc_resource = ResourceLoader.load_threaded_get(scene_to_load)

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b1ud5agm6mrdl" path="res://scenes/UI & misc/form/form_3d.gd" id="1_7841l"]
 [ext_resource type="PackedScene" uid="uid://gnw1ypwpwkp1" path="res://scenes/UI & misc/form/gui_panel_3d.tscn" id="1_r868j"]
-[ext_resource type="PackedScene" uid="uid://cyr2guyycxmrf" path="res://scenes/levels/Overworld3D.tscn" id="2_1b1gd"]
+[ext_resource type="PackedScene" uid="uid://cyr2guyycxmrf" path="res://scenes/levels/OverworldTitle.tscn" id="2_1b1gd"]
 
 [sub_resource type="Animation" id="Animation_1b1gd"]
 resource_name = "Move_camera"
@@ -15,10 +15,10 @@ tracks/0/path = NodePath("Camera3D:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 2.7, 5.9),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 2.72),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 0.27801684, 0.5822387), Vector3(-0.16421393, 0.27801684, 0.72027135), Vector3(0, 0.27801684, 0.5822387)]
+"values": [Vector3(0, 0.58499205, -3.793923), Vector3(0, 0.585, -3)]
 }
 
 [sub_resource type="Animation" id="Animation_7841l"]
@@ -33,7 +33,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 0.27801684, 0.5822387)]
+"values": [Vector3(0, 0.58499205, -3.793923)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_pkaxy"]
@@ -43,16 +43,16 @@ _data = {
 }
 
 [node name="form3D" type="Node3D"]
-script = ExtResource("1_7841l")
 
 [node name="GUIPanel3D" parent="." instance=ExtResource("1_r868j")]
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.016700786, 0.27801684, 0.59627676)
-current = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24916029, 0.20915437, -4.237405)
 
 [node name="OverworldTitle" parent="." instance=ExtResource("2_1b1gd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.8895488, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.58499384, -3.611948)
+current = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 reset_on_save = false
@@ -60,3 +60,4 @@ libraries = {
 &"": SubResource("AnimationLibrary_pkaxy")
 }
 speed_scale = 0.25
+script = ExtResource("1_7841l")

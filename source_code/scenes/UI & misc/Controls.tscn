@@ -1,230 +1,162 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=7 format=3 uid="uid://ctxhlsde2hsqb"]
 
-[ext_resource path="res://scenes/UI & misc/Controls.gd" type="Script" id=1]
-[ext_resource path="res://scenes/UI & misc/Help.tscn" type="PackedScene" id=2]
-[ext_resource path="res://fonts/scroll_bar_theme.tres" type="Theme" id=3]
-[ext_resource path="res://scenes/Comics/chapter 4/Cover 2.webp" type="Texture2D" id=4]
-[ext_resource path="res://scenes/UI & misc/generic_joystick_ui_selector.gd" type="Script" id=6]
-[ext_resource path="res://fonts/Menu_dynamicfont.tres" type="FontFile" id=8]
-[ext_resource path="res://scenes/UI & misc/Notification.gd" type="Script" id=14]
+[ext_resource type="Script" uid="uid://b0imjr128olge" path="res://scenes/UI & misc/Controls.gd" id="1"]
+[ext_resource type="Theme" uid="uid://c560i5fcetkf" path="res://fonts/Dystopia-App-Light-en-theme.tres" id="1_ym7im"]
+[ext_resource type="Theme" uid="uid://dbpub1p1sa5p3" path="res://fonts/scroll_bar_theme.tres" id="3"]
+[ext_resource type="Script" uid="uid://dc084fcbm0vel" path="res://scenes/UI & misc/generic_joystick_ui_selector.gd" id="6"]
+[ext_resource type="FontFile" path="res://fonts/Menu_dynamicfont.tres" id="8"]
 
-[sub_resource type="Theme" id=1]
+[sub_resource type="Theme" id="1"]
 
 [node name="Controls" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_horizontal_guides_": [  ]
-}
+theme = ExtResource("1_ym7im")
+script = ExtResource("1")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
 offset_left = 74.065
 offset_top = -5.66075
 offset_right = 3098.06
 offset_bottom = 3230.34
 rotation = -1.54681
-scale = Vector2( 0.277108, 0.190609 )
+scale = Vector2(0.277108, 0.190609)
 
 [node name="TextureRect2" type="TextureRect" parent="."]
+layout_mode = 0
 offset_left = 236.512
 offset_top = -59.7258
 offset_right = 1516.51
 offset_bottom = 1714.27
 rotation = 0.411034
-scale = Vector2( 0.433765, 0.433765 )
-texture = ExtResource( 4 )
-
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_top = -321.0
-offset_right = 1064.0
-offset_bottom = 1185.0
-color = Color( 1, 1, 1, 0.611765 )
-
-[node name="Help popup" type="Popup" parent="."]
-visible = true
-offset_right = 1285.0
-offset_bottom = 741.0
-script = ExtResource( 14 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Control" parent="Help popup" instance=ExtResource( 2 )]
+scale = Vector2(0.433765, 0.433765)
 
 [node name="CheckButton" type="CheckButton" parent="."]
 visible = false
+layout_mode = 0
 offset_left = 670.09
 offset_top = 96.1085
 offset_right = 746.09
 offset_bottom = 136.108
-theme = SubResource( 1 )
+theme = SubResource("1")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
 offset_left = 299.0
 offset_top = 51.0
 offset_right = 809.0
 offset_bottom = 557.0
-theme = ExtResource( 3 )
+theme = ExtResource("3")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
-offset_right = 352.0
-offset_bottom = 816.0
-script = ExtResource( 6 )
+layout_mode = 2
+script = ExtResource("6")
 
 [node name="back" type="Button" parent="ScrollContainer/VBoxContainer"]
-offset_right = 352.0
-offset_bottom = 78.0
-theme_override_fonts/font = ExtResource( 8 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8")
 action_mode = 0
 text = "Back"
 flat = true
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-offset_top = 82.0
-offset_right = 352.0
-offset_bottom = 160.0
+layout_mode = 2
 
 [node name="music" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer2"]
-offset_right = 236.0
-offset_bottom = 78.0
-theme_override_fonts/font = ExtResource( 8 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8")
 toggle_mode = true
 text = "music on/off"
 flat = true
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
 
 [node name="CheckBox" type="CheckBox" parent="ScrollContainer/VBoxContainer/HBoxContainer2"]
-offset_left = 240.0
-offset_right = 264.0
-offset_bottom = 78.0
+layout_mode = 2
 
-[node name="debug" type="Button" parent="ScrollContainer/VBoxContainer"]
-offset_top = 164.0
-offset_right = 352.0
-offset_bottom = 242.0
-theme_override_fonts/font = ExtResource( 8 )
+[node name="HBoxContainer4" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="debug" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
 toggle_mode = true
 shortcut_in_tooltip = false
 text = "Debug "
 flat = true
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
+
+[node name="debugCheckBox" type="CheckBox" parent="ScrollContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
 
 [node name="languague" type="Button" parent="ScrollContainer/VBoxContainer"]
-offset_top = 246.0
-offset_right = 352.0
-offset_bottom = 324.0
-theme_override_fonts/font = ExtResource( 8 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8")
 toggle_mode = true
 shortcut_in_tooltip = false
 text = "languague"
 flat = true
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
 
 [node name="shuffle" type="Button" parent="ScrollContainer/VBoxContainer"]
-offset_top = 328.0
-offset_right = 352.0
-offset_bottom = 406.0
-theme_override_fonts/font = ExtResource( 8 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8")
 toggle_mode = true
 shortcut_in_tooltip = false
 text = "Shuffle Music "
 flat = true
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
 
 [node name="CRT" type="Button" parent="ScrollContainer/VBoxContainer"]
-offset_top = 410.0
-offset_right = 352.0
-offset_bottom = 488.0
-theme_override_fonts/font = ExtResource( 8 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8")
 toggle_mode = true
 shortcut_in_tooltip = false
 text = "CRT on off"
 flat = true
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
 
 [node name="help" type="Button" parent="ScrollContainer/VBoxContainer"]
-offset_top = 492.0
-offset_right = 352.0
-offset_bottom = 570.0
-theme_override_fonts/font = ExtResource( 8 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8")
 text = "Hold to Show Help"
 flat = true
 
 [node name="change controller" type="Button" parent="ScrollContainer/VBoxContainer"]
-offset_top = 574.0
-offset_right = 352.0
-offset_bottom = 652.0
-theme_override_fonts/font = ExtResource( 8 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8")
 toggle_mode = true
 text = "Direction/controls"
 flat = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-offset_top = 656.0
-offset_right = 352.0
-offset_bottom = 734.0
+layout_mode = 2
 
 [node name="vibration" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer"]
-offset_right = 185.0
-offset_bottom = 78.0
-theme_override_fonts/font = ExtResource( 8 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8")
 toggle_mode = true
 text = "vibration"
 flat = true
 
 [node name="CheckBox" type="CheckBox" parent="ScrollContainer/VBoxContainer/HBoxContainer"]
-offset_left = 189.0
-offset_right = 213.0
-offset_bottom = 78.0
+layout_mode = 2
 
 [node name="TextureButton" type="TextureButton" parent="ScrollContainer/VBoxContainer"]
 visible = false
-offset_top = 656.0
-offset_right = 352.0
-offset_bottom = 656.0
+layout_mode = 2
 toggle_mode = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-offset_top = 738.0
-offset_right = 352.0
-offset_bottom = 816.0
+layout_mode = 2
 
 [node name="multiplayer" type="Button" parent="ScrollContainer/VBoxContainer/HBoxContainer3"]
-offset_right = 217.0
-offset_bottom = 78.0
-theme_override_fonts/font = ExtResource( 8 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8")
 toggle_mode = true
 shortcut_in_tooltip = false
 text = "online mmo"
 flat = true
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
 
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/back" to="." method="_on_Button_pressed"]
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/HBoxContainer2/music" to="." method="_on_music_toggled"]
-[connection signal="toggled" from="ScrollContainer/VBoxContainer/debug" to="." method="_on_Debug_toggled"]
+[connection signal="toggled" from="ScrollContainer/VBoxContainer/HBoxContainer4/debug" to="." method="_on_Debug_toggled"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/languague" to="." method="_on_languague_pressed"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/shuffle" to="." method="_on_Shuffle_pressed"]
 [connection signal="toggled" from="ScrollContainer/VBoxContainer/CRT" to="." method="_on_CRT_toggled"]

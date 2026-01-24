@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bggltjgyfwpkc"]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Theme" uid="uid://c560i5fcetkf" path="res://fonts/Dystopia-App-Light-en-theme.tres" id="1_6ehqc"]
-[ext_resource type="Script" uid="uid://cpkmfbdwok87v" path="res://scenes/UI & misc/ingame_menu.gd" id="2"]
+[ext_resource type="Script" path="res://scenes/UI & misc/ingame_menu.gd" id="2"]
 
 [node name="Control" type="Control"]
 layout_mode = 3

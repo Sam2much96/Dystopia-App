@@ -1,18 +1,19 @@
 [gd_scene load_steps=6 format=3 uid="uid://cyr2guyycxmrf"]
 
-[ext_resource type="Texture2D" uid="uid://mvy768pf8y4m" path="res://resources/3D/HDR_3d_background_bw.webp" id="1_mk56a"]
-[ext_resource type="PackedScene" uid="uid://dvjdmv7f0loy" path="res://resources/3D/overworld map.blend" id="3_xxeqk"]
+[ext_resource type="Texture2D" uid="uid://mvy768pf8y4m" path="res://resources/3D/HDR_3d_background_bw.webp" id="1_htc4o"]
+[ext_resource type="PackedScene" uid="uid://cpqfckmkr2itx" path="res://resources/3D/landscape mesh.tscn" id="2_htc4o"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_x681s"]
-panorama = ExtResource("1_mk56a")
+panorama = ExtResource("1_htc4o")
 energy_multiplier = 0.8
 
 [sub_resource type="Sky" id="Sky_j0mot"]
 sky_material = SubResource("PanoramaSkyMaterial_x681s")
-radiance_size = 1
+radiance_size = 0
 
 [sub_resource type="Environment" id="1"]
 background_mode = 2
+background_energy_multiplier = 1.5
 sky = SubResource("Sky_j0mot")
 ambient_light_source = 3
 ambient_light_color = Color(0.439216, 0.439216, 0.439216, 1)
@@ -21,9 +22,6 @@ ambient_light_color = Color(0.439216, 0.439216, 0.439216, 1)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("1")
-
-[node name="overworld map" parent="WorldEnvironment" instance=ExtResource("3_xxeqk")]
-transform = Transform3D(1, 6.20164e-17, 0, 2.84061e-16, 1, 0, 0, 5.55112e-17, 1, 0, -1.624716, 1.9242867)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="WorldEnvironment"]
 transform = Transform3D(0.999955, 1.98448e-09, 0.00945957, -1.97906e-09, 1, -5.82077e-10, -0.00945957, 5.6333e-10, 0.999955, 0.00746644, 3.38803, -0.329723)
@@ -34,9 +32,12 @@ transform = Transform3D(0.9999553, 1.9844784e-09, 0.009459573, -1.9790607e-09, 1
 light_energy = 16.0
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
-transform = Transform3D(0.31463704, 0.9342097, -0.16809429, -0.4326837, 0.29877564, 0.8505985, 0.8448599, -0.19489814, 0.49822325, 0, 11.306797, 5.8542385)
-visible = false
-light_energy = 0.7
+transform = Transform3D(0.31463706, 0.93420976, -0.16809434, -0.43268374, 0.29877567, 0.8505986, 0.84485996, -0.19489816, 0.49822327, 0, 34.82541, 17.83229)
+light_energy = 0.5
 light_indirect_energy = 0.0
 light_specular = 0.5
-light_bake_mode = 1
+light_bake_mode = 0
+sky_mode = 1
+
+[node name="Landscape" parent="WorldEnvironment" instance=ExtResource("2_htc4o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0006027, 0)

@@ -44,10 +44,16 @@ func _ready():
 		# Connect to attack pressed and roll pressed signals in touch hud object
 		safe_TouchScreen.connect("attack_pressed", self, "attack")
 		safe_TouchScreen.connect("roll_pressed", self, "roll")
-		TouchTimer.connect("timeout",self,"idle")
+		
 		
 	if (!is_instance_valid(safe_TouchScreen)):
 		push_error("Debug Touch HuD -> Player Connection")
+	
+	# connect the touchscreen timeout timer
+	if (is_instance_valid(TouchTimer)):
+		TouchTimer.connect("timeout",self,"idle")
+	if (!is_instance_valid(TouchTimer)):
+		push_error("Debug The touchcreen timeout timer")
 	
 
 func _on_dialog_started():

@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/cinematics/cinematics V2.gd" type="Script" id=1]
 [ext_resource path="res://resources/title animation/Dystopia Logo Drop shadow.png" type="Texture" id=2]
@@ -7,66 +7,7 @@
 [ext_resource path="res://resources/title animation/dots.png" type="Texture" id=5]
 [ext_resource path="res://godot.png" type="Texture" id=6]
 [ext_resource path="res://scenes/Shaders/CRT.tscn" type="PackedScene" id=7]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_22.webp" type="Texture" id=8]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_31.webp" type="Texture" id=9]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_63.webp" type="Texture" id=11]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_34.webp" type="Texture" id=12]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_7.webp" type="Texture" id=13]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_15.webp" type="Texture" id=14]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_39.webp" type="Texture" id=15]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/body_2.webp" type="Texture" id=16]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_67.webp" type="Texture" id=17]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_17.webp" type="Texture" id=18]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_51.webp" type="Texture" id=19]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_46.webp" type="Texture" id=20]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_41.webp" type="Texture" id=21]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_53.webp" type="Texture" id=22]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_58.webp" type="Texture" id=23]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_60.webp" type="Texture" id=24]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_55.webp" type="Texture" id=25]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_29.webp" type="Texture" id=26]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_43.webp" type="Texture" id=27]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_48.webp" type="Texture" id=28]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_65.webp" type="Texture" id=29]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_36.webp" type="Texture" id=30]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_1.webp" type="Texture" id=31]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/body_1.webp" type="Texture" id=32]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_19.webp" type="Texture" id=33]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_10.webp" type="Texture" id=34]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_24.webp" type="Texture" id=35]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_27.webp" type="Texture" id=36]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_12.webp" type="Texture" id=37]
-[ext_resource path="res://resources/title animation/cape_animation_sprites/cape_4.webp" type="Texture" id=38]
-[ext_resource path="res://resources/title animation/intro_animation_sprites/concept_1.webp" type="Texture" id=39]
-[ext_resource path="res://resources/title animation/intro_animation_sprites/concept_2.webp" type="Texture" id=40]
-[ext_resource path="res://resources/title animation/intro_animation_sprites/concept_3.webp" type="Texture" id=41]
-[ext_resource path="res://resources/title animation/intro_animation_sprites/hands_1.webp" type="Texture" id=42]
-[ext_resource path="res://resources/title animation/intro_animation_sprites/hands_3.webp" type="Texture" id=43]
-[ext_resource path="res://resources/title animation/intro_animation_sprites/hands_2.webp" type="Texture" id=44]
-
-[sub_resource type="SpriteFrames" id=5]
-animations = [ {
-"frames": [ ExtResource( 42 ), ExtResource( 44 ), ExtResource( 43 ) ],
-"loop": true,
-"name": "default",
-"speed": 5.0
-} ]
-
-[sub_resource type="SpriteFrames" id=3]
-animations = [ {
-"frames": [ ExtResource( 32 ), ExtResource( 16 ) ],
-"loop": true,
-"name": "default",
-"speed": 5.0
-} ]
-
-[sub_resource type="SpriteFrames" id=4]
-animations = [ {
-"frames": [ ExtResource( 31 ), ExtResource( 38 ), ExtResource( 13 ), ExtResource( 34 ), ExtResource( 37 ), ExtResource( 14 ), ExtResource( 18 ), ExtResource( 33 ), ExtResource( 8 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 26 ), ExtResource( 9 ), ExtResource( 12 ), ExtResource( 30 ), ExtResource( 15 ), ExtResource( 21 ), ExtResource( 27 ), ExtResource( 20 ), ExtResource( 28 ), ExtResource( 19 ), ExtResource( 22 ), ExtResource( 25 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 11 ), ExtResource( 29 ), ExtResource( 17 ) ],
-"loop": true,
-"name": "default",
-"speed": 5.0
-} ]
+[ext_resource path="res://resources/title animation/opening_cinematics_tileset_256x256_px.webp" type="Texture" id=10]
 
 [sub_resource type="Animation" id=1]
 length = 0.001
@@ -131,7 +72,7 @@ tracks/4/keys = {
 "values": [ true ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("side_view:visible")
+tracks/5/path = NodePath("cape_2:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
@@ -139,11 +80,11 @@ tracks/5/enabled = true
 tracks/5/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("3_4_view:position")
+tracks/6/path = NodePath("cape_2:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
@@ -151,11 +92,11 @@ tracks/6/enabled = true
 tracks/6/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 478, 584 ) ]
+"update": 1,
+"values": [ false ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("side_view:position")
+tracks/7/path = NodePath("3_4_view_2:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
@@ -164,10 +105,10 @@ tracks/7/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 256, 290 ) ]
+"values": [ Vector2( -298, -12 ) ]
 }
 tracks/8/type = "value"
-tracks/8/path = NodePath("front_view:visible")
+tracks/8/path = NodePath("front_view_2:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
@@ -175,11 +116,11 @@ tracks/8/enabled = true
 tracks/8/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
+"update": 0,
+"values": [ Vector2( -585, -6 ) ]
 }
 tracks/9/type = "value"
-tracks/9/path = NodePath("front_view:scale")
+tracks/9/path = NodePath("side_view_2:position")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/imported = false
@@ -188,10 +129,10 @@ tracks/9/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 0.629976, 0.629976 ) ]
+"values": [ Vector2( -867, -8 ) ]
 }
 tracks/10/type = "value"
-tracks/10/path = NodePath("3_4_view:visible")
+tracks/10/path = NodePath("side_view_2:visible")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/imported = false
@@ -203,7 +144,7 @@ tracks/10/keys = {
 "values": [ false ]
 }
 tracks/11/type = "value"
-tracks/11/path = NodePath("3_4_view:scale")
+tracks/11/path = NodePath("front_view_2:visible")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/imported = false
@@ -211,11 +152,11 @@ tracks/11/enabled = true
 tracks/11/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ) ]
+"update": 1,
+"values": [ false ]
 }
 tracks/12/type = "value"
-tracks/12/path = NodePath("cape:visible")
+tracks/12/path = NodePath("3_4_view_2:visible")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/imported = false
@@ -227,7 +168,7 @@ tracks/12/keys = {
 "values": [ false ]
 }
 tracks/13/type = "value"
-tracks/13/path = NodePath("front_view:position")
+tracks/13/path = NodePath("side_view_2:scale")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/imported = false
@@ -236,10 +177,10 @@ tracks/13/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 505, 304 ) ]
+"values": [ Vector2( 2.5, 2.5 ) ]
 }
 tracks/14/type = "value"
-tracks/14/path = NodePath("cape:position")
+tracks/14/path = NodePath("front_view_2:scale")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/imported = false
@@ -248,7 +189,67 @@ tracks/14/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 486, 339 ) ]
+"values": [ Vector2( 2.5, 2.5 ) ]
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("3_4_view_2:scale")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 2.5, 2.5 ) ]
+}
+tracks/16/type = "value"
+tracks/16/path = NodePath("3_4_view_2/hands_2:frame")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+tracks/17/type = "value"
+tracks/17/path = NodePath("cape_2:scale")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1.6, 1.6 ) ]
+}
+tracks/18/type = "value"
+tracks/18/path = NodePath("cape_2/body_animation_2:frame")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 5 ]
+}
+tracks/19/type = "value"
+tracks/19/path = NodePath("cape_2/cape_animation2:frame")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 7 ]
 }
 
 [sub_resource type="Animation" id=2]
@@ -327,124 +328,184 @@ tracks/5/keys = {
 "values": [ true, false ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("side_view:visible")
+tracks/6/path = NodePath("cape_2:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0.3, 12.8, 16 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ false, true, false ]
+"times": PoolRealArray( 0, 21.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 329, 198 ) ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("side_view:position")
+tracks/7/path = NodePath("cape_2:visible")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 12.8, 13.9, 15, 16 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1199, 268 ), Vector2( 784, 336 ), Vector2( 546, 274 ), Vector2( 481, 290 ) ]
+"times": PoolRealArray( 0, 21.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
 }
 tracks/8/type = "value"
-tracks/8/path = NodePath("front_view:visible")
+tracks/8/path = NodePath("3_4_view_2:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"times": PoolRealArray( 0.3, 16, 19 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ false, true, false ]
+"times": PoolRealArray( 0, 19 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( -298, -12 ), Vector2( 172, 30 ) ]
 }
 tracks/9/type = "value"
-tracks/9/path = NodePath("front_view:scale")
+tracks/9/path = NodePath("front_view_2:position")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/imported = false
 tracks/9/enabled = true
 tracks/9/keys = {
-"times": PoolRealArray( 16, 19 ),
+"times": PoolRealArray( 0, 16 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0.520001, 0.520001 ), Vector2( 0.660824, 0.660824 ) ]
+"values": [ Vector2( -585, -6 ), Vector2( 156, 8 ) ]
 }
 tracks/10/type = "value"
-tracks/10/path = NodePath("3_4_view:visible")
+tracks/10/path = NodePath("side_view_2:position")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/imported = false
 tracks/10/enabled = true
 tracks/10/keys = {
-"times": PoolRealArray( 0.3, 19, 21.3 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ false, true, false ]
+"times": PoolRealArray( 0, 12.8, 13.9, 15, 16 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -867, -8 ), Vector2( 855, -8 ), Vector2( 438, 59 ), Vector2( 203, -5 ), Vector2( 122, 5 ) ]
 }
 tracks/11/type = "value"
-tracks/11/path = NodePath("3_4_view:position")
+tracks/11/path = NodePath("side_view_2:visible")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/imported = false
 tracks/11/enabled = true
 tracks/11/keys = {
-"times": PoolRealArray( 19.1 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 521, 318 ) ]
+"times": PoolRealArray( 0, 12.8, 16 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
 }
 tracks/12/type = "value"
-tracks/12/path = NodePath("3_4_view:scale")
+tracks/12/path = NodePath("front_view_2:visible")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/imported = false
 tracks/12/enabled = true
 tracks/12/keys = {
-"times": PoolRealArray( 19.1 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 0.486048, 0.486048 ) ]
+"times": PoolRealArray( 0, 16, 19 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
 }
 tracks/13/type = "value"
-tracks/13/path = NodePath("cape:visible")
+tracks/13/path = NodePath("3_4_view_2:visible")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/imported = false
 tracks/13/enabled = true
 tracks/13/keys = {
-"times": PoolRealArray( 0.3, 21.3 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 19, 21.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
-"values": [ false, true ]
+"values": [ false, true, false ]
 }
 tracks/14/type = "value"
-tracks/14/path = NodePath("front_view:position")
+tracks/14/path = NodePath("side_view_2:scale")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/imported = false
 tracks/14/enabled = true
 tracks/14/keys = {
-"times": PoolRealArray( 16, 19 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 12.8 ),
+"transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 505, 304 ), Vector2( 493, 406 ) ]
+"values": [ Vector2( 2.5, 2.5 ) ]
 }
 tracks/15/type = "value"
-tracks/15/path = NodePath("cape:position")
+tracks/15/path = NodePath("front_view_2:scale")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/imported = false
 tracks/15/enabled = true
 tracks/15/keys = {
-"times": PoolRealArray( 21.3, 30 ),
+"times": PoolRealArray( 16, 19 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 500, 320 ), Vector2( 525, 320 ) ]
+"values": [ Vector2( 2.5, 2.5 ), Vector2( 3, 3 ) ]
+}
+tracks/16/type = "value"
+tracks/16/path = NodePath("3_4_view_2:scale")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/keys = {
+"times": PoolRealArray( 19 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 2.5, 2.5 ) ]
+}
+tracks/17/type = "value"
+tracks/17/path = NodePath("3_4_view_2/hands_2:frame")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/keys = {
+"times": PoolRealArray( 19, 19.8, 20.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2 ]
+}
+tracks/18/type = "value"
+tracks/18/path = NodePath("cape_2:scale")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/keys = {
+"times": PoolRealArray( 21.3 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1.4, 1.4 ) ]
+}
+tracks/19/type = "value"
+tracks/19/path = NodePath("cape_2/body_animation_2:frame")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/keys = {
+"times": PoolRealArray( 21.3, 21.8, 22.4, 23.2, 23.9, 24.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 5, 6, 5, 6, 5, 6 ]
+}
+tracks/20/type = "value"
+tracks/20/path = NodePath("cape_2/cape_animation2:frame")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/keys = {
+"times": PoolRealArray( 21.4, 21.5, 21.6, 21.7, 21.8, 21.9, 22, 22.1, 22.2, 22.3, 22.4, 22.5, 22.6, 22.7, 22.8, 22.9, 23, 23.1, 23.2, 23.3, 23.4, 23.5, 23.6, 23.7, 23.8, 23.9, 24, 24.1, 24.2, 24.3, 24.4, 24.5, 24.6, 24.7, 24.8, 24.9, 25 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 10, 9, 8, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18 ]
 }
 
 [node name="Cinematics" type="Control"]
@@ -475,6 +536,61 @@ input_pass_on_modal_close_click = false
 texture = ExtResource( 2 )
 stretch_mode = 6
 
+[node name="side_view_2" type="Sprite" parent="."]
+visible = false
+position = Vector2( -867, -8 )
+scale = Vector2( 2.5, 2.5 )
+texture = ExtResource( 10 )
+centered = false
+hframes = 7
+vframes = 5
+frame = 30
+
+[node name="front_view_2" type="Sprite" parent="."]
+visible = false
+position = Vector2( -585, -6 )
+scale = Vector2( 2.5, 2.5 )
+texture = ExtResource( 10 )
+centered = false
+hframes = 7
+vframes = 5
+frame = 34
+
+[node name="3_4_view_2" type="Sprite" parent="."]
+visible = false
+position = Vector2( -298, -12 )
+scale = Vector2( 2.5, 2.5 )
+texture = ExtResource( 10 )
+centered = false
+hframes = 7
+vframes = 5
+frame = 32
+
+[node name="hands_2" type="Sprite" parent="3_4_view_2"]
+position = Vector2( 50, 25.8776 )
+texture = ExtResource( 10 )
+centered = false
+hframes = 7
+vframes = 5
+
+[node name="cape_2" type="Node2D" parent="."]
+visible = false
+scale = Vector2( 1.6, 1.6 )
+
+[node name="body_animation_2" type="Sprite" parent="cape_2"]
+texture = ExtResource( 10 )
+centered = false
+hframes = 7
+vframes = 5
+frame = 5
+
+[node name="cape_animation2" type="Sprite" parent="cape_2"]
+texture = ExtResource( 10 )
+centered = false
+hframes = 7
+vframes = 5
+frame = 7
+
 [node name="splatter" type="TextureRect" parent="."]
 margin_left = -7.35754
 margin_top = 176.804
@@ -483,45 +599,7 @@ margin_bottom = 449.804
 rect_scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 5 )
 
-[node name="side_view" type="Sprite" parent="."]
-visible = false
-position = Vector2( 256, 290 )
-scale = Vector2( 0.535192, 0.535192 )
-texture = ExtResource( 39 )
-
-[node name="front_view" type="Sprite" parent="."]
-visible = false
-position = Vector2( 505, 304 )
-scale = Vector2( 0.629976, 0.629976 )
-texture = ExtResource( 40 )
-
-[node name="3_4_view" type="Sprite" parent="."]
-visible = false
-position = Vector2( 478, 584 )
-texture = ExtResource( 41 )
-
-[node name="hands" type="AnimatedSprite" parent="3_4_view"]
-position = Vector2( 43.2056, 8.22961 )
-scale = Vector2( 1.01962, 1.01962 )
-frames = SubResource( 5 )
-playing = true
-
-[node name="cape" type="Sprite" parent="."]
-visible = false
-position = Vector2( 486, 339 )
-scale = Vector2( 0.463077, 0.463077 )
-
-[node name="body_animation" type="AnimatedSprite" parent="cape"]
-position = Vector2( 0, 6 )
-frames = SubResource( 3 )
-playing = true
-
-[node name="cape_animation" type="AnimatedSprite" parent="cape"]
-frames = SubResource( 4 )
-playing = true
-
 [node name="ColorRect" parent="." instance=ExtResource( 7 )]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 0.0

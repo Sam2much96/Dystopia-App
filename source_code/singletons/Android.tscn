@@ -22,6 +22,8 @@ autostart = true
 script = ExtResource( 3 )
 enabled = true
 
+[node name="AdsTimer" type="Timer" parent="."]
+
 [connection signal="timeout" from="RainsTimer" to="." method="_on_RainsTimer_timeout"]
 [connection signal="timeout" from="ScreenTimer" to="." method="_on_ScreenTimer_timeout"]
 [connection signal="timeout" from="OrientationTimer" to="." method="_on_OrientationTimer_timeout"]

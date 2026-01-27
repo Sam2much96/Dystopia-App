@@ -723,7 +723,7 @@ remote func broadcast_world_positions():
 
 
 
-class Player_v3_networking extends KinematicBody2D:
+class Player_v4_networking extends KinematicBody2D:
 
 	
 	
@@ -956,12 +956,23 @@ class Lobby extends Control:
 			
 		# Bug: Dialogue box doesnt stop showing 
 		
-
-	# Starts Server Connections
-	# Connects to UI Buttons
-	static func _on_host_pressed( peer : NetworkedMultiplayerENet, Lobby : SceneTree, host_button : Button, join_button : Button , dialog_box : DialogBox) -> bool:
-		# bugs: (1) debugthe stack that auto presses this button
-		#print_stack()
+	"""
+	Host Server UI backend
+	Features:
+		(1) Creates the multiplayer authoritative server
+		(2) Connects to the Login UI
+		(3) Multiplayer Architecture uses the authoritative broadcasting server
+	To do:
+		(1) depreciate Godot Multiplayer ENet implementation to custom code so it's cross platform
+		(2) Document Code thoroughly
+		(3) Implement Multiplayer Logic to cycle between UDP, TCP Websocket and GodotNetworkedMultiplayerENet
+	"""
+	# Starts Godot 3 Multiplayer Enet Servers
+	# to do:
+	# (1) move to separate server and client classes in the Networking scripts
+	static func _on_host_pressed_ENet( peer : NetworkedMultiplayerENet, Lobby : SceneTree, host_button : Button, join_button : Button , dialog_box : DialogBox) -> bool:
+		# 
+		
 		peer = NetworkedMultiplayerENet.new()
 		peer.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER)
 		var err = peer.create_server(DEFAULT_PORT, Networking.NetConfig.MAX_PLAYERS) # Maximum of % peers
@@ -985,17 +996,38 @@ class Lobby extends Control:
 		print_debug("Waiting for player..."+ str(Networking.NetConfig.ip[0]))
 		
 		# Sets UI Status : text : String, status : DialogBox, isok : bool
-		_set_status("Waiting for players ..." + str(Networking.NetConfig.ip[0]) ,dialog_box ,true)
-
-		# Only show hosting instructions when relevant.
-		#
-		# Show Host Instructionals
-		#port_forward_label.visible = true
-		#find_public_ip_button.visible = true
+		_set_status("Waiting for players ..." + str(Networking.NetConfig.	ip[0]) ,dialog_box ,true)
+		return true
+	
+	# TCP Multiplayer Servers implementation
+	static func _on_host_pressed_TCP(peer, Lobby : SceneTree, host_button : Button, join_button : Button, dialog_box : DialogBox):
+		peer = TCP_Server.new()
+		var err = peer.listen(DEFAULT_PORT, "127.0.0.1")
+		
+		# If Bad Connection
+		if err != OK:
+			# Is another server running?
+			_set_status("Can't host, address in use.", dialog_box, false)
+			print_debug("Failed to create server. Error code: " + str(err))
+			return true
+		
+		OS.set_window_title('Server')
+		# Disable buttons
+		host_button.set_disabled(true)
+		join_button.set_disabled(true)
+		
+		# I/O
+		print_debug("Server started on port: " + str(DEFAULT_PORT))
+		print_debug("Waiting for players... " + str(Networking.NetConfig.ip[0]))
+		
+		# Sets UI Status: text: String, status: DialogBox, isok: bool
+		_set_status("Waiting for players... " + str(Networking.NetConfig.ip[0]), dialog_box, true)
+		
 		return true
 
+	# Godot 3 Multiplayer ENet Client Join Backend
 	# Connects to Server From Client
-	static func _on_join_pressed( address: LineEdit, ClientPeer: NetworkedMultiplayerENet, Lobby : SceneTree ) -> bool :
+	static func _on_join_pressed_ENet( address: LineEdit, ClientPeer: NetworkedMultiplayerENet, Lobby : SceneTree ) -> bool :
 		var ip = address.get_text()
 		if not ip.is_valid_ip_address():
 			print_debug("IP Address Is Invalid")
@@ -1011,8 +1043,34 @@ class Lobby extends Control:
 		print_debug(" Connecting...")
 		
 		return true
-
-
+	
+	# TCP Server Join Server Logic Implementation
+	static func _on_join_pressed_TCP(address: LineEdit, ClientPeer, Lobby : SceneTree) -> bool:
+		var ip = address.get_text()
+		
+		# Validate IP address
+		if not ip.is_valid_ip_address():
+			print_debug("IP Address Is Invalid: " + ip)
+			_set_status("IP address is invalid", Dialogs.dialog_box, false)
+			return true
+		
+		# Initialize custom TCP client
+		var client = StreamPeerTCP.new()
+		var err = client.connect_to_host(ip, DEFAULT_PORT)
+		print_debug("Join Lobby Backend Triggered: ", ip, "/", str(err))
+		
+		
+		if err != OK:
+			print_debug("Failed to connect to server. Error code: " + str(err))
+			_set_status("Failed to connect to server.", Dialogs.dialog_box, false)
+			return false
+		
+		if err == OK:
+			# debug client connection
+			# works
+			print_debug("Client Connected Successfully: ", client.get_status())
+		
+		return true
 
 
 class NetworkedObject extends Area2D:

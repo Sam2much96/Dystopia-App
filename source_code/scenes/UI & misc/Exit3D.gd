@@ -49,8 +49,10 @@ func _on_body_entered(body):
 		Globals.current_level = to_scene
 		Globals.spawn_x = body.position.x+ 200 
 		Globals.spawn_y = body.position.y +200
-		Globals.player_hitpoints = body.hitpoints
+		#Globals.player_hitpoints = body.hitpoints
 		
+		
+		Utils.Functions.change_scene_to(Globals.loading_scene, get_tree())
 		# temporarily disable for touch interface refactor
 		#
 		#Utils.Functions.save_game(

@@ -22,9 +22,9 @@ var last_mouse_pos3D = null
 # The last processed input touch/mouse event. To calculate relative movement.
 var last_mouse_pos2D = null
 
-onready var node_viewport = $Viewport
-onready var node_quad = $Quad
-onready var node_area = $Quad/Area
+onready var node_viewport : Viewport = $Viewport
+onready var node_quad : MeshInstance = $Quad
+onready var node_area : Area = $Quad/Area
 
 func _ready():
 	node_area.connect("mouse_entered", self, "_mouse_entered_area")
@@ -126,12 +126,12 @@ func handle_mouse(event):
 
 
 func find_mouse(global_position):
-	var camera = get_viewport().get_camera()
+	var camera_ = get_viewport().get_camera()
 	
 	# From camera center to the mouse position in the Area
-	var from = camera.project_ray_origin(global_position)
-	var dist = find_further_distance_to(camera.transform.origin)
-	var to = from + camera.project_ray_normal(global_position) * dist
+	var from = camera_.project_ray_origin(global_position)
+	var dist = find_further_distance_to(camera_.transform.origin)
+	var to = from + camera_.project_ray_normal(global_position) * dist
 	
 	
 	# Manually raycasts the are to find the mouse position

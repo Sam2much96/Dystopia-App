@@ -5,6 +5,7 @@
 # The Net Player Script 
 # 
 # Core Features:
+# (0) Implements Godot Multiplayer ENet
 # (1) The Player Script v2 implements networking calls Websocket polling 
 # (2) Contain all Online Player Code
 # (3) Connects to the SImulation singleton for hit detection and player movement
@@ -46,8 +47,22 @@
 
 extends Player_v2_TopDown
 
-class_name Player_v2_networking
+class_name Player_v3_networking
 
+# Network signals
+signal peer_connected(peer_id)
+signal peer_disconnected(peer_id)
+signal connected_to_server()
+signal connection_failed()
+signal server_disconnected()
+
+# Network state
+var is_server : bool = false
+var server = null # : TCPServer
+var client : StreamPeerTCP = null
+var peers : Dictionary = {} # peer_id : {stream: StreamPeerTCP, buffer: String}
+var my_peer_id : int = 0
+var next_peer_id : int = 2 # Server is always 1, clients start at 2
 
 
 #Server Variable
@@ -97,7 +112,7 @@ func _ready():
 	
 	# Save Player Details
 	#CLient Peer Details Locally
-	safe_Simulation.register_player(peer_id)
+	Simulation.register_player(peer_id)
 	
 	#print_debug ("Client Peer Data ", Simulation.player_info[peer_id])
 	
@@ -108,24 +123,25 @@ func _ready():
 	
 	"Register Player Error Catcher"
 	# Error Catcher 2
-	if safe_Simulation.player_info.keys().empty():
-		safe_Simulation.player_info = {peer_id : {}}
-		print_debug(safe_Simulation.player_info.keys())# For Debug Purposes ONly
+	if Simulation.player_info.keys().empty():
+		Simulation.player_info = {peer_id : {}}
+		print_debug(Simulation.player_info.keys())# For Debug Purposes ONly
 
 	# Connect SIgnals
 	# (1) Networking Singleton to SImulation SIngleton
 	if is_network_master():
 		
-		safe_Simulation.connect("pi", safe_Simulation,"simulate", [peer_id, self])
-		print_debug("Simulation signal is connected: ",safe_Simulation.is_connected("pi", safe_Simulation,"simulate"))
+		Simulation.connect("pi", Simulation,"simulate", [peer_id, self])
+		print_debug("Simulation signal is connected: ",Simulation.is_connected("pi", Simulation,"simulate"))
 
 	"Active Camera"
 	
+	# This code should only be called if the gameplay type is using godot multiplayer enet
 	if not is_network_master():
-		if safe_Networking.NetConfig.GamePlay == safe_Networking.NetConfig.LOCAL_COOP:
+		if Networking.NetConfig.GamePlay == Networking.NetConfig.LOCAL_COOP:
 			# Fixes Client Player Inactive Camera
 			# Breaks in Online MMO Gameplay
-			safe_Simulation.all_player_objects[2].player_camera.make_current()
+			Simulation.all_player_objects[2].player_camera.make_current()
 
 
 
@@ -492,7 +508,7 @@ remote func display_damage(body):
 			break
 
 
-class server  extends Reference:
+class server3  extends Reference:
 	remote func fire_weapon(id, position, current_angle):
 		Simulation.projectiles.append({ timestamp = OS.get_ticks_msec() + (Networking.TICK_DURATION * 2), id = id, position = position, current_angle = current_angle })
 

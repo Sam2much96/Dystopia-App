@@ -150,18 +150,19 @@ func _ready():
 
 func _input(event):
 	"Status UI Visibility Is Entirely Self Controlled From Here"
+	#check if the player is available and return if not
 	
 	# Satus UI Only Listens to The Pause Input
-	if not event.is_action_pressed("pause"): # Guard Clause
+	if not event.is_action_pressed("stats"): # Guard Clause
 		return 
 		
 	# Enable / DIsable Logic is Buggy
-	if event.is_action_pressed("pause")  && enabled == false:
+	if event.is_action_pressed("stats")  && enabled == false:
 		#print_debug("enable")
 		enabled = true
 		_enable()
 		return enabled 
-	if event.is_action_pressed("pause") && enabled == true:
+	if event.is_action_pressed("stats") && enabled == true:
 		enabled = false
 		_disable()
 
@@ -185,9 +186,10 @@ func _fetch_prices(): # temporarily disabled for refactoring Aug 22/2025
 		safeNetworking._check_connection("https://free-api.vestige.fi/asset/2717482658/price" , safeNetworking) #
 
 
-
+# to do:
+# (1) Move All Wallet resource and api return data type to a seprate sccript and reference the data 
 func _update_wallet_stats(): #Updates killcount and Algos
-	if safeNetworking.good_internet && !safeNetworking.Data.empty():
+	if safeNetworking.NetConfig.good_internet && !safeNetworking.NetConfig.Data.empty():
 		_coin_label.text = 'Suds: ' + str (Globals.suds) + "\n Worth: " + str(Globals.suds * float(safeNetworking.price_usd))
 		
 		# serialises sud price data from vestigefi + Globals storage

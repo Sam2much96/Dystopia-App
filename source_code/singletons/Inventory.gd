@@ -69,7 +69,7 @@ func get_item(type:String) -> int:
 		return inventory[type]
 	else:
 		return 0
-	pass
+
 
 
 """
@@ -171,7 +171,7 @@ func useItem(type:String, amount:int) -> bool:
 		return true
 	else:
 		return false
-	pass
+
 
 "RETURNS A DUPLICATE OF THE INVENTORY DICTIONARY"
 func list() -> Dictionary:

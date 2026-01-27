@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://scenes/characters/3DMeshPlayer.gd" type="Script" id=1]
+[ext_resource path="res://scenes/characters/Player3D_3rd_person.gd" type="Script" id=1]
 [ext_resource path="res://resources/3D/Toon_Shade_Settings.tres" type="Material" id=2]
 [ext_resource path="res://resources/3D/player3d.tscn" type="PackedScene" id=4]
 

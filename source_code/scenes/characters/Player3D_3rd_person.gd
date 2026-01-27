@@ -2,7 +2,7 @@ extends KinematicBody
 # Bugs:
 #(1) movement uses global positin instead of local positin for movement logic
 
-
+class_name Player_3rd_Person
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")#Vector3.DOWN * 20  # strength of gravity
 export (float) var speed = 10.0  # movement speed
@@ -38,15 +38,7 @@ func _input(event):
 		look_rot.x = clamp(look_rot.x, min_angle, max_angle)
 		
 
-	#if Input.is_action_pressed("move_up"):
-		
-	#	velocity.z -= speed
-	#if Input.is_action_pressed("move_down"):
-	#	velocity.z += speed
-	#if Input.is_action_pressed("move_right"):
-	#	velocity.x += speed
-	#if Input.is_action_pressed("move_left"):
-	#	velocity.x -= speed
+
 	if Input.is_action_just_pressed("roll"):
 		jump = true
 	if Input.is_action_just_released("roll"):
@@ -95,8 +87,9 @@ func _process(delta):
 		# create a death count to change to 2d overworld scene
 	#despawn conditional
 	if self.position.y < -20:
-				
-		Globals.current_level = "res://scenes/levels/Overworld.tscn"
+		# to do:
+		# (1) create and use a scene exit reource + dictionary for storingn viable sences and scen exits
+		Globals.current_level = "res://scenes/levels/overworld_1.tscn"
 		
 		# Global Scene Transition
 		Utils.Functions.change_scene_to(Globals.loading_scene, get_tree())

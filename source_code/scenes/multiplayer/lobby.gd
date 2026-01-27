@@ -12,6 +12,7 @@
 # (3) Test Both Online MMO and Local Coop with 3-5 Players and fix all bugs
 # (4) Dedicated Server Logic implementation
 # (5) Write logic to get the steam user name if playing on steam
+# (6) Export Multiple options for different types of server connections e.g. enet and TCP
 # *************************************************
 # Bugs
 # (1) Multiplayer is buggy (2/3)
@@ -32,6 +33,8 @@ Code may be really hacky but will be thoughroughly Documented.
 onready var network = NetworkedMultiplayerENet.new()
 export (String) var pub_ipaddr = "https://icanhazip.com/" # used in match making to 
 export (String) var my_ip : String = ""
+export(int, "Enet", "Tcp", "UDP", "Websockets") var state
+
 
 # Lobby UI Items
 onready var c_react : ColorRect = $ColorRect
@@ -42,6 +45,9 @@ onready var _host : Button = $ui/ScrollContainer/grid/host
 
 # Selector for Local Lan or Online mmo 
 onready var _multiplayer_type : OptionButton = $ui/ScrollContainer/grid/input_game
+
+# selector for networking tyle
+onready var game_state_controller : OptionButton = $ui/ScrollContainer/grid/input_net
 
 export(bool) var DEDICATED_SERVER  # boolean for quick testing. Depreciate
 
@@ -61,19 +67,16 @@ func _ready():
 	_multiplayer_type.add_item("lan")
 	_multiplayer_type.add_item("mmo")
 	
+	# expose multiplayer architecture to UI
+	game_state_controller.add_item("Enet")
+	game_state_controller.add_item("TCP")
+	game_state_controller.add_item("UDP")
+	game_state_controller.add_item("Websockets")
+	
 	# Make UI Global
 	Networking.NetConfig.UserInterface = $ui
 	
-	#Request For Public Arrderss Depreciated
 	
-	# Connect Networking Signals
-	#Networking.connect("request_completed", self, "_on_search_IP")
-	
-	# 
-	#Networking.request(pub_ipaddr)
-
-	
-
 	
 	# UI Scaling on mobile Devices 
 			#Quick Fix for Upscaing
@@ -114,8 +117,15 @@ func _on_play_pressed():
 	
 	# Connects UI Button Signals
 	
+	# Godot ENet
 	#address: LineEdit, ClientPeer: NetworkedMultiplayerENet, Lobby : SceneTree
-	Networking.Lobby._on_join_pressed($ui/ScrollContainer/grid/address_text, network, get_tree())
+	if state == 0:
+		Networking.Lobby._on_join_pressed_ENet($ui/ScrollContainer/grid/address_text, network, get_tree())
+	
+	# TCP
+	if state == 1:
+		Networking.Lobby._on_join_pressed_TCP($ui/ScrollContainer/grid/address_text, network, get_tree())
+
 	hide_lobby_UI_elements()
 
 func _on_host_pressed():
@@ -130,7 +140,19 @@ func _on_host_pressed():
 	
 	# Connects UI Button Signals
 	#peer : NetworkedMultiplayerENet, Lobby : SceneTree, host_button : Button, join_button : Button , dialog_box : DialogBox
-	Networking.Lobby._on_host_pressed(network, get_tree(), $ui/ScrollContainer/grid/host, $ui/ScrollContainer/grid/play, $Dialog_box)
+	
+	# Godot 3 Enet
+	if state == 0:
+		Networking.Lobby._on_host_pressed_ENet(network, get_tree(), $ui/ScrollContainer/grid/host, $ui/ScrollContainer/grid/play, $Dialog_box)
+	
+	# TCP Multiplayer
+	if state == 1:
+		Networking.Lobby._on_host_pressed_TCP(network, get_tree(), $ui/ScrollContainer/grid/host, $ui/ScrollContainer/grid/play, $Dialog_box)
+	
+	# TO do:
+	# (1) Implemtn UDP multiplayer architechture into backend class
+	#(2) connect UI to multiplayer state machinee
+	
 	hide_lobby_UI_elements()
 
 
@@ -151,3 +173,7 @@ func _dedicated_server():
 	
 	
 	Networking.Lobby._on_host_pressed(network, get_tree(), $ui/ScrollContainer/grid/host, $ui/ScrollContainer/grid/play, $Dialog_box)
+
+
+func _on_input_net_item_selected(index):
+	state = index

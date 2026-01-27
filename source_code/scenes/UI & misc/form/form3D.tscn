@@ -41,5 +41,5 @@ reset_on_save = false
 playback_speed = 0.25
 anims/Move_camera = SubResource( 1 )
 
-[node name="Overworld3D" parent="." instance=ExtResource( 2 )]
+[node name="OverworldTitle" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.45707, 0 )

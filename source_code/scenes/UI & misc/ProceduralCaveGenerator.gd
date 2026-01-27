@@ -44,7 +44,7 @@ export(float) var noise_lacunarity = 0.4
 export(float) var noise_threshold = 0.5
 
 # set get method to update Map generated on the fly
-export(bool) var redraw setget redraw
+export(bool) var redraw setget _redraw
 
 # Acces the Parent TileMap with the AutoTile
 var tile_map = null # should pass in a tilemap parameter
@@ -87,8 +87,8 @@ func _enter_tree()-> void:
 	
 	#map_dimensions = Utils.Functions.edge_length(point_data)
 	
-	map__width = map_dimensions.x/10
-	map__height = map_dimensions.y/10
+	map__width = int(map_dimensions.x/10)
+	map__height = int(map_dimensions.y/10)
 	
 	# Debug Point data
 	# poolVector Array
@@ -115,7 +115,7 @@ func _enter_tree()-> void:
 	render()
 	
 
-func redraw(value = null) -> void:
+func _redraw(value = null) -> void:
 	if tile_map == null :#&& Globals.tile_map == null:
 		return
 	

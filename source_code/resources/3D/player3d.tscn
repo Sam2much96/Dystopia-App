@@ -309,7 +309,7 @@ shader_param/use_attenuation = true
 shader_param/use_specular = false
 shader_param/specular_strength = 1.0
 shader_param/specular_shininess = 16.0
-shader_param/use_rim = true
+shader_param/use_rim = false
 shader_param/rim_width = 8.0
 shader_param/rim_color = Color( 1, 1, 1, 1 )
 shader_param/use_ramp = false
@@ -343,7 +343,7 @@ shader_param/use_attenuation = true
 shader_param/use_specular = false
 shader_param/specular_strength = 1.0
 shader_param/specular_shininess = 16.0
-shader_param/use_rim = true
+shader_param/use_rim = false
 shader_param/rim_width = 8.0
 shader_param/rim_color = Color( 1, 1, 1, 1 )
 shader_param/use_ramp = false
@@ -773,10 +773,12 @@ skin = SubResource( 4 )
 material/0 = SubResource( 29 )
 
 [node name="eyes_1" type="MeshInstance" parent="Armature/Skeleton"]
+visible = false
 mesh = SubResource( 8 )
 skin = SubResource( 4 )
 
 [node name="eyes_2" type="MeshInstance" parent="Armature/Skeleton"]
+visible = false
 mesh = SubResource( 12 )
 skin = SubResource( 4 )
 

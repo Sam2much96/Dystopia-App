@@ -579,7 +579,7 @@ class Enemy_ extends RefCounted:
 		player : Player, 
 		player_pos : Vector2, 
 		_position : Vector2,
-		_enemy: Enemy, 
+		_enemy: CharacterBody2D, # Enemy 
 		enemy_type : String, 
 		state : int, 
 		enemy_distance_to_player : float,
@@ -689,3 +689,39 @@ class Enemy_ extends RefCounted:
 		#if raycast.is_enabled() == false && player == null:
 		#	#use state changer timer to turn off processing
 		#	push_error ('Debug Enenmy Behaviour Check')
+	
+	static func hit_collision_detected(
+		area : Area2D, 
+		state : int, 
+		hitpoints : int, 
+		pushback_direction : Vector2, 
+		_body : CharacterBody2D,
+		_global_position : Vector2,
+		kick_back_distance : int
+		):
+		# Features
+		# (1) Hit Detection
+		# (2) Hit Registration
+		# (3) RPC Call for multiplayer mesh
+		#print_stack()
+		#print_debug("Fix ENemy Player Collision Spammer")
+		
+		if not state == STATE_DIE && area.name == "player_sword": #if it's not dead and it's hit by the player"s sword collisssion
+			
+			print_debug("Enemy Struck, Implement Make RPC CAll if error > 0")
+			_body.hitpoints -= 1
+			
+			Music.play_sfx(Music.MusicConfig.hit_sfx) # Plays sfx from the Music singleton
+			#print_debug ("enemy hitpoint: "+ str(hitpoints))# for debug purposes only
+			pushback_direction = (_global_position - area.global_position).normalized()
+			_body.set_velocity(pushback_direction * kick_back_distance)
+			_body.move_and_slide() # Flies back at a random distance
+			
+			state = STATE_HURT
+			var blood = Globals.blood_fx.instance()
+			#get_parent().add_child(blood) # Instances Blood FX
+			
+			_body.get_parent().call_deferred("add_child", blood)
+			blood.global_position = _global_position # Makes the fx position to the Kinematic object position
+			
+		

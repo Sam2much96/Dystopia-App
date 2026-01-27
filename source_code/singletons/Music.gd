@@ -80,7 +80,13 @@ signal music_finished
 
 @onready var safe_Utils = get_node("/root/Utils")
 
+var bus: int 
+var bus2 : int 
+
 func _ready():
+	print_debug("Music bus debug: ",music_bus,"/",music_bus_2)
+	bus= music_bus
+	bus2 = music_bus_2
 	
 	if MusicConfig == null:
 		push_error("Music Config resource not assigned!")
@@ -112,9 +118,10 @@ func _ready():
 		"Default Music"
 		# bug:
 		# (1) does not shuffle music
-		var music_track = shuffle(MusicConfig.default_playlist)
-		play(music_track) #Not needed for release
-		#play_track(music_track)
+		var default_playlist : Dictionary = MusicConfig.default_playlist
+		var music_track : String = shuffle(default_playlist)
+		play(music_track) 
+		
 		
 	if !MusicConfig.enable:
 		A.stop()
@@ -246,32 +253,32 @@ func _notification(what):
 	#print_debug(what) # for debug purposes only
 	if what == NOTIFICATION_PAUSED: # Called When App Is Paused And Sets A's Bus first Music Fx the low pass filter
 		
-		AudioServer.set_bus_effect_enabled(music_bus,selected_sound_fx,true) # B's music Bus
-		AudioServer.set_bus_volume_db(music_bus,-3)
+		AudioServer.set_bus_effect_enabled(bus,selected_sound_fx,true) # B's music Bus
+		AudioServer.set_bus_volume_db(bus,-3)
 		#AudioServer.set_bus_volume_db(music_bus_2,10)
 
 	if what == NOTIFICATION_UNPAUSED:
 		
-		AudioServer.set_bus_effect_enabled(music_bus,selected_sound_fx,false)
-		AudioServer.set_bus_volume_db(music_bus,0)
+		AudioServer.set_bus_effect_enabled(bus,selected_sound_fx,false)
+		AudioServer.set_bus_volume_db(bus,0)
 		#AudioServer.set_bus_volume_db(music_bus_2,-100)
 
 	if what == NOTIFICATION_PREDELETE:
-		AudioServer.set_bus_volume_db(music_bus,-100)
+		AudioServer.set_bus_volume_db(bus,-100)
 		#AudioServer.set_bus_volume_db(music_bus_2,-100)
 		
 
 	if what == NOTIFICATION_APPLICATION_PAUSED:
 		print_debug("1111111111")
-		AudioServer.set_bus_mute(music_bus, true)
+		AudioServer.set_bus_mute(bus, true)
 		#AudioServer.set_bus_mute(music_bus_2, true)
 		
 		clear()
 	if what == NOTIFICATION_APPLICATION_RESUMED:
 		print_debug("22222222")
 		# Unmute both music bus's
-		AudioServer.set_bus_mute(music_bus, false)
-		AudioServer.set_bus_mute(music_bus_2, false)
+		AudioServer.set_bus_mute(bus, false)
+		AudioServer.set_bus_mute(bus2, false)
 
 
 """

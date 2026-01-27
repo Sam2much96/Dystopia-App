@@ -1,12 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://dri0wvvcpk18w"]
+[gd_scene load_steps=12 format=3 uid="uid://dri0wvvcpk18w"]
 
-[ext_resource type="Script" path="res://scenes/cinematics/cinematics V2.gd" id="1"]
+[ext_resource type="Script" uid="uid://cshoqy5tig5ya" path="res://scenes/cinematics/cinematics V2.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://5w57f804dcyw" path="res://resources/title animation/Dystopia Logo Drop shadow.png" id="2"]
 [ext_resource type="Texture2D" uid="uid://b1jl03tkqyb24" path="res://resources/Buttons/bck.png" id="3"]
 [ext_resource type="Animation" path="res://singletons/Title animation.tres" id="4"]
 [ext_resource type="Texture2D" uid="uid://4q55h8pkhcvc" path="res://resources/title animation/dots.png" id="5"]
 [ext_resource type="Texture2D" uid="uid://0t1lclxhetw1" path="res://godot.png" id="6"]
 [ext_resource type="PackedScene" uid="uid://bojmk6pwnm71g" path="res://scenes/Shaders/CRT.tscn" id="7"]
+[ext_resource type="Texture2D" uid="uid://crgyviag3pphk" path="res://resources/title animation/opening_cinematics_tileset_256x256_px.webp" id="7_fwyx2"]
 
 [sub_resource type="Animation" id="1"]
 length = 0.001
@@ -70,10 +71,190 @@ tracks/4/keys = {
 "update": 0,
 "values": [true]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("side_view:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("side_view:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-577, -24)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("front_view:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("front_view:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-277, -27)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("3_4_view:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("3_4_view:position")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-584, 260)]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("cape:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("side_view:scale")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2.5, 2.5)]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("front_view:scale")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2.5, 2.5)]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("3_4_view:scale")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2.5, 2.5)]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("3_4_view/hands:frame")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/16/type = "value"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("cape:scale")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.5, 1.5)]
+}
+tracks/17/type = "value"
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/path = NodePath("cape:position")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(95, 470)]
+}
+tracks/18/type = "value"
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/path = NodePath("cape/body_animation:frame")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+tracks/19/type = "value"
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/path = NodePath("cape/cape_animation:frame")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [18]
+}
 
 [sub_resource type="Animation" id="2"]
 resource_name = "opening_cinematic"
-length = 7.0
+length = 25.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -117,10 +298,10 @@ tracks/3/path = NodePath("TextureRect3:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 5.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 5.5, 12.141459),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [false, true]
+"values": [false, true, false]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -146,12 +327,192 @@ tracks/5/keys = {
 "update": 1,
 "values": [true, false]
 }
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("side_view:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 12.141459, 15.731333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("side_view:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 12.141459, 13.370874, 14.551104, 15.731333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-577, -24), Vector2(1354.0001, 345), Vector2(970.0001, 416), Vector2(758, 340.00003), Vector2(526.00006, 370)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("front_view:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 15.731333, 19.009748),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("front_view:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 15.731333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-277, -27), Vector2(556.99994, 321.99997)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("3_4_view:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 19.009748, 19.242182),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("3_4_view:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0, 19.009748),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-584, 260), Vector2(549, 356)]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("cape:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0, 19.242182),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("side_view:scale")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(12.141459),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2.5, 2.5)]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("front_view:scale")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(15.731333, 19.009748),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(2.5, 2.5), Vector2(3.5, 3.5)]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("3_4_view:scale")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(19.009748),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2.5, 2.5)]
+}
+tracks/16/type = "value"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("3_4_view/hands:frame")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"times": PackedFloat32Array(19.009748, 19.1, 19.166666),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+tracks/17/type = "value"
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/path = NodePath("cape:scale")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = {
+"times": PackedFloat32Array(19.242182),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.5, 1.5)]
+}
+tracks/18/type = "value"
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/path = NodePath("cape:position")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = {
+"times": PackedFloat32Array(19.242182),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(95, 470)]
+}
+tracks/19/type = "value"
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/path = NodePath("cape/body_animation:frame")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = {
+"times": PackedFloat32Array(19.242182, 19.4, 19.566668, 19.7, 19.866667, 20, 20.166666, 20.3, 20.466667, 20.7, 20.9, 21.2, 21.466667, 21.733334, 22.033333, 22.566668, 22.733335, 22.866669, 23.033335, 23.166668, 23.333334, 23.466667, 23.633335, 23.866669, 24.324484, 24.624485, 24.891151, 25.157818, 25.457817),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [6, 5, 6, 5, 6, 5, 6, 5, 6, 5, 6, 5, 6, 5, 6, 5, 6, 5, 6, 5, 6, 5, 6, 5, 6, 5, 6, 5, 6]
+}
+tracks/20/type = "value"
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/path = NodePath("cape/cape_animation:frame")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/keys = {
+"times": PackedFloat32Array(19.2418, 19.266668, 19.300001, 19.333334, 19.366667, 19.400002, 19.433334, 19.466667, 19.500002, 19.533335, 19.566668, 19.6, 19.633335, 19.666668, 19.7, 19.733334, 19.766668, 19.800001, 19.833334, 19.866667, 19.900002, 19.933334, 19.966667, 20.000002, 20.033335, 20.066668, 20.1, 20.133335, 20.166668, 20.2, 20.233334, 20.266668, 20.312948, 20.337816, 20.37115, 20.404482, 20.437815, 20.47115, 20.504482, 20.537815, 20.57115, 20.604483, 20.637815, 20.671148, 20.704483, 20.737816, 20.771149, 20.804482, 20.837816, 20.87115, 20.904482, 20.937815, 20.97115, 21.004482, 21.037815, 21.07115, 21.104483, 21.137815, 21.171148, 21.204483, 21.237816, 21.271149, 21.304482, 21.337816, 21.376795, 21.401663, 21.434996, 21.468328, 21.501661, 21.534996, 21.568329, 21.601662, 21.634996, 21.66833, 21.701662, 21.734995, 21.76833, 21.801662, 21.834995, 21.868328, 21.901663, 21.934996, 21.968328, 22.001661, 22.034996, 22.068329, 22.101662, 22.134996, 22.16833, 22.201662, 22.234995, 22.26833, 22.301662, 22.334995, 22.368328, 22.401663, 22.431799, 22.456667, 22.49, 22.523333, 22.556665, 22.59, 22.623333, 22.656666, 22.69, 22.723333, 22.756666, 22.789999, 22.823334, 22.856667, 22.89, 22.923332, 22.956667, 22.99, 23.023333, 23.056665, 23.09, 23.123333, 23.156666, 23.19, 23.223333, 23.256666, 23.289999, 23.323334, 23.356667, 23.39, 23.423332, 23.456667, 23.503265, 23.528133, 23.561466, 23.594799, 23.628132, 23.661467, 23.6948, 23.728132, 23.761467, 23.7948, 23.828133, 23.861465, 23.8948, 23.928133, 23.961466, 23.994799, 24.028133, 24.061466, 24.094799, 24.128132, 24.161467, 24.1948, 24.228132, 24.261467, 24.2948, 24.328133, 24.361465, 24.3948, 24.428133, 24.461466, 24.494799, 24.528133, 24.558504, 24.583372, 24.616705, 24.650038, 24.68337, 24.716705, 24.750038, 24.783371, 24.816706, 24.850039, 24.883371, 24.916704, 24.950039, 24.983372, 25.016705, 25.050037, 25.083372, 25.116705, 25.150038, 25.18337, 25.216705, 25.250038, 25.283371, 25.316706, 25.350039, 25.383371, 25.416704, 25.450039, 25.483372, 25.516705, 25.550037, 25.583372),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [18, 19, 20, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 18, 19, 20, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 18, 19, 20, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 18, 19, 20, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 18, 19, 20, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 18, 19, 20, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ihjsl"]
 _data = {
-"RESET": SubResource("1"),
-"intro_animation": ExtResource("4"),
-"opening_cinematic": SubResource("2")
+&"RESET": SubResource("1"),
+&"intro_animation": ExtResource("4"),
+&"opening_cinematic": SubResource("2")
 }
 
 [node name="Cinematics" type="Control"]
@@ -191,12 +552,9 @@ autostart = true
 
 [node name="animation player" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_ihjsl")
+&"": SubResource("AnimationLibrary_ihjsl")
 }
 autoplay = "intro_animation"
-
-[node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(-1334.26, 412.127)
 
 [node name="TextureRect3" type="TextureRect" parent="."]
 visible = false
@@ -219,12 +577,65 @@ texture = ExtResource("2")
 layout_mode = 0
 offset_left = -7.35754
 offset_top = 176.804
-offset_right = 723.643
-offset_bottom = 449.804
+offset_right = 723.647
+offset_bottom = 449.80408
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("5")
 
+[node name="side_view" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-577, -24)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("7_fwyx2")
+hframes = 7
+vframes = 5
+frame = 30
+
+[node name="front_view" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-277, -27)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("7_fwyx2")
+hframes = 7
+vframes = 5
+frame = 34
+
+[node name="3_4_view" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-584, 260)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("7_fwyx2")
+hframes = 7
+vframes = 5
+frame = 32
+
+[node name="hands" type="Sprite2D" parent="3_4_view"]
+position = Vector2(37, 18)
+texture = ExtResource("7_fwyx2")
+hframes = 7
+vframes = 5
+
+[node name="cape" type="Node2D" parent="."]
+visible = false
+position = Vector2(95, 470)
+scale = Vector2(1.5, 1.5)
+
+[node name="body_animation" type="Sprite2D" parent="cape"]
+position = Vector2(329, -14)
+texture = ExtResource("7_fwyx2")
+hframes = 7
+vframes = 5
+frame = 6
+
+[node name="cape_animation" type="Sprite2D" parent="cape"]
+position = Vector2(329, -14)
+texture = ExtResource("7_fwyx2")
+hframes = 7
+vframes = 5
+frame = 18
+
 [node name="CRT" parent="." instance=ExtResource("7")]
+visible = false
 layout_mode = 0
 offset_left = 0.0
 offset_top = 0.0

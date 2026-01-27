@@ -439,7 +439,9 @@ class Functions extends RefCounted:
 	# Loads Singular User Data from local storage
 	# Version 2 of Load_game function
 	# Should allow for loading individual variables from Local
-	static func load_user_data( data: String ):
+	static func load_user_data( data: String, safeTree : SceneTree ):
+		print_debug("Loading User Data >>>", data)
+		var safe_Diag = safeTree.get_root().get_node("/root/Dialogs")
 		
 		#var save_game : FileAccess = Utils.file 
 		if not FileAccess.file_exists("user://savegeme.save"):
@@ -454,10 +456,10 @@ class Functions extends RefCounted:
 		if save_dict.has(data):
 			print_debug ("Loading user data: ", data)
 			if data == 'languague':
-				Dialogs.language = save_dict.languague
-			if data == "Music_on_settings":
-				Music.Music_on_settings = save_dict.Music_on_settings
-				Music._ready()
+				safe_Diag.language = save_dict.languague
+			#if data == "Music_on_settings":
+			#	safe_Music.Music_on_settings = save_dict.Music_on_settings
+			#	#Music._ready()
 
 
 
@@ -1097,10 +1099,6 @@ class Film :
 
 
 
-	static func cinematic_debug(videoplayer: VideoStreamPlayer, vid_stream)-> void:
-		Debug.misc_debug = str(int(videoplayer.stream_position)) + Globals.os + str(videoplayer.is_playing(),
-		str(vid_stream) + videoplayer.get_stream_name()
-		)
 
 		
 	"""

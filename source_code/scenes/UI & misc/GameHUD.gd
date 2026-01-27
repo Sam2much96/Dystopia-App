@@ -38,8 +38,10 @@ extends CanvasLayer
 class_name GameHUD
 
 
-@onready var menu : Game_Menu = $"Menu"
+# Safe pointers to singletons
+#@onready var 
 
 @onready var _Stats : Stats = $Stats
 @onready var _Status_text : StatusText = $Status_text
+@onready var menu : Game_Menu = $Menu
 @onready var children : Array = [menu, _Stats, _Status_text]

@@ -50,7 +50,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.8895488, 0)
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.58499205, -3.793923)
 current = true
-fov = 85.91399
 
 [node name="GUIPanel3D" parent="." instance=ExtResource("1_r868j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24916029, 0.20915437, -4.157513)

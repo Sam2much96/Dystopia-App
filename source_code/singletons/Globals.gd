@@ -126,6 +126,8 @@ var player_name : String
 "Device Variables"
 var user_data_dir : String =OS.get_user_data_dir()
 
+"Safe Pointers to Global Singletons"
+@onready var utils_singleton = get_node("/root/Utils")
 
 "Screen Orientation"
 # for upscaling and wonscaling UI
@@ -138,8 +140,8 @@ var blood_fx: PackedScene = load ('res://scenes/UI & misc/Blood_Splatter_FX.tscn
 var despawn_fx: PackedScene = load ("res://scenes/UI & misc/DespawnFX.tscn")
 var bullet_fx : PackedScene
 
-"Node Pointer"
-var _smoke_fx_ 
+#"Node Pointer"
+#var _smoke_fx_ 
 
 'Temporary variants'
 var temp
@@ -180,15 +182,17 @@ func update_curr_scene() -> void:
 
 
 func _go_to_title():
+	update_curr_scene()
 	'Quits if already at title screen'
-	if get_tree().get_current_scene().get_name() == 'Menu':
+	if curr_scene == 'Title screen':
 		get_tree().quit()
-	Music.play_track(Music.MusicConfig.ui_sfx[1])
 	
 	'changes scene to title_screen'
-	title = load(global_scenes["title_scene"])
+	# to do:
+	# (1) use a resource for this logic instead of a global based dictionary
+	current_level = global_scenes["title_scene"]
 	
-	return Utils.Functions.change_scene_to_packed(title, get_tree())#get_tree().change_scene_to_file()
+	utils_singleton.Functions.change_scene_to_packed(title, get_tree())#get_tree().change_scene_to_file()
 
 func _go_to_cinematics():
 	cinematics = load(global_scenes["cinematics"])

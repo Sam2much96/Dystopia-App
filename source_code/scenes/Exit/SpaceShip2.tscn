@@ -15,6 +15,7 @@ frame = 97
 [node name="Exit" type="Area2D" parent="."]
 monitorable = false
 script = ExtResource("2_ergey")
+to_scene = "res://scenes/levels/Overworld3D.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
 position = Vector2(-0.5, 1)

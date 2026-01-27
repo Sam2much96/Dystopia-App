@@ -24,9 +24,16 @@ class_name Login
 """
 This is a gate-keeper script to keep check user's internet connections, restrict their access
 """
-var film : String = Globals.global_scenes["cinematics"]
+
+# safe pointer to global singletons
+@onready var safe_Globals = get_node("/root/Globals")
+@onready var safe_Utils = get_node("/root/Utils")
+@onready var safe_Diag = get_node("/root/Dialogs")
+@onready var _debug = get_node("/root/Debug")
+
+
+@onready var film : String = safe_Globals.global_scenes.get("cinematics")
 @onready var cinematics : PackedScene =load(film)#load('res://scenes/cinematics/cinematics.tscn')
-var index : int = 0
 
 @onready var play_button : Button = $TextureButton/play
 #@onready var dialgue_box = $Dialog_box
@@ -37,28 +44,19 @@ var index : int = 0
 @onready var label_spacer2 : Label = $label_spacer2
 @onready var label_spacer3 : Label =$label_spacer3
 
-#@onready var timer = $Timer
-@onready var _debug =get_tree().get_root().get_node("/root/Debug")
 
-var os = Globals.os # Pointer
+#var os = Globals.os # Pointer
 
-@onready var UI_buttons : Array = [
+@onready var UI_buttons : Array 
+
+func _ready():
+	UI_buttons = [
 	play_button, #dialgue_box, 
 	language, label_spacer, 
 	label_spacer2, label_spacer3
 	]
-
-@onready var _hide_dialogue_box : bool = false
-
-func _ready():
-# Described Above
-#	if _debug != null:
-#		_debug = get_tree().get_root().get_node("/root/Debug")
-
-	#dialgue_box.hide_dialogue()
-
-	# Load Users Prefered DIalogue 
-	Utils.Functions.load_user_data('languague')
+	
+	safe_Utils.UI.check_for_broken_links(UI_buttons)
 	
 	
 	# Load Users Prefered DIalogue 
@@ -131,45 +129,6 @@ func _on_play_pressed():
 
 	Utils.Functions.change_scene_to_packed(cinematics, get_tree())
 
-
-"""
-CHECKS IF THE DEVICE IS INTERNET CONNECTED AND GATEKEEPS ACCESS ON MOBILE DEVICES
-"""
-func _check_if_device_is_online(): 
-	#if os == 'Android' or 'iOS' or 'X11': #disable x11 for release build
-	#	index = index + 1
-	#	dialgue_box.show_dialog('Checking for Internet Connectivity','admin')
-		#Networking.url = 
-	#	Networking._check_connection( 'https://mfts.io', Networking)#url('https://play.google.com/store/apps/details?id=dystopia.app')
-	#	print_debug("Port To Individual Platform Singleton Scripts")
-	pass
-
-
-func _http_request_completed(result, response_code, headers, body):
-	if body.is_empty() != true:
-		show_play_button()
-		
-		Networking.good_internet = true #aves the internet status as a global variable
-		
-		#dialgue_box.show_dialog('Device is internet connected','Admin')
-		print ('Device is internet connected', result, response_code)
-		return
-	# Loop
-	while body.is_empty() == true && index < 30:
-		print ('No Internet Connection', result, response_code)
-		index += 1
-		_check_if_device_is_online()
-		#if _debug != null:
-		
-		get_tree().change_scene_to_packed( _debug.error_splash_page)
-		
-		#Resets Networking node
-		Networking.stop_check()
-		# Error splash page
-		if index == 10:
-			#dialgue_box.show_dialog('No Internet Connection','Admin') #not needed
-			get_tree().change_scene_to_packed(_debug.error_splash_page)
-			break
 
 
 func show_play_button() :

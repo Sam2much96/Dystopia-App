@@ -132,11 +132,15 @@ var despawn_particles
 var blood : BloodSplatter
 
 var kick_back_distance : int 
+var pushback_direction : Vector2
+
+"Memory safe global pointers"
+@onready var local_utils = get_tree().get_root().get_node("/root/Utils")
+@onready var local_debug = get_tree().get_root().get_node("/root/Debug")
+@onready var local_music = get_tree().get_root().get_node("/root/Music")
 
 func _enter_tree():
-	# Create A Global reference to self
-	# To DO: Use Enemy Object Pool to run enemy ai via simulations
-	Utils.EnemyObjPool.append(self)
+	
 	
 	
 	# set processor's rate as a correlation of the enemy type
@@ -152,7 +156,10 @@ func _enter_tree():
 
 
 func _ready():
-	#player =get_tree().get_nodes_in_group('player').pop_front()
+	#
+	# Create A Global reference to self
+	# To DO: Use Enemy Object Pool to run enemy ai via simulations
+	local_utils.EnemyObjPool.append(self)
 	
 	# Disable Raycast
 	raycast.set_enabled(false) 
@@ -160,10 +167,10 @@ func _ready():
 		# If the Frame Rate is Low, Optimizze Processor
 	# Bug: THis creates a scenerio where a players that hack the games enemies by overloading the processors
 	# Bug: Bugt It also allows for a smoothe framerate
-	if Debug.FPS_debug < 15:
+	if local_debug.FPS_debug < 15:
 		self.selected_frame_rate = IDIOT_FRAME_RATE
 	
-	kick_back_distance = Utils.calc_rand_number() # Calculates a random kickback distance
+	kick_back_distance = local_utils.calc_rand_number() # Calculates a random kickback distance
 	
 	# Redundancy Code
 	_randomize_self(enemy_type)
@@ -172,25 +179,7 @@ func _ready():
 
 
 func _process(_delta):
-	#debug() #turn off when not debugging
 	
-	
-	# Debug MOb Calculation
-	#print_debug(abs(linear_vel.x),"/",abs(linear_vel.y))
-	
-	#if player != null:
-	
-	"Proximity Attack Logic"
-	# buggy
-	# use behavoiural logic instead
-	#if abs(linear_vel.x) && abs(linear_vel.y) <= 8 and player != null: # Player is in clo9se proximity
-	#	state = STATE_ATTACK
-	#else : state = STATE_IDLE # change to state walk for random enemy parterns
-	
-	# Raises up a Frame Counter
-	#frame_counter += 1
-	
-
 	"""
 	ENEMY PROCESS LOGIC
 	"""
@@ -424,22 +413,9 @@ func _get_player() -> Player :
 # Bugs:
 # (1) Triggers Prematurely by Spawn Area 
 func _on_hurtbox_area_entered(area):
-	print_debug("Fix ENemy Player Collision Spammer")
-	if not state == STATE_DIE && area.name == "player_sword": #if it's not dead and it's hit by the player"s sword collisssion
-		print_debug("Enemy Struck, Implement Make RPC CAll if error > 0")
-		hitpoints -= 1
-		Music.play_sfx(Music.MusicConfig.hit_sfx) # Plays sfx from the Music singleton
-		#print_debug ("enemy hitpoint: "+ str(hitpoints))# for debug purposes only
-		var pushback_direction = (global_position - area.global_position).normalized()
-		set_velocity(pushback_direction *   kick_back_distance)
-		move_and_slide() # Flies back at a random distance
-		state = STATE_HURT
-		var blood = Globals.blood_fx.instantiate()
-		get_parent().add_child(blood) # Instances Blood FX
-		blood.global_position = global_position # Makes the fx position global?
+	Simulation.Enemy_.hit_collision_detected(
 		
-		#$state_changer.start() # Disabled Random State Changer For Debugging
-		
+	)
 
 
 # Despawn Logic
@@ -627,18 +603,18 @@ class Behaviour extends RefCounted:
 		return _facing
 
 
-	static func enemy_navigation(navi : NavigationAgent2D, target_pos : Vector2, curr_pos : Vector2, line : Line2D, pos_data : Array, type: int): 
+	static func enemy_navigation(navi : NavigationAgent2D, target_pos : Vector2, curr_pos : Vector2, line : Line2D, pos_data : Array, type: int, _debug = false): 
 		# refactored Navigation agent
 		# Navigation Agent doesn't focus on Player instead focuses on the scene origin's point
 		navi.set_target_position(target_pos) # target location is the player position
 		
 		
-		if Debug.enabled and type == 2: # Debug Navigation path
+		if _debug and type == 2: # Debug Navigation path
 			line.add_point(navi.get_final_position())
 			#line.points = [navi.get_final_location(), curr_pos]
 			pos_data.append(line.points)
 
-		if Debug.enabled and type == 1:
+		if _debug and type == 1:
 			line.points = [navi.get_final_position(), curr_pos]
 
 

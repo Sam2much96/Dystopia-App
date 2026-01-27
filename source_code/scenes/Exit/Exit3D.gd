@@ -41,28 +41,28 @@ func _ready():
 func _on_body_entered(body):
 	# Buggy not workinh
 	# Using timer node instead
-	if body is Camera3D:
-		print("11111111111")
+	if body is KinematicCollision3D:
+		print_debug("3d level exit collision triggered")
 		Globals.current_level = to_scene
 		Globals.spawn_x = body.position.x+ 200 
 		Globals.spawn_y = body.position.y +200
-		Globals.player_hitpoints = body.hitpoints
+		#Globals.player_hitpoints = body.hitpoints
 		
-		
-		Utils.Functions.save_game(
-			[body], 
-			body.hitpoints, 
-			(body.position.x+ 200), 
-			(body.position.y +200), 
-			to_scene, 
-			"", 
-			Globals.kill_count, 
-			"", 
-			null, 
-			""
-			) 
-			
-			
+		Utils.Functions.change_scene_to_packed(Globals.loading_scene, get_tree())
+		#Utils.Functions.save_game(
+		#	[body], 
+		#	body.hitpoints, 
+		#	(body.position.x+ 200), 
+		#	(body.position.y +200), 
+		#	to_scene, 
+		#	"", 
+		#	Globals.kill_count, 
+		#	"", 
+		#	null, 
+		#	""
+		#	) 
+		#	
+		#	
 
 
 

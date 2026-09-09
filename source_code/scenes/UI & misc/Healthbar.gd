@@ -44,39 +44,30 @@ var heart_empty : PackedScene = preload ("res://scenes/UI & misc/HeartEmpty.tscn
 Connects to the player node and shows a health bar in the form of hearts
 """
 
+# Last hitpoint value the bar was drawn for. -1 = nothing drawn from live data yet,
+# so the three placeholder hearts from Healthbar.tscn stay until the player spawns.
+var _rendered_hp : int = -1
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Try to get the player node. If null wait till next frame, rinse, repeat.
-	#while (player == null):
-	#	
-	#	# use a global function instead
-	#	player_group = get_tree().get_nodes_in_group("player")
-	#	# Too much Nested Ifs?
-	#	if not player_group.is_empty():
-	#		for i in player_group:
-	#			if i is Player:
-	#				player = i #player = player_group.pop_front()
-	#				initial_health = player.hitpoints
-	#				
-	#				#print_debug(111111) #works
-	#			if i is Player_v2_networking: pass 
-	#	else:
-			
-			# Emitted befor Node._process()
-	#		await get_tree().idle_frame
-	
-	
-	# Connect Signals to Player Object
-	#player.connect("health_changed", Callable(self, "_on_health_changed"))
-	
-	# Debug SIgnals
-	#print_debug(player.is_connected("health_changed", Callable(self, "_on_health_changed")))
-	
-
-	
-	# Set Hitpoint to Player Object Hitpoints
-	#_on_health_changed(player.hitpoints)
+	# ( issue #80 / #106 ) The old _ready() was fully commented out, so the health bar
+	# was never connected to the player and never updated. Player.gd keeps
+	# Globals.player_hitpoints in sync on every hit, so poll that each frame - the
+	# same approach minimap.gd uses to follow the player. This also works for the
+	# networked player, which updates the same global.
 	pass
+
+func _process(_delta):
+	var hp : int = Globals.player_hitpoints
+	if hp == _rendered_hp:
+		return
+	# Ignore the pre-spawn state (hp still 0) so the placeholder hearts are not
+	# wiped before the player exists; once a real value has shown, hp 0 (death)
+	# is honoured and clears the bar.
+	if hp <= 0 and _rendered_hp <= 0:
+		return
+	_rendered_hp = hp
+	_on_health_changed(max(hp, 0))
 
 # Should Implement a New Constant for Max Health
 func _on_health_changed(new_hp : int):
@@ -89,9 +80,9 @@ func _on_health_changed(new_hp : int):
 		# Creates New Heart Instate From Updatesd HP
 		# inefficient code
 		for i in new_hp:
-			
-			var heart = heart_instance.instantiate(0)
-			
+
+			var heart = heart_instance.instantiate()
+
 			self.call_deferred('add_child',heart) #adds more life bars
 
 

@@ -117,13 +117,21 @@ class Player_utils extends RefCounted:
 		return Globals.player
 
 
+func _ready():
+	# Seed the global random number generator exactly once, at startup ( issue #26 ).
+	# Godot 4 already auto-seeds on launch; this makes it explicit. Individual call
+	# sites must NOT call randomize() again - repeatedly re-seeding (e.g. on every
+	# music track change or enemy spawn) can hand out identical seeds when several
+	# calls land in the same clock tick, which is the "randomize bug" seen when a
+	# mobile app is minimised and resumed.
+	randomize()
+
 # Calculates the center of a Rectangle
 func calc_center_of_rectangle(rect : Vector2) -> Vector2:
 	return Vector2((rect.x/2), (rect.y/2))
 
 # Produces Truely Randomized Results
 func randomize_enemy_type() -> String:
-	randomize()
 	#_randomize(self)
 	return ['Easy', "Intermediate", "Hard"][randi()%3]
 

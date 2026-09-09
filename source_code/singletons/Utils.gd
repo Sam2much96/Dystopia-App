@@ -493,6 +493,28 @@ class Functions extends RefCounted:
 		var height = sqrt(pow(point_data[2].x - point_data[1].x, 2) + pow( point_data[2].y - point_data[1].y,2)) 
 		return Vector2(width, height)
 
+	"""
+	Netcode serialization helpers ( issue #49 )
+	Encodes a data Dictionary to/from a binary PackedByteArray for sending over the
+	network. dict2bytes / bytes2dict are exact inverses for any JSON style data
+	Dictionary ( numbers, strings, bools, arrays, nested dictionaries ):
+		bytes2dict(dict2bytes(d)) == d
+	var_to_bytes is used rather than a JSON string so integer values keep their
+	type instead of being widened to float on decode.
+	"""
+	static func dict2bytes(data : Dictionary) -> PackedByteArray:
+		return var_to_bytes(data)
+
+	static func bytes2dict(data : PackedByteArray) -> Dictionary:
+		# bytes_to_var (no object decoding) so a malformed or hostile packet can
+		# never carry an executable payload. Returns {} if the bytes are not a
+		# Dictionary.
+		var parsed = bytes_to_var(data)
+		if typeof(parsed) == TYPE_DICTIONARY:
+			return parsed
+		push_error("bytes2dict: decoded bytes are not a Dictionary")
+		return {}
+
 "Screen Class "
 class Screen  :
 	

@@ -150,9 +150,8 @@ func _enter_tree():
 		self.selected_frame_rate = AVERAGE_FRAME_RATE
 	if self.enemy_type == "Hard":
 		self.selected_frame_rate = FAST_FRAME_RATE
-	
-	# randomize seed generator
-	randomize()
+
+	# ( issue #26 ) seed is set once in Utils._ready(); do not re-seed per enemy
 
 
 func _ready():

@@ -114,7 +114,7 @@ func _ready():
 	
 	"Music Player Logic"
 	if MusicConfig.enable :
-		randomize() # randomise the engine's seed generator
+		# ( issue #26 ) RNG is seeded once in Utils._ready(); no per-scene re-seed here
 		"Default Music"
 		# bug:
 		# (1) does not shuffle music
@@ -298,7 +298,7 @@ static func shuffle_array(_fx : Array) -> int : # selects a random number of an 
 
 # Play the Next Track and Shuffle
 func _on_A_finished(): #This  signals when the music has finished and autoshuffles
-	randomize() #  reset the random seed in the random number generator
+	# ( issue #26 ) do not re-seed on every track change; seeded once in Utils._ready()
 	# shuffle music track
 	MusicConfig.music_track = shuffle(MusicConfig.default_playlist)
 	get_random_sound_effect()
@@ -371,6 +371,6 @@ func set_sound_effect(fx_ : int, state : bool):
 # Music Finished Playing
 func _on_Music_music_finished():
 	print_debug("music funished playing B")
-	randomize()
+	# ( issue #26 ) do not re-seed on every track change; seeded once in Utils._ready()
 	MusicConfig.music_track = shuffle(MusicConfig.default_playlist)
 	play(MusicConfig.music_track)

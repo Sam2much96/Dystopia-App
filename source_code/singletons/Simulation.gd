@@ -113,6 +113,41 @@ CPU FX
 var rainFX : RainFX
 
 
+"""
+SIMPLE DAY / NIGHT CYCLE ( issue #96 )
+"""
+# A lightweight, non-authoritative in-game clock advanced from _process().
+# It only logs phase changes for now - other systems (lighting, weather, spawns)
+# can read `day_phase` / `day_cycle_progress()` later without owning the timing.
+enum DayPhase { DAWN, DAY, DUSK, NIGHT }
+
+# Frames for one full dawn->night->dawn loop. ~1 minute at 60 fps.
+const DAY_CYCLE_FRAMES : int = 3600
+
+var day_cycle_frame : int = 0
+var day_phase : int = DayPhase.DAWN   # cycle starts at frame 0 == dawn
+
+# 0.0 at start of dawn, wrapping back to 0.0 after a full cycle.
+func day_cycle_progress() -> float:
+	return float(day_cycle_frame) / float(DAY_CYCLE_FRAMES)
+
+func _phase_for_progress(t : float) -> int:
+	if t < 0.15:
+		return DayPhase.DAWN
+	elif t < 0.5:
+		return DayPhase.DAY
+	elif t < 0.65:
+		return DayPhase.DUSK
+	return DayPhase.NIGHT
+
+func _tick_day_night_cycle() -> void:
+	day_cycle_frame = (day_cycle_frame + 1) % DAY_CYCLE_FRAMES
+	var next_phase : int = _phase_for_progress(day_cycle_progress())
+	if next_phase != day_phase:
+		day_phase = next_phase
+		print_debug("[day/night] -> %s (frame %d/%d)" % [DayPhase.keys()[next_phase], day_cycle_frame, DAY_CYCLE_FRAMES])
+
+
 
 """
 SIMULATION LOGIC
@@ -222,10 +257,13 @@ func simulate(id : int): # playerclass controls all player networkinf objects
 
 
 func _process(_delta):
-	
+
 	frame_counter += 1
-	
-	
+
+	# advance the simple day / night cycle ( issue #96 )
+	_tick_day_night_cycle()
+
+
 		# Reset Frame Counter TO Conserver Memory
 	if frame_counter >= 1000:
 			frame_counter = 0

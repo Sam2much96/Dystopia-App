@@ -54,14 +54,14 @@ flat = true
 layout_mode = 2
 focus_previous = NodePath("../continue")
 shortcut_in_tooltip = false
-text = "Multiplayer"
+text = "multiplayer"
 flat = true
 
 [node name="anime" type="Button" parent="ScrollContainer/HSeparator"]
 layout_mode = 2
 focus_next = NodePath("../quit")
 shortcut_in_tooltip = false
-text = "Anime"
+text = "anime"
 flat = true
 
 [node name="practice" type="Button" parent="ScrollContainer/HSeparator"]
@@ -73,7 +73,7 @@ flat = true
 layout_mode = 2
 focus_next = NodePath("../quit")
 shortcut_in_tooltip = false
-text = "Controls"
+text = "controls"
 flat = true
 
 [node name="quit" type="Button" parent="ScrollContainer/HSeparator"]

@@ -65,6 +65,11 @@ signal status_showing
 # Backup Pointer to Inventory Singleton
 @onready var _inventory : Storage = get_node("/root/Inventory")
 
+# ( issue #145 ) icon-based inventory grid. Built in code and parented under the
+# existing VBoxContainer so the scene file does not need restructuring.
+const INVENTORY_SLOT : PackedScene = preload("res://scenes/UI & misc/InventorySlot.tscn")
+var _inventory_grid : GridContainer
+
 # pointer to Music singleton
 @onready var safeMusic = get_node("/root/Music")
 
@@ -101,6 +106,14 @@ func _ready():
 	
 	#Regex for Inventory Update
 	regex.compile("(\\d+)")
+
+	# ( issue #145 ) swap the text button list for an icon grid
+	_inventory_button.hide()
+	_inventory_grid = GridContainer.new()
+	_inventory_grid.name = "InventoryGrid"
+	_inventory_grid.columns = 4
+	_inventory_parent.add_child(_inventory_grid)
+	_inventory.item_changed.connect(_on_inventory_changed)
 	
 	# Set Tab Icons via SUbclass Script
 	tab_container.set_script(TabIcons)
@@ -123,14 +136,14 @@ func _input(event):
 		_enable()
 	#	#_state = ENABLED
 		safeMusic.play_track(safeMusic.MusicConfig.ui_sfx.get(0))
-		return enabled_ # _state
+		return  # _input is void in Godot 4; the returned value was never used
 	if event.is_action_pressed("stats") && enabled_ == true:
 		enabled_ = false
 		_disable()
 	#	#_state = DISABLED
 		#print_debug("disable")
 		safeMusic.play_track(safeMusic.MusicConfig.ui_sfx.get(1))
-		return enabled #_state
+		return
 
 
 
@@ -155,106 +168,50 @@ func _update_quest_listing():
 	_quest_label.text = text
 	#pass
 
-# Connects to Inventory.remove item -> Stats.gd
-func _update_inventory_button_cache(item : String, amount : int) : # COde Bloc Called from inventroy singleton remove_item() method
-	# 
-	# 
-	# Code Bloc is meant to update a pointer containing all Inventory items buttons and their related ammount
-	# This Code Bloc is used to optimize a psudo-sorting algorithm needed for the Stats UI 
-	# 
-	# Ideally these buttons should be a texture reat with a number ount labeel, but that'll be for a later refactor
-	
-	var result
-	
-	for i in _inventory_parent.get_children(): # Nested Bloc?
-		if i is Label:
-			pass
-		if i is Button:
-			
-			# look for the particular Inventory Button 
-			if i.name == item:
-			
-				# Returns the item count for each Inventory Item
-				result = regex.search(i.text)
-			
-				if result:
-					#print_debug(i.text) # for debug purposes only
-					
-					i.set_text("%s x %s\n" % [i.name, int(result.get_string()) - amount])
-				
-				#print_debug("%s x %s\n" % [i.name, result.get_string()]) # for debug purposes only
+# ( issue #145 ) The inventory UI is now an icon grid. These two entry points are
+# kept because they are called from elsewhere (Inventory.remove_item and _enable);
+# both just re-render the grid from the current inventory dictionary.
 
+# Called from Inventory.remove_item() after an item is consumed.
+func _update_inventory_button_cache(_item : String, _amount : int) -> void:
+	_render_inventory_grid()
 
-func _update_inventory_listing():
-	"Inventory UI Logic"
-	# Refactoring?
-	
-	# Updates the Inventroy Button with the Items the Player holds
-	# Note: As the Number of Items grow, inventory might require a more encompassing method && UI
-	var text : String = ""
-	var inventory : Dictionary = _inventory.list()
-	var _inventory_size : int = inventory.size()
-	
-	#print_debug("Inventory Size Debug : ", _inventory_size) # For Debug Purposes only
-	
-	# add COnditional for if quest parent has inventory item to avoid dupliucation bug
-	# it'll compate an array of the button names to check if it is already created
-	# if created pass, if not , update inventory listing
-	
-	if inventory.is_empty():
-		text += "[Empty]"
-		_inventory_button.text = text
-	
-	elif not inventory.is_empty() && _inventory_size >= 1 :
-		
-		if inventory.size() == 1: # Works
-			for item in inventory:
-				if not _stats_buttons.has(str(item)):
-					text = "%s x %s\n" % [item, inventory[item]]
-					_inventory_button.text = text
-					pass
-		
-		if _inventory_size > 1 :
-			
-			if not _stats_buttons.size() > _inventory_size : # Buggy Conditional
-			
-			
-				# Bugs: 
-				# (1) Only Uses the first item in t he inventory dictionary sometimes
-				# (2) Duplicates the number of items everytime (2/3)
-				# (4) Items of same type repeat themselves
-				# (5) Doesnt Reflect Item Current Count
-				
-				
-				# Add Conditionals
-				#print_debug("Item Debug: ", item) # For Debug Purposes only
-				for item in inventory:
-				
-					# DUplicates button using instancing
-					# Item Button should ideally be low poly texture buttons
-					var new_item_button : Button = _inventory_button.duplicate(8) 
-					
-					
-					#create new button object anbd or remove exisiting buttons if they exist
-					#_inventory_parent.add_sibling(_inventory_button, new_item_button)
-					
-					# connect signal
-					
-					# Sorts Items and the amount Into Individual Lines using REGEX
-					text = "%s x %s\n" % [item, inventory[item]]
-					
-					# set each item button Text to their corresponding item 
-					new_item_button.text = text
-					new_item_button.name = str(item)
-					
-					# connect button to inventory singleton method
-					#
-					new_item_button.connect("pressed", Callable(_inventory, "remove_item").bind(item, 1)) # button presses 
-					
-					# Create a pointer to Inventory ui buttons
-					_stats_buttons.append(new_item_button)
-					#print_debug("Inventory Stats Debug: ", _stats_buttons) # For Debug Purposes only
-			else : pass
+func _update_inventory_listing() -> void:
+	_render_inventory_grid()
+
+func _on_inventory_changed(_action, _type, _amount) -> void:
+	_render_inventory_grid()
+
+# Rebuilds the icon grid from Inventory.list(). Cheap enough for the item counts
+# this game deals with; called on open and on every inventory change.
+func _render_inventory_grid() -> void:
+	if not is_instance_valid(_inventory_grid):
+		return
+
+	for child in _inventory_grid.get_children():
+		child.queue_free()
+	_stats_buttons.clear()
+
+	var items : Dictionary = _inventory.list()
+
+	if items.is_empty():
+		var empty := Label.new()
+		empty.text = "[ Empty ]"
+		_inventory_grid.add_child(empty)
+		return
+
+	for item in items:
+		var count : int = int(items[item])
+		if count <= 0:
+			continue
+		var slot := INVENTORY_SLOT.instantiate()
+		_inventory_grid.add_child(slot)
+		slot.set_item(str(item), count)
+		slot.used.connect(_on_slot_used)
+		_stats_buttons.append(str(item))
+
+func _on_slot_used(item_type : String) -> void:
+	_inventory.remove_item(item_type, 1)
 
 
 func _notification(what):  #Triggered when the Min Game Loop is exited

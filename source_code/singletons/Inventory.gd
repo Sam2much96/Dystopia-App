@@ -52,9 +52,36 @@ var _stats_ui #: Stats
 @onready var bullet : PackedScene = preload("res://scenes/items/Bullet.tscn")
 @onready var bomb_explosion : PackedScene = preload("res://scenes/items/bombexplosion.tscn")
 
-# Hard COding Items for 
+# Hard COding Items for
 # items
 enum {Generic_Item, Magic_Sword, health_potion, Bow, Arrow, Bomb}
+
+
+# ( issue #145 ) Icon-based inventory catalogue.
+# Maps the string key used in `inventory` to its display name and icon path.
+# `Magic Sword` and `health potion` reuse placeholders until dedicated art lands
+# (see issue #103 for the Magic Sword pixel art).
+const ITEM_DATA : Dictionary = {
+	"Generic Item":  {"name": "Generic Item", "icon": "res://resources/misc/shield.webp"},
+	"Magic Sword":   {"name": "Magic Sword",  "icon": "res://resources/misc/ring.webp"},
+	"health potion": {"name": "Health Potion", "icon": "res://resources/misc/key.webp"},
+	"Bomb":          {"name": "Bomb",  "icon": "res://resources/misc/bombs.webp"},
+	"Arrow":         {"name": "Arrow", "icon": "res://resources/misc/arrow.webp"},
+	"Bow":           {"name": "Bow",   "icon": "res://resources/misc/bow.webp"},
+}
+
+const FALLBACK_ICON : String = "res://resources/Environment Tilesets & Tilemaps/item2.webp"
+
+# Icon texture for an item key, or a generic fallback if unknown / missing.
+func item_icon(type : String) -> Texture2D:
+	var path : String = ITEM_DATA.get(type, {}).get("icon", FALLBACK_ICON)
+	if not ResourceLoader.exists(path):
+		path = FALLBACK_ICON
+	return load(path) if ResourceLoader.exists(path) else null
+
+# Human-readable name for an item key (falls back to the key itself).
+func item_display_name(type : String) -> String:
+	return ITEM_DATA.get(type, {}).get("name", type)
 
 
 """

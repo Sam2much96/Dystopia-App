@@ -718,7 +718,7 @@ class Enemy_ extends RefCounted:
 			_body.move_and_slide() # Flies back at a random distance
 			
 			state = STATE_HURT
-			var blood = Globals.blood_fx.instance()
+			var blood = Globals.blood_fx.instantiate()
 			#get_parent().add_child(blood) # Instances Blood FX
 			
 			_body.get_parent().call_deferred("add_child", blood)

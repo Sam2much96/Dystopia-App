@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://b288viros8dyk"]
+[gd_scene format=3 uid="uid://b288viros8dyk"]
 
 [ext_resource type="Texture2D" uid="uid://bet3ob1uolkg" path="res://resources/3D/550px-TLoZTWW_Vr_boxcloud1.png" id="1_evfpv"]
 [ext_resource type="PackedScene" uid="uid://b0ok6pw1iidhr" path="res://resources/3D/overworld_map.tscn" id="2_x681s"]
 [ext_resource type="PackedScene" uid="uid://endi2tywgaf1" path="res://scenes/characters/Aarin_3d.tscn" id="3_j0mot"]
 [ext_resource type="PackedScene" uid="uid://clg4whlp0q8s5" path="res://resources/3D/broken_ship_3d.tscn" id="4_j0mot"]
+[ext_resource type="PackedScene" uid="uid://dvtjoictqp6qv" path="res://resources/3D/random_block_model.glb" id="5_fejjy"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_mk56a"]
 panorama = ExtResource("1_evfpv")
@@ -16,20 +17,23 @@ radiance_size = 1
 background_mode = 2
 sky = SubResource("Sky_x681s")
 
-[node name="Overworld3D" type="Node3D"]
+[node name="Overworld3D" type="Node3D" unique_id=1901572996]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=440378372]
 environment = SubResource("Environment_j0mot")
 
-[node name="overworld map" parent="WorldEnvironment" instance=ExtResource("2_x681s")]
+[node name="overworld map" parent="WorldEnvironment" unique_id=1314208987 instance=ExtResource("2_x681s")]
 
-[node name="Player" parent="WorldEnvironment/overworld map" instance=ExtResource("3_j0mot")]
+[node name="Player" parent="WorldEnvironment/overworld map" unique_id=564402002 instance=ExtResource("3_j0mot")]
 transform = Transform3D(0.31143945, 0, -0.950266, 0, 1, 0, 0.950266, 0, 0.31143945, 0, 1.6456656, 1.2855667)
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment/overworld map"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment/overworld map" unique_id=2090081399]
 transform = Transform3D(-0.20897004, -0.977922, 0, -0.06348224, 0.013565382, 0.9978908, -0.97585934, 0.20852928, -0.06491544, 0, 3.781114, 0)
 light_energy = 2.0
 directional_shadow_mode = 0
 
-[node name="broken_ ship_final" parent="WorldEnvironment/overworld map" instance=ExtResource("4_j0mot")]
+[node name="broken_ ship_final" parent="WorldEnvironment/overworld map" unique_id=375325109 instance=ExtResource("4_j0mot")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.945631, 0, 0)
+
+[node name="random_block_model" parent="." unique_id=77769087 instance=ExtResource("5_fejjy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.881921, 6.358265, 0)

@@ -50,12 +50,15 @@ func _on_body_entered(body):
 			(body.position.y +200), 
 			to_scene, 
 			"", 
-			Globals.kill_count, 
-			"", 
-			null, 
+			Globals.kill_count,
+			"",
+			null,
 			""
-			) 
-			
+			)
+
+		SteamCloud.save_progress()
+		SteamLeaderboards.submit_kill_count(Globals.kill_count)
+
 		#var err = get_tree().change_scene_to_packed(Globals.loading_scene)
 		#print_debug("loading scene err debug: ", err)
 		#if err != OK:

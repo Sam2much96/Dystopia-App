@@ -199,7 +199,7 @@ func _input(_event):
 			Input.is_action_just_pressed("roll") ):
 				
 				"Updates Player Input Data Across Client/Server Peers"
-				Simulation.rpc_unreliable_id(1, "pi", peer_id, Simulation.RawData) # Packet Loss Error
+				Simulation.rpc_id(1, "pi", peer_id, Simulation.RawData) # Packet Loss Error
 		
 		
 	# Server Side Code

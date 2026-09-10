@@ -79,11 +79,14 @@ func _save(body):
 			body.position.y, 
 			"", 
 			Globals.os, 
-			Globals.kill_count, 
+			Globals.kill_count,
 			"",
 			null,
 			""
 			)
+
+		SteamCloud.save_progress()
+		SteamLeaderboards.submit_kill_count(Globals.kill_count)
 
 func _reset_autosave_debugger() -> void:
 	#if body is Player:

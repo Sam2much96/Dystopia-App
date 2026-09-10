@@ -1,4 +1,4 @@
-[gd_resource type="FontFile" load_steps=4 format=4 uid="uid://472m0ptygjdm"]
+[gd_resource type="FontFile" format=4 uid="uid://472m0ptygjdm"]
 
 [sub_resource type="Image" id="Image_qm842"]
 data = {
@@ -27,6 +27,15 @@ font_weight = 700
 subpixel_positioning = 0
 msdf_pixel_range = 14
 msdf_size = 128
+cache/0/variation_coordinates = {}
+cache/0/face_index = 0
+cache/0/embolden = 0.0
+cache/0/transform = Transform2D(1, 0, 0, 1, 0, 0)
+cache/0/spacing_top = 0
+cache/0/spacing_bottom = 0
+cache/0/spacing_space = 0
+cache/0/spacing_glyph = 0
+cache/0/baseline_offset = 0.0
 cache/0/16/0/ascent = 16.0
 cache/0/16/0/descent = 4.0
 cache/0/16/0/underline_position = 0.0
@@ -118,6 +127,15 @@ cache/0/50/0/kerning_overrides/50/0 = Vector2(0, 0)
 
 [resource]
 fallbacks = Array[Font]([SubResource("1")])
+cache/0/variation_coordinates = {}
+cache/0/face_index = 0
+cache/0/embolden = 0.0
+cache/0/transform = Transform2D(1, 0, 0, 1, 0, 0)
+cache/0/spacing_top = 0
+cache/0/spacing_bottom = 0
+cache/0/spacing_space = 0
+cache/0/spacing_glyph = 0
+cache/0/baseline_offset = 0.0
 cache/0/16/0/ascent = 0.0
 cache/0/16/0/descent = 0.0
 cache/0/16/0/underline_position = 0.0

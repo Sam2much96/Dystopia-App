@@ -85,7 +85,7 @@ class Zip extends RefCounted:
 				#for t in gdunzip.files.keys():
 				#	print ("Type of " + f['file_name'] + " ",typeof(gdunzip.get_compressed(t))) # for debug purposes only
 				
-					Networking.save_file_(unziped_file, concat, file_size)
+					#Networking.save_file_(unziped_file, concat, file_size)
 
 
 				# "compression_method" will be either -1 for uncompressed data, or

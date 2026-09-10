@@ -13,7 +13,7 @@
 # *************************************************
 # To Do:
 # (1) Only show once, when installing file. Should Save Information to Globals save file and only Load once
-
+# (2) scene is buggy, backport Mobile implementation to this script
 
 
 extends Control

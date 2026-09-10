@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dtrufnkwowb7h"]
+[gd_scene format=3 uid="uid://dtrufnkwowb7h"]
 
 [ext_resource type="Script" uid="uid://cpvcc1kvynacv" path="res://scenes/UI & misc/Stats.gd" id="1"]
 [ext_resource type="FontFile" path="res://fonts/dialog.tres" id="2"]
@@ -36,7 +36,7 @@ TabContainer/styles/panel = SubResource("2")
 TabContainer/styles/tab_bg = SubResource("4")
 TabContainer/styles/tab_fg = SubResource("6")
 
-[node name="Stats" type="PanelContainer"]
+[node name="Stats" type="PanelContainer" unique_id=795358529]
 process_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,19 +48,19 @@ focus_mode = 2
 theme_override_styles/panel = ExtResource("4")
 script = ExtResource("1")
 
-[node name="TabContainer" type="TabContainer" parent="."]
+[node name="TabContainer" type="TabContainer" parent="." unique_id=1246116374]
 layout_mode = 2
 theme = SubResource("3")
 theme_override_fonts/font = ExtResource("3")
-current_tab = 1
+current_tab = 3
 script = ExtResource("6")
 
-[node name="0" type="TabBar" parent="TabContainer"]
+[node name="0" type="TabBar" parent="TabContainer" unique_id=1506435191]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/0"]
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/0" unique_id=1403632728]
 layout_mode = 0
 offset_left = 3.07108
 offset_top = 3.35535
@@ -68,17 +68,17 @@ offset_right = 991.071
 offset_bottom = 905.355
 theme = ExtResource("5")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/0/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/0/ScrollContainer" unique_id=82227261]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="TabContainer/0/ScrollContainer/VBoxContainer"]
+[node name="Title" type="Label" parent="TabContainer/0/ScrollContainer/VBoxContainer" unique_id=733641696]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2")
 text = "Stats"
 horizontal_alignment = 1
 
-[node name="Kill_count" type="Label" parent="TabContainer/0/ScrollContainer/VBoxContainer"]
+[node name="Kill_count" type="Label" parent="TabContainer/0/ScrollContainer/VBoxContainer" unique_id=621988940]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -87,31 +87,23 @@ text = "KC
 "
 horizontal_alignment = 1
 
-[node name="1" type="TabBar" parent="TabContainer"]
+[node name="1" type="TabBar" parent="TabContainer" unique_id=804475726]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/1"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/1" unique_id=559527035]
 layout_mode = 0
 offset_right = 77.0
 offset_bottom = 224.0
 
-[node name="Label_Spacer" type="Label" parent="TabContainer/1/VBoxContainer"]
+[node name="Label_Spacer" type="Label" parent="TabContainer/1/VBoxContainer" unique_id=1553229908]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/1/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/1/VBoxContainer" unique_id=1577454615]
 layout_mode = 2
 
-[node name="Sud" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_fonts/font = ExtResource("3")
-text = "Coins
-"
-horizontal_alignment = 1
-
-[node name="price" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
+[node name="Sud" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer" unique_id=1593258385]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -120,16 +112,25 @@ text = "Coins
 "
 horizontal_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="TabContainer/1/VBoxContainer/HBoxContainer"]
+[node name="price" type="Label" parent="TabContainer/1/VBoxContainer/HBoxContainer" unique_id=679652301]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("3")
+text = "Coins
+"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="TabContainer/1/VBoxContainer/HBoxContainer" unique_id=1106017324]
 layout_mode = 2
 texture = ExtResource("7_cc07t")
 
-[node name="2" type="TabBar" parent="TabContainer"]
+[node name="2" type="TabBar" parent="TabContainer" unique_id=812356253]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="ScrollContainer2" type="ScrollContainer" parent="TabContainer/2"]
+[node name="ScrollContainer2" type="ScrollContainer" parent="TabContainer/2" unique_id=510768344]
 layout_mode = 0
 offset_left = 3.07108
 offset_top = 3.35535
@@ -137,17 +138,17 @@ offset_right = 991.071
 offset_bottom = 905.355
 theme = ExtResource("5")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/2/ScrollContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/2/ScrollContainer2" unique_id=1858415177]
 layout_mode = 2
 
-[node name="Title2" type="Label" parent="TabContainer/2/ScrollContainer2/VBoxContainer"]
+[node name="Title2" type="Label" parent="TabContainer/2/ScrollContainer2/VBoxContainer" unique_id=1473117852]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2")
 text = "Quests"
 horizontal_alignment = 1
 
-[node name="Quests" type="Label" parent="TabContainer/2/ScrollContainer2/VBoxContainer"]
+[node name="Quests" type="Label" parent="TabContainer/2/ScrollContainer2/VBoxContainer" unique_id=376501208]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -157,12 +158,11 @@ Quest 2
 "
 horizontal_alignment = 1
 
-[node name="3" type="TabBar" parent="TabContainer"]
-visible = false
+[node name="3" type="TabBar" parent="TabContainer" unique_id=313848793]
 layout_mode = 2
 metadata/_tab_index = 3
 
-[node name="ScrollContainer3" type="ScrollContainer" parent="TabContainer/3"]
+[node name="ScrollContainer3" type="ScrollContainer" parent="TabContainer/3" unique_id=11658396]
 layout_mode = 0
 offset_left = 3.07108
 offset_top = 3.35535
@@ -170,16 +170,16 @@ offset_right = 991.071
 offset_bottom = 905.355
 theme = ExtResource("5")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/3/ScrollContainer3"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/3/ScrollContainer3" unique_id=1460000499]
 layout_mode = 2
 
-[node name="Title3" type="Label" parent="TabContainer/3/ScrollContainer3/VBoxContainer"]
+[node name="Title3" type="Label" parent="TabContainer/3/ScrollContainer3/VBoxContainer" unique_id=118901858]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "Inventory"
 horizontal_alignment = 1
 
-[node name="Inventory" type="Button" parent="TabContainer/3/ScrollContainer3/VBoxContainer"]
+[node name="Inventory" type="Button" parent="TabContainer/3/ScrollContainer3/VBoxContainer" unique_id=782520516]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -188,41 +188,41 @@ text = "Item 1
 "
 flat = true
 
-[node name="4" type="TabBar" parent="TabContainer"]
+[node name="4" type="TabBar" parent="TabContainer" unique_id=449683272]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="TabContainer/4"]
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/4" unique_id=360131204]
 layout_mode = 0
 offset_top = -23.0
 offset_right = 1146.0
 offset_bottom = 637.0
 
-[node name="minimap" type="NinePatchRect" parent="TabContainer/4/MarginContainer"]
+[node name="minimap" type="NinePatchRect" parent="TabContainer/4/MarginContainer" unique_id=1040581181]
 modulate = Color(1, 1, 1, 0.411765)
 layout_mode = 2
 texture = ExtResource("11")
 region_rect = Rect2(0, 12, 66, 43)
 script = ExtResource("7")
 
-[node name="ComicsV8" type="Node2D" parent="TabContainer/4/MarginContainer/minimap"]
+[node name="ComicsV8" type="Node2D" parent="TabContainer/4/MarginContainer/minimap" unique_id=708684683]
 script = ExtResource("10_cc07t")
 enabled = true
 
-[node name="Lines" type="Node2D" parent="TabContainer/4/MarginContainer/minimap/ComicsV8"]
+[node name="Lines" type="Node2D" parent="TabContainer/4/MarginContainer/minimap/ComicsV8" unique_id=181919506]
 
-[node name="Sprite2D" type="Sprite2D" parent="TabContainer/4/MarginContainer/minimap"]
+[node name="Sprite2D" type="Sprite2D" parent="TabContainer/4/MarginContainer/minimap" unique_id=1283438737]
 position = Vector2(457, 244)
 scale = Vector2(9, 9)
 texture = ExtResource("11_omhli")
 
-[node name="Sprite2D2" type="Sprite2D" parent="TabContainer/4/MarginContainer/minimap"]
+[node name="Sprite2D2" type="Sprite2D" parent="TabContainer/4/MarginContainer/minimap" unique_id=983840687]
 position = Vector2(687, 221)
 scale = Vector2(9, 9)
 texture = ExtResource("12_rch61")
 
-[node name="TextureRect" type="TextureRect" parent="TabContainer/4"]
+[node name="TextureRect" type="TextureRect" parent="TabContainer/4" unique_id=2006263315]
 layout_mode = 0
 offset_right = 64.0
 offset_bottom = 64.0

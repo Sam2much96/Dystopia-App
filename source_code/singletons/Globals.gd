@@ -166,14 +166,31 @@ var OverWorld : PackedScene
 func _ready():
 	#print_debug('Blood fx:',blood_fx) #optimize blood fx to only load during game runtimes
 	#print_debug("Despawn Fx:", despawn_fx)
-	
-	
-	
-	
+
+
+
+
 	#Set White Background
-	RenderingServer.set_default_clear_color(Color("white")) 
-	
-	
+	RenderingServer.set_default_clear_color(Color("white"))
+
+	_restore_cloud_progress()
+
+
+func _restore_cloud_progress() -> void:
+	var progress := SteamCloud.load_progress()
+	if progress.has("kill_count"):
+		kill_count = int(progress.kill_count)
+	if progress.has("current_level") and progress.current_level != "":
+		current_level = str(progress.current_level)
+	if progress.has("spawn_x"):
+		spawn_x = int(progress.spawn_x)
+	if progress.has("spawn_y"):
+		spawn_y = int(progress.spawn_y)
+	if progress.has("player_hitpoints"):
+		player_hitpoints = int(progress.player_hitpoints)
+	if progress.has("direction_control") and progress.direction_control != "":
+		direction_control = str(progress.direction_control)
+
 
 func update_curr_scene() -> void:
 	curr_scene= get_tree().get_current_scene().get_name() 
@@ -192,7 +209,7 @@ func _go_to_title():
 	# (1) use a resource for this logic instead of a global based dictionary
 	current_level = global_scenes["title_scene"]
 	
-	utils_singleton.Functions.change_scene_to_packed(title, get_tree())#get_tree().change_scene_to_file()
+	utils_singleton.Functions.change_scene_to_packed(self.loading_scene, get_tree())#get_tree().change_scene_to_file()
 
 func _go_to_cinematics():
 	cinematics = load(global_scenes["cinematics"])

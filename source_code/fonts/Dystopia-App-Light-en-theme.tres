@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=28 format=4 uid="uid://c560i5fcetkf"]
+[gd_resource type="Theme" format=4 uid="uid://c560i5fcetkf"]
 
 [ext_resource type="Texture2D" uid="uid://b18cuv77te7qf" path="res://resources/kenny ui-pack/grey_box.png" id="1"]
 [ext_resource type="FontFile" uid="uid://bulfmexofxbh0" path="res://fonts/Comic_Andy.ttf" id="1_3mtjn"]
@@ -173,6 +173,15 @@ style_name = "Regular"
 subpixel_positioning = 0
 msdf_pixel_range = 14
 msdf_size = 128
+cache/0/variation_coordinates = {}
+cache/0/face_index = 0
+cache/0/embolden = 0.0
+cache/0/transform = Transform2D(1, 0, 0, 1, 0, 0)
+cache/0/spacing_top = 0
+cache/0/spacing_bottom = 0
+cache/0/spacing_space = 0
+cache/0/spacing_glyph = 0
+cache/0/baseline_offset = 0.0
 cache/0/16/0/ascent = 15.0
 cache/0/16/0/descent = 4.0
 cache/0/16/0/underline_position = 2.28125
@@ -752,6 +761,15 @@ cache/0/33/0/glyphs/79/texture_idx = 0
 
 [sub_resource type="FontFile" id="8"]
 fallbacks = Array[Font]([SubResource("7")])
+cache/0/variation_coordinates = {}
+cache/0/face_index = 0
+cache/0/embolden = 0.0
+cache/0/transform = Transform2D(1, 0, 0, 1, 0, 0)
+cache/0/spacing_top = 0
+cache/0/spacing_bottom = 0
+cache/0/spacing_space = 0
+cache/0/spacing_glyph = 0
+cache/0/baseline_offset = 0.0
 cache/0/16/0/ascent = 0.0
 cache/0/16/0/descent = 0.0
 cache/0/16/0/underline_position = 0.0

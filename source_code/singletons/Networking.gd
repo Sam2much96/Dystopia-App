@@ -35,6 +35,12 @@ extends HTTPRequest
 
 class_name Internet
 
+signal connection_success
+signal error_connection_failed(code, message)
+signal error_ssl_handshake
+signal game_finished
+signal Timeout
+
 """
 All Net Code In One Script
 """
@@ -161,7 +167,7 @@ func _on_Networking_request_completed(result: int, response_code: int, headers: 
 	
 	match result:
 		HTTPRequest.RESULT_SUCCESS: #what happens to body? #always write a http request completed function in the connecting script
-			emit_signal("connection_success") 
+			connection_success.emit()
 			NetConfig.good_internet = true
 			#_connection =(str ('connection success')) # Debugs to the Debug singleton # Depreciated--Delete
 			#print_debug (str(result) + str(response_code) + str(headers)+ str (body))  
@@ -193,53 +199,53 @@ func _on_Networking_request_completed(result: int, response_code: int, headers: 
 			#print_debug(body.get_string_from_utf8())
 			
 		HTTPRequest.RESULT_CHUNKED_BODY_SIZE_MISMATCH:
-			emit_signal("error_connection_failed", HTTPRequest.RESULT_CHUNKED_BODY_SIZE_MISMATCH, 'RESULT_CHUNKED_BODY_SIZE_MISMATCH')
+			error_connection_failed.emit(HTTPRequest.RESULT_CHUNKED_BODY_SIZE_MISMATCH, 'RESULT_CHUNKED_BODY_SIZE_MISMATCH')
 			print_debug("error_connection_failed", HTTPRequest.RESULT_CHUNKED_BODY_SIZE_MISMATCH, 'RESULT_CHUNKED_BODY_SIZE_MISMATCH')
-			
+
 		HTTPRequest.RESULT_CANT_CONNECT:
-			emit_signal("error_connection_failed", HTTPRequest.RESULT_CANT_CONNECT, 'RESULT_CANT_CONNECT')
+			error_connection_failed.emit(HTTPRequest.RESULT_CANT_CONNECT, 'RESULT_CANT_CONNECT')
 			print_debug("error_connection_failed", HTTPRequest.RESULT_CANT_CONNECT, 'RESULT_CANT_CONNECT')
-			
+
 		HTTPRequest.RESULT_CANT_RESOLVE:
-			emit_signal("error_connection_failed", HTTPRequest.RESULT_CANT_RESOLVE, 'RESULT_CANT_RESOLVE')
+			error_connection_failed.emit(HTTPRequest.RESULT_CANT_RESOLVE, 'RESULT_CANT_RESOLVE')
 			print_debug("error_connection_failed", HTTPRequest.RESULT_CANT_RESOLVE, 'RESULT_CANT_RESOLVE')
 			#good_internet = false
 			#_connection = (str ('connection failed')) # Debugs to the Debug singleton
 			#print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
-			
+
 		HTTPRequest.RESULT_CONNECTION_ERROR:
-			emit_signal("error_connection_failed", HTTPRequest.RESULT_CONNECTION_ERROR, 'RESULT_CONNECTION_ERROR')
+			error_connection_failed.emit(HTTPRequest.RESULT_CONNECTION_ERROR, 'RESULT_CONNECTION_ERROR')
 			print_debug("error_connection_failed", HTTPRequest.RESULT_CONNECTION_ERROR, 'RESULT_CONNECTION_ERROR')
 			NetConfig.good_internet = false
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
 			#print_debug (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
-			
+
 		HTTPRequest.RESULT_TLS_HANDSHAKE_ERROR:
-			emit_signal("error_ssl_handshake")
+			error_ssl_handshake.emit()
 			print_debug("error_ssl_handshake")
-			
+
 		HTTPRequest.RESULT_NO_RESPONSE:
-			emit_signal("error_connection_failed", HTTPRequest.RESULT_NO_RESPONSE, 'RESULT_NO_RESPONSE')
+			error_connection_failed.emit(HTTPRequest.RESULT_NO_RESPONSE, 'RESULT_NO_RESPONSE')
 			print_debug("error_connection_failed", HTTPRequest.RESULT_NO_RESPONSE, 'RESULT_NO_RESPONSE')
-			
+
 		HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED:
-			emit_signal("error_connection_failed", HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED, 'RESULT_BODY_SIZE_LIMIT_EXCEEDED')
+			error_connection_failed.emit(HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED, 'RESULT_BODY_SIZE_LIMIT_EXCEEDED')
 			print_debug("error_connection_failed", HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED, 'RESULT_BODY_SIZE_LIMIT_EXCEEDED')
-			
+
 		HTTPRequest.RESULT_REQUEST_FAILED:
-			emit_signal("error_connection_failed", HTTPRequest.RESULT_REQUEST_FAILED, 'RESULT_REQUEST_FAILED')
+			error_connection_failed.emit(HTTPRequest.RESULT_REQUEST_FAILED, 'RESULT_REQUEST_FAILED')
 			print_debug("error_connection_failed", HTTPRequest.RESULT_REQUEST_FAILED, 'RESULT_REQUEST_FAILED')
-			
+
 		HTTPRequest.RESULT_DOWNLOAD_FILE_CANT_OPEN:
-			emit_signal("error_connection_failed", HTTPRequest.RESULT_DOWNLOAD_FILE_CANT_OPEN, 'RESULT_DOWNLOAD_FILE_CANT_OPEN')
+			error_connection_failed.emit(HTTPRequest.RESULT_DOWNLOAD_FILE_CANT_OPEN, 'RESULT_DOWNLOAD_FILE_CANT_OPEN')
 			print_debug("error_connection_failed", HTTPRequest.RESULT_DOWNLOAD_FILE_CANT_OPEN, 'RESULT_DOWNLOAD_FILE_CANT_OPEN')
-			
+
 		HTTPRequest.RESULT_DOWNLOAD_FILE_WRITE_ERROR:
-			emit_signal("error_connection_failed", HTTPRequest.RESULT_DOWNLOAD_FILE_WRITE_ERROR, 'RESULT_DOWNLOAD_FILE_WRITE_ERROR')
+			error_connection_failed.emit(HTTPRequest.RESULT_DOWNLOAD_FILE_WRITE_ERROR, 'RESULT_DOWNLOAD_FILE_WRITE_ERROR')
 			print_debug("error_connection_failed", HTTPRequest.RESULT_DOWNLOAD_FILE_WRITE_ERROR, 'RESULT_DOWNLOAD_FILE_WRITE_ERROR')
-			 
+
 		HTTPRequest.RESULT_REDIRECT_LIMIT_REACHED:
-			emit_signal("error_connection_failed", HTTPRequest.RESULT_REDIRECT_LIMIT_REACHED, 'RESULT_REDIRECT_LIMIT_REACHED')
+			error_connection_failed.emit(HTTPRequest.RESULT_REDIRECT_LIMIT_REACHED, 'RESULT_REDIRECT_LIMIT_REACHED')
 			print_debug("error_connection_failed", HTTPRequest.RESULT_REDIRECT_LIMIT_REACHED, 'RESULT_REDIRECT_LIMIT_REACHED')
 
 func _format_price(value):
@@ -304,51 +310,51 @@ func on_request_result(result, response_code, headers, body): # I need to pass v
 	#connected to results and works as an auto emitter
 	match result:
 		RESULT_SUCCESS: #what happens to body? #always write a http request cmpleted function in the connecting script
-			emit_signal("connection_success") 
+			connection_success.emit()
 			#_connection =(str ('connection success')) # Debugs to the Debug singleton # Depreciated--Delete
-			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body))  
+			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body))
 		RESULT_CHUNKED_BODY_SIZE_MISMATCH:
-			emit_signal("error_connection_failed", RESULT_CHUNKED_BODY_SIZE_MISMATCH,'RESULT_CHUNKED_BODY_SIZE_MISMATCH')
+			error_connection_failed.emit(RESULT_CHUNKED_BODY_SIZE_MISMATCH,'RESULT_CHUNKED_BODY_SIZE_MISMATCH')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
 			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_CANT_CONNECT:
-			emit_signal("error_connection_failed",RESULT_CANT_CONNECT,'RESULT_CANT_CONNECT')
+			error_connection_failed.emit(RESULT_CANT_CONNECT,'RESULT_CANT_CONNECT')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
 			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_CANT_RESOLVE:
-			emit_signal("error_connection_failed",RESULT_CANT_RESOLVE,'RESULT_CANT_RESOLVE')
+			error_connection_failed.emit(RESULT_CANT_RESOLVE,'RESULT_CANT_RESOLVE')
 			#_connection = (str ('connection failed')) # Debugs to the Debug singleton
 			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_CONNECTION_ERROR:
-			emit_signal("error_connection_failed",RESULT_CONNECTION_ERROR,'RESULT_CONNECTION_ERROR')
+			error_connection_failed.emit(RESULT_CONNECTION_ERROR,'RESULT_CONNECTION_ERROR')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
 			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		#RESULT_SSL_HANDSHAKE_ERROR:
-		#	emit_signal("error_ssl_handshake")
+		#	error_ssl_handshake.emit()
 			#_connection = (str ('connection failed')) # Debugs to the Debug singleton
 		#	connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_NO_RESPONSE:
-			emit_signal("error_connection_failed",RESULT_NO_RESPONSE,'RESULT_NO_RESPONSE')
+			error_connection_failed.emit(RESULT_NO_RESPONSE,'RESULT_NO_RESPONSE')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
 			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_BODY_SIZE_LIMIT_EXCEEDED:
-			emit_signal("error_connection_failed", RESULT_BODY_SIZE_LIMIT_EXCEEDED,'RESULT_BODY_SIZE_LIMIT_EXCEEDED')
+			error_connection_failed.emit(RESULT_BODY_SIZE_LIMIT_EXCEEDED,'RESULT_BODY_SIZE_LIMIT_EXCEEDED')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
 			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) #use in a function
 		RESULT_REQUEST_FAILED:
-			emit_signal("error_connection_failed", RESULT_REQUEST_FAILED, 'RESULT_REQUEST_FAILED')
+			error_connection_failed.emit(RESULT_REQUEST_FAILED, 'RESULT_REQUEST_FAILED')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
+			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body))
 		RESULT_DOWNLOAD_FILE_CANT_OPEN:
-			emit_signal("error_connection_failed",RESULT_DOWNLOAD_FILE_CANT_OPEN,'RESULT_DOWNLOAD_FILE_CANT_OPEN')
+			error_connection_failed.emit(RESULT_DOWNLOAD_FILE_CANT_OPEN,'RESULT_DOWNLOAD_FILE_CANT_OPEN')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton
-			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
+			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body))
 		RESULT_DOWNLOAD_FILE_WRITE_ERROR:
-			emit_signal("error_connection_failed", RESULT_DOWNLOAD_FILE_WRITE_ERROR, 'RESULT_DOWNLOAD_FILE_WRITE_ERROR')
+			error_connection_failed.emit(RESULT_DOWNLOAD_FILE_WRITE_ERROR, 'RESULT_DOWNLOAD_FILE_WRITE_ERROR')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
-			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
+			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body))
 		RESULT_REDIRECT_LIMIT_REACHED:
-			emit_signal("error_connection_failed",RESULT_REDIRECT_LIMIT_REACHED, 'RESULT_REDIRECT_LIMIT_REACHED')
+			error_connection_failed.emit(RESULT_REDIRECT_LIMIT_REACHED, 'RESULT_REDIRECT_LIMIT_REACHED')
 			#_connection =(str ('connection failed')) # Debugs to the Debug singleton # Depreciated--Delete
 			NetConfig.connection_debug = (str(result) + str(response_code) + str(headers)+ str (body)) 
 	#stop_check() # Disabled
@@ -366,6 +372,13 @@ func _on_failure(code, message):
 
 func _on_fail_ssl_handshake():
 	print('SSL Handshake Error!!')
+
+
+func _on_connected_ok_fwd() -> void:
+	Lobby._on_connected_ok()
+
+func _on_connected_fail_fwd() -> void:
+	Lobby._on_connected_fail(get_tree())
 	#_connection = str ('ssl handshake error!!') # Debug Variable # Depreciated--Delete
 
 'Downloads a Json file and Stores it Locally'
@@ -530,7 +543,7 @@ func _on_Timer2_timeout():
 	print ('check timer stopped')
 	NetConfig.Timeout_ = true
 
-	emit_signal("Timeout")
+	Timeout.emit()
 	stop_check()
 	#if is_instance_valid(Comics_v6): # Error Catcher
 	#	Comics_v6.SwipeLocked = false#!Comics_v6.SwipeLocked
@@ -594,38 +607,18 @@ func _player_connected(_id : int):
 	#GamePlay = LOCAL_COOP
 	
 	if NetConfig.map_instance == null:
-		Globals.current_level = "res://scenes/levels/OverworldOnline.tscn"#"res://scenes/levels/Testing Scene.tscn"
-		# Someone connected, start the game!
-		var Map : PackedScene = Utils.Functions.LoadLargeScene(
-			Globals.current_level, 
-			Globals.scene_resource, 
-			Globals._o, 
-			Globals.scene_loader, 
-			Globals.loading_resource, 
-			Globals.a, 
-			Globals.b, 
-			Globals.progress
-			)
-		
-		NetConfig.map_instance = Map.instance()
-	
-	
-		
-		# Connect deferred so we can safely erase it from the callback.
-		# Defines the Type of COnnection
-		# Connects the Game Loop's Game Finished Signal to an End Game Method
-		# ENd Game Is a Non Existent Function SO it throws a warning
-		connect("game_finished", Callable(self, "_end_game").bind(), CONNECT_DEFERRED)
-		
-		
-		
-		# Logic: If player connected, Start Game
-		
-		# Add Game Scene to tree
-		# Instace As A child of Server Node
+		Globals.current_level = "res://scenes/levels/OverworldOnline.tscn"
+		var Map := load(Globals.current_level) as PackedScene
+		if Map == null:
+			push_error("_player_connected: failed to load map at " + Globals.current_level)
+			return
+		NetConfig.map_instance = Map.instantiate()
+
+		if not game_finished.is_connected(_end_game):
+			game_finished.connect(_end_game, CONNECT_DEFERRED)
+
 		get_tree().get_root().add_child(NetConfig.map_instance)
-		
-		Networking.UserInterface.hide()
+		NetConfig.UserInterface.hide()
 	
 
 	
@@ -776,7 +769,7 @@ func poolByte2Array(data_from: PackedByteArray) -> Array:
 			var test_json_conv = JSON.new()
 			test_json_conv.parse(i) # Returns either a String or a Dictionary? Type 18 for dictionary
 			NetConfig.RawJson = test_json_conv.get_data()
-		return NetConfig.RawJson.get_data()
+		return NetConfig.RawJson
  
 	else: 
 		push_error("Error calling built-in function 'bytes_to_var': Not enough bytes for decoding bytes, or invalid format.")
@@ -918,9 +911,9 @@ class SceneManager extends Node2D:
 		# By default, all nodes in server inherit from master,
 		# while all nodes in clients inherit from puppet.
 		# set_network_master is tree-recursive by default.
-		if get_tree().is_server():
+		if multiplayer.is_server():
 			# For the server, give control of player 2 to the other peer.
-			player2.set_multiplayer_authority(get_tree().get_peers()[0])
+			player2.set_multiplayer_authority(multiplayer.get_peers()[0])
 		else:
 			# For the client, give control of player 2 to itself.
 			player2.set_multiplayer_authority(get_tree().get_unique_id())
@@ -981,27 +974,18 @@ class Lobby extends Control:
 
 	var peer = null
 
-	# FOrmerly Ready Method
-	static func ConnectSignal(scene_tree_obj : SceneTree, Lobby : Node) -> void:
-		# Connect all the callbacks related to networking.
-		# Inernet Class Contains Logic for the Implmentations Requiring Parameters
-		
-		# Players/CLients
-		# Connect Signals
-		# Debug Signal Connections
-		# Signals Connect to Networking Main Script, which executeds Lobby Static Functions
-		# Present in the Lobby Class
-		# Temporarily Disabling for Porting
-		#scene_tree_obj.connect("peer_connected", Callable(Networking, "_player_connected"))
-		#scene_tree_obj.connect("peer_disconnected", Callable(Networking, "_player_disconnected"))
-		
-		# Connection Signal
-		#scene_tree_obj.connect("connected_to_server", Callable(Lobby, "_on_connected_ok")) 
-		#scene_tree_obj.connect("connection_failed", Callable(Networking, "_connected_fail"))
-		
-		# Server
-		#scene_tree_obj.connect("server_disconnected", Callable(Networking, "_server_disconnected"))
-		pass
+	static func ConnectSignal(scene_tree_obj: SceneTree, _lobby_node: Node) -> void:
+		var mp := scene_tree_obj.get_multiplayer()
+		if not mp.peer_connected.is_connected(Networking._player_connected):
+			mp.peer_connected.connect(Networking._player_connected)
+		if not mp.peer_disconnected.is_connected(Networking._player_disconnected):
+			mp.peer_disconnected.connect(Networking._player_disconnected)
+		if not mp.connected_to_server.is_connected(Networking._on_connected_ok_fwd):
+			mp.connected_to_server.connect(Networking._on_connected_ok_fwd)
+		if not mp.connection_failed.is_connected(Networking._on_connected_fail_fwd):
+			mp.connection_failed.connect(Networking._on_connected_fail_fwd)
+		if not mp.server_disconnected.is_connected(Networking._server_disconnected):
+			mp.server_disconnected.connect(Networking._server_disconnected)
 
 
 
@@ -1094,8 +1078,12 @@ class Lobby extends Control:
 		
 		# Sets Network Peer
 		Lobby.get_multiplayer().multiplayer_peer = peer #Lobby.set_multiplayer_peer(peer)
-	
-		
+
+		# Host never receives its own peer_connected signal, so bootstrap
+		# the host's map + player object here instead of waiting for one.
+		if Networking.NetConfig.GamePlay == Networking.NetConfig.MMO_SERVER:
+			Networking._player_connected(1)
+
 		host_button.set_disabled(true)
 		join_button.set_disabled(true)
 		
@@ -1132,8 +1120,78 @@ class Lobby extends Control:
 
 		_set_status("Connecting...", Dialogs.dialog_box, true)
 		print_debug(" Connecting...")
-		
+
 		return true
+
+
+	static func _on_steam_host_pressed(lobby_tree: SceneTree, max_players: int, dialog_box: DialogBox) -> void:
+		var peer := SteamMultiplayerPeer.new()
+		var err := peer.create_host(max_players)
+		if err != OK:
+			_set_status("Steam: Can't host (error %d)" % err, dialog_box, false)
+			return
+		lobby_tree.get_multiplayer().multiplayer_peer = peer
+		_set_status("Steam: Waiting for players... (ID: %d)" % Steam.getSteamID(), dialog_box, true)
+		print_debug("Steam host started. Local Steam ID: ", Steam.getSteamID())
+
+		# Host never receives its own peer_connected signal, so bootstrap
+		# the host's map + player object here instead of waiting for one.
+		if Networking.NetConfig.GamePlay == Networking.NetConfig.MMO_SERVER:
+			Networking._player_connected(1)
+
+		# Create a matchmaking lobby so other players can find this game
+		# instead of needing the host's Steam64 ID pasted in manually.
+		Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, max_players)
+
+
+	static func _on_steam_join_pressed(host_steam_id: int, lobby_tree: SceneTree, dialog_box: DialogBox) -> bool:
+		if host_steam_id == 0:
+			_set_status("Steam: Enter a valid Steam ID.", dialog_box, false)
+			return false
+		var peer := SteamMultiplayerPeer.new()
+		var err := peer.create_client(host_steam_id)
+		if err != OK:
+			_set_status("Steam: Failed to connect (error %d)" % err, dialog_box, false)
+			return false
+		lobby_tree.get_multiplayer().multiplayer_peer = peer
+		_set_status("Steam: Connecting to %d..." % host_steam_id, dialog_box, true)
+		print_debug("Steam client connecting to Steam ID: ", host_steam_id)
+		return true
+
+
+	##### Steam Lobby matchmaking (find-a-game, instead of pasting a Steam64 ID) ######
+
+	const STEAM_LOBBY_TAG_KEY := "dystopia_lobby"
+
+	static func _on_steam_lobby_created(connect_result: int, lobby_id: int) -> void:
+		if connect_result != Steam.RESULT_OK:
+			push_error("Steam: failed to create matchmaking lobby (result %d)" % connect_result)
+			return
+		Steam.setLobbyData(lobby_id, "name", "%s's game" % Networking.NetConfig.cfg_player_name)
+		Steam.setLobbyData(lobby_id, STEAM_LOBBY_TAG_KEY, "1")
+
+
+	static func _on_steam_request_lobby_list() -> void:
+		Steam.addRequestLobbyListStringFilter(STEAM_LOBBY_TAG_KEY, "1", Steam.LOBBY_COMPARISON_EQUAL)
+		Steam.requestLobbyList()
+
+
+	static func _on_steam_lobby_match_list(lobbies: Array, server_list: ItemList) -> void:
+		server_list.clear()
+		for lobby_id in lobbies:
+			var lobby_name : String = Steam.getLobbyData(lobby_id, "name")
+			if lobby_name == "":
+				lobby_name = "Game #%d" % lobby_id
+			var idx := server_list.add_item(lobby_name)
+			server_list.set_item_metadata(idx, {"type": "steam", "lobby_id": lobby_id})
+
+
+	static func _on_steam_lobby_joined(lobby_id: int, response: int, lobby_tree: SceneTree, dialog_box: DialogBox) -> void:
+		if response != Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
+			_set_status("Steam: Failed to join lobby (response %d)" % response, dialog_box, false)
+			return
+		var host_id := Steam.getLobbyOwner(lobby_id)
+		_on_steam_join_pressed(host_id, lobby_tree, dialog_box)
 
 
 

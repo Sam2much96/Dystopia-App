@@ -414,7 +414,13 @@ func _get_player() -> Player :
 # (1) Triggers Prematurely by Spawn Area 
 func _on_hurtbox_area_entered(area):
 	Simulation.Enemy_.hit_collision_detected(
-		
+	area,
+	state,
+	hitpoints,
+	pushback_direction,
+	self,
+	global_position,
+	kick_back_distance
 	)
 
 

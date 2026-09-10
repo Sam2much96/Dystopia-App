@@ -7,10 +7,15 @@
 # Reads data from the Sprite Atlas Tile Config resource and 
 # spawns objects at the tile position
 #
+# to do:
+# (1) add logic that implements rigid body physics + timer for the side scrolling levels
+# (2) logic should account for level name and trigger different loading mechanics
 # *************************************************
 extends TileMapLayer
 
 @export var tile_config : Resource
+
+@onready var levelObject : Array = []
 
 func _ready():
 	if tile_config == null:
@@ -18,6 +23,14 @@ func _ready():
 		return
 	
 	loadMap()
+
+func loadMapSideScrolling():
+	#logic
+	# (1) cycle throught the tileset and get the tile data
+	# (2) spawn the Sidescrolling tiles and attach each obhect to the level object
+	# (3) create a timer for triggering the entire level's collisions
+	
+	pass
 
 func loadMap():
 	#print_debug("Loading Map Triggered")

@@ -147,6 +147,10 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 visible = false
 layout_mode = 2
 
+[node name="input_transport" type="OptionButton" parent="ui/ScrollContainer/grid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
 [node name="address_text" type="LineEdit" parent="ui/ScrollContainer/grid"]
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
@@ -154,6 +158,16 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "127.0.0.1"
 caret_blink = true
 caret_blink_interval = 0.5
+
+[node name="refresh" type="Button" parent="ui/ScrollContainer/grid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Find Games"
+flat = true
+
+[node name="server_list" type="ItemList" parent="ui/ScrollContainer/grid"]
+custom_minimum_size = Vector2(128, 80)
+layout_mode = 2
 
 [node name="label_spacer" type="Label" parent="ui/ScrollContainer/grid"]
 visible = false
@@ -192,6 +206,9 @@ libraries = {
 
 [node name="Dialog_box" parent="." instance=ExtResource("4")]
 
+[connection signal="item_selected" from="ui/ScrollContainer/grid/input_transport" to="." method="_on_input_transport_item_selected"]
+[connection signal="pressed" from="ui/ScrollContainer/grid/refresh" to="." method="_on_refresh_pressed"]
+[connection signal="item_selected" from="ui/ScrollContainer/grid/server_list" to="." method="_on_server_list_item_selected"]
 [connection signal="pressed" from="ui/ScrollContainer/grid/play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="ui/ScrollContainer/grid/host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="ui/ScrollContainer/grid/back" to="." method="_on_back_pressed"]

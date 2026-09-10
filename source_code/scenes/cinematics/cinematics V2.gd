@@ -141,15 +141,7 @@ func _on_Timer_timeout():
 func _go_to_title() -> void:
 	
 	if local_globals.curr_scene == 'Cinematics': #I use this bool to define two states
-		
-		
-		
-		#get_tree().change_scene_to(Globals.title_screen)
 		local_globals._go_to_title()
-	if is_instance_valid(local_globals.cinematics):
-		# Free the Cinematics file from the Stack if loaded
-		
-		pass
 
 func play_opening_cinematic() -> int:
 	#Plays the opening cinematic 

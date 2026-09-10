@@ -15,6 +15,8 @@
 
 extends Node
 
+signal steam_ready
+
 var app_id = 3888070
 
 func _ready() -> void:
@@ -46,6 +48,8 @@ func _ready() -> void:
 		steam_username, ui_language
 	]
 	print_debug("app data: ", SteamData)
+
+	steam_ready.emit()
 
 
 func _process(_delta: float) -> void:

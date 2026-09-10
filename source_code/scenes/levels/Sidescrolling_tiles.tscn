@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://cg2lngqai587y"]
+
+[ext_resource type="Texture2D" uid="uid://ceeniqx0xmyaf" path="res://scenes/levels/godot_128x_dungeon_tileset.png" id="1_kf5og"]
+[ext_resource type="Script" uid="uid://sd208hcpc45j" path="res://scenes/levels/sidescrolling_tiles.gd" id="1_xtwhv"]
+
+[node name="Node2D" type="Node2D" unique_id=500313229]
+script = ExtResource("1_xtwhv")
+
+[node name="RigidBody2D" type="RigidBody2D" parent="." unique_id=467373614]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RigidBody2D" unique_id=1716533519]
+polygon = PackedVector2Array(56, -64, 57, 53, -59, 53, -60, -64)
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D" unique_id=276214026]
+texture = ExtResource("1_kf5og")
+hframes = 16
+vframes = 19
+frame = 71
+
+[node name="Sprite2D2" type="Sprite2D" parent="RigidBody2D" unique_id=809429918]
+visible = false
+position = Vector2(111, 1)
+texture = ExtResource("1_kf5og")
+hframes = 16
+vframes = 19
+frame = 72
+
+[node name="Sprite2D3" type="Sprite2D" parent="RigidBody2D" unique_id=279221264]
+visible = false
+position = Vector2(221, 1)
+texture = ExtResource("1_kf5og")
+hframes = 16
+vframes = 19
+frame = 73
